@@ -137,6 +137,40 @@ public class AssetCatalogEntityResource {
     }
 
     /**
+     * Return a list of assets by asset type name without any additional search criteria
+     * The list includes also subtypes
+     *
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param typeName         the assets type name to search for
+     * @return                 list of assets by type name
+     */
+    @GetMapping(path = "/assets-by-type-name/{typeName}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetListResponse getAssetsByTypeName(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
+                                                 @PathVariable("typeName") @NotBlank String typeName) {
+        return assetService.searchByTypeName(serverName, userId, typeName);
+    }
+
+    /**
+     * Return a list of assets by asset type GUID without any additional search criteria
+     * The list includes also subtypes
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param typeGUID         the assets type GUID to search for
+     * @return                 list of assets by type GUID
+     */
+    @GetMapping(path = "/assets-by-type-guid/{typeGUID}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+
+    public AssetListResponse getAssetsByTypeGUID(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
+                                                 @PathVariable("typeGUID") @NotBlank String typeGUID) {
+        return assetService.searchByTypeGUID(serverName, userId, typeGUID);
+    }
+
+    /**
      * Return the full context of an asset/glossary term based on its identifier.
      * The response contains the list of the connections assigned to the asset.
      *

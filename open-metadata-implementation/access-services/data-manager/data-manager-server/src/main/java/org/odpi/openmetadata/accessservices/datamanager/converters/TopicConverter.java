@@ -35,7 +35,7 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -72,7 +72,9 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
 
                     topicProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     topicProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    topicProperties.setDisplayName(this.removeName(instanceProperties));
+                    topicProperties.setName(this.removeName(instanceProperties));
+                    topicProperties.setDisplayName(topicProperties.getName());
+                    topicProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     topicProperties.setDescription(this.removeDescription(instanceProperties));
                     topicProperties.setTopicType(this.removeTopicType(instanceProperties));
 
@@ -103,7 +105,7 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

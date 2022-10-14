@@ -3,7 +3,7 @@
 
 /**
  * These classes provides the Java clients for the Governance Program Open Metadata Access Service (OMAS).
- * These clients manage all of the interaction with an open metadata repository.  They are initialized with the URL
+ * These clients manage all the interaction with an open metadata repository.  They are initialized with the URL
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */

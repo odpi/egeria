@@ -10,13 +10,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ConfigurationItemProperties provides the base class for infrastructure items.  This extends referenceable with the ability to
+ * RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
  * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -27,6 +29,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = AssetConnectionProperties.class, name = "AssetConnectionProperties"),
+                @JsonSubTypes.Type(value = DataContentForDataSetProperties.class, name = "DataContentForDataSetProperties"),
                 @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
                 @JsonSubTypes.Type(value = ExternalGlossaryElementLinkProperties.class, name = "ExternalGlossaryElementLinkProperties"),
                 @JsonSubTypes.Type(value = CapabilityDeploymentProperties.class, name = "CapabilityDeploymentProperties"),
@@ -34,6 +38,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ControlFlowProperties.class, name = "ControlFlowProperties"),
                 @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
                 @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
+                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
+                @JsonSubTypes.Type(value = GlossaryTermCategorization.class, name = "GlossaryTermCategorization"),
+                @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
         })
 public class RelationshipProperties implements Serializable
 {
@@ -41,6 +48,8 @@ public class RelationshipProperties implements Serializable
 
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;
+
+    private Map<String, Object> extendedProperties = null;
 
 
     /**
@@ -53,7 +62,7 @@ public class RelationshipProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieve values from the supplied template
      *
      * @param template element to copy
      */
@@ -63,6 +72,7 @@ public class RelationshipProperties implements Serializable
         {
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
+            extendedProperties = template.getExtendedProperties();
         }
     }
 
@@ -112,6 +122,41 @@ public class RelationshipProperties implements Serializable
 
 
     /**
+     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @param extendedProperties property map
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -119,9 +164,10 @@ public class RelationshipProperties implements Serializable
     @Override
     public String toString()
     {
-        return "ConfigurationItemRelationshipProperties{" +
+        return "RelationshipProperties{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
+                       ", extendedProperties=" + extendedProperties +
                        '}';
     }
 
@@ -150,7 +196,7 @@ public class RelationshipProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

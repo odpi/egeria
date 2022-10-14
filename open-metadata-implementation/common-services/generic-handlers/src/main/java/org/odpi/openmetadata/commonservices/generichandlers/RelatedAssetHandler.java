@@ -81,7 +81,9 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier for relationship type
      * @param relationshipTypeName unique name for relationship type
      * @param serviceSupportedZones override the default supported zones.
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -95,6 +97,8 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       relationshipTypeGUID,
                                     String       relationshipTypeName,
                                     List<String> serviceSupportedZones,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
                                     Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
@@ -111,6 +115,8 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        0,
                                                        0,
                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
 
@@ -140,7 +146,9 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param startingEnd which end of the relationship to start at 0=either end; 1=end1 and 2=end 2
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -160,18 +168,34 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      int          startingEnd,
                                      int          startFrom,
                                      int          pageSize,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
                                      Date         effectiveTime,
                                      String       methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
+        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        elementGUID,
+                                                                        elementGUIDParameterName,
+                                                                        elementTypeName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
         List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                   elementGUID,
+                                                                   startingEntity,
                                                                    elementGUIDParameterName,
                                                                    elementTypeName,
                                                                    relationshipTypeGUID,
                                                                    relationshipTypeName,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   0,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -188,10 +212,10 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 if (relationship != null)
                 {
                     if ((startingEnd == 0)
-                                || ((startingEnd == 1) && (elementGUID.equals(relationship.getEntityOneProxy().getGUID())))
-                                || ((startingEnd == 2) && (elementGUID.equals(relationship.getEntityTwoProxy().getGUID()))))
+                                || ((startingEnd == 1) && (startingEntity.getGUID().equals(relationship.getEntityOneProxy().getGUID())))
+                                || ((startingEnd == 2) && (startingEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))))
                     {
-                        EntityProxy otherEnd = repositoryHandler.getOtherEnd(elementGUID, elementTypeName, relationship, methodName);
+                        EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), elementTypeName, relationship, 0, methodName);
 
                         if ((otherEnd != null) && (otherEnd.getType() != null) && (repositoryHelper.isTypeOf(serviceName,
                                                                                                              otherEnd.getType().getTypeDefName(),
@@ -205,8 +229,8 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    otherEnd.getType().getTypeDefName(),
                                                                                    null,
                                                                                    null,
-                                                                                   false,
-                                                                                   false,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
                                                                                    serviceSupportedZones,
                                                                                    effectiveTime,
                                                                                    methodName);
@@ -230,7 +254,6 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 }
             }
         }
-
 
         if (results.isEmpty())
         {

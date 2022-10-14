@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class ActorProfileBuilder extends ReferenceableBuilder
 {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
 
     /**
@@ -140,12 +140,16 @@ public class ActorProfileBuilder extends ReferenceableBuilder
      * @return InstanceProperties object
      */
     InstanceProperties getTeamStructureProperties(boolean delegationEscalationAuthority,
-                                                  String methodName)
+                                                  String  methodName)
     {
-        return repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                             null,
-                                                             OpenMetadataAPIMapper.DELEGATION_ESCALATION_PROPERTY_NAME,
-                                                             delegationEscalationAuthority,
-                                                             methodName);
+        InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.DELEGATION_ESCALATION_PROPERTY_NAME,
+                                                                                      delegationEscalationAuthority,
+                                                                                      methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 }

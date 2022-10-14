@@ -7,46 +7,42 @@ import java.util.Objects;
 /**
  * Feedback contains the comments, tags, ratings and likes that consumers of the asset have created.
  */
-public class AssetFeedback extends AssetPropertyBase
+public class AssetFeedback extends AssetPropertyElementBase
 {
     private static final long     serialVersionUID = 1L;
 
     /*
      * Lists of objects that make up the feedback on the asset.
      */
-    protected AssetInformalTags informalTags = null;
-    protected AssetLikes        likes        = null;
-    protected AssetRatings      ratings      = null;
-    protected AssetComments     comments     = null;
+    protected InformalTags informalTags = null;
+    protected Likes        likes        = null;
+    protected Ratings      ratings      = null;
+    protected Comments     comments     = null;
 
 
     /**
      * Simple constructor only for subclasses
-     *
-     * @param parentAsset linked asset
      */
-    protected AssetFeedback(AssetDescriptor parentAsset)
+    protected AssetFeedback()
     {
-        super(parentAsset);
+        super();
     }
 
 
     /**
      * Typical Constructor
      *
-     * @param parentAsset description of the asset that this feedback is attached to.
      * @param informalTags list of tags for the asset.
      * @param likes list of likes (one object per person liking the asset) for the asset.
      * @param ratings list of ratings that people have given the asset one Rating object for each person's rating.
      * @param comments list of comments for the asset.
      */
-    public AssetFeedback(AssetDescriptor parentAsset,
-                         AssetInformalTags informalTags,
-                         AssetLikes likes,
-                         AssetRatings ratings,
-                         AssetComments comments)
+    public AssetFeedback(InformalTags informalTags,
+                         Likes        likes,
+                         Ratings      ratings,
+                         Comments     comments)
     {
-        super(parentAsset);
+        super();
 
         this.informalTags = informalTags;
         this.likes = likes;
@@ -56,45 +52,42 @@ public class AssetFeedback extends AssetPropertyBase
 
 
     /**
-     * Copy/clone constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the feedback clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone constructor.
      *
-     * @param parentAsset description of the asset that this feedback is attached to.
      * @param templateFeedback template object to copy.
      */
-    public AssetFeedback(AssetDescriptor parentAsset, AssetFeedback templateFeedback)
+    public AssetFeedback(AssetFeedback templateFeedback)
     {
-        super(parentAsset, templateFeedback);
+        super(templateFeedback);
 
         /*
          * Only create a child object if the template is not null.
          */
         if (templateFeedback != null)
         {
-            AssetInformalTags templateInformalTags = templateFeedback.getInformalTags();
-            AssetLikes        templateLikes        = templateFeedback.getLikes();
-            AssetRatings      templateRatings      = templateFeedback.getRatings();
-            AssetComments     templateComments     = templateFeedback.getComments();
+            InformalTags templateInformalTags = templateFeedback.getInformalTags();
+            Likes        templateLikes        = templateFeedback.getLikes();
+            Ratings      templateRatings      = templateFeedback.getRatings();
+            Comments     templateComments = templateFeedback.getComments();
 
             if (templateInformalTags != null)
             {
-                this.informalTags = templateInformalTags.cloneIterator(parentAsset);
+                this.informalTags = templateInformalTags.cloneIterator();
             }
 
             if (templateLikes != null)
             {
-                this.likes = templateLikes.cloneIterator(parentAsset);
+                this.likes = templateLikes.cloneIterator();
             }
 
             if (templateRatings != null)
             {
-                this.ratings = templateRatings.cloneIterator(parentAsset);
+                this.ratings = templateRatings.cloneIterator();
             }
 
             if (templateComments != null)
             {
-                this.comments = templateComments.cloneIterator(parentAsset);
+                this.comments = templateComments.cloneIterator();
             }
         }
 
@@ -107,7 +100,7 @@ public class AssetFeedback extends AssetPropertyBase
      *
      * @return InformalTags tag list
      */
-    public AssetInformalTags getInformalTags()
+    public InformalTags getInformalTags()
     {
         if (informalTags == null)
         {
@@ -115,7 +108,7 @@ public class AssetFeedback extends AssetPropertyBase
         }
         else
         {
-            return informalTags.cloneIterator(super.getParentAsset());
+            return informalTags.cloneIterator();
         }
     }
 
@@ -126,7 +119,7 @@ public class AssetFeedback extends AssetPropertyBase
      *
      * @return Likes like object list
      */
-    public AssetLikes getLikes()
+    public Likes getLikes()
     {
         if (likes == null)
         {
@@ -134,7 +127,7 @@ public class AssetFeedback extends AssetPropertyBase
         }
         else
         {
-            return likes.cloneIterator(super.getParentAsset());
+            return likes.cloneIterator();
         }
     }
 
@@ -145,7 +138,7 @@ public class AssetFeedback extends AssetPropertyBase
      *
      * @return Ratings rating list
      */
-    public AssetRatings getRatings()
+    public Ratings getRatings()
     {
         if (ratings == null)
         {
@@ -153,26 +146,26 @@ public class AssetFeedback extends AssetPropertyBase
         }
         else
         {
-            return ratings.cloneIterator(super.getParentAsset());
+            return ratings.cloneIterator();
         }
     }
 
 
     /**
      * Returns a copy of the comments for the asset in an iterator.  This iterator can be used to step
-     * through the comments once.  Therefore call getComments() for each scan of the asset's comments.
+     * through the comments once.  Therefore, call getComments() for each scan of the asset's comments.
      *
      * @return Comments comment list
      */
-    public AssetComments getComments()
+    public Comments getComments()
     {
         if (comments == null)
         {
-            return comments;
+            return null;
         }
         else
         {
-            return comments.cloneIterator(super.getParentAsset());
+            return comments.cloneIterator();
         }
     }
 

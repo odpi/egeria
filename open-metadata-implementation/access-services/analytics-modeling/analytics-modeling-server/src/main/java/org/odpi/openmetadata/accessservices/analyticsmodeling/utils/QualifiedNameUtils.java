@@ -41,7 +41,7 @@ public class QualifiedNameUtils {
 	
 	/**
 	 * Extract identifiers from qualified name.
-	 * @param qualifiedName like "(SoftwareServerCapability)=xxx::(Asset)=yyy::(SchemaAttribute)=NAME1::(SchemaAttribute)=NAME2"
+	 * @param qualifiedName like "(SoftwareCapability)=xxx::(Asset)=yyy::(SchemaAttribute)=NAME1::(SchemaAttribute)=NAME2"
 	 * @return stack of identifiers.
 	 */
 	public static List <String> extractIdentifiersFromQualifiedName(String qualifiedName) {

@@ -50,7 +50,7 @@ import java.util.*;
  * <p>
  *     Updates and deletes are routed to the owning (home) repository.  Searches are made to each repository in turn
  *     and the duplicates are removed.  Queries are directed to the local repository and then the remote repositories
- *     until all of the requested metadata is assembled.
+ *     until all the requested metadata is assembled.
  * </p>
  */
 class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
@@ -58,9 +58,9 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /*
      * Private variables for a metadata collection instance
      */
-    private EnterpriseOMRSRepositoryConnector enterpriseParentConnector;
-    private String                            localMetadataCollectionId;
-    private AuditLog                          auditLog;
+    private final EnterpriseOMRSRepositoryConnector enterpriseParentConnector;
+    private final String                            localMetadataCollectionId;
+    private final AuditLog                          auditLog;
 
 
     /**
@@ -195,7 +195,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of TypeDef to return.
@@ -233,7 +233,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of an AttributeTypeDef to return.
@@ -1046,10 +1046,32 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
 
         /*
-         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
-         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
-         * there are no positive results from any repository.
+         * Ready to process the request.  Callers to the enterprise repository are typically well-defined and only request entities that
+         * are known.  The loop below assumes that the entity is not returned because a repository is not currently registered.
+         * Therefore, the enterprise connector will retry the request five times to give the owning repository time to register.
          */
+        int retryCount = 0;
+
+        while (retryCount < 4)
+        {
+            try
+            {
+                federationControl.executeCommand(executor);
+
+                return executor.getEntityDetail();
+            }
+            catch (EntityProxyOnlyException | EntityNotKnownException proxyException)
+            {
+                cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+                federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+                executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
+
+                retryCount ++;
+                auditLog.logMessage(methodName, OMRSAuditCode.RETRY_FOR_PROXY.getMessageDefinition(guid, userId, Integer.toString(retryCount)));
+            }
+        }
+
         federationControl.executeCommand(executor);
 
         return executor.getEntityDetailHistory();
@@ -1061,7 +1083,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2062,7 +2084,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -4373,7 +4395,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws FunctionNotSupportedException this method is not supported
      */
     @Override
@@ -4394,7 +4416,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws FunctionNotSupportedException this method is not supported
      */
     @Override
@@ -4409,7 +4431,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     }
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity
@@ -4429,7 +4451,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove
      * relationships attached to the entity.
@@ -4453,7 +4475,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -4909,7 +4931,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Throw a FunctionNotSupportedException if it was returned by all of the calls to the cohort connectors.
+     * Throw a FunctionNotSupportedException if it was returned by all the calls to the cohort connectors.
      *
      * @param exception captured exception
      * @throws FunctionNotSupportedException the requested function is not supported in any of the federated repositories

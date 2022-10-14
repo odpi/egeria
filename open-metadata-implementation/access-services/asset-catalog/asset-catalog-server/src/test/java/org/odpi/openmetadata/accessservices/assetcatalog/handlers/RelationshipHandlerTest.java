@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -53,6 +54,9 @@ public class RelationshipHandlerTest {
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
 
+    @Mock
+    ClockService clockService;
+
     @InjectMocks
     private RelationshipHandler relationshipHandler;
 
@@ -72,7 +76,7 @@ public class RelationshipHandlerTest {
 
         when(assetHandler.getUniqueAttachmentLink(USER, FIRST_GUID,
                 Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
-                "", null, methodName)).thenReturn(mock);
+                "", 0, false, false, null, methodName)).thenReturn(mock);
 
         org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship
                 result = relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID,
@@ -95,7 +99,7 @@ public class RelationshipHandlerTest {
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
         doThrow(mockedException).when(assetHandler).getUniqueAttachmentLink(USER, FIRST_GUID,
                 Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
-                "", null, methodName);
+                "", 0, false, false, null, methodName);
 
         assertThrows(UserNotAuthorizedException.class, () ->
                 relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));

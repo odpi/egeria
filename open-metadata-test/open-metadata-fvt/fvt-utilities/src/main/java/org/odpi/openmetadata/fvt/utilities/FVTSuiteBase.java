@@ -12,55 +12,21 @@ import static java.lang.System.exit;
 
 /**
  * FVTSuiteBase provides the common functions for calling the Access Services FVT Test suite as a main program.
- * It is used when running the test suite standalone (ie outside of the failsafe test framework).
+ * It is used when running the test suite standalone (ie outside the failsafe test framework).
  */
 public abstract class FVTSuiteBase
 {
-    static String  fvtSuiteClassName = null;
-
-    public static void main(String[] args)
-    {
-        int exitCode;
-
-        try
-        {
-            String url = getUrl(args);
-            String serverName = getServerName(args);
-            String userId = getUserId(args);
-
-            Class<?> fvtSuiteClass = Class.forName(fvtSuiteClassName);
-            FVTSuiteBase fvtSuite = (FVTSuiteBase)fvtSuiteClass.getDeclaredConstructor().newInstance();
-
-            exitCode = fvtSuite.performFVT(url, serverName, userId);
-        }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error)
-        {
-            System.out.println("Invalid FVTSuite class: " + fvtSuiteClassName);
-            error.printStackTrace();
-            exitCode = -99;
-        }
-        catch (IOException error)
-        {
-            System.out.println("Error getting user input");
-            error.printStackTrace();
-            exitCode = -99;
-        }
-
-        exit(exitCode);
-    }
-
-
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId calling user
      * @return combined results of running test
      */
-    protected abstract int performFVT(String   serverName,
-                                      String   serverPlatformRootURL,
-                                      String   userId);
+    public abstract int performFVT(String serverName,
+                                   String serverPlatformRootURL,
+                                   String userId);
 
 
     /**
@@ -72,7 +38,7 @@ public abstract class FVTSuiteBase
      * @return the serverName to use on the calls to the server
      * @throws IOException IO exception occurred while getting input from the user.
      */
-    private static String getServerName(String[] args) throws IOException
+    protected static String getServerName(String[] args) throws IOException
     {
         String name;
         if (args.length > 1)
@@ -104,7 +70,7 @@ public abstract class FVTSuiteBase
      * @return the userId to use on the calls to the server
      * @throws IOException IO exception occurred while getting input from the user.
      */
-    private static String getUserId(String[] args) throws IOException
+    protected static String getUserId(String[] args) throws IOException
     {
         String userId;
         if (args.length > 2)
@@ -136,7 +102,7 @@ public abstract class FVTSuiteBase
      * @return the url to use on the calls to the server
      * @throws IOException IO exception occurred while getting input from the user.
      */
-    private static String getUrl(String[] args) throws IOException
+    protected static String getUrl(String[] args) throws IOException
     {
         String url;
 

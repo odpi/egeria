@@ -31,19 +31,20 @@ import org.slf4j.LoggerFactory;
  */
 public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 {
+    private final List<OMRSTypeDefEvent>                    typeDefEventBuffer     = new ArrayList<>();
+    private final List<BufferedInstanceEvent>               instanceEventBuffer    = new ArrayList<>();
+    private final List<OMRSTypeDefEventProcessorInterface>  typeDefEventConsumers  = new ArrayList<>();
+    private final List<OMRSInstanceEventProcessorInterface> instanceEventConsumers = new ArrayList<>();
+    private final OMRSRepositoryContentValidator            repositoryValidator;   /* set in constructor */
+    private final OMRSRepositoryEventExchangeRule           exchangeRule;          /* set in constructor */
+
     private boolean                                   isActive               = false;
-    private List<OMRSTypeDefEvent>                    typeDefEventBuffer     = new ArrayList<>();
-    private List<BufferedInstanceEvent>               instanceEventBuffer    = new ArrayList<>();
-    private List<OMRSTypeDefEventProcessorInterface>  typeDefEventConsumers  = new ArrayList<>();
-    private List<OMRSInstanceEventProcessorInterface> instanceEventConsumers = new ArrayList<>();
-    private OMRSRepositoryContentValidator            repositoryValidator;   /* set in constructor */
-    private OMRSRepositoryEventExchangeRule           exchangeRule;          /* set in constructor */
 
     /*
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
 
@@ -155,8 +156,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * Indicate that all of the event processors are registered and it is ready to
-     * process events.
+     * Indicate that all the event processors are registered and they are ready to process events.
      */
     public void start()
     {
@@ -177,7 +177,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         /*
          * This sends out the buffered events.   There is a possibility that
          * new events may be interlaced, or go ahead of the buffered events.
-         * However the receiver should be able to handle this since event buses
+         * However, the receiver should be able to handle this since event buses
          * do not necessarily guarantee delivery order is the same as the sending
          * order.
          */
@@ -186,8 +186,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * Send out all of the buffered events, beginning with the TypeDef events and
-     * then the instance events.  Typically the TypeDef events should cover all of the
+     * Send out all the buffered events, beginning with the TypeDef events and
+     * then the instance events.  Typically, the TypeDef events should cover all the
      * TypeDefs that were added during start up.  These events help to ensure there is
      * consistency in the types used in the cohort.
      * <p>
@@ -232,7 +232,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                     InternalOMRSEventProcessingContext.getInstance().setCurrentMessageId(event.getMessageId());
                     this.distributeInstanceEvent(event.getEvent());
                     //Now that the buffered event has been distributed, we need to update the Future
-                    //that the OpenMetadataTopicConnector is monitoring the reflect the state of
+                    //that the OpenMetadataTopicConnector is monitoring to reflect the state of
                     //any asynchronous event processing that is taking place for this event.
                     
                     //That future is recorded in the BufferedInstanceEvent.
@@ -276,67 +276,71 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     private void distributeInstanceEvent(OMRSInstanceEvent event)
     {
-    	boolean validEvent = false;
-    	
-    	if (event.getInstanceEventType() == OMRSInstanceEventType.BATCH_INSTANCES_EVENT) 
-    	{
-    	    /*
-    		 * A batch instance event is valid and should be processed if all
-    	     * references and entities in the contained graph are valid to be processed
-    		 */
-    		InstanceGraph eventGraph = event.getInstanceBatch();
-    		List<EntityDetail> eventEntities = eventGraph.getEntities();
-    		List<Relationship> eventRelationships = eventGraph.getRelationships();
-    		
-    		List<EntityDetail> validEntities = new ArrayList<>();
-    		List<Relationship> validRelationships = new ArrayList<>();
-    		
-    		for (EntityDetail entity: eventEntities)
-    		{
-    			if (exchangeRule.processInstanceEvent(entity))
-    			{
-    				validEntities.add(entity);
-    			}
-    		}
-    		
-    		
-    		for (Relationship relationship: eventRelationships)
-    		{
-    			if (exchangeRule.processInstanceEvent(relationship))
-    			{
-    				validRelationships.add(relationship);
-    			}
-    		}
-    		
-    		if (validEntities.size() > 0 || validRelationships.size() > 0)
-    		{
-    		    /*
-    			 * Can't just update the instance graph on the event, so we'll
-    			 * construct a new event with the updated instances and adjust...
-    			 */
-    			InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);
-    	        OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT,
-                                                                             validInstanceGraph);
-    	        validInstanceEvent.setEventOriginator(event.getEventOriginator());
-    	        event = validInstanceEvent;
-    	        validEvent = true;
-    		}
-    		
-    	}
-    	else
+        boolean validEvent = false;
+
+        if (event.getInstanceEventType() == OMRSInstanceEventType.BATCH_INSTANCES_EVENT)
         {
-    		validEvent = exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
+            /*
+             * A batch instance event is valid and should be processed if all
+             * references and entities in the contained graph are valid to be processed
+             */
+            InstanceGraph eventGraph = event.getInstanceBatch();
+            List<EntityDetail> eventEntities = eventGraph.getEntities();
+            List<Relationship> eventRelationships = eventGraph.getRelationships();
+
+            List<EntityDetail> validEntities = new ArrayList<>();
+            List<Relationship> validRelationships = new ArrayList<>();
+            if (eventEntities != null)
+            {
+                for (EntityDetail entity : eventEntities)
+                {
+                    if (exchangeRule.processInstanceEvent(entity))
+                    {
+                        validEntities.add(entity);
+                    }
+                }
+            }
+
+            if (eventRelationships != null)
+            {
+                for (Relationship relationship : eventRelationships)
+                {
+                    if (exchangeRule.processInstanceEvent(relationship))
+                    {
+                        validRelationships.add(relationship);
+                    }
+                }
+            }
+
+            if (validEntities.size() > 0 || validRelationships.size() > 0)
+            {
+                /*
+                 * Can't just update the instance graph on the event, so we'll
+                 * construct a new event with the updated instances and adjust...
+                 */
+                InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);
+                OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT,
+                                                                             validInstanceGraph);
+                validInstanceEvent.setEventOriginator(event.getEventOriginator());
+                event = validInstanceEvent;
+                validEvent = true;
+            }
+
+        }
+        else
+        {
+            validEvent = exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
                                                            event.getTypeDefName());
         }
-    	
-    	if (validEvent)
-    	{
+
+        if (validEvent)
+        {
             for (OMRSInstanceEventProcessorInterface consumer : instanceEventConsumers)
             {
                 consumer.sendInstanceEvent(super.eventProcessorName, event);
             }
 
-    	}
+        }
     }
 
 
@@ -711,7 +715,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      *
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -852,7 +856,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
@@ -923,7 +927,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1167,7 +1171,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
@@ -1305,7 +1309,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
@@ -1373,7 +1377,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1588,7 +1592,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
     /**
      * A remote repository has detected two metadata instances with the same identifier (guid).  One of these instances
-     * has its home in the repository and the other is located in a metadata collection owned by another
+     * has its home in the repository and the other one is located in a metadata collection owned by another
      * repository in the cohort.  This is a serious error because it could lead to corruption of the metadata collection.
      * When this occurs, all repositories in the cohort delete their reference copies of the metadata instances and
      * at least one of the instances has its GUID changed in its respective home repository.  The updated instance(s)

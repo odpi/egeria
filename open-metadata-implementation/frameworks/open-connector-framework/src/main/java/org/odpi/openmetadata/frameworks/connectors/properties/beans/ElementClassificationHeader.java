@@ -4,8 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,15 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ElementClassification.class, name = "ElementClassification"),
-                @JsonSubTypes.Type(value = SecurityTags.class, name = "SecurityTags")
+                @JsonSubTypes.Type(value = SecurityTags.class, name = "SecurityTags"),
+                @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase")
         })
 public class ElementClassificationHeader extends ElementControlHeader
 {
     private static final long    serialVersionUID = 1L;
-
-    private String               classificationTypeId          = null;
-    private long                 classificationTypeVersion     = 0;
-    private String               classificationTypeDescription = null;
 
     private ClassificationOrigin classificationOrigin          = ClassificationOrigin.ASSIGNED;
     private String               classificationOriginGUID      = null;
@@ -59,79 +54,9 @@ public class ElementClassificationHeader extends ElementControlHeader
 
         if (template != null)
         {
-            classificationTypeId          = template.getClassificationTypeId();
-            classificationTypeVersion     = template.getClassificationTypeVersion();
-            classificationTypeDescription = template.getClassificationTypeDescription();
-
             classificationOrigin          = template.getClassificationOrigin();
             classificationOriginGUID      = template.getClassificationOriginGUID();
         }
-    }
-
-
-    /**
-     * Set up the unique identifier for the element's type.
-     *
-     * @param classificationTypeId String identifier
-     */
-    public void setClassificationTypeId(String classificationTypeId)
-    {
-        this.classificationTypeId = classificationTypeId;
-    }
-
-
-    /**
-     * Return unique identifier for the element's type.
-     *
-     * @return element type id
-     */
-    public String getClassificationTypeId()
-    {
-        return classificationTypeId;
-    }
-
-
-    /**
-     * Set up the version number for this element's type
-     *
-     * @param classificationTypeVersion version number for the element type.
-     */
-    public void setClassificationTypeVersion(long classificationTypeVersion)
-    {
-        this.classificationTypeVersion = classificationTypeVersion;
-    }
-
-
-    /**
-     * Return the version number for this element's type.
-     *
-     * @return elementTypeVersion version number for the element type.
-     */
-    public long getClassificationTypeVersion()
-    {
-        return classificationTypeVersion;
-    }
-
-
-    /**
-     * Set up a short description of this element's type.
-     *
-     * @param classificationTypeDescription set up the description for this element's type
-     */
-    public void setClassificationTypeDescription(String classificationTypeDescription)
-    {
-        this.classificationTypeDescription = classificationTypeDescription;
-    }
-
-
-    /**
-     * Return the description for this element's type.
-     *
-     * @return elementTypeDescription String description for the element type
-     */
-    public String getClassificationTypeDescription()
-    {
-        return classificationTypeDescription;
     }
 
 
@@ -189,26 +114,14 @@ public class ElementClassificationHeader extends ElementControlHeader
     public String toString()
     {
         return "ElementClassificationHeader{" +
-                "elementTypeId='" + classificationTypeId + '\'' +
-                ", elementTypeVersion=" + classificationTypeVersion +
-                ", elementTypeDescription='" + classificationTypeDescription + '\'' +
-                ", classificationOrigin=" + classificationOrigin +
-                ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
-                ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOrigin=" + getElementOrigin() +
-                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                ", elementLicense='" + getElementLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                ", elementMaintainedBy=" + getElementMaintainedBy() +
-                ", elementCreateTime=" + getElementCreateTime() +
-                ", elementUpdateTime=" + getElementUpdateTime() +
-                ", elementVersion=" + getElementVersion() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationOrigin=" + classificationOrigin +
+                       ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -234,10 +147,7 @@ public class ElementClassificationHeader extends ElementControlHeader
             return false;
         }
         ElementClassificationHeader that = (ElementClassificationHeader) objectToCompare;
-        return classificationTypeVersion == that.classificationTypeVersion &&
-                Objects.equals(classificationTypeId, that.classificationTypeId) &&
-                Objects.equals(classificationTypeDescription, that.classificationTypeDescription) &&
-                classificationOrigin == that.classificationOrigin &&
+        return classificationOrigin == that.classificationOrigin &&
                 Objects.equals(classificationOriginGUID, that.classificationOriginGUID);
     }
 
@@ -250,7 +160,6 @@ public class ElementClassificationHeader extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), classificationTypeId, classificationTypeVersion, classificationTypeDescription, classificationOrigin,
-                            classificationOriginGUID);
+        return Objects.hash(super.hashCode(), classificationOrigin, classificationOriginGUID);
     }
 }

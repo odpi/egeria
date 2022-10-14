@@ -46,7 +46,7 @@ public interface GovernedAssetInterface
     /**
      * @param userId    - String - userId of user making request.
      * @param assetGuid - String - guid of asset component
-     * @return the the entity if this has a governed classification assigned
+     * @return the entity if this has a governed classification assigned
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      * @throws PropertyServerException    - there is a problem retrieving information from the property server(s).
      * @throws InvalidParameterException  - one of the parameters is null or invalid.

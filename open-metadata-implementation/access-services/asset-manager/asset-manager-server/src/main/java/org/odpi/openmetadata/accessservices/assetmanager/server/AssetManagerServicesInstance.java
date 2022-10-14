@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.ConnectionExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ExternalReferenceExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -28,18 +30,19 @@ import java.util.List;
  */
 public class AssetManagerServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
+    private static final AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
-    private SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
-    private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
-    private DataAssetExchangeHandler                                            dataAssetExchangeHandler;
-    private ExternalReferenceExchangeHandler                                    externalReferenceHandler;
-    private GlossaryExchangeHandler                                             glossaryExchangeHandler;
-    private ProcessExchangeHandler                                              processExchangeHandler;
-    private SchemaExchangeHandler                                               schemaExchangeHandler;
-    private GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
-    private AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
-    private GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
+    private final SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
+    private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+    private final ConnectionExchangeHandler                                           connectionExchangeHandler;
+    private final DataAssetExchangeHandler                                            dataAssetExchangeHandler;
+    private final ExternalReferenceExchangeHandler                                    externalReferenceHandler;
+    private final GlossaryExchangeHandler                                             glossaryExchangeHandler;
+    private final ProcessExchangeHandler                                              processExchangeHandler;
+    private final SchemaExchangeHandler                                               schemaExchangeHandler;
+    private final GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
+    private final AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
+    private final GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
 
 
     /**
@@ -87,7 +90,6 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
         }
 
-
         this.assetManagerHandler = new SoftwareCapabilityHandler<>(new AssetManagerConverter<>(repositoryHelper, serviceName, serverName),
                                                                    SoftwareCapabilityElement.class,
                                                                    serviceName,
@@ -117,6 +119,18 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                          defaultZones,
                                                                          publishZones,
                                                                          auditLog);
+
+        this.connectionExchangeHandler = new ConnectionExchangeHandler(serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
 
         this.dataAssetExchangeHandler = new DataAssetExchangeHandler(serviceName,
                                                                      serverName,
@@ -251,6 +265,22 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return externalIdentifierHandler;
+    }
+
+
+    /**
+     * Return the handler for managing connection, connector type and endpoint objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectionExchangeHandler getConnectionExchangeHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectionExchangeHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectionExchangeHandler;
     }
 
 

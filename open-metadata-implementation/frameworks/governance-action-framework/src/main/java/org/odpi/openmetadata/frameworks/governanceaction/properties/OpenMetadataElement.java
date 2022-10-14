@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
@@ -20,12 +21,11 @@ public class OpenMetadataElement extends ElementControlHeader
 {
     private static final long serialVersionUID = 1L;
 
-    private String                      elementGUID       = null;
-    private ElementType                 elementType       = null;
-    private Date                        effectiveFromTime = null;
-    private Date                        effectiveToTime   = null;
-    private List<ElementClassification> classifications   = null;
-    private ElementProperties           elementProperties = null;
+    private String                       elementGUID       = null;
+    private Date                         effectiveFromTime = null;
+    private Date                         effectiveToTime   = null;
+    private List<AttachedClassification> classifications   = null;
+    private ElementProperties            elementProperties = null;
 
 
     /**
@@ -49,7 +49,6 @@ public class OpenMetadataElement extends ElementControlHeader
         if (template != null)
         {
             elementGUID       = template.getElementGUID();
-            elementType       = template.getElementType();
             effectiveFromTime = template.getEffectiveFromTime();
             effectiveToTime   = template.getEffectiveToTime();
             classifications   = template.getClassifications();
@@ -78,26 +77,6 @@ public class OpenMetadataElement extends ElementControlHeader
     {
         this.elementGUID = guid;
     }
-
-
-    /**
-     * Return the element type properties for this metadata element.
-     *
-     * @return ElementType type information.
-     */
-    public ElementType getElementType() { return elementType; }
-
-
-    /**
-     * Set up the element type properties for this metadata element.
-     *
-     * @param type element type properties
-     */
-    public void setElementType(ElementType type)
-    {
-        this.elementType = type;
-    }
-
 
 
     /**
@@ -146,7 +125,7 @@ public class OpenMetadataElement extends ElementControlHeader
      *
      * @return Classifications  list of classifications
      */
-    public List<ElementClassification> getClassifications()
+    public List<AttachedClassification> getClassifications()
     {
         if (classifications == null)
         {
@@ -168,7 +147,7 @@ public class OpenMetadataElement extends ElementControlHeader
      *
      * @param classifications list of classifications
      */
-    public void setClassifications(List<ElementClassification> classifications)
+    public void setClassifications(List<AttachedClassification> classifications)
     {
         this.classifications = classifications;
     }
@@ -209,23 +188,15 @@ public class OpenMetadataElement extends ElementControlHeader
     {
         return "OpenMetadataElement{" +
                        "elementGUID='" + elementGUID + '\'' +
-                       ", elementType=" + elementType +
+                       ", effectiveFromTime=" + effectiveFromTime +
+                       ", effectiveToTime=" + effectiveToTime +
                        ", classifications=" + classifications +
                        ", elementProperties=" + elementProperties +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                       ", elementOriginCategory=" + getElementOriginCategory() +
-                       ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                       ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                       ", elementLicense='" + getElementLicense() + '\'' +
                        ", status=" + getStatus() +
-                       ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                       ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                       ", elementMaintainedBy=" + getElementMaintainedBy() +
-                       ", elementCreateTime=" + getElementCreateTime() +
-                       ", elementUpdateTime=" + getElementUpdateTime() +
-                       ", elementVersion=" + getElementVersion() +
-                       ", mappingProperties=" + getMappingProperties() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 
@@ -247,13 +218,12 @@ public class OpenMetadataElement extends ElementControlHeader
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         OpenMetadataElement that = (OpenMetadataElement) objectToCompare;
         return Objects.equals(elementGUID, that.elementGUID) &&
-                       Objects.equals(elementType, that.elementType) &&
                        Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(classifications, that.classifications) &&
@@ -269,6 +239,6 @@ public class OpenMetadataElement extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementGUID, elementType, classifications, elementProperties);
+        return Objects.hash(super.hashCode(), elementGUID, effectiveFromTime, effectiveToTime, classifications, elementProperties);
     }
 }

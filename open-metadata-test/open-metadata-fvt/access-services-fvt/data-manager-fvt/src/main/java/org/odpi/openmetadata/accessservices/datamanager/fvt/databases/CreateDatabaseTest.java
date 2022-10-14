@@ -63,7 +63,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -92,7 +92,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -128,7 +128,7 @@ public class CreateDatabaseTest
         String activityName = "cascadedDelete";
         try
         {
-            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
 
             thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
             thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
@@ -151,20 +151,18 @@ public class CreateDatabaseTest
         databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
         databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
 
-
         /*
          * Check that elements can be deleted one by one
          */
-
         try
         {
-            activityName = "deleteOneByOne - prevalidate";
+            activityName = "deleteOneByOne - pre-validate";
             thisTest.checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
 
-            client.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnName);
+            client.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
 
             activityName = "deleteOneByOne - column gone";
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
@@ -172,7 +170,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
 
-            client.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableName);
+            client.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
 
             activityName = "deleteOneByOne - table gone";
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
@@ -180,7 +178,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
 
-            client.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaName);
+            client.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
 
             activityName = "deleteOneByOne - schema gone";
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
@@ -188,7 +186,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
 
-            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
 
             activityName = "deleteOneByOne - database gone";
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
@@ -200,8 +198,6 @@ public class CreateDatabaseTest
             /*
              * Recreate database
              */
-            activityName= "deleteOneByOne";
-
             databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
             databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
             databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
@@ -222,7 +218,7 @@ public class CreateDatabaseTest
             try
             {
 
-                client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+                client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, true, databaseColumnTwoProperties);
                 throw new FVTUnexpectedCondition(testCaseName, activityName);
             }
             catch (InvalidParameterException expectedError)
@@ -236,7 +232,7 @@ public class CreateDatabaseTest
 
             DatabaseColumnElement beforeElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
 
-            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, false, databaseColumnTwoProperties);
 
             DatabaseColumnElement afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
 
@@ -255,7 +251,7 @@ public class CreateDatabaseTest
              */
             databaseColumnTwoProperties.setDataType(databaseColumnTwoType);
 
-            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, false, databaseColumnTwoProperties);
 
             afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
 
@@ -279,7 +275,7 @@ public class CreateDatabaseTest
 
             databaseColumnTwoProperties.setDisplayName(databaseColumnTwoDisplayName);
 
-            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, false, databaseColumnTwoProperties);
 
             afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
 
@@ -302,7 +298,7 @@ public class CreateDatabaseTest
             activityName = "cascadedDelete";
             try
             {
-                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
 
                 thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
                 thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
@@ -339,7 +335,7 @@ public class CreateDatabaseTest
             activityName = "cascadedDelete for SchemaType";
             try
             {
-                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
 
                 thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
                 thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
@@ -376,9 +372,9 @@ public class CreateDatabaseTest
 
         try
         {
-            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
 
-            return new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            return new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
         catch (Exception unexpectedError)
         {
@@ -407,7 +403,7 @@ public class CreateDatabaseTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);

@@ -34,7 +34,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -71,7 +71,9 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
 
                     databaseProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     databaseProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    databaseProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseProperties.setName(this.removeName(instanceProperties));
+                    databaseProperties.setDisplayName(databaseProperties.getName());
+                    databaseProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     databaseProperties.setDescription(this.removeDescription(instanceProperties));
                     databaseProperties.setPathName(this.removePathName(instanceProperties));
                     databaseProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
@@ -116,7 +118,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

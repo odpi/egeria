@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,19 +18,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = GovernanceZoneInAction.class, name = "GovernanceZoneInAction")
-})
 public class GovernanceZoneDefinition extends GovernanceZoneElement
 {
     private static final long    serialVersionUID = 1L;
 
-    private ElementStub       parentGovernanceZone            = null;
-    private List<ElementStub> nestedGovernanceZones           = null;
+    private ElementStub       parentGovernanceZone  = null;
+    private List<ElementStub> nestedGovernanceZones = null;
     private List<ElementStub> associatedGovernanceDefinitions = null;
 
 

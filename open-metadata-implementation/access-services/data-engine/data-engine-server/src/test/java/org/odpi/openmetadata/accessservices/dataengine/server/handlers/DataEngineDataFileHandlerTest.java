@@ -22,11 +22,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -107,20 +111,20 @@ class DataEngineDataFileHandlerTest {
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                false, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
-                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
-                        null, OWNER, 0, null, null,
-                        null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
-                        getExtendedProperties(), METHOD);
+                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
+                      null, OWNER, 0, null, null,
+                      null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                      getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
-        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
-                EXTERNAL_SOURCE_NAME, USER, METHOD);
+                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
+                PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
                 guid, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
@@ -128,32 +132,34 @@ class DataEngineDataFileHandlerTest {
     @Test
     void insertIncompleteCsvFileToCatalog() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         CSVFile csvFile = getCsvFile();
+        csvFile.setIncomplete(true);
         SchemaType schemaType = getTabularSchema();
         List<Attribute> columns = getTabularColumns();
         schemaType.setAttributeList(columns);
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                true, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
-                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
+                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
                         null, OWNER, 0, null, null,
                         null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
-                        getExtendedProperties(), METHOD);
+                        getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
-        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
-                EXTERNAL_SOURCE_NAME, USER, METHOD);
+                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
+                PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
                 guid, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
 
-        verify(fileHandler, times(1)).setClassificationInRepository(USER, guid,
+        verify(fileHandler, times(1)).setClassificationInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, guid,
                 "fileGUID", CSV_FILE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
-                INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, METHOD);
+                INCOMPLETE_CLASSIFICATION_TYPE_NAME, (InstanceProperties) null, true, false,
+                false,null, METHOD);
     }
 
     @Test
@@ -166,20 +172,19 @@ class DataEngineDataFileHandlerTest {
         mockRepositoryHelper();
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                false, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, csvFile.getQualifiedName(), csvFile.getFileType());
         verify(fileHandler, times(1)).
                 updateAsset(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE, CommonMapper.GUID_PROPERTY_NAME,
-                        QUALIFIED_NAME, NAME, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
-                        getExtendedProperties(), METHOD);
+                            QUALIFIED_NAME, NAME, null, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                            getExtendedProperties(),null, null, true, false, false, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
-        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
-                EXTERNAL_SOURCE_NAME, USER, METHOD);
+                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+        verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
+                PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
                 GUID_VALUE, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
@@ -190,15 +195,15 @@ class DataEngineDataFileHandlerTest {
         final String methodName = "removeDataFile";
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(SCHEMA_TYPE_GUID);
-        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID_VALUE, ASSET_TO_SCHEMA_TYPE_TYPE_NAME, DATA_FILE_TYPE_NAME))
-                .thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID_VALUE, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineDataFileHandler.removeDataFile(USER, GUID_VALUE, EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_GUID, DeleteSemantic.SOFT);
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, SCHEMA_TYPE_GUID, EXTERNAL_SOURCE_NAME, DeleteSemantic.SOFT);
         verify(fileHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE,
-                GUID_PROPERTY_NAME, DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
+                GUID_PROPERTY_NAME, DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false, false, null, methodName);
     }
 
     @Test
@@ -216,7 +221,7 @@ class DataEngineDataFileHandlerTest {
             EntityDetail entityDetail = new EntityDetail();
             entityDetail.setGUID(GUID_VALUE);
 
-            when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME)).thenReturn(Optional.of(entityDetail));
+            when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, FILE_TYPE)).thenReturn(Optional.of(entityDetail));
             return;
         }
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME)).thenReturn(Optional.empty());

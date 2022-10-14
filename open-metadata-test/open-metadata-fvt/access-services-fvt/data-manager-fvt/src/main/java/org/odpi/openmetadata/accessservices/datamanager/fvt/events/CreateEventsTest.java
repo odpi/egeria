@@ -257,7 +257,7 @@ public class CreateEventsTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             EventBrokerProperties properties = new EventBrokerProperties();
             properties.setQualifiedName(eventBrokerName);
@@ -451,8 +451,8 @@ public class CreateEventsTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private String getTopic(EventBrokerClient client,
-                               String                eventBrokerGUID,
-                               String                userId) throws FVTUnexpectedCondition
+                            String            eventBrokerGUID,
+                            String             userId) throws FVTUnexpectedCondition
     {
         final String activityName = "getTopic";
 
@@ -788,15 +788,15 @@ public class CreateEventsTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void checkSchemaAttributeOK(EventBrokerClient client,
-                                      String                schemaAttributeGUID,
-                                      String                eventTypeGUID,
-                                      String                activityName,
-                                      String                userId) throws FVTUnexpectedCondition
+                                        String            schemaAttributeGUID,
+                                        String            eventTypeGUID,
+                                        String            activityName,
+                                        String            userId) throws FVTUnexpectedCondition
     {
 
         try
         {
-            SchemaAttributeElement    retrievedElement = client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+            SchemaAttributeElement retrievedElement = client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
 
             if (retrievedElement == null)
             {

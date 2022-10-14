@@ -17,13 +17,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedAsset extends PropertyBase
+public class RelatedAsset extends Asset
 {
     private static final long     serialVersionUID = 1L;
 
-    private String   typeName = null;
-    private String   attributeName = null;
-    private Asset    relatedAsset = null;
+    private String relationshipName = null;
+    private String attributeName    = null;
 
 
     /**
@@ -46,8 +45,8 @@ public class RelatedAsset extends PropertyBase
 
         if (template != null)
         {
-            typeName = template.getTypeName();
-            relatedAsset = template.getRelatedAsset();
+            relationshipName = template.getRelationshipName();
+            attributeName = template.getAttributeName();
         }
     }
 
@@ -57,20 +56,20 @@ public class RelatedAsset extends PropertyBase
      *
      * @return type name string
      */
-    public String getTypeName()
+    public String getRelationshipName()
     {
-        return typeName;
+        return relationshipName;
     }
 
 
     /**
      * Set up the type of relationship to the asset.
      *
-     * @param typeName type name string
+     * @param relationshipName type name string
      */
-    public void setTypeName(String typeName)
+    public void setRelationshipName(String relationshipName)
     {
-        this.typeName = typeName;
+        this.relationshipName = relationshipName;
     }
 
 
@@ -97,28 +96,6 @@ public class RelatedAsset extends PropertyBase
 
 
     /**
-     * Return the bean that described the related asset
-     *
-     * @return asset bean
-     */
-    public Asset getRelatedAsset()
-    {
-        return relatedAsset;
-    }
-
-
-    /**
-     * Set up the bean that described the related asset
-     *
-     * @param relatedAsset asset bean
-     */
-    public void setRelatedAsset(Asset relatedAsset)
-    {
-        this.relatedAsset = relatedAsset;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -127,10 +104,39 @@ public class RelatedAsset extends PropertyBase
     public String toString()
     {
         return "RelatedAsset{" +
-                "typeName='" + typeName + '\'' +
-                ", attributeName='" + attributeName + '\'' +
-                ", relatedAsset=" + relatedAsset +
-                '}';
+                       "displayName='" + getDisplayName() + '\'' +
+                       ", shortDescription='" + getShortDescription() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
+                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
+                       ", ownerType=" + getOwnerType() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", assetOrigin=" + getAssetOrigin() +
+                       ", referenceData=" + isReferenceData() +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", relatiionshipName='" + relationshipName + '\'' +
+                       ", attributeName='" + attributeName + '\'' +
+                       '}';
     }
 
 
@@ -152,21 +158,20 @@ public class RelatedAsset extends PropertyBase
             return false;
         }
         RelatedAsset that = (RelatedAsset) objectToCompare;
-        return Objects.equals(getTypeName(), that.getTypeName()) &&
-                Objects.equals(getAttributeName(), that.getAttributeName()) &&
-                Objects.equals(getRelatedAsset(), that.getRelatedAsset());
+        return Objects.equals(getRelationshipName(), that.getRelationshipName()) &&
+                Objects.equals(getAttributeName(), that.getAttributeName());
     }
 
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTypeName(), getAttributeName(), getRelatedAsset());
+        return Objects.hash(getRelationshipName(), getAttributeName());
     }
 }

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.listener;
 import org.odpi.openmetadata.accessservices.datamanager.converters.DataManagerOMASConverter;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.datamanager.outtopic.DataManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -13,6 +12,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -35,12 +35,12 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(DataManagerOMRSTopicListener.class);
 
-    private List<String>                               supportedZones;
-    private DataManagerOutTopicPublisher               publisher;
-    private OMRSRepositoryHelper                       repositoryHelper;
-    private String                                     serverUserId;
-    private DataManagerOMASConverter<ElementStub>      converter;
-    private OpenMetadataAPIGenericHandler<ElementStub> genericHandler;
+    private final List<String>                               supportedZones;
+    private final DataManagerOutTopicPublisher               publisher;
+    private final OMRSRepositoryHelper                       repositoryHelper;
+    private final String                                     serverUserId;
+    private final DataManagerOMASConverter<ElementStub>      converter;
+    private final OpenMetadataAPIGenericHandler<ElementStub> genericHandler;
 
 
     /**
@@ -433,7 +433,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -474,7 +474,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -555,9 +555,10 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
+    @Override
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -595,7 +596,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -676,7 +677,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -719,7 +720,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */

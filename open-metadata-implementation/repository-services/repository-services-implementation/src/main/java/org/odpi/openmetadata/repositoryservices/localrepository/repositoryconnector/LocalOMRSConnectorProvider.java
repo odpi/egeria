@@ -11,8 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -37,8 +39,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private OMRSRepositoryContentManager       repositoryContentManager        = null;
     private OMRSRepositoryEventExchangeRule    saveExchangeRule                = null;
     private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
-    private ConnectorTypeProperties            connectorTypeProperties         = null;
-    private ConnectorType                      connectorType                   = null;
+    private final ConnectorTypeProperties      connectorTypeProperties         = null;
+    private final ConnectorType                connectorType                   = null;
     private AuditLog                           auditLog                        = null;
 
 
@@ -47,7 +49,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * provides the configuration information about the local server that is used to set up the
      * local repository connector.
      *
-     * @param localMetadataCollectionId metadata collection Id for the local repository
+     * @param localMetadataCollectionId metadata collection id for the local repository
      * @param localRepositoryRemoteConnection connection object for creating a remote connector to this repository.
      * @param realEventMapper optional event mapper for local repository
      * @param outboundRepositoryEventManager event manager to call for outbound events.
@@ -77,7 +79,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * provides the configuration information about the local server that is used to set up the
      * local repository connector.
      *
-     * @param localMetadataCollectionId metadata collection Id for the local repository
+     * @param localMetadataCollectionId metadata collection id for the local repository
      * @param localRepositoryMode style of operation to perform
      * @param localRepositoryRemoteConnection connection object for creating a remote connector to this repository.
      * @param realEventMapper optional event mapper for local repository
@@ -143,7 +145,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param realLocalConnection connection that should have all of the properties needed by the Connector Provider
+     * @param realLocalConnection connection that should have all the properties needed by the Connector Provider
      *                              to create a connector instance.
      * @return Connector instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
@@ -152,14 +154,23 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     @Override
     public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        return this.getConnector(new ConnectionProperties(realLocalConnection));
+        Connector connector;
+        if (realLocalConnection instanceof VirtualConnection)
+        {
+            connector = this.getConnector(new VirtualConnectionProperties((VirtualConnection)realLocalConnection));
+
+        } else
+        {
+            connector = this.getConnector(new ConnectionProperties(realLocalConnection));
+        }
+        return connector;
     }
 
 
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param realLocalConnection connection that should have all of the properties needed by the Connector Provider
+     * @param realLocalConnection connection that should have all the properties needed by the Connector Provider
      *                              to create a connector instance.
      * @return Connector instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection

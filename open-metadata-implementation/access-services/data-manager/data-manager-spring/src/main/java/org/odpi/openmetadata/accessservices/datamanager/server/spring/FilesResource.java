@@ -431,7 +431,7 @@ public class FilesResource
 
     /**
      * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -458,7 +458,7 @@ public class FilesResource
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -733,6 +733,33 @@ public class FilesResource
      * UserNotAuthorizedException security access problem.
      */
     @PostMapping(path = "/data-files/by-search-path-name")
+
+    public DataFilesResponse getDataFilesByPathName(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @RequestParam int                 startingFrom,
+                                                    @RequestParam int                 maxPageSize,
+                                                    @RequestBody  PathNameRequestBody requestBody)
+    {
+        return  restAPI.getDataFilesByPathName(serverName, userId, startingFrom, maxPageSize, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     * @param requestBody path name
+     *
+     * @return data file properties or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @PostMapping(path = "/data-files/by-search-name")
 
     public DataFilesResponse findDataFilesByPathName(@PathVariable String              serverName,
                                                      @PathVariable String              userId,

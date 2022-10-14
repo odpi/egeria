@@ -193,9 +193,8 @@ public class ExchangeClientBase
     }
 
 
-
     /**
-     * Set up the correlation properties for request.
+     * Set up the correlation properties for update.
      *
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
@@ -225,6 +224,32 @@ public class ExchangeClientBase
         }
 
         return correlationProperties;
+    }
+
+
+    /**
+     * Set up the correlation properties for update.
+     *
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalIdentifier unique identifier of the glossary in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return filled out correlation properties
+     * @throws InvalidParameterException missing external identifier
+     */
+    UpdateRequestBody getUpdateRequestBody(String assetManagerGUID,
+                                           String assetManagerName,
+                                           String externalIdentifier,
+                                           Date   effectiveTime,
+                                           String methodName) throws InvalidParameterException
+    {
+        UpdateRequestBody requestBody = new UpdateRequestBody();
+
+        requestBody.setMetadataCorrelationProperties(getCorrelationProperties(assetManagerGUID, assetManagerName, externalIdentifier, methodName));
+        requestBody.setEffectiveTime(effectiveTime);
+
+        return requestBody;
     }
 
 
@@ -280,8 +305,40 @@ public class ExchangeClientBase
     }
 
 
+
     /**
-     * Return the asset manager identifiers packaged in an appropriate request body (or null is assetManagerGUID is null).
+     * Set up the correlation properties for request.
+     *
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param methodName calling method
+     * @return filled out correlation properties
+     * @throws InvalidParameterException missing external identifier
+     */
+    MetadataCorrelationProperties getCorrelationProperties(String                       assetManagerGUID,
+                                                           String                       assetManagerName,
+                                                           ExternalIdentifierProperties externalIdentifierProperties,
+                                                           String                       methodName) throws InvalidParameterException
+    {
+        MetadataCorrelationProperties correlationProperties = new MetadataCorrelationProperties(externalIdentifierProperties);
+
+        if (assetManagerGUID != null)
+        {
+            correlationProperties.setAssetManagerGUID(assetManagerGUID);
+            correlationProperties.setAssetManagerName(assetManagerName);
+        }
+        else if ((externalIdentifierProperties != null) && (externalIdentifierProperties.getExternalIdentifier() != null))
+        {
+            handleMissingScope(externalIdentifierProperties.getExternalIdentifier(), methodName);
+        }
+
+        return correlationProperties;
+    }
+
+
+    /**
+     * Return the asset manager identifiers packaged in an appropriate request body (or null if assetManagerGUID is null).
      *
      * @param assetManagerGUID unique identifier for the asset manager
      * @param assetManagerName unique name for the asset manager
@@ -304,8 +361,7 @@ public class ExchangeClientBase
 
 
     /**
-     * Return the asset manager identifiers packaged in an appropriate request body (or null is assetManagerGUID is null).
-     *
+     * Return the asset manager identifiers packaged in an appropriate request body.
      * @param assetManagerGUID unique identifier for the asset manager
      * @param assetManagerName unique name for the asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -323,6 +379,149 @@ public class ExchangeClientBase
             requestBody.setAssetManagerName(assetManagerName);
         }
 
+        requestBody.setEffectiveTime(effectiveTime);
+
+        return requestBody;
+    }
+
+
+
+    /**
+     * Return the asset manager identifiers packaged with relevant properties in an appropriate request body.
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @return request body
+     */
+    RelationshipRequestBody getRelationshipRequestBody(String                 assetManagerGUID,
+                                                       String                 assetManagerName,
+                                                       Date                   effectiveTime,
+                                                       RelationshipProperties relationshipProperties)
+    {
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setProperties(relationshipProperties);
+
+        return requestBody;
+    }
+
+
+    /**
+     * Return the asset manager identifiers packaged with relevant properties in an appropriate request body.
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param name name to search for
+     * @param nameParameterName parameter name
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @return request body
+     */
+    NameRequestBody getNameRequestBody(String                 assetManagerGUID,
+                                       String                 assetManagerName,
+                                       String                 name,
+                                       String                 nameParameterName,
+                                       Date                   effectiveTime)
+    {
+        NameRequestBody requestBody = new NameRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        return requestBody;
+    }
+
+
+    /**
+     * Return the asset manager identifiers packaged with relevant properties in an appropriate request body.
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param name name to search for
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return request body
+     * @throws InvalidParameterException blank name
+     */
+    NameRequestBody getNameRequestBody(String                 assetManagerGUID,
+                                       String                 assetManagerName,
+                                       String                 name,
+                                       Date                   effectiveTime,
+                                       String                 methodName) throws InvalidParameterException
+    {
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        return getNameRequestBody(assetManagerGUID, assetManagerName, name, nameParameterName, effectiveTime);
+    }
+
+
+    /**
+     * Return the asset manager identifiers packaged with relevant properties in an appropriate request body.
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique qualifiedName for the asset manager
+     * @param qualifiedName qualifiedName to search for
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @return request body
+     */
+    NameRequestBody getQualifiedNameRequestBody(String                 assetManagerGUID,
+                                                String                 assetManagerName,
+                                                String                 qualifiedName,
+                                                Date                   effectiveTime)
+    {
+        final String nameParameterName = "qualifiedName";
+
+        return getNameRequestBody(assetManagerGUID, assetManagerName, qualifiedName, nameParameterName, effectiveTime);
+    }
+
+
+    /**
+     * Return the asset manager identifiers packaged with relevant properties in an appropriate request body.
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param searchString string to find in the properties
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return request body
+     * @throws InvalidParameterException blank name
+     */
+    SearchStringRequestBody getSearchStringRequestBody(String                 assetManagerGUID,
+                                                       String                 assetManagerName,
+                                                       String                 searchString,
+                                                       Date                   effectiveTime,
+                                                       String                 methodName) throws InvalidParameterException
+    {
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
         requestBody.setEffectiveTime(effectiveTime);
 
         return requestBody;

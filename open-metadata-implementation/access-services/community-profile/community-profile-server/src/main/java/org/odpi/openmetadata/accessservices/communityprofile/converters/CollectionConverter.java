@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
 
@@ -22,7 +23,7 @@ import java.util.Map;
 
 
 /**
- * CollectionConverter generates a CollectionElement from an Collection entity
+ * CollectionConverter generates a CollectionElement from a Collection entity
  */
 public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
 {
@@ -125,14 +126,21 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
-    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return this.getNewBean(beanClass, entity, methodName);
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof CollectionElement)
+        {
+            CollectionElement bean = (CollectionElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 
 

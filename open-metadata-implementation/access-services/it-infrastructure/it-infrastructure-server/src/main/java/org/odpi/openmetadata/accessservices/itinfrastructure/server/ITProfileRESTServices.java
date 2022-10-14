@@ -27,6 +27,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -40,13 +41,13 @@ import java.util.List;
  */
 public class ITProfileRESTServices
 {
-    static private ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
+    private static final ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ITProfileRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ITProfileRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -58,7 +59,7 @@ public class ITProfileRESTServices
 
 
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param serverName called server
      * @param userId calling user
@@ -125,6 +126,7 @@ public class ITProfileRESTServices
                                                                        requestBody.getProperties().getExtendedProperties(),
                                                                        null,
                                                                        null,
+                                                                       new Date(),
                                                                        methodName);
 
                 if (userIdentity == null)
@@ -134,10 +136,15 @@ public class ITProfileRESTServices
                                                            requestBody.getExternalSourceName(),
                                                            profileGUID,
                                                            profileGUIDParameterName,
+                                                           "UserIdentity:" + requestBody.getItUserId(),
                                                            requestBody.getItUserId(),
                                                            null,
                                                            null,
                                                            null,
+                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName);
                 }
                 else
@@ -155,27 +162,33 @@ public class ITProfileRESTServices
                                                              false,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                                             (InstanceProperties) null,
                                                              null,
+                                                             null,
+                                                             new Date(),
                                                              methodName);
                 }
                 
                 if (requestBody.getItInfrastructureGUID() != null)
                 {
                     profileHandler.linkElementToElement(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             requestBody.getItInfrastructureGUID(),
-                                                             itInfrastructureGUIDParameterName,
-                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                             profileGUID,
-                                                             profileGUIDParameterName,
-                                                             typeName,
-                                                             false,
-                                                             false,
-                                                             OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME,
-                                                             null,
-                                                             methodName);
+                                                        requestBody.getExternalSourceGUID(),
+                                                        requestBody.getExternalSourceName(),
+                                                        requestBody.getItInfrastructureGUID(),
+                                                        itInfrastructureGUIDParameterName,
+                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        profileGUID,
+                                                        profileGUIDParameterName,
+                                                        typeName,
+                                                        false,
+                                                        false,
+                                                        OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME,
+                                                        (InstanceProperties) null,
+                                                        null,
+                                                        null,
+                                                        new Date(),
+                                                        methodName);
                 }
 
                 response.setGUID(profileGUID);
@@ -245,6 +258,9 @@ public class ITProfileRESTServices
                                            isMergeUpdate,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -302,6 +318,9 @@ public class ITProfileRESTServices
                                            requestBody.getExternalSourceName(),
                                            itProfileGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -354,11 +373,11 @@ public class ITProfileRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                int contactType = 0;
+                int contactMethodTypeOrdinal = 0;
 
-                if (requestBody.getProperties().getType() != null)
+                if (requestBody.getProperties().getContactMethodType() != null)
                 {
-                    contactType = requestBody.getProperties().getType().getOpenTypeOrdinal();
+                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOpenTypeOrdinal();
                 }
 
                 handler.createContactMethod(userId,
@@ -366,9 +385,16 @@ public class ITProfileRESTServices
                                             requestBody.getExternalSourceName(),
                                             itProfileGUID,
                                             guidParameterName,
-                                            contactType,
-                                            requestBody.getProperties().getService(),
-                                            requestBody.getProperties().getValue(),
+                                            requestBody.getProperties().getName(),
+                                            requestBody.getProperties().getContactType(),
+                                            contactMethodTypeOrdinal,
+                                            requestBody.getProperties().getContactMethodService(),
+                                            requestBody.getProperties().getContactMethodValue(),
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -496,7 +522,9 @@ public class ITProfileRESTServices
                                                               itProfileGUID,
                                                               guidParameterName,
                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -543,7 +571,9 @@ public class ITProfileRESTServices
                                                                actorProfileUserId,
                                                                nameParameterName,
                                                                OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
-                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
         }
         catch (Exception error)
@@ -597,7 +627,9 @@ public class ITProfileRESTServices
                                                                 OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -651,7 +683,9 @@ public class ITProfileRESTServices
                                                            OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
         }
         catch (Exception error)
@@ -700,9 +734,14 @@ public class ITProfileRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProperties().getQualifiedName(),
+                                                                     requestBody.getProperties().getUserId(),
+                                                                     requestBody.getProperties().getDistinguishedName(),
                                                                      requestBody.getProperties().getAdditionalProperties(),
                                                                      requestBody.getProperties().getTypeName(),
                                                                      requestBody.getProperties().getExtendedProperties(),
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
                 response.setGUID(userIdentityGUID);
@@ -763,10 +802,17 @@ public class ITProfileRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getProperties().getQualifiedName(),
+                                           requestBody.getProperties().getUserId(),
+                                           requestBody.getProperties().getDistinguishedName(),
                                            requestBody.getProperties().getAdditionalProperties(),
                                            requestBody.getProperties().getTypeName(),
                                            requestBody.getProperties().getExtendedProperties(),
                                            isMergeUpdate,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -822,6 +868,9 @@ public class ITProfileRESTServices
                                            requestBody.getExternalSourceName(),
                                            userIdentityGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -883,6 +932,14 @@ public class ITProfileRESTServices
                                              userIdentityGUIDParameterName,
                                              profileGUID,
                                              profileGUIDParameterName,
+                                             null,
+                                             null,
+                                             null,
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -943,6 +1000,9 @@ public class ITProfileRESTServices
                                                   userIdentityGUIDParameterName,
                                                   profileGUID,
                                                   profileGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
             }
             else
@@ -1004,7 +1064,9 @@ public class ITProfileRESTServices
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
                 response.setElements(elements);
             }
@@ -1065,6 +1127,9 @@ public class ITProfileRESTServices
                                                                                      nameParameterName,
                                                                                      startFrom,
                                                                                      pageSize,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date(),
                                                                                      methodName);
                 response.setElements(elements);
             }
@@ -1116,6 +1181,9 @@ public class ITProfileRESTServices
             UserIdentityElement element = handler.getUserIdentityByGUID(userId,
                                                                         userIdentityGUID,
                                                                         userIdentityGUIDParameterName,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName);
             response.setElement(element);
         }

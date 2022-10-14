@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * PersonalRoleElement contains the properties and header for a person role assigned to a profile retrieved from the metadata repository.
@@ -26,8 +28,8 @@ public class PersonRoleElement implements MetadataElement, Serializable
     private static final long     serialVersionUID = 1L;
 
     private ElementHeader        elementHeader = null;
-    private PersonRoleProperties properties    = null;
-    private List<ElementStub>    appointees    = null;
+    private PersonRoleProperties properties = null;
+    private List<ElementStub>    appointees = null;
 
 
     /**

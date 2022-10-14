@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.List;
 

@@ -12,25 +12,26 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 /**
  * ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
 public class ValidValuesRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
-    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
-                                                                                         instanceHandler.getServiceName());
+    private static final AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
+    private static final RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+                                                                                               instanceHandler.getServiceName());
 
 
     /**
@@ -77,14 +78,7 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueSet(userId,
                                                              null,
@@ -99,6 +93,7 @@ public class ValidValuesRESTServices
                                                              requestBody.getExtendedProperties(),
                                                              null,
                                                              null,
+                                                             new Date(),
                                                              methodName));
             }
             else
@@ -122,6 +117,7 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody parameters to update.
      *
      * @return unique identifier for the new definition
@@ -132,6 +128,7 @@ public class ValidValuesRESTServices
     public GUIDResponse  createValidValueDefinition(String                 serverName,
                                                     String                 userId,
                                                     String                 setGUID,
+                                                    boolean                isDefaultValue,
                                                     ValidValuesRequestBody requestBody)
     {
         final String methodName = "createValidValueDefinition";
@@ -147,19 +144,13 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueDefinition(userId,
                                                                     null,
                                                                     null,
                                                                     setGUID,
+                                                                    isDefaultValue,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
@@ -171,6 +162,9 @@ public class ValidValuesRESTServices
                                                                     requestBody.getExtendedProperties(),
                                                                     null,
                                                                     null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
             else
@@ -221,14 +215,7 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.updateValidValue(userId,
                                          null,
@@ -239,12 +226,16 @@ public class ValidValuesRESTServices
                                          requestBody.getDescription(),
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
-                                         requestBody.getPreferredValue(),
                                          false,
+                                         requestBody.getPreferredValue(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          null,
                                          null,
+                                         true,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -294,20 +285,16 @@ public class ValidValuesRESTServices
 
             if (qualifiedName != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.deleteValidValue(userId,
                                          null,
                                          null,
                                          validValueGUID,
                                          qualifiedName,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -333,6 +320,7 @@ public class ValidValuesRESTServices
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody null request body supplied to satisfy REST protocol
      *
      * @return void or
@@ -345,6 +333,7 @@ public class ValidValuesRESTServices
                                                  String          userId,
                                                  String          setGUID,
                                                  String          validValueGUID,
+                                                 boolean         isDefaultValue,
                                                  NullRequestBody requestBody)
     {
         final String   methodName = "attachValidValueToSet";
@@ -358,22 +347,19 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.attachValidValueToSet(userId,
                                           null,
                                           null,
                                           setGUID,
                                           validValueGUID,
+                                          isDefaultValue,
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
         }
         catch (Exception error)
@@ -418,21 +404,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.detachValidValueFromSet(userId,
                                             null,
                                             null,
                                             setGUID,
                                             validValueGUID,
-                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
         }
         catch (Exception error)
@@ -472,16 +453,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean,
-                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getValidValueByGUID(userId, validValueGUID, null, methodName));
+            response.setElement(handler.getValidValueByGUID(userId,
+                                                            validValueGUID,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -528,21 +507,16 @@ public class ValidValuesRESTServices
 
             if (validValueName != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getValidValueByName(userId,
                                                                     validValueName,
                                                                     nameParameterName,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
         }
@@ -591,21 +565,16 @@ public class ValidValuesRESTServices
 
             if (searchString != null)
             {
-                ValidValuesHandler<ValidValueElement,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean,
-                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findValidValues(userId,
                                                                 searchString,
                                                                 searchStringParameterName,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
             }
         }
@@ -651,21 +620,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             response.setElementList(handler.getValidValueSetMembers(userId,
                                                                     validValueSetGUID,
                                                                     validValueGUIDParameter,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
         }
         catch (Exception error)
@@ -710,21 +674,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean,
-                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             response.setElementList(handler.getSetsForValidValue(userId,
                                                                  validValueGUID,
                                                                  validValueGUIDParameter,
                                                                  startFrom,
                                                                  pageSize,
-                                                                 null,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName));
         }
         catch (Exception error)

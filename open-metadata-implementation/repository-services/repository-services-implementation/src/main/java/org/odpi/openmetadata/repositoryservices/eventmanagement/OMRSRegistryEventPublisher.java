@@ -21,12 +21,11 @@ import java.util.List;
  */
 public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 {
-    private AuditLog auditLog;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSRegistryEventPublisher.class);
 
-    private String                   publisherName;
-    private List<OMRSTopicConnector> omrsTopicConnectors;
+    private final String                   publisherName;
+    private final List<OMRSTopicConnector> omrsTopicConnectors;
+    private final AuditLog auditLog;
 
 
     /**
@@ -100,7 +99,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
-                                  "registryEvent : " + registryEvent.toString(),
+                                  "registryEvent : " + registryEvent,
                                   error);
 
             log.debug("Exception: " + error + "; Registry Event: " + registryEvent);

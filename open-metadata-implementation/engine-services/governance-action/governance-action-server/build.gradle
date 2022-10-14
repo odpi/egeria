@@ -18,7 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Governance Action OMES Server-side'

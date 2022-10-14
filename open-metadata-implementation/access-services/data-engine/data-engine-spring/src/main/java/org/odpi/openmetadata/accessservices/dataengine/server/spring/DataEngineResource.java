@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
@@ -541,4 +542,20 @@ public class DataEngineResource {
                                         @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteEventType(userId, serverName, requestBody);
     }
+
+    /**
+     * Create or update a processing state entity with the provided properties
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the processing state
+     * @return void response
+     */
+    @PostMapping(path = "/processing-state")
+    public VoidResponse upsertProcessingState(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @RequestBody ProcessingStateRequestBody requestBody) {
+        return restAPI.upsertProcessingState(userId, serverName, requestBody);
+    }
+
 }

@@ -46,7 +46,7 @@ public interface ServerPurposeManagerInterface
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -56,7 +56,7 @@ public interface ServerPurposeManagerInterface
      * @param classificationName name of the classification type
      * @param effectiveFrom when should relationship be effective - null means immediately
      * @param effectiveTo when should relationship no longer be effective - null means never
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param classificationProperties properties
      *

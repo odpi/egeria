@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -18,6 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 
 /**
@@ -406,6 +410,8 @@ public class ConnectorConfigurationFactory
      * @throws ClassNotFoundException when the provided class cannot be found
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     * @throws NoSuchMethodException the default constructor of the connector provider is not implemented
+     * @throws InvocationTargetException the default constructor of the connector provider can not be called
      */
     public Connection getRepositoryConnection(String              connectorProviderClassName,
                                               String              url,
@@ -524,7 +530,11 @@ public class ConnectorConfigurationFactory
             configurationProperties = new HashMap<>();
         }
 
-        configurationProperties.put("local.server.id", serverId);
+        // the serverId is used to set the default topic.id (though this could be overriden in the consumer configuration)
+        // retrieve from the default if needed
+        if (StringUtils.isEmpty((String)configurationProperties.get("local.server.id"))) {
+            configurationProperties.put("local.server.id", serverId);
+        }
 
         Connection connection = new Connection();
 
@@ -767,6 +777,8 @@ public class ConnectorConfigurationFactory
      * @throws ClassNotFoundException when the provided class cannot be found
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     * @throws NoSuchMethodException the default constructor of the connector provider is not implemented
+     * @throws InvocationTargetException the default constructor of the connector provider can not be called
      */
     public Connection getRepositoryEventMapperConnection(String              connectorProviderClassName,
                                                          Map<String, Object> configurationProperties,

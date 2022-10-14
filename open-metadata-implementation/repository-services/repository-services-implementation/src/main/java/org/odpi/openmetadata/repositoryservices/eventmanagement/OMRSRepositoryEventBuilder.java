@@ -783,7 +783,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
     /**
      * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
-     * but it is no longer returned on queries.
+     * but, it is no longer returned on queries.
      *
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
@@ -1014,7 +1014,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1283,7 +1283,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
     /**
      * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
-     * but it is no longer returned on queries.
+     * but, it is no longer returned on queries.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -1507,7 +1507,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *

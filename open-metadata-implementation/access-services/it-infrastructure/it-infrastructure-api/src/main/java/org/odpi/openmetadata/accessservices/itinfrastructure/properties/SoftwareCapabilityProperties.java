@@ -16,14 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * SoftwareCapabilityProperties describes a function implemented in software that is supported by an instance of IT Infrastructure.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
-        })
-@SuppressWarnings(value = "deprecated")
 public class SoftwareCapabilityProperties extends ConfigurationItemProperties
 {
     private static final long    serialVersionUID = 1L;

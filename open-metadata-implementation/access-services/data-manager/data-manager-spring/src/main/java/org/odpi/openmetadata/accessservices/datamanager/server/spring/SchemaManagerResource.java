@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class SchemaManagerResource
 {
-    private SchemaManagerRESTServices restAPI = new SchemaManagerRESTServices();
+    private final SchemaManagerRESTServices restAPI = new SchemaManagerRESTServices();
 
     /**
      * Default constructor
@@ -214,8 +214,8 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      * @param requestBody properties about the schema type to store
      *
      * @return unique identifier of the new schema type or

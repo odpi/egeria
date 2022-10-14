@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -13,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * that define the motivation, goals and implementation approach for the governance program.
  *
  * Governance drivers document of the business strategy and regulations that provide the motivation behind the governance program. They feed
- * into the governance program's policy making phase ensuring the governance program is focused on activity that delivers value to the organization.
+ * into the governance program's policymaking phase ensuring the governance program is focused on activity that delivers value to the organization.
  * A governance driver could be a governance strategy statement, a business imperative, a regulation or a regulation's article.
  *
  * Governance policies define the goals and best practices for the governance program.  There are three types of governance policies:
@@ -150,19 +152,19 @@ public interface GovernanceDefinitionsInterface
      * @param definitionOneGUID unique identifier of the first definition
      * @param definitionTwoGUID unique identifier of the second definition
      * @param relationshipTypeName the name of the relationship to create
-     * @param description description of their relationship
+     * @param properties description of their relationship
      *
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void linkPeerDefinitions(String userId,
-                             String definitionOneGUID,
-                             String definitionTwoGUID,
-                             String relationshipTypeName,
-                             String description) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
+    void linkPeerDefinitions(String                   userId,
+                             String                   definitionOneGUID,
+                             String                   definitionTwoGUID,
+                             String                   relationshipTypeName,
+                             PeerDefinitionProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -198,19 +200,19 @@ public interface GovernanceDefinitionsInterface
      * @param definitionGUID unique identifier of the governance definition
      * @param supportingDefinitionGUID unique identifier of the supporting governance definition
      * @param relationshipTypeName the name of the relationship to create
-     * @param rationale description of how the supporting definition provides support
+     * @param properties description of how the supporting definition provides support
      *
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void setupSupportingDefinition(String userId,
-                                   String definitionGUID,
-                                   String supportingDefinitionGUID,
-                                   String relationshipTypeName,
-                                   String rationale) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+    void setupSupportingDefinition(String                         userId,
+                                   String                         definitionGUID,
+                                   String                         supportingDefinitionGUID,
+                                   String                         relationshipTypeName,
+                                   SupportingDefinitionProperties properties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**

@@ -60,7 +60,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Retrieve all of the definitions for the requested governance engine from the Governance Engine OMAS
+     * Retrieve all the definitions for the requested governance engine from the Governance Engine OMAS
      * running in a metadata server.
      *
      * @param governanceEngineName qualifiedName of the requested governance engine
@@ -139,7 +139,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Return a summary of all of the engine statuses for the engine service.
+     * Return a summary of all the engine statuses for the engine service.
      *
      * @param serviceURLMarker URL identifier of the Engine Service
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
@@ -192,7 +192,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Return a summary of all of the engine statuses for the engine host.
+     * Return a summary of all the engine statuses for the engine host.
      *
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *

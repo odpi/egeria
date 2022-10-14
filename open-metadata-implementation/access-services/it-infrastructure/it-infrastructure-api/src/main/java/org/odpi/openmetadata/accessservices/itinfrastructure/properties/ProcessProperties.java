@@ -135,7 +135,7 @@ public class ProcessProperties extends AssetProperties
 
 
     /**
-     * Set up the the description of the processing performed by this process.
+     * Set up the description of the processing performed by this process.
      *
      * @param formula string description
      */
@@ -176,12 +176,15 @@ public class ProcessProperties extends AssetProperties
     public String toString()
     {
         return "ProcessProperties{" +
-                       "formula='" + formula + '\'' +
-                       ", implementationLanguage='" + implementationLanguage + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
+                       ", formula='" + formula + '\'' +
+                       ", implementationLanguage='" + implementationLanguage + '\'' +
+                       ", cloneToAsset=" + cloneToAsset() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

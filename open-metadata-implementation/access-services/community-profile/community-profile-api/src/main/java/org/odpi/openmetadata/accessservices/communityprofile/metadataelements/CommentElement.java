@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * CommentElement contains the properties and header for a comment retrieved from the metadata repository.
@@ -28,8 +28,8 @@ public class CommentElement implements MetadataElement, Serializable
 
     private ElementHeader     elementHeader = null;
     private CommentProperties properties    = null;
-    private List<ElementStub> answeredBy    = null;
-    private List<ElementStub> answers       = null;
+    private RelatedElement    relatedElement = null;
+
 
     /**
      * Default constructor
@@ -51,8 +51,7 @@ public class CommentElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-            answeredBy = template.getAnsweredBy();
-            answers = template.getAnswers();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -104,47 +103,28 @@ public class CommentElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the list of comments that answer a question posed in this comment.
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @return list of related comments
+     * @return list of element stubs
      */
-    public List<ElementStub> getAnsweredBy()
+    public RelatedElement getRelatedElement()
     {
-        return answeredBy;
+        return relatedElement;
     }
 
 
     /**
-     * Set up the list of comments that answer a question posed in this comment.
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param answeredBy list of related comments
+     * @param relatedElement relationship details
      */
-    public void setAnsweredBy(List<ElementStub> answeredBy)
+    public void setRelatedElement(RelatedElement relatedElement)
     {
-        this.answeredBy = answeredBy;
+        this.relatedElement = relatedElement;
     }
 
-
-    /**
-     * Return the list of unique identifiers (guids) for comments that contain a question that this comment answers.
-     *
-     * @return list of related comments
-     */
-    public List<ElementStub> getAnswers()
-    {
-        return answers;
-    }
-
-
-    /**
-     * Set up the list of comments that contain a question that this comment answers.
-     *
-     * @param answers list of related comments
-     */
-    public void setAnswers(List<ElementStub> answers)
-    {
-        this.answers = answers;
-    }
 
 
     /**
@@ -158,8 +138,7 @@ public class CommentElement implements MetadataElement, Serializable
         return "CommentElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", answeredBy=" + answeredBy +
-                       ", answers=" + answers +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -184,8 +163,7 @@ public class CommentElement implements MetadataElement, Serializable
         CommentElement that = (CommentElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(answeredBy, that.answeredBy) &&
-                       Objects.equals(answers, that.answers);
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -197,6 +175,6 @@ public class CommentElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, answeredBy, answers);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

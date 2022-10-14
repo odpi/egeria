@@ -1,0 +1,824 @@
+{
+	"info": {
+		"_postman_id": "a76a5a86-529b-4995-97ff-9963dd4b53aa",
+		"name": "Glossary View endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1.1 Get glossaries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"glossaries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.2 Get glossary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"glossaries",
+						"{{glossary-guid}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.3 Get home glossary of a term",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/home-glossary",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"home-glossary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.4 Get home glossary of a category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/home-glossary",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						"{{category-guid}}",
+						"home-glossary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.5 Get external glossary links of glossary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/external-glossary-links?from=0&size=5",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"glossaries",
+						"{{glossary-guid}}",
+						"external-glossary-links"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1 Get categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/?from=0&size=5",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						""
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2 Get category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						"{{category-guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.3 Get glossary's categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/categories?from=0&size=5",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"glossaries",
+						"{{glossary-guid}}",
+						"categories"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.4 Get subcategories of category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/subcategories",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						"{{category-guid}}",
+						"subcategories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.5 Get external glossary links of category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/external-glossary-links",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						"{{category-guid}}",
+						"external-glossary-links"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.1 Get terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms?from=0&size=5",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.2 Get term",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.3 Get glossary's terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/terms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"glossaries",
+						"{{glossary-guid}}",
+						"terms"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.4 Get category's terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/terms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"categories",
+						"{{category-guid}}",
+						"terms"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.5 Get external glossaries links of term",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"see-also"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.6 Get related terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"see-also"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.7 Get term synonyms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/synonyms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"synonyms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.8 Get term antonyms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/antonyms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"antonyms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.9 Get term preferred",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/preferred-terms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"preferred-terms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.10 Get term replacements",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/replacement-terms",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"replacement-terms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.11 Get term translations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/translations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"translations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.12 Get term is a",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/is-a",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"is-a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.13 Get term valid values",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/valid-values",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"valid-values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.14 Get term used in context",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/used-in-contexts",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"used-in-contexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.15 Get term assigned elements",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/assigned-elements",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"assigned-elements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.16 Get term attributes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/attributes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"attributes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.17 Get term subtypes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/subtypes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"subtypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.18 Get term types",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"glossary-view",
+						"users",
+						"{{userId}}",
+						"terms",
+						"{{term-guid}}",
+						"types"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "serverName",
+			"value": "omas"
+		},
+		{
+			"key": "userId",
+			"value": "demo"
+		},
+		{
+			"key": "omas-url",
+			"value": ""
+		}
+	]
+}

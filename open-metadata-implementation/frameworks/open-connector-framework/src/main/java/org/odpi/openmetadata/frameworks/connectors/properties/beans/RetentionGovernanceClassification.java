@@ -23,7 +23,6 @@ public class RetentionGovernanceClassification extends GovernanceClassificationB
 {
     private static final long     serialVersionUID = 1L;
 
-    private RetentionBasis retentionBasis = null;
     private String         associatedGUID = null;
     private Date           archiveAfter   = null;
     private Date           deleteAfter    = null;
@@ -49,33 +48,10 @@ public class RetentionGovernanceClassification extends GovernanceClassificationB
 
         if (template != null)
         {
-            retentionBasis = template.getRetentionBasis();
             associatedGUID = template.getAssociatedGUID();
             archiveAfter   = template.getArchiveAfter();
             deleteAfter    = template.getDeleteAfter();
         }
-    }
-
-
-    /**
-     * Return a description of the factor used to set the archiveAfter and deleteAfter dates.
-     *
-     * @return enum defined by RetentionBasis
-     */
-    public RetentionBasis getRetentionBasis()
-    {
-        return retentionBasis;
-    }
-
-
-    /**
-     * Set up a description of the factor used to set the archiveAfter and deleteAfter dates.
-     *
-     * @param retentionBasis enum defined by RetentionBasis
-     */
-    public void setRetentionBasis(RetentionBasis retentionBasis)
-    {
-        this.retentionBasis = retentionBasis;
     }
 
 
@@ -158,22 +134,25 @@ public class RetentionGovernanceClassification extends GovernanceClassificationB
     public String toString()
     {
         return "RetentionGovernanceClassification{" +
-                "retentionBasis=" + retentionBasis +
-                ", associatedGUID='" + associatedGUID + '\'' +
-                ", archiveAfter=" + archiveAfter +
-                ", deleteAfter=" + deleteAfter +
-                ", status=" + getStatus() +
-                ", confidence=" + getConfidence() +
-                ", steward='" + getSteward() + '\'' +
-                ", source='" + getSource() + '\'' +
-                ", notes='" + getNotes() + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", governanceStatus=" + getGovernanceStatus() +
+                       ", confidence=" + getConfidence() +
+                       ", steward='" + getSteward() + '\'' +
+                       ", stewardTypeName='" + getStewardTypeName() + '\'' +
+                       ", stewardPropertyName='" + getStewardPropertyName() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", notes='" + getNotes() + '\'' +
+                       ", levelIdentifier=" + getLevelIdentifier() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", associatedGUID='" + associatedGUID + '\'' +
+                       ", archiveAfter=" + archiveAfter +
+                       ", deleteAfter=" + deleteAfter +
+                       '}';
     }
 
 
@@ -199,8 +178,7 @@ public class RetentionGovernanceClassification extends GovernanceClassificationB
             return false;
         }
         RetentionGovernanceClassification that = (RetentionGovernanceClassification) objectToCompare;
-        return retentionBasis == that.retentionBasis &&
-                Objects.equals(associatedGUID, that.associatedGUID) &&
+        return  Objects.equals(associatedGUID, that.associatedGUID) &&
                 Objects.equals(archiveAfter, that.archiveAfter) &&
                 Objects.equals(deleteAfter, that.deleteAfter);
     }
@@ -214,6 +192,6 @@ public class RetentionGovernanceClassification extends GovernanceClassificationB
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), retentionBasis, associatedGUID, archiveAfter, deleteAfter);
+        return Objects.hash(super.hashCode(), associatedGUID, archiveAfter, deleteAfter);
     }
 }

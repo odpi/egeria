@@ -19,6 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation 'junit:junit'
 }
 

@@ -18,7 +18,7 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
      *
      * @param event event as a string
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
+     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
     protected void sendEvent(String event) throws InvalidParameterException,
                                                   ConnectorCheckedException

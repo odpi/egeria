@@ -186,7 +186,7 @@ public class GUIDResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -195,7 +195,7 @@ public class GUIDResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, GUIDResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

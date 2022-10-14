@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.securitymanager.server;
 
 import org.odpi.openmetadata.accessservices.securitymanager.converters.SecurityManagerOMASConverter;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
@@ -48,6 +47,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -64,11 +64,11 @@ import java.util.List;
  */
 public class SecurityManagerRESTServices
 {
-    private static SecurityManagerInstanceHandler instanceHandler = new SecurityManagerInstanceHandler();
+    private static final SecurityManagerInstanceHandler instanceHandler = new SecurityManagerInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(SecurityManagerRESTServices.class),
+    private static final RESTCallLogger restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(SecurityManagerRESTServices.class),
                                                                                   instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -168,6 +168,9 @@ public class SecurityManagerRESTServices
                                                                   requestBody.getVendorProperties(),
                                                                   null,
                                                                   null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName));
             }
         }
@@ -210,7 +213,7 @@ public class SecurityManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SecurityManagerElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
@@ -290,6 +293,9 @@ public class SecurityManagerRESTServices
                                                                       requestBody.getAdditionalProperties(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getExtendedProperties(),
+                                                                      null,
+                                                                      null,
+                                                                      new Date(),
                                                                       methodName);
 
                 response.setGUID(groupGUID);
@@ -368,6 +374,11 @@ public class SecurityManagerRESTServices
                                                    requestBody.getTypeName(),
                                                    requestBody.getExtendedProperties(),
                                                    isMergeUpdate,
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -422,6 +433,9 @@ public class SecurityManagerRESTServices
                 handler.removeGovernanceDefinition(userId,
                                                    securityGroupGUID,
                                                    guidParameterName,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -440,7 +454,7 @@ public class SecurityManagerRESTServices
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param serverName called server
      * @param userId calling user
@@ -481,6 +495,9 @@ public class SecurityManagerRESTServices
                                                                                       OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                                       startFrom,
                                                                                       pageSize,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
                                                                                       methodName));
         }
         catch (Exception error)
@@ -557,12 +574,14 @@ public class SecurityManagerRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
                                                                           startFrom,
                                                                           pageSize,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
             }
             else
@@ -610,7 +629,13 @@ public class SecurityManagerRESTServices
             GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getGovernanceDefinitionByGUID(userId, securityGroupGUID, guidParameterName, methodName));
+            response.setElement(handler.getGovernanceDefinitionByGUID(userId,
+                                                                      securityGroupGUID,
+                                                                      guidParameterName,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName));
         }
         catch (Exception error)
         {
@@ -660,9 +685,14 @@ public class SecurityManagerRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getQualifiedName(),
+                                                                     requestBody.getUserId(),
+                                                                     requestBody.getDistinguishedName(),
                                                                      requestBody.getAdditionalProperties(),
                                                                      requestBody.getTypeName(),
                                                                      requestBody.getExtendedProperties(),
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
                 response.setGUID(userIdentityGUID);
@@ -723,10 +753,17 @@ public class SecurityManagerRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getQualifiedName(),
+                                           requestBody.getUserId(),
+                                           requestBody.getDistinguishedName(),
                                            requestBody.getAdditionalProperties(),
                                            requestBody.getTypeName(),
                                            requestBody.getExtendedProperties(),
                                            isMergeUpdate,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -782,6 +819,9 @@ public class SecurityManagerRESTServices
                                            requestBody.getExternalSourceName(),
                                            userIdentityGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -843,6 +883,14 @@ public class SecurityManagerRESTServices
                                              userIdentityGUIDParameterName,
                                              profileGUID,
                                              profileGUIDParameterName,
+                                             null,
+                                             null,
+                                             null,
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -903,6 +951,9 @@ public class SecurityManagerRESTServices
                                                   userIdentityGUIDParameterName,
                                                   profileGUID,
                                                   profileGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
             }
             else
@@ -964,7 +1015,9 @@ public class SecurityManagerRESTServices
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
                 response.setElementList(elements);
             }
@@ -1025,6 +1078,9 @@ public class SecurityManagerRESTServices
                                                                                      nameParameterName,
                                                                                      startFrom,
                                                                                      pageSize,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date(),
                                                                                      methodName);
                 response.setElementList(elements);
             }
@@ -1076,6 +1132,9 @@ public class SecurityManagerRESTServices
             UserIdentityElement element = handler.getUserIdentityByGUID(userId,
                                                                         userIdentityGUID,
                                                                         userIdentityGUIDParameterName,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName);
             response.setElement(element);
         }
@@ -1125,7 +1184,9 @@ public class SecurityManagerRESTServices
                                                               actorProfileGUID,
                                                               guidParameterName,
                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -1172,7 +1233,9 @@ public class SecurityManagerRESTServices
                                                                actorProfileUserId,
                                                                nameParameterName,
                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
         }
         catch (Exception error)
@@ -1226,7 +1289,9 @@ public class SecurityManagerRESTServices
                                                                 OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                requestBody.getEffectiveTime(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -1280,7 +1345,9 @@ public class SecurityManagerRESTServices
                                                            OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
         }
         catch (Exception error)
@@ -1343,8 +1410,9 @@ public class SecurityManagerRESTServices
                                                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                              1,
                                                                                              false,
-                                                                                             0,
-                                                                                             0,
+                                                                                             false,
+                                                                                             startFrom,
+                                                                                             pageSize,
                                                                                              requestBody.getEffectiveTime(),
                                                                                              methodName);
                 if (appointmentRelationships != null)
@@ -1478,7 +1546,9 @@ public class SecurityManagerRESTServices
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
                                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
 
             appointee.setProfile(profile);
@@ -1528,7 +1598,13 @@ public class SecurityManagerRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getPersonRoleByGUID(userId, personRoleGUID, guidParameterName, null, methodName));
+            response.setElement(handler.getPersonRoleByGUID(userId,
+                                                            personRoleGUID,
+                                                            guidParameterName,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1574,7 +1650,14 @@ public class SecurityManagerRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(handler.getPersonRolesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.getPersonRolesByName(userId,
+                                                              requestBody.getName(),
+                                                              nameParameterName,
+                                                              startFrom, pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -1620,8 +1703,15 @@ public class SecurityManagerRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(
-                    handler.findPersonRoles(userId, requestBody.getSearchString(), searchStringParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.findPersonRoles(userId,
+                                                         requestBody.getSearchString(),
+                                                         searchStringParameterName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {

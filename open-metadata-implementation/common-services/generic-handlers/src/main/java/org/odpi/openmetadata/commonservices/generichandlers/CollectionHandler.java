@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -25,6 +26,8 @@ import java.util.Map;
  */
 public class CollectionHandler<B> extends ReferenceableHandler<B>
 {
+    private static final String qualifiedNameParameterName = "qualifiedName";
+
     /**
      * Construct the handler with information needed to work with B objects.
      *
@@ -76,8 +79,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * Create the collection object.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param qualifiedName unique name for the collection - used in other configuration
      * @param displayName short display name for the collection
      * @param description description of the governance collection
@@ -85,6 +88,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance collection subtype
      * @param classificationName name of classification to add to the collection (assume no properties)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new collection object
@@ -102,12 +108,13 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
                                    String              classificationName,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -140,14 +147,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
             builder.setupCollectionClassification(userId, classificationName, methodName);
         }
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -156,8 +164,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * Create the folder object.  This is collection with a Folder classification attached
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param qualifiedName unique name for the collection - used in other configuration
      * @param displayName short display name for the collection
      * @param description description of the governance collection
@@ -166,6 +174,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param extendedProperties  properties for a governance collection subtype
      * @param orderBy the factor used to organize the members
      * @param orderPropertyName name of property of OrderBy is 99 (OTHER)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new collection object
@@ -184,12 +195,13 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                Map<String, Object> extendedProperties,
                                int                 orderBy,
                                String              orderPropertyName,
+                               Date                effectiveFrom,
+                               Date                effectiveTo,
+                               Date                effectiveTime,
                                String              methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -219,14 +231,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         builder.setupFolderClassification(userId, orderBy, orderPropertyName, methodName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -239,8 +252,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * collection is deleted, any linked terms and categories are deleted as well.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the collection - used in other configuration
      * @param displayName short display name for the collection
@@ -288,6 +301,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -296,8 +310,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * Update the anchor object that all elements in a collection (terms and categories) are linked to.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param collectionGUID unique identifier of the collection to update
      * @param collectionGUIDParameterName parameter passing the collectionGUID
      * @param qualifiedName unique name for the collection - used in other configuration
@@ -306,6 +320,12 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance collection
      * @param suppliedTypeName type of collection
      * @param extendedProperties  properties for a governance collection subtype
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -323,12 +343,16 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   boolean             isMergeUpdate,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -357,6 +381,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -364,12 +390,12 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     collectionGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
-                                    new Date(),
+                                    isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -382,20 +408,28 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param collectionGUIDParameterName parameter name supplying collectionGUID
      * @param orderBy the factor used to organize the members
      * @param orderPropertyName name of property of OrderBy is 99 (OTHER)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addFolderClassificationToCollection(String userId,
-                                                     String collectionGUID,
-                                                     String collectionGUIDParameterName,
-                                                     int    orderBy,
-                                                     String orderPropertyName,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public void  addFolderClassificationToCollection(String  userId,
+                                                     String  collectionGUID,
+                                                     String  collectionGUIDParameterName,
+                                                     int     orderBy,
+                                                     String  orderPropertyName,
+                                                     boolean isMergeUpdate,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
@@ -411,10 +445,10 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
                                            OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
                                            builder.getFolderProperties(orderBy, orderPropertyName, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           null,
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -425,17 +459,23 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param collectionGUID unique identifier of asset
      * @param collectionGUIDParameterName parameter name supplying collectionGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeFolderClassificationFromCollection(String userId,
-                                                          String collectionGUID,
-                                                          String collectionGUIDParameterName,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public void  removeFolderClassificationFromCollection(String  userId,
+                                                          String  collectionGUID,
+                                                          String  collectionGUIDParameterName,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
@@ -448,9 +488,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
-                                                false,
-                                                false,
-                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -459,30 +499,40 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * Add a member (Referenceable) to collection.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param collectionGUID unique identifier of the collection
      * @param collectionGUIDParameterName parameter supplying the collectionGUID
      * @param memberGUID unique identifier of the element that is being added to the collection
      * @param memberGUIDParameterName parameter supplying the memberGUID
      * @param membershipRationale why is the element a member? (optional)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addMemberToCollection(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String collectionGUID,
-                                      String collectionGUIDParameterName,
-                                      String memberGUID,
-                                      String memberGUIDParameterName,
-                                      String membershipRationale,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void addMemberToCollection(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  collectionGUID,
+                                      String  collectionGUIDParameterName,
+                                      String  memberGUID,
+                                      String  memberGUIDParameterName,
+                                      String  membershipRationale,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -498,12 +548,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                   memberGUID,
                                   memberGUIDParameterName,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                   properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -512,12 +565,14 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * Remove a parent-child relationship between two categories.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param collectionGUID unique identifier of the collection
      * @param collectionGUIDParameterName parameter supplying the collectionGUID
      * @param memberGUID unique identifier of the element that is being added to the collection
      * @param memberGUIDParameterName parameter supplying the memberGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -525,17 +580,19 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeMemberFromCollection(String userId,
-                                           String externalSourceGUID,
-                                           String externalSourceName,
-                                           String collectionGUID,
-                                           String collectionGUIDParameterName,
-                                           String memberGUID,
-                                           String memberGUIDParameterName,
-                                           Date   effectiveTime,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void removeMemberFromCollection(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  collectionGUID,
+                                           String  collectionGUIDParameterName,
+                                           String  memberGUID,
+                                           String  memberGUIDParameterName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -548,8 +605,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                       memberGUIDParameterName,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -562,24 +619,30 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * the Anchors classifications are set up in these elements.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
-     * @param externalSourceName unique name of the software server capability that owns this collection
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
      * @param collectionGUID unique identifier of the metadata element to remove
      * @param collectionGUIDParameterName parameter supplying the collectionGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeCollection(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String collectionGUID,
-                                 String collectionGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void removeCollection(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  collectionGUID,
+                                 String  collectionGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -590,9 +653,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -606,7 +669,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -615,15 +680,17 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findCollections(String userId,
-                                   String searchString,
-                                   String searchStringParameterName,
-                                   int    startFrom,
-                                   int    pageSize,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public List<B> findCollections(String  userId,
+                                   String  searchString,
+                                   String  searchStringParameterName,
+                                   int     startFrom,
+                                   int     pageSize,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -633,6 +700,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
                               effectiveTime,
                               methodName);
     }
@@ -647,7 +716,10 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -656,15 +728,17 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getCollectionsByName(String userId,
-                                          String name,
-                                          String nameParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B>   getCollectionsByName(String  userId,
+                                          String  name,
+                                          String  nameParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -679,8 +753,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -696,6 +770,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -704,21 +781,24 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getCollectionByGUID(String userId,
-                                 String guid,
-                                 String guidParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public B getCollectionByGUID(String  userId,
+                                 String  guid,
+                                 String  guidParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
 
     }

@@ -77,6 +77,7 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String SOURCE_GUID = "sourceGuid";
     private static final String SOURCE_QUALIFIED_NAME = "sourceQualifiedName";
     private static final String SOURCE_TYPE = "sourceType";
+    private static final String TARGET_TYPE = "targetType";
     private static final String TARGET_GUID = "targetGuid";
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
@@ -123,7 +124,8 @@ class DataEngineSchemaTypeHandlerTest {
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
         when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                schemaTypeBuilder, methodName)).thenReturn(GUID);
+                schemaTypeBuilder, null, null, false, false, null,
+                methodName)).thenReturn(GUID);
 
         mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
@@ -147,7 +149,7 @@ class DataEngineSchemaTypeHandlerTest {
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
-        EntityDetail schemaTypeEntity = mockFindEntity(QUALIFIED_NAME, GUID, SCHEMA_TYPE_TYPE_NAME);
+        EntityDetail schemaTypeEntity = mockFindEntity(QUALIFIED_NAME, GUID, SOURCE_TYPE, SCHEMA_TYPE_TYPE_NAME);
 
         EntityDetail schemaTypeUpdatedEntity = mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(GUID, null)).thenReturn(schemaTypeUpdatedEntity);
@@ -168,7 +170,8 @@ class DataEngineSchemaTypeHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(NAME,
                 DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(schemaTypeHandler, times(1)).updateSchemaType(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder, true,
+                false, false, null, methodName);
         verify(dataEngineSchemaAttributeHandler, times(1)).upsertSchemaAttributes(USER, attributeList,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
@@ -193,7 +196,8 @@ class DataEngineSchemaTypeHandlerTest {
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, schemaTypeBuilder,
+        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, schemaTypeBuilder, null,
+                null, false, false, null,
                 methodName)).thenThrow(mockedException);
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -204,14 +208,14 @@ class DataEngineSchemaTypeHandlerTest {
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
                                                 InvalidParameterException {
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, REFERENCEABLE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SOURCE_TYPE, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, TARGET_TYPE, REFERENCEABLE_TYPE_NAME);
 
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -224,12 +228,12 @@ class DataEngineSchemaTypeHandlerTest {
                                                                                  InvalidParameterException {
         final String methodName = "addLineageMappingRelationship";
 
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, REFERENCEABLE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SOURCE_TYPE, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, TARGET_TYPE, REFERENCEABLE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
@@ -264,8 +268,8 @@ class DataEngineSchemaTypeHandlerTest {
         when(entityDetail.getGUID()).thenReturn(ATTRIBUTE_GUID);
         Set<EntityDetail> entityDetails = new HashSet<>();
         entityDetails.add(entityDetail);
-        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME))
-                .thenReturn(entityDetails);
+        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                SCHEMA_ATTRIBUTE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(entityDetails);
 
         dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
@@ -286,11 +290,11 @@ class DataEngineSchemaTypeHandlerTest {
                 dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
-    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName)
+    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityType, String entityTypeName)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         InstanceType type = mock(InstanceType.class);
-        when(type.getTypeDefName()).thenReturn(SOURCE_TYPE);
+        when(type.getTypeDefName()).thenReturn(entityType);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(guid);
         when(entityDetail.getType()).thenReturn(type);

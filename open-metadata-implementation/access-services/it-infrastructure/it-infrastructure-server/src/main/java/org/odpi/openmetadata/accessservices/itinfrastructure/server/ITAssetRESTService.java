@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
@@ -30,10 +29,13 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,11 +45,11 @@ import java.util.List;
  */
 public class ITAssetRESTService
 {
-    private static ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
-    private static RESTCallLogger                  restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ITAssetRESTService.class),
-                                                                                    instanceHandler.getServiceName());
+    private static final ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
+    private static final RESTCallLogger                  restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ITAssetRESTService.class),
+                                                                                              instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -65,7 +67,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Create a new metadata element to represent a asset.
+     * Create a new metadata element to represent an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -115,12 +117,16 @@ public class ITAssetRESTService
                                                                 requestBody.getExternalSourceGUID(),
                                                                 requestBody.getExternalSourceName(),
                                                                 requestBody.getQualifiedName(),
-                                                                requestBody.getDisplayName(),
+                                                                requestBody.getName(),
+                                                                requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 this.getInstanceStatus(requestBody.getInitialStatus()),
+                                                                requestBody.getEffectiveFrom(),
+                                                                requestBody.getEffectiveTo(),
+                                                                new Date(),
                                                                 methodName);
 
                     if ((assetGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -138,6 +144,9 @@ public class ITAssetRESTService
                                                      false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     (InstanceProperties) null,
+                                                     null,
+                                                     null,
                                                      null,
                                                      methodName);
                     }
@@ -148,12 +157,16 @@ public class ITAssetRESTService
                                                                 null,
                                                                 null,
                                                                 requestBody.getQualifiedName(),
-                                                                requestBody.getDisplayName(),
+                                                                requestBody.getName(),
+                                                                requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 this.getInstanceStatus(requestBody.getInitialStatus()),
+                                                                requestBody.getEffectiveFrom(),
+                                                                requestBody.getEffectiveTo(),
+                                                                new Date(),
                                                                 methodName);
 
                     if ((assetGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -171,6 +184,9 @@ public class ITAssetRESTService
                                                      false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     (InstanceProperties) null,
+                                                     null,
+                                                     null,
                                                      null,
                                                      methodName);
                     }
@@ -181,6 +197,9 @@ public class ITAssetRESTService
                     handler.setVendorProperties(userId,
                                                 assetGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -273,7 +292,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Create a new metadata element to represent a asset using an existing metadata element as a template.
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -322,8 +341,13 @@ public class ITAssetRESTService
                                                                 requestBody.getQualifiedName(),
                                                                 qualifiedNameParameterName,
                                                                 requestBody.getDisplayName(),
+                                                                requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
+                                                                requestBody.getPathName(),
                                                                 requestBody.getNetworkAddress(),
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName);
 
                 if ((assetGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -341,7 +365,10 @@ public class ITAssetRESTService
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 (InstanceProperties) null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -365,7 +392,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Update the metadata element representing a asset.
+     * Update the metadata element representing an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -415,11 +442,17 @@ public class ITAssetRESTService
                                     elementGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getDisplayName(),
+                                    requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
+                                    requestBody.getEffectiveFrom(),
+                                    requestBody.getEffectiveTo(),
                                     isMergeUpdate,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -427,6 +460,9 @@ public class ITAssetRESTService
                     handler.setVendorProperties(userId,
                                                 assetGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -492,8 +528,11 @@ public class ITAssetRESTService
                                                      assetGUIDParameterName,
                                                      typeDef.getGUID(),
                                                      typeDef.getName(),
+                                                     false,
+                                                     false,
                                                      this.getInstanceStatus(requestBody.getElementStatus()),
                                                      statusParameterName,
+                                                     requestBody.getEffectiveTime(),
                                                      methodName);
             }
             else
@@ -513,7 +552,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Create a relationship between a asset and a related asset.
+     * Create a relationship between an asset and a related asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -523,6 +562,7 @@ public class ITAssetRESTService
      * @param relatedAssetTypeName name of type for the asset
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param relatedAssetGUID unique identifier of the related asset
+     * @param requestBody request body
      *
      * @return void or
      *
@@ -575,6 +615,7 @@ public class ITAssetRESTService
                                              requestBody.getEffectiveFrom(),
                                              requestBody.getEffectiveTo(),
                                              requestBody.getProperties(),
+                                             requestBody.getEffectiveTime(),
                                              methodName);
             }
             else
@@ -601,7 +642,7 @@ public class ITAssetRESTService
      * @param userId calling user
      * @param relationshipTypeName name of the relationship type
      * @param relationshipGUID unique identifier of the asset
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param requestBody new properties
      *
@@ -646,6 +687,7 @@ public class ITAssetRESTService
                                                    requestBody.getEffectiveFrom(),
                                                    requestBody.getEffectiveTo(),
                                                    requestBody.getProperties(),
+                                                   requestBody.getEffectiveTime(),
                                                    methodName);
             }
             else
@@ -665,7 +707,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Remove a relationship between a asset and a related asset.
+     * Remove a relationship between an asset and a related asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -746,7 +788,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -801,8 +843,9 @@ public class ITAssetRESTService
                                                       requestBody.getEffectiveTo(),
                                                       false,
                                                       false,
-                                                      false,
+                                                      true,
                                                       requestBody.getProperties(),
+                                                      requestBody.getEffectiveTime(),
                                                       methodName);
 
             }
@@ -823,14 +866,14 @@ public class ITAssetRESTService
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
      * @param assetTypeName name of type for the asset
      * @param assetGUID unique identifier of the asset
      * @param classificationName name of the classification type
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param requestBody properties
      *
@@ -881,6 +924,7 @@ public class ITAssetRESTService
                                                       false,
                                                       isMergeUpdate,
                                                       requestBody.getProperties(),
+                                                      requestBody.getEffectiveTime(),
                                                       methodName);
             }
             else
@@ -970,7 +1014,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Update the zones for the asset asset so that it becomes visible to consumers.
+     * Update the zones for the asset so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the IT Infrastructure OMAS).
      *
@@ -1005,7 +1049,7 @@ public class ITAssetRESTService
 
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, assetGUID, elementGUIDParameterName, methodName);
+            handler.publishAsset(userId, assetGUID, elementGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1019,7 +1063,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Update the zones for the asset asset so that it is no longer visible to consumers.
+     * Update the zones for the  asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
      * instance of the IT Infrastructure OMAS.  This is the setting when the asset is first created).
      *
@@ -1053,7 +1097,7 @@ public class ITAssetRESTService
 
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, assetGUID, elementGUIDParameterName, methodName);
+            handler.withdrawAsset(userId, assetGUID, elementGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1067,7 +1111,7 @@ public class ITAssetRESTService
 
 
     /**
-     * Remove the metadata element representing a asset.
+     * Remove the metadata element representing an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -1186,6 +1230,8 @@ public class ITAssetRESTService
                                                                    searchStringParameterName,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   false,
+                                                                   false,
                                                                    requestBody.getEffectiveTime(),
                                                                    methodName);
 
@@ -1264,6 +1310,8 @@ public class ITAssetRESTService
                                                                         nameParameterName,
                                                                         startFrom,
                                                                         pageSize,
+                                                                        false,
+                                                                        false,
                                                                         requestBody.getEffectiveTime(),
                                                                         methodName);
 
@@ -1347,6 +1395,11 @@ public class ITAssetRESTService
                                                                             OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                             OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                             typeDef.getName(),
+                                                                            null,
+                                                                            null,
+                                                                            2,
+                                                                            false,
+                                                                            false,
                                                                             startFrom,
                                                                             pageSize,
                                                                             requestBody.getEffectiveTime(),
@@ -1478,7 +1531,7 @@ public class ITAssetRESTService
                                                                EffectiveTimeRequestBody requestBody)
     {
         // todo
-        return null;    // not sure this is needed
+        return null;
     }
 
     /**
@@ -1550,6 +1603,8 @@ public class ITAssetRESTService
                                                                             startingEnd,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            false,
+                                                                            false,
                                                                             requestBody.getEffectiveTime(),
                                                                             methodName);
 
@@ -1619,6 +1674,9 @@ public class ITAssetRESTService
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -1726,6 +1784,9 @@ public class ITAssetRESTService
                                                                requestBody.getProperties().getQualifiedName(),
                                                                requestBody.getProperties().getDescription(),
                                                                requestBody.getProperties().getFormula(),
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
                     }
                     else
@@ -1742,6 +1803,9 @@ public class ITAssetRESTService
                                                                requestBody.getProperties().getQualifiedName(),
                                                                requestBody.getProperties().getDescription(),
                                                                requestBody.getProperties().getFormula(),
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
                     }
                 }
@@ -1759,6 +1823,9 @@ public class ITAssetRESTService
                                                            null,
                                                            null,
                                                            null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
                 }
             }
@@ -1827,8 +1894,10 @@ public class ITAssetRESTService
                                                         dataSupplierGUIDParameterName,
                                                         dataConsumerGUID,
                                                         dataConsumerGUIDParameterName,
-                                                        requestBody.getEffectiveTime(),
                                                         requestBody.getName(),
+                                                        false,
+                                                        false,
+                                                        requestBody.getEffectiveTime(),
                                                         methodName));
             }
             else
@@ -1839,7 +1908,9 @@ public class ITAssetRESTService
                                                         dataConsumerGUID,
                                                         dataConsumerGUIDParameterName,
                                                         null,
-                                                        null,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName));
             }
         }
@@ -1905,6 +1976,9 @@ public class ITAssetRESTService
                                            requestBody.getProperties().getQualifiedName(),
                                            requestBody.getProperties().getDescription(),
                                            requestBody.getProperties().getFormula(),
+                                           false,
+                                           false,
+                                           requestBody.getEffectiveTime(),
                                            methodName);
                 }
                 else
@@ -1919,6 +1993,9 @@ public class ITAssetRESTService
                                            null,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
                 }
             }
@@ -1982,6 +2059,8 @@ public class ITAssetRESTService
                                       requestBody.getExternalSourceName(),
                                       dataFlowGUID,
                                       dataFlowGUIDParameterName,
+                                      false,
+                                      false,
                                       requestBody.getEffectiveTime(),
                                       methodName);
             }
@@ -1992,7 +2071,9 @@ public class ITAssetRESTService
                                       null,
                                       dataFlowGUID,
                                       dataFlowGUIDParameterName,
-                                      null,
+                                      false,
+                                      false,
+                                      new Date(),
                                       methodName);
             }
         }
@@ -2008,11 +2089,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -2023,6 +2106,8 @@ public class ITAssetRESTService
     public DataFlowElementsResponse getDataFlowConsumers(String                   serverName,
                                                          String                   userId,
                                                          String                   dataSupplierGUID,
+                                                         int                      startFrom,
+                                                         int                      pageSize,
                                                          EffectiveTimeRequestBody requestBody)
     {
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
@@ -2049,6 +2134,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDataFlowConsumers(userId,
                                                                      dataSupplierGUID,
                                                                      dataSupplierGUIDParameterName,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
                                                                      requestBody.getEffectiveTime(),
                                                                      methodName));
             }
@@ -2057,7 +2146,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDataFlowConsumers(userId,
                                                                      dataSupplierGUID,
                                                                      dataSupplierGUIDParameterName,
-                                                                     null,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName));
             }
         }
@@ -2073,11 +2166,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -2088,6 +2183,8 @@ public class ITAssetRESTService
     public DataFlowElementsResponse getDataFlowSuppliers(String                   serverName,
                                                          String                   userId,
                                                          String                   dataConsumerGUID,
+                                                         int                      startFrom,
+                                                         int                      pageSize,
                                                          EffectiveTimeRequestBody requestBody)
     {
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
@@ -2114,6 +2211,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDataFlowSuppliers(userId,
                                                                      dataConsumerGUID,
                                                                      dataConsumerGUIDParameterName,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
                                                                      requestBody.getEffectiveTime(),
                                                                      methodName));
             }
@@ -2122,7 +2223,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDataFlowSuppliers(userId,
                                                                      dataConsumerGUID,
                                                                      dataConsumerGUIDParameterName,
-                                                                     null,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName));
             }
         }
@@ -2197,6 +2302,9 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getQualifiedName(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getGuard(),
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
                     }
                     else
@@ -2213,6 +2321,9 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getQualifiedName(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getGuard(),
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
                     }
                 }
@@ -2230,6 +2341,9 @@ public class ITAssetRESTService
                                                               null,
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
                 }
             }
@@ -2298,8 +2412,10 @@ public class ITAssetRESTService
                                                            currentStepGUIDParameterName,
                                                            nextStepGUID,
                                                            nextStepGUIDParameterName,
-                                                           requestBody.getEffectiveTime(),
                                                            requestBody.getName(),
+                                                           false,
+                                                           false,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
             }
             else
@@ -2310,7 +2426,9 @@ public class ITAssetRESTService
                                                            nextStepGUID,
                                                            nextStepGUIDParameterName,
                                                            null,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
             }
         }
@@ -2374,6 +2492,9 @@ public class ITAssetRESTService
                                           requestBody.getProperties().getQualifiedName(),
                                           requestBody.getProperties().getDescription(),
                                           requestBody.getProperties().getGuard(),
+                                          false,
+                                          false,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -2436,6 +2557,8 @@ public class ITAssetRESTService
                                          requestBody.getExternalSourceName(),
                                          controlFlowGUID,
                                          controlFlowGUIDParameterName,
+                                         false,
+                                         false,
                                          requestBody.getEffectiveTime(),
                                          methodName);
             }
@@ -2446,7 +2569,9 @@ public class ITAssetRESTService
                                          null,
                                          controlFlowGUID,
                                          controlFlowGUIDParameterName,
-                                         null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
         }
@@ -2462,11 +2587,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody null request body
      *
      * @return unique identifier and properties of the relationship or
@@ -2477,6 +2604,8 @@ public class ITAssetRESTService
     public ControlFlowElementsResponse getControlFlowNextSteps(String                   serverName,
                                                                String                   userId,
                                                                String                   currentStepGUID,
+                                                               int                      startFrom,
+                                                               int                      pageSize,
                                                                EffectiveTimeRequestBody requestBody)
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
@@ -2503,6 +2632,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getControlFlowNextSteps(userId,
                                                                         currentStepGUID,
                                                                         currentStepGUIDParameterName,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
                                                                         requestBody.getEffectiveTime(),
                                                                         methodName));
             }
@@ -2511,7 +2644,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getControlFlowNextSteps(userId,
                                                                         currentStepGUID,
                                                                         currentStepGUIDParameterName,
-                                                                        null,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName));
             }
         }
@@ -2527,11 +2664,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -2542,6 +2681,8 @@ public class ITAssetRESTService
     public ControlFlowElementsResponse getControlFlowPreviousSteps(String                   serverName,
                                                                    String                   userId,
                                                                    String                   currentStepGUID,
+                                                                   int                      startFrom,
+                                                                   int                      pageSize,
                                                                    EffectiveTimeRequestBody requestBody)
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
@@ -2568,6 +2709,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getControlFlowPreviousSteps(userId,
                                                                             currentStepGUID,
                                                                             currentStepGUIDParameterName,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            false,
+                                                                            false,
                                                                             requestBody.getEffectiveTime(),
                                                                             methodName));
             }
@@ -2576,7 +2721,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getControlFlowPreviousSteps(userId,
                                                                             currentStepGUID,
                                                                             currentStepGUIDParameterName,
-                                                                            null,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            false,
+                                                                            false,
+                                                                            new Date(),
                                                                             methodName));
             }
         }
@@ -2651,6 +2800,9 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getQualifiedName(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getFormula(),
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
                     }
                     else
@@ -2667,6 +2819,9 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getQualifiedName(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getFormula(),
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
                     }
                 }
@@ -2684,6 +2839,9 @@ public class ITAssetRESTService
                                                               null,
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
                 }
             }
@@ -2752,8 +2910,10 @@ public class ITAssetRESTService
                                                            callerGUIDParameterName,
                                                            calledGUID,
                                                            calledGUIDParameterName,
-                                                           requestBody.getEffectiveTime(),
                                                            requestBody.getName(),
+                                                           false,
+                                                           false,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
             }
             else
@@ -2764,7 +2924,9 @@ public class ITAssetRESTService
                                                            calledGUID,
                                                            calledGUIDParameterName,
                                                            null,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
             }
         }
@@ -2828,6 +2990,9 @@ public class ITAssetRESTService
                                           requestBody.getProperties().getQualifiedName(),
                                           requestBody.getProperties().getDescription(),
                                           requestBody.getProperties().getFormula(),
+                                          false,
+                                          false,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -2890,6 +3055,8 @@ public class ITAssetRESTService
                                          requestBody.getExternalSourceName(),
                                          processCallGUID,
                                          processCallGUIDParameterName,
+                                         false,
+                                         false,
                                          requestBody.getEffectiveTime(),
                                          methodName);
             }
@@ -2900,7 +3067,9 @@ public class ITAssetRESTService
                                          null,
                                          processCallGUID,
                                          processCallGUIDParameterName,
-                                         null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
         }
@@ -2916,11 +3085,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -2931,6 +3102,8 @@ public class ITAssetRESTService
     public ProcessCallElementsResponse getProcessCalled(String                   serverName,
                                                         String                   userId,
                                                         String                   callerGUID,
+                                                        int                      startFrom,
+                                                        int                      pageSize,
                                                         EffectiveTimeRequestBody requestBody)
     {
         final String callerGUIDParameterName = "callerGUID";
@@ -2957,6 +3130,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getProcessCalled(userId,
                                                                  callerGUID,
                                                                  callerGUIDParameterName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
                                                                  requestBody.getEffectiveTime(),
                                                                  methodName));
             }
@@ -2965,7 +3142,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getProcessCalled(userId,
                                                                  callerGUID,
                                                                  callerGUIDParameterName,
-                                                                 null,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName));
             }
         }
@@ -2981,11 +3162,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -2996,6 +3179,8 @@ public class ITAssetRESTService
     public ProcessCallElementsResponse getProcessCallers(String                   serverName,
                                                          String                   userId,
                                                          String                   calledGUID,
+                                                         int                      startFrom,
+                                                         int                      pageSize,
                                                          EffectiveTimeRequestBody requestBody)
     {
         final String callerGUIDParameterName = "callerGUID";
@@ -3022,6 +3207,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getProcessCallers(userId,
                                                                   calledGUID,
                                                                   callerGUIDParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
                                                                   requestBody.getEffectiveTime(),
                                                                   methodName));
             }
@@ -3030,7 +3219,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getProcessCallers(userId,
                                                                   calledGUID,
                                                                   callerGUIDParameterName,
-                                                                  null,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName));
             }
         }
@@ -3047,7 +3240,7 @@ public class ITAssetRESTService
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param serverName name of the server to route the request to
@@ -3065,7 +3258,7 @@ public class ITAssetRESTService
                                             String                    userId,
                                             String                    sourceElementGUID,
                                             String                    destinationElementGUID,
-                                            EffectiveDatesRequestBody requestBody)
+                                            LineageMappingRequestBody requestBody)
     {
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
         final String destinationElementGUIDParameterName = "destinationElementGUID";
@@ -3089,14 +3282,38 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                handler.setupLineageMapping(userId,
-                                            sourceElementGUID,
-                                            sourceElementGUIDParameterName,
-                                            destinationElementGUID,
-                                            destinationElementGUIDParameterName,
-                                            requestBody.getEffectiveFrom(),
-                                            requestBody.getEffectiveTo(),
-                                            methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupLineageMapping(userId,
+                                                sourceElementGUID,
+                                                sourceElementGUIDParameterName,
+                                                destinationElementGUID,
+                                                destinationElementGUIDParameterName,
+                                                requestBody.getProperties().getQualifiedName(),
+                                                requestBody.getProperties().getDescription(),
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                false,
+                                                false,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
+                else
+                {
+                    handler.setupLineageMapping(userId,
+                                                sourceElementGUID,
+                                                sourceElementGUIDParameterName,
+                                                destinationElementGUID,
+                                                destinationElementGUIDParameterName,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                false,
+                                                false,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
             }
             else
             {
@@ -3107,6 +3324,11 @@ public class ITAssetRESTService
                                             destinationElementGUIDParameterName,
                                             null,
                                             null,
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -3122,13 +3344,91 @@ public class ITAssetRESTService
 
 
     /**
-     * Remove the lineage mapping between two elements.
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public LineageMappingElementResponse getLineageMapping(String          serverName,
+                                                           String          userId,
+                                                           String          sourceElementGUID,
+                                                           String          destinationElementGUID,
+                                                           NameRequestBody requestBody)
+    {
+        final String methodName = "getLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LineageMappingElementResponse response = new LineageMappingElementResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProcessHandler<ProcessElement,
+                                  PortElement,
+                                  DataFlowElement,
+                                  ControlFlowElement,
+                                  ProcessCallElement,
+                                  LineageMappingElement> handler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getLineageMapping(userId,
+                                                              sourceElementGUID,
+                                                              sourceElementGUIDParameterName,
+                                                              destinationElementGUID,
+                                                              destinationElementGUIDParameterName,
+                                                              requestBody.getName(),
+                                                              false,
+                                                              false,
+                                                              requestBody.getEffectiveTime(),
+                                                              methodName));
+            }
+            else
+            {
+                response.setElement(handler.getLineageMapping(userId,
+                                                              sourceElementGUID,
+                                                              sourceElementGUIDParameterName,
+                                                              destinationElementGUID,
+                                                              destinationElementGUIDParameterName,
+                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Remove the lineage mapping between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
@@ -3137,12 +3437,10 @@ public class ITAssetRESTService
      */
     public VoidResponse clearLineageMapping(String                                 serverName,
                                             String                                 userId,
-                                            String                                 sourceElementGUID,
-                                            String                                 destinationElementGUID,
+                                            String                                 lineageMappingGUID,
                                             EffectiveTimeMetadataSourceRequestBody requestBody)
     {
-        final String sourceElementGUIDParameterName      = "sourceElementGUID";
-        final String destinationElementGUIDParameterName = "destinationElementGUID";
+        final String lineageMappingGUIDParameterName      = "lineageMappingGUID";
         final String methodName = "clearLineageMapping";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -3164,21 +3462,21 @@ public class ITAssetRESTService
             if (requestBody != null)
             {
                 handler.clearLineageMapping(userId,
-                                            sourceElementGUID,
-                                            sourceElementGUIDParameterName,
-                                            destinationElementGUID,
-                                            destinationElementGUIDParameterName,
+                                            lineageMappingGUID,
+                                            lineageMappingGUIDParameterName,
+                                            false,
+                                            false,
                                             requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
             {
                 handler.clearLineageMapping(userId,
-                                            sourceElementGUID,
-                                            sourceElementGUIDParameterName,
-                                            destinationElementGUID,
-                                            destinationElementGUIDParameterName,
-                                            null,
+                                            lineageMappingGUID,
+                                            lineageMappingGUIDParameterName,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -3194,11 +3492,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -3209,6 +3509,8 @@ public class ITAssetRESTService
     public LineageMappingElementsResponse getDestinationLineageMappings(String                   serverName,
                                                                         String                   userId,
                                                                         String                   sourceElementGUID,
+                                                                        int                      startFrom,
+                                                                        int                      pageSize,
                                                                         EffectiveTimeRequestBody requestBody)
     {
         final String sourceElementGUIDParameterName = "sourceElementGUID";
@@ -3235,6 +3537,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDestinationLineageMappings(userId,
                                                                               sourceElementGUID,
                                                                               sourceElementGUIDParameterName,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              false,
+                                                                              false,
                                                                               requestBody.getEffectiveTime(),
                                                                               methodName));
             }
@@ -3243,7 +3549,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getDestinationLineageMappings(userId,
                                                                               sourceElementGUID,
                                                                               sourceElementGUIDParameterName,
-                                                                              null,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              false,
+                                                                              false,
+                                                                              new Date(),
                                                                               methodName));
             }
         }
@@ -3259,11 +3569,13 @@ public class ITAssetRESTService
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -3274,6 +3586,8 @@ public class ITAssetRESTService
     public LineageMappingElementsResponse getSourceLineageMappings(String                   serverName,
                                                                    String                   userId,
                                                                    String                   destinationElementGUID,
+                                                                   int                      startFrom,
+                                                                   int                      pageSize,
                                                                    EffectiveTimeRequestBody requestBody)
     {
         final String destinationElementGUIDParameterName = "destinationElementGUID";
@@ -3300,6 +3614,10 @@ public class ITAssetRESTService
                 response.setElementList(handler.getSourceLineageMappings(userId,
                                                                          destinationElementGUID,
                                                                          destinationElementGUIDParameterName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
                                                                          requestBody.getEffectiveTime(),
                                                                          methodName));
             }
@@ -3308,7 +3626,11 @@ public class ITAssetRESTService
                 response.setElementList(handler.getSourceLineageMappings(userId,
                                                                          destinationElementGUID,
                                                                          destinationElementGUIDParameterName,
-                                                                         null,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
                                                                          methodName));
             }
         }

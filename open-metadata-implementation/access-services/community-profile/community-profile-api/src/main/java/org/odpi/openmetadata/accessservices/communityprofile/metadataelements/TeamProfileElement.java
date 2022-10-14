@@ -15,6 +15,8 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * TeamProfileElement contains the properties and header for a team profile retrieved from the metadata repository.
@@ -27,9 +29,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
     private static final long     serialVersionUID = 1L;
 
     private ElementHeader         elementHeader = null;
-    private TeamProfileProperties properties    = null;
-    private ElementStub           superTeam     = null;
-    private List<ElementStub>     subTeams      = null;
+    private TeamProfileProperties properties = null;
+    private ElementStub           superTeam  = null;
+    private List<ElementStub>     subTeams   = null;
 
     /**
      * Default constructor

@@ -57,7 +57,7 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
 * **[data-engine](data-engine)** - exchange metadata with a data processing engine.
                                    
   The Data Engine OMAS provides APIs and events for a data movement/processing
-engine to record the changes it is making the the data landscape. 
+engine to record the changes it is making to the data landscape. 
 This information forms a key part of asset lineage.
 
 * **[data-manager](data-manager)** - exchange metadata with a data manager.
@@ -184,10 +184,10 @@ the subject area definition.
 
 ## Using the OMASs
 
-The OMASs run in either a [Metadata Access Point](../admin-services/docs/concepts/metadata-access-point.md)
-or a [Metadata Server](../admin-services/docs/concepts/metadata-server.md).
+The OMASs run in either a [Metadata Access Point](https://egeria-project.org/concepts/metadata-access-point)
+or a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store).
 They can be configured and activated individually or as a complete set.
-The [administration services](../admin-services/README.md) provide
+The [administration services](../admin-services) provide
 the ability to configure, start and stop the access services.
 
 Each OMAS typically supports a REST API, a topic where it publishes notifications
@@ -196,22 +196,12 @@ OMAS.
 
 It also has a Java client that provides access to its API and topics.
 This java client is embedded in the
-[Governance Servers](../admin-services/docs/concepts/governance-server-types.md) and
-[View Servers](../admin-services/docs/concepts/view-server.md).
+[Governance Servers](https://egeria-project.org/concepts/governance-server) and
+[View Servers](https://egeria-project.org/concepts/view-server).
 They can also be downloaded and used independently with the 
-**[Egeria Client Package](../../open-metadata-distribution/README.md)**.  
+**[Egeria Client Package](../../open-metadata-distribution)**.  
 
-This is illustrated in Figure 1:
-
-![Figure 1](docs/design/access-services-overview.png)
-> Figure 1: Structure of an Open Metadata Access Service (OMAS)
-
-
-## Digging deeper
-
-* [OMAS Concepts](docs/concepts)
-* [User Guides for each OMAS](docs/user)
-* [OMAS Design Documentation](docs/design)
+More information on the OMASs can be found in the [Egeria Documentation](https://egeria-project.org/services/omas).
 
 ----
 Return to [open-metadata-implementation](..).

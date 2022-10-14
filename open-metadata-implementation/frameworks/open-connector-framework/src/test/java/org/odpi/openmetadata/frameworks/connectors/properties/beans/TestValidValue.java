@@ -334,11 +334,11 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -347,7 +347,7 @@ public class TestValidValue
 
         try
         {
-            validateResultObject((ValidValue) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((ValidValue) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -458,11 +458,11 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getSetTestObject();
+        ElementBase elementBase = getSetTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -471,7 +471,7 @@ public class TestValidValue
 
         try
         {
-            validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -559,11 +559,11 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getDefinitionTestObject();
+        ElementBase elementBase = getDefinitionTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -572,7 +572,7 @@ public class TestValidValue
 
         try
         {
-            validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

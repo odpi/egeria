@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 /**
  * RestoreEntityExecutor provides the executor for the restoreEntity method.
- * This is a tricky request because the entity has been deleted so it is
+ * This is a tricky request because the entity has been deleted, so it is
  * not retrievable until restored.  Also, this is an optional function
  * so the repository where the entity has its home may not support restore.
  *
@@ -24,15 +24,15 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class ClassifyEntityExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 entityGUID;
-    private EntityProxy            entityProxy;
-    private String                 classificationName;
-    private String                 externalSourceGUID;
-    private String                 externalSourceName;
-    private ClassificationOrigin   classificationOrigin;
-    private String                 classificationOriginGUID;
-    private InstanceProperties     classificationProperties;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 entityGUID;
+    private final EntityProxy            entityProxy;
+    private final String                 classificationName;
+    private final String                 externalSourceGUID;
+    private final String                 externalSourceName;
+    private final ClassificationOrigin   classificationOrigin;
+    private final String                 classificationOriginGUID;
+    private final InstanceProperties     classificationProperties;
 
     private EntityDetail updatedEntity = null;
     private Classification addedClassification = null;
@@ -43,6 +43,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
      *
      * @param userId unique identifier for requesting user
      * @param entityGUID unique identifier (guid) for the entity
+     * @param entityProxy entity proxy to anchor classification
      * @param classificationName String name for the classification
      * @param externalSourceGUID unique identifier (guid) for the external source
      * @param externalSourceName unique name for the external source

@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Base implementation of a Data Engine Connector, implementing all of the required methods any Data Engine Connector
+ * Base implementation of a Data Engine Connector, implementing all the required methods any Data Engine Connector
  * is expected to provide (via the DataEngineInterface). It is an abstract class as on its own it does absolutely
  * nothing, and therefore a Data Engine Connector needs to extend it and override at least one of the methods to
  * actually do something.

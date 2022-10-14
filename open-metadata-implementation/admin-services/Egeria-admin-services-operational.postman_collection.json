@@ -113,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "content-packs/DataStoreConnectorTypes.json",
+					"raw": "content-packs/OpenConnectorsArchive.json",
 					"options": {
 						"raw": {
 							"language": "text"

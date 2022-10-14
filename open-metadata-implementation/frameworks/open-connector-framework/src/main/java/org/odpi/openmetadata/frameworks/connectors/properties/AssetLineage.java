@@ -13,44 +13,28 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  * Currently lineage is not implemented in the ConnectedAssetProperties interface because more design work is needed.
  * This class is therefore a placeholder for lineage information.
  */
-public class AssetLineage extends AssetPropertyBase
+public class AssetLineage extends AssetPropertyElementBase
 {
     private static final long     serialVersionUID = 1L;
-
-    /**
-     * Default constructor
-     */
-    protected AssetLineage()
-    {
-        super(null);
-    }
 
 
     /**
      * Typical constructor.
-     *
-     * @param parentAsset description of the asset that this lineage is attached to.
      */
-    public AssetLineage(AssetDescriptor  parentAsset)
+    public AssetLineage()
     {
-        /*
-         * Save descriptor of the asset that this lineage is attached to
-         */
-        super(parentAsset);
+        super();
     }
 
 
     /**
-     * Copy/clone constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the lineage clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone constructor.
      *
-     * @param parentAsset description of the asset that this lineage is attached to.
      * @param templateLineage lineage object to copy.
      */
-    public AssetLineage(AssetDescriptor  parentAsset, AssetLineage templateLineage)
+    public AssetLineage(AssetLineage templateLineage)
     {
-        super(parentAsset, templateLineage);
+        super(templateLineage);
 
         /*
          * The open lineage design is still in progress so for the time being, this object does not do anything

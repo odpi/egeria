@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME;
@@ -99,10 +98,11 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(), process.getName(),
-                process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                null, process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()), process.getOriginBusinessCapabilityGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), InstanceStatus.DRAFT, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), null, null,
+                InstanceStatus.DRAFT, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -140,9 +140,10 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
-                updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
-                buildProcessExtendedProperties(updatedProcess), methodName);
+               updatedProcess.getQualifiedName(), updatedProcess.getName(), null, updatedProcess.getDescription(),
+               updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
+               buildProcessExtendedProperties(updatedProcess), null, null, true, false,
+                false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -190,7 +191,8 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         assetHandler.updateBeanStatusInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), instanceStatus, processStatusParameterName, methodName);
+                entityTypeDef.getGUID(), entityTypeDef.getName(), false, false, instanceStatus, processStatusParameterName,
+                dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -209,11 +211,8 @@ public class DataEngineProcessHandler {
     public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException {
-
-        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
-                PROCESS_TYPE_NAME);
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).
-                collect(Collectors.toSet());
+        return dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
+                portTypeName, PROCESS_TYPE_NAME);
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
@@ -240,8 +239,8 @@ public class DataEngineProcessHandler {
 
         Optional<EntityDetail> parentProcessEntity = findProcessEntity(userId, parentProcess.getQualifiedName());
         if (parentProcessEntity.isPresent()) {
-            dataEngineCommonHandler.upsertExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID, PROCESS_HIERARCHY_TYPE_NAME,
-                    PROCESS_TYPE_NAME, externalSourceName, relationshipProperties);
+            dataEngineCommonHandler.upsertExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID,
+                    PROCESS_HIERARCHY_TYPE_NAME, PROCESS_TYPE_NAME, PROCESS_TYPE_NAME, externalSourceName, relationshipProperties);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
                     parentProcess.getQualifiedName());
@@ -297,6 +296,7 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, false,
+                false, dataEngineCommonHandler.getNow(), methodName);
     }
 }

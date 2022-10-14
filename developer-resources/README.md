@@ -4,7 +4,7 @@
 # Developer Resources
 
 This page contains resources to help developers working on the Egeria project.
-It supplements the general [Community Guide](../Community-Guide.md).
+It supplements the general [Community Guide](https://egeria-project.org/guides/community/).
 
 * [Programming Languages](languages)
 
@@ -24,12 +24,12 @@ It supplements the general [Community Guide](../Community-Guide.md).
     * [Feature Branches](Feature-Branch.md)
     * [Acclaim Badges](badges)
 
-The [Egeria Dojo](../open-metadata-resources/open-metadata-tutorials/egeria-dojo) provides education
+The [Egeria Dojo](https://egeria-project.org/education/egeria-dojo/) provides education
 on how to make a contribution to Egeria. 
 
 ----
-* Return to the [Community Guide](../Community-Guide.md)
-* Return to Egeria's [Home Page](../index.md)
+* Return to the [Community Guide](https://egeria-project.org/guides/community/)
+* Return to Egeria's [Home Page](https://egeria-project.org/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

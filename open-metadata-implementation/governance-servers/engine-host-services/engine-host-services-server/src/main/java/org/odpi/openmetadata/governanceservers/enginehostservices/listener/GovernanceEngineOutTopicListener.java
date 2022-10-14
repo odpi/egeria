@@ -25,7 +25,7 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
      * appropriate governance engine handler.
      *
-     * @param governanceEngineHandlers these are the handlers for all of the governance engines that are hosted by this
+     * @param governanceEngineHandlers these are the handlers for all the governance engines that are hosted by this
      *                                engine host server.
      * @param auditLog logging destination
      */

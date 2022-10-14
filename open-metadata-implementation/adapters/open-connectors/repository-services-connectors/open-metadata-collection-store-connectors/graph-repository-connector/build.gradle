@@ -22,7 +22,7 @@ dependencies {
     runtimeOnly 'joda-time:joda-time'
     runtimeOnly 'org.antlr:antlr-runtime'
     runtimeOnly 'org.xerial.snappy:snappy-java'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Graph Repository Connector'
@@ -32,6 +32,7 @@ java {
 }
 
 task fatJar(type: Jar) {
+    zip64 = true
     manifest {
         attributes 'Main-Class': ''
     }
@@ -43,3 +44,8 @@ task fatJar(type: Jar) {
 }
 
 build.dependsOn fatJar
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}

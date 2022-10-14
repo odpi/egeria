@@ -12,9 +12,9 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    runtimeOnly 'ch.qos.logback:logback-classic'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 }
 

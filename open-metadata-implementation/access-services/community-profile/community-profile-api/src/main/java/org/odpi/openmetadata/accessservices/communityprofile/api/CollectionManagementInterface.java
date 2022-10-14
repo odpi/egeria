@@ -26,7 +26,7 @@ public interface CollectionManagementInterface
      *
      * @param userId     userId of user making request
      * @param parentGUID unique identifier of referenceable object (typically a personal profile, project or
-     *                   community) that they collections hang off of.
+     *                   community) that the collections hang off of.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      *

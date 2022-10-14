@@ -13,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.
+ * ExternalSourceRequestBody carries the parameters for marking an asset or schema as external.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
+public class EffectiveDatesRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 

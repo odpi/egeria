@@ -83,6 +83,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     {
         return "GovernanceRoleProperties{" +
                        "domainIdentifier=" + domainIdentifier +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", roleId='" + getRoleId() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", title='" + getTitle() + '\'' +
@@ -123,7 +124,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

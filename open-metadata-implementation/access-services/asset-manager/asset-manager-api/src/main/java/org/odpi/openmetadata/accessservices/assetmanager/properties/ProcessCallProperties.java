@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProcessCallProperties implements Serializable
+public class ProcessCallProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -43,6 +43,8 @@ public class ProcessCallProperties implements Serializable
      */
     public ProcessCallProperties(ProcessCallProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
@@ -87,7 +89,7 @@ public class ProcessCallProperties implements Serializable
 
 
     /**
-     * Set up the the description of the relationship.
+     * Set up the description of the relationship.
      *
      * @param description string text
      */
@@ -131,6 +133,8 @@ public class ProcessCallProperties implements Serializable
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        '}';
     }
 
@@ -152,21 +156,25 @@ public class ProcessCallProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ProcessCallProperties that = (ProcessCallProperties) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getFormula(), that.getFormula());
+        return Objects.equals(qualifiedName, that.qualifiedName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(formula, that.formula);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, formula);
+        return Objects.hash(super.hashCode(), qualifiedName, description, formula);
     }
 }

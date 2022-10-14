@@ -30,17 +30,17 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 {
     INTEGRATOR_NOT_RETURNED(400, "OMAG-GENERIC-HANDLERS-400-001",
                             "Service {0} is unable to process the properties supplied to method {1} because the requested owner {2} ({3}) is " +
-                                    "not a recognized software server capability.  The associated error message is: {4}",
+                                    "not a recognized software capability.  The associated error message is: {4}",
                             "The system is unable to create a new instance in the metadata repository with an invalid integrator specified as" +
                                     " the owner.",
-                            "Ensure the request includes the unique identifiers for a valid software server capability entity to represent " +
+                            "Ensure the request includes the unique identifiers for a valid software capability entity to represent " +
                                     "the integrator and retry the request."),
 
     BAD_INTEGRATOR_NAME(400, "OMAG-GENERIC-HANDLERS-400-002",
                         "Service {0} is unable to process the properties supplied to method {1} because the unique name {2} given for the " +
-                                "requested owner does not match the unique name of {3} returned in software server capability {4}",
+                                "requested owner does not match the unique name of {3} returned in software capability {4}",
                         "The system is unable to create a new instance with an invalid integrator specified as the owner.",
-                        "Retry the request with a matching the unique identifier and name for a valid software server capability entity to " +
+                        "Retry the request with a matching the unique identifier and name for a valid software capability entity to " +
                                 "represent the owner of the new instance."),
 
     UNKNOWN_EXTERNAL_IDENTITY (400, "OMAG-GENERIC-HANDLERS-400-003",
@@ -106,13 +106,6 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                             "Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}",
                             "The system is unable to claim a governance action because another Engine Host OMAG Server has got there first.",
                             "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
-
-
-    MULTIPLE_CONNECTIONS_FOUND(404, "OMAG-GENERIC-HANDLERS-404-001",
-            "{0} connections are connected to the asset with unique identifier {1}; the calling method is {2} and the server is {3}",
-            "The system is unable to process a request because multiple connections have been discovered and it is unsure which connection to " +
-                                       "return.",
-            "use the getConnectionsForAsset to page through the list of connections to select the one that is appropriate for your use case."),
 
     MULTIPLE_ENTITIES_FOUND(404, "OMAG-GENERIC-HANDLERS-404-002",
             "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",

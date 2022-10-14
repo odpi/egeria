@@ -43,14 +43,14 @@ public enum EngineServiceDescription implements Serializable
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                        engineServiceCode;
-    private ComponentDevelopmentStatus engineServiceDevelopmentStatus;
-    private String                     engineServiceName;
-    private String                     engineServiceFullName;
-    private String                     engineServiceURLMarker;
-    private String                     engineServiceDescription;
-    private String                     engineServiceWiki;
-    private String                     engineServicePartnerService;
+    private final int                        engineServiceCode;
+    private final ComponentDevelopmentStatus engineServiceDevelopmentStatus;
+    private final String                     engineServiceName;
+    private final String                     engineServiceFullName;
+    private final String                     engineServiceURLMarker;
+    private final String                     engineServiceDescription;
+    private final String                     engineServiceWiki;
+    private final String                     engineServicePartnerService;
 
 
     /**
@@ -176,7 +176,7 @@ public enum EngineServiceDescription implements Serializable
     /**
      * Return the URL for the wiki page describing this engine service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getEngineServiceWiki()
     {

@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.viewservices.glossaryauthor.properties.GraphStatistics;
 import org.odpi.openmetadata.viewservices.glossaryauthor.properties.NodeRelationshipStats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -40,10 +42,11 @@ public class GraphFVT
     private RelationshipsFVT relationshipFVT = null;
     private CategoryFVT categoryFVT = null;
     private SubjectAreaDefinitionCategoryFVT subjectAreaFVT = null;
+    private static Logger log = LoggerFactory.getLogger(GraphFVT.class);
+
 
     private String serverName = null;
     private String userId = null;
-    private String omagServer;
     public static void main(String args[])
     {
         try
@@ -54,9 +57,9 @@ public class GraphFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
 
         }
 
@@ -64,17 +67,14 @@ public class GraphFVT
     public GraphFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GlossaryAuthorViewRestClient client = new GlossaryAuthorViewRestClient(serverName, url);
         glossaryAuthorViewGraphClient = new GlossaryAuthorViewGraphClient(client);
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT = new TermFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url,serverName,userId);
         relationshipFVT = new RelationshipsFVT(url,serverName,userId);
-
-        omagServer = retrieveOmagServerName("Glossary Author");
-
-        System.out.println("OMAGSERVER " + omagServer );
-
-        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,omagServer,userId);
+        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
         this.serverName=serverName;
         this.userId=userId;
     }
@@ -92,7 +92,9 @@ public class GraphFVT
 
         for (ViewServiceConfig vsc: viewServiceConfigs){
             if (vsc.getViewServiceName().equals(viewServiceName)) {
-                System.out.println("OMAG Server URL " + String.valueOf(vsc.getOMAGServerPlatformRootURL()));
+                if (log.isDebugEnabled()) {
+                    log.debug("OMAG Server URL " + String.valueOf(vsc.getOMAGServerPlatformRootURL()));
+                }
                 return  String.valueOf(vsc.getOMAGServerName());
             }
         }
@@ -113,7 +115,7 @@ public class GraphFVT
             System.out.println("GraphFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -128,7 +130,6 @@ public class GraphFVT
                 null,
                 null,
                 null);
-//                3);
         checkGraphContent(graph,1,0);
 
         Term term1 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME1,glossaryGuid);
@@ -146,7 +147,6 @@ public class GraphFVT
             null,
             null);
         checkGraphContent(graph,3,2);
-//        System.out.println(graph.getNodes().toString());
 
 
         graph = getGraph(term1.getSystemAttributes().getGUID(),
@@ -197,7 +197,6 @@ public class GraphFVT
                 null,
                 null,
                 null);
-//        System.out.println(graph.getRelationships().toString());
         checkGraphContent(graph,4,3);
 
 
@@ -256,7 +255,6 @@ public class GraphFVT
                 null,
                 null,
                 null);
-//        System.out.println("taxonomyGuid " + graphST.toString());
         //check for nodeOrRelationshipTypeName as Taxonamy
         checkGraphStats1(graphST,"Taxonomy");
 
@@ -306,9 +304,8 @@ public class GraphFVT
 
     private void checkGraphStats1(GraphStatistics graphST, String nodeToCheck) throws GlossaryAuthorFVTCheckedException {
             Map<String, NodeRelationshipStats> nodeInfos = graphST.getNodeCounts();
- //           System.out.println(nodeInfos.keySet());
-//            for (Map<String, NodeRelationshipStats> nodeInfo: nodeInfos) System.out.println();
-            if (!nodeInfos.containsKey(nodeToCheck)){
+
+             if (!nodeInfos.containsKey(nodeToCheck)){
                 throw new GlossaryAuthorFVTCheckedException("ERROR: Expected to find "+ nodeToCheck + " but it did not exist");
             }
     }
@@ -334,9 +331,11 @@ public class GraphFVT
                 nrStats = mapEntry.getValue();
                 if (nrStats.getCount() != relationshipCount)
                     throw new GlossaryAuthorFVTCheckedException("ERROR: Expected to find "+ relationshipCount + " relationships but found " + nrStats.getCount());
-                System.out.println(mapEntry.getValue());
-                System.out.println(nrStats.getCount());
-                System.out.println(nrStats.getNodeOrRelationshipTypeName());
+                if (log.isDebugEnabled()) {
+                    log.debug(mapEntry.getValue().toString());
+                    log.debug(nrStats.getCount().toString());
+                    log.debug(nrStats.getNodeOrRelationshipTypeName());
+                }
             }
         }
     }
@@ -372,9 +371,10 @@ public class GraphFVT
     }
 
     private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedRelationshipsSize) throws GlossaryAuthorFVTCheckedException {
-        System.out.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedRelationshipsSize + " Relationships" );
+        if (log.isDebugEnabled()) {
+            log.debug("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedRelationshipsSize + " Relationships" );
+        }
         if (graph.getNodes().size() !=expectedNodesSize ) {
-//            System.out.println(graph.getNodes().toString());
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size());
         }
         if (expectedRelationshipsSize ==0 && (graph.getRelationships() != null) ) {

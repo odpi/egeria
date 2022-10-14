@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * GovernanceDomainSetElement is the bean used to return a governance domain set definition stored in the open metadata repositories.

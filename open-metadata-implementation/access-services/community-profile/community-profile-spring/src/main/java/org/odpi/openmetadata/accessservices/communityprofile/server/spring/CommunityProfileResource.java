@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class CommunityProfileResource
 {
-    private CommunityProfileRESTServices restAPI = new CommunityProfileRESTServices();
+    private final CommunityProfileRESTServices restAPI = new CommunityProfileRESTServices();
 
 
     /**

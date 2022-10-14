@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.io.Serializable;
@@ -32,6 +32,7 @@ public class NewMetadataElementRequestBody implements Serializable
     private Date              effectiveTo   = null;
     private ElementProperties properties    = null;
     private String            templateGUID  = null;
+    private Date              effectiveTime = null;
 
 
     /**
@@ -191,6 +192,28 @@ public class NewMetadataElementRequestBody implements Serializable
     public String getTemplateGUID()
     {
         return templateGUID;
+    }
+
+
+    /**
+     * Return the effective time use on any queries for related elements.
+     *
+     * @return date object
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up the effective time use on any queries for related elements.
+     *
+     * @param effectiveTime date object
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
     }
 
 

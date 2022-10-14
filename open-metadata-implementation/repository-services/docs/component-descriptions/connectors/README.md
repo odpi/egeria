@@ -3,18 +3,18 @@
 
 # Connectors consumed by the OMRS
 
-A Connector is a Java class that supports the standard [Open Connector Framework (OCF)](../../../../frameworks/open-connector-framework) APIs.
+A Connector is a Java class that supports the standard [Open Connector Framework (OCF)](https://egeria-project.org/frameworks/ocf/overview) APIs.
 The Open Metadata Repository Services (OMRS) defines the following connectors to enable
 support for specific operating platform services to be plugged into the OMRS.
 
-* **[Audit Log Store Connector](audit-log-store-connector.md)** - supports the reading and writing of
-audit log records to specific destinations on behalf of the **[OMRS Audit Log](../audit-log.md)**.
+* **[Audit Log Store Connector](https://egeria-project.org/concepts/audit-log-store-connector)** - supports the reading and writing of
+audit log records to specific destinations on behalf of the **[OMRS Audit Log](https://egeria-project.org/concepts/audit-log)**.
 
-* **[Cohort Registry Store Connector](cohort-registry-store-connector.md)** - supports the
+* **[Cohort Registry Store Connector](https://egeria-project.org/concepts/cohort-registry-store-connector)** - supports the
 reading and writing of the cohort registry store to specific destinations on behalf of
-the **[Cohort Registry](../cohort-registry.md)**.
+the **[Cohort Registry](https://egeria-project.org/concepts/cohort-registry)**.
 
-* **[Event Mapper Connector](event-mapper-connector.md)** - informs a cohort
+* **[Event Mapper Connector](https://egeria-project.org/concepts/event-mapper-connector)** - informs a cohort
 of changes to metadata mastered in a third party metadata repository that
 occurred through the third party technology's own mechanisms.
 It is always paired with the repository connector for
@@ -23,17 +23,17 @@ the third party technology.
 * **[OMRS Topic Connector](omrs-topic-connector.md)** - manages the exchange 
 of **[OMRS Events](../../event-descriptions/README.md)** with
 the **[OMRS Topic](../../omrs-event-topic.md)** by calling
-the **[Open Metadata Topic Connector](open-metadata-topic-connector.md)**.
+the **[Open Metadata Topic Connector](https://egeria-project.org/concepts/open-metadata-topic-connector)**.
 
-* **[Open Metadata Archive Store Connector](open-metadata-archive-store-connector.md)** - supports the
-reading and writing of **[open metadata archives](../../open-metadata-archive.md)**
+* **[Open Metadata Archive Store Connector](https://egeria-project.org/concepts/open-metadata-archive-store-connector)** - supports the
+reading and writing of **[open metadata archives](https://egeria-project.org/concepts/open-metadata-archive)**
 on behalf of the **[archive manager](../archive-manager.md)**.
 
-* **[Open Metadata Topic Connector](open-metadata-topic-connector.md)** - manages
-the calls to the **[event bus](../../../../admin-services/docs/concepts/event-bus.md)** to support
+* **[Open Metadata Topic Connector](https://egeria-project.org/concepts/open-metadata-topic-connector.md)** - manages
+the calls to the **[event bus](https://egeria-project.org/concepts/event-bus)** to support
 specific topic connectors such as the OMRS Topic Connector described above.
 
-* **[Repository Connector](repository-connector.md)** defines the open metadata common interface
+* **[Repository Connector](https://egeria-project.org/concepts/repository-connector)** defines the open metadata common interface
 to a metadata repository.  This may be a repository with
 native support for the open metadata types and instances or
 one that is mapping to a third party metadata repository API.
@@ -44,9 +44,9 @@ The OMRS defines the interfaces for these connectors and selected implementation
 are located in the **[adapters](../../../../adapters/open-connectors/repository-services-connectors)** package.
 
 All of these connectors support
-the [Open Connector Framework (OCF)](../../../../frameworks/open-connector-framework)
+the [Open Connector Framework (OCF)](https://egeria-project.org/frameworks/ocf/overview)
 which means the OMRS uses the 
-OCF [Connector Broker](../../../../frameworks/open-connector-framework/docs/concepts/connector-broker.md)
+OCF [Connector Broker](https://egeria-project.org/concepts/connector-broker)
 to create the instances of the connectors it needs.
 The type of connector needed is defined in a connection object.
 

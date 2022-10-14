@@ -92,7 +92,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Return the list of property names whose values match in all of the duplicate suspects.
+     * Return the list of property names whose values match in all the duplicate suspects.
      *
      * @return list of property names
      */
@@ -112,7 +112,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Set up the list of property names whose values match in all of the duplicate suspects.
+     * Set up the list of property names whose values match in all the duplicate suspects.
      *
      * @param matchingPropertyNames list of property names
      */
@@ -123,7 +123,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Return the list of classifications that match in all of the duplicate suspects.
+     * Return the list of classifications that match in all the duplicate suspects.
      *
      * @return list of classification names
      */
@@ -143,7 +143,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Set up the list of classifications that match in all of the duplicate suspects.
+     * Set up the list of classifications that match in all the duplicate suspects.
      *
      * @param matchingClassificationNames list of classification names
      */
@@ -154,7 +154,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Return the list of unique identifiers for attachments that match in all of the duplicate suspects.
+     * Return the list of unique identifiers for attachments that match in all the duplicate suspects.
      *
      * @return list of string guids
      */
@@ -174,7 +174,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Set up the list of unique identifiers for attachments that match in all of the duplicate suspects.
+     * Set up the list of unique identifiers for attachments that match in all the duplicate suspects.
      *
      * @param matchingAttachmentGUIDs list of string guids
      */
@@ -185,7 +185,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Return the list of relationships that are common across all of the duplicate suspects.
+     * Return the list of relationships that are common across all the duplicate suspects.
      *
      * @return list of string guids
      */
@@ -205,7 +205,7 @@ public class SuspectDuplicateAnnotation extends Annotation
 
 
     /**
-     * Set up the list of relationships that are common across all of the duplicate suspects.
+     * Set up the list of relationships that are common across all the duplicate suspects.
      *
      * @param matchingRelationshipGUIDs  list of string guids
      */

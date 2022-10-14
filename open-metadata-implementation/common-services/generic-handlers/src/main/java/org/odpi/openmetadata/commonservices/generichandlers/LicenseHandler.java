@@ -22,7 +22,7 @@ import java.util.List;
  * LicenseHandler manages License objects.  It runs server-side in
  * the OMAG Server Platform and retrieves License entities through the OMRSRepositoryConnector.
  */
-public class LicenseHandler<B> extends ReferenceableHandler<B>
+public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
 {
     /**
      * Construct the handler information needed to interact with the repository services
@@ -72,10 +72,12 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of Licenses attached to an anchor entity.
+     * Count the number of licenses attached to an entity.
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
@@ -85,6 +87,8 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      */
     public int countLicenses(String   userId,
                              String   elementGUID,
+                             boolean  forLineage,
+                             boolean  forDuplicateProcessing,
                              Date     effectiveTime,
                              String   methodName) throws InvalidParameterException,
                                                          PropertyServerException,
@@ -95,6 +99,9 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -109,7 +116,9 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of object being attached to
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      * @return list of licenses or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -122,6 +131,8 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                 String       elementTypeName,
                                 int          startFrom,
                                 int          pageSize,
+                                boolean      forLineage,
+                                boolean      forDuplicateProcessing,
                                 Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -129,10 +140,12 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
     {
         return this.getLicenses(userId,
                                 elementGUID,
-                                elementGUIDParameterName,
-                                elementTypeName,
-                                supportedZones, startFrom,
+                                elementGUIDParameterName, elementTypeName,
+                                supportedZones,
+                                startFrom,
                                 pageSize,
+                                forLineage,
+                                forDuplicateProcessing,
                                 effectiveTime,
                                 methodName);
     }
@@ -147,6 +160,8 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of licenses or null if none found
@@ -161,6 +176,8 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startFrom,
                                 int          pageSize,
+                                boolean      forLineage,
+                                boolean      forDuplicateProcessing,
                                 Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -172,7 +189,12 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                                                     elementTypeName,
                                                                     OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                                    null,
                                                                     OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
+                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    serviceSupportedZones,
                                                                     startFrom,
                                                                     pageSize,
                                                                     effectiveTime,
@@ -197,8 +219,8 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                                                            OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
                                                                            null,
                                                                            null,
-                                                                           false,
-                                                                           false,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
                                                                            serviceSupportedZones,
                                                                            effectiveTime,
                                                                            methodName);

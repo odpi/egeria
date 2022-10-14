@@ -16,25 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OCFMetadataOperationalServices
 {
-    private String   serverName;
-    private AuditLog auditLog;
-
-
-    /**
-     * Constructor
-     *
-     * @param serverName this server
-     * @param repositoryConnector connector to repository
-     * @param auditLog logging destination
-     * @throws NewInstanceException unable to initialize
-     */
-    @Deprecated
-    public OCFMetadataOperationalServices(String                   serverName,
-                                          OMRSRepositoryConnector  repositoryConnector,
-                                          AuditLog                 auditLog) throws NewInstanceException
-    {
-        this(serverName, repositoryConnector, auditLog, null, 500);
-    }
+    private final String   serverName;
+    private final AuditLog auditLog;
 
 
     /**

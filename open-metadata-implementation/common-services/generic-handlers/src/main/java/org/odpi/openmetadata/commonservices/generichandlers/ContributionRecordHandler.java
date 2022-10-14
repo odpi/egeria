@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
-    private static String contributionRecordGUIDParameterName = "contributionRecordGUID";
+    private final static String contributionRecordGUIDParameterName = "contributionRecordGUID";
 
-    private int karmaPointPlateau;
+    private final int karmaPointPlateau;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -85,18 +85,24 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
      * @param userId     calling user
      * @param profileGUID identifier for the entity that the contribution record is attached to
      * @param profileGUIDParameterName name of parameter supplying the GUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public B getContributionRecord(String userId,
-                                   String profileGUID,
-                                   String profileGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public B getContributionRecord(String  userId,
+                                   String  profileGUID,
+                                   String  profileGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         return this.getAttachedElement(userId,
                                        profileGUID,
@@ -106,10 +112,10 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                        OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                        0,
-                                       false,
-                                       false,
+                                       forLineage,
+                                       forDuplicateProcessing,
                                        supportedZones,
-                                       null,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -120,18 +126,24 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
      * @param userId     calling user
      * @param profileGUID identifier for the entity that the contribution record is attached to
      * @param profileGUIDParameterName name of parameter supplying the GUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    EntityDetail getContributionRecordEntity(String userId,
-                                             String profileGUID,
-                                             String profileGUIDParameterName,
-                                             String methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    EntityDetail getContributionRecordEntity(String  userId,
+                                             String  profileGUID,
+                                             String  profileGUIDParameterName,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         return this.getAttachedEntity(userId,
                                       profileGUID,
@@ -140,10 +152,11 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                       OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                       OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                      false,
-                                      false,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -160,6 +173,11 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
      * @param additionalProperties additional properties for the contribution record
      * @param extendedProperties additional properties from defined subtypes
      * @param suppliedTypeName name of subtype or null
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -175,11 +193,21 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        Map<String, String> additionalProperties,
                                        String              suppliedTypeName,
                                        Map<String, Object> extendedProperties,
+                                       boolean             isMergeUpdate,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
                                        String              methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        EntityDetail contributionRecordEntity = this.getContributionRecordEntity(userId, profileGUID, profileGUIDParameterName, methodName);
+        EntityDetail contributionRecordEntity = this.getContributionRecordEntity(userId,
+                                                                                 profileGUID,
+                                                                                 profileGUIDParameterName,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         String typeName = OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME;
 
@@ -215,29 +243,29 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                         null,
                                                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                                                        null,
-                                                                        null,
                                                                         builder,
+                                                                        effectiveTime,
                                                                         methodName);
 
             if ((contributionRecordGUID != null) && (profileGUID != null))
             {
-                this.linkElementToElement(userId,
-                                          null,
-                                          null,
-                                          profileGUID,
-                                          profileGUIDParameterName,
-                                          OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                          contributionRecordGUID,
-                                          contributionRecordGUIDParameterName,
-                                          OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                          false,
-                                          false,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
-                                          null,
-                                          methodName);
+                this.uncheckedLinkElementToElement(userId,
+                                                   null,
+                                                   null,
+                                                   profileGUID,
+                                                   profileGUIDParameterName,
+                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                   contributionRecordGUID,
+                                                   contributionRecordGUIDParameterName,
+                                                   OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   supportedZones,
+                                                   OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
+                                                   null,
+                                                   effectiveTime,
+                                                   methodName);
             }
         }
         else
@@ -259,12 +287,12 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         contributionRecordGUIDParameterName,
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         builder.getInstanceProperties(methodName),
-                                        true,
-                                        new Date(),
+                                        isMergeUpdate,
+                                        effectiveTime,
                                         methodName);
         }
 
@@ -277,20 +305,32 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
      * @param userId       calling user
      * @param profileGUID   unique identifier for the connected Person entity.
      * @param profileGUIDParameterName parameter supplying the profileGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName   calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeContributionRecord(String userId,
-                                         String profileGUID,
-                                         String profileGUIDParameterName,
-                                         String methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void removeContributionRecord(String  userId,
+                                         String  profileGUID,
+                                         String  profileGUIDParameterName,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
-        EntityDetail contributionRecordEntity = this.getContributionRecordEntity(userId, profileGUID, profileGUIDParameterName, methodName);
+        EntityDetail contributionRecordEntity = this.getContributionRecordEntity(userId,
+                                                                                 profileGUID,
+                                                                                 profileGUIDParameterName,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         if (contributionRecordEntity != null)
         {
@@ -303,9 +343,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                         null,
                                         null,
-                                        false,
-                                        false,
-                                        new Date(),
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
         }
     }

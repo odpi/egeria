@@ -184,7 +184,7 @@ public class TestFileBasedRegistryStoreConnector
         {
             connector.start();
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -197,7 +197,7 @@ public class TestFileBasedRegistryStoreConnector
         {
             connector.close();
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -217,7 +217,7 @@ public class TestFileBasedRegistryStoreConnector
             connector.close();
             assertFalse(connector.isActive());
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -240,7 +240,7 @@ public class TestFileBasedRegistryStoreConnector
             connector.close();
             assertFalse(connector.isActive());
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }

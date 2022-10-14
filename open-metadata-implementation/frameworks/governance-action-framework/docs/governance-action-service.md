@@ -3,18 +3,18 @@
 
 # Governance Action Service
 
-A governance action service is a specialized [connector](../../open-connector-framework/docs/concepts/connector.md)
+A governance action service is a specialized [connector](https://egeria-project.org/concepts/connector)
 that performs monitoring of metadata changes, validation of metadata, triage of issues, assessment and/or remediation activities on request.
 
 There are five types of governance action services:
   
-* **[Watchdog Governance Service Service](watchdog-governance-service.md)** listens for changes to metadata and initiates
-  [governance actions](governance-action.md), [governance action processes](governance-action-process.md)
-  or an [incident report](incident-report.md).
+* **[Watchdog Governance Service](watchdog-governance-service.md)** listens for changes to metadata and initiates
+  [governance actions](https://egeria-project.org/concepts/governance-action), [governance action processes](https://egeria-project.org/concepts/governance-action-process)
+  or an [incident report](https://egeria-project.org/concept/incident-report).
   
 * **[Verification Governance Action Service](verification-governance-service.md)** validates that the metadata elements, relationships and
   classification are set up as they should be.  For example, it may check that a new asset has an owner, is set up
-  with zones and includes a connection and a schema there possible.  It produces [guards](guard.md)
+  with zones and includes a connection and a schema there possible.  It produces [guards](https://egeria-project.org/concepts/guard)
   that define what needs to be done.
   
 * **[Triage Governance Action Service](triage-governance-service.md)** runs triage rules to determine how to manage a situation or request.
@@ -25,7 +25,7 @@ There are five types of governance action services:
   and classifications. Examples of remediation governance action services are duplicate linking and consolidating.
 
 * **[Provisioning Governance Action Service](provisioning-governance-service.md)**  invokes a provisioning service whenever a provisioning request is made. 
-  Typically the provisioning service is an external service.  It may also create lineage metadata to
+  Typically, the provisioning service is an external service.  It may also create lineage metadata to
   describe the work of the provisioning engine.         
 
 

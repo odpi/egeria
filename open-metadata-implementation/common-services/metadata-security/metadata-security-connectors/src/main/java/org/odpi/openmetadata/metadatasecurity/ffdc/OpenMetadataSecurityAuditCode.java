@@ -153,11 +153,11 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**

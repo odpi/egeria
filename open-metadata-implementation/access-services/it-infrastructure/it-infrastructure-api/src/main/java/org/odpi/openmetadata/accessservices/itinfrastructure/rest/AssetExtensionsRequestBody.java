@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
+    private Date                effectiveTime = null;
     private Map<String, Object> properties = null;
 
     /**
@@ -44,6 +46,7 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
         if (template != null)
         {
             this.properties = template.getProperties();
+            effectiveTime = template.getEffectiveTime();
         }
     }
 
@@ -71,6 +74,28 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
 
 
     /**
+     * Return the date/time to use for the query.
+     *
+     * @return date object
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up  the date/time to use for the query.
+     *
+     * @param effectiveTime date object
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -79,7 +104,8 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
     public String toString()
     {
         return "AssetExtensionsRequestBody{" +
-                       "properties=" + properties +
+                       "effectiveTime=" + effectiveTime +
+                       ", properties=" + properties +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
@@ -105,12 +131,12 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         AssetExtensionsRequestBody that = (AssetExtensionsRequestBody) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(effectiveTime, that.effectiveTime) && Objects.equals(properties, that.properties);
     }
 
 
@@ -122,6 +148,6 @@ public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), properties, effectiveTime);
     }
 }

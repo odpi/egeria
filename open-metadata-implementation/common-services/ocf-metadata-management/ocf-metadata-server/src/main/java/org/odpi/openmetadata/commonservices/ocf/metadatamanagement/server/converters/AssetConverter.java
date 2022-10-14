@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * AssetConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a Asset bean.
+ * EntityDetail object into an Asset bean.
  */
 public class AssetConverter<B> extends OCFConverter<B>
 {
@@ -73,7 +73,8 @@ public class AssetConverter<B> extends OCFConverter<B>
 
                 bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeName(instanceProperties));
+                bean.setName(this.removeName(instanceProperties));
+                bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
 
                 /* Note this value should be in the classification */
@@ -127,7 +128,9 @@ public class AssetConverter<B> extends OCFConverter<B>
                     }
                 }
 
-                bean.setOrigin(originMap);
+                bean.setAssetOrigin(originMap);
+
+                // todo set up SecurityTags and the governance classifications
             }
 
             return returnBean;
@@ -142,7 +145,7 @@ public class AssetConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

@@ -2,34 +2,25 @@
 # Copyright Contributors to the ODPi Egeria project.
 ---
 name: "Check documentation links"
+
 on:
-  #  schedule:
-  #  - cron: '0 1 * * *'
-  #  Manual only for now as job is failing, but leave this in-situ for when the check tool is fixed
+  push:
+  pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  markdown-link-check:
-    name: "Check documentation links"
+  linkChecker:
     runs-on: ubuntu-latest
+    if: startsWith(github.repository,'odpi/')
     steps:
-      - name: checkout action code
-        if: startsWith(github.repository,'odpi/')
-        uses: actions/checkout@master
-      - name: Check links
-        if: success()
-        id: check_links
-        uses: cmgrote/github-action-link-check@master
-#      - name: Create issue from file
-#        if: success()
-#        uses: peter-evans/create-issue-from-file@v2
-#        with:
-#          token: ${{ secrets.GITHUB_TOKEN }}
-#          title: Broken links
-#          content-filepath: ./errors.txt
-#          labels: documentation, consumability, tidy up
-      - name: Upload errors
-        uses: actions/upload-artifact@v2
+      - uses: actions/checkout@v3
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.5.1
         with:
-          name: Link Check Errors
-          path: errors.txt
+          # Can switch to true once we run clean
+          fail: false
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

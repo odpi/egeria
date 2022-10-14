@@ -11,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 
 /**
  * OMRSRepositoryServicesInstanceHandler provides the mapping for inbound REST requests to the appropriate instances
- * for the requested server.  The map is maintained in a static so it is scoped to the class loader.
+ * for the requested server.  The map is maintained in a static, so it is scoped to the class loader.
  *
  * Instances of this class call the synchronized static methods to work with the map.
  */
@@ -66,7 +66,7 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
 
 
     /**
-     * Return the audit log or null (if the instance is not available.
+     * Return the audit log or null (if the instance is not available).
      *
      * @param userId calling user
      * @param serverName requested server

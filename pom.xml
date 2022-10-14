@@ -11,7 +11,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <name>Egeria</name>
@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>3.13-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria-docs/</url>
 
@@ -31,7 +31,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
         <license>
             <name>Creative Commons Attribution 4.0 International (CC BY 4.0)</name>
@@ -129,7 +129,6 @@
         <module>open-metadata-implementation</module>
         <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>
-        <module>open-metadata-publication</module>
         <module>open-metadata-resources</module>
         <module>open-metadata-test</module>
     </modules>
@@ -148,117 +147,128 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.8.2</junit.platform.version>
-        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <junit.platform.version>1.9.1</junit.platform.version>
+        <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
-        <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
-        <mockito.version>4.4.0</mockito.version>
+        <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
+        <mockito.version>4.8.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
-        <jackson.version>2.13.2</jackson.version>
-        <jackson.databind.version>2.13.2.2</jackson.databind.version>
+        <jackson.databind.version>2.13.4</jackson.databind.version>
+        <jackson.version>2.13.4</jackson.version>
         <logback.version>1.2.11</logback.version>
-        <spring-boot.version>2.6.6</spring-boot.version>
-        <netty.version>4.1.75.Final</netty.version>
-        <kafka.version>3.1.0</kafka.version>
+        <kafka.version>3.3.1</kafka.version>
+        <tomcat.version>9.0.67</tomcat.version>
+        <netty.version>4.1.82.Final</netty.version>
+        <spring.ldap.core>2.4.1</spring.ldap.core>
+        <janus.version>0.6.2</janus.version>
+        <spring-boot.version>2.7.4</spring-boot.version>
         <janus.version>0.6.1</janus.version>
-        <tomcat.version>9.0.62</tomcat.version>
-        <spring.ldap.core>2.3.6.RELEASE</spring.ldap.core>
-        <gremlin.version>3.5.1</gremlin.version>
-        <spring-data.version>2.6.3</spring-data.version>
-        <springdoc.version>1.6.6</springdoc.version>
-        <spring.version>5.3.18</spring.version>
-        <spring-security.version>5.6.2</spring-security.version>
+        <gremlin.version>3.5.2</gremlin.version>
+        <spring-data.version>2.7.3</spring-data.version>
+        <springdoc.version>1.6.11</springdoc.version>
+        <spring.version>5.3.23</spring.version>
+        <spring-security.version>5.7.3</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
-	    <commons-text.version>1.9</commons-text.version>
+        <commons-cli.version>1.5.0</commons-cli.version>
+	    <commons-text.version>1.10.0</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>4.2.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
         <jwt.version>0.9.1</jwt.version>
-        <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
-        <jakarta-validation.version>3.0.0</jakarta-validation.version>
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <javax-annotation.version>1.3.2</javax-annotation.version>
-        <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
+        <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
-        <avro.version>1.11.0</avro.version>
-        <plexus.version>3.4.1</plexus.version>
+        <avro.version>1.11.1</avro.version>
+        <plexus.version>3.4.2</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
         <guava.version>31.1-jre</guava.version>
-        <tink.version>1.6.1</tink.version>
+        <tink.version>1.7.0</tink.version>
         <jsonld.version>0.13.4</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.14.0</oss.version>
-        <spotbugs-annotations.version>4.6.0</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.2</spotbugs-annotations.version>
+        <oss.version>4.15.0</oss.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.10.14</joda.version>
+        <joda.version>2.11.2</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
-        <antlr.version>3.5.2</antlr.version>
+        <antlr.version>3.5.3</antlr.version>
+        <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <swagger.version>2.1.13</swagger.version>
-        <snakeyaml.version>1.30</snakeyaml.version>
-        <micrometer-registry-prometheus.version>1.8.4</micrometer-registry-prometheus.version>
-        <groovy.version>3.0.10</groovy.version>
-        <classgraph.version>4.8.143</classgraph.version>
-        <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
+        <snakeyaml.version>1.33</snakeyaml.version>
+        <swagger.version>2.2.3</swagger.version>
+        <micrometer-registry-prometheus.version>1.9.4</micrometer-registry-prometheus.version>
+        <classgraph.version>4.8.149</classgraph.version>
+        <groovy.version>3.0.13</groovy.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
-        <javassist.version>3.28.0-GA</javassist.version>
+        <javassist.version>3.29.2-GA</javassist.version>
         <httpcore.version>4.4.15</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <commons-configuration2.version>2.7</commons-configuration2.version>
-        <lettuce.version>6.1.8.RELEASE</lettuce.version>
-        <lombok.version>1.18.22</lombok.version>
+        <commons-configuration2.version>2.8.0</commons-configuration2.version>
+        <lettuce.version>6.2.0.RELEASE</lettuce.version>
+        <lombok.version>1.18.24</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-        <thrift.version>0.16.0</thrift.version>
-        <elasticsearch.version>7.17.1</elasticsearch.version>
-        <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
+        <thrift.version>0.17.0</thrift.version>
+        <elasticsearch.version>8.4.2</elasticsearch.version>
+        <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
-        <maven-site-plugin.version>3.11.0</maven-site-plugin.version>
-        <maven-reports-plugin.version>3.2.2</maven-reports-plugin.version>
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-shade.version>3.3.0</maven-shade.version>
-        <maven-install.version>3.0.0-M1</maven-install.version>
-        <owasp.version>7.0.4</owasp.version>
-        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-        <maven-pmd.version>3.16.0</maven-pmd.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+        <maven-reports-plugin.version>3.4.1</maven-reports-plugin.version>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
+        <maven-shade.version>3.4.0</maven-shade.version>
+        <maven-install.version>3.0.1</maven-install.version>
+        <maven-pmd.version>3.19.0</maven-pmd.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <owasp.version>7.2.1</owasp.version>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <maven-download.version>1.6.8</maven-download.version>
-        <spotbugs-maven.version>4.6.0</spotbugs-maven.version>
-        <maven-antrun.version>3.0.0</maven-antrun.version>
+        <spotbugs-maven.version>4.7.2.0</spotbugs-maven.version>
+        <maven-antrun.version>3.1.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
-        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
+        <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
+        <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
         <frontend.plugin.version>1.12.1</frontend.plugin.version>
-        <exec.plugin.version>3.0.0</exec.plugin.version>
-        <resources.plugin.version>3.2.0</resources.plugin.version>
-        <rat-plugin.version>0.13</rat-plugin.version>
+        <resources.plugin.version>3.3.0</resources.plugin.version>
+        <exec.plugin.version>3.1.0</exec.plugin.version>
+        <rat-plugin.version>0.15</rat-plugin.version>
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin>1.6.12</nexus-staging-maven-plugin>
+        <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.3.0</build-helper.version>
-        <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.6.2</openlineage.version>
+        <openlineage.version>0.14.1</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
+        <cassandra.version>4.0.6</cassandra.version>
+        <ant.version>1.10.12</ant.version>
+        <gson.version>2.9.1</gson.version>
+        <jnr.version>3.1.15</jnr.version>
+        <protobuf.version>3.21.7</protobuf.version>
+        <osgi.version>8.0.0</osgi.version>
+        <jacksonjdk8.version>2.13.4</jacksonjdk8.version>
+        <log4j.version>2.19.0</log4j.version>
+        <reactivestreams.version>1.0.4</reactivestreams.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -350,6 +360,13 @@
                 <artifactId>commons-text</artifactId>
                 <scope>compile</scope>
                 <version>${commons-text.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <scope>compile</scope>
+                <version>${commons-cli.version}</version>
    	        </dependency>
 
             <dependency>
@@ -586,6 +603,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>${commons-logging.version}</version>
@@ -623,6 +646,12 @@
                 <artifactId>janusgraph-lucene</artifactId>
                 <version>${janus.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jacksonjdk8.version}</version>
             </dependency>
 
             <dependency>
@@ -1155,13 +1184,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>catalog-integrator-spring</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>cloud-information-model</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1938,6 +1960,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>gaf-metadata-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>ocf-metadata-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2065,6 +2115,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-types</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>content-pack-helpers</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2405,14 +2462,7 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-tag-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
+             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>software-developer-api</artifactId>
                 <scope>compile</scope>
@@ -2708,6 +2758,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-proxy-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>cassandra-metadata-extractor-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2750,12 +2807,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-connector-archives</artifactId>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>catalog-builder</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
 
@@ -2826,11 +2877,6 @@
                 <artifactId>open-metadata-assemblies</artifactId>
                 <version>${open-metadata.version}</version>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>open-metadata-labs</artifactId>
-                <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
@@ -3097,6 +3143,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>ST4</artifactId>
+                <version>${ST4.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.xerial.snappy</groupId>
                 <artifactId>snappy-java</artifactId>
                 <version>${snappy.version}</version>
@@ -3178,7 +3231,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>${jcl-over-slf4j.version}</version>
+                <version>${slf4j.version}</version>
             </dependency>
 
             <dependency>
@@ -3280,6 +3333,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>search-integrator-server</artifactId>
                 <version>${open-metadata.version}</version>
@@ -3316,6 +3376,48 @@
                 <version>${hibernate-validator.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cassandra</groupId>
+                <artifactId>cassandra-all</artifactId>
+                <version>${cassandra.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.jnr</groupId>
+                <artifactId>jnr-posix</artifactId>
+                <version>${jnr.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactivestreams</groupId>
+                <artifactId>reactive-streams</artifactId>
+                <version>${reactivestreams.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -3330,17 +3432,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
-    <!-- Most dependencies pushed down to keep components minimal -->
-    <dependencies>
-        <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
 
@@ -3714,6 +3805,7 @@
                         <exclude>**/*.p12</exclude>
                         <exclude>**/*.crt</exclude>
                         <exclude>**/*.key</exclude>
+                        <exclude>.github/pull_request_template.md</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -3941,7 +4033,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.11.0</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.12.0</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>

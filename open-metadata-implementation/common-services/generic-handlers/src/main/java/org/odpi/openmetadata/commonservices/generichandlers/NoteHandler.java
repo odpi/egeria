@@ -11,12 +11,12 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * NoteLogHandler manages NoteLog objects.  It runs server-side in
  * the OMAG Server Platform and retrieves NoteLog entities through the OMRSRepositoryConnector.
- * Currently note do not support effectivity dates but may be interesting of notes are added during deployment.
  */
 public class NoteHandler<B> extends ReferenceableHandler<B>
 {
@@ -72,6 +72,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of the attached objects
      * @throws InvalidParameterException  the parameters are invalid
@@ -80,6 +83,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
      */
     public int countAttachedNotes(String   userId,
                                   String   elementGUID,
+                                  boolean  forLineage,
+                                  boolean  forDuplicateProcessing,
+                                  Date     effectiveTime,
                                   String   methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -89,7 +95,10 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_GUID,
                                       OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_NAME,
-                                      null,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -104,6 +113,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -119,6 +131,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                              List<String> serviceSupportedZones,
                              int          startingFrom,
                              int          pageSize,
+                             boolean      forLineage,
+                             boolean      forDuplicateProcessing,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException

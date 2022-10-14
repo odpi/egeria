@@ -73,11 +73,11 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a definition of a operating platform.
+     * Create a definition of a external reference.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
      *                   will be deleted when the element is deleted (once the external reference is linked to the anchor).
      * @param qualifiedName unique name for the reference
@@ -91,6 +91,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param extendedProperties  properties for an external reference subtype
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of external reference
@@ -114,6 +115,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                           Map<String, Object> extendedProperties,
                                           Date                effectiveFrom,
                                           Date                effectiveTo,
+                                          Date                effectiveTime,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -157,21 +159,20 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
 
     /**
-     * Update the operating platform.
+     * Update the external reference.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param operatingPlatformGUID unique identifier of the operating platform to update
-     * @param operatingPlatformGUIDParameterName parameter passing the operatingPlatformGUID
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param externalReferenceGUID unique identifier of the external reference to update
+     * @param externalReferenceGUIDParameterName parameter passing the externalReferenceGUID
      * @param qualifiedName unique name for the reference
      * @param displayName short display name for the reference
      * @param description description of the reference
@@ -179,11 +180,14 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param referenceVersion version of the reference
      * @param organization owning org for the reference
      * @param additionalProperties additional properties for an external reference
-     * @param suppliedTypeName name of sub type or null
-     * @param extendedProperties  properties for a governance operatingPlatform subtype
+     * @param suppliedTypeName name of subtype or null
+     * @param extendedProperties  properties for a governance externalReference subtype
      * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -193,8 +197,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
     public void   updateExternalReference(String              userId,
                                           String              externalSourceGUID,
                                           String              externalSourceName,
-                                          String              operatingPlatformGUID,
-                                          String              operatingPlatformGUIDParameterName,
+                                          String              externalReferenceGUID,
+                                          String              externalReferenceGUIDParameterName,
                                           String              qualifiedName,
                                           String              displayName,
                                           String              description,
@@ -204,9 +208,12 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                           Map<String, String> additionalProperties,
                                           String              suppliedTypeName,
                                           Map<String, Object> extendedProperties,
-                                          boolean             isMergeUpdate,
                                           Date                effectiveFrom,
                                           Date                effectiveTo,
+                                          boolean             isMergeUpdate,
+                                          boolean             forLineage,
+                                          boolean             forDuplicateProcessing,
+                                          Date                effectiveTime,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -214,7 +221,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         final String qualifiedNameParameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(operatingPlatformGUID, operatingPlatformGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
@@ -246,17 +253,15 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
-
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    operatingPlatformGUID,
-                                    operatingPlatformGUIDParameterName,
+                                    externalReferenceGUID,
+                                    externalReferenceGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
@@ -269,63 +274,73 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * Remove the metadata element representing an external reference.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param operatingPlatformGUID unique identifier of the metadata element to remove
-     * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param externalReferenceGUID unique identifier of the metadata element to remove
+     * @param externalReferenceGUIDParameterName parameter supplying the externalReferenceGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeExternalReference(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String operatingPlatformGUID,
-                                        String operatingPlatformGUIDParameterName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void removeExternalReference(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  externalReferenceGUID,
+                                        String  externalReferenceGUIDParameterName,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    operatingPlatformGUID,
-                                    operatingPlatformGUIDParameterName,
+                                    externalReferenceGUID,
+                                    externalReferenceGUIDParameterName,
                                     OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                     OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
-     * Return information about a specific operating platform.
+     * Return information about a specific external reference.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the operating platform
+     * @param qualifiedName unique name for the external reference
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return properties of the operating platform
+     * @return properties of the external reference
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public B getExternalReferenceByQualifiedName(String userId,
-                                                 String qualifiedName,
-                                                 String qualifiedNameParameter,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public B getExternalReferenceByQualifiedName(String  userId,
+                                                 String  qualifiedName,
+                                                 String  qualifiedNameParameter,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         return this.getBeanByUniqueName(userId,
                                         qualifiedName,
@@ -333,6 +348,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                         OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
     }
@@ -347,7 +364,9 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param referenceIdParameterName parameter supplying referenceId
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -356,15 +375,17 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getExternalReferencesById(String userId,
-                                              String referenceId,
-                                              String referenceIdParameterName,
-                                              int    startFrom,
-                                              int    pageSize,
-                                              Date   effectiveTime,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<B>  getExternalReferencesById(String  userId,
+                                              String  referenceId,
+                                              String  referenceIdParameterName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -378,8 +399,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -399,7 +420,9 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -408,15 +431,17 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getExternalReferencesByName(String userId,
-                                                String name,
-                                                String nameParameterName,
-                                                int    startFrom,
-                                                int    pageSize,
-                                                Date   effectiveTime,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<B>  getExternalReferencesByName(String  userId,
+                                                String  name,
+                                                String  nameParameterName,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -431,8 +456,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -452,7 +477,9 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param urlParameterName parameter supplying url
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -461,15 +488,17 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getExternalReferencesByURL(String userId,
-                                               String url,
-                                               String urlParameterName,
-                                               int    startFrom,
-                                               int    pageSize,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public List<B>  getExternalReferencesByURL(String  userId,
+                                               String  url,
+                                               String  urlParameterName,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.URL_PROPERTY_NAME);
@@ -483,8 +512,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -495,34 +524,38 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return information about the defined operating platforms.
+     * Return information about the defined external references.
      *
      * @param userId calling user
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
      * @param pageSize maximum number of elements to return an this call
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return properties of the operating platform
+     * @return properties of the external reference
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getExternalReferences(String userId,
-                                         int    startingFrom,
-                                         int    pageSize,
-                                         Date   effectiveTime,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<B> getExternalReferences(String  userId,
+                                         int     startingFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
                                    null,
-                                   false,
-                                   false,
+                                   forLineage,
+                                   forDuplicateProcessing,
                                    supportedZones,
                                    startingFrom,
                                    pageSize,
@@ -540,6 +573,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -549,15 +584,17 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findExternalReferences(String userId,
-                                          String searchString,
-                                          String searchStringParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B> findExternalReferences(String  userId,
+                                          String  searchString,
+                                          String  searchStringParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -567,6 +604,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
                               effectiveTime,
                               methodName);
     }

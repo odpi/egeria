@@ -38,15 +38,6 @@ updates:
   open-pull-requests-limit: 5
   reviewers:
   - planetf1
-- package-ecosystem: docker
-  directory: "./open-metadata-resources/open-metadata-deployment/docker/jupyter"
-  schedule:
-    interval: monthly
-    time: "03:00"
-    timezone: "Etc/UTC"
-  open-pull-requests-limit: 5
-  reviewers:
-  - planetf1
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:

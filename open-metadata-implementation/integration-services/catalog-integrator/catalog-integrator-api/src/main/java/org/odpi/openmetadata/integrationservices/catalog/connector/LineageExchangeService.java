@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,7 @@ import java.util.Map;
  */
 public class LineageExchangeService extends SchemaExchangeService
 {
-    private LineageExchangeClient    lineageExchangeClient;
-
+    private final LineageExchangeClient    lineageExchangeClient;
 
     /**
      * Create a new client to exchange lineage content with open metadata.
@@ -45,7 +45,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         super(lineageExchangeClient, synchronizationDirection,userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
 
-        this.lineageExchangeClient    = lineageExchangeClient;
+        this.lineageExchangeClient = lineageExchangeClient;
     }
 
 
@@ -57,11 +57,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Create a new metadata element to represent a process.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this process
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param processProperties properties about the process to store
      * @param initialStatus status value for the new process (default = ACTIVE)
      *
@@ -71,16 +67,12 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcess(boolean             assetManagerIsHome,
-                                String              processExternalIdentifier,
-                                String              processExternalIdentifierName,
-                                String              processExternalIdentifierUsage,
-                                KeyPattern          processExternalIdentifierKeyPattern,
-                                Map<String, String> mappingProperties,
-                                ProcessProperties   processProperties,
-                                ProcessStatus       initialStatus) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String createProcess(boolean                      assetManagerIsHome,
+                                ExternalIdentifierProperties externalIdentifierProperties,
+                                ProcessProperties            processProperties,
+                                ProcessStatus                initialStatus) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName = "createProcess";
 
@@ -90,12 +82,7 @@ public class LineageExchangeService extends SchemaExchangeService
                                                        assetManagerGUID,
                                                        assetManagerName,
                                                        assetManagerIsHome,
-                                                       processExternalIdentifier,
-                                                       processExternalIdentifierName,
-                                                       processExternalIdentifierUsage,
-                                                       connectorName,
-                                                       processExternalIdentifierKeyPattern,
-                                                       mappingProperties,
+                                                       externalIdentifierProperties,
                                                        initialStatus,
                                                        processProperties);
         }
@@ -117,12 +104,7 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param processExternalIdentifier unique identifier of the process in the external asset manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new process
@@ -131,16 +113,12 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcessFromTemplate(boolean             assetManagerIsHome,
-                                            String              templateGUID,
-                                            String              processExternalIdentifier,
-                                            String              processExternalIdentifierName,
-                                            String              processExternalIdentifierUsage,
-                                            KeyPattern          processExternalIdentifierKeyPattern,
-                                            Map<String, String> mappingProperties,
-                                            TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public String createProcessFromTemplate(boolean                      assetManagerIsHome,
+                                            String                       templateGUID,
+                                            ExternalIdentifierProperties externalIdentifierProperties,
+                                            TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "createProcessFromTemplate";
 
@@ -151,12 +129,7 @@ public class LineageExchangeService extends SchemaExchangeService
                                                                    assetManagerName,
                                                                    assetManagerIsHome,
                                                                    templateGUID,
-                                                                   processExternalIdentifier,
-                                                                   processExternalIdentifierName,
-                                                                   processExternalIdentifierUsage,
-                                                                   connectorName,
-                                                                   processExternalIdentifierKeyPattern,
-                                                                   mappingProperties,
+                                                                   externalIdentifierProperties,
                                                                    templateProperties);
         }
         else
@@ -179,6 +152,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param processProperties new properties for the metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -187,9 +161,10 @@ public class LineageExchangeService extends SchemaExchangeService
     public void updateProcess(String            processGUID,
                               String            processExternalIdentifier,
                               boolean           isMergeUpdate,
-                              ProcessProperties processProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                              ProcessProperties processProperties,
+                              Date              effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String methodName = "updateProcess";
 
@@ -201,7 +176,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                 processGUID,
                                                 processExternalIdentifier,
                                                 isMergeUpdate,
-                                                processProperties);
+                                                processProperties,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
         }
         else
         {
@@ -222,6 +200,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param processGUID unique identifier of the process to update
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
      * @param processStatus new status for the process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -229,7 +208,8 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void updateProcessStatus(String        processGUID,
                                     String        processExternalIdentifier,
-                                    ProcessStatus processStatus) throws InvalidParameterException,
+                                    ProcessStatus processStatus,
+                                    Date          effectiveTime) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -242,7 +222,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                       assetManagerName,
                                                       processGUID,
                                                       processExternalIdentifier,
-                                                      processStatus);
+                                                      processStatus,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -263,18 +246,20 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
-     * @param containmentType describes the ownership of the sub-process
+     * @param containmentProperties describes the ownership of the sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessParent(boolean                assetManagerIsHome,
-                                   String                 parentProcessGUID,
-                                   String                 childProcessGUID,
-                                   ProcessContainmentType containmentType) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void setupProcessParent(boolean                      assetManagerIsHome,
+                                   String                       parentProcessGUID,
+                                   String                       childProcessGUID,
+                                   ProcessContainmentProperties containmentProperties,
+                                   Date                         effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName = "setupProcessParent";
 
@@ -286,7 +271,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                      assetManagerIsHome,
                                                      parentProcessGUID,
                                                      childProcessGUID,
-                                                     containmentType);
+                                                     containmentProperties,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
         }
         else
         {
@@ -306,15 +294,17 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearProcessParent(String parentProcessGUID,
-                                   String childProcessGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                   String childProcessGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String methodName = "clearProcessParent";
 
@@ -324,7 +314,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                      assetManagerGUID,
                                                      assetManagerName,
                                                      parentProcessGUID,
-                                                     childProcessGUID);
+                                                     childProcessGUID,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
         }
         else
         {
@@ -343,6 +336,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Update the zones for the asset so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the Asset Manager OMAS).
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @param processGUID unique identifier of the metadata element to publish
      *
@@ -350,15 +344,22 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishProcess(String processGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void publishProcess(String processGUID,
+                               Date   effectiveTime) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String methodName = "publishProcess";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.publishProcess(userId, assetManagerGUID, assetManagerName, processGUID);
+            lineageExchangeClient.publishProcess(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 processGUID,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
         }
         else
         {
@@ -379,20 +380,28 @@ public class LineageExchangeService extends SchemaExchangeService
      * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
      *
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawProcess(String processGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void withdrawProcess(String processGUID,
+                                Date   effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String methodName = "withdrawProcess";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.withdrawProcess(userId, assetManagerGUID, assetManagerName, processGUID);
+            lineageExchangeClient.withdrawProcess(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  processGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
         }
         else
         {
@@ -412,21 +421,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param processGUID unique identifier of the metadata element to remove
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeProcess(String processGUID,
-                              String processExternalIdentifier) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                              String processExternalIdentifier,
+                              Date   effectiveTime) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String methodName = "removeProcess";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.removeProcess(userId, assetManagerGUID, assetManagerName, processGUID, processExternalIdentifier);
+            lineageExchangeClient.removeProcess(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                processGUID,
+                                                processExternalIdentifier,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
         }
         else
         {
@@ -448,6 +466,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -457,11 +476,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<ProcessElement> findProcesses(String searchString,
                                               int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                              int    pageSize,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return lineageExchangeClient.findProcesses(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return lineageExchangeClient.findProcesses(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   searchString,
+                                                   startFrom,
+                                                   pageSize,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -470,6 +498,7 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of metadata elements describing the processes associated with the requested asset manager
      *
@@ -477,12 +506,20 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessElement>   getProcessesForAssetManager(int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<ProcessElement>   getProcessesForAssetManager(int  startFrom,
+                                                              int  pageSize,
+                                                              Date effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        return lineageExchangeClient.getProcessesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return lineageExchangeClient.getProcessesForAssetManager(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 effectiveTime,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -493,6 +530,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -502,11 +540,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<ProcessElement>   getProcessesByName(String name,
                                                      int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                     int    pageSize,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getProcessesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return lineageExchangeClient.getProcessesByName(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        name,
+                                                        startFrom,
+                                                        pageSize,
+                                                        effectiveTime,
+                                                        forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -514,6 +561,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return requested metadata element
      *
@@ -521,11 +569,18 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElement getProcessByGUID(String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public ProcessElement getProcessByGUID(String processGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        return lineageExchangeClient.getProcessByGUID(userId, assetManagerGUID, assetManagerName, processGUID);
+        return lineageExchangeClient.getProcessByGUID(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      processGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -535,6 +590,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return parent process element
      *
@@ -544,11 +600,18 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public ProcessElement getProcessParent(String assetManagerGUID,
                                            String assetManagerName,
-                                           String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                           String processGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        return lineageExchangeClient.getProcessParent(userId, assetManagerGUID, assetManagerName, processGUID);
+        return lineageExchangeClient.getProcessParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      processGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -558,6 +621,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param processGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of process element
      *
@@ -567,11 +631,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<ProcessElement> getSubProcesses(String processGUID,
                                                 int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                int    pageSize,
+                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        return lineageExchangeClient.getSubProcesses(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+        return lineageExchangeClient.getSubProcesses(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     processGUID,
+                                                     startFrom,
+                                                     pageSize,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
     }
 
 
@@ -584,13 +657,9 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this port
      * @param processGUID unique identifier of the process where the port is located
-     * @param portExternalIdentifier unique identifier of the port in the external asset manager
-     * @param portExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param portExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param portExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param portProperties properties for the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the port
      *
@@ -598,16 +667,13 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createPort(boolean             assetManagerIsHome,
-                             String              processGUID,
-                             String              portExternalIdentifier,
-                             String              portExternalIdentifierName,
-                             String              portExternalIdentifierUsage,
-                             KeyPattern          portExternalIdentifierKeyPattern,
-                             Map<String, String> mappingProperties,
-                             PortProperties      portProperties) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public String createPort(boolean                      assetManagerIsHome,
+                             String                       processGUID,
+                             ExternalIdentifierProperties externalIdentifierProperties,
+                             PortProperties               portProperties,
+                             Date                         effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "createPort";
 
@@ -618,13 +684,11 @@ public class LineageExchangeService extends SchemaExchangeService
                                                     assetManagerName,
                                                     assetManagerIsHome,
                                                     processGUID,
-                                                    portExternalIdentifier,
-                                                    portExternalIdentifierName,
-                                                    portExternalIdentifierUsage,
-                                                    connectorName,
-                                                    portExternalIdentifierKeyPattern,
-                                                    mappingProperties,
-                                                    portProperties);
+                                                    externalIdentifierProperties,
+                                                    portProperties,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
         }
         else
         {
@@ -646,6 +710,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param portGUID unique identifier of the port to update
      * @param portProperties new properties for the port
      * @param portExternalIdentifier unique identifier of the port in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -653,15 +718,24 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void updatePort(String         portGUID,
                            String         portExternalIdentifier,
-                           PortProperties portProperties) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                           PortProperties portProperties,
+                           Date           effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String methodName = "updatePort";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.updatePort(userId, assetManagerGUID, assetManagerName, portGUID, portExternalIdentifier, portProperties);
+            lineageExchangeClient.updatePort(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             portGUID,
+                                             portExternalIdentifier,
+                                             portProperties,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing);
         }
         else
         {
@@ -682,6 +756,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -689,15 +764,24 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void setupProcessPort(boolean assetManagerIsHome,
                                  String  processGUID,
-                                 String  portGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                 String  portGUID,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         final String methodName = "setupProcessPort";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.setupProcessPort(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, processGUID, portGUID);
+            lineageExchangeClient.setupProcessPort(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   assetManagerIsHome,
+                                                   processGUID,
+                                                   portGUID,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
         }
         else
         {
@@ -717,21 +801,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearProcessPort(String processGUID,
-                                 String portGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+                                 String portGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "clearProcessPort";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.clearProcessPort(userId, assetManagerGUID, assetManagerName, processGUID, portGUID);
+            lineageExchangeClient.clearProcessPort(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   processGUID,
+                                                   portGUID,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
         }
         else
         {
@@ -753,6 +846,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -760,15 +854,24 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void setupPortDelegation(boolean assetManagerIsHome,
                                     String  portOneGUID,
-                                    String  portTwoGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                    String  portTwoGUID,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String methodName = "setupPortDelegation";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.setupPortDelegation(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portOneGUID, portTwoGUID);
+            lineageExchangeClient.setupPortDelegation(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerIsHome,
+                                                      portOneGUID,
+                                                      portTwoGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -788,21 +891,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearPortDelegation(String portOneGUID,
-                                    String portTwoGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                    String portTwoGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String methodName = "clearPortDelegation";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.clearPortDelegation(userId, assetManagerGUID, assetManagerName, portOneGUID, portTwoGUID);
+            lineageExchangeClient.clearPortDelegation(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      portOneGUID,
+                                                      portTwoGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -823,6 +935,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -830,15 +943,24 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void setupPortSchemaType(boolean assetManagerIsHome,
                                     String  portGUID,
-                                    String  schemaTypeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                    String  schemaTypeGUID,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String methodName = "setupPortSchemaType";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.setupPortSchemaType(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portGUID, schemaTypeGUID);
+            lineageExchangeClient.setupPortSchemaType(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerIsHome,
+                                                      portGUID,
+                                                      schemaTypeGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -858,21 +980,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearPortSchemaType(String portGUID,
-                                    String schemaTypeGUID) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                    String schemaTypeGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String methodName = "clearPortSchemaType";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.clearPortSchemaType(userId, assetManagerGUID, assetManagerName, portGUID, schemaTypeGUID);
+            lineageExchangeClient.clearPortSchemaType(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      portGUID,
+                                                      schemaTypeGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -892,21 +1023,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param portGUID unique identifier of the metadata element to remove
      * @param portExternalIdentifier unique identifier of the port in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removePort(String portGUID,
-                           String portExternalIdentifier) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                           String portExternalIdentifier,
+                           Date   effectiveTime) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
         final String methodName = "removePort";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.removePort(userId, assetManagerGUID, assetManagerName, portGUID, portExternalIdentifier);
+            lineageExchangeClient.removePort(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             portGUID,
+                                             portExternalIdentifier,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing);
         }
         else
         {
@@ -928,6 +1068,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -937,11 +1078,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<PortElement>   findPorts(String searchString,
                                          int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                         int    pageSize,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.findPorts(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return lineageExchangeClient.findPorts(userId,
+                                               assetManagerGUID,
+                                               assetManagerName,
+                                               searchString,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
@@ -951,6 +1101,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -960,11 +1111,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<PortElement>    getPortsForProcess(String processGUID,
                                                    int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                   int    pageSize,
+                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        return lineageExchangeClient.getPortsForProcess(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+        return lineageExchangeClient.getPortsForProcess(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        processGUID,
+                                                        startFrom,
+                                                        pageSize,
+                                                        effectiveTime,
+                                                        forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -974,6 +1134,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param portGUID unique identifier of the starting port
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -983,11 +1144,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<PortElement>  getPortUse(String portGUID,
                                          int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                         int    pageSize,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.getPortUse(userId, assetManagerGUID, assetManagerName, portGUID, startFrom, pageSize);
+        return lineageExchangeClient.getPortUse(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                portGUID,
+                                                startFrom,
+                                                pageSize,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -995,6 +1165,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Retrieve the port that this port delegates to.
      *
      * @param portGUID unique identifier of the starting port alias
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1002,11 +1173,18 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElement getPortDelegation(String portGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public PortElement getPortDelegation(String portGUID,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.getPortDelegation(userId, assetManagerGUID, assetManagerName, portGUID);
+        return lineageExchangeClient.getPortDelegation(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       portGUID,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
@@ -1017,6 +1195,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1026,11 +1205,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public List<PortElement>   getPortsByName(String name,
                                               int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                              int    pageSize,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getPortsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return lineageExchangeClient.getPortsByName(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    name,
+                                                    startFrom,
+                                                    pageSize,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
@@ -1038,6 +1226,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Retrieve the port metadata element with the supplied unique identifier.
      *
      * @param portGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1045,11 +1234,18 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElement getPortByGUID(String portGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public PortElement getPortByGUID(String portGUID,
+                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getPortByGUID(userId, assetManagerGUID, assetManagerName, portGUID);
+        return lineageExchangeClient.getPortByGUID(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   portGUID,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -1059,25 +1255,34 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
-     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or asset as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementExternalIdentifier unique identifier of the port in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setBusinessSignificant(String elementGUID,
-                                       String elementExternalIdentifier) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                       String elementExternalIdentifier,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String methodName = "setBusinessSignificant";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.setBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, elementExternalIdentifier);
+            lineageExchangeClient.setBusinessSignificant(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         elementGUID,
+                                                         elementExternalIdentifier,
+                                                         effectiveTime,
+                                                         forLineage,
+                                                         forDuplicateProcessing);
         }
         else
         {
@@ -1097,21 +1302,30 @@ public class LineageExchangeService extends SchemaExchangeService
      *
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementExternalIdentifier unique identifier of the element in the external asset manager (can be null)
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearBusinessSignificant(String elementGUID,
-                                         String elementExternalIdentifier) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                         String elementExternalIdentifier,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String methodName = "clearBusinessSignificant";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            lineageExchangeClient.clearBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, elementExternalIdentifier);
+            lineageExchangeClient.clearBusinessSignificant(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           elementGUID,
+                                                           elementExternalIdentifier,
+                                                           effectiveTime,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
         }
         else
         {
@@ -1132,9 +1346,8 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the relationship
      *
@@ -1142,14 +1355,13 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupDataFlow(boolean assetManagerIsHome,
-                                String  dataSupplierGUID,
-                                String  dataConsumerGUID,
-                                String  qualifiedName,
-                                String  description,
-                                String  formula) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public String setupDataFlow(boolean            assetManagerIsHome,
+                                String             dataSupplierGUID,
+                                String             dataConsumerGUID,
+                                DataFlowProperties properties,
+                                Date               effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "setupDataFlow";
 
@@ -1161,9 +1373,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                        assetManagerIsHome,
                                                        dataSupplierGUID,
                                                        dataConsumerGUID,
-                                                       qualifiedName,
-                                                       description,
-                                                       formula);
+                                                       properties,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
         }
         else
         {
@@ -1186,6 +1399,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1193,13 +1407,22 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFlowElement getDataFlow(String  dataSupplierGUID,
-                                       String  dataConsumerGUID,
-                                       String  qualifiedName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public DataFlowElement getDataFlow(String dataSupplierGUID,
+                                       String dataConsumerGUID,
+                                       String qualifiedName,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getDataFlow(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, dataConsumerGUID, qualifiedName);
+        return lineageExchangeClient.getDataFlow(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 dataSupplierGUID,
+                                                 dataConsumerGUID,
+                                                 qualifiedName,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -1207,20 +1430,18 @@ public class LineageExchangeService extends SchemaExchangeService
      * Update relationship between two elements that shows that data flows from one to the other.
      *
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateDataFlow(String dataFlowGUID,
-                               String qualifiedName,
-                               String description,
-                               String formula) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException
+    public void updateDataFlow(String             dataFlowGUID,
+                               DataFlowProperties properties,
+                               Date               effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName = "updateDataFlow";
 
@@ -1230,9 +1451,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                  assetManagerGUID,
                                                  assetManagerName,
                                                  dataFlowGUID,
-                                                 qualifiedName,
-                                                 description,
-                                                 formula);
+                                                 properties,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
         }
         else
         {
@@ -1251,14 +1473,16 @@ public class LineageExchangeService extends SchemaExchangeService
      * Remove the data flow relationship between two elements.
      *
      * @param dataFlowGUID unique identifier of the data flow relationship
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataFlow(String dataFlowGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void clearDataFlow(String dataFlowGUID,
+                              Date   effectiveTime) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String methodName = "clearDataFlow";
 
@@ -1267,7 +1491,10 @@ public class LineageExchangeService extends SchemaExchangeService
             lineageExchangeClient.clearDataFlow(userId,
                                                 assetManagerGUID,
                                                 assetManagerName,
-                                                dataFlowGUID);
+                                                dataFlowGUID,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
         }
         else
         {
@@ -1283,9 +1510,12 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1293,18 +1523,32 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowConsumers(userId, assetManagerGUID, assetManagerName, dataSupplierGUID);
+        return lineageExchangeClient.getDataFlowConsumers(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          dataSupplierGUID,
+                                                          startFrom,
+                                                          pageSize,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1312,11 +1556,22 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowSuppliers(userId, assetManagerGUID, assetManagerName, dataConsumerGUID);
+        return lineageExchangeClient.getDataFlowSuppliers(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          dataConsumerGUID,
+                                                          startFrom,
+                                                          pageSize,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
@@ -1326,9 +1581,8 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier for the control flow relationship
      *
@@ -1336,14 +1590,13 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupControlFlow(boolean assetManagerIsHome,
-                                   String  currentStepGUID,
-                                   String  nextStepGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  guard) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public String setupControlFlow(boolean               assetManagerIsHome,
+                                   String                currentStepGUID,
+                                   String                nextStepGUID,
+                                   ControlFlowProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "setupControlFlow";
 
@@ -1355,9 +1608,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                           assetManagerIsHome,
                                                           currentStepGUID,
                                                           nextStepGUID,
-                                                          qualifiedName,
-                                                          description,
-                                                          guard);
+                                                          properties,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
         }
         else
         {
@@ -1380,6 +1634,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1389,32 +1644,39 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public ControlFlowElement getControlFlow(String currentStepGUID,
                                              String nextStepGUID,
-                                             String qualifiedName) throws InvalidParameterException,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getControlFlow(userId, assetManagerGUID, assetManagerName, currentStepGUID, nextStepGUID, qualifiedName);
+        return lineageExchangeClient.getControlFlow(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    currentStepGUID,
+                                                    nextStepGUID,
+                                                    qualifiedName,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
     /**
-     * Update the relationship between tow elements that shows that when one completes the next is started.
+     * Update the relationship between two elements that shows that when one completes the next is started.
      *
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateControlFlow(String  controlFlowGUID,
-                                  String  qualifiedName,
-                                  String  description,
-                                  String  guard) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void updateControlFlow(String                controlFlowGUID,
+                                  ControlFlowProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "updateControlFlow";
 
@@ -1424,9 +1686,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                     assetManagerGUID,
                                                     assetManagerName,
                                                     controlFlowGUID,
-                                                    qualifiedName,
-                                                    description,
-                                                    guard);
+                                                    properties,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
         }
         else
         {
@@ -1447,6 +1710,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1454,9 +1718,10 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public void clearControlFlow(String assetManagerGUID,
                                  String assetManagerName,
-                                 String controlFlowGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                 String controlFlowGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "clearControlFlow";
 
@@ -1465,7 +1730,10 @@ public class LineageExchangeService extends SchemaExchangeService
             lineageExchangeClient.clearControlFlow(userId,
                                                    assetManagerGUID,
                                                    assetManagerName,
-                                                   controlFlowGUID);
+                                                   controlFlowGUID,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
         }
         else
         {
@@ -1481,9 +1749,12 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1491,18 +1762,32 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+        return lineageExchangeClient.getControlFlowNextSteps(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             currentStepGUID,
+                                                             startFrom,
+                                                             pageSize,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1510,11 +1795,22 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowPreviousSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+        return lineageExchangeClient.getControlFlowPreviousSteps(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 currentStepGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 effectiveTime,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -1524,9 +1820,8 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -1534,14 +1829,13 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupProcessCall(boolean assetManagerIsHome,
-                                   String  callerGUID,
-                                   String  calledGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  formula) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public String setupProcessCall(boolean               assetManagerIsHome,
+                                   String                callerGUID,
+                                   String                calledGUID,
+                                   ProcessCallProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "setupProcessCall";
 
@@ -1553,9 +1847,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                           assetManagerIsHome,
                                                           callerGUID,
                                                           calledGUID,
-                                                          qualifiedName,
-                                                          description,
-                                                          formula);
+                                                          properties,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
         }
         else
         {
@@ -1578,6 +1873,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1587,11 +1883,20 @@ public class LineageExchangeService extends SchemaExchangeService
      */
     public ProcessCallElement getProcessCall(String callerGUID,
                                              String calledGUID,
-                                             String qualifiedName) throws InvalidParameterException,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getProcessCall(userId, assetManagerGUID, assetManagerName, callerGUID, calledGUID, qualifiedName);
+        return lineageExchangeClient.getProcessCall(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    callerGUID,
+                                                    calledGUID,
+                                                    qualifiedName,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
@@ -1599,20 +1904,18 @@ public class LineageExchangeService extends SchemaExchangeService
      * Update the relationship between two elements that shows a request-response call between them.
      *
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProcessCall(String processCallGUID,
-                                  String qualifiedName,
-                                  String description,
-                                  String formula) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void updateProcessCall(String                processCallGUID,
+                                  ProcessCallProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "updateProcessCall";
 
@@ -1622,9 +1925,10 @@ public class LineageExchangeService extends SchemaExchangeService
                                                     assetManagerGUID,
                                                     assetManagerName,
                                                     processCallGUID,
-                                                    qualifiedName,
-                                                    description,
-                                                    formula);
+                                                    properties,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
         }
         else
         {
@@ -1643,14 +1947,16 @@ public class LineageExchangeService extends SchemaExchangeService
      * Remove the process call relationship.
      *
      * @param processCallGUID unique identifier of the process call relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessCall(String processCallGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearProcessCall(String processCallGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "clearProcessCall";
 
@@ -1659,7 +1965,10 @@ public class LineageExchangeService extends SchemaExchangeService
             lineageExchangeClient.clearProcessCall(userId,
                                                    assetManagerGUID,
                                                    assetManagerName,
-                                                   processCallGUID);
+                                                   processCallGUID,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
         }
         else
         {
@@ -1675,9 +1984,12 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1685,18 +1997,32 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessCallElement> getProcessCalled(String callerGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<ProcessCallElement> getProcessCalled(String callerGUID,
+                                                     int    startFrom,
+                                                     int    pageSize,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getProcessCalled(userId, assetManagerGUID, assetManagerName, callerGUID);
+        return lineageExchangeClient.getProcessCalled(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      callerGUID,
+                                                      startFrom,
+                                                      pageSize,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1704,30 +2030,45 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessCallElement> getProcessCallers(String calledGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<ProcessCallElement> getProcessCallers(String calledGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getProcessCallers(userId, assetManagerGUID, assetManagerName, calledGUID);
+        return lineageExchangeClient.getProcessCallers(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       calledGUID,
+                                                       startFrom,
+                                                       pageSize,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupLineageMapping(String  sourceElementGUID,
-                                    String  destinationElementGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupLineageMapping(String                   sourceElementGUID,
+                                    String                   destinationElementGUID,
+                                    LineageMappingProperties properties,
+                                    Date                     effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName = "setupLineageMapping";
 
@@ -1737,7 +2078,99 @@ public class LineageExchangeService extends SchemaExchangeService
                                                       assetManagerGUID,
                                                       assetManagerName,
                                                       sourceElementGUID,
-                                                      destinationElementGUID);
+                                                      destinationElementGUID,
+                                                      properties,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one relationship between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param sourceElementGUID unique identifier of the element that is making the call
+     * @param destinationElementGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public LineageMappingElement getLineageMapping(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  sourceElementGUID,
+                                                   String  destinationElementGUID,
+                                                   String  qualifiedName,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return lineageExchangeClient.getLineageMapping(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       sourceElementGUID,
+                                                       destinationElementGUID,
+                                                       qualifiedName,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+    }
+
+
+    /**
+     * Update the lineage mapping relationship between two elements.
+     *
+     * @param lineageMappingGUID unique identifier of the lineage mapping relationship
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+      *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateLineageMapping(String                   lineageMappingGUID,
+                                     LineageMappingProperties properties,
+                                     Date                     effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName = "updateLineageMapping";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            lineageExchangeClient.updateLineageMapping(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       lineageMappingGUID,
+                                                       properties,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
         }
         else
         {
@@ -1755,17 +2188,17 @@ public class LineageExchangeService extends SchemaExchangeService
     /**
      * Remove the lineage mapping between two elements.
      *
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
-
+     * @param lineageMappingGUID unique identifier of the source
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearLineageMapping(String sourceElementGUID,
-                                    String destinationElementGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void clearLineageMapping(String lineageMappingGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String methodName = "clearLineageMapping";
 
@@ -1774,8 +2207,10 @@ public class LineageExchangeService extends SchemaExchangeService
             lineageExchangeClient.clearLineageMapping(userId,
                                                       assetManagerGUID,
                                                       assetManagerName,
-                                                      sourceElementGUID,
-                                                      destinationElementGUID);
+                                                      lineageMappingGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -1791,9 +2226,12 @@ public class LineageExchangeService extends SchemaExchangeService
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of lineage mapping relationships
      *
@@ -1801,18 +2239,32 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<LineageMappingElement> getDestinationLineageMappings(String sourceElementGUID) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<LineageMappingElement> getDestinationLineageMappings(String sourceElementGUID,
+                                                                     int    startFrom,
+                                                                     int    pageSize,
+                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getDestinationLineageMappings(userId, assetManagerGUID, assetManagerName, sourceElementGUID);
+        return lineageExchangeClient.getDestinationLineageMappings(userId,
+                                                                   assetManagerGUID,
+                                                                   assetManagerName,
+                                                                   sourceElementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of lineage mapping relationships
      *
@@ -1820,10 +2272,21 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<LineageMappingElement> getSourceLineageMappings(String destinationElementGUID) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<LineageMappingElement> getSourceLineageMappings(String destinationElementGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        return lineageExchangeClient.getSourceLineageMappings(userId, assetManagerGUID, assetManagerName, destinationElementGUID);
+        return lineageExchangeClient.getSourceLineageMappings(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              destinationElementGUID,
+                                                              startFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
     }
 }

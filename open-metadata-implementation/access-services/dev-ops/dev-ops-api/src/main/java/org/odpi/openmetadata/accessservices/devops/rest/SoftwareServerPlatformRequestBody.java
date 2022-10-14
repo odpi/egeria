@@ -124,7 +124,7 @@ public class SoftwareServerPlatformRequestBody extends SoftwareServerPlatformPro
                        ", softwareServerVersion='" + getSoftwareServerPlatformVersion() + '\'' +
                        ", softwareServerSource='" + getSoftwareServerPlatformSource() + '\'' +
                        ", softwareServerUserId='" + getSoftwareServerPlatformUserId() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

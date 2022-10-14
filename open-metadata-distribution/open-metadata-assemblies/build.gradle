@@ -66,6 +66,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:data-privacy:data-privacy-client')
     implementation project(':open-metadata-implementation:access-services:dev-ops:dev-ops-client')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
+    implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
@@ -97,7 +98,6 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
-    implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 
@@ -151,7 +151,6 @@ distributions {
                 fileMode = 0755
             }
             into('utilities') {
-                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility').shadowJar }
                 fileMode = 0755
@@ -192,24 +191,6 @@ distributions {
             }
         }
     }
-    deploy {
-        //distributionBaseName = "${rootProject.name}-deploy"
-        contents {
-            into('notebooks') {
-                from("${project(':open-metadata-resources:open-metadata-labs').projectDir}")
-                exclude 'pom.xml'
-                exclude '*.iml'
-                exclude '.classpath'
-                exclude '.project'
-                exclude '.settings/**'
-                exclude '.ipynb_checkpoints/**'
-                exclude '**/target/**'
-                exclude '**/build/**'
-                exclude 'build.gradle'
-                fileMode = 0755
-            }
-        }
-    }
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
@@ -218,10 +199,7 @@ egeriaomagDistTar.archiveFileName = (rootProject.name + '-' + rootProject.versio
 egeriaomagDistZip.enabled=false // TODO: does not seem to work
 
 // Ditto for the deploy distribution
-deployDistTar.compression = Compression.GZIP
-//deployDistTar.archiveExtension = 'tar.gz'
-deployDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
-deployDistZip.enabled=false // TODO: does not seem to work
+
 
 task unzip(type: Copy) {
     String zipFile = "${project.buildDir}/distributions/${rootProject.name}-${rootProject.version}-distribution.tar.gz"

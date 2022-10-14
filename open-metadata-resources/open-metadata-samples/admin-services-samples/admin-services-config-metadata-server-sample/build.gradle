@@ -10,11 +10,11 @@ plugins {
 
 dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    runtimeOnly 'ch.qos.logback:logback-classic'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 }
 

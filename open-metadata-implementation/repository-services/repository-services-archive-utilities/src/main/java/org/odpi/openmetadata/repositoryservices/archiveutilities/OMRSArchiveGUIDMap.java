@@ -21,7 +21,7 @@ public class OMRSArchiveGUIDMap
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSArchiveGUIDMap.class);
 
-    private String              guidMapFileName;
+    private final String              guidMapFileName;
     private Map<String, String> idToGUIDMap;
 
 
@@ -78,9 +78,10 @@ public class OMRSArchiveGUIDMap
 
     /**
      * Retrieve the guid for an element based on its id.
+     * If no GUID exists, a new one is created and returned
      *
      * @param id id of element
-     * @return guid mapped to Id
+     * @return guid mapped to id
      */
     public String  getGUID(String id)
     {
@@ -94,6 +95,18 @@ public class OMRSArchiveGUIDMap
         }
 
         return guid;
+    }
+
+
+    /**
+     * Retrieve the guid for an element based on its id.
+     *
+     * @param id id of element
+     * @return guid mapped to id
+     */
+    public String  queryGUID(String id)
+    {
+        return idToGUIDMap.get(id);
     }
 
 

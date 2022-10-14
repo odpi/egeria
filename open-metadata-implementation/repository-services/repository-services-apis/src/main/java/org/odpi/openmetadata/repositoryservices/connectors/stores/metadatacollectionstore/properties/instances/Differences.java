@@ -175,7 +175,7 @@ public abstract class Differences
         }
         else
         {
-            // Otherwise they are both non-null, and they are not equal
+            // Otherwise, they are both non-null, and they are not equal
             addDiffering(name, new ValuePair(left, right));
         }
     }
@@ -221,11 +221,10 @@ public abstract class Differences
         differing.put(name, valuePair);
     }
 
-    class ValuePair
+    static class ValuePair
     {
-
-        private Object left;
-        private Object right;
+        private final Object left;
+        private final Object right;
 
         ValuePair(Object left, Object right)
         {
@@ -242,7 +241,5 @@ public abstract class Differences
         {
             return right;
         }
-
     }
-
 }

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -61,7 +60,7 @@ public class SequentialFederationControl extends FederationControlBase
                         if (executor.issueRequestToRepository(metadataCollectionId, metadataCollection))
                         {
                             /*
-                             * The executor returns true if it has all of the results it needs.
+                             * The executor returns true if it has all the results it needs.
                              * If it returns false it means it needs more info from another repository.
                              */
                             break;

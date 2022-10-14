@@ -11,7 +11,7 @@ dependencies {
     implementation 'javax.validation:validation-api'
     implementation 'org.springframework:spring-context'
     implementation 'io.swagger.core.v3:swagger-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

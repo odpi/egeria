@@ -3,7 +3,7 @@
 
 # Open Metadata Repository Cohort
 
-An **open metadata repository cohort** is a collection of [servers](../../admin-services/docs/concepts/cohort-member.md)
+An **open metadata repository cohort** is a collection of [servers](https://egeria-project.org/concepts/cohort-member)
 sharing metadata using the **[Open Metadata Repository Services (OMRS)](..)**.
 This sharing is peer-to-peer.
 Once a server becomes a member of the cohort, it can share
@@ -37,7 +37,7 @@ Cohort membership is established dynamically.  This is through the [Cohort Topic
 
 To join an open metadata repository cohort, a server must integrate
 with the OMRS module. OMRS then manages the metadata exchange. When OMRS running inside the server is
-[configured to join a cohort](../../admin-services/docs/user/configuring-registration-to-a-cohort.md)
+[configured to join a cohort](https://egeria-project.org/guides/admin/servers/configuring-registration-to-a-cohort)
 it first adds a [Registration Event](event-descriptions/registry-events.md) to the Cohort Topic(s).
 This event identifies the server, its metadata repository (if any) and its capabilities (see figure 1).
 
@@ -49,7 +49,7 @@ and begins to receive the registration events from other members.  The other mem
 [Re-Registration Events](event-descriptions/registry-events.md) to ensure the new member has the latest
 information about the originator's capabilities.  The exchange of registration information causes all members to verify
 that they have the latest information about their peers.  This is maintained in their own
-[Cohort Registry Store](component-descriptions/connectors/cohort-registry-store-connector.md)
+[Cohort Registry Store](https://egeria-project.org/concepts/cohort-registry-store-connector)
 so that they can reconfigure themselves on restart
 without needing the other members to resend their registration information.
 
@@ -63,7 +63,7 @@ These requests can both retrieve metadata and maintain metadata in the [home met
 The management of federated queries and the routing of maintenance requests is managed by OMRS's
 [Enterprise Repository Services](subsystem-descriptions/enterprise-repository-services.md).
 The enterprise repository services are configured with the registration information from across the cohort at the
-same time as the cohort registry store is updated.  This process is managed by the [Cohort Registry](component-descriptions/cohort-registry.md)
+same time as the cohort registry store is updated.  This process is managed by the [Cohort Registry](https://egeria-project.org/concepts/cohort-registry)
 component (see figure 3).
 
 ![Figure 3](repository-services-formation-of-a-cohort-3.png)
@@ -81,7 +81,7 @@ routed to the home repository by the enterprise repository services (figure 4).
 
 Finally, as type definitions (TypeDefs) are added and updated, the cohort members send out
 events to allow the other members to verify that this type does not conflict with any of their types (figure 5).
-Any conflicts in the types causes [audit log messages](component-descriptions/audit-log.md) to be logged in all of the
+Any conflicts in the types causes [audit log messages](https://egeria-project.org/concepts/audit-log) to be logged in all the
 members, prompting action to resolve the conflicts.
 
 ![Figure 5](repository-services-formation-of-a-cohort-5.png)
@@ -92,9 +92,9 @@ members, prompting action to resolve the conflicts.
 ## Enabling Cohort Membership
 
 Egeria provides a number or pre-built
-[cohort members](../../admin-services/docs/concepts/cohort-member.md).
+[cohort members](https://egeria-project.org/concepts/cohort-member).
 
-One of them, the [repository proxy](../../admin-services/docs/concepts/repository-proxy.md)
+One of them, the [repository proxy](https://egeria-project.org/concepts/repository-proxy)
 provides a simple way to integrate a third party server into a cohort 
 by creating an [OMRS Repository Connector and optional Event Mapper Connector](../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
 to map between the third party APIs/events and the repository service's equivalents
@@ -103,7 +103,7 @@ A more bespoke integration involves:
 
 * Creating an [OMRS Repository Connector and optional Event Mapper Connector](../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
 * Designing how to configure the OMRS Services for your metadata repository.
-Typically this is done by extending the existing administration services of the
+Typically, this is done by extending the existing administration services of the
 metadata repository, but Egeria also offers
 some pre-built **[administration services](../../admin-services)** that
 can be used or modified.
@@ -130,11 +130,11 @@ between the metadata repositories.
 ## Cohort registration
 
 The OMRS protocols are peer-to-peer.
-Each repository in the cohort has an [OMRS Cohort Registry](component-descriptions/cohort-registry.md) that 
+Each repository in the cohort has an [OMRS Cohort Registry](https://egeria-project.org/concepts/cohort-registry) that 
 supports the registration of the metadata
 repositories across the cohort.   Through the registration process, each OMRS Cohort Registry 
-assembles a list of all of the members of the cohort.  This is saved in the 
-[OMRS Cohort Registry Store](component-descriptions/connectors/cohort-registry-store-connector.md).  The list of connections to the remote members of the cohort are passed to the OMRS Enterprise Connector Manager that in turn manages the configuration of the Enterprise OMRS Repository Connectors.
+assembles a list of all the members of the cohort.  This is saved in the 
+[OMRS Cohort Registry Store](https://egeria-project.org/concepts/cohort-registry-store-connector).  The list of connections to the remote members of the cohort are passed to the OMRS Enterprise Connector Manager that in turn manages the configuration of the Enterprise OMRS Repository Connectors.
 
 The Enterprise OMRS Connector provides federated query support across the metadata cohort
 for the Open Metadata Access Services (OMAS).

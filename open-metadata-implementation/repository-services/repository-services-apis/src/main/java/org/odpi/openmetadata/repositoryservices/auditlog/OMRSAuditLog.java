@@ -21,7 +21,7 @@ import java.util.UUID;
  * will have their own instance of an OMRSAuditLog. OMRSAuditLog will ensure audit log records are written to
  * disk in the common OMRSAuditLog for this local server.
  *
- * There are different severities of log record to cover all of the activity of the OMRS.
+ * There are different severities of log record to cover all the activity of the OMRS.
  *
  * This audit log is critical to validate the behavior of the OMAG Service, particularly in the initial interaction of
  * a new member in the OMRS Cohort.
@@ -34,8 +34,8 @@ import java.util.UUID;
  */
 public class OMRSAuditLog extends AuditLog
 {
-    private OMRSAuditLogDestination        omrsDestination;          /* Initialized in the constructor */
-    private OMRSAuditLogReportingComponent omrsReportingComponent;   /* Initialized in the constructor */
+    private final OMRSAuditLogDestination        omrsDestination;          /* Initialized in the constructor */
+    private final OMRSAuditLogReportingComponent omrsReportingComponent;   /* Initialized in the constructor */
 
 
     /**
@@ -186,7 +186,7 @@ public class OMRSAuditLog extends AuditLog
                              String                      additionalInformation,
                              String                      systemAction,
                              String                      userAction,
-                             Throwable                   caughtException)
+                             Exception                   caughtException)
     {
         this.storeLogRecord(actionDescription,
                             logMessageId,
@@ -218,58 +218,66 @@ public class OMRSAuditLog extends AuditLog
                                 String                         additionalInformation,
                                 String                         systemAction,
                                 String                         userAction,
-                                Throwable                      caughtException)
+                                Exception                      caughtException)
     {
-        OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord();
-
-        logRecord.setGUID(UUID.randomUUID().toString());
-        logRecord.setTimeStamp(new Date());
+        if (severity != null)
+        {
+            super.auditLogActivity.countRecord(severity.getOrdinal(), severity.getName());
+        }
 
         if (omrsDestination != null)
         {
+            OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord();
+
+            logRecord.setGUID(UUID.randomUUID().toString());
+            logRecord.setTimeStamp(new Date());
+
             logRecord.setOriginatorProperties(omrsDestination.getOriginatorProperties());
             logRecord.setOriginator(omrsDestination.getOriginator());
+
+            logRecord.setOriginatorComponent(new AuditLogReportingComponent(omrsReportingComponent));
+            logRecord.setReportingComponent(omrsReportingComponent);
+
+            logRecord.setActionDescription(actionDescription);
+            logRecord.setThreadId(Thread.currentThread().getId());
+            logRecord.setThreadName(Thread.currentThread().getName());
+
+            if (severity != null)
+            {
+                logRecord.setSeverityCode(severity.getOrdinal());
+                logRecord.setSeverity(severity.getName());
+            }
+
+            logRecord.setMessageId(logMessageId);
+            logRecord.setMessageText(logMessage);
+            logRecord.setSystemAction(systemAction);
+            logRecord.setUserAction(userAction);
+
+            List<String> additionalInformationArray = null;
+
+            if (additionalInformation != null)
+            {
+                additionalInformationArray = new ArrayList<>();
+                additionalInformationArray.add(additionalInformation);
+            }
+
+            logRecord.setAdditionalInformation(additionalInformationArray);
+
+            if (caughtException != null)
+            {
+                logRecord.setExceptionClassName(caughtException.getClass().getName());
+                logRecord.setExceptionMessage(caughtException.getMessage());
+
+                StringWriter stackTrace = new StringWriter();
+                caughtException.printStackTrace(new PrintWriter(stackTrace));
+
+                logRecord.setExceptionStackTrace(stackTrace.toString());
+            }
+
+            omrsDestination.addLogRecord(logRecord);
         }
-
-        logRecord.setOriginatorComponent(new AuditLogReportingComponent(omrsReportingComponent));
-        logRecord.setReportingComponent(omrsReportingComponent);
-
-        logRecord.setActionDescription(actionDescription);
-        logRecord.setThreadId(Thread.currentThread().getId());
-        logRecord.setThreadName(Thread.currentThread().getName());
-
-        logRecord.setSeverityCode(severity.getOrdinal());
-        logRecord.setSeverity(severity.getName());
-        super.auditLogActivity.countRecord(severity.getOrdinal(), severity.getName());
-
-        logRecord.setMessageId(logMessageId);
-        logRecord.setMessageText(logMessage);
-        logRecord.setSystemAction(systemAction);
-        logRecord.setUserAction(userAction);
-
-        List<String> additionalInformationArray = null;
-
-        if (additionalInformation != null)
-        {
-            additionalInformationArray = new ArrayList<>();
-            additionalInformationArray.add(additionalInformation);
-        }
-
-        logRecord.setAdditionalInformation(additionalInformationArray);
-
-        if (caughtException != null)
-        {
-            logRecord.setExceptionClassName(caughtException.getClass().getName());
-            logRecord.setExceptionMessage(caughtException.getMessage());
-
-            StringWriter stackTrace = new StringWriter();
-            caughtException.printStackTrace(new PrintWriter(stackTrace));
-
-            logRecord.setExceptionStackTrace(stackTrace.toString());
-        }
-
-        omrsDestination.addLogRecord(logRecord);
     }
+
 
     /**
      * Return a full report for the OMRS Audit log.

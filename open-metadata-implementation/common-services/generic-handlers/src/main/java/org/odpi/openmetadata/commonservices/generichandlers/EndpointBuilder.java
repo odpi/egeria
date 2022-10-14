@@ -13,9 +13,10 @@ import java.util.Map;
  */
 class EndpointBuilder extends ReferenceableBuilder
 {
-    private String displayName;
-    private String description;
-    private String networkAddress;
+    private final String displayName;
+    private final String description;
+    private final String networkAddress;
+
     private String protocol;
     private String encryptionMethod;
 
@@ -114,50 +115,35 @@ class EndpointBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ENDPOINT_DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ENDPOINT_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (networkAddress != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
-                                                                      networkAddress,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                  networkAddress,
+                                                                  methodName);
 
-        if (protocol != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME,
-                                                                      protocol,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME,
+                                                                  protocol,
+                                                                  methodName);
 
-        if (encryptionMethod != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ENCRYPTION_METHOD_PROPERTY_NAME,
-                                                                      encryptionMethod,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ENCRYPTION_METHOD_PROPERTY_NAME,
+                                                                  encryptionMethod,
+                                                                  methodName);
 
         return properties;
     }

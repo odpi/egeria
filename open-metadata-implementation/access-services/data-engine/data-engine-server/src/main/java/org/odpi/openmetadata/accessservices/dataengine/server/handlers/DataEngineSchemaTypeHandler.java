@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +30,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID;
@@ -53,13 +55,14 @@ public class DataEngineSchemaTypeHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName                   name of this service
-     * @param serverName                    name of the local server
-     * @param invalidParameterHandler       handler for managing parameter errors
-     * @param repositoryHelper              provides utilities for manipulating the repository services objects
-     * @param schemaTypeHandler             handler for managing schema elements in the metadata repositories
-     * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
-     * @param dataEngineCommonHandler       provides utilities for manipulating entities
+     * @param serviceName                      name of this service
+     * @param serverName                       name of the local server
+     * @param invalidParameterHandler          handler for managing parameter errors
+     * @param repositoryHelper                 provides utilities for manipulating the repository services objects
+     * @param schemaTypeHandler                handler for managing schema elements in the metadata repositories
+     * @param dataEngineRegistrationHandler    provides calls for retrieving external data engine guid
+     * @param dataEngineCommonHandler          provides utilities for manipulating entities
+     * @param dataEngineSchemaAttributeHandler provides utilities for manipulating schema attributes
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                        OMRSRepositoryHelper repositoryHelper, SchemaTypeHandler<SchemaType> schemaTypeHandler,
@@ -106,8 +109,10 @@ public class DataEngineSchemaTypeHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         String schemaTypeGUID;
+        Date now = dataEngineCommonHandler.getNow();
         if (originalSchemaTypeEntity.isEmpty()) {
-            schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder, methodName);
+            schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder,
+                      null, null, false, false, now, methodName);
         } else {
             schemaTypeGUID = originalSchemaTypeEntity.get().getGUID();
             EntityDetail updatedSchemaTypeEntity = buildSchemaTypeEntityDetail(schemaTypeGUID, schemaType);
@@ -116,7 +121,7 @@ public class DataEngineSchemaTypeHandler {
 
             if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
                 schemaTypeHandler.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
-                        schemaTypeBuilder);
+                        schemaTypeBuilder, true, false, false, now, methodName);
             }
         }
 
@@ -179,7 +184,8 @@ public class DataEngineSchemaTypeHandler {
             return;
         }
         dataEngineCommonHandler.upsertExternalRelationship(userId, sourceEntity.get().getGUID(), targetEntity.get().getGUID(),
-                LINEAGE_MAPPING_TYPE_NAME, sourceEntity.get().getType().getTypeDefName(), externalSourceName, null);
+                LINEAGE_MAPPING_TYPE_NAME, sourceEntity.get().getType().getTypeDefName(),
+                targetEntity.get().getType().getTypeDefName(), externalSourceName, null);
     }
 
     /**
@@ -199,19 +205,17 @@ public class DataEngineSchemaTypeHandler {
                                                                                                        PropertyServerException,
                                                                                                        InvalidParameterException {
         Optional<EntityDetail> referenceableEntity = dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
-        if (referenceableEntity.isEmpty()) {
-            return Optional.empty();
-        }
 
-        EntityDetail entityDetail = referenceableEntity.get();
-        if (TABULAR_SCHEMA_TYPE_TYPE_NAME.equalsIgnoreCase(entityDetail.getType().getTypeDefName())) {
-            Optional<EntityDetail> assetEntity = dataEngineCommonHandler.getEntityForRelationship(userId, entityDetail.getGUID(),
-                    ASSET_TO_SCHEMA_TYPE_TYPE_NAME, TABULAR_SCHEMA_TYPE_TYPE_NAME);
-            if (assetEntity.isPresent()) {
-                entityDetail = assetEntity.get();
+        if (referenceableEntity.isPresent()) {
+            EntityDetail entityDetail = referenceableEntity.get();
+
+            if (TABULAR_SCHEMA_TYPE_TYPE_NAME.equalsIgnoreCase(entityDetail.getType().getTypeDefName())) {
+                return dataEngineCommonHandler.getEntityForRelationship(userId, entityDetail.getGUID(),
+                        ASSET_TO_SCHEMA_TYPE_TYPE_NAME, TABULAR_SCHEMA_TYPE_TYPE_NAME);
             }
         }
-        return Optional.of(entityDetail);
+
+        return referenceableEntity;
     }
 
     /**
@@ -249,7 +253,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                                       PropertyServerException,
                                                                                                       InvalidParameterException {
         Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, schemaTypeGUID,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME);
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();

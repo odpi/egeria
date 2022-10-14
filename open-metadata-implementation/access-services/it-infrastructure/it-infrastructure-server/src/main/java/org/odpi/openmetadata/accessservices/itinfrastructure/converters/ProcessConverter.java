@@ -36,7 +36,7 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -73,7 +73,8 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
 
                     processProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     processProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    processProperties.setDisplayName(this.removeName(instanceProperties));
+                    processProperties.setName(this.removeName(instanceProperties));
+                    processProperties.setDisplayName(processProperties.getName());
                     processProperties.setDescription(this.removeDescription(instanceProperties));
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));
@@ -106,7 +107,7 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

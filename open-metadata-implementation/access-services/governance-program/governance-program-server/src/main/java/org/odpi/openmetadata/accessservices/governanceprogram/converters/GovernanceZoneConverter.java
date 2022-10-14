@@ -35,7 +35,7 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -71,6 +71,7 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                     governanceZoneProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    governanceZoneProperties.setZoneName(this.removeZoneName(instanceProperties));
                     governanceZoneProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     governanceZoneProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     governanceZoneProperties.setDescription(this.removeDescription(instanceProperties));
@@ -105,7 +106,7 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

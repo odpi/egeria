@@ -14,12 +14,12 @@ import java.util.Map;
  */
 public class ValidValuesBuilder extends ReferenceableBuilder
 {
-    private String  displayName;
-    private String  description;
-    private String  usage;
-    private String  scope;
-    private String  preferredValue;
-    private boolean isDeprecated;
+    private final String  displayName;
+    private final String  description;
+    private final String  usage;
+    private final String  scope;
+    private final String  preferredValue;
+    private final boolean isDeprecated;
 
 
     /**
@@ -81,50 +81,35 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.VALID_VALUE_DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VALID_VALUE_DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      usage,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  usage,
+                                                                  methodName);
 
-        if (scope != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.VALID_VALUE_SCOPE_PROPERTY_NAME,
-                                                                      scope,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VALID_VALUE_SCOPE_PROPERTY_NAME,
+                                                                  scope,
+                                                                  methodName);
 
-        if (preferredValue != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PREFERRED_VALUE_PROPERTY_NAME,
-                                                                      preferredValue,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                  preferredValue,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,

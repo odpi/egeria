@@ -20,6 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -307,7 +308,7 @@ public class OMAGServerOperationalServices
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
 
             /*
-             * A this point the type of server influences the start up sequence.
+             * At this point the type of server influences the start-up sequence.
              */
             if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||
@@ -368,6 +369,26 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+
+                    /*
+                     * The enterprise repository services have been requested so GAF metadata management can also be started.
+                     */
+                    GAFMetadataOperationalServices operationalGAFMetadataServices;
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
+                    operationalGAFMetadataServices = new GAFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                        enterpriseRepositoryConnector,
+                                                                                        operationalRepositoryServices.getAuditLog(
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                        configuration.getLocalServerUserId(),
+                                                                                        configuration.getMaxPageSize());
+
+                    instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
+                    activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
                 }
 
                 /*
@@ -485,7 +506,7 @@ public class OMAGServerOperationalServices
                  * Governance servers are varied in nature.  Many host connectors that exchange metadata with third party technologies.
                  * However they may also host specific types of engines, or provide an implementation of a complete governance service.
                  * Because of this variety, Egeria does not (yet) provide any specialist frameworks for supporting the governance servers.
-                 * All of the implementation is in the governance services subsystems initialized below.
+                 * all the implementation is in the governance services subsystems initialized below.
                  *
                  * Set up the server instance - ensure it is active and the security has been set up correctly.
                  */
@@ -1237,7 +1258,18 @@ public class OMAGServerOperationalServices
                     instance.getOperationalOCFMetadataServices().shutdown();
 
                     instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
+                }
 
+                /*
+                 * Shutdown the GAF metadata management services
+                 */
+                if (instance.getOperationalGAFMetadataServices() != null)
+                {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
+
+                    instance.getOperationalGAFMetadataServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

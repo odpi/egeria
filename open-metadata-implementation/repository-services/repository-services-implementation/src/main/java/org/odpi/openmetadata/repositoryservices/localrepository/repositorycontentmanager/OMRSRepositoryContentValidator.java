@@ -30,7 +30,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentValidator.class);
 
-    private        OMRSRepositoryContentManager    repositoryContentManager;
+    private final OMRSRepositoryContentManager    repositoryContentManager;
 
     private enum MatchOption
     {
@@ -607,7 +607,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Validate that the supplied user Id is not null.
+     * Validate that the supplied user id is not null.
      *
      * @param sourceName name of source of request.
      * @param userId userId passed on call to this metadata collection.
@@ -1077,7 +1077,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param parameterName name of the parameter that passed the typeDef.
      * @param typeDef unique identifier for a type or an instance passed on the request
      * @param methodName method receiving the call
-     * @throws TypeDefNotKnownException no recognized typeDef provided
+     * @throws TypeDefNotKnownException typeDef provided not recognized
      */
     @Override
     public  void validateKnownTypeDef(String  sourceName,
@@ -1457,7 +1457,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Validate that a home metadata collection identifier in an classification is not null.
+     * Validate that a home metadata collection identifier in a classification is not null.
      *
      * @param sourceName source of the request (used for logging)
      * @param classification classification to test.
@@ -1979,7 +1979,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     switch(operator)
                     {
                         case IN:
-                            // For the IN operator, only an ArrayPropertyValue is allowed
+                            // For the IN operator, only an ArrayTypePropertyValue is allowed
                             if (!(value instanceof ArrayPropertyValue))
                             {
                                 throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
@@ -1989,7 +1989,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                             }
                             break;
                         case LIKE:
-                            // For the LIKE operator, only a PrimitivePropertyValue of type string is allowed
+                            // For the LIKE operator, only a PrimitiveTypePropertyValue of type string is allowed
                             if (value instanceof PrimitivePropertyValue)
                             {
                                 PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
@@ -2093,7 +2093,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Validate that the properties for a metadata instance match its TypeDef.
      *
      * @param sourceName source of the request (used for logging)
-     * @param parameterName name of the properties parameter.
+     * @param parameterName name of the "properties" parameter.
      * @param typeDef type information to validate against.
      * @param properties proposed properties for instance.
      * @param methodName method receiving the call.
@@ -2150,7 +2150,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         /*
          * Need to step through each of the proposed properties and validate that the name and value are
-         * present and they match the typeDef
+         * present, and they match the typeDef
          */
         Iterator<?>    propertyList = properties.getPropertyNames();
 
@@ -2299,7 +2299,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Validate that the properties for a metadata instance match its TypeDef
      *
      * @param sourceName source of the request (used for logging)
-     * @param parameterName name of the properties parameter.
+     * @param parameterName name of the "properties" parameter.
      * @param typeDefSummary type information to validate against.
      * @param properties proposed properties
      * @param methodName method receiving the call
@@ -2341,7 +2341,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Validate that the properties for a metadata instance match its TypeDef
      *
      * @param sourceName source of the request (used for logging)
-     * @param parameterName name of the properties parameter.
+     * @param parameterName name of the "properties" parameter.
      * @param typeDef type information to validate against.
      * @param properties proposed properties
      * @param methodName method receiving the call
@@ -2398,13 +2398,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (entityType != null)
                 {
-                    if (repositoryContentManager.isTypeOfByGUID(sourceName,
+                    return (repositoryContentManager.isTypeOfByGUID(sourceName,
                                                                 entityType.getTypeDefGUID(),
                                                                 entityType.getTypeDefName(),
-                                                                instanceTypeGUID))
-                    {
-                        return true;
-                    }
+                                                                instanceTypeGUID));
                 }
             }
         }
@@ -2787,7 +2784,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Verify that an instance is not already deleted since the repository is processing a delete request
+     * Verify that an instance is not already deleted since the repository is processing a delete request,
      * and it does not want to look stupid.
      *
      * @param sourceName source of the request (used for logging)
@@ -3021,7 +3018,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * The caller can rehome the entity provided:
          * The entity originates from the local cohort and is NOT locally mastered
          * OR
-         * The entity has instanceProvenanceType set to external and replicatedBy is NOT the local metadataColelctionId.
+         * The entity has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
          * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
          * an external entity) and consequently cannot be rehomed.
          *
@@ -3050,13 +3047,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     updateAllowed = true;
                 }
-                break;
-
-            default:
-                /*
-                 * For any other instance provenance value do not allow update
-                 */
-                updateAllowed = false;
                 break;
         }
 
@@ -3172,7 +3162,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * The caller can update the relationship provided:
          * The relationship is locally mastered
          * OR
-         * The relationship has instanceProvenanceType set to external and replicatedBy is set to the local metadataColelctionId.
+         * The relationship has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
          * Any other combination suggest that this is either a reference copy of an instance from the local cohort or a reference
          * copy of an external relationship (and something else is responsible for replication).
          *
@@ -3250,7 +3240,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * The caller can rehome the relationship provided:
          * The relationship originates from the local cohort and is NOT locally mastered
          * OR
-         * The relationship has instanceProvenanceType set to external and replicatedBy is NOT the local metadataColelctionId.
+         * The relationship has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
          * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
          * an external relationship) and consequently cannot be rehomed.
          *
@@ -3281,12 +3271,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
                 break;
 
-            default:
-                /*
-                 * For any other instance provenance value do not allow update
-                 */
-                updateAllowed = false;
-                break;
         }
 
         if (!updateAllowed)
@@ -4169,7 +4153,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
                         break;
                     case IN:
-                        // The value to test against must be a list (ArrayPropertyValue)
+                        // The value to test against must be a list (ArrayTypePropertyValue)
                         if (testValue instanceof ArrayPropertyValue)
                         {
                             ArrayPropertyValue apv = (ArrayPropertyValue) testValue;
@@ -4662,7 +4646,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
     /**
      * Throw a logic error exception if this object does not have a repository content manager.
-     * This would occur if if is being used in an environment where the OMRS has not been properly
+     * This would occur if it is being used in an environment where the OMRS has not been properly
      * initialized.
      *
      * @param methodName name of calling method.
@@ -4759,7 +4743,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Validate that either zero or one entities were returned from a find request.  This is typically when searching
+     * Validate that either zero or one entity were returned from a find request.  This is typically when searching
      * for entities of a specific type using one of its unique properties.
      *
      * @param findResults list of entities returned from the search.
@@ -4789,7 +4773,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Validate that either zero or one relationships were returned from a find request.  This is typically when searching
+     * Validate that either zero or one relationship were returned from a find request.  This is typically when searching
      * for relationships of a specific type where the cardinality is set to AT_MOST_ONE in the RelationshipEndCardinality.
      *
      * @param findResults list of relationships returned from the search.

@@ -9,6 +9,7 @@ import static org.testng.Assert.fail;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
@@ -104,8 +105,8 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {
 			String guid = metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
-					builder, methodName);
+					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+					builder, new Date(), methodName);
 			
 			EntityDetail entity = omEntityDao.getEntityByGuid(guid);	
 			
@@ -126,8 +127,11 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		// test converter to fetch bean from repository
 		try {
 			SchemaAttribute sa = metadataHandler.getBeanByQualifiedName(ctx.getUserId(),
-					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
-					CONTAINER_QNAME, "CONTAINER_QNAME", methodName);
+																		IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+																		CONTAINER_QNAME, "CONTAINER_QNAME",
+																		false,
+																		false,
+																		new Date(), methodName);
 			
 			assertEquals(sa.getClass().getName(), obj.getClass().getName());	// fetched the same type as saved
 			
@@ -168,8 +172,8 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {
 			String guid = metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
-					builder, methodName);
+					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+					builder, new Date(), methodName);
 			
 			EntityDetail entity = omEntityDao.getEntityByGuid(guid);	
 			
@@ -191,7 +195,8 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		try {
 			SchemaAttribute sa = metadataHandler.getBeanByQualifiedName(ctx.getUserId(),
 					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
-					ITEM_QNAME, "ITEM_QNAME", methodName);
+					ITEM_QNAME, "ITEM_QNAME",
+					false, false, new Date(), methodName);
 			
 			assertEquals(sa.getClass().getName(), obj.getClass().getName());	// fetched the same type as saved
 			

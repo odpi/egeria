@@ -52,7 +52,7 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
 
 
     /**
-     * Return the the unique employee number for this governance officer.
+     * Return the unique employee number for this governance officer.
      *
      * @return String identifier
      */

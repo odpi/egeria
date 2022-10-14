@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.Organization
 import org.odpi.openmetadata.accessservices.communityprofile.client.SecurityGroupManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
@@ -28,6 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.List;
@@ -38,16 +38,16 @@ import java.util.List;
  */
 public class OrganizationIntegratorContext
 {
-    private OrganizationManagement      organizationClient;
-    private SecurityGroupManagement     securityGroupClient;
-    private UserIdentityManagement      userIdentityClient;
-    private CommunityProfileEventClient eventClient;
+    private final OrganizationManagement      organizationClient;
+    private final SecurityGroupManagement     securityGroupClient;
+    private final UserIdentityManagement      userIdentityClient;
+    private final CommunityProfileEventClient eventClient;
 
-    private String   userId;
-    private String   externalSourceGUID;
-    private String   externalSourceName;
-    private String   connectorName;
-    private AuditLog auditLog;
+    private final String   userId;
+    private final String   externalSourceGUID;
+    private final String   externalSourceName;
+    private final String   connectorName;
+    private final AuditLog auditLog;
 
 
     /**
@@ -85,6 +85,23 @@ public class OrganizationIntegratorContext
         this.auditLog           = auditLog;
     }
 
+
+
+    /* ========================================================
+     * Returning the external source name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the external source that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getExternalSourceName()
+    {
+        return externalSourceName;
+    }
 
 
     /* ========================================================
@@ -307,9 +324,54 @@ public class OrganizationIntegratorContext
 
 
     /**
-     * Return information about a named actor profile.
+     * Return information about matching named actor profiles.
      *
      * @param name unique name for the actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ActorProfileElement> getActorProfilesByName(String name,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return organizationClient.getActorProfilesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about actor profiles associated with a location.
+     *
+     * @param locationGUID unique identifier or the location
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles
+     *
+     * @throws InvalidParameterException locationGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ActorProfileElement> getActorProfilesByLocation(String locationGUID,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return organizationClient.getActorProfilesByLocation(userId, locationGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about all actor profiles.
+     *
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -319,13 +381,12 @@ public class OrganizationIntegratorContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ActorProfileElement> getActorProfileByName(String name,
-                                                           int    startFrom,
-                                                           int    pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<ActorProfileElement> getActorProfiles(int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return organizationClient.getActorProfileByName(userId, name, startFrom, pageSize);
+        return organizationClient.getActorProfiles(userId, startFrom, pageSize);
     }
 
 
@@ -342,13 +403,13 @@ public class OrganizationIntegratorContext
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<ActorProfileElement> findActorProfile(String searchString,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    public List<ActorProfileElement> findActorProfiles(String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
-        return organizationClient.findActorProfile(userId, searchString, startFrom, pageSize);
+        return organizationClient.findActorProfiles(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -569,13 +630,59 @@ public class OrganizationIntegratorContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleElement> getPersonRoleByName(String name,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<PersonRoleElement> getPersonRolesByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        return organizationClient.getPersonRoleByName(userId, name, startFrom, pageSize);
+        return organizationClient.getPersonRolesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the leadership person roles linked to a team.
+     *
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<PersonRoleElement> getLeadershipRolesForTeam(String teamGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return organizationClient.getLeadershipRolesForTeam(userId, teamGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the membership person roles linked to a team.
+     *
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<PersonRoleElement> getMembershipRolesForTeam(String teamGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return organizationClient.getMembershipRolesForTeam(userId, teamGUID, startFrom, pageSize);
     }
 
 
@@ -592,13 +699,13 @@ public class OrganizationIntegratorContext
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<PersonRoleElement> findPersonRole(String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public List<PersonRoleElement> findPersonRoles(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
-        return organizationClient.findPersonRole(userId, searchString, startFrom, pageSize);
+        return organizationClient.findPersonRoles(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -753,6 +860,27 @@ public class OrganizationIntegratorContext
                                                                                 UserNotAuthorizedException
     {
         return userIdentityClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
+    }
+
+
+    /**
+     * Create a UserIdentity that is for the sole use of a specific actor profile.
+     *
+     * @param profileGUID unique identifier of the profile
+     * @param newIdentity properties for the new userIdentity
+     *
+     * @return unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String createUserIdentityForProfile(String                 profileGUID,
+                                               UserIdentityProperties newIdentity) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        return userIdentityClient.createUserIdentityForProfile(userId, externalSourceGUID, externalSourceName, profileGUID, newIdentity);
     }
 
 

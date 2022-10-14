@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
@@ -14,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -57,7 +60,7 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -83,9 +86,82 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
             {
                 RelatedAsset bean = (RelatedAsset) returnBean;
 
+                /*
+                 * Check that the entity is of the correct type.
+                 */
+                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.ASSET_TYPE_NAME, methodName);
+
+                /*
+                 * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
+                 * properties, leaving any subclass properties to be stored in extended properties.
+                 */
+                InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+
+                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                bean.setName(this.removeName(instanceProperties));
+                bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
+                bean.setDescription(this.removeDescription(instanceProperties));
+
+                /* Note this value should be in the classification */
+                bean.setOwner(this.removeOwner(instanceProperties));
+                /* Note this value should be in the classification */
+                bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                /* Note this value should be in the classification */
+                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+
+                /*
+                 * Any remaining properties are returned in the extended properties.  They are
+                 * assumed to be defined in a subtype.
+                 */
+                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                /*
+                 * The values in the classifications override the values in the main properties of the Asset's entity.
+                 * Having these properties in the main entity is deprecated.
+                 */
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+
+                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+
+                bean.setOwner(this.getOwner(instanceProperties));
+                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+
+                Map<String, String> originMap = this.getOtherOriginValues(instanceProperties);
+
+                String orgOriginValue = this.getOriginOrganizationGUID(instanceProperties);
+                String bizOriginValue = this.getOriginBusinessCapabilityGUID(instanceProperties);
+
+                if ((orgOriginValue != null) || (bizOriginValue != null))
+                {
+                    if (originMap == null)
+                    {
+                        originMap = new HashMap<>();
+                    }
+
+                    if (orgOriginValue != null)
+                    {
+                        originMap.put(OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME, orgOriginValue);
+                    }
+
+                    if (bizOriginValue != null)
+                    {
+                        originMap.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME, bizOriginValue);
+                    }
+                }
+
+                bean.setAssetOrigin(originMap);
+
+                // todo set up SecurityTags and the governance classifications - needs some common methods with the AssetConverter
+
+
                 if (relationship != null)
                 {
-                    bean.setTypeName(relationship.getType().getTypeDefName());
+                    bean.setRelationshipName(relationship.getType().getTypeDefName());
 
                     boolean relatedAssetAtEndOne = true;
 
@@ -114,10 +190,6 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
                         bean.setAttributeName(endDef.getAttributeName());
                     }
                 }
-
-                AssetConverter<Asset> assetConverter = new AssetConverter<>(repositoryHelper, serviceName, serverName);
-
-                bean.setRelatedAsset(assetConverter.getNewBean(Asset.class, entity, methodName));
             }
 
             return returnBean;

@@ -37,11 +37,11 @@ import java.util.List;
  */
 public class ConnectionRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
-    private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ConnectionRESTServices.class),
-                                                                                   instanceHandler.getServiceName());
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ConnectionRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
-    private RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -109,6 +109,9 @@ public class ConnectionRESTServices
                                                                  null,
                                                                  null,
                                                                  null,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
 
                 if (connectionGUID != null)
@@ -116,6 +119,9 @@ public class ConnectionRESTServices
                     handler.setVendorProperties(userId,
                                                 connectionGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -258,6 +264,9 @@ public class ConnectionRESTServices
                                          isMergeUpdate,
                                          null,
                                          null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -265,6 +274,9 @@ public class ConnectionRESTServices
                     handler.setVendorProperties(userId,
                                                 connectionGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -329,6 +341,11 @@ public class ConnectionRESTServices
                                                    connectionGUIDParameterName,
                                                    connectorTypeGUID,
                                                    connectorTypeGUIDParameterName,
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -391,6 +408,9 @@ public class ConnectionRESTServices
                                                       connectionGUIDParameterName,
                                                       connectorTypeGUID,
                                                       connectorTypeGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
             }
             else
@@ -453,6 +473,11 @@ public class ConnectionRESTServices
                                               connectionGUIDParameterName,
                                               endpointGUID,
                                               endpointGUIDParameterName,
+                                              null,
+                                              null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
             }
             else
@@ -515,6 +540,9 @@ public class ConnectionRESTServices
                                                  connectionGUIDParameterName,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -580,6 +608,11 @@ public class ConnectionRESTServices
                                               requestBody.getArguments(),
                                               embeddedConnectionGUID,
                                               embeddedConnectionGUIDParameterName,
+                                              null,
+                                              null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
             }
             else
@@ -642,6 +675,9 @@ public class ConnectionRESTServices
                                                  connectionGUIDParameterName,
                                                  embeddedConnectionGUID,
                                                  embeddedConnectionGUIDParameterName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -705,6 +741,11 @@ public class ConnectionRESTServices
                                              assetGUID,
                                              assetGUIDParameterName,
                                              requestBody.getAssetSummary(),
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -767,6 +808,9 @@ public class ConnectionRESTServices
                                                 connectionGUIDParameterName,
                                                 assetGUID,
                                                 assetGUIDParameterName,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
             }
             else
@@ -825,6 +869,9 @@ public class ConnectionRESTServices
                                          requestBody.getExternalSourceName(),
                                          connectionGUID,
                                          connectionGUIDParameterName,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -885,6 +932,8 @@ public class ConnectionRESTServices
                                                                               searchStringParameterName,
                                                                               startFrom,
                                                                               pageSize,
+                                                                              false,
+                                                                              false,
                                                                               new Date(),
                                                                               methodName);
 
@@ -948,6 +997,8 @@ public class ConnectionRESTServices
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   false,
+                                                                                   false,
                                                                                    new Date(),
                                                                                    methodName);
 
@@ -1002,6 +1053,8 @@ public class ConnectionRESTServices
             ConnectionElement connection = handler.getConnectionByGUID(userId,
                                                                        guid,
                                                                        guidParameterName,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -1067,11 +1120,20 @@ public class ConnectionRESTServices
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getTypeName(),
                                                              requestBody.getExtendedProperties(),
+                                                             null,
+                                                             null,
+                                                             new Date(),
                                                              methodName);
 
                 if (endpointGUID != null)
                 {
-                    handler.setVendorProperties(userId, endpointGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                endpointGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
                 }
 
                 response.setGUID(endpointGUID);
@@ -1202,6 +1264,9 @@ public class ConnectionRESTServices
                                        isMergeUpdate,
                                        null,
                                        null,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1209,6 +1274,9 @@ public class ConnectionRESTServices
                     handler.setVendorProperties(userId,
                                                 endpointGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -1267,6 +1335,9 @@ public class ConnectionRESTServices
                                        requestBody.getExternalSourceName(),
                                        endpointGUID,
                                        endpointGUIDParameterName,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
             }
             else
@@ -1327,6 +1398,8 @@ public class ConnectionRESTServices
                                                                        searchStringParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -1391,6 +1464,8 @@ public class ConnectionRESTServices
                                                                             nameParameterName,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            false,
+                                                                            false,
                                                                             new Date(),
                                                                             methodName);
 
@@ -1442,7 +1517,13 @@ public class ConnectionRESTServices
 
             EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
 
-            EndpointElement element = handler.getEndpointByGUID(userId, guid, endpointGUIDParameterName, methodName);
+            EndpointElement element = handler.getEndpointByGUID(userId,
+                                                                guid,
+                                                                endpointGUIDParameterName,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
@@ -1506,6 +1587,9 @@ public class ConnectionRESTServices
                                                                                  searchStringParameterName,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
                                                                                  methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -1568,6 +1652,9 @@ public class ConnectionRESTServices
                                                                                       nameParameterName,
                                                                                       startFrom,
                                                                                       pageSize,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
                                                                                       methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -1618,7 +1705,13 @@ public class ConnectionRESTServices
 
             ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
 
-            ConnectorTypeElement element = handler.getConnectorTypeByGUID(userId, guid, connectorTypeGUIDParameterName, methodName);
+            ConnectorTypeElement element = handler.getConnectorTypeByGUID(userId,
+                                                                          guid,
+                                                                          connectorTypeGUIDParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
@@ -1699,6 +1792,9 @@ public class ConnectionRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -1774,6 +1870,9 @@ public class ConnectionRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -1847,6 +1946,9 @@ public class ConnectionRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 

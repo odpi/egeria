@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -413,6 +413,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-engine-proxy-services-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Spring for REST APIs -->
 
         <dependency>
@@ -757,6 +763,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>data-engine-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>data-engine-proxy-services-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

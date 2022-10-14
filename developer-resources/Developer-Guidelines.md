@@ -185,15 +185,15 @@ Modules should ensure they include some FVTs as they move to from development to
 technical preview.  By the time the module is moving to released function, the
 FVTs should be able to validate that this function is stable and correct.
 (Details of the development phases are defined on the 
-[Content Status](../open-metadata-publication/website/content-status) page.)
+[Content Status](https://egeria-project.org/release-notes/content-status/) page.)
 
 Some connectors are tested via the [Conformance Test Suite](../open-metadata-conformance-suite).
 If you deliver a connector that is covered by this test suite, you should run the tests before
 merging changes into master.  The conformance test suite is also
 run as part of the release process.
 
-Egeria's [hands on labs](../open-metadata-resources/open-metadata-labs)
-provide a complex multi-server environment and are typically used
+Egeria's hands on labs
+provide a complex multiserver environment and are typically used
 by contributors to verify that their changes have not regressed any of the
 basic function.
 

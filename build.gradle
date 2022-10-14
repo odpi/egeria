@@ -19,9 +19,17 @@ buildscript {
  */
 
 plugins {
-        id "io.freefair.aggregate-javadoc" version "6.4.1"
-        id "io.freefair.lombok" version "6.4.1"
+        id "io.freefair.lombok" version "6.5.1"
+        id "io.freefair.aggregate-javadoc" version "6.5.1"
+        // Checks for unnecessary dependencies
+        id 'com.autonomousapps.dependency-analysis' version "1.13.1"
+        // helps resolve log implementation clashes
+        id 'dev.jacomet.logging-capabilities' version "0.10.0"
+        // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
+        id 'de.jjohannes.java-ecosystem-capabilities' version "0.5"
     }
+
+
 
 /*
  * Configuration for all projects - INCLUDING this one
@@ -30,12 +38,14 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.8-SNAPSHOT'
+    version = '3.13-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
     apply plugin: 'jacoco'
     //apply plugin: 'io.freefair.lombok'
+    apply plugin: 'de.jjohannes.java-ecosystem-capabilities'
+    apply plugin: 'dev.jacomet.logging-capabilities'
 
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
@@ -54,75 +64,86 @@ allprojects {
     // Assign variables for any constraints
 
     ext {
-        antlrVersion = '3.5.2'
-        avroVersion = '1.11.0'
-        classgraphVersion = '4.8.143'
+        antlrVersion = '3.5.3'
+        ST4Version = '4.3.4'
+        avroVersion = '1.11.1'
+        classgraphVersion = '4.8.149'
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
-        commonsconfiguration2Version = '2.7'
+        commonsconfiguration2Version = '2.8.0'
         commonsconfigurationVersion = '1.10'
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
-        commonstextVersion = '1.9'
-        elasticsearchVersion = '7.17.1'
+        commonstextVersion = '1.10.0'
+        commonscliVersion = '1.5.0'
+        elasticsearchVersion = '8.4.2'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
-        gremlinVersion = '3.5.1'
-        groovyVersion = '3.0.9'
+        gremlinVersion = '3.5.2'
+        groovyVersion = '3.0.10'
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '6.2.0.Final'
+        hibernatevalidatorVersion = '8.0.0.Final'
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
-        jacksonVersion = '2.13.1'
+        jacksonVersion = '2.13.3'
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
-        jakartapersistenceVersion = '2.2.3'
-        janusVersion = '0.6.1'
-	    jakartavalidationVersion = '3.0.1'
-        javassistVersion = '3.28.0-GA'
+        jakartapersistenceVersion = '3.1.0'
+	    jakartavalidationVersion = '3.0.2'
+        janusVersion = '0.6.2'
+        javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.10.14'
+        jodatimeVersion = '2.11.2'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
-        junitjupiterVersion = '5.8.2'
+        junitjupiterVersion = '5.9.1'
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
-        kafkaVersion = '3.1.0'
-        lang3Version='3.8.1'
+        kafkaVersion = '3.3.1'
+        lang3Version='3.12.0'
         logbackVersion = '1.2.11'
-        lettuceVersion = '6.1.8.RELEASE'
+        lettuceVersion = '6.2.0.RELEASE'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.75.Final'
-        mockitoVersion = '4.4.0'
-        openlineageVersion = '0.6.2'
-        ossVersion = '4.14.0'
-        plexusVersion = '3.4.1'
-        prometheusVersion = '1.8.4'
+        openlineageVersion = '0.14.1'
+        ossVersion = '4.15.0'
+        mockitoVersion = '4.8.0'
+        nettyVersion = '4.1.82.Final'
+        plexusVersion = '3.4.2'
+        prometheusVersion = '1.9.4'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
+        snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
-        snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
-        springbootVersion = '2.6.6'
-        springdataVersion = '2.6.3'
-        spotbugsVersion = '4.6.0'
-        springdocVersion = '1.6.6'
-        springldapVersion = '2.3.5.RELEASE'
-        springsecurityVersion = '5.6.2'
-        swaggerVersion = '2.1.13'
-        springwebVersion = '5.3.18'
-        testngVersion = '7.5'
-        thriftVersion = '0.16.0'
-        tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.62'
+        spotbugsVersion = '4.7.2'
+        springdocVersion = '1.6.11'
+        springbootVersion = '2.7.4'
+        springdataVersion = '2.7.3'
+        springldapVersion = '2.4.1'
+        swaggerVersion = '2.2.3'
+        springsecurityVersion = '5.7.3'
+        testngVersion = '7.6.1'
+        thriftVersion = '0.17.0'
+        springwebVersion = '5.3.23'
+        tinkVersion = '1.7.0'
+        tomcatVersion = '9.0.67'
         validationVersion = '2.0.1.Final'
+        antVersion = '1.10.12'
+        gsonVersion = '2.9.1'
+        protobufVersion = '3.21.7'
+        jnrVersion = '3.1.15'
+        cassandraVersion = '4.0.6'
+        osgiVersion = '8.0.0'
+        log4jVersion = '2.19.0'
+        jacksonjdk8Version = '2.13.4'
+        reactivestreamsVersion = '1.0.4'
     }
 
     dependencies {
@@ -145,6 +166,7 @@ allprojects {
             implementation("com.sleepycat:je:${sleepycatVersion}")
             implementation("commons-codec:commons-codec:${commonscodecVersion}")
             implementation("commons-io:commons-io:${commonsioVersion}")
+            implementation("commons-cli:commons-cli:${commonscliVersion}")
             implementation("commons-logging:commons-logging:${commonsloggingVersion}")
             implementation("org.apache.commons:commons-text:${commonstextVersion}")
             implementation("io.github.classgraph:classgraph:${classgraphVersion}")
@@ -234,12 +256,23 @@ allprojects {
 	        implementation("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
 	        implementation("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
             implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
+            implementation("org.apache.thrift:libthrift:${thriftVersion}")
+            implementation("org.apache.cassandra:cassandra-all:${cassandraVersion}")
+            implementation("org.apache.ant:ant:${antVersion}")
+            implementation("com.google.protobuf:protobuf-java:${protobufVersion}")
+            implementation("com.google.code.gson:gson:${gsonVersion}")
+            implementation("com.github.jnr:jnr-posix:${jnrVersion}")
+            implementation("org.osgi:org.osgi.core:${osgiVersion}")
+            implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+            implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
+            implementation("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
             runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
             implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
             runtimeOnly("org.antlr:antlr-runtime:${antlrVersion}")
+            runtimeOnly("org.antlr:ST4:${ST4Version}")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
@@ -257,19 +290,34 @@ allprojects {
             testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-platform-runner:${junitplatformVersion}")
             testImplementation("org.junit.jupiter:junit-platform-suite-api:${junitplatformVersion}")
+            testImplementation("org.junit.vintage:junit-vintage-engine:${junitplatformVersion}")
             testImplementation("org.mockito:mockito-core:${mockitoVersion}")
             testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
             testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
             testImplementation("org.slf4j:slf4j-simple:${slf4jVersion}")
             testImplementation("org.testng:testng:${testngVersion}")
             testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
-            implementation("org.apache.thrift:libthrift:${thriftVersion}")
         }
     }
 
     java {
         withSourcesJar()
         withJavadocJar()
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
+    }
+
+    // Allow for tests to be run in all projects
+    test {
+        useJUnitPlatform()
+    }
+    dependencies {
+        testImplementation("junit:junit")
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     }
 
     publishing {
@@ -284,7 +332,9 @@ allprojects {
         options.encoding = 'UTF-8'
         sourceCompatibility = "11"
         targetCompatibility = "11"
+        options.compilerArgs << "-Xlint:all"
     }
+
 
 
     // Tasks to help in finding dependency chains
@@ -293,19 +343,48 @@ allprojects {
     task findDependency(type: DependencyInsightReportTask) {}
 
     // Whilst all modules have their own javadoc, we only build
-    // an aggregate for the client and API modules
+    // an aggregate for the client and API modules plus the REST calls
     javadoc {
-        include ( "**/*api/**/*.java" )
-        include ( "**/*client/**/*.java" )
-        include ( "**/*framework/**/*.java" )
-        // See 6148 - additional refinements
-        include ( "**/accessservices/dataengine/**/*.java" )
-        exclude ( "**/accessservices/dataengine/server/**/*.java" )
-        exclude ( "**/accessservices/**/connectors/**/*.java" )
-        exclude ( "**/fvt/client/**/*.java" )
-        exclude ( "**/userinterface/**/*.java" )
+        include ( "**/api/*.java" )
+        include ( "**/client/*.java" )
+        include ( "**/clients/*.java" )
+        include ( "**/properties/*.java" )
+        include ( "**/metadataelements/*.java" )
+        include ( "**/metadataelement/*.java" )
+        include ( "**/events/*.java" )
+        include ( "**/rest/*.java" )
+        include ( "**/exceptions/*.java" )
+        include ( "**/beans/*.java" )
+        include ( "**/ffdc/*.java" )
+        include ( "**/configuration/*.java" )
+        include ( "**/configuration/registration/*.java" )
+        include ( "**/store/*.java" )
+        include ( "**/connectors/*.java" )
+        include ( "**/adminservices/*.java" )
+        include ( "**/connector/*.java" )
+        include ( "**/frameworks/*.java" )
+        include ( "**/context/*.java" )
+        include ( "**/contextmanager/*.java" )
+        include ( "**/graph/*.java" )
+        include ( "**/model/*.java" )
+        include ( "**/auditlog/*.java" )
+        include ( "**/omrstopic/*.java" )
+        include ( "**/openmetadatatopic/*.java" )
+        include ( "**/archivestore/*.java" )
+        include ( "**/auditlogstore/*.java" )
+        include ( "**/cohortregistrystore/*.java" )
+        include ( "**/repositoryconnector/*.java" )
+        include ( "**/repositoryeventmapper/*.java" )
+        include ( "**/metadatacollectionstore/*.java" )
+        include ( "**/metadatacollectionstore/instances/*.java" )
+        include ( "**/metadatacollectionstore/typedefs/*.java" )
+        include ( "**/metadatacollectionstore/search/*.java" )
+        include ( "**/metadatacollectionstore/utilities/*.java" )
+        include ( "**/archiveutilities/*.java" )
+        include ( "**/metadatasecurity/*.java" )
+        include ( "**/spring/*.java" )
+        include ( "**/frameworks/**/*.java" )
     }
-
 }
 
 /*
@@ -344,3 +423,20 @@ task codeCoverageReport(type: JacocoReport) {
 codeCoverageReport.dependsOn {
     subprojects*.test
 }
+
+// Dependency checking - see https://github.com/autonomousapps/dependency-analysis-android-gradle-plugin
+dependencyAnalysis {
+    issues {
+        all {
+            onAny {
+                severity('fail')
+            }
+            onUnusedDependencies {
+                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api", "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations")
+            }
+        }
+    }
+}
+
+// Always run dependency check
+build.dependsOn("buildHealth")

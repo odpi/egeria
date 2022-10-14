@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DatabasePrimaryKeyProperties implements Serializable
+public class DatabasePrimaryKeyProperties extends ClassificationProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -45,6 +44,8 @@ public class DatabasePrimaryKeyProperties implements Serializable
      */
     public DatabasePrimaryKeyProperties(DatabasePrimaryKeyProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             name             = template.getName();
@@ -106,9 +107,12 @@ public class DatabasePrimaryKeyProperties implements Serializable
     public String toString()
     {
         return "DatabasePrimaryKeyProperties{" +
-                "name='" + name + '\'' +
-                ", keyPattern=" + keyPattern +
-                '}';
+                       "effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", name='" + name + '\'' +
+                       ", keyPattern=" + keyPattern +
+                       '}';
     }
 
 
@@ -125,24 +129,27 @@ public class DatabasePrimaryKeyProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof DatabasePrimaryKeyProperties))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         DatabasePrimaryKeyProperties that = (DatabasePrimaryKeyProperties) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                keyPattern == that.keyPattern;
+        return Objects.equals(name, that.name) && keyPattern == that.keyPattern;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, keyPattern);
+        return Objects.hash(super.hashCode(), name, keyPattern);
     }
 }

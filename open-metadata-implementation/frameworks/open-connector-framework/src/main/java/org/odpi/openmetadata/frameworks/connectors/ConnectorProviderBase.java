@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * ConnectorProviderBase is a base class for a connector provider.  It manages all of the class loading
+ * ConnectorProviderBase is a base class for a connector provider.  It manages all the class loading
  * for subclass implementations of the connector provider along with the generation of new connector guids.
  *
  * ConnectorProviderBase creates a connector instance with the class name from the private variable called
@@ -199,7 +199,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param connection   connection that should have all of the properties needed by the Connector Provider
+     * @param connection   connection that should have all the properties needed by the Connector Provider
      *                     to create a connector instance.
      * @return Connector   instance of the connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection

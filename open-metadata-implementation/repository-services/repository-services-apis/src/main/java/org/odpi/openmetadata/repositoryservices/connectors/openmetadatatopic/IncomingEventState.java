@@ -15,5 +15,5 @@ public enum IncomingEventState
     /**
      * The event has been distributed to all topic listeners.
      */
-    DISTRIBUTED_TO_ALL_TOPIC_LISTENERS;
+    DISTRIBUTED_TO_ALL_TOPIC_LISTENERS
 }

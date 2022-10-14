@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.accessservices.digitalservice.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalService;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DigitalServiceOMASAPIRequestBody provides a common header for DigitalService OMAS request bodies for its REST API.
+ * DigitalServiceOMASAPIRequestBody provides a common header for DigitalServiceProperties OMAS request bodies for its REST API.
  *
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonSubTypes(
         {
-        @JsonSubTypes.Type(value = DigitalService.class, name = "DigitalService")
+        @JsonSubTypes.Type(value = DigitalServiceProperties.class, name = "DigitalServiceProperties")
         })
 public abstract class DigitalServiceOMASAPIRequestBody implements java.io.Serializable
 {

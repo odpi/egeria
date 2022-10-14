@@ -100,6 +100,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
             archiveName = template.getArchiveName();
             archiveDescription = template.getArchiveDescription();
             archiveType = template.getArchiveType();
+            archiveVersion = template.getArchiveVersion();
             originatorName = template.getOriginatorName();
             originatorOrganization = template.getOriginatorOrganization();
             originatorLicense = template.getOriginatorLicense();

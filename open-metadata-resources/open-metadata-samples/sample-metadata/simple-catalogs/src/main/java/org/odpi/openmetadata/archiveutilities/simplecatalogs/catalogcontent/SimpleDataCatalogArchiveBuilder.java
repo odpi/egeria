@@ -4,23 +4,26 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
-import org.odpi.openmetadata.archiveutilities.catalogbuilder.CatalogTypesArchiveBuilder;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * SimpleDataCatalogArchiveBuilder provides data source metadata.
  */
-public class SimpleDataCatalogArchiveBuilder extends CatalogTypesArchiveBuilder
+public class SimpleDataCatalogArchiveBuilder
 {
     /*
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "2216ab62-176a-46c0-b889-9aa081754b54";
-    private static final String                  archiveRootName    = "SimpleDataCatalog";
-    private static final String                  archiveName        = "Simple Data Catalog";
+    private static final String                  archiveName        = "SimpleDataCatalog";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Sample metadata showing data sources and their schemas.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
@@ -83,115 +86,135 @@ public class SimpleDataCatalogArchiveBuilder extends CatalogTypesArchiveBuilder
     private static final long   versionNumber = 1L;
     private static final String versionName   = "1.0";
 
+    private final OMRSArchiveBuilder         archiveBuilder;
+    private final SimpleCatalogArchiveHelper archiveHelper;
 
     /**
      * Constructor pushes all archive header values to the superclass
+     *
+     * @param archiveRootName common name for the guid map
      */
-    public SimpleDataCatalogArchiveBuilder()
+    public SimpleDataCatalogArchiveBuilder(String archiveRootName)
     {
-        super(archiveGUID,
-              archiveName,
-              archiveDescription,
-              archiveType,
-              archiveRootName,
-              originatorName,
-              archiveLicense,
-              creationDate,
-              versionNumber,
-              versionName,
-              null);
+        List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
+
+        /*
+         * This value allows the archive to be based on the existing open metadata types
+         */
+        dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
+
+        this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
+                                                     archiveName,
+                                                     archiveDescription,
+                                                     archiveType,
+                                                     originatorName,
+                                                     archiveLicense,
+                                                     creationDate,
+                                                     dependentOpenMetadataArchives);
+
+        this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
+                                                            archiveGUID,
+                                                            archiveRootName,
+                                                            originatorName,
+                                                            creationDate,
+                                                            versionNumber,
+                                                            versionName);
     }
 
 
     /**
-     * Returns the open metadata type archive containing all of the elements extracted from the connector
+     * Returns the open metadata type archive containing all the elements extracted from the connector
      * providers of the featured open connectors.
      *
      * @return populated open metadata archive object
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
-        String databaseGUID = super.addAsset(databaseAssetTypeName,
-                                             branchQualifiedName,
-                                             branchDisplayName,
-                                             branchDescription,
-                                            null);
+        String databaseGUID = archiveHelper.addAsset(databaseAssetTypeName,
+                                                     branchQualifiedName,
+                                                     branchDisplayName,
+                                                     branchDescription,
+                                                     null,
+                                                     null);
 
-        String databaseSchemaGUID = super.addAsset(databaseSchemaAssetTypeName,
-                                                   retailSchemaQualifiedName,
-                                                   retailSchemaDisplayName,
-                                                   retailSchemaDescription,
-                                             null);
+        String databaseSchemaGUID = archiveHelper.addAsset(databaseSchemaAssetTypeName,
+                                                           retailSchemaQualifiedName,
+                                                           retailSchemaDisplayName,
+                                                           retailSchemaDescription,
+                                                           null,
+                                                           null);
 
-        super.addDataContentForDataSet(databaseGUID, databaseSchemaGUID);
+        archiveHelper.addDataContentForDataSet(databaseGUID, databaseSchemaGUID, null, null);
 
-        String topLevelSchemaTypeGUID = super.addTopLevelSchemaType(databaseSchemaGUID,
-                                                                    relationalTopLevelSchemaTypeName,
-                                                                    retailSchemaQualifiedName + "_schema_detail",
-                                                                    retailSchemaDisplayName + " Schema Detail",
-                                                                    null,
-                                                                    null);
+        String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(databaseSchemaGUID,
+                                                                            relationalTopLevelSchemaTypeName,
+                                                                            retailSchemaQualifiedName + "_schema_detail",
+                                                                            retailSchemaDisplayName + " Schema Detail",
+                                                                            null,
+                                                                            null);
 
-        String relationalTableGUID = super.addSchemaAttribute(relationalTableTypeName,
-                                                              relationalTableSchemaTypeName,
-                                                              customerTableQualifiedName,
-                                                              customerTableDisplayName,
-                                                              customerTableDescription,
-                                                              null,
-                                                              0,
-                                                              0,
-                                                              null);
+        String relationalTableGUID = archiveHelper.addSchemaAttribute(relationalTableTypeName,
+                                                                      relationalTableSchemaTypeName,
+                                                                      customerTableQualifiedName,
+                                                                      customerTableDisplayName,
+                                                                      customerTableDescription,
+                                                                      null,
+                                                                      0,
+                                                                      0,
+                                                                      null);
 
-        super.addAttributeForSchemaType(topLevelSchemaTypeGUID, relationalTableGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, relationalTableGUID);
 
-        String relationalColumnGUID = super.addSchemaAttribute(relationalColumnTypeName,
-                                                               null,
-                                                               customerIdQualifiedName,
-                                                               customerIdDisplayName,
-                                                               customerIdDescription,
-                                                               customerIdDataType,
-                                                               customerIdLength,
-                                                               0,
-                                                               null);
+        String relationalColumnGUID = archiveHelper.addSchemaAttribute(relationalColumnTypeName,
+                                                                       null,
+                                                                       customerIdQualifiedName,
+                                                                       customerIdDisplayName,
+                                                                       customerIdDescription,
+                                                                       customerIdDataType,
+                                                                       customerIdLength,
+                                                                       0,
+                                                                       null);
 
-        super.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
 
-        relationalColumnGUID = super.addSchemaAttribute(relationalColumnTypeName,
-                                                        null,
-                                                        customerNameQualifiedName,
-                                                        customerNameDisplayName,
-                                                        customerNameDescription,
-                                                        customerNameDataType,
-                                                        customerNameLength,
-                                                        1,
-                                                        null);
+        relationalColumnGUID = archiveHelper.addSchemaAttribute(relationalColumnTypeName,
+                                                                null,
+                                                                customerNameQualifiedName,
+                                                                customerNameDisplayName,
+                                                                customerNameDescription,
+                                                                customerNameDataType,
+                                                                customerNameLength,
+                                                                1,
+                                                                null);
 
-        super.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
 
-        relationalColumnGUID = super.addSchemaAttribute(relationalColumnTypeName,
-                                                        null,
-                                                        customerStatusQualifiedName,
-                                                        customerStatusDisplayName,
-                                                        customerStatusDescription,
-                                                        customerStatusDataType,
-                                                        customerStatusLength,
-                                                        2,
-                                                        null);
+        relationalColumnGUID = archiveHelper.addSchemaAttribute(relationalColumnTypeName,
+                                                                null,
+                                                                customerStatusQualifiedName,
+                                                                customerStatusDisplayName,
+                                                                customerStatusDescription,
+                                                                customerStatusDataType,
+                                                                customerStatusLength,
+                                                                2,
+                                                                null);
 
-        super.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
 
-        relationalColumnGUID = super.addSchemaAttribute(relationalColumnTypeName,
-                                                        null,
-                                                        customerCardIdQualifiedName,
-                                                        customerCardIdDisplayName,
-                                                        customerCardIdDescription,
-                                                        customerCardIdDataType,
-                                                        customerCardIdLength,
-                                                        3,
-                                                        null);
+        relationalColumnGUID = archiveHelper.addSchemaAttribute(relationalColumnTypeName,
+                                                                null,
+                                                                customerCardIdQualifiedName,
+                                                                customerCardIdDisplayName,
+                                                                customerCardIdDescription,
+                                                                customerCardIdDataType,
+                                                                customerCardIdLength,
+                                                                3,
+                                                                null);
 
-        super.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
 
-        return super.getOpenMetadataArchive();
+        archiveHelper.saveGUIDs();
+
+        return archiveBuilder.getOpenMetadataArchive();
     }
 }

@@ -10,7 +10,7 @@ metadata interfaces defined in the
 
 Specifically, the Discovery Engine OMAS 
 provides
-an [out topic](../../docs/concepts/client-server/out-topic.md)
+an [out topic](https://egeria-project.org/concepts/out-topic)
 used to keep the Discovery Engine OMAS's client (typically a Discovery Server)
 up-to-date with configuration changes.
 

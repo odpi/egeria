@@ -17,6 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -35,6 +37,7 @@ public class GlossaryFVT {
     private String serverName = null;
     private String userId = null;
     private int existingGlossaryCount = 0;
+    private static Logger log = LoggerFactory.getLogger(GlossaryFVT.class);
 
     /*
      * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
@@ -52,7 +55,9 @@ public class GlossaryFVT {
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
         existingGlossaryCount = findGlossaries("").size();
-        System.out.println("existingGlossaryCount " + existingGlossaryCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingGlossaryCount " + existingGlossaryCount);
+        }
     }
 
     public static void runWith2Servers(String url) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
@@ -67,23 +72,23 @@ public class GlossaryFVT {
         } catch (IOException e1) {
             System.out.println("Error getting user input");
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         }
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
         try
         {
-            System.out.println("GlossaryFVT runIt started " + serverName + " and " + userId);
+            System.out.println("GlossaryFVT runIt started ");
             GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
             fvt.run();
             fvt.deleteRemainingGlossaries();
             System.out.println("GlossaryFVT runIt finished");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -100,7 +105,9 @@ public class GlossaryFVT {
             initialGlossaryCount = initialGlossaryState.size();
         }
 
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
         Glossary glossary2 = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
@@ -112,29 +119,45 @@ public class GlossaryFVT {
         }
         Glossary glossaryForUpdate = new Glossary();
         glossaryForUpdate.setName(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME3);
-        System.out.println("Get the glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the glossary");
+        }
         String guid = glossary.getSystemAttributes().getGUID();
         Glossary gotGlossary = getGlossaryByGUID(guid);
-        System.out.println("Update the glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Update the glossary");
+        }
         Glossary updatedGlossary = updateGlossary(guid, glossaryForUpdate);
         FVTUtils.validateNode(updatedGlossary);
-        System.out.println("Get the glossary again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the glossary again");
+        }
         gotGlossary = getGlossaryByGUID(guid);
         FVTUtils.validateNode(gotGlossary);
-        System.out.println("Delete the glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the glossary");
+        }
         deleteGlossary(guid);
         //FVTUtils.validateNode(gotGlossary);
-        System.out.println("restore the glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("restore the glossary");
+        }
         gotGlossary = restoreGlossary(guid);
         FVTUtils.validateNode(gotGlossary);
-        System.out.println("Delete the glossary again");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the glossary again");
+        }
         deleteGlossary(guid);
         //FVTUtils.validateNode(gotGlossary);
-        System.out.println("Create glossary with the same name as a deleted one");
+        if (log.isDebugEnabled()) {
+            log.debug("Create glossary with the same name as a deleted one");
+        }
         glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
 
-        System.out.println("create glossaries to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create glossaries to find");
+        }
         Glossary glossaryForFind1 = getGlossaryForInput("qrs");
         glossaryForFind1.setQualifiedName("yyy");
         glossaryForFind1 = issueCreateGlossary(glossaryForFind1);
@@ -241,7 +264,9 @@ public class GlossaryFVT {
 
         if (newGlossary != null) {
             String guid = newGlossary.getSystemAttributes().getGUID();
-            System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Created Glossary " + newGlossary.getName() + " with userId " + guid);
+            }
             createdGlossariesSet.add(guid);
         }
         return newGlossary;
@@ -267,7 +292,9 @@ public class GlossaryFVT {
         glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
-        System.out.println("Created Glossary " + newGlossary.getName() + " with GUID " + newGlossary.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Glossary " + newGlossary.getName() + " with GUID " + newGlossary.getSystemAttributes().getGUID());
+        }
 
         return newGlossary;
     }
@@ -300,7 +327,9 @@ public class GlossaryFVT {
         glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
-        System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
+        }
         return newGlossary;
     }
 
@@ -314,7 +343,9 @@ public class GlossaryFVT {
     public Glossary getGlossaryByGUID(String guid) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = glossaryAuthorViewGlossaryClient.getByGUID(this.userId, guid);
         FVTUtils.validateNode(glossary);
-        System.out.println("Got Glossary " + glossary.getName() + " with userId " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
+        if (log.isDebugEnabled()) {
+            log.debug("Got Glossary " + glossary.getName() + " with userId " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
+        }
         return glossary;
     }
 
@@ -322,21 +353,27 @@ public class GlossaryFVT {
         boolean isReplace = true;
         Glossary updatedGlossary = glossaryAuthorViewGlossaryClient.update(this.userId, guid, glossary, isReplace);
         FVTUtils.validateNode(updatedGlossary);
-        System.out.println("Updated Glossary name to " + updatedGlossary.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Glossary name to " + updatedGlossary.getName());
+        }
         return updatedGlossary;
     }
 
     public void deleteGlossary(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
             glossaryAuthorViewGlossaryClient.delete(this.userId, guid);
             createdGlossariesSet.remove(guid);
-            System.out.println("Delete succeeded");
+            if (log.isDebugEnabled()) {
+                log.debug("Delete succeeded");
+            }
     }
 
     public Glossary restoreGlossary(String guid) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary restoredGlossary = glossaryAuthorViewGlossaryClient.restore(this.userId, guid);
         FVTUtils.validateNode(restoredGlossary);
         createdGlossariesSet.add(restoredGlossary.getSystemAttributes().getGUID());
-        System.out.println("Restored Glossary name is " + restoredGlossary.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Glossary name is " + restoredGlossary.getName());
+        }
         return restoredGlossary;
     }
 

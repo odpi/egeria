@@ -64,7 +64,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     private void throwException(BasicFileConnectorErrorCode errorCode,
                                 String                      methodName,
                                 String                      fileStoreName,
-                                Throwable                   caughtException) throws FileException
+                                Exception                   caughtException) throws FileException
     {
         ExceptionMessageDefinition messageDefinition;
 

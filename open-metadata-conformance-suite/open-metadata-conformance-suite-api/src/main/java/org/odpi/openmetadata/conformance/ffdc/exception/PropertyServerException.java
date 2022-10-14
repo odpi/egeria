@@ -48,7 +48,7 @@ public class PropertyServerException extends ConformanceSuiteCheckedExceptionBas
                                    String    errorMessage,
                                    String    systemAction,
                                    String    userAction,
-                                   Throwable caughtError)
+                                   Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

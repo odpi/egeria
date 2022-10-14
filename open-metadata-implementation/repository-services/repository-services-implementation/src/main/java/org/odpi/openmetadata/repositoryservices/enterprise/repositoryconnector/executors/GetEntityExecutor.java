@@ -16,7 +16,8 @@ import java.util.List;
  */
 public abstract class GetEntityExecutor extends RepositoryExecutorBase
 {
-    private   ClassificationAccumulator accumulator;
+    private   final ClassificationAccumulator accumulator;
+
     protected String                    entityGUID;
 
 

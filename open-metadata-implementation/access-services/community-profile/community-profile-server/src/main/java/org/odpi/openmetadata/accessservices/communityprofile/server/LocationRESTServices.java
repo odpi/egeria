@@ -3,19 +3,26 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.DigitalLocationRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.FixedLocationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.DigitalLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationsResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecureLocationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.SecureLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
@@ -23,7 +30,6 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +38,10 @@ import java.util.List;
  */
 public class LocationRESTServices
 {
-    private static CommunityProfileInstanceHandler   instanceHandler     = new CommunityProfileInstanceHandler();
-    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LocationRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final CommunityProfileInstanceHandler   instanceHandler     = new CommunityProfileInstanceHandler();
+    private static final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LocationRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
     /**
@@ -59,15 +65,15 @@ public class LocationRESTServices
      *
      * @param serverName name of calling server
      * @param userId             calling user
-     * @param locationProperties properties to store
+     * @param requestBody properties to store
      * @return unique identifier of the new metadata element
      * InvalidParameterException one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public GUIDResponse createLocation(String             serverName,
-                                       String             userId,
-                                       LocationProperties locationProperties)
+    public GUIDResponse createLocation(String                   serverName,
+                                       String                   userId,
+                                       ReferenceableRequestBody requestBody)
     {
         final String methodName = "createLocation";
 
@@ -80,20 +86,33 @@ public class LocationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (locationProperties != null)
+            if (requestBody != null)
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createLocation(userId,
-                                                        locationProperties.getQualifiedName(),
-                                                        locationProperties.getDisplayName(),
-                                                        locationProperties.getDescription(),
-                                                        locationProperties.getAdditionalProperties(),
-                                                        locationProperties.getTypeName(),
-                                                        locationProperties.getExtendedProperties(),
-                                                        null,
-                                                        null,
-                                                        methodName));
+                if (requestBody.getProperties() instanceof LocationProperties)
+                {
+                    LocationProperties locationProperties = (LocationProperties)requestBody.getProperties();
+
+                    response.setGUID(handler.createLocation(userId,
+                                                            requestBody.getExternalSourceGUID(),
+                                                            requestBody.getExternalSourceName(),
+                                                            locationProperties.getQualifiedName(),
+                                                            locationProperties.getIdentifier(),
+                                                            locationProperties.getDisplayName(),
+                                                            locationProperties.getDescription(),
+                                                            locationProperties.getAdditionalProperties(),
+                                                            locationProperties.getTypeName(),
+                                                            locationProperties.getExtendedProperties(),
+                                                            locationProperties.getEffectiveFrom(),
+                                                            locationProperties.getEffectiveTo(),
+                                                            new Date(),
+                                                            methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LocationProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -117,16 +136,16 @@ public class LocationRESTServices
      * @param serverName name of calling server
      * @param userId             calling user
      * @param templateGUID       unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      * @return unique identifier of the new metadata element
      * InvalidParameterException one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public GUIDResponse createLocationFromTemplate(String             serverName,
-                                                   String             userId,
-                                                   String             templateGUID,
-                                                   TemplateProperties templateProperties)
+    public GUIDResponse createLocationFromTemplate(String              serverName,
+                                                   String              userId,
+                                                   String              templateGUID,
+                                                   TemplateRequestBody requestBody)
     {
         final String methodName = "createLocationFromTemplate";
 
@@ -139,15 +158,18 @@ public class LocationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (templateProperties != null)
+            if (requestBody != null)
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createLocationFromTemplate(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
                                                                     templateGUID,
-                                                                    templateProperties.getQualifiedName(),
-                                                                    templateProperties.getDisplayName(),
-                                                                    templateProperties.getDescription(),
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getIdentifier(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
                                                                     methodName));
             }
             else
@@ -172,17 +194,17 @@ public class LocationRESTServices
      * @param userId             calling user
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationGUID       unique identifier of the metadata element to update
-     * @param locationProperties new properties for this element
+     * @param requestBody new properties for this element
      * @return void or
      * InvalidParameterException one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public VoidResponse updateLocation(String             serverName,
-                                       String             userId,
-                                       String             locationGUID,
-                                       boolean            isMergeUpdate,
-                                       LocationProperties locationProperties)
+    public VoidResponse updateLocation(String                   serverName,
+                                       String                   userId,
+                                       String                   locationGUID,
+                                       boolean                  isMergeUpdate,
+                                       ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateLocation";
         final String guidParameter = "locationGUID";
@@ -196,23 +218,38 @@ public class LocationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (locationProperties != null)
-            {
-                LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                handler.updateLocation(userId,
-                                       locationGUID,
-                                       guidParameter,
-                                       locationProperties.getQualifiedName(),
-                                       locationProperties.getDisplayName(),
-                                       locationProperties.getDescription(),
-                                       locationProperties.getAdditionalProperties(),
-                                       locationProperties.getTypeName(),
-                                       locationProperties.getExtendedProperties(),
-                                       isMergeUpdate,
-                                       null,
-                                       null,
-                                       methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LocationProperties)
+                {
+                    LocationProperties locationProperties = (LocationProperties) requestBody.getProperties();
+
+                    handler.updateLocation(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           locationGUID,
+                                           guidParameter,
+                                           locationProperties.getQualifiedName(),
+                                           locationProperties.getIdentifier(),
+                                           locationProperties.getDisplayName(),
+                                           locationProperties.getDescription(),
+                                           locationProperties.getAdditionalProperties(),
+                                           locationProperties.getTypeName(),
+                                           locationProperties.getExtendedProperties(),
+                                           isMergeUpdate,
+                                           locationProperties.getEffectiveFrom(),
+                                           locationProperties.getEffectiveTo(),
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LocationProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -242,10 +279,10 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public VoidResponse setLocationAsFixedPhysical(String                   serverName,
-                                                   String                   userId,
-                                                   String                   locationGUID,
-                                                   FixedLocationRequestBody requestBody)
+    public VoidResponse setLocationAsFixedPhysical(String                    serverName,
+                                                   String                    userId,
+                                                   String                    locationGUID,
+                                                   ClassificationRequestBody requestBody)
     {
         final String methodName = "setLocationAsFixedPhysical";
         final String locationGUIDParameter = "locationGUID";
@@ -263,14 +300,30 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                handler.addFixedLocationClassification(userId,
-                                                       locationGUID,
-                                                       locationGUIDParameter,
-                                                       requestBody.getCoordinates(),
-                                                       requestBody.getMapProjection(),
-                                                       requestBody.getPostalAddress(),
-                                                       requestBody.getTimeZone(),
-                                                       methodName);
+                if (requestBody.getProperties() instanceof FixedLocationProperties)
+                {
+                    FixedLocationProperties properties = (FixedLocationProperties) requestBody.getProperties();
+
+                    handler.addFixedLocationClassification(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
+                                                           locationGUID,
+                                                           locationGUIDParameter,
+                                                           properties.getCoordinates(),
+                                                           properties.getMapProjection(),
+                                                           properties.getPostalAddress(),
+                                                           properties.getTimeZone(),
+                                                           properties.getEffectiveFrom(),
+                                                           properties.getEffectiveTo(),
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(FixedLocationProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -293,17 +346,16 @@ public class LocationRESTServices
      * @param serverName name of calling server
      * @param userId       calling user
      * @param locationGUID unique identifier of the metadata element to unclassify
-     * @param requestBody null request body
+     * @param requestBody  request body
      * @return void or
      * InvalidParameterException one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearLocationAsFixedPhysical(String          serverName,
-                                                     String          userId,
-                                                     String          locationGUID,
-                                                     NullRequestBody requestBody)
+    public VoidResponse clearLocationAsFixedPhysical(String                    serverName,
+                                                     String                    userId,
+                                                     String                    locationGUID,
+                                                     ExternalSourceRequestBody requestBody)
     {
         final String methodName = "clearLocationAsFixedPhysical";
         final String locationGUIDParameter = "locationGUID";
@@ -319,11 +371,30 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.removeFixedLocationClassification(userId,
-                                                      locationGUID,
-                                                      locationGUIDParameter,
-                                                      methodName);
-
+            if (requestBody == null)
+            {
+                handler.removeFixedLocationClassification(userId,
+                                                          null,
+                                                          null,
+                                                          locationGUID,
+                                                          locationGUIDParameter,
+                                                          false,
+                                                          false,
+                                                          new Date(),
+                                                          methodName);
+            }
+            else
+            {
+                handler.removeFixedLocationClassification(userId,
+                                                          requestBody.getExternalSourceGUID(),
+                                                          requestBody.getExternalSourceName(),
+                                                          locationGUID,
+                                                          locationGUIDParameter,
+                                                          false,
+                                                          false,
+                                                          new Date(),
+                                                          methodName);
+            }
         }
         catch (Exception error)
         {
@@ -350,7 +421,7 @@ public class LocationRESTServices
     public VoidResponse setLocationAsSecure(String                    serverName,
                                             String                    userId,
                                             String                    locationGUID,
-                                            SecureLocationRequestBody requestBody)
+                                            ClassificationRequestBody requestBody)
 
     {
         final String methodName = "setLocationAsSecure";
@@ -369,12 +440,27 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                handler.addSecureLocationClassification(userId,
-                                                        locationGUID,
-                                                        locationGUIDParameter,
-                                                        requestBody.getDescription(),
-                                                        requestBody.getLevel(),
-                                                        methodName);
+                if (requestBody.getProperties() instanceof  SecureLocationProperties)
+                {
+                    SecureLocationProperties properties = (SecureLocationProperties) requestBody.getProperties();
+                    handler.addSecureLocationClassification(userId,
+                                                            requestBody.getExternalSourceGUID(),
+                                                            requestBody.getExternalSourceName(),
+                                                            locationGUID,
+                                                            locationGUIDParameter,
+                                                            properties.getDescription(),
+                                                            properties.getLevel(),
+                                                            properties.getEffectiveFrom(),
+                                                            properties.getEffectiveTo(),
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SecureLocationProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -397,18 +483,17 @@ public class LocationRESTServices
      * @param serverName name of calling server
      * @param userId calling user
      * @param locationGUID unique identifier of the metadata element to unclassify
-     * @param requestBody null request body
+     * @param requestBody  request body
      *
      * @return void or
      * InvalidParameterException one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearLocationAsSecure(String          serverName,
-                                              String          userId,
-                                              String          locationGUID,
-                                              NullRequestBody requestBody)
+    public VoidResponse clearLocationAsSecure(String                    serverName,
+                                              String                    userId,
+                                              String                    locationGUID,
+                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName = "clearLocationAsSecure";
         final String locationGUIDParameter = "locationGUID";
@@ -424,10 +509,30 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.removeSecureLocationClassification(userId,
-                                                       locationGUID,
-                                                       locationGUIDParameter,
-                                                       methodName);
+            if (requestBody == null)
+            {
+                handler.removeSecureLocationClassification(userId,
+                                                           null,
+                                                           null,
+                                                           locationGUID,
+                                                           locationGUIDParameter,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName);
+            }
+            else
+            {
+                handler.removeSecureLocationClassification(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
+                                                           locationGUID,
+                                                           locationGUIDParameter,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName);
+            }
         }
         catch (Exception error)
         {
@@ -452,10 +557,10 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public VoidResponse setLocationAsDigital(String                     serverName,
-                                             String                     userId,
-                                             String                     locationGUID,
-                                             DigitalLocationRequestBody requestBody)
+    public VoidResponse setLocationAsDigital(String                    serverName,
+                                             String                    userId,
+                                             String                    locationGUID,
+                                             ClassificationRequestBody requestBody)
     {
         final String methodName = "setLocationAsDigital";
         final String locationGUIDParameter = "locationGUID";
@@ -473,11 +578,27 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                handler.addCyberLocationClassification(userId,
-                                                       locationGUID,
-                                                       locationGUIDParameter,
-                                                       requestBody.getNetworkAddress(),
-                                                       methodName);
+                if (requestBody.getProperties() instanceof DigitalLocationProperties)
+                {
+                    DigitalLocationProperties properties = (DigitalLocationProperties)requestBody.getProperties();
+
+                    handler.addCyberLocationClassification(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
+                                                           locationGUID,
+                                                           locationGUIDParameter,
+                                                           properties.getNetworkAddress(),
+                                                           properties.getEffectiveFrom(),
+                                                           properties.getEffectiveTo(),
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalLocationProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -507,11 +628,10 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearLocationAsDigital(String          serverName,
-                                               String          userId,
-                                               String          locationGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse clearLocationAsDigital(String                    serverName,
+                                               String                    userId,
+                                               String                    locationGUID,
+                                               ExternalSourceRequestBody requestBody)
     {
         final String methodName = "clearLocationAsDigital";
         final String locationGUIDParameter = "locationGUID";
@@ -527,10 +647,30 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.removeCyberLocationClassification(userId,
-                                                      locationGUID,
-                                                      locationGUIDParameter,
-                                                      methodName);
+            if (requestBody == null)
+            {
+                handler.removeCyberLocationClassification(userId,
+                                                          null,
+                                                          null,
+                                                          locationGUID,
+                                                          locationGUIDParameter,
+                                                          false,
+                                                          false,
+                                                          new Date(),
+                                                          methodName);
+            }
+            else
+            {
+                handler.removeCyberLocationClassification(userId,
+                                                          requestBody.getExternalSourceGUID(),
+                                                          requestBody.getExternalSourceName(),
+                                                          locationGUID,
+                                                          locationGUIDParameter,
+                                                          false,
+                                                          false,
+                                                          new Date(),
+                                                          methodName);
+            }
         }
         catch (Exception error)
         {
@@ -555,11 +695,10 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeLocation(String          serverName,
-                                       String          userId,
-                                       String          locationGUID,
-                                       NullRequestBody requestBody)
+    public VoidResponse removeLocation(String                    serverName,
+                                       String                    userId,
+                                       String                    locationGUID,
+                                       ExternalSourceRequestBody requestBody)
     {
         final String   methodName = "removeLocation";
         final String   guidParameter = "locationGUID";
@@ -575,7 +714,30 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.removeLocation(userId, locationGUID, guidParameter, methodName);
+            if (requestBody == null)
+            {
+                handler.removeLocation(userId,
+                                       null,
+                                       null,
+                                       locationGUID,
+                                       guidParameter,
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
+            }
+            else
+            {
+                handler.removeLocation(userId,
+                                       requestBody.getExternalSourceGUID(),
+                                       requestBody.getExternalSourceName(),
+                                       locationGUID,
+                                       guidParameter,
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
+            }
         }
         catch (Exception error)
         {
@@ -601,16 +763,15 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse setupNestedLocation(String          serverName,
-                                            String          userId,
-                                            String          parentLocationGUID,
-                                            String          childLocationGUID,
-                                            NullRequestBody requestBody)
+    public VoidResponse setupNestedLocation(String                  serverName,
+                                            String                  userId,
+                                            String                  parentLocationGUID,
+                                            String                  childLocationGUID,
+                                            RelationshipRequestBody requestBody)
     {
-        final String methodName = "setupNestedLocation";
+        final String methodName                  = "setupNestedLocation";
         final String parentLocationGUIDParameter = "parentLocationGUID";
-        final String childLocationGUIDParameter = "childLocationGUID";
+        final String childLocationGUIDParameter  = "childLocationGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -623,14 +784,49 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.setupNestedLocation(userId,
-                                        parentLocationGUID,
-                                        parentLocationGUIDParameter,
-                                        childLocationGUID,
-                                        childLocationGUIDParameter,
-                                        null,
-                                        null,
-                                        methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof NestedLocationProperties)
+                {
+                    handler.setupNestedLocation(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                parentLocationGUID,
+                                                parentLocationGUIDParameter,
+                                                childLocationGUID,
+                                                childLocationGUIDParameter,
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupNestedLocation(userId,
+                                                null,
+                                                null,
+                                                parentLocationGUID,
+                                                parentLocationGUIDParameter,
+                                                childLocationGUID,
+                                                childLocationGUIDParameter,
+                                                null,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NestedLocationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -656,12 +852,11 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearNestedLocation(String          serverName,
-                                            String          userId,
-                                            String          parentLocationGUID,
-                                            String          childLocationGUID,
-                                            NullRequestBody requestBody)
+    public VoidResponse clearNestedLocation(String                    serverName,
+                                            String                    userId,
+                                            String                    parentLocationGUID,
+                                            String                    childLocationGUID,
+                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName = "clearNestedLocation";
         final String parentLocationGUIDParameter = "parentLocationGUID";
@@ -678,13 +873,34 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.clearNestedLocation(userId,
-                                        parentLocationGUID,
-                                        parentLocationGUIDParameter,
-                                        childLocationGUID,
-                                        childLocationGUIDParameter,
-                                        null,
-                                        methodName);
+            if (requestBody == null)
+            {
+                handler.clearNestedLocation(userId,
+                                            null,
+                                            null,
+                                            parentLocationGUID,
+                                            parentLocationGUIDParameter,
+                                            childLocationGUID,
+                                            childLocationGUIDParameter,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
+            else
+            {
+                handler.clearNestedLocation(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            parentLocationGUID,
+                                            parentLocationGUIDParameter,
+                                            childLocationGUID,
+                                            childLocationGUIDParameter,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
         }
         catch (Exception error)
         {
@@ -710,12 +926,11 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse setupAdjacentLocation(String          serverName,
-                                              String          userId,
-                                              String          locationOneGUID,
-                                              String          locationTwoGUID,
-                                              NullRequestBody requestBody)
+    public VoidResponse setupAdjacentLocation(String                  serverName,
+                                              String                  userId,
+                                              String                  locationOneGUID,
+                                              String                  locationTwoGUID,
+                                              RelationshipRequestBody requestBody)
     {
         final String methodName = "setupAdjacentLocation";
         final String locationOneGUIDParameter = "locationOneGUID";
@@ -732,14 +947,51 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.setupPeerLocations(userId,
-                                        locationOneGUID,
-                                        locationOneGUIDParameter,
-                                        locationTwoGUID,
-                                        locationTwoGUIDParameter,
-                                        null,
-                                        null,
-                                        methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() == null)
+                {
+                    handler.setupPeerLocations(userId,
+                                               null,
+                                               null,
+                                               locationOneGUID,
+                                               locationOneGUIDParameter,
+                                               locationTwoGUID,
+                                               locationTwoGUIDParameter,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else if (requestBody.getProperties() instanceof AdjacentLocationProperties)
+                {
+                    AdjacentLocationProperties properties = (AdjacentLocationProperties)requestBody.getProperties();
+
+                    handler.setupPeerLocations(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               locationOneGUID,
+                                               locationOneGUIDParameter,
+                                               locationTwoGUID,
+                                               locationTwoGUIDParameter,
+                                               properties.getEffectiveFrom(),
+                                               properties.getEffectiveTo(),
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AdjacentLocationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -765,12 +1017,11 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse clearAdjacentLocation(String          serverName,
-                                              String          userId,
-                                              String          locationOneGUID,
-                                              String          locationTwoGUID,
-                                              NullRequestBody requestBody)
+    public VoidResponse clearAdjacentLocation(String                    serverName,
+                                              String                    userId,
+                                              String                    locationOneGUID,
+                                              String                    locationTwoGUID,
+                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName = "clearAdjacentLocation";
         final String locationOneGUIDParameter = "locationOneGUID";
@@ -787,13 +1038,34 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.clearPeerLocations(userId,
-                                       locationOneGUID,
-                                       locationOneGUIDParameter,
-                                       locationTwoGUID,
-                                       locationTwoGUIDParameter,
-                                       null,
-                                       methodName);
+            if (requestBody == null)
+            {
+                handler.clearPeerLocations(userId,
+                                           null,
+                                           null,
+                                           locationOneGUID,
+                                           locationOneGUIDParameter,
+                                           locationTwoGUID,
+                                           locationTwoGUIDParameter,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+            }
+            else
+            {
+                handler.clearPeerLocations(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           locationOneGUID,
+                                           locationOneGUIDParameter,
+                                           locationTwoGUID,
+                                           locationTwoGUIDParameter,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+            }
         }
         catch (Exception error)
         {
@@ -804,6 +1076,338 @@ public class LocationRESTServices
         return response;
     }
 
+
+    /**
+     * Create a profile location relationship between an actor profile and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the location
+     * @param requestBody profile location request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public VoidResponse setupProfileLocation(String                  serverName,
+                                             String                  userId,
+                                             String                  actorProfileGUID,
+                                             String                  locationGUID,
+                                             RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupProfileLocation";
+        final String actorProfileGUIDParameter = "actorProfileGUID";
+        final String locationGUIDParameter = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ProfileLocationProperties)
+                {
+                    ProfileLocationProperties properties = (ProfileLocationProperties)requestBody.getProperties();
+
+                    handler.setupProfileLocation(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 actorProfileGUID,
+                                                 actorProfileGUIDParameter,
+                                                 locationGUID,
+                                                 locationGUIDParameter,
+                                                 properties.getAssociationType(),
+                                                 properties.getEffectiveFrom(),
+                                                 properties.getEffectiveTo(),
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProfileLocation(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 actorProfileGUID,
+                                                 actorProfileGUIDParameter,
+                                                 locationGUID,
+                                                 locationGUIDParameter,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProfileLocationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove a profile location relationship between an actor profile and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the location
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public VoidResponse clearProfileLocation(String                    serverName,
+                                             String                    userId,
+                                             String                    actorProfileGUID,
+                                             String                    locationGUID,
+                                             ExternalSourceRequestBody requestBody)
+    {
+        final String methodName = "clearProfileLocation";
+        final String actorProfileGUIDParameter = "actorProfileGUID";
+        final String locationGUIDParameter = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.clearProfileLocation(userId,
+                                             null,
+                                             null,
+                                             actorProfileGUID,
+                                             actorProfileGUIDParameter,
+                                             locationGUID,
+                                             locationGUIDParameter,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
+            else
+            {
+                handler.clearProfileLocation(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             actorProfileGUID,
+                                             actorProfileGUIDParameter,
+                                             locationGUID,
+                                             locationGUIDParameter,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create an asset location relationship between an asset and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param locationGUID unique identifier of the location
+     * @param requestBody profile location request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public VoidResponse setupAssetLocation(String                  serverName,
+                                           String                  userId,
+                                           String                  assetGUID,
+                                           String                  locationGUID,
+                                           RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupAssetLocation";
+        final String assetGUIDParameter = "assetGUID";
+        final String locationGUIDParameter = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssetLocationProperties)
+                {
+                    AssetLocationProperties properties = (AssetLocationProperties)requestBody.getProperties();
+
+                    handler.setupAssetLocation(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               locationGUID,
+                                               locationGUIDParameter,
+                                               assetGUID,
+                                               assetGUIDParameter,
+                                               properties.getEffectiveFrom(),
+                                               properties.getEffectiveTo(),
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupAssetLocation(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               locationGUID,
+                                               locationGUIDParameter,
+                                               assetGUID,
+                                               assetGUIDParameter,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AssetLocationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove an asset location relationship between an asset and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the  location
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public VoidResponse clearAssetLocation(String                    serverName,
+                                           String                    userId,
+                                           String                    assetGUID,
+                                           String                    locationGUID,
+                                           ExternalSourceRequestBody requestBody)
+    {
+        final String methodName = "clearAssetLocation";
+        final String assetGUIDParameter = "assetGUID";
+        final String locationTwoGUIDParameter = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.clearAssetLocation(userId,
+                                           null,
+                                           null,
+                                           locationGUID,
+                                           locationTwoGUIDParameter,
+                                           assetGUID,
+                                           assetGUIDParameter,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+            }
+            else
+            {
+                handler.clearAssetLocation(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           locationGUID,
+                                           locationTwoGUIDParameter,
+                                           assetGUID,
+                                           assetGUIDParameter,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
@@ -821,19 +1425,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationsResponse findLocations(String                  serverName,
-                                           String                  userId,
-                                           SearchStringRequestBody requestBody,
-                                           int                     startFrom,
-                                           int                     pageSize)
+    public LocationListResponse findLocations(String                  serverName,
+                                              String                  userId,
+                                              SearchStringRequestBody requestBody,
+                                              int                     startFrom,
+                                              int                     pageSize)
     {
         final String methodName = "findLocations";
         final String parameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationsResponse response = new LocationsResponse();
-        AuditLog          auditLog = null;
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -843,17 +1447,20 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                List<LocationElement> locations = handler.findBeans(userId,
-                                                                    requestBody.getSearchString(),
-                                                                    parameterName,
-                                                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                                    null,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    new Date(),
-                                                                    methodName);
-                response.setElementList(locations);
+                List<LocationElement> locations = handler.findLocations(userId,
+                                                                        requestBody.getSearchString(),
+                                                                        parameterName,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
+                                                                        methodName);
+                response.setElements(locations);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)
@@ -867,7 +1474,7 @@ public class LocationRESTServices
 
 
     /**
-     * Retrieve the list of location metadata elements with a matching qualified or display name.
+     * Retrieve the list of location metadata elements with a matching qualified name, identifier or display name.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of calling server
@@ -881,19 +1488,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationsResponse getLocationsByName(String          serverName,
-                                                String          userId,
-                                                NameRequestBody requestBody,
-                                                int             startFrom,
-                                                int             pageSize)
+    public LocationListResponse getLocationsByName(String          serverName,
+                                                   String          userId,
+                                                   NameRequestBody requestBody,
+                                                   int             startFrom,
+                                                   int             pageSize)
     {
         final String methodName = "getLocationsByName";
         final String parameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationsResponse response = new LocationsResponse();
-        AuditLog          auditLog = null;
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -903,28 +1510,353 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                List<String> specificMatchPropertyNames = new ArrayList<>();
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                List<LocationElement> locations = handler.getLocationsByName(userId,
+                                                                             requestBody.getName(),
+                                                                             parameterName,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             false,
+                                                                             false,
+                                                                             new Date(),
+                                                                             methodName);
+                response.setElements(locations);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
 
-                List<LocationElement> locations = handler.getBeansByValue(userId,
-                                                                          requestBody.getName(),
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of adjacent location metadata elements linked to locationGUID.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getAdjacentLocations(String serverName,
+                                                     String userId,
+                                                     String locationGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
+    {
+        final String methodName = "getAdjacentLocations";
+        final String parameterName = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getAdjacentLocations(userId,
+                                                                           locationGUID,
+                                                                           parameterName,
+                                                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName);
+            response.setElements(locations);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the list of nested location metadata elements linked to locationGUID.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getNestedLocations(String serverName,
+                                                   String userId,
+                                                   String locationGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
+    {
+        final String methodName = "getNestedLocations";
+        final String parameterName = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getNestedLocations(userId,
+                                                                         locationGUID,
+                                                                         parameterName,
+                                                                         OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName);
+            response.setElements(locations);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the list of location metadata elements that has the location identifier with locationGUID nested inside it.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getGroupingLocations(String serverName,
+                                                     String userId,
+                                                     String locationGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
+    {
+        final String methodName = "getGroupingLocations";
+        final String parameterName = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getGroupingLocations(userId,
+                                                                           locationGUID,
+                                                                           parameterName,
+                                                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName);
+            response.setElements(locations);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to the requested profile.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID profile to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getLocationsByProfile(String serverName,
+                                                      String userId,
+                                                      String actorProfileGUID,
+                                                      int    startFrom,
+                                                      int    pageSize)
+    {
+        final String methodName = "getLocationsByProfile";
+        final String parameterName = "actorProfileGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getProfileLocations(userId,
+                                                                          actorProfileGUID,
                                                                           parameterName,
-                                                                          OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                                          specificMatchPropertyNames,
-                                                                          true,
-                                                                          null,
-                                                                          null,
-                                                                          false,
-                                                                          false,
-                                                                          null,
+                                                                          OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                           startFrom,
                                                                           pageSize,
+                                                                          false,
+                                                                          false,
                                                                           new Date(),
                                                                           methodName);
-                response.setElementList(locations);
-            }
+            response.setElements(locations);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to assetGUID.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID asset to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getKnownLocationsForAsset(String serverName,
+                                                          String userId,
+                                                          String assetGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
+    {
+        final String methodName = "getKnownLocationsForAsset";
+        final String parameterName = "assetGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getAssetLocations(userId,
+                                                                        assetGUID,
+                                                                        parameterName,
+                                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
+                                                                        methodName);
+            response.setElements(locations);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of location metadata.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse getLocations(String          serverName,
+                                             String          userId,
+                                             int             startFrom,
+                                             int             pageSize)
+    {
+        final String methodName = "getLocations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LocationListResponse response = new LocationListResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            List<LocationElement> locations = handler.getLocations(userId,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName);
+            response.setElements(locations);
         }
         catch (Exception error)
         {

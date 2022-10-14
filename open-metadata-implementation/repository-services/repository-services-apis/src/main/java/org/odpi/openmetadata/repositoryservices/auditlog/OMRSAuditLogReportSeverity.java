@@ -65,7 +65,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
 
 
     /**
-     * Set up he numerical code for this enum.
+     * Set up the numerical code for this enum.
      *
      * @param ordinal identifier
      */
@@ -99,7 +99,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
 
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @return String description
@@ -112,7 +112,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
 
     /**
      * Set up the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @param description String description

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -16,7 +15,7 @@ import java.util.List;
 public class ParallelFederationControl extends FederationControlBase
 {
     // todo at this point the parallel federation control uses the sequential federation control since the worker threads are not implemented.
-    private SequentialFederationControl sequentialFederationControl;
+    private final SequentialFederationControl sequentialFederationControl;
 
     /**
      * Constructor for a federated query

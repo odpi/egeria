@@ -23,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ArrayPropertyValue.class, name = "ArrayPropertyValue"),
-        @JsonSubTypes.Type(value = EnumPropertyValue.class, name = "EnumPropertyValue"),
-        @JsonSubTypes.Type(value = MapPropertyValue.class, name = "MapPropertyValue"),
-        @JsonSubTypes.Type(value = PrimitivePropertyValue.class, name = "PrimitivePropertyValue"),
-        @JsonSubTypes.Type(value = StructPropertyValue.class, name = "StructPropertyValue")
+        @JsonSubTypes.Type(value = ArrayTypePropertyValue.class, name = "ArrayTypePropertyValue"),
+        @JsonSubTypes.Type(value = EnumTypePropertyValue.class, name = "EnumTypePropertyValue"),
+        @JsonSubTypes.Type(value = MapTypePropertyValue.class, name = "MapTypePropertyValue"),
+        @JsonSubTypes.Type(value = PrimitiveTypePropertyValue.class, name = "PrimitiveTypePropertyValue"),
+        @JsonSubTypes.Type(value = StructTypePropertyValue.class, name = "StructTypePropertyValue")
 })
 public abstract class PropertyValue implements Serializable
 {

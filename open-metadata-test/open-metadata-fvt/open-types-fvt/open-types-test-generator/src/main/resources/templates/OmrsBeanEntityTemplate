@@ -103,24 +103,24 @@ public class  <$$uname$$> implements Serializable {
                log.debug("==> Method: " + methodName);
         }
         InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue=null;
+        EnumPropertyValue enumTypePropertyValue=null;
         <$Enum$$
-        enumPropertyValue = new EnumPropertyValue();
+        enumTypePropertyValue = new EnumPropertyValue();
         // <$$description$$>
-        enumPropertyValue.setOrdinal(<$$EnumName$$>.ordinal());
-        enumPropertyValue.setSymbolicName(<$$EnumName$$>.name());
-        instanceProperties.setProperty("<$$EnumName$$>",enumPropertyValue);
+        enumTypePropertyValue.setOrdinal(<$$EnumName$$>.ordinal());
+        enumTypePropertyValue.setSymbolicName(<$$EnumName$$>.name());
+        instanceProperties.setProperty("<$$EnumName$$>",enumTypePropertyValue);
         $Enum$$>
-        MapPropertyValue mapPropertyValue=null;
+        MapPropertyValue mapTypePropertyValue=null;
         <$Map$$
         // <$$description$$>
-        mapPropertyValue = new MapPropertyValue();
+        mapTypePropertyValue = new MapPropertyValue();
         $Map$$>
-        PrimitivePropertyValue primitivePropertyValue=null;
+        PrimitivePropertyValue primitiveTypePropertyValue=null;
          <$Attr$$
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-        instanceProperties.setProperty("<$$AttrName$$>",primitivePropertyValue);
+        primitiveTypePropertyValue = new PrimitivePropertyValue();
+        primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+        instanceProperties.setProperty("<$$AttrName$$>",primitiveTypePropertyValue);
          $Attr$$>
         if (log.isDebugEnabled()) {
                log.debug("<== Method: " + methodName);

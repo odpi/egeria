@@ -17,7 +17,7 @@ This documentation has moved to [https://odpi.github.io/egeria-docs](https://odp
 * [Gradle (to build Egeria)](Gradle.md)
 * [HTTPie and curl](HTTPie-Curl.md) - Command line tools for issuing REST API calls
 * [IntelliJ](IntelliJ.md) - Developer tool for working with the egeria content
-* [Jupyter Notebooks](Jupyter-Notebooks.md) - Interactive python environment used in the hands on labs
+* [Jupyter Notebooks](https://egeria-project.org/education/open-metadata-labs/overview/) - Interactive python environment used in the hands on labs
 * [Kubernetes](Kubernetes.md) - Orchestrating container environment - useful for production operation and hands-on labs
 * [Markdown](Markdown.md) - Website/document tagging language for documentation 
 * [Maven](Maven.md) - Build management
@@ -26,14 +26,14 @@ This documentation has moved to [https://odpi.github.io/egeria-docs](https://odp
 * [Spring and Spring Boot](../Spring.md) - for building REST APIs
 * [Swagger](Swagger.md) - REST API Documentation
 
-The **[Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)** describes how these tools are used when working with Egeria.
+The **[Egeria Dojo](https://egeria-project.org/education/egeria-dojo/)** describes how these tools are used when working with Egeria.
 
 ----
 * Return to [Developer Resources](..)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 
 ----

@@ -429,7 +429,7 @@ public class OMAGServerAdminForIntegrationServices
 
 
     /**
-     * Set up the configuration for all of the open metadata integration services (OMISs).  This overrides
+     * Set up the configuration for all the open metadata integration services (OMISs).  This overrides
      * the current values.
      *
      * @param userId                user that is issuing the request.

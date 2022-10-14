@@ -4,11 +4,15 @@
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,15 +44,19 @@ public class OMRSClient {
     protected Optional<EntityDetail> getEntityDetail(String userId, String serverName, String guid, String entityTypeName, String methodName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryViewOmasException {
 
-        Optional<EntityDetail> entityDetail ;
+        Optional<EntityDetail> entityDetail;
         try {
-            entityDetail = Optional.ofNullable( instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                    .getEntityByGUID(userId, guid, "guid", entityTypeName, methodName) );
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
+
+            OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
+                    serverName, methodName);
+            entityDetail = Optional.ofNullable(entitiesHandler.getEntityFromRepository(userId, guid,
+                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME, entityTypeName, null, null,
+                    false, false, null, null, methodName));
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){
             throw new GlossaryViewOmasException(500, this.getClass().getName(),
-                    DEFAULT_ACTION_DESCRIPTION_PREFIX + " getEntityByGUID: guid " + guid + " entityTypeName" + entityTypeName,
+                    DEFAULT_ACTION_DESCRIPTION_PREFIX + " getEntityFromRepository: guid " + guid + " entityTypeName" + entityTypeName,
                     e.getClass() + " - " + e.getMessage(), DEFAULT_SYSTEM_ACTION, DEFAULT_USER_ACTION);
         }
         return entityDetail;
@@ -78,14 +86,17 @@ public class OMRSClient {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryViewOmasException {
         List<EntityDetail> entityDetails;
         try {
-            entityDetails = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                    .getEntitiesForRelationshipType(userId, entityGUID, entityTypeName, relationshipTypeGUID, relationshipTypeName,
-                            from, size, methodName);
-        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
+
+            OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
+                    serverName, methodName);
+            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                    null, null, 0, false, false, from, size, null, methodName);
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){
             throw new GlossaryViewOmasException(500, this.getClass().getName(), DEFAULT_ACTION_DESCRIPTION_PREFIX +
-                    " getEntitiesForRelationshipType: entityGUID " + entityGUID + " entityTypeName " + entityTypeName +
+                    " getAttachedEntities: entityGUID " + entityGUID + " entityTypeName " + entityTypeName +
                     " relationshipTypeGUID " + relationshipTypeGUID + " relationshipTypeName " + relationshipTypeName,
                     e.getClass() + " - " + e.getMessage(), DEFAULT_SYSTEM_ACTION, DEFAULT_USER_ACTION);
         }
@@ -100,7 +111,6 @@ public class OMRSClient {
      * @param serverName instance to call
      * @param entityGUID target entity
      * @param entityTypeName entity type name
-     * @param anchorAtEnd1 which end should the target entity be at
      * @param relationshipTypeGUID relationship type guid to navigate
      * @param relationshipTypeName relationship type name to navigate
      * @param from from
@@ -113,24 +123,25 @@ public class OMRSClient {
      *                                   UserNotAuthorizedException or PropertyServerException
      */
     protected List<EntityDetail> getSubEntities(String userId, String serverName, String entityGUID, String entityTypeName,
-                                                boolean anchorAtEnd1, String relationshipTypeGUID, String relationshipTypeName,
+                                                String relationshipTypeGUID, String relationshipTypeName,
                                                 Integer from, Integer size, String methodName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryViewOmasException {
 
         List<EntityDetail> entityDetails;
         try {
-            entityDetails = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                                    .getEntitiesForRelationshipEnd(userId, entityGUID, entityTypeName, anchorAtEnd1,
-                                                                   relationshipTypeGUID, relationshipTypeName,
-                                                                   from, size, methodName);
+            OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
+                    serverName, methodName);
+            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                    entityTypeName, relationshipTypeGUID,relationshipTypeName, null,
+                    null, null, 0, false,
+                    false, null, from, size, null, methodName);
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         }catch (Exception e){
             throw new GlossaryViewOmasException(500, this.getClass().getName(), DEFAULT_ACTION_DESCRIPTION_PREFIX +
-                    " getEntitiesForRelationshipEnd: guid " + entityGUID + " entityTypeName " + entityTypeName +
-                    " anchorAtEnd1 " + anchorAtEnd1 + " relationshipTypeGUID " + relationshipTypeGUID +
-                    " relationshipTypeName " + relationshipTypeName, e.getClass() + " - " + e.getMessage(),
-                    DEFAULT_SYSTEM_ACTION, DEFAULT_USER_ACTION);
+                    " getAttachedEntities: guid " + entityGUID + " entityTypeName " + entityTypeName +
+                    " relationshipTypeGUID " + relationshipTypeGUID + " relationshipTypeName " + relationshipTypeName,
+                    e.getClass() + " - " + e.getMessage(), DEFAULT_SYSTEM_ACTION, DEFAULT_USER_ACTION);
         }
         return entityDetails;
     }
@@ -141,7 +152,8 @@ public class OMRSClient {
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param entityTypeGUID entity type
+     * @param entityTypeName entity type name
+     * @param entityTypeGUID entity type guid
      * @param from from
      * @param size size
      * @param methodName calling method
@@ -151,13 +163,17 @@ public class OMRSClient {
      * @throws GlossaryViewOmasException if any exception is thrown from repository level, other than InvalidParameterException,
      *                                   UserNotAuthorizedException or PropertyServerException
      */
-    protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String entityTypeGUID, Integer from, Integer size,
+    protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String entityTypeName,
+                                                     String entityTypeGUID, Integer from, Integer size,
                                                      String methodName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryViewOmasException {
         List<EntityDetail> entities;
         try {
-            entities = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                    .getEntitiesByType(userId, entityTypeGUID, from, size, methodName);
+            OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
+                    serverName, methodName);
+            entities = entitiesHandler.getEntitiesByType(userId, entityTypeGUID, entityTypeName, null,
+                    false, false, null, from, size, null,
+                    methodName);
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         }catch (Exception e){

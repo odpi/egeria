@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * UserIdentityListResponse is the response structure used on the OMAS REST API calls that return a
+ * UserIdentityListResponse is the response structure used on the OMAS REST API calls that return
  * a list of user identity elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

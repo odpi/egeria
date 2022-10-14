@@ -373,7 +373,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
         {
             super.disconnect();
         }
-        catch (Throwable  exec)
+        catch (Exception  exec)
         {
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }

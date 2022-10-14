@@ -46,7 +46,7 @@ public abstract class ConnectorProvider
      * Creates a new instance of a connector using the information from the connection and the properties
      * from the subclass(es).
      *
-     * @param connection   connection that should have all of the properties needed by the Connector Provider
+     * @param connection   connection that should have all the properties needed by the Connector Provider
      *                   to create a connector instance.
      * @return new connector instance.
      * @throws ConnectionCheckedException an error with the connection.
@@ -59,7 +59,7 @@ public abstract class ConnectorProvider
      * Creates a new instance of a connector using the information from the connection and the properties
      * from the subclass(es).
      *
-     * @param connection   connection that should have all of the properties needed by the Connector Provider
+     * @param connection   connection that should have all the properties needed by the Connector Provider
      *                   to create a connector instance.
      * @return Connector   instance of the connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection

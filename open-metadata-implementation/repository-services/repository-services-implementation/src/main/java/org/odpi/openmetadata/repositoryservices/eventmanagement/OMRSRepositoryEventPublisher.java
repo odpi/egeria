@@ -24,9 +24,10 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryEventPublisher.class);
 
     private OpenMetadataEventsSecurity securityVerifier = new OMRSMetadataDefaultEventsSecurity();
-    private List<OMRSTopicConnector>   typesTopicConnectors;
-    private List<OMRSTopicConnector>   instancesTopicConnectors;
-    private AuditLog                   auditLog;
+
+    private final List<OMRSTopicConnector>   typesTopicConnectors;
+    private final List<OMRSTopicConnector>   instancesTopicConnectors;
+    private final AuditLog                   auditLog;
 
 
     /**

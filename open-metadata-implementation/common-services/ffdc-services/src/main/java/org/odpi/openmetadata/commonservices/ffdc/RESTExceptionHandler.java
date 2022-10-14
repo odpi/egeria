@@ -85,12 +85,34 @@ public class RESTExceptionHandler
         throw error;
     }
 
+    /**
+     * Manage an unexpected exception
+     *
+     * @param expectedClassName name of expected properties class
+     * @param methodName method that caught the exception
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleInvalidPropertiesObject(String expectedClassName,
+                                              String methodName) throws InvalidParameterException
+    {
+        InvalidParameterException error =
+                new InvalidParameterException(OMAGCommonErrorCode.INVALID_PROPERTIES_OBJECT.getMessageDefinition(methodName, expectedClassName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              expectedClassName);
+
+        log.error("Wrong properties class", error);
+        throw error;
+    }
+
 
 
     /**
      * Manage a bad type name
      *
-     * @param subTypeName name of null parameter - use to help locate where the problem is
+     * @param subTypeName subtype that does not match
+     * @param superTypeName expected (super) type
+     * @param serviceName calling service
      * @param methodName method that caught the exception
      * @throws InvalidParameterException exception to report error
      */

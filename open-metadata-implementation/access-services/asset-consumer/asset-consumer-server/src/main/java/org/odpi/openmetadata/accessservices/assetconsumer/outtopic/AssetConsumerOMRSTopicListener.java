@@ -31,10 +31,10 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
 
-    private AssetConsumerOutTopicPublisher eventPublisher;
-    private AssetHandler<AssetElement>     assetHandler;
-    private String                         localServerUserId;
-    private List<String>                   supportedZones;
+    private final AssetConsumerOutTopicPublisher eventPublisher;
+    private final AssetHandler<AssetElement>     assetHandler;
+    private final String                         localServerUserId;
+    private final List<String>                   supportedZones;
 
     /**
      * Initialize the topic listener.
@@ -46,12 +46,12 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetConsumerOMRSTopicListener(String                            serviceName,
-                                             String                         localServerUserId,
-                                             AssetConsumerOutTopicPublisher eventPublisher,
-                                             AssetHandler<AssetElement>     assetHandler,
-                                             List<String>                   supportedZones,
-                                             AuditLog                       auditLog)
+    public AssetConsumerOMRSTopicListener(String                         serviceName,
+                                          String                         localServerUserId,
+                                          AssetConsumerOutTopicPublisher eventPublisher,
+                                          AssetHandler<AssetElement>     assetHandler,
+                                          List<String>                   supportedZones,
+                                          AuditLog                       auditLog)
     {
         super(serviceName, auditLog);
 
@@ -145,7 +145,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -184,7 +184,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -261,7 +261,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -300,7 +300,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -377,7 +377,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -418,7 +418,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -713,7 +713,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,

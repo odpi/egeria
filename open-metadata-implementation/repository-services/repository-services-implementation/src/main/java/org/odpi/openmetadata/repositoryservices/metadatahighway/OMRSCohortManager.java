@@ -50,7 +50,7 @@ public class OMRSCohortManager
     private String                       localMetadataCollectionId        = null;
     private OMRSRepositoryEventPublisher outboundRepositoryEventPublisher = null;
 
-    private AuditLog                     auditLog;
+    private final AuditLog                     auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSCohortManager.class);
 
@@ -286,6 +286,7 @@ public class OMRSCohortManager
                                                                                          error.getClass().getName(),
                                                                                          error.getMessage()),
                                   error);
+            throw error;
         }
 
         log.debug(actionDescription + " COMPLETE");
@@ -312,7 +313,7 @@ public class OMRSCohortManager
         }
 
         /*
-         * Start the cohort's event manager so it is able to pass events.
+         * Start the cohort's event manager, so it is able to pass events.
          */
         if (this.cohortRepositoryEventManager != null)
         {
@@ -359,9 +360,31 @@ public class OMRSCohortManager
                 cohortInstancesTopicConnector.start();
             }
         }
+        // Topic connector has failed to initialize - retry loop expired - possible network connectivity/DNS issue need to raise exception
+        catch (ConnectorCheckedException   error)
+        {
+            log.debug(actionDescription + " FAILED with connector checked exception");
+            this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
+
+            // Record to original exception in the audit log to facilitate debugging as this may indicate an infrastructure issue
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName,
+                            error.getClass().getName(),
+                            error.getMessage()),
+                    error);
+            /*
+             * Throw runtime exception to indicate that the topic connector is unavailable (server should shut down if this happens).
+             */
+            throw new OMRSConnectorErrorException(OMRSErrorCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName),
+                    this.getClass().getName(),
+                    actionDescription,
+                    error);
+
+        }
+        // Some other kind of initialization error
         catch (Exception error)
         {
-            log.error("Unable to initialize event listener", error);
+            log.debug("Unable to initialize event listener", error);
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
             auditLog.logException(actionDescription,
@@ -369,6 +392,7 @@ public class OMRSCohortManager
                                                                                          error.getClass().getName(),
                                                                                          error.getMessage()),
                                   error);
+            throw(error);
         }
 
         /*

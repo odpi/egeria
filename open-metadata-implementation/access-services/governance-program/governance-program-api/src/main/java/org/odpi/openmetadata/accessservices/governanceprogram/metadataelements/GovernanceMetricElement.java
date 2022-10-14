@@ -10,11 +10,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * GovernanceMetricElement is the bean used to return a governance metric stored in the open metadata repositories.
@@ -26,8 +26,9 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader              elementHeader     = null;
-    private GovernanceMetricProperties properties        = null;
+    private ElementHeader              elementHeader  = null;
+    private GovernanceMetricProperties properties     = null;
+    private RelatedElement             relatedElement = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -99,6 +101,30 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -109,7 +135,8 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
         return "GovernanceMetricElement{" +
                 "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                '}';
+                       ", relatedElement=" + relatedElement +
+                       '}';
     }
 
 
@@ -132,7 +159,8 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
         }
         GovernanceMetricElement that = (GovernanceMetricElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-               Objects.equals(properties, that.properties);
+               Objects.equals(properties, that.properties) &&
+               Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -144,6 +172,6 @@ public class GovernanceMetricElement implements Serializable, MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

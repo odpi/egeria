@@ -32,6 +32,7 @@ public class GovernanceListenerManager
      * Create a governance listener manager for watchdog listeners.
      *
      * @param auditLog audit log for the listener manager
+     * @param governanceEngineName engine name for messages
      */
     public GovernanceListenerManager(AuditLog auditLog,
                                      String   governanceEngineName)
@@ -199,13 +200,13 @@ public class GovernanceListenerManager
                         WatchdogMetadataElementEvent watchdogMetadataElementEvent = (WatchdogMetadataElementEvent)event;
 
                         invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement(), elementParameterName, methodName);
-                        invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement().getElementType(), elementTypeParameterName, methodName);
+                        invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement().getType(), elementTypeParameterName, methodName);
                         invalidParameterHandler.validateGUID(watchdogMetadataElementEvent.getMetadataElement().getElementGUID(), elementGUIDParameterName, methodName);
-                        invalidParameterHandler.validateName(watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName(), typeNameParameterName, methodName);
+                        invalidParameterHandler.validateName(watchdogMetadataElementEvent.getMetadataElement().getType().getTypeName(), typeNameParameterName, methodName);
 
                         if (this.elementIsInteresting(watchdogMetadataElementEvent.getMetadataElement().getElementGUID(),
-                                                      watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName(),
-                                                      watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementSuperTypeNames()))
+                                                      watchdogMetadataElementEvent.getMetadataElement().getType().getTypeName(),
+                                                      watchdogMetadataElementEvent.getMetadataElement().getType().getSuperTypeNames()))
                         {
                             this.callListener(event);
                         }
@@ -215,8 +216,8 @@ public class GovernanceListenerManager
                         WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent)event;
 
                         if (this.elementIsInteresting(relatedElementsEvent.getRelatedMetadataElements().getRelationshipGUID(),
-                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getElementTypeName(),
-                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getElementSuperTypeNames()))
+                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getTypeName(),
+                                                      relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getSuperTypeNames()))
                         {
                             this.callListener(event);
                         }

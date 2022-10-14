@@ -21,35 +21,35 @@ an asset in summary lists or hover text.  It includes the following properties:
  * **qualifiedName** - The official (unique) name for the asset. This is often defined by the IT systems
     management organization and should be used (when available) on audit logs and error messages.
     
-    (Sourced from the qualifiedName attribute in Referenceable - [model 0010](../../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md))
+    (Sourced from the qualifiedName attribute in Referenceable - [model 0010](https://egeria-project.org/types/0/0010-Base-Model))
     
  * **displayName** - A consumable name for the asset.  Often a shortened form of the asset's qualifiedName
     for use on user interfaces and messages.   The asset's displayName should be only be used for audit logs and error
     messages if the qualifiedName is not set. 
     
-    (Sourced from displayName attribute  within Asset - [model 0010](../../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)))
+    (Sourced from displayName attribute  within Asset - [model 0010](https://egeria-project.org/types/0/0010-Base-Model)))
  
  * **shortDescription** - short description about the asset.
     
-    (Sourced from assetSummary within ConnectionsToAsset - [model 0205](../../../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.md))
+    (Sourced from assetSummary within ConnectionsToAsset - [model 0205](https://egeria-project.org/types/2/0205-Connection-Linkage))
  
  * **description** - full description of the asset.
     
-    (Sourced from description attribute within Asset - [model 0010](../../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)))
+    (Sourced from description attribute within Asset - [model 0010](https://egeria-project.org/types/0/0010-Base-Model)))
  
  * **owner** - name of the person or organization that owns the asset.
     
-    (Sourced from the AssetOwnership Classification - [model 0445](../../../../../open-metadata-publication/website/open-metadata-types/0445-Governance-Roles.md)).
+    (Sourced from the AssetOwnership Classification - [model 0445](https://egeria-project.org/types/4/0445-Governance-Roles)).
  
  * **zoneMembership** - list of governance zones assigned to the asset.
  
-    (Sourced from the AssetZoneMembership classification - [model 0445](../../../../../open-metadata-publication/website/open-metadata-types/0424-Governance-Zones.md)))
+    (Sourced from the AssetZoneMembership classification - [model 0445](https://egeria-project.org/types/4/0424-Governance-Zones.md)))
  
  * **classifications** - full list of the classifications assigned to the asset along with their properties.
 
 ## Asset Detail
 
-AssetDetail extends AssetSummary to provide all of the properties directly related to this asset.  It includes:
+AssetDetail extends AssetSummary to provide all the properties directly related to this asset.  It includes:
 
  * **ExternalIdentifiers** - list of identifiers for this asset that are used in other systems.
  

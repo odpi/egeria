@@ -38,15 +38,11 @@ public class TestElementType
     {
         ElementType testObject = new ElementType();
 
-        testObject.setElementTypeId("TestTypeId");
-        testObject.setElementTypeName("TestTypeName");
-        testObject.setElementSuperTypeNames(superTypes);
-        testObject.setElementTypeVersion(5);
-        testObject.setElementTypeDescription("TestTypeDescription");
-        testObject.setElementSourceServer("TestSourceServer");
-        testObject.setElementOrigin(ElementOrigin.CONTENT_PACK);
-        testObject.setElementMetadataCollectionId("TestHomeId");
-        testObject.setElementLicense("TestLicense");
+        testObject.setTypeId("TestTypeId");
+        testObject.setTypeName("TestTypeName");
+        testObject.setSuperTypeNames(superTypes);
+        testObject.setTypeVersion(5);
+        testObject.setTypeDescription("TestTypeDescription");
 
         return testObject;
     }
@@ -59,15 +55,11 @@ public class TestElementType
      */
     private void validateResultObject(ElementType  resultObject)
     {
-        assertTrue(resultObject.getElementTypeId().equals("TestTypeId"));
-        assertTrue(resultObject.getElementTypeName().equals("TestTypeName"));
-        assertTrue(resultObject.getElementSuperTypeNames().equals(superTypes));
-        assertTrue(resultObject.getElementTypeVersion() == 5);
-        assertTrue(resultObject.getElementTypeDescription().equals("TestTypeDescription"));
-        assertTrue(resultObject.getElementSourceServer().equals("TestSourceServer"));
-        assertTrue(resultObject.getElementOrigin().equals(ElementOrigin.CONTENT_PACK));
-        assertTrue(resultObject.getElementMetadataCollectionId().equals("TestHomeId"));
-        assertTrue(resultObject.getElementLicense().equals("TestLicense"));
+        assertTrue(resultObject.getTypeId().equals("TestTypeId"));
+        assertTrue(resultObject.getTypeName().equals("TestTypeName"));
+        assertTrue(resultObject.getSuperTypeNames().equals(superTypes));
+        assertTrue(resultObject.getTypeVersion() == 5);
+        assertTrue(resultObject.getTypeDescription().equals("TestTypeDescription"));
     }
 
 
@@ -85,7 +77,7 @@ public class TestElementType
         assertTrue(sameObject.equals(sameObject));
 
         ElementType  differentObject = getTestObject();
-        differentObject.setElementTypeId("Different");
+        differentObject.setTypeId("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
 
@@ -124,7 +116,7 @@ public class TestElementType
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -133,33 +125,11 @@ public class TestElementType
         {
             validateResultObject(objectMapper.readValue(jsonString, ElementType.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
 
-        /*
-         * Through superclass
-         */
-        PropertyBase  propertyBase = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(propertyBase);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((ElementType) objectMapper.readValue(jsonString, PropertyBase.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
     }
 
 

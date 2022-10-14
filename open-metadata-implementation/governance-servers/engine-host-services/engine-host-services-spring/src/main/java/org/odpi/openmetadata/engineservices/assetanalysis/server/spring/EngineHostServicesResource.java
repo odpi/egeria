@@ -33,6 +33,7 @@ public class EngineHostServicesResource
      *
      * @param serverName engine host server name
      * @param userId calling user
+     * @param governanceEngineName name of governance engine of interest
      * @return list of statuses - on for each assigned governance engines or
      *
      *  InvalidParameterException one of the parameters is null or invalid or

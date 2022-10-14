@@ -92,7 +92,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
 
 
     /**
-     * Return the the category of the primitive's type.  This sets the name and Java Class used for
+     * Return the category of the primitive's type.  This sets the name and Java Class used for
      * the primitive value.
      *
      * @return PrimitiveDefCategory

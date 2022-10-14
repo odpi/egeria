@@ -67,8 +67,8 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
-     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param supportedZones list of zones that access service is allowed to serve Assets from.
+     * @param defaultZones list of zones that access service should set in all new Assets.
      * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
@@ -103,8 +103,8 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
-     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param supportedZones list of zones that access service is allowed to serve Assets from.
+     * @param defaultZones list of zones that access service should set in all new Assets.
      * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
@@ -440,17 +440,16 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         final String connectionDescription = "Client-side topic connection.";
         final String eventSource = "Topic Event Bus";
 
-        ElementType elementType = VirtualConnection.getVirtualConnectionType();
+        ElementOrigin elementOrigin = new ElementOrigin();
 
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
+        elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
 
         String connectionName = "OutTopicConnector." + serviceName;
 
         VirtualConnection connection = new VirtualConnection();
 
-        elementType = VirtualConnection.getVirtualConnectionType();
-
-        connection.setType(elementType);
+        connection.setOrigin(elementOrigin);
+        connection.setType(VirtualConnection.getVirtualConnectionType());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);

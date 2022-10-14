@@ -16,6 +16,9 @@ import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceC
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.subjectAreaDefinitionCategory.GlossaryAuthorViewSubjectAreaDefinitionCategoryClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,12 +33,14 @@ public class SubjectAreaDefinitionCategoryFVT
     private static final String DEFAULT_TEST_CATEGORY_NAME_UPDATED = "Test subject area definition A updated";
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test subject area definition B";
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test subject area definition C";
-    private static SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaCategory = null;
+    //private static SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaCategory = null;
+    private static GlossaryAuthorViewSubjectAreaDefinitionCategoryClient subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT =null;
     private String userId = null;
     private int existingSubjectAreaCount = 0;
     private static GlossaryAuthorViewRestClient glossaryAuthorViewRestClient = null;
     private static GlossaryAuthorViewGraphClient glossaryAuthorViewGraphClient = null;
+    private static Logger log = LoggerFactory.getLogger(SubjectAreaDefinitionCategoryFVT.class);
 
     /*
      * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
@@ -55,9 +60,9 @@ public class SubjectAreaDefinitionCategoryFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+                log.error("ERROR: " + e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+                log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
     }
     public static void runWith2Servers(String url) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -66,32 +71,26 @@ public class SubjectAreaDefinitionCategoryFVT
     }
     public SubjectAreaDefinitionCategoryFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-
-
+        GlossaryAuthorViewRestClient client = new GlossaryAuthorViewRestClient(serverName, url);
+        subjectAreaCategory = new GlossaryAuthorViewSubjectAreaDefinitionCategoryClient(client);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
-        //graphFVT.glossaryAuthorViewGraphClient = new GlossaryAuthorViewGraphClient();
-        glossaryAuthorViewRestClient = new GlossaryAuthorViewRestClient(serverName, url);
-        glossaryAuthorViewGraphClient = new GlossaryAuthorViewGraphClient(glossaryAuthorViewRestClient);
-
-        String omagServer = retrieveOmagServerName("Glossary Author");
-
-        SubjectAreaRestClient client = new SubjectAreaRestClient(omagServer, url);
-        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
         this.userId=userId;
         existingSubjectAreaCount = findSubjectAreaDefinitions("").size();
-        System.out.println("existingSubjectAreaCount " + existingSubjectAreaCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingSubjectAreaCount " + existingSubjectAreaCount);
+        }
     }
 
-    public SubjectAreaDefinitionCategoryFVT(String url,String serverName,String omagServerName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SubjectAreaRestClient client = new SubjectAreaRestClient(omagServerName, url);
-        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
+/*    public SubjectAreaDefinitionCategoryFVT(String url,String serverName,String omagServerName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        GlossaryAuthorViewRestClient client = new GlossaryAuthorViewRestClient(omagServerName, url);
+        subjectAreaCategory = new GlossaryAuthorViewSubjectAreaDefinitionCategoryClient(client);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.userId=userId;
         existingSubjectAreaCount = findSubjectAreaDefinitions("").size();
         System.out.println("existingSubjectAreaCount " + existingSubjectAreaCount);
-    }
+    }*/
 
-    private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+/*    private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
 
         List<ViewServiceConfig> viewServiceConfigs = glossaryAuthorViewGraphClient.getViewServiceConfigs(userId);
 //        Map<String,Object> viewServiceOptions;
@@ -106,7 +105,7 @@ public class SubjectAreaDefinitionCategoryFVT
             }
         }
         return null;
-    }
+    }*/
 
     public static void runIt(String url, String serverName, String userId) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         try
@@ -118,7 +117,7 @@ public class SubjectAreaDefinitionCategoryFVT
             System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -128,13 +127,19 @@ public class SubjectAreaDefinitionCategoryFVT
     }
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
-        System.out.println("Create a subjectArea1");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a subjectArea1");
+        }
         SubjectAreaDefinition subjectArea1  = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(subjectArea1);
-        System.out.println("Create a subjectArea2");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a subjectArea2");
+        }
         SubjectAreaDefinition subjectArea2 = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(subjectArea2);
         SubjectAreaDefinition subjectAreaForUpdate = new SubjectAreaDefinition();
@@ -142,33 +147,48 @@ public class SubjectAreaDefinitionCategoryFVT
 
         if (subjectArea1  != null)
         {
-            System.out.println("Get the subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("Get the subjectArea1 ");
+            }
             String guid = subjectArea1 .getSystemAttributes().getGUID();
             SubjectAreaDefinition gotSubjectAreaDefinition = getSubjectAreaDefinitionByGUID(guid);
-            System.out.println("Update the subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("Update the subjectArea1 ");
+            }
             SubjectAreaDefinition updatedSubjectAreaDefinition = updateSubjectAreaDefinition(guid, subjectAreaForUpdate);
             FVTUtils.validateNode(updatedSubjectAreaDefinition);
-            System.out.println("Get the subjectArea1  again");
+            if (log.isDebugEnabled()) {
+                log.debug("Get the subjectArea1  again");
+            }
             gotSubjectAreaDefinition = getSubjectAreaDefinitionByGUID(guid);
             FVTUtils.validateNode( gotSubjectAreaDefinition);
-            System.out.println("Delete the subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("Delete the subjectArea1 ");
+            }
             deleteSubjectAreaDefinition(guid);
             //FVTUtils.validateNode( gotSubjectAreaDefinition);
-            System.out.println("restore the subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("restore the subjectArea1 ");
+            }
             gotSubjectAreaDefinition = restoreSubjectAreaDefinition(guid);
             FVTUtils.validateNode( gotSubjectAreaDefinition);
-            System.out.println("Delete the subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("Delete the subjectArea1 ");
+            }
             deleteSubjectAreaDefinition(guid);
             //FVTUtils.validateNode( gotSubjectAreaDefinition);
-            System.out.println("Purge a subjectArea1 ");
+            if (log.isDebugEnabled()) {
+                log.debug("Purge a subjectArea1 ");
+            }
 
             // create subjectArea DEFAULT_TEST_CATEGORY_NAME3 with parent
-            System.out.println("Create a subjectArea with a parent subjectArea");
-            System.out.println("Create a category with a parent category");
+            if (log.isDebugEnabled()) {
+                log.debug("Create a subjectArea with a parent subjectArea");
+                log.debug("Create a category with a parent category");
+            }
 
             SubjectAreaDefinition  subjectAreaDefinition3 = createSubjectAreaDefinitionWithParentGlossaryGuid( DEFAULT_TEST_CATEGORY_NAME3, subjectArea2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
             FVTUtils.validateNode(subjectAreaDefinition3);
-
         }
     }
     private SubjectAreaDefinition createSubjectAreaDefinitionWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -185,7 +205,9 @@ public class SubjectAreaDefinitionCategoryFVT
         if (newSubjectAreaDefinition != null)
         {
             createdSubjectAreasSet.add(newSubjectAreaDefinition.getSystemAttributes().getGUID());
-            System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with glossaryGuid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
+            if (log.isDebugEnabled()) {
+                log.debug("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with glossaryGuid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
+            }
         }
         return newSubjectAreaDefinition;
     }
@@ -200,7 +222,9 @@ public class SubjectAreaDefinitionCategoryFVT
         if (newSubjectAreaDefinition != null)
         {
             createdSubjectAreasSet.add(newSubjectAreaDefinition.getSystemAttributes().getGUID());
-            System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
+            if (log.isDebugEnabled()) {
+                log.debug("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
+            }
         }
         return newSubjectAreaDefinition;
     }
@@ -210,16 +234,20 @@ public class SubjectAreaDefinitionCategoryFVT
         SubjectAreaDefinition subjectArea = subjectAreaCategory.getByGUID(this.userId, guid);
         if (subjectArea != null)
         {
-            System.out.println("Got SubjectAreaDefinition " + subjectArea.getName() + " with userId " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
+            if (log.isDebugEnabled()) {
+                log.debug("Got SubjectAreaDefinition " + subjectArea.getName() + " with userId " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
+            }
         }
         return subjectArea;
     }
 
     public SubjectAreaDefinition updateSubjectAreaDefinition(String guid, SubjectAreaDefinition subjectArea) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.update(this.userId, guid, subjectArea);
+        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.update(this.userId, guid, subjectArea,true);
         if (updatedSubjectAreaDefinition != null)
         {
-            System.out.println("Updated SubjectAreaDefinition name to " + updatedSubjectAreaDefinition.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Updated SubjectAreaDefinition name to " + updatedSubjectAreaDefinition.getName());
+            }
         }
         return updatedSubjectAreaDefinition;
     }
@@ -227,7 +255,9 @@ public class SubjectAreaDefinitionCategoryFVT
     public void deleteSubjectAreaDefinition(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
            subjectAreaCategory.delete(this.userId, guid);
            createdSubjectAreasSet.remove(guid);
-           System.out.println("Deleted SubjectAreaDefinition guid is " + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted SubjectAreaDefinition guid is " + guid);
+        }
     }
 
 
@@ -236,14 +266,16 @@ public class SubjectAreaDefinitionCategoryFVT
         if (restoredSubjectAreaDefinition != null)
         {
             createdSubjectAreasSet.add(restoredSubjectAreaDefinition.getSystemAttributes().getGUID());
-            System.out.println("restored SubjectAreaDefinition name is " + restoredSubjectAreaDefinition.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("restored SubjectAreaDefinition name is " + restoredSubjectAreaDefinition.getName());
+            }
         }
         return restoredSubjectAreaDefinition;
     }
     public List<SubjectAreaDefinition> findSubjectAreaDefinitions(String criteria) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        return subjectAreaCategory.find(this.userId, findRequest);
+        return subjectAreaCategory.find(this.userId, findRequest,false, true);
     }
     private void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, GlossaryAuthorFVTCheckedException {
         deleteRemainingSubjectAreas();

@@ -23,7 +23,7 @@ public abstract class ConformanceSuiteCheckedExceptionBase extends Exception
     private String    reportedErrorMessage;
     private String    reportedSystemAction;
     private String    reportedUserAction;
-    private Throwable reportedCaughtException = null;
+    private Exception reportedCaughtException = null;
 
 
     /**
@@ -71,7 +71,7 @@ public abstract class ConformanceSuiteCheckedExceptionBase extends Exception
                                                 String    errorMessage,
                                                 String    systemAction,
                                                 String    userAction,
-                                                Throwable caughtError)
+                                                Exception caughtError)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
@@ -156,7 +156,7 @@ public abstract class ConformanceSuiteCheckedExceptionBase extends Exception
      *
      * @return reportedCaughtException
      */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+    public Exception getReportedCaughtException() { return reportedCaughtException; }
 
 
     /**

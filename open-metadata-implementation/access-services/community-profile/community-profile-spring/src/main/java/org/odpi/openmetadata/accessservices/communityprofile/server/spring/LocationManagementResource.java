@@ -4,17 +4,16 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.DigitalLocationRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.FixedLocationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationsResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecureLocationRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.server.LocationRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class LocationManagementResource
 {
-    private LocationRESTServices restAPI = new LocationRESTServices();
+    private final LocationRESTServices restAPI = new LocationRESTServices();
 
 
     /**
@@ -62,9 +61,9 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations")
 
-    public GUIDResponse createLocation(@PathVariable String             serverName,
-                                       @PathVariable String             userId,
-                                       @RequestBody  LocationProperties locationProperties)
+    public GUIDResponse createLocation(@PathVariable String                   serverName,
+                                       @PathVariable String                   userId,
+                                       @RequestBody  ReferenceableRequestBody locationProperties)
     {
         return restAPI.createLocation(serverName, userId, locationProperties);
     }
@@ -85,10 +84,10 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/from-template/{templateGUID}")
 
-    public GUIDResponse createLocationFromTemplate(@PathVariable String             serverName,
-                                                   @PathVariable String             userId,
-                                                   @PathVariable String             templateGUID,
-                                                   @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createLocationFromTemplate(@PathVariable String              serverName,
+                                                   @PathVariable String              userId,
+                                                   @PathVariable String              templateGUID,
+                                                   @RequestBody  TemplateRequestBody templateProperties)
     {
         return restAPI.createLocationFromTemplate(serverName, userId, templateGUID, templateProperties);
     }
@@ -109,11 +108,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/update")
 
-    public VoidResponse updateLocation(@PathVariable String             serverName,
-                                       @PathVariable String             userId,
-                                       @PathVariable String             locationGUID,
-                                       @RequestParam boolean            isMergeUpdate,
-                                       @RequestBody  LocationProperties locationProperties)
+    public VoidResponse updateLocation(@PathVariable String                   serverName,
+                                       @PathVariable String                   userId,
+                                       @PathVariable String                   locationGUID,
+                                       @RequestParam boolean                  isMergeUpdate,
+                                       @RequestBody  ReferenceableRequestBody locationProperties)
     {
         return restAPI.updateLocation(serverName, userId, locationGUID, isMergeUpdate, locationProperties);
     }
@@ -134,10 +133,10 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/classify-as-fixed-location")
 
-    public VoidResponse setLocationAsFixedPhysical(@PathVariable String                   serverName,
-                                                   @PathVariable String                   userId,
-                                                   @PathVariable String                   locationGUID,
-                                                   @RequestBody  FixedLocationRequestBody requestBody)
+    public VoidResponse setLocationAsFixedPhysical(@PathVariable String                    serverName,
+                                                   @PathVariable String                    userId,
+                                                   @PathVariable String                    locationGUID,
+                                                   @RequestBody  ClassificationRequestBody requestBody)
     {
         return restAPI.setLocationAsFixedPhysical(serverName, userId, locationGUID, requestBody);
     }
@@ -157,11 +156,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/classify-as-fixed-location/delete")
 
-    public VoidResponse clearLocationAsFixedPhysical(@PathVariable String          serverName,
-                                                     @PathVariable String          userId,
-                                                     @PathVariable String          locationGUID,
+    public VoidResponse clearLocationAsFixedPhysical(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    locationGUID,
                                                      @RequestBody (required = false)
-                                                                   NullRequestBody requestBody)
+                                                                   ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearLocationAsFixedPhysical(serverName, userId, locationGUID, requestBody);
     }
@@ -184,7 +183,7 @@ public class LocationManagementResource
     public VoidResponse setLocationAsSecure(@PathVariable String                    serverName,
                                             @PathVariable String                    userId,
                                             @PathVariable String                    locationGUID,
-                                            @RequestBody  SecureLocationRequestBody requestBody)
+                                            @RequestBody  ClassificationRequestBody requestBody)
 
     {
         return restAPI.setLocationAsSecure(serverName, userId, locationGUID, requestBody);
@@ -206,11 +205,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/classify-as-secure-location/delete")
 
-    public VoidResponse clearLocationAsSecure(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @PathVariable String          locationGUID,
+    public VoidResponse clearLocationAsSecure(@PathVariable String                    serverName,
+                                              @PathVariable String                    userId,
+                                              @PathVariable String                    locationGUID,
                                               @RequestBody (required = false)
-                                                            NullRequestBody requestBody)
+                                                            ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearLocationAsSecure(serverName, userId, locationGUID, requestBody);
     }
@@ -231,10 +230,10 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/classify-as-digital-location")
 
-    public VoidResponse setLocationAsDigital(@PathVariable String                     serverName,
-                                             @PathVariable String                     userId,
-                                             @PathVariable String                     locationGUID,
-                                             @RequestBody  DigitalLocationRequestBody requestBody)
+    public VoidResponse setLocationAsDigital(@PathVariable String                    serverName,
+                                             @PathVariable String                    userId,
+                                             @PathVariable String                    locationGUID,
+                                             @RequestBody  ClassificationRequestBody requestBody)
     {
         return restAPI.setLocationAsDigital(serverName, userId, locationGUID, requestBody);
     }
@@ -255,11 +254,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/classify-as-digital-location/delete")
 
-    public VoidResponse clearLocationAsDigital(@PathVariable String          serverName,
-                                               @PathVariable String          userId,
-                                               @PathVariable String          locationGUID,
+    public VoidResponse clearLocationAsDigital(@PathVariable String                    serverName,
+                                               @PathVariable String                    userId,
+                                               @PathVariable String                    locationGUID,
                                                @RequestBody (required = false)
-                                                             NullRequestBody requestBody)
+                                                             ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearLocationAsDigital(serverName, userId, locationGUID, requestBody);
     }
@@ -280,11 +279,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationGUID}/delete")
 
-    public VoidResponse removeLocation(@PathVariable String          serverName,
-                                       @PathVariable String          userId,
-                                       @PathVariable String          locationGUID,
+    public VoidResponse removeLocation(@PathVariable String                    serverName,
+                                       @PathVariable String                    userId,
+                                       @PathVariable String                    locationGUID,
                                        @RequestBody (required = false)
-                                                     NullRequestBody requestBody)
+                                                     ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeLocation(serverName, userId, locationGUID, requestBody);
     }
@@ -306,12 +305,12 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{parentLocationGUID}/has-nested-location/{childLocationGUID}")
 
-    public VoidResponse setupNestedLocation(@PathVariable String          serverName,
-                                            @PathVariable String          userId,
-                                            @PathVariable String          parentLocationGUID,
-                                            @PathVariable String          childLocationGUID,
+    public VoidResponse setupNestedLocation(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @PathVariable String                  parentLocationGUID,
+                                            @PathVariable String                  childLocationGUID,
                                             @RequestBody (required = false)
-                                                          NullRequestBody requestBody)
+                                                          RelationshipRequestBody requestBody)
     {
         return restAPI.setupNestedLocation(serverName, userId, parentLocationGUID, childLocationGUID, requestBody);
     }
@@ -333,12 +332,12 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{parentLocationGUID}/has-nested-location/{childLocationGUID}/delete")
 
-    public VoidResponse clearNestedLocation(@PathVariable String          serverName,
-                                            @PathVariable String          userId,
-                                            @PathVariable String          parentLocationGUID,
-                                            @PathVariable String          childLocationGUID,
+    public VoidResponse clearNestedLocation(@PathVariable String                    serverName,
+                                            @PathVariable String                    userId,
+                                            @PathVariable String                    parentLocationGUID,
+                                            @PathVariable String                    childLocationGUID,
                                             @RequestBody (required = false)
-                                                          NullRequestBody requestBody)
+                                                          ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearNestedLocation(serverName, userId, parentLocationGUID, childLocationGUID, requestBody);
     }
@@ -360,12 +359,12 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationOneGUID}/linked-to-peer-location/{locationTwoGUID}")
 
-    public VoidResponse setupAdjacentLocation(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @PathVariable String          locationOneGUID,
-                                              @PathVariable String          locationTwoGUID,
+    public VoidResponse setupAdjacentLocation(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @PathVariable String                  locationOneGUID,
+                                              @PathVariable String                  locationTwoGUID,
                                               @RequestBody (required = false)
-                                                            NullRequestBody requestBody)
+                                                            RelationshipRequestBody requestBody)
     {
         return restAPI.setupAdjacentLocation(serverName, userId, locationOneGUID, locationTwoGUID, requestBody);
     }
@@ -387,16 +386,122 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/{locationOneGUID}/linked-to-peer-location/{locationTwoGUID}/delete")
 
-    public VoidResponse clearAdjacentLocation(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @PathVariable String          locationOneGUID,
-                                              @PathVariable String          locationTwoGUID,
+    public VoidResponse clearAdjacentLocation(@PathVariable String                    serverName,
+                                              @PathVariable String                    userId,
+                                              @PathVariable String                    locationOneGUID,
+                                              @PathVariable String                    locationTwoGUID,
                                               @RequestBody (required = false)
-                                                            NullRequestBody requestBody)
+                                                            ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearAdjacentLocation(serverName, userId, locationOneGUID, locationTwoGUID, requestBody);
     }
 
+
+    /**
+     * Create a profile location relationship between an actor profile and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the location
+     * @param requestBody profile location request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @PostMapping(path = "/locations/{locationGUID}/linked-to-actor-profiles/{actorProfileGUID}")
+
+    public VoidResponse setupProfileLocation(@PathVariable String                  serverName,
+                                             @PathVariable String                  userId,
+                                             @PathVariable String                  actorProfileGUID,
+                                             @PathVariable String                  locationGUID,
+                                             @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupProfileLocation(serverName, userId, actorProfileGUID, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a profile location relationship between an actor profile and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the location
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @PostMapping(path = "/locations/{locationGUID}/linked-to-actor-profiles/{actorProfileGUID}/delete")
+
+    public VoidResponse clearProfileLocation(@PathVariable String                    serverName,
+                                             @PathVariable String                    userId,
+                                             @PathVariable String                    actorProfileGUID,
+                                             @PathVariable String                    locationGUID,
+                                             @RequestBody(required = false)
+                                                           ExternalSourceRequestBody requestBody)
+    {
+        return restAPI.clearProfileLocation(serverName, userId, actorProfileGUID, locationGUID, requestBody);
+    }
+
+
+
+    /**
+     * Create an asset location relationship between an asset and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param locationGUID unique identifier of the location
+     * @param requestBody profile location request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @PostMapping(path = "/locations/{locationGUID}/linked-to-assets/{assetGUID}")
+
+    public VoidResponse setupAssetLocation(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @PathVariable String                  assetGUID,
+                                           @PathVariable String                  locationGUID,
+                                           @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupAssetLocation(serverName, userId, assetGUID, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove an asset location relationship between an asset and a location.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param locationGUID unique identifier of the location
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @PostMapping(path = "/locations/{locationGUID}/linked-to-assets/{assetGUID}/delete")
+
+    public VoidResponse clearAssetLocation(@PathVariable String                    serverName,
+                                           @PathVariable String                    userId,
+                                           @PathVariable String                    assetGUID,
+                                           @PathVariable String                    locationGUID,
+                                           @RequestBody(required = false)
+                                                         ExternalSourceRequestBody requestBody)
+    {
+        return restAPI.clearAssetLocation(serverName, userId, assetGUID, locationGUID, requestBody);
+    }
 
 
     /**
@@ -416,18 +521,18 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/by-search-string")
 
-    public LocationsResponse findLocations(@PathVariable String                  serverName,
-                                           @PathVariable String                  userId,
-                                           @RequestParam int                     startFrom,
-                                           @RequestParam int                     pageSize,
-                                           @RequestBody  SearchStringRequestBody requestBody)
+    public LocationListResponse findLocations(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @RequestParam int                     startFrom,
+                                              @RequestParam int                     pageSize,
+                                              @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findLocations(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
     /**
-     * Retrieve the list of location metadata elements with a matching qualified or display name.
+     * Retrieve the list of location metadata elements with a matching qualified name, identifier or display name.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of calling server
@@ -443,13 +548,168 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/by-name")
 
-    public LocationsResponse getLocationsByName(@PathVariable String          serverName,
-                                                @PathVariable String          userId,
-                                                @RequestParam int             startFrom,
-                                                @RequestParam int             pageSize,
-                                                @RequestBody  NameRequestBody requestBody)
+    public LocationListResponse getLocationsByName(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize,
+                                                   @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getLocationsByName(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of adjacent location metadata elements linked to locationGUID.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID location to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations/{locationGUID}/has-peer-locations")
+
+    public LocationListResponse getAdjacentLocations(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String locationGUID,
+                                                     @RequestParam int    startFrom,
+                                                     @RequestParam int    pageSize)
+    {
+        return restAPI.getAdjacentLocations(serverName, userId, locationGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of nested location metadata elements linked to locationGUID.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID location to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations/{locationGUID}/has-nested-locations")
+
+    public LocationListResponse getNestedLocations(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String locationGUID,
+                                                   @RequestParam int    startFrom,
+                                                   @RequestParam int    pageSize)
+    {
+        return restAPI.getNestedLocations(serverName, userId, locationGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements that has the location identifier with locationGUID nested inside it.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param locationGUID location to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations/{locationGUID}/has-grouping-locations")
+
+    public LocationListResponse getGroupingLocations(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String locationGUID,
+                                                     @RequestParam int    startFrom,
+                                                     @RequestParam int    pageSize)
+    {
+        return restAPI.getGroupingLocations(serverName, userId, locationGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to the requested profile.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param actorProfileGUID name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations/by-actor-profile/{actorProfileGUID}")
+
+    public LocationListResponse getLocationsByProfile(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String actorProfileGUID,
+                                                      @RequestParam int    startFrom,
+                                                      @RequestParam int    pageSize)
+    {
+        return restAPI.getLocationsByProfile(serverName, userId, actorProfileGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to the requested asset.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param assetGUID name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations/by-asset/{assetGUID}")
+
+    public LocationListResponse getKnownLocationsForAsset(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String assetGUID,
+                                                          @RequestParam int    startFrom,
+                                                          @RequestParam int    pageSize)
+    {
+        return restAPI.getKnownLocationsForAsset(serverName, userId, assetGUID, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the list of location metadata elements.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @GetMapping(path = "/locations")
+
+    public LocationListResponse getLocations(@PathVariable String          serverName,
+                                             @PathVariable String          userId,
+                                             @RequestParam int             startFrom,
+                                             @RequestParam int             pageSize)
+    {
+        return restAPI.getLocations(serverName, userId, startFrom, pageSize);
     }
 
 

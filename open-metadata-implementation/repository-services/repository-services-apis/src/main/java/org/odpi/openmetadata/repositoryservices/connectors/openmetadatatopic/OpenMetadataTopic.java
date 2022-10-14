@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 public interface OpenMetadataTopic
 {
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param newListener object implementing the listener interface

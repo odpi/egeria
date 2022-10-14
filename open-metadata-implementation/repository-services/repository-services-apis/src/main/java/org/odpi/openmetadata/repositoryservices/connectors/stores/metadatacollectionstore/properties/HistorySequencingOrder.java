@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * HistorySequencingOrder is used for retrieval of history against a metadata collection.  It defines how the results
  * should be ordered before they are returned.  This is particularly important when the results are to returned
- * over multiple pages since the caller does not have all of the results at once to perform the sort themselves.
+ * over multiple pages since the caller does not have all the results at once to perform the sort themselves.
  *
  * The sequencing order values are:
  * <ul>

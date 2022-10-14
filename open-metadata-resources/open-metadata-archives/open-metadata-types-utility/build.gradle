@@ -11,8 +11,8 @@ plugins {
 dependencies {
 
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
-    implementation 'ch.qos.logback:logback-classic'
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    runtimeOnly 'ch.qos.logback:logback-classic'
 }
 
 description = 'Open Metadata Types Utility'
@@ -23,6 +23,8 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }
 
 shadowJar {

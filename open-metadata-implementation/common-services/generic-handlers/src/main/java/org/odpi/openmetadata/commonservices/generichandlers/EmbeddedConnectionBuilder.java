@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -14,9 +15,9 @@ import java.util.Map;
  */
 public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private Map<String, Object>  arguments;
-    private String               displayName;
-    private int                  position;
+    private final Map<String, Object>  arguments;
+    private final String               displayName;
+    private final int                  position;
 
     /**
      * Constructor when only the qualified name is known.
@@ -57,31 +58,29 @@ public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
      * @return InstanceProperties object
      */
     @Override
-    public InstanceProperties getInstanceProperties(String  methodName)
+    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
-                                                                                  position,
-                                                                                  methodName);
+        InstanceProperties properties;
 
-        if (arguments != null)
-        {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               null,
+                                                               OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
+                                                               position,
+                                                               methodName);
+
+        properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                    properties,
                                                                    OpenMetadataAPIMapper.ARGUMENTS_PROPERTY_NAME,
                                                                    arguments,
                                                                    methodName);
-        }
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
+
+        setEffectivityDates(properties);
 
         return properties;
     }

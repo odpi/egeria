@@ -56,7 +56,7 @@ public class InvalidParameterException extends ConformanceSuiteCheckedExceptionB
                                      String    errorMessage,
                                      String    systemAction,
                                      String    userAction,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String    parameterName)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);

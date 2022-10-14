@@ -29,6 +29,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     private String              abbreviation                 = null;
     private String              usage                        = null;
     private String              technicalName                = null;
+    private String              versionIdentifier            = null;
     private String              technicalDescription         = null;
     private String              formula                      = null;
     private String              implementationLanguage       = null;
@@ -60,6 +61,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
             usage = template.getUsage();
 
             technicalName = template.getTechnicalName();
+            versionIdentifier = template.getVersionIdentifier();
             technicalDescription = template.getTechnicalDescription();
 
             formula = template.getFormula();
@@ -205,6 +207,28 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
 
     /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored technical description property for the asset.
      * If no technical description is provided then null is returned.
      *
@@ -236,7 +260,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the the description of the processing performed by this process.
+     * Set up the description of the processing performed by this process.
      *
      * @param formula string description
      */
@@ -283,6 +307,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
                        ", abbreviation='" + abbreviation + '\'' +
                        ", usage='" + usage + '\'' +
                        ", technicalName='" + technicalName + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
                        ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
@@ -305,24 +330,54 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof GovernanceActionProcessProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         GovernanceActionProcessProperties that = (GovernanceActionProcessProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(summary, that.summary) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(abbreviation, that.abbreviation) &&
-                       Objects.equals(usage, that.usage) &&
-                       Objects.equals(technicalName, that.technicalName) &&
-                       Objects.equals(technicalDescription, that.technicalDescription) &&
-                       Objects.equals(formula, that.formula) &&
-                       Objects.equals(implementationLanguage, that.implementationLanguage);
+
+        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        {
+            return false;
+        }
+        if (summary != null ? ! summary.equals(that.summary) : that.summary != null)
+        {
+            return false;
+        }
+        if (description != null ? ! description.equals(that.description) : that.description != null)
+        {
+            return false;
+        }
+        if (abbreviation != null ? ! abbreviation.equals(that.abbreviation) : that.abbreviation != null)
+        {
+            return false;
+        }
+        if (usage != null ? ! usage.equals(that.usage) : that.usage != null)
+        {
+            return false;
+        }
+        if (technicalName != null ? ! technicalName.equals(that.technicalName) : that.technicalName != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        if (technicalDescription != null ? ! technicalDescription.equals(that.technicalDescription) : that.technicalDescription != null)
+        {
+            return false;
+        }
+        if (formula != null ? ! formula.equals(that.formula) : that.formula != null)
+        {
+            return false;
+        }
+        return implementationLanguage != null ? implementationLanguage.equals(that.implementationLanguage) : that.implementationLanguage == null;
     }
 
 
@@ -334,7 +389,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, summary, description, abbreviation, usage, technicalName, technicalDescription,
+        return Objects.hash(super.hashCode(), displayName, summary, description, abbreviation, usage, technicalName, versionIdentifier, technicalDescription,
                             formula, implementationLanguage);
     }
 }

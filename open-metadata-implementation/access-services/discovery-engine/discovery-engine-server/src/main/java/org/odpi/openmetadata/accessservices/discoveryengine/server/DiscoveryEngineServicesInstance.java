@@ -28,12 +28,13 @@ import java.util.List;
  */
 public class DiscoveryEngineServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
+    private static final AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 
-    private AssetHandler<OpenMetadataAPIDummyBean>                  assetHandler;
-    private AnnotationHandler<Annotation>                           annotationHandler;
-    private DataFieldHandler                                        dataFieldHandler;
-    private DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
+    private final AssetHandler<OpenMetadataAPIDummyBean>                  assetHandler;
+    private final AnnotationHandler<Annotation>                           annotationHandler;
+    private final DataFieldHandler<DataField>                             dataFieldHandler;
+    private final DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
+
     private Connection                                              outTopicConnection;
 
 

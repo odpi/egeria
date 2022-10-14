@@ -6,7 +6,7 @@
 
 The Asset Consumer OMAS is designed for use by an application that is accessing data sources and services through
 [connectors](../../../../frameworks/open-connector-framework/docs/concepts/connector.md).
-These data sources and services are called [Assets](../../../docs/concepts/assets),
+These data sources and services are called [Assets](https://egeria-project.org/concepts/asset),
 hence the name of this OMAS is **Asset Consumer**.
 
 Typically the first action to take is to

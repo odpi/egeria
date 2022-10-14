@@ -7,7 +7,7 @@
 dependencies {
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.springframework:spring-web'
     implementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')

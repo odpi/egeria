@@ -10,7 +10,7 @@
     <parent>
         <artifactId>sample-metadata</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -42,7 +42,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>catalog-builder</artifactId>
+            <artifactId>content-pack-helpers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-types</artifactId>
         </dependency>
 
         <dependency>

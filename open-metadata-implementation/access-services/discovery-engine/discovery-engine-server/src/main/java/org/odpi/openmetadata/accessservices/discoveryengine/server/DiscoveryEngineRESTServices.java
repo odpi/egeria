@@ -23,11 +23,11 @@ import java.util.Date;
  */
 public class DiscoveryEngineRESTServices
 {
-    private static DiscoveryEngineServiceInstanceHandler instanceHandler = new DiscoveryEngineServiceInstanceHandler();
+    private static final DiscoveryEngineServiceInstanceHandler instanceHandler = new DiscoveryEngineServiceInstanceHandler();
 
-    private        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DiscoveryEngineRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private        final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DiscoveryEngineRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -72,6 +72,8 @@ public class DiscoveryEngineRESTServices
                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                          null,
+                                                         false,
+                                                         false,
                                                          startFrom,
                                                          pageSize,
                                                          new Date(),
@@ -186,6 +188,8 @@ public class DiscoveryEngineRESTServices
                                                           nameParameterName,
                                                           startFrom,
                                                           pageSize,
+                                                          false,
+                                                          false,
                                                           new Date(),
                                                           methodName));
         }
@@ -243,6 +247,8 @@ public class DiscoveryEngineRESTServices
                                                     null,
                                                     startFrom,
                                                     pageSize,
+                                                    false,
+                                                    false,
                                                     new Date(),
                                                     methodName));
         }
@@ -295,6 +301,8 @@ public class DiscoveryEngineRESTServices
                                                               networkAddressParameterName,
                                                               startFrom,
                                                               pageSize,
+                                                              false,
+                                                              false,
                                                               new Date(),
                                                               methodName));
         }
@@ -357,7 +365,7 @@ public class DiscoveryEngineRESTServices
      * @param serverName name of server instance to route request to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset being analysed
-     * @param requestBody  all of the other parameters
+     * @param requestBody  all the other parameters
      *
      * @return The unique identifier of the new discovery report or
      *
@@ -408,6 +416,11 @@ public class DiscoveryEngineRESTServices
                                                                        requestBody.getDiscoveryEngineGUID(),
                                                                        requestBody.getDiscoveryServiceGUID(),
                                                                        requestBody.getAdditionalProperties(),
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
             }
         }
@@ -476,6 +489,12 @@ public class DiscoveryEngineRESTServices
                                                       requestBody.getAnalysisParameters(),
                                                       discoveryRequestStatus,
                                                       requestBody.getAdditionalProperties(),
+                                                      null,
+                                                      null,
+                                                      true,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
             }
         }
@@ -523,6 +542,9 @@ public class DiscoveryEngineRESTServices
 
             response.setAnalysisReport(handler.getDiscoveryAnalysisReport(userId,
                                                                           discoveryReportGUID,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
         }
         catch (Exception error)
@@ -1045,7 +1067,14 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getPreviousDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
+            handler.getPreviousDataFieldsForAsset(userId,
+                                                  discoveryReportGUID,
+                                                  startingFrom,
+                                                  maximumResults,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);
         }
         catch (Exception error)
         {
@@ -1092,7 +1121,14 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getNewDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
+            handler.getNewDataFieldsForAsset(userId,
+                                             discoveryReportGUID,
+                                             startingFrom,
+                                             maximumResults,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
         }
         catch (Exception error)
         {
@@ -1138,7 +1174,14 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getNestedDataFields(userId, parentDataFieldGUID, startingFrom, maximumResults, methodName);
+            handler.getNestedDataFields(userId,
+                                        parentDataFieldGUID,
+                                        startingFrom,
+                                        maximumResults,
+                                        false,
+                                        false,
+                                        new Date(),
+                                        methodName);
         }
         catch (Exception error)
         {
@@ -1181,7 +1224,12 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getDataField(userId, dataFieldGUID, methodName);
+            handler.getDataField(userId,
+                                 dataFieldGUID,
+                                 false,
+                                 false,
+                                 new Date(),
+                                 methodName);
         }
         catch (Exception error)
         {
@@ -1248,6 +1296,9 @@ public class DiscoveryEngineRESTServices
                                                       dataFieldSortOrder,
                                                       dataField.getDefaultValue(),
                                                       dataField.getAdditionalProperties(),
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
             }
             else
@@ -1319,6 +1370,9 @@ public class DiscoveryEngineRESTServices
                                                 dataFieldSortOrder,
                                                 dataField.getDefaultValue(),
                                                 dataField.getAdditionalProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
             }
             else
@@ -1439,6 +1493,11 @@ public class DiscoveryEngineRESTServices
                                     dataFieldSortOrder,
                                     dataField.getDefaultValue(),
                                     dataField.getAdditionalProperties(),
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
         }
         catch (Exception error)
@@ -1488,6 +1547,9 @@ public class DiscoveryEngineRESTServices
                                     null,
                                     null,
                                     dataFieldGUID,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
         }
         catch (Exception error)

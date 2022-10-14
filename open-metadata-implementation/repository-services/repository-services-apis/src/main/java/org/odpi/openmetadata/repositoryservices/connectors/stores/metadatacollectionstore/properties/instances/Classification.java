@@ -41,7 +41,7 @@ public class Classification extends InstanceAuditHeader
     {
         /*
          * Throw an exception if the classification's name is null because that does not make sense.
-         * The constructors do not catch this exception so it is received by the creator of the classification
+         * The constructors do not catch this exception, so it is received by the creator of the classification
          * object.
          */
         if (name == null || name.equals(""))
@@ -49,7 +49,7 @@ public class Classification extends InstanceAuditHeader
             final String methodName = "validateName";
 
             /*
-             * Build and throw exception.  This should not happen and it is likely to be a problem in the
+             * Build and throw exception.  This should not happen, and it is likely to be a problem in the
              * repository connector.
              */
             throw new OMRSRuntimeException(OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME.getMessageDefinition(),
@@ -191,7 +191,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Return the guid of the entity where a propagate classification came from.
+     * Return the guid of the entity where the propagated classification came from.
      *
      * @return unique identifier of the classification's origin
      */
@@ -202,7 +202,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Set up the guid of the entity where a propagate classification came from.
+     * Set up the guid of the entity where the propagated classification came from.
      *
      * @param classificationOriginGUID unique identifier of the classification's origin
      */

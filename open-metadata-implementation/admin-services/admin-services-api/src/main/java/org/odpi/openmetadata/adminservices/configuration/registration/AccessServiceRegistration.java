@@ -34,6 +34,7 @@ public class AccessServiceRegistration implements Serializable
      * Complete Constructor
      *
      * @param accessServiceCode ordinal for this access service
+     * @param accessServiceDevelopmentStatus development status
      * @param accessServiceName symbolic name for this access service
      * @param accessServiceFullName full name for this access service
      * @param accessServiceURLMarker name of the part of the URL that is the name of the access service
@@ -233,7 +234,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the URL for the wiki page describing this access service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getAccessServiceWiki()
     {
@@ -244,7 +245,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the URL for the wiki page describing this access service.
      *
-     * @param accessServiceWiki  String URL name for the wiki page
+     * @param accessServiceWiki  String URL for the wiki page
      */
     public void setAccessServiceWiki(String accessServiceWiki)
     {

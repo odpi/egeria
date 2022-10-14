@@ -16,7 +16,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class GetEntitySummaryExecutor extends GetEntityExecutor
 {
-    private EntitySummaryAccumulator  accumulator;
+    private final EntitySummaryAccumulator  accumulator;
 
 
     /**

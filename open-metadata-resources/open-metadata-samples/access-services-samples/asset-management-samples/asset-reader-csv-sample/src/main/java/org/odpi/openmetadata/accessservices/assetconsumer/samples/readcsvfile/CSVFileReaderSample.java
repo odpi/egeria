@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class CSVFileReaderSample
 {
-    private String  fileName;
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String  fileName;
+    private final String  serverName;
+    private final String  serverURLRoot;
+    private final String  clientUserId;
 
 
     /**
@@ -298,7 +298,7 @@ public class CSVFileReaderSample
 
                 if (assetUniverse != null)
                 {
-                    System.out.println("Type Name: " + assetUniverse.getAssetTypeName());
+                    System.out.println("Type Name: " + assetUniverse.getType().getTypeName());
                     System.out.println("Qualified Name: " + assetUniverse.getQualifiedName());
                 }
                 else

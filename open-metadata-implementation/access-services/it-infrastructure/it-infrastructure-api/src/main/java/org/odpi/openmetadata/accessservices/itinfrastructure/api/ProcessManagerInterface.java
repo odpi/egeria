@@ -7,6 +7,10 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Da
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
@@ -380,7 +384,7 @@ public interface ProcessManagerInterface
 
 
     /**
-     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or asset as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
@@ -434,11 +438,8 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param properties qualified name for this relationship and other related properties
      *
      * @return unique identifier of the relationship
      *
@@ -446,19 +447,16 @@ public interface ProcessManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String setupDataFlow(String  userId,
-                         String  infrastructureManagerGUID,
-                         String  infrastructureManagerName,
-                         boolean infrastructureManagerIsHome,
-                         String  dataSupplierGUID,
-                         String  dataConsumerGUID,
-                         String  qualifiedName,
-                         String  description,
-                         String  formula,
-                         Date    effectiveFrom,
-                         Date    effectiveTo) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
+    String setupDataFlow(String             userId,
+                         String             infrastructureManagerGUID,
+                         String             infrastructureManagerName,
+                         boolean            infrastructureManagerIsHome,
+                         String             dataSupplierGUID,
+                         String             dataConsumerGUID,
+                         DataFlowProperties properties,
+                         Date               effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
@@ -494,27 +492,21 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateDataFlow(String userId,
-                        String infrastructureManagerGUID,
-                        String infrastructureManagerName,
-                        String dataFlowGUID,
-                        String qualifiedName,
-                        String description,
-                        String formula,
-                        Date   effectiveFrom,
-                        Date   effectiveTo) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException;
+    void updateDataFlow(String             userId,
+                        String             infrastructureManagerGUID,
+                        String             infrastructureManagerName,
+                        String             dataFlowGUID,
+                        DataFlowProperties properties,
+                        Date               effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**
@@ -540,10 +532,12 @@ public interface ProcessManagerInterface
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -554,16 +548,20 @@ public interface ProcessManagerInterface
      */
     List<DataFlowElement> getDataFlowConsumers(String userId,
                                                String dataSupplierGUID,
+                                               int    startFrom,
+                                               int    pageSize,
                                                Date   effectiveTime) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -574,6 +572,8 @@ public interface ProcessManagerInterface
      */
     List<DataFlowElement> getDataFlowSuppliers(String userId,
                                                String dataConsumerGUID,
+                                               int    startFrom,
+                                               int    pageSize,
                                                Date   effectiveTime) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
@@ -588,11 +588,8 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param properties qualified name for this relationship and other related properties
      *
      * @return unique identifier for the control flow relationship
      *
@@ -600,19 +597,16 @@ public interface ProcessManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String setupControlFlow(String  userId,
-                            String  infrastructureManagerGUID,
-                            String  infrastructureManagerName,
-                            boolean infrastructureManagerIsHome,
-                            String  currentStepGUID,
-                            String  nextStepGUID,
-                            String  qualifiedName,
-                            String  description,
-                            String  guard,
-                            Date    effectiveFrom,
-                            Date    effectiveTo) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
+    String setupControlFlow(String                userId,
+                            String                infrastructureManagerGUID,
+                            String                infrastructureManagerName,
+                            boolean               infrastructureManagerIsHome,
+                            String                currentStepGUID,
+                            String                nextStepGUID,
+                            ControlFlowProperties properties,
+                            Date                  effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -647,27 +641,21 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateControlFlow(String userId,
-                           String infrastructureManagerGUID,
-                           String infrastructureManagerName,
-                           String controlFlowGUID,
-                           String qualifiedName,
-                           String description,
-                           String guard,
-                           Date   effectiveFrom,
-                           Date   effectiveTo) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    void updateControlFlow(String                userId,
+                           String                infrastructureManagerGUID,
+                           String                infrastructureManagerName,
+                           String                controlFlowGUID,
+                           ControlFlowProperties properties,
+                           Date                  effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -693,10 +681,12 @@ public interface ProcessManagerInterface
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -707,16 +697,20 @@ public interface ProcessManagerInterface
      */
     List<ControlFlowElement> getControlFlowNextSteps(String userId,
                                                      String currentStepGUID,
+                                                     int    startFrom,
+                                                     int    pageSize,
                                                      Date   effectiveTime) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -727,6 +721,8 @@ public interface ProcessManagerInterface
      */
     List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
                                                          String currentStepGUID,
+                                                         int    startFrom,
+                                                         int    pageSize,
                                                          Date   effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
@@ -741,11 +737,8 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -753,19 +746,16 @@ public interface ProcessManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String setupProcessCall(String  userId,
-                            String  infrastructureManagerGUID,
-                            String  infrastructureManagerName,
-                            boolean infrastructureManagerIsHome,
-                            String  callerGUID,
-                            String  calledGUID,
-                            String  qualifiedName,
-                            String  description,
-                            String  formula,
-                            Date    effectiveFrom,
-                            Date    effectiveTo) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
+    String setupProcessCall(String                userId,
+                            String                infrastructureManagerGUID,
+                            String                infrastructureManagerName,
+                            boolean               infrastructureManagerIsHome,
+                            String                callerGUID,
+                            String                calledGUID,
+                            ProcessCallProperties properties,
+                            Date                  effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -800,27 +790,21 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateProcessCall(String userId,
-                           String infrastructureManagerGUID,
-                           String infrastructureManagerName,
-                           String processCallGUID,
-                           String qualifiedName,
-                           String description,
-                           String formula,
-                           Date   effectiveFrom,
-                           Date   effectiveTo) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    void updateProcessCall(String                userId,
+                           String                infrastructureManagerGUID,
+                           String                infrastructureManagerName,
+                           String                processCallGUID,
+                           ProcessCallProperties properties,
+                           Date                  effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -845,10 +829,12 @@ public interface ProcessManagerInterface
                                                          PropertyServerException;
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -859,16 +845,20 @@ public interface ProcessManagerInterface
      */
     List<ProcessCallElement> getProcessCalled(String userId,
                                               String callerGUID,
+                                              int    startFrom,
+                                              int    pageSize,
                                               Date   effectiveTime) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException;
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return unique identifier and properties of the relationship
@@ -879,6 +869,8 @@ public interface ProcessManagerInterface
      */
     List<ProcessCallElement> getProcessCallers(String userId,
                                                String calledGUID,
+                                               int    startFrom,
+                                               int    pageSize,
                                                Date   effectiveTime) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
@@ -886,14 +878,14 @@ public interface ProcessManagerInterface
 
     /**
      * Link two elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties properties of the relationship and effectivity dates
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -901,21 +893,69 @@ public interface ProcessManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String setupLineageMapping(String userId,
-                               String sourceElementGUID,
-                               String destinationElementGUID,
-                               Date   effectiveFrom,
-                               Date   effectiveTo) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException;
+    String setupLineageMapping(String                   userId,
+                               String                   sourceElementGUID,
+                               String                   destinationElementGUID,
+                               LineageMappingProperties properties,
+                               Date                     effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
-     * Remove the lineage mapping between two elements.
+     * Retrieve the lineage mapping relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one lineage mapping relationship between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime effective time for the query
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    LineageMappingElement getLineageMapping(String userId,
+                                            String sourceElementGUID,
+                                            String destinationElementGUID,
+                                            String qualifiedName,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+    /**
+     * Update the lineage mapping relationship between two elements.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void updateLineageMapping(String                   userId,
+                              String                   infrastructureManagerGUID,
+                              String                   infrastructureManagerName,
+                              String                   lineageMappingGUID,
+                              LineageMappingProperties properties,
+                              Date                     effectiveTime) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
+
+
+    /**
+     * Remove the lineage mapping relationship.
+     *
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the  relationship
      * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -923,18 +963,19 @@ public interface ProcessManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearLineageMapping(String userId,
-                             String sourceElementGUID,
-                             String destinationElementGUID,
+                             String lineageMappingGUID,
                              Date   effectiveTime) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException;
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return list of lineage mapping relationships
@@ -945,15 +986,19 @@ public interface ProcessManagerInterface
      */
     List<LineageMappingElement> getDestinationLineageMappings(String userId,
                                                               String sourceElementGUID,
+                                                              int    startFrom,
+                                                              int    pageSize,
                                                               Date   effectiveTime) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime effective time for the query
      *
      * @return list of lineage mapping relationships
@@ -964,6 +1009,8 @@ public interface ProcessManagerInterface
      */
     List<LineageMappingElement> getSourceLineageMappings(String userId,
                                                          String destinationElementGUID,
+                                                         int    startFrom,
+                                                         int    pageSize,
                                                          Date   effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;

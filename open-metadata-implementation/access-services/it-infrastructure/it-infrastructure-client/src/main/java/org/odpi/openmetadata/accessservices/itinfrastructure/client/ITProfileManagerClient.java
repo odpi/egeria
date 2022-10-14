@@ -176,7 +176,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
     /**
      * Create a definition of an IT profile.  If the itInfrastructureGUID is provided, it is connected to the infrastructure element that the
      * profile describes using the ITInfrastructureProfile relationship.  If the itUserId is specified, a UserIdentity for that userId is
-     * found/created and connected to the the new IT profile.
+     * found/created and connected to the new IT profile.
      *
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local

@@ -57,52 +57,52 @@ public class TestBeansToAccessOMRS {
         EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
-        PrimitivePropertyValue primitivePropertyValue;
-        ArrayPropertyValue arrayPropertyValue;
+        PrimitivePropertyValue primitiveTypePropertyValue;
+        ArrayPropertyValue arrayTypePropertyValue;
          <$$Attr$$
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+        primitiveTypePropertyValue = new PrimitivePropertyValue();
+        primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
         <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-        primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-        instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+        primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+        instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
         $$Attr$$>
 
         <$$AttrList$$
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+        primitiveTypePropertyValue = new PrimitivePropertyValue();
+        primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
         <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-        primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+        primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
 
-        arrayPropertyValue = new ArrayPropertyValue();
-        arrayPropertyValue.setArrayCount(1);
-        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
-        instanceProperties.setProperty("<$$AttrName$$>", arrayPropertyValue);
+        arrayTypePropertyValue = new ArrayPropertyValue();
+        arrayTypePropertyValue.setArrayCount(1);
+        arrayTypePropertyValue.setArrayValue(0,primitiveTypePropertyValue);
+        instanceProperties.setProperty("<$$AttrName$$>", arrayTypePropertyValue);
         $$AttrList$$>
 
-        EnumPropertyValue enumPropertyValue;
+        EnumPropertyValue enumTypePropertyValue;
         <$$Enum$$
-        enumPropertyValue = new EnumPropertyValue();
+        enumTypePropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-        instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+        enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+        instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
         $$Enum$$>
 
-        MapPropertyValue mapPropertyValue;
+        MapPropertyValue mapTypePropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
         PrimitivePropertyValue primitivePropertyValueForMap=null;
         InstanceProperties mapValues =null;
 
         <$$Map$$
-        mapPropertyValue = new MapPropertyValue();
+        mapTypePropertyValue = new MapPropertyValue();
         primitivePropertyValueForMap = new PrimitivePropertyValue();
         primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
         mapValues = new InstanceProperties();
         mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-        mapPropertyValue.setMapValues(mapValues);
-        instanceProperties.setProperty("<$$MapName$$>", mapPropertyValue);
+        mapTypePropertyValue.setMapValues(mapValues);
+        instanceProperties.setProperty("<$$MapName$$>", mapTypePropertyValue);
 
         $$Map$$>
 
@@ -171,39 +171,39 @@ public class TestBeansToAccessOMRS {
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
-        PrimitivePropertyValue primitivePropertyValue;
+        PrimitivePropertyValue primitiveTypePropertyValue;
          <$$Attr$$
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+        primitiveTypePropertyValue = new PrimitivePropertyValue();
+        primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
         <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-        primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-        instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+        primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+        instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
         $$Attr$$>
 
-        EnumPropertyValue enumPropertyValue;
+        EnumPropertyValue enumTypePropertyValue;
         <$$Enum$$
-        enumPropertyValue = new EnumPropertyValue();
+        enumTypePropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-        instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+        enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+        instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
         $$Enum$$>
 
-        MapPropertyValue mapPropertyValue =null;
+        MapPropertyValue mapTypePropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
 
         PrimitivePropertyValue primitivePropertyValueForMap=null;
         InstanceProperties mapValues=null;
         <$$Map$$
-        mapPropertyValue = new MapPropertyValue();
+        mapTypePropertyValue = new MapPropertyValue();
         primitivePropertyValueForMap = new PrimitivePropertyValue();
         primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
         mapValues = new InstanceProperties();
         mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-        mapPropertyValue.setMapValues(mapValues);
-        instanceProperties.setProperty("<$$uMapName$$>", mapPropertyValue);
+        mapTypePropertyValue.setMapValues(mapValues);
+        instanceProperties.setProperty("<$$uMapName$$>", mapTypePropertyValue);
 
         $$Map$$>
 
@@ -232,39 +232,39 @@ public class TestBeansToAccessOMRS {
             EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
-            PrimitivePropertyValue primitivePropertyValue;
+            PrimitivePropertyValue primitiveTypePropertyValue;
              <$$Attr$$
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+            primitiveTypePropertyValue = new PrimitivePropertyValue();
+            primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
             <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-            primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-            instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+            primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+            instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             $$Attr$$>
 
-            EnumPropertyValue enumPropertyValue;
+            EnumPropertyValue enumTypePropertyValue;
             <$$Enum$$
-            enumPropertyValue = new EnumPropertyValue();
+            enumTypePropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-            instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+            enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+            instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
             $$Enum$$>
 
-            MapPropertyValue mapPropertyValue;
+            MapPropertyValue mapTypePropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
             PrimitivePropertyValue primitivePropertyValueForMap=null;
             InstanceProperties mapValues =null;
 
             <$$Map$$
-            mapPropertyValue = new MapPropertyValue();
+            mapTypePropertyValue = new MapPropertyValue();
             primitivePropertyValueForMap = new PrimitivePropertyValue();
             primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
             mapValues = new InstanceProperties();
             mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-            mapPropertyValue.setMapValues(mapValues);
-            instanceProperties.setProperty("<$$MapName$$>", mapPropertyValue);
+            mapTypePropertyValue.setMapValues(mapValues);
+            instanceProperties.setProperty("<$$MapName$$>", mapTypePropertyValue);
 
             $$Map$$>
 
@@ -349,36 +349,36 @@ public class TestBeansToAccessOMRS {
             Relationship mockRelationship = new Relationship();
             InstanceProperties instanceProperties = new InstanceProperties();
 
-            PrimitivePropertyValue primitivePropertyValue;
+            PrimitivePropertyValue primitiveTypePropertyValue;
              <$$Attr$$
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+            primitiveTypePropertyValue = new PrimitivePropertyValue();
+            primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
             <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-            primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-            instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+            primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+            instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             $$Attr$$>
 
-            EnumPropertyValue enumPropertyValue;
+            EnumPropertyValue enumTypePropertyValue;
             <$$Enum$$
-            enumPropertyValue = new EnumPropertyValue();
+            enumTypePropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-            instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+            enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+            instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
             $$Enum$$>
 
-            MapPropertyValue mapPropertyValue;
+            MapPropertyValue mapTypePropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
             <$$Map$$
-            mapPropertyValue = new MapPropertyValue();
+            mapTypePropertyValue = new MapPropertyValue();
             PrimitivePropertyValue primitivePropertyValueForMap = new PrimitivePropertyValue();
             primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
             InstanceProperties mapValues = new InstanceProperties();
             mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-            mapPropertyValue.setMapValues(mapValues);
-            instanceProperties.setProperty("<$$uMapName$$>", mapPropertyValue);
+            mapTypePropertyValue.setMapValues(mapValues);
+            instanceProperties.setProperty("<$$uMapName$$>", mapTypePropertyValue);
 
             $$Map$$>
 
@@ -466,39 +466,39 @@ public class TestBeansToAccessOMRS {
             Relationship mockRelationship = new Relationship();
             InstanceProperties instanceProperties = new InstanceProperties();
 
-            PrimitivePropertyValue primitivePropertyValue;
+            PrimitivePropertyValue primitiveTypePropertyValue;
              <$$Attr$$
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+            primitiveTypePropertyValue = new PrimitivePropertyValue();
+            primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
             <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-            primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-            instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+            primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+            instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             $$Attr$$>
 
-            EnumPropertyValue enumPropertyValue;
+            EnumPropertyValue enumTypePropertyValue;
             <$$Enum$$
-            enumPropertyValue = new EnumPropertyValue();
+            enumTypePropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-            instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+            enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+            instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
             $$Enum$$>
 
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            MapPropertyValue mapPropertyValue = null;
+            MapPropertyValue mapTypePropertyValue = null;
             InstanceProperties mapValues =null;
             PrimitivePropertyValue primitivePropertyValueForMap =null;
 
             <$$Map$$
-            mapPropertyValue = new MapPropertyValue();
+            mapTypePropertyValue = new MapPropertyValue();
             primitivePropertyValueForMap = new PrimitivePropertyValue();
             primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
             mapValues = new InstanceProperties();
             mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-            mapPropertyValue.setMapValues(mapValues);
-            instanceProperties.setProperty("<$$uMapName$$>", mapPropertyValue);
+            mapTypePropertyValue.setMapValues(mapValues);
+            instanceProperties.setProperty("<$$uMapName$$>", mapTypePropertyValue);
 
             $$Map$$>
 
@@ -583,39 +583,39 @@ public class TestBeansToAccessOMRS {
             Relationship mockRelationship = new Relationship();
             InstanceProperties instanceProperties = new InstanceProperties();
 
-            PrimitivePropertyValue primitivePropertyValue;
+            PrimitivePropertyValue primitiveTypePropertyValue;
              <$$Attr$$
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+            primitiveTypePropertyValue = new PrimitivePropertyValue();
+            primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
             <$$AttrType$$> <$$AttrName$$> = <$$AttrValue$$>;
-            primitivePropertyValue.setPrimitiveValue(<$$AttrName$$>);
-            instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+            primitiveTypePropertyValue.setPrimitiveValue(<$$AttrName$$>);
+            instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             $$Attr$$>
 
-            EnumPropertyValue enumPropertyValue;
+            EnumPropertyValue enumTypePropertyValue;
             <$$Enum$$
-            enumPropertyValue = new EnumPropertyValue();
+            enumTypePropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
-            instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+            enumTypePropertyValue.setSymbolicName(<$$uEnumType$$>.values()[0].name());
+            instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
 
             $$Enum$$>
 
-            MapPropertyValue mapPropertyValue=null;
+            MapPropertyValue mapTypePropertyValue=null;
             PrimitivePropertyValue primitivePropertyValueForMap = null;
             InstanceProperties mapValues =null;
 
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
             <$$Map$$
-            mapPropertyValue = new MapPropertyValue();
+            mapTypePropertyValue = new MapPropertyValue();
             primitivePropertyValueForMap = new PrimitivePropertyValue();
             primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
             mapValues = new InstanceProperties();
             mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
-            mapPropertyValue.setMapValues(mapValues);
-            instanceProperties.setProperty("<$$uMapName$$>", mapPropertyValue);
+            mapTypePropertyValue.setMapValues(mapValues);
+            instanceProperties.setProperty("<$$uMapName$$>", mapTypePropertyValue);
 
             $$Map$$>
 

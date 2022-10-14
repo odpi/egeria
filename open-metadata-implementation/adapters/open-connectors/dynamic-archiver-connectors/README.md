@@ -1,15 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![InDev](../../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Dynamic Archive Connectors
 
 This module contains the implementation of the
 archive service connectors that run in the
-[Archive Manager Open Metadata Engine Service (OMES)](../../../engine-services/repository-governance)
+[Repository Governance Open Metadata Engine Service (OMES)](https://egeria-project.org/services/omes/repository-governance/overview)
 hosted by the
-[Engine Host OMAG Server](../../../admin-services/docs/concepts/engine-host.md).
+[Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
 
 They are responsible for building open metadata archives based on the content of the open metadata repositories.
 

@@ -1,21 +1,16 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Subject Area Open Metadata Access Service (OMAS)
 
-The Subject Area OMAS supports subject matter experts who are documenting
-their knowledge about a particular subject.  This includes:
+The Subject Area OMAS supports subject-matter experts who are documenting
+their knowledge about a particular in a glossary.
 
-* glossary terms
-* reference data
-* validation rules
+* [Documentation](https://egeria-project.org/services/omas/security-manager/overview)
 
-The Subject Area API enables subject matter experts to author glossary content. The operations include Find, Create, Read, Update and 
-Delete (CRUD) operations on Glossary, Term and Category objects.
-
-These structures are defined as POJO property objects (aka beans).
+## Design Information
 
 The module structure for the Subject Area OMAS is as follows:
 

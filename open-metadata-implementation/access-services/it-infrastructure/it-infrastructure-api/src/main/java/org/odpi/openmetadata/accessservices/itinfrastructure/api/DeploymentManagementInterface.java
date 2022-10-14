@@ -51,7 +51,7 @@ public interface DeploymentManagementInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param deploymentGUID unique identifier of the relationship
-     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param deploymentProperties properties for the relationship
      *

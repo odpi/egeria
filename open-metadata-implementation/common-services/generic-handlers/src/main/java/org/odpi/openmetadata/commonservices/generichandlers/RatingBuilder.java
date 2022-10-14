@@ -7,15 +7,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-
 /**
  * RatingBuilder is able to build the properties for a Rating entity.
  */
 public class RatingBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private int        starRating;
-    private String     review;
-    private boolean    isPublic;
+    private final int     starRating;
+    private final String  review;
+    private final boolean isPublic;
 
     /**
      * Constructor.
@@ -23,7 +22,6 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
      * @param starRating stars parameter
      * @param review review comments
      * @param isPublic should this feedback be shareable?
-     * @param parentGUID unique identifier of the entity that the rating is attaching to
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -31,7 +29,6 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
     public RatingBuilder(int                  starRating,
                          String               review,
                          boolean              isPublic,
-                         String               parentGUID,
                          OMRSRepositoryHelper repositoryHelper,
                          String               serviceName,
                          String               serverName)
@@ -91,14 +88,11 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.STARS_PROPERTY_NAME);
         }
 
-        if (review != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.REVIEW_PROPERTY_NAME,
-                                                                      review,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.REVIEW_PROPERTY_NAME,
+                                                                  review,
+                                                                  methodName);
 
         return properties;
     }

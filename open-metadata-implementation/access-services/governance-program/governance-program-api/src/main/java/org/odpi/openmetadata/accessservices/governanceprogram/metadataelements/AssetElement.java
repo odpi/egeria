@@ -10,6 +10,7 @@ import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * Asset holds asset properties that are used for displaying details of
@@ -108,7 +109,7 @@ public class AssetElement implements MetadataElement, Serializable
 
 
     /**
-     * Set up the the description of the asset.
+     * Set up the description of the asset.
      *
      * @param properties of external references
      */

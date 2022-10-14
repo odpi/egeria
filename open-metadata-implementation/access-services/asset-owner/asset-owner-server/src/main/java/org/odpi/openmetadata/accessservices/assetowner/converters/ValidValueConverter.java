@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.ValidValueProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -16,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a ValidValueElement bean.
+ * EntityDetail object into a bean that inherits from ValidValueElement.
  */
 public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
 {
@@ -35,8 +36,59 @@ public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
     }
 
 
+
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
+
+            if (returnBean instanceof ValidValueElement)
+            {
+                ValidValueElement bean = (ValidValueElement) returnBean;
+                this.updateSimpleMetadataElement(beanClass, bean, entity, methodName);
+
+                if (relationship != null)
+                {
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                    {
+                        bean.setSetGUID(relationship.getEntityOneProxy().getGUID());
+                        bean.setIsDefaultValue(this.removeIsDefaultValue(relationship.getProperties()));
+                    }
+                }
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -59,43 +111,7 @@ public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
 
             if (returnBean instanceof ValidValueElement)
             {
-                ValidValueElement bean = (ValidValueElement) returnBean;
-                ValidValueProperties validValueProperties = new ValidValueProperties();
-
-                if (entity != null)
-                {
-                    /*
-                     * Check that the entity is of the correct type.
-                     */
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-
-                    /*
-                     * The property values come from the entity.
-                     */
-                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
-
-                    validValueProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    validValueProperties.setDisplayName(this.removeName(instanceProperties));
-                    validValueProperties.setDescription(this.removeDescription(instanceProperties));
-                    validValueProperties.setUsage(this.removeUsage(instanceProperties));
-                    validValueProperties.setScope(this.removeScope(instanceProperties));
-                    validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
-                    validValueProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    validValueProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    validValueProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    bean.setValidValueProperties(validValueProperties);
-                }
-                else
-                {
-                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-                }
+                this.updateSimpleMetadataElement(beanClass, (ValidValueElement) returnBean, entity, methodName);
             }
 
             return returnBean;
@@ -110,22 +126,48 @@ public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and that of a connected relationship.
+     * Extract the properties from the entity.  Each concrete DataManager OMAS converter implements this method.
+     * The top level fills in the header
      *
      * @param beanClass name of the class to create
+     * @param bean output bean
      * @param entity entity containing the properties
-     * @param relationship relationship containing the properties
      * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @Override
-    public B getNewBean(Class<B>     beanClass,
-                        EntityDetail entity,
-                        Relationship relationship,
-                        String       methodName) throws PropertyServerException
+    void updateSimpleMetadataElement(Class<B>          beanClass,
+                                     ValidValueElement bean,
+                                     EntityDetail      entity,
+                                     String            methodName)  throws PropertyServerException
     {
-        return getNewBean(beanClass, entity, methodName);
+        if (entity != null)
+        {
+            bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+            ValidValueProperties validValueProperties = new ValidValueProperties();
+
+            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+
+            validValueProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+            validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+            validValueProperties.setDisplayName(this.removeName(instanceProperties));
+            validValueProperties.setDescription(this.removeDescription(instanceProperties));
+            validValueProperties.setUsage(this.removeUsage(instanceProperties));
+            validValueProperties.setScope(this.removeScope(instanceProperties));
+            validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
+            validValueProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
+
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            validValueProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+            validValueProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            bean.setValidValueProperties(validValueProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+        }
     }
 }

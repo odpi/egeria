@@ -21,16 +21,16 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetDetail
 {
-    private ElementType                 type                   = new ElementType();
-    private List<ElementClassification> classifications        = new ArrayList<>();
-    private Map<String, Object>         assetProperties        = new HashMap<>();
-    private AssetExternalIdentifiers    externalIdentifiers    = null;
-    private AssetRelatedMediaReferences relatedMediaReferences = null;
-    private AssetNoteLogs               noteLogs               = null;
-    private AssetExternalReferences     externalReferences     = null;
-    private AssetConnections            connections            = null;
-    private AssetLicenses               licenses               = null;
-    private AssetCertifications         certifications         = null;
+    private final ElementType                 type                   = new ElementType();
+    private final List<ElementClassification> classifications        = new ArrayList<>();
+    private final Map<String, Object>         assetProperties        = new HashMap<>();
+    private final ExternalIdentifiers         externalIdentifiers    = null;
+    private final RelatedMediaReferences      relatedMediaReferences = null;
+    private final NoteLogs                    noteLogs               = null;
+    private final ExternalReferences          externalReferences     = null;
+    private final Connections                 connections            = null;
+    private final Licenses                    licenses               = null;
+    private final Certifications              certifications         = null;
 
 
     /**
@@ -38,7 +38,7 @@ public class TestAssetDetail
      */
     public TestAssetDetail()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
     }
 
 
@@ -127,7 +127,7 @@ public class TestAssetDetail
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
-                               new MockAssetExternalIdentifiers(null, 45, 8),
+                               new MockExternalIdentifiers(45, 8),
                                relatedMediaReferences,
                                noteLogs,
                                externalReferences,
@@ -142,13 +142,13 @@ public class TestAssetDetail
      */
     @Test public void testBeanConstructor()
     {
-        AssetExternalIdentifiers    externalIdentifiers    = null;
-        AssetRelatedMediaReferences relatedMediaReferences = null;
-        AssetNoteLogs               noteLogs               = null;
-        AssetExternalReferences     externalReferences     = null;
-        AssetConnections            connections            = null;
-        AssetLicenses               licenses               = null;
-        AssetCertifications         certifications         = null;
+        ExternalIdentifiers    externalIdentifiers    = null;
+        RelatedMediaReferences relatedMediaReferences = null;
+        NoteLogs               noteLogs               = null;
+        ExternalReferences     externalReferences     = null;
+        Connections            connections    = null;
+        Licenses               licenses       = null;
+        Certifications         certifications = null;
 
         AssetDetail testObject = new AssetDetail(new Asset(),
                                                  externalIdentifiers,
@@ -174,13 +174,13 @@ public class TestAssetDetail
      */
     @Test public void testCloneConstructor()
     {
-        AssetExternalIdentifiers    externalIdentifiers    = new MockAssetExternalIdentifiers(null, 15, 50);
-        AssetRelatedMediaReferences relatedMediaReferences = new MockAssetRelatedMediaReferences(null, 15, 50);
-        AssetNoteLogs               noteLogs               = new MockAssetNoteLogs(null, 15, 50);
-        AssetExternalReferences     externalReferences     = new MockAssetExternalReferences(null, 15, 50);
-        AssetConnections            connections            = new MockAssetConnections(null, 15, 50);
-        AssetLicenses               licenses               = new MockAssetLicenses(null, 15, 50);
-        AssetCertifications         certifications         = new MockAssetCertifications(null, 15, 50);
+        ExternalIdentifiers    externalIdentifiers    = new MockExternalIdentifiers( 15, 50);
+        RelatedMediaReferences relatedMediaReferences = new MockRelatedMediaReferences( 15, 50);
+        NoteLogs               noteLogs               = new MockNoteLogs( 15, 50);
+        ExternalReferences     externalReferences     = new MockExternalReferences( 15, 50);
+        Connections         connections    = new MockConnections(15, 50);
+        Licenses            licenses       = new MockLicenses(15, 50);
+        Certifications      certifications = new MockAssetCertifications( 15, 50);
 
         AssetDetail testObject = new AssetDetail(new Asset(),
                                                  externalIdentifiers,
@@ -206,13 +206,13 @@ public class TestAssetDetail
      */
     @Test public void testToString()
     {
-        AssetExternalIdentifiers    externalIdentifiers    = new MockAssetExternalIdentifiers(null, 15, 50);
-        AssetRelatedMediaReferences relatedMediaReferences = new MockAssetRelatedMediaReferences(null, 15, 50);
-        AssetNoteLogs               noteLogs               = new MockAssetNoteLogs(null, 15, 50);
-        AssetExternalReferences     externalReferences     = new MockAssetExternalReferences(null, 15, 50);
-        AssetConnections            connections            = new MockAssetConnections(null, 15, 50);
-        AssetLicenses               licenses               = new MockAssetLicenses(null, 15, 50);
-        AssetCertifications         certifications         = new MockAssetCertifications(null, 15, 50);
+        ExternalIdentifiers    externalIdentifiers    = new MockExternalIdentifiers( 15, 50);
+        RelatedMediaReferences relatedMediaReferences = new MockRelatedMediaReferences( 15, 50);
+        NoteLogs               noteLogs               = new MockNoteLogs( 15, 50);
+        ExternalReferences     externalReferences     = new MockExternalReferences( 15, 50);
+        Connections         connections    = new MockConnections( 15, 50);
+        Licenses            licenses       = new MockLicenses(15, 50);
+        Certifications certifications = new MockAssetCertifications( 15, 50);
 
         AssetDetail testTemplate = new AssetDetail(new Asset(),
                                                    externalIdentifiers,

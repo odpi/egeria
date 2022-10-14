@@ -126,7 +126,7 @@ public class ConfigPropertiesResource
 
     /**
      * Set up the password to use when the server is issuing REST calls.  If this value is set then the
-     * serverUserId and this password are embedded the the HTTP header.
+     * serverUserId and this password are both embedded in the HTTP header.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.

@@ -55,7 +55,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -84,7 +84,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -301,26 +301,28 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for getGlossary)");
             }
 
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierTwo);
+            externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoName);
+            externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
+            externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierTwoKeyPattern);
+            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+
             assetManagerClient.addExternalIdentifier(userId,
                                                      assetManagerTwoGUID,
                                                      assetManagerTwoName,
-                                                     SynchronizationDirection.BOTH_DIRECTIONS,
-                                                     null,
                                                      glossaryGUID,
                                                      GLOSSARY_TYPE_NAME,
-                                                     externalGlossaryIdentifierTwo,
-                                                     externalGlossaryIdentifierTwoName,
-                                                     externalGlossaryIdentifierTwoUsage,
-                                                     externalGlossaryIdentifierTwoSource,
-                                                     externalGlossaryIdentifierTwoKeyPattern,
-                                                     null);
+                                                     externalIdentifierProperties);
 
             GlossaryElement                 retrievedElement;
             List<MetadataCorrelationHeader> metadataCorrelationHeaders;
             MetadataCorrelationHeader       correlationHeader;
 
             /*
-             * Retreive element for just asset manager two
+             * Retrieve element for just asset manager two
              */
             retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerTwoGUID, assetManagerTwoName, glossaryGUID);
 
@@ -379,7 +381,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
             /*
-             * Retreive element for just asset manager one
+             * Retrieve element for just asset manager one
              */
             retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
 
@@ -461,7 +463,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
             if (metadataCorrelationHeaders.size() != 2)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve) " + metadataCorrelationHeaders.toString());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve) " + metadataCorrelationHeaders);
             }
 
             glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne);
@@ -542,20 +544,21 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for getGlossary)");
             }
 
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierOne);
+            externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierOneName);
+            externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierOneUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierOneSource);
+            externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierOneKeyPattern);
+            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+
             assetManagerClient.addExternalIdentifier(userId,
                                                      assetManagerTwoGUID,
                                                      assetManagerTwoName,
-                                                     SynchronizationDirection.BOTH_DIRECTIONS,
-                                                     null,
                                                      glossaryGUID,
                                                      GLOSSARY_TYPE_NAME,
-                                                     externalGlossaryIdentifierOne,
-                                                     externalGlossaryIdentifierOneName,
-                                                     externalGlossaryIdentifierOneUsage,
-                                                     externalGlossaryIdentifierOneSource,
-                                                     externalGlossaryIdentifierOneKeyPattern,
-                                                     null);
-
+                                                     externalIdentifierProperties);
 
             GlossaryElement                 retrievedElement;
             List<MetadataCorrelationHeader> metadataCorrelationHeaders;
@@ -781,19 +784,21 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for getGlossary One)");
             }
 
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierTwo);
+            externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoName);
+            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+            externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
+            externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierTwoKeyPattern);
+
             assetManagerClient.addExternalIdentifier(userId,
                                                      assetManagerOneGUID,
                                                      assetManagerOneName,
-                                                     SynchronizationDirection.BOTH_DIRECTIONS,
-                                                     null,
                                                      glossaryGUID,
                                                      GLOSSARY_TYPE_NAME,
-                                                     externalGlossaryIdentifierTwo,
-                                                     externalGlossaryIdentifierTwoName,
-                                                     externalGlossaryIdentifierTwoUsage,
-                                                     externalGlossaryIdentifierTwoSource,
-                                                     externalGlossaryIdentifierTwoKeyPattern,
-                                                     null);
+                                                     externalIdentifierProperties);
 
             GlossaryElement retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
 

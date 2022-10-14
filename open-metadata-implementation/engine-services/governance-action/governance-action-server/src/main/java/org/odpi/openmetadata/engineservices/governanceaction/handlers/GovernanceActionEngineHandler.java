@@ -34,12 +34,14 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 
 
     /**
-     * Create a client-side object for calling a governance action engine.  Notices there there are two versions of the
-     * GovernanceEngineClient.  It is possible that they pointing at different metadata server instances so do not
+     * Create a client-side object for calling a governance action engine.  Notice there are two instances of the
+     * GovernanceEngineClient.  It is possible that they are pointing at different metadata server instances so do not
      * consolidate them into one client (even if IntelliJ begs you to :).
      *
      * @param engineConfig the unique identifier of the governance action engine.
      * @param localServerName the name of the engine host server where the governance action engine is running
+     * @param partnerServerName name of partner server
+     * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client to control the execution of governance action requests

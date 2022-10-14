@@ -204,11 +204,11 @@ public class TestNote
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -217,7 +217,7 @@ public class TestNote
 
         try
         {
-            validateResultObject((Note) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Note) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

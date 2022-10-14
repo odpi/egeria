@@ -27,14 +27,8 @@ in each method.
 When an action is not authorized, your method can either call the appropriate reusable methods or
 call its equivalent superclass method to report the error.
 
-There are complete working examples of these connectors used in
-the [Egeria Hands On Labs](../../../../open-metadata-resources/open-metadata-labs).
-The code for these connectors is in the
-[open-metadata-security-samples](../../../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples) module.
-
 ----
   
-* Return to [Extending Egeria using Connectors](../../../../open-metadata-publication/website/developer-guide/extending-egeria-using-connectors.md) 
 * Return to [Open Metadata Security Module Overview](..)
 
 

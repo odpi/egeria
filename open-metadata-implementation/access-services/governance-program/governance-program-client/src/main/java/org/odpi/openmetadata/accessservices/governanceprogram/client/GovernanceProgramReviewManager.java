@@ -6,12 +6,12 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceProg
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -20,14 +20,8 @@ import java.util.List;
  * The GovernanceProgramReviewInterface supports the periodic review of the governance program.
  * This includes looking at the metrics and the governance zones.
  */
-public class GovernanceProgramReviewManager implements GovernanceProgramReviewInterface
+public class GovernanceProgramReviewManager extends GovernanceProgramBaseClient implements GovernanceProgramReviewInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -39,13 +33,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
     public GovernanceProgramReviewManager(String serverName,
                                           String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -65,13 +53,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                           String     userId,
                                           String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -91,14 +73,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                           int      maxPageSize,
                                           AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -122,19 +97,12 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                           int        maxPageSize,
                                           AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -148,16 +116,41 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                           GovernanceProgramRESTClient restClient,
                                           int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
+
+    /**
+     * Retrieve the governance definition by the unique identifier assigned by this service when it was created.
+     *
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to retrieve
+     *
+     * @return properties of the governance definition
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not recognized
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public GovernanceDefinitionElement getGovernanceDefinitionByGUID(String userId,
+                                                                     String definitionGUID) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String   methodName = "getGovernanceDefinitionByGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        GovernanceDefinitionResponse restResult = restClient.callGovernanceDefinitionGetRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 definitionGUID);
+
+        return restResult.getElement();
+    }
 
 
     /**
@@ -185,16 +178,17 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                                                                                        PropertyServerException
     {
         final String   methodName = "getGovernanceDefinitionsForDomain";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/for-domain?domainIdentifier={2}&typeName={3}&startFrom={4}&pageSize={5}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/for-domain?domainIdentifier={3}&startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         GovernanceDefinitionListResponse restResult = restClient.callGovernanceDefinitionListGetRESTCall(methodName,
-                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         urlTemplate,
                                                                                                          serverName,
                                                                                                          userId,
+                                                                                                         getTypeName(typeName),
                                                                                                          domainIdentifier,
                                                                                                          typeName,
                                                                                                          startFrom,
@@ -205,7 +199,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
 
 
     /**
-     * Return the list of governance definitions associated with a unique docId.  In an ideal world, the should be only one.
+     * Return the list of governance definitions associated with a unique docId.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param typeName option types name to restrict retrieval to a specific type
@@ -229,8 +223,9 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                                                                                       PropertyServerException
     {
         final String   methodName = "getGovernanceDefinitionsForDocId";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/for-document-id/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/for-document-id/{3}?startFrom={4}&pageSize={5}";
         final String   docIdParameterName = "docId";
+
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(docIdParameterName, docIdParameterName, methodName);
@@ -238,14 +233,34 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         GovernanceDefinitionListResponse restResult = restClient.callGovernanceDefinitionListGetRESTCall(methodName,
-                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         urlTemplate,
                                                                                                          serverName,
                                                                                                          userId,
+                                                                                                         getTypeName(typeName),
                                                                                                          docId,
                                                                                                          startFrom,
                                                                                                          queryPageSize);
 
         return restResult.getElements();
+    }
+
+
+    /**
+     * Fill in a default type name if none supplied.
+     *
+     * @param suppliedTypeName supplied on the parameters
+     * @return type name to send
+     */
+    private String getTypeName(String suppliedTypeName)
+    {
+        final String defaultTypeName = "GovernanceDefinition";
+
+        if (suppliedTypeName != null)
+        {
+            return  suppliedTypeName;
+        }
+
+        return defaultTypeName;
     }
 
 
@@ -268,62 +283,19 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                                                                                               PropertyServerException
     {
         final String methodName = "getGovernanceDefinitionInContext";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/in-context";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/in-context";
         final String guidParameterName = "governanceDefinitionGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceDefinitionGUID, guidParameterName, methodName);
 
         GovernanceDefinitionGraphResponse restResult = restClient.callGovernanceDefinitionGraphGetRESTCall(methodName,
-                                                                                                           serverPlatformURLRoot + urlTemplate,
+                                                                                                           urlTemplate,
                                                                                                            serverName,
                                                                                                            userId,
                                                                                                            governanceDefinitionGUID);
 
         return restResult.getElement();
-    }
-
-
-    /**
-     * Return the elements that are governed by the supplied governance definition.
-     *
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique name of the governance definition
-     * @param startFrom where to start from in the list of definitions
-     * @param pageSize max number of results to return in one call
-     *
-     * @return list of headers for the associated elements
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    @Override
-    public List<ElementStub> getElementsGovernedByDefinition(String userId,
-                                                             String governanceDefinitionGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String methodName = "getElementsGovernedByDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/elements?startFrom={3}&pageSize={4}";
-        final String guidParameterName = "governanceDefinitionGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceDefinitionGUID, guidParameterName, methodName);
-
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       governanceDefinitionGUID,
-                                                                                       startFrom,
-                                                                                       queryPageSize);
-
-        return restResult.getElements();
     }
 
 
@@ -352,10 +324,9 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                                                                                PropertyServerException
     {
         final String methodName = "findGovernanceDefinitions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/by-search-string?startFrom={3}&pageSize={4}";
         final String searchStringParameterName = "searchString";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchString, methodName);
 
@@ -366,10 +337,11 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceDefinitionListResponse restResult = restClient.callGovernanceDefinitionListPostRESTCall(methodName,
-                                                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                                                          urlTemplate,
                                                                                                           requestBody,
                                                                                                           serverName,
                                                                                                           userId,
+                                                                                                          getTypeName(typeName),
                                                                                                           startFrom,
                                                                                                           queryPageSize);
 
@@ -399,7 +371,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
                                                                                                        PropertyServerException
     {
         final String methodName = "getGovernanceDefinitionMetrics";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/metrics-implementation?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/metrics-implementation?startFrom={3}&pageSize={4}";
         final String guidParameterName = "governanceDefinitionGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -408,7 +380,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         GovernanceMetricImplementationListResponse restResult = restClient.callGovernanceMetricsImplementationListGetRESTCall(methodName,
-                                                                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                                                                              urlTemplate,
                                                                                                                               serverName,
                                                                                                                               userId,
                                                                                                                               governanceDefinitionGUID,
@@ -420,45 +392,11 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
 
 
     /**
-     * Return detailed information about the requested governance zone.
-     *
-     * @param userId calling user
-     * @param zoneGUID unique identifier of the zone to search for
-     *
-     * @return detailed information about the requested zone
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    @Override
-    public GovernanceZoneInAction getGovernanceZoneInAction(String userId,
-                                                            String zoneGUID) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        final String methodName = "getElementsGovernedByDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-zones/{2}/in-action";
-        final String guidParameterName = "zoneGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(zoneGUID, guidParameterName, methodName);
-
-        GovernanceZoneInActionResponse restResult = restClient.callGovernanceZoneInActionGetRESTCall(methodName,
-                                                                                                     serverPlatformURLRoot + urlTemplate,
-                                                                                                     serverName,
-                                                                                                     userId,
-                                                                                                     zoneGUID);
-
-        return restResult.getElement();
-    }
-
-
-    /**
      * Return the list of assets that are members of a particular zone.
      *
      * @param userId calling user
-     * @param zoneGUID unique identifier of the zone to search for
+     * @param zoneName unique name of the zone to search for
+     * @param subTypeName optional asset subtypeName to limit the results
      * @param startFrom where to start from in the list of assets
      * @param pageSize max number of results to return in one call
      *
@@ -470,25 +408,35 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
      */
     @Override
     public List<ElementStub> getGovernanceZoneMembers(String userId,
-                                                      String zoneGUID,
+                                                      String zoneName,
+                                                      String subTypeName,
                                                       int    startFrom,
                                                       int    pageSize) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
         final String methodName = "getElementsGovernedByDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-zones/{2}/members?startFrom={2}&pageSize={3}";
-        final String guidParameterName = "zoneGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-zones/{2}/members/{3}?startFrom={4}&pageSize={5}";
+        final String nameParameterName = "zoneName";
+        final String assetTypeName = "Asset";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(zoneGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(zoneName, nameParameterName, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        String typeName = assetTypeName;
+
+        if (subTypeName != null)
+        {
+            typeName = subTypeName;
+        }
+
         ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       urlTemplate,
                                                                                        serverName,
                                                                                        userId,
-                                                                                       zoneGUID,
+                                                                                       zoneName,
+                                                                                       typeName,
                                                                                        startFrom,
                                                                                        queryPageSize);
 

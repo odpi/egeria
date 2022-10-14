@@ -124,7 +124,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The integration daemon {0} has initialized",
                        "The integration daemon services has completed initialization.",
-                       "Verify that all of the configured integration services, and their connectors within have successfully started and" +
+                       "Verify that all the configured integration services, and their connectors within have successfully started and" +
                                "are able to connect both to their third party technology and their partner OMAS."),
 
     NO_PERMITTED_SYNCHRONIZATION("INTEGRATION-DAEMON-SERVICES-0014",
@@ -142,7 +142,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED("INTEGRATION-DAEMON-SERVICES-0016",
                                           OMRSAuditLogRecordSeverity.INFO,
-                                          "User {0} has cleared all of the configuration properties for the integration connector {1} in integration daemon {2}",
+                                          "User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}",
                                           "The connector will be restarted once the properties are cleared.",
                                           "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties."),
 
@@ -311,7 +311,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                           OMRSAuditLogRecordSeverity.SECURITY,
                           "Integration service {0} is not authorized to call its partner " +
                                   "OMAS running in integration daemon {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}",
-                          "Some, or all of the metadata from the connected third party technologies can not be exchanged with the open" +
+                          "Some, or all the metadata from the connected third party technologies can not be exchanged with the open" +
                                   "metadata ecosystem.",
                           "The userId comes from the integration daemon's configuration document.  It is stored as the localServerUserId.  " +
                                   "The authorization failure may be limited to a single operation, or extend to all requests to a specific partner " +

@@ -346,24 +346,29 @@ public class License extends Referenceable
     public String toString()
     {
         return "License{" +
-                "licenseGUID='" + licenseGUID + '\'' +
-                ", licenseTypeName='" + licenseTypeName + '\'' +
-                ", licensee='" + licensee + '\'' +
-                ", summary='" + summary + '\'' +
-                ", link=" + link +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", licenseConditions='" + licenseConditions + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", custodian='" + custodian + '\'' +
-                ", notes='" + notes + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", licenseGUID='" + licenseGUID + '\'' +
+                       ", licenseTypeName='" + licenseTypeName + '\'' +
+                       ", licensee='" + licensee + '\'' +
+                       ", summary='" + summary + '\'' +
+                       ", link=" + link +
+                       ", startDate=" + startDate +
+                       ", endDate=" + endDate +
+                       ", licenseConditions='" + licenseConditions + '\'' +
+                       ", createdBy='" + createdBy + '\'' +
+                       ", custodian='" + custodian + '\'' +
+                       ", notes='" + notes + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

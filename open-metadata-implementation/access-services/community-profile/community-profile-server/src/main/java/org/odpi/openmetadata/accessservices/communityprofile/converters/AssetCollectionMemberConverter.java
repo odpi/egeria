@@ -34,7 +34,7 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -44,6 +44,7 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
@@ -78,6 +79,7 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     assetProperties.setName(this.removeName(instanceProperties));
+                    assetProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
                     assetProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     assetProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());

@@ -4,9 +4,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.server.UserIdentityRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class UserIdentityResource
 {
-    private UserIdentityRESTServices restAPI = new UserIdentityRESTServices();
+    private final UserIdentityRESTServices restAPI = new UserIdentityRESTServices();
 
     /**
      * Create a UserIdentity.  This is not connected to a profile.
@@ -43,9 +44,9 @@ public class UserIdentityResource
      */
     @PostMapping(path = "/user-identities")
 
-    public GUIDResponse createUserIdentity(@PathVariable String                  serverName,
-                                           @PathVariable String                  userId,
-                                           @RequestBody  UserIdentityRequestBody requestBody)
+    public GUIDResponse createUserIdentity(@PathVariable String                   serverName,
+                                           @PathVariable String                   userId,
+                                           @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.createUserIdentity(serverName, userId, requestBody);
     }
@@ -57,7 +58,7 @@ public class UserIdentityResource
      * @param serverName name of target server
      * @param userId the name of the calling user
      * @param userIdentityGUID unique identifier of the UserIdentity
-     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false)
      * @param requestBody updated properties for the new userIdentity
      *
      * @return void or
@@ -67,11 +68,11 @@ public class UserIdentityResource
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}")
 
-    public VoidResponse updateUserIdentity(@PathVariable String                  serverName,
-                                           @PathVariable String                  userId,
-                                           @PathVariable String                  userIdentityGUID,
-                                           @RequestParam boolean                 isMergeUpdate,
-                                           @RequestBody  UserIdentityRequestBody requestBody)
+    public VoidResponse updateUserIdentity(@PathVariable String                   serverName,
+                                           @PathVariable String                   userId,
+                                           @PathVariable String                   userIdentityGUID,
+                                           @RequestParam boolean                  isMergeUpdate,
+                                           @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.updateUserIdentity(serverName, userId, userIdentityGUID, isMergeUpdate, requestBody);
     }
@@ -96,7 +97,8 @@ public class UserIdentityResource
     public VoidResponse deleteUserIdentity(@PathVariable String                    serverName,
                                            @PathVariable String                    userId,
                                            @PathVariable String                    userIdentityGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody (required = false)
+                                                         ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, userId, userIdentityGUID, requestBody);
     }
@@ -117,15 +119,46 @@ public class UserIdentityResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/user-identities/{userIdentityGUID}/personal-profiles/{profileGUID}/link")
+    @PostMapping(path = "/user-identities/{userIdentityGUID}/profiles/{profileGUID}/link")
 
-    public VoidResponse  addIdentityToProfile(@PathVariable String                    serverName,
-                                              @PathVariable String                    userId,
-                                              @PathVariable String                    userIdentityGUID,
-                                              @PathVariable String                    profileGUID,
-                                              @RequestBody  MetadataSourceRequestBody requestBody)
+    public VoidResponse  addIdentityToProfile(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @PathVariable String                  userIdentityGUID,
+                                              @PathVariable String                  profileGUID,
+                                              @RequestBody (required = false)
+                                                            RelationshipRequestBody requestBody)
     {
         return restAPI.addIdentityToProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
+    }
+
+
+    /**
+     * Link a user identity to a profile.  This will fail if the user identity is already connected to
+     * a profile.
+     *
+     * @param serverName name of target server
+     * @param userId the name of the calling user.
+     * @param userIdentityGUID unique identifier of the UserIdentity
+     * @param profileGUID the profile to add the identity to.
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false)
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException  - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/user-identities/{userIdentityGUID}/profiles/{profileGUID}/link/update")
+
+    public VoidResponse updateIdentityProfile(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @PathVariable String                  userIdentityGUID,
+                                              @PathVariable String                  profileGUID,
+                                              @RequestParam boolean                 isMergeUpdate,
+                                              @RequestBody (required = false)
+                                                            RelationshipRequestBody requestBody)
+    {
+        return restAPI.updateIdentityProfile(serverName, userId, userIdentityGUID, profileGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -150,7 +183,8 @@ public class UserIdentityResource
                                                   @PathVariable String                    userId,
                                                   @PathVariable String                    userIdentityGUID,
                                                   @PathVariable String                    profileGUID,
-                                                  @RequestBody  MetadataSourceRequestBody requestBody)
+                                                  @RequestBody (required = false)
+                                                                ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeIdentityFromProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }

@@ -1153,7 +1153,7 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Set up the configuration for all of the open metadata access services (OMASs).  This overrides
+     * Set up the configuration for all the open metadata access services (OMASs).  This overrides
      * the current values.
      *
      * @param userId                user that is issuing the request.

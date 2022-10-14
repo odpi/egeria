@@ -166,7 +166,7 @@ public class IntegrationServiceHandler
 
 
     /**
-     * Refresh all of the connectors, or a specific connector if a connector name is supplied.
+     * Refresh all the connectors, or a specific connector if a connector name is supplied.
      *
      * @param connectorName name of a specific connector or null for all connectors
      * @throws InvalidParameterException the connector name is not recognized
@@ -256,6 +256,7 @@ public class IntegrationServiceHandler
     /**
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
+     * @param userId calling user
      * @param connectorName name of a specific connector or null for all connectors
      * @param isMergeUpdate should the properties be merged into the existing properties or replace them
      * @param configurationProperties new configuration properties
@@ -305,7 +306,7 @@ public class IntegrationServiceHandler
 
 
     /**
-     * Restart all of the connectors, or a specific connector if a connector name is supplied.
+     * Restart all the connectors, or a specific connector if a connector name is supplied.
      *
      * @param connectorName name of a specific connector or null for all connectors
      * @throws InvalidParameterException the connector name is not recognized
@@ -351,7 +352,7 @@ public class IntegrationServiceHandler
 
 
     /**
-     * Step through all of the connector handlers and disconnect the integration connectors
+     * Step through all the connector handlers and disconnect the integration connectors
      */
     public void shutdown()
     {

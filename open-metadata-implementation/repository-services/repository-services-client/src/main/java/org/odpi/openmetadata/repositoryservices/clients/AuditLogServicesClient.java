@@ -9,22 +9,14 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
-import org.odpi.openmetadata.repositoryservices.rest.properties.AttributeTypeDefResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
-import org.odpi.openmetadata.repositoryservices.rest.properties.CohortListResponse;
-import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
-import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,15 +38,15 @@ public class AuditLogServicesClient implements AuditLoggingComponent
     static final private String rootServiceNameInURL  = "/servers/{0}/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{1}";
 
-    private String              localServerUserId   = null;
-    private String              localServerPassword = null;
+    private final String              localServerUserId   = null;
+    private final String              localServerPassword = null;
 
-    private String              restURLRoot;                /* Initialized in constructor */
+    private final String              restURLRoot;                /* Initialized in constructor */
 
-    private RESTClientConnector restClient;                 /* Initialized in constructor */
-    private String              serverName;                 /* Initialized in constructor */
+    private final RESTClientConnector restClient;                 /* Initialized in constructor */
+    private final String              serverName;                 /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     protected AuditLog          auditLog = null;
 
@@ -286,7 +278,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * Issue a GET REST call that returns a AuditLogReportResponse object.
      *
      * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return AttributeTypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack. TODO
@@ -308,7 +300,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @param <T> class name
      * @param methodName  name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
@@ -326,7 +318,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @param <T> class name
      * @param methodName  name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -360,7 +352,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @param <T> class name
      * @param methodName name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param request request body object
      * @param params a list of parameters that are slotted into the url template
      * @return VoidResponse
@@ -556,7 +548,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         else if (restResult.getExceptionClassName() != null)
         {
             /*
-             * All of the other expected exceptions have been processed so default exception to RepositoryErrorException
+             * All the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
             throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
                                                this.getClass().getName(),

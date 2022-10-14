@@ -18,7 +18,7 @@ import java.util.*;
 
 /**
  * The ConnectorBroker is a generic factory for Open Connector Framework (OCF) Connectors.
- * The OCF provides a default implementation because all of the implementation that is specific to a
+ * The OCF provides a default implementation because all the implementation that is specific to a
  * particular type of connector is delegated to the connector provider specified in the connection.
  */
 public class ConnectorBroker

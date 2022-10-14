@@ -6,16 +6,19 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileLocationElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -62,6 +65,7 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
@@ -127,6 +131,7 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setUserId(this.removeUserId(instanceProperties));
                                     userProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
@@ -159,6 +164,9 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     contributionRecord.setIsPublic(this.removeIsPublic(entityProperties));
                                     contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
                                     contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
+
+                                    contributionBean.setProperties(contributionRecord);
+                                    bean.setContributionRecord(contributionBean);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
                                 {
@@ -169,9 +177,11 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
-                                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
-                                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
-                                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                                    contactMethodProperties.setName(this.removeName(entityProperties));
+                                    contactMethodProperties.setContactType(this.removeContactType(entityProperties));
+                                    contactMethodProperties.setContactMethodType(this.getContactMethodTypeFromProperties(entityProperties));
+                                    contactMethodProperties.setContactMethodService(this.removeContactMethodService(entityProperties));
+                                    contactMethodProperties.setContactMethodValue(this.removeContactMethodValue(entityProperties));
 
                                     contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
                                     contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
@@ -203,7 +213,9 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                         List<ElementStub>            teamLeaders          = new ArrayList<>();
                         List<ElementStub>            teamMembers          = new ArrayList<>();
                         List<ProfileIdentityElement> profileIdentities    = new ArrayList<>();
+                        List<ProfileLocationElement> locations            = new ArrayList<>();
                         List<ElementStub>            roles                = new ArrayList<>();
+                        List<RelatedElement>         businessCapabilities   = new ArrayList<>();
                         List<ElementStub>            linkedInfrastructure = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
@@ -244,6 +256,29 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.ORGANIZATIONAL_CAPABILITY_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    RelatedElement relatedElement = super.getRelatedElement(beanClass, relationship, entityProxy, methodName);
+
+                                    businessCapabilities.add(relatedElement);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    ProfileLocationElement    locationElement = new ProfileLocationElement();
+                                    ProfileLocationProperties locationProperties = new ProfileLocationProperties();
+
+                                    locationProperties.setAssociationType(this.removeAssociationType(relationship.getProperties()));
+
+                                    locationElement.setLocation(elementStub);
+                                    locationElement.setProperties(locationProperties);
+                                    locations.add(locationElement);
+                                }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
@@ -269,7 +304,7 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     if (primaryEntity.getGUID().equals(entityProxy.getGUID()))
                                     {
                                         /*
-                                         * The primary entity is the super team - save sub-team
+                                         * The primary entity is the super team - save subteam
                                          */
                                         ElementStub elementStub = super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName);
                                         subTeams.add(elementStub);
@@ -310,6 +345,16 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                         if (! roles.isEmpty())
                         {
                             bean.setPersonRoles(roles);
+                        }
+
+                        if (! businessCapabilities.isEmpty())
+                        {
+                            bean.setBusinessCapability(businessCapabilities);
+                        }
+
+                        if (! locations.isEmpty())
+                        {
+                            bean.setLocations(locations);
                         }
 
                         if (! linkedInfrastructure.isEmpty())

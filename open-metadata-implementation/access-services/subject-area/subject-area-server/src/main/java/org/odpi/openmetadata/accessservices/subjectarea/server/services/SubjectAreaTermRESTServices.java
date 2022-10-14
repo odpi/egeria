@@ -39,7 +39,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * The name needs to be specified - as this is the main identifier for the term. The name should be unique for canonical glossaries. This API does not police the uniqueness in this case.
      * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the guid.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatenated with the guid.
      * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *

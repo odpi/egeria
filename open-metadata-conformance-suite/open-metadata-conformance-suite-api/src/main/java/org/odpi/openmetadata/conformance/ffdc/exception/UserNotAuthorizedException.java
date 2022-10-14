@@ -58,7 +58,7 @@ public class UserNotAuthorizedException extends ConformanceSuiteCheckedException
                                       String    errorMessage,
                                       String    systemAction,
                                       String    userAction,
-                                      Throwable caughtError,
+                                      Exception caughtError,
                                       String    userId)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);

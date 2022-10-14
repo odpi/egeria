@@ -22,7 +22,7 @@ public interface GovernanceZonesInterface
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones, publishedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user
@@ -110,42 +110,6 @@ public interface GovernanceZonesInterface
                                 String childZoneGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException;
-
-
-    /**
-     * Link a governance zone to a governance definition that controls how the assets in the zone should be governed.
-     *
-     * @param userId calling user
-     * @param zoneGUID unique identifier of the zone
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkZoneToGovernanceDefinition(String userId,
-                                        String zoneGUID,
-                                        String definitionGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
-
-
-    /**
-     * Remove the link between a zone and a governance definition.
-     *
-     * @param userId calling user
-     * @param zoneGUID unique identifier of the zone
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkZoneFromGovernanceDefinition(String userId,
-                                            String zoneGUID,
-                                            String definitionGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
 
     /**
      * Return information about a specific governance zone.

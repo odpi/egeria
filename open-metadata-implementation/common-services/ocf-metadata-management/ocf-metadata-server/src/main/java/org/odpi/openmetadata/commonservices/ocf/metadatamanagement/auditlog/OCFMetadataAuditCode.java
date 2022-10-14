@@ -5,11 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.auditlog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OCFMetadataAuditCode is used to define the message content for the OMRS Audit Log.
@@ -26,33 +22,33 @@ import java.util.Arrays;
  */
 public enum OCFMetadataAuditCode implements AuditLogMessageSet
 {
-    SERVICE_INITIALIZING("OCF-METADATA-MANAGEMENT-0001",
+    SERVICE_INITIALIZING("CONNECTED-ASSET-SERVICES-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
-             "The Open Connector Framework (OCF) Metadata Management Service is initializing a new server instance",
+             "The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance",
              "The local server has started up a new instance of the service which provides the metadata lookup services " +
                                  "for OCF Connectors.",
              "No action is required.  This is part of the normal operation of the service."),
 
-    SERVICE_INITIALIZED("OCF-METADATA-MANAGEMENT-0003",
+    SERVICE_INITIALIZED("CONNECTED-ASSET-SERVICES-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}",
              "The service has completed initialization of a new server instance.",
              "Verify that the service has started correctly."),
 
-    SERVICE_SHUTDOWN("OCF-METADATA-MANAGEMENT-0004",
+    SERVICE_SHUTDOWN("CONNECTED-ASSET-SERVICES-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
-             "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance for server {0}",
+             "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}",
              "The local administrator has requested shut down of a server instance.",
              "No action is required if the server is shutting down."),
 
-    SERVICE_INSTANCE_FAILURE("OCF-METADATA-MANAGEMENT-0005",
+    SERVICE_INSTANCE_FAILURE("CONNECTED-ASSET-SERVICES-0005",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance; error message is {0}",
+            "The Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}",
             "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
     ;
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**
@@ -63,7 +59,7 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

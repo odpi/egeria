@@ -25,6 +25,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
  * uses native Apache Kafka as the event/messaging infrastructure.
@@ -158,10 +160,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 /*
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
-                 * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
+                 * the last time it ran.
+                 * 'local.server.id' is used as the default and  is supplied in the connection object as the serverIdProperty.
+                 *
+                 * If group.id explicitly set using the standard kafka property, then use that.
                  */
+
                 serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
-                consumerProperties.put("group.id", serverId);
+
+                if (StringUtils.isEmpty((String)consumerProperties.get("group.id"))) {
+                    consumerProperties.put("group.id", serverId);
+                }
 
                 if (auditLog != null)
                 {
@@ -233,7 +242,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws RuntimeException which is handled in the calling code.
      */
-
+    @SuppressWarnings(value = "unchecked")
     private void copyProperties(Object propertiesObject, Properties target)
     {
 		Map<String, Object> propertiesMap;
@@ -246,6 +255,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 }
 		}
 	}
+
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -312,7 +322,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private void initializeProducerAndProducerThread() {
 
-        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
+        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
     }
 
@@ -501,7 +511,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 while (count < napCount) {
                    if (auditLog != null)
                    {
-                       auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count + 1)));
+                       auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(
+                               connectionProperties.getProperty("bootstrap.servers"),
+                               String.valueOf(count + 1),
+                               String.valueOf(napCount)));
                    }
                     Instant start = Instant.now();
                     if (getRunningBrokers(connectionProperties)) {

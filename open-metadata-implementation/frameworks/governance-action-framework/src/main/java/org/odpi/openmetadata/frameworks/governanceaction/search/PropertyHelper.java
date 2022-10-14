@@ -75,7 +75,7 @@ public class PropertyHelper
     private ElementProperties addPrimitivePropertyToInstance(ElementProperties    properties,
                                                              String               propertyName,
                                                              Object               propertyValue,
-                                                             PrimitiveDefCategory propertyCategory)
+                                                             PrimitiveTypeCategory propertyCategory)
     {
         ElementProperties  resultingProperties;
 
@@ -90,13 +90,13 @@ public class PropertyHelper
                 resultingProperties = properties;
             }
 
-            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+            PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
 
-            primitivePropertyValue.setPrimitiveDefCategory(propertyCategory);
-            primitivePropertyValue.setPrimitiveValue(propertyValue);
-            primitivePropertyValue.setTypeName(propertyCategory.getName());
+            primitiveTypePropertyValue.setPrimitiveTypeCategory(propertyCategory);
+            primitiveTypePropertyValue.setPrimitiveValue(propertyValue);
+            primitiveTypePropertyValue.setTypeName(propertyCategory.getName());
 
-            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+            resultingProperties.setProperty(propertyName, primitiveTypePropertyValue);
 
             return resultingProperties;
         }
@@ -120,7 +120,7 @@ public class PropertyHelper
                                                String            propertyName,
                                                String            propertyValue)
     {
-        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
     }
 
 
@@ -137,7 +137,7 @@ public class PropertyHelper
                                             String            propertyName,
                                             int               propertyValue)
     {
-        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
     }
 
 
@@ -154,7 +154,7 @@ public class PropertyHelper
                                              String            propertyName,
                                              long              propertyValue)
     {
-        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG);
     }
 
 
@@ -171,7 +171,7 @@ public class PropertyHelper
                                               String            propertyName,
                                               float             propertyValue)
     {
-        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
     }
 
 
@@ -190,7 +190,7 @@ public class PropertyHelper
     {
         Long longValue = propertyValue.getTime();
 
-        return addPrimitivePropertyToInstance(properties, propertyName, longValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        return addPrimitivePropertyToInstance(properties, propertyName, longValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
     }
 
 
@@ -207,7 +207,7 @@ public class PropertyHelper
                                                 String            propertyName,
                                                 boolean           propertyValue)
     {
-        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
     }
 
 
@@ -239,12 +239,12 @@ public class PropertyHelper
         }
 
 
-        EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+        EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
 
-        enumPropertyValue.setSymbolicName(symbolicName);
-        enumPropertyValue.setTypeName(propertyType);
+        enumTypePropertyValue.setSymbolicName(symbolicName);
+        enumTypePropertyValue.setTypeName(propertyType);
 
-        resultingProperties.setProperty(propertyName, enumPropertyValue);
+        resultingProperties.setProperty(propertyName, enumTypePropertyValue);
 
         return resultingProperties;
     }
@@ -277,22 +277,22 @@ public class PropertyHelper
                 resultingProperties = properties;
             }
 
-            ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
-            arrayPropertyValue.setTypeName("array<string>");
-            arrayPropertyValue.setArrayCount(arrayValues.size());
+            ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+            arrayTypePropertyValue.setTypeName("array<string>");
+            arrayTypePropertyValue.setArrayCount(arrayValues.size());
             int index = 0;
             for (String arrayValue : arrayValues )
             {
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
 
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitivePropertyValue.setPrimitiveValue(arrayValue);
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitiveTypePropertyValue.setPrimitiveValue(arrayValue);
 
-                arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+                arrayTypePropertyValue.setArrayValue(index, primitiveTypePropertyValue);
                 index++;
             }
 
-            resultingProperties.setProperty(propertyName, arrayPropertyValue);
+            resultingProperties.setProperty(propertyName, arrayTypePropertyValue);
 
             return resultingProperties;
         }
@@ -342,11 +342,11 @@ public class PropertyHelper
                  */
                 if (mapElementProperties != null)
                 {
-                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
 
-                    mapPropertyValue.setTypeName("map<string,object>");
-                    mapPropertyValue.setMapValues(mapElementProperties);
-                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+                    mapTypePropertyValue.setTypeName("map<string,object>");
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
 
                     return resultingProperties;
                 }
@@ -392,125 +392,125 @@ public class PropertyHelper
 
                 if (mapPropertyValue instanceof String)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Integer)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Long)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Short)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Date)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     /*
                      * Internally, dates are stored as Java Long.
                      */
                     Long timestamp = ((Date) mapPropertyValue).getTime();
-                    primitivePropertyValue.setPrimitiveValue(timestamp);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    primitiveTypePropertyValue.setPrimitiveValue(timestamp);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Character)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Byte)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Boolean)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Float)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof BigDecimal)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(
-                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(
+                            PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof BigInteger)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(
-                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(
+                            PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Double)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue != null)
                 {
-                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
-                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
+                    primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
             }
@@ -566,9 +566,10 @@ public class PropertyHelper
                  */
                 if (mapElementProperties != null)
                 {
-                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
-                    mapPropertyValue.setMapValues(mapElementProperties);
-                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    mapTypePropertyValue.setTypeName("map<string,string>");
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
                     
                     return resultingProperties;
                 }
@@ -611,11 +612,11 @@ public class PropertyHelper
             {
                 String mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-                resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                 propertyCount++;
             }
 
@@ -795,7 +796,7 @@ public class PropertyHelper
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return map property value or null
      */
@@ -814,11 +815,11 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof MapPropertyValue)
+                    if (propertyValue instanceof MapTypePropertyValue)
                     {
-                        MapPropertyValue mapPropertyValue = (MapPropertyValue) propertyValue;
+                        MapTypePropertyValue mapTypePropertyValue = (MapTypePropertyValue) propertyValue;
                         
-                        return this.getElementPropertiesAsMap(mapPropertyValue.getMapValues());
+                        return this.getElementPropertiesAsMap(mapTypePropertyValue.getMapValues());
                     }
                 }
                 catch (Throwable error)
@@ -842,7 +843,7 @@ public class PropertyHelper
     {
         if (properties != null)
         {
-            Map<String, PropertyValue> propertyValues = properties.getInstanceProperties();
+            Map<String, PropertyValue> propertyValues = properties.getPropertyValueMap();
             Map<String, Object>        resultingMap   = new HashMap<>();
 
             if (propertyValues != null)
@@ -853,10 +854,10 @@ public class PropertyHelper
 
                     if (actualPropertyValue != null)
                     {
-                        if (actualPropertyValue instanceof PrimitivePropertyValue)
+                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue)
                         {
-                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
-                            resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
+                            PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) actualPropertyValue;
+                            resultingMap.put(mapPropertyName, primitiveTypePropertyValue.getPrimitiveValue());
                         }
                         else
                         {
@@ -898,15 +899,15 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitivePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue)
                     {
-                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) propertyValue;
+                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
 
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING)
                         {
-                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
                             {
-                                return primitivePropertyValue.getPrimitiveValue().toString();
+                                return primitiveTypePropertyValue.getPrimitiveValue().toString();
                             }
                         }
                     }
@@ -948,15 +949,15 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitivePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue)
                     {
-                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) propertyValue;
+                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
 
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT)
                         {
-                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Integer.parseInt(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Integer.parseInt(primitiveTypePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }
@@ -997,15 +998,15 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitivePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue)
                     {
-                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) propertyValue;
+                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
 
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE)
                         {
-                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
                             {
-                                Long timestamp = (Long)primitivePropertyValue.getPrimitiveValue();
+                                Long timestamp = (Long) primitiveTypePropertyValue.getPrimitiveValue();
                                 return new Date(timestamp);
 
                             }
@@ -1050,15 +1051,15 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitivePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue)
                     {
-                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) propertyValue;
+                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
 
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
                         {
-                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Boolean.parseBoolean(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Boolean.parseBoolean(primitiveTypePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }
@@ -1099,8 +1100,8 @@ public class PropertyHelper
                 propertyCondition.setProperty(propertyName);
                 PropertyValue propertyValue = properties.getPropertyValue(propertyName);
 
-                if ((propertyValue instanceof PrimitivePropertyValue)
-                            && ((PrimitivePropertyValue)propertyValue).getPrimitiveDefCategory().equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) )
+                if ((propertyValue instanceof PrimitiveTypePropertyValue)
+                            && ((PrimitiveTypePropertyValue)propertyValue).getPrimitiveTypeCategory().equals(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING) )
                 {
                     // Use the LIKE operator for any strings
                     propertyCondition.setOperator(PropertyComparisonOperator.LIKE);

@@ -127,7 +127,7 @@ public class BooleanRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -136,7 +136,7 @@ public class BooleanRequestBodyTest
         {
             validateResultObject(objectMapper.readValue(jsonString, BooleanRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

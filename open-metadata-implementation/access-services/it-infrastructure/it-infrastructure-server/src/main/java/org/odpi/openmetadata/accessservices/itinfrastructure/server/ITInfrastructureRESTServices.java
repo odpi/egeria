@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ElementS
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
@@ -36,6 +35,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,12 +56,12 @@ import java.util.List;
  */
 public class ITInfrastructureRESTServices
 {
-    private static ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
+    private static final ITInfrastructureInstanceHandler instanceHandler = new ITInfrastructureInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ITInfrastructureRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ITInfrastructureRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -70,8 +70,6 @@ public class ITInfrastructureRESTServices
     public ITInfrastructureRESTServices()
     {
     }
-
-
 
 
     /**
@@ -184,6 +182,9 @@ public class ITInfrastructureRESTServices
                                                                  null,
                                                                  null,
                                                                  null,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
 
                 if (connectionGUID != null)
@@ -191,6 +192,9 @@ public class ITInfrastructureRESTServices
                     handler.setVendorProperties(userId,
                                                 connectionGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -333,6 +337,9 @@ public class ITInfrastructureRESTServices
                                          isMergeUpdate,
                                          null,
                                          null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -340,6 +347,9 @@ public class ITInfrastructureRESTServices
                     handler.setVendorProperties(userId,
                                                 connectionGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -404,6 +414,11 @@ public class ITInfrastructureRESTServices
                                                    connectionGUIDParameterName,
                                                    connectorTypeGUID,
                                                    connectorTypeGUIDParameterName,
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -466,6 +481,9 @@ public class ITInfrastructureRESTServices
                                                       connectionGUIDParameterName,
                                                       connectorTypeGUID,
                                                       connectorTypeGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
             }
             else
@@ -528,6 +546,11 @@ public class ITInfrastructureRESTServices
                                               connectionGUIDParameterName,
                                               endpointGUID,
                                               endpointGUIDParameterName,
+                                              null,
+                                              null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
             }
             else
@@ -590,6 +613,9 @@ public class ITInfrastructureRESTServices
                                                  connectionGUIDParameterName,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -655,6 +681,11 @@ public class ITInfrastructureRESTServices
                                               requestBody.getArguments(),
                                               embeddedConnectionGUID,
                                               embeddedConnectionGUIDParameterName,
+                                              null,
+                                              null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
             }
             else
@@ -717,6 +748,9 @@ public class ITInfrastructureRESTServices
                                                  connectionGUIDParameterName,
                                                  embeddedConnectionGUID,
                                                  embeddedConnectionGUIDParameterName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -780,6 +814,11 @@ public class ITInfrastructureRESTServices
                                              assetGUID,
                                              assetGUIDParameterName,
                                              requestBody.getAssetSummary(),
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -842,6 +881,9 @@ public class ITInfrastructureRESTServices
                                                 connectionGUIDParameterName,
                                                 assetGUID,
                                                 assetGUIDParameterName,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
             }
             else
@@ -900,6 +942,9 @@ public class ITInfrastructureRESTServices
                                          requestBody.getExternalSourceName(),
                                          connectionGUID,
                                          connectionGUIDParameterName,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -960,6 +1005,8 @@ public class ITInfrastructureRESTServices
                                                                               searchStringParameterName,
                                                                               startFrom,
                                                                               pageSize,
+                                                                              false,
+                                                                              false,
                                                                               new Date(),
                                                                               methodName);
 
@@ -1023,6 +1070,8 @@ public class ITInfrastructureRESTServices
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   false,
+                                                                                   false,
                                                                                    new Date(),
                                                                                    methodName);
 
@@ -1074,7 +1123,13 @@ public class ITInfrastructureRESTServices
 
             ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            ConnectionElement connection = handler.getConnectionByGUID(userId, guid, guidParameterName, new Date(), methodName);
+            ConnectionElement connection = handler.getConnectionByGUID(userId,
+                                                                       guid,
+                                                                       guidParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
+                                                                       methodName);
 
             response.setElement(setUpVendorProperties(userId, connection, handler, methodName));
         }
@@ -1151,11 +1206,20 @@ public class ITInfrastructureRESTServices
                                                                        requestBody.getAdditionalProperties(),
                                                                        requestBody.getTypeName(),
                                                                        requestBody.getExtendedProperties(),
+                                                                       requestBody.getEffectiveFrom(),
+                                                                       requestBody.getEffectiveTo(),
+                                                                       new Date(),
                                                                        methodName);
 
                 if (connectorTypeGUID != null)
                 {
-                    handler.setVendorProperties(userId, connectorTypeGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                connectorTypeGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
                 }
 
                 response.setGUID(connectorTypeGUID);
@@ -1292,7 +1356,12 @@ public class ITInfrastructureRESTServices
                                             requestBody.getAdditionalProperties(),
                                             requestBody.getTypeName(),
                                             requestBody.getExtendedProperties(),
+                                            requestBody.getEffectiveFrom(),
+                                            requestBody.getEffectiveTo(),
                                             isMergeUpdate,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1300,6 +1369,9 @@ public class ITInfrastructureRESTServices
                     handler.setVendorProperties(userId,
                                                 connectorTypeGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -1359,6 +1431,9 @@ public class ITInfrastructureRESTServices
                                             requestBody.getExternalSourceName(),
                                             connectorTypeGUID,
                                             connectorTypeGUIDParameterName,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -1420,6 +1495,9 @@ public class ITInfrastructureRESTServices
                                                                                  searchStringParameterName,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
                                                                                  methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -1482,6 +1560,9 @@ public class ITInfrastructureRESTServices
                                                                                       nameParameterName,
                                                                                       startFrom,
                                                                                       pageSize,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
                                                                                       methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -1532,7 +1613,13 @@ public class ITInfrastructureRESTServices
 
             ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
 
-            ConnectorTypeElement element = handler.getConnectorTypeByGUID(userId, guid, connectorTypeGUIDParameterName, methodName);
+            ConnectorTypeElement element = handler.getConnectorTypeByGUID(userId,
+                                                                          guid,
+                                                                          connectorTypeGUIDParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
@@ -1599,11 +1686,19 @@ public class ITInfrastructureRESTServices
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getTypeName(),
                                                              requestBody.getExtendedProperties(),
+                                                             null,
+                                                             null,
+                                                             new Date(),
                                                              methodName);
 
                 if (endpointGUID != null)
                 {
-                    handler.setVendorProperties(userId, endpointGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                endpointGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(), methodName);
                 }
 
                 if (infrastructureGUID != null)
@@ -1621,7 +1716,10 @@ public class ITInfrastructureRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                                 (InstanceProperties)null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -1703,6 +1801,9 @@ public class ITInfrastructureRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
                                                  null,
                                                  methodName);
                 }
@@ -1778,6 +1879,9 @@ public class ITInfrastructureRESTServices
                                        isMergeUpdate,
                                        null,
                                        null,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1785,6 +1889,9 @@ public class ITInfrastructureRESTServices
                     handler.setVendorProperties(userId,
                                                 endpointGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -1843,6 +1950,9 @@ public class ITInfrastructureRESTServices
                                        requestBody.getExternalSourceName(),
                                        endpointGUID,
                                        endpointGUIDParameterName,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
             }
             else
@@ -1904,6 +2014,8 @@ public class ITInfrastructureRESTServices
                                                                         parameterName,
                                                                         startFrom,
                                                                         pageSize,
+                                                                        false,
+                                                                        false,
                                                                         new Date(),
                                                                         methodName);
 
@@ -1962,6 +2074,8 @@ public class ITInfrastructureRESTServices
                                                                              parameterName,
                                                                              startFrom,
                                                                              pageSize,
+                                                                             false,
+                                                                             false,
                                                                              new Date(),
                                                                              methodName);
                 response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
@@ -2020,6 +2134,8 @@ public class ITInfrastructureRESTServices
                                                                                        parameterName,
                                                                                        startFrom,
                                                                                        pageSize,
+                                                                                       false,
+                                                                                       false,
                                                                                        new Date(),
                                                                                        methodName);
 
@@ -2131,7 +2247,7 @@ public class ITInfrastructureRESTServices
 
             EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
 
-            EndpointElement element = handler.getEndpointByGUID(userId, guid, endpointGUIDParameterName, methodName);
+            EndpointElement element = handler.getEndpointByGUID(userId, guid, endpointGUIDParameterName, false, false, new Date(), methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
@@ -2212,6 +2328,9 @@ public class ITInfrastructureRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2287,6 +2406,9 @@ public class ITInfrastructureRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2360,6 +2482,9 @@ public class ITInfrastructureRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2411,44 +2536,50 @@ public class ITInfrastructureRESTServices
                 if (infrastructureManagerIsHome)
                 {
                     capabilityGUID = handler.createSoftwareCapability(userId,
-                                                                            requestBody.getExternalSourceGUID(),
-                                                                            requestBody.getExternalSourceName(),
-                                                                            requestBody.getTypeName(),
-                                                                            requestBody.getClassificationName(),
-                                                                            requestBody.getQualifiedName(),
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            requestBody.getTypeDescription(),
-                                                                            requestBody.getVersion(),
-                                                                            requestBody.getPatchLevel(),
-                                                                            requestBody.getSource(),
-                                                                            requestBody.getAdditionalProperties(),
-                                                                            requestBody.getExtendedProperties(),
-                                                                            requestBody.getVendorProperties(),
-                                                                            requestBody.getEffectiveFrom(),
-                                                                            requestBody.getEffectiveTo(),
-                                                                            methodName);
+                                                                      requestBody.getExternalSourceGUID(),
+                                                                      requestBody.getExternalSourceName(),
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getClassificationName(),
+                                                                      requestBody.getQualifiedName(),
+                                                                      requestBody.getDisplayName(),
+                                                                      requestBody.getDescription(),
+                                                                      requestBody.getTypeDescription(),
+                                                                      requestBody.getVersion(),
+                                                                      requestBody.getPatchLevel(),
+                                                                      requestBody.getSource(),
+                                                                      requestBody.getAdditionalProperties(),
+                                                                      requestBody.getExtendedProperties(),
+                                                                      requestBody.getVendorProperties(),
+                                                                      requestBody.getEffectiveFrom(),
+                                                                      requestBody.getEffectiveTo(),
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName);
                 }
                 else
                 {
                     capabilityGUID = handler.createSoftwareCapability(userId,
-                                                                            null,
-                                                                            null,
-                                                                            requestBody.getTypeName(),
-                                                                            requestBody.getClassificationName(),
-                                                                            requestBody.getQualifiedName(),
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            requestBody.getTypeDescription(),
-                                                                            requestBody.getVersion(),
-                                                                            requestBody.getPatchLevel(),
-                                                                            requestBody.getSource(),
-                                                                            requestBody.getAdditionalProperties(),
-                                                                            requestBody.getExtendedProperties(),
-                                                                            requestBody.getVendorProperties(),
-                                                                            requestBody.getEffectiveFrom(),
-                                                                            requestBody.getEffectiveTo(),
-                                                                            methodName);
+                                                                      null,
+                                                                      null,
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getClassificationName(),
+                                                                      requestBody.getQualifiedName(),
+                                                                      requestBody.getDisplayName(),
+                                                                      requestBody.getDescription(),
+                                                                      requestBody.getTypeDescription(),
+                                                                      requestBody.getVersion(),
+                                                                      requestBody.getPatchLevel(),
+                                                                      requestBody.getSource(),
+                                                                      requestBody.getAdditionalProperties(),
+                                                                      requestBody.getExtendedProperties(),
+                                                                      requestBody.getVendorProperties(),
+                                                                      requestBody.getEffectiveFrom(),
+                                                                      requestBody.getEffectiveTo(),
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName);
                 }
 
                 response.setGUID(capabilityGUID);
@@ -2568,11 +2699,11 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateSoftwareCapability(String                              serverName,
-                                                       String                              userId,
-                                                       String                              capabilityGUID,
-                                                       boolean                             isMergeUpdate,
-                                                       SoftwareCapabilityRequestBody requestBody)
+    public VoidResponse updateSoftwareCapability(String                        serverName,
+                                                 String                        userId,
+                                                 String                        capabilityGUID,
+                                                 boolean                       isMergeUpdate,
+                                                 SoftwareCapabilityRequestBody requestBody)
     {
         final String methodName                  = "updateSoftwareCapability";
         final String elementGUIDParameterName    = "capabilityGUID";
@@ -2590,6 +2721,8 @@ public class ITInfrastructureRESTServices
 
             if (requestBody != null)
             {
+                Date effectiveDate = new Date();
+
                 handler.updateSoftwareCapability(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),
@@ -2608,6 +2741,9 @@ public class ITInfrastructureRESTServices
                                                isMergeUpdate,
                                                requestBody.getEffectiveFrom(),
                                                requestBody.getEffectiveTo(),
+                                               false,
+                                               false,
+                                               effectiveDate,
                                                methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -2615,6 +2751,9 @@ public class ITInfrastructureRESTServices
                     handler.setVendorProperties(userId,
                                                 capabilityGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                effectiveDate,
                                                 methodName);
                 }
             }
@@ -2743,6 +2882,8 @@ public class ITInfrastructureRESTServices
                                                                                  null,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 false,
+                                                                                 false,
                                                                                  new Date(),
                                                                                  methodName);
 
@@ -2936,12 +3077,12 @@ public class ITInfrastructureRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private SoftwareCapabilityElement setUpVendorProperties(String                                                           userId,
-                                                            SoftwareCapabilityElement element,
+    private SoftwareCapabilityElement setUpVendorProperties(String                                               userId,
+                                                            SoftwareCapabilityElement                            element,
                                                             SoftwareCapabilityHandler<SoftwareCapabilityElement> handler,
-                                                            String                                                           methodName) throws InvalidParameterException,
-                                                                                                                                                      UserNotAuthorizedException,
-                                                                                                                                                      PropertyServerException
+                                                            String                                               methodName) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
     {
         final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
 
@@ -2952,6 +3093,9 @@ public class ITInfrastructureRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -3022,6 +3166,9 @@ public class ITInfrastructureRESTServices
                                                                                                                          methodName),
                                                                                      instanceHandler.getServiceName(),
                                                                                      methodName),
+                                                    null,
+                                                    null,
+                                                    new Date(),
                                                     methodName);
             }
             else
@@ -3044,6 +3191,9 @@ public class ITInfrastructureRESTServices
                                                                                                                          methodName),
                                                                                      instanceHandler.getServiceName(),
                                                                                      methodName),
+                                                    null,
+                                                    null,
+                                                    new Date(),
                                                     methodName);
             }
 
@@ -3121,8 +3271,13 @@ public class ITInfrastructureRESTServices
                 }
             }
 
-            if (instanceProperties != null)
+            if ((properties.getEffectiveFrom() != null) || (properties.getEffectiveTo() != null))
             {
+                if (instanceProperties == null)
+                {
+                    instanceProperties = new InstanceProperties();
+                }
+
                 instanceProperties.setEffectiveFromTime(properties.getEffectiveFrom());
                 instanceProperties.setEffectiveToTime(properties.getEffectiveTo());
             }
@@ -3177,6 +3332,7 @@ public class ITInfrastructureRESTServices
                                                                                   instanceHandler.getRepositoryHelper(userId, serverName, methodName),
                                                                                   instanceHandler.getServiceName(),
                                                                                   methodName),
+                                                 false, false, new Date(),
                                                  methodName);
         }
         catch (Exception error)
@@ -3228,6 +3384,8 @@ public class ITInfrastructureRESTServices
                                        serverAssetUseGUID,
                                        elementGUIDParameterName,
                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                       false,
+                                       false,
                                        null,
                                        methodName);
         }
@@ -3286,7 +3444,11 @@ public class ITInfrastructureRESTServices
                                                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          null,
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          0,
+                                                                          false,
+                                                                          false,
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getEffectiveTime(),
@@ -3355,7 +3517,11 @@ public class ITInfrastructureRESTServices
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          null,
                                                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                          0,
+                                                                          false,
+                                                                          false,
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getEffectiveTime(),
@@ -3418,7 +3584,7 @@ public class ITInfrastructureRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                           assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
@@ -3428,6 +3594,9 @@ public class ITInfrastructureRESTServices
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                           assetGUID,
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          0,
+                                                                          false,
+                                                                          false,
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getEffectiveTime(),

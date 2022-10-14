@@ -50,7 +50,7 @@ public class GraphOMRSRepositoryConnector extends OMRSRepositoryConnector
             }
 
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),

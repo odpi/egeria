@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
+import org.odpi.openmetadata.http.HttpRequestHeadersFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +37,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "3.8-SNAPSHOT",
+                version = "3.13-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -76,6 +78,9 @@ public class OMAGServerPlatform
 
     @Value("${startup.server.list}")
     String startupServers;
+
+    @Value("${header.name.list}")
+    List<String> headerNames;
 
     @Autowired
     private Environment env;
@@ -211,6 +216,21 @@ public class OMAGServerPlatform
             temporaryDeactivateServers();
         }
 
+    }
+
+    /**
+     * Initialization of HttpRequestHeadersFilter. headerNames is a list of headers defined in application properties.
+     * @return bean of an initialized FilterRegistrationBean
+     */
+    @Bean
+    public FilterRegistrationBean<HttpRequestHeadersFilter> getRequestHeadersFilter() {
+        FilterRegistrationBean<HttpRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new HttpRequestHeadersFilter(headerNames));
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(1);
+
+        return registrationBean;
     }
 
 }

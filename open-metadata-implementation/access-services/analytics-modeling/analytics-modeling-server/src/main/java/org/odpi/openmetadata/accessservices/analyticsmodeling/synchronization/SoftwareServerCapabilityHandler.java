@@ -16,19 +16,19 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareCapability;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
- *	 Handler for SoftwareServerCapability object.
+ *	 Handler for SoftwareCapability object.
  */
-public class SoftwareServerCapabilityHandler extends ReferenceableHandler<SoftwareServerCapability> {
+public class SoftwareServerCapabilityHandler extends ReferenceableHandler<SoftwareCapability> {
 	/**
 	 * Construct the collection handler.
 	 *
-	 * @param converter               specific for SoftwareServerCapability bean class
+	 * @param converter               specific for SoftwareCapability bean class
 	 * @param serviceName             name of this service
 	 * @param serverName              name of the local server
 	 * @param invalidParameterHandler handler for managing parameter errors
@@ -41,7 +41,7 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 	 * @param publishZones            list of zones that the access service sets up in published Asset instances.
 	 * @param auditLog                destination for audit log events.
 	 */
-	public SoftwareServerCapabilityHandler(	OpenMetadataAPIGenericConverter<SoftwareServerCapability> converter,
+	public SoftwareServerCapabilityHandler(	OpenMetadataAPIGenericConverter<SoftwareCapability> converter,
 								String serviceName,
 								String serverName,
 								InvalidParameterHandler invalidParameterHandler,
@@ -53,13 +53,13 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 								List<String> defaultZones,
 								List<String> publishZones,
 								AuditLog auditLog) {
-		super(converter, SoftwareServerCapability.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
-				repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones,
-				auditLog);
+		super(converter, SoftwareCapability.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+              repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones,
+              auditLog);
 	}
 
 	/**
-	 * Create a new metadata element to represent a SoftwareServerCapability.
+	 * Create a new metadata element to represent a SoftwareCapability.
 	 *
 	 * @param userId     calling user
 	 * @param source 	 identifier of the server capability (url of the service)
@@ -79,9 +79,9 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 
 		SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(source, null, null, repositoryHelper, serviceName, serverName);
 		
-		// create SoftwareServerCapability 
+		// create SoftwareCapability
 		String guid = createBeanInRepository(userId, null, null, IdMap.CAPABILITY_TYPE_GUID,
-				IdMap.CAPABILITY_TYPE_NAME, null, null, builder, methodName);
+				IdMap.CAPABILITY_TYPE_NAME, builder, new Date(), methodName);
 
 		return guid;
 	}
@@ -98,7 +98,7 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 	 * @throws PropertyServerException    the repository services hit an unexpected problem
 	 * @throws UserNotAuthorizedException the user is not permitted to access this entity
 	 */
-	public SoftwareServerCapability findSoftwareServerCapability(
+	public SoftwareCapability findSoftwareServerCapability(
 			String userId,
 			String identifier,
 			String methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
@@ -115,19 +115,19 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 	}
 	
 	/**
-	 * Returns the SoftwareServerCapability object corresponding to the supplied GUID.
+	 * Returns the SoftwareCapability object corresponding to the supplied GUID.
 	 *
 	 * @param userId        String - userId of user making request
-	 * @param guid          the unique id for the SoftwareServerCapability
+	 * @param guid          the unique id for the SoftwareCapability
 	 * @param guidParameter name of parameter supplying the guid
 	 * @param methodName    calling method
 	 *
-	 * @return SoftwareServerCapability retrieved from the repository
+	 * @return SoftwareCapability retrieved from the repository
 	 * @throws InvalidParameterException  one of the properties (probably the GUID) is invalid
 	 * @throws PropertyServerException    the repository services hit an unexpected problem
 	 * @throws UserNotAuthorizedException the user is not permitted to access this entity
 	 */
-	public SoftwareServerCapability getSoftwareServerCapability(
+	public SoftwareCapability getSoftwareServerCapability(
 			String userId,
 			String guid,
 			String guidParameter,

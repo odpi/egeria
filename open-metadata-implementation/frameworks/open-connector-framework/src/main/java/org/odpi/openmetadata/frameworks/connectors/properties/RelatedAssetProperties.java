@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 
 
 /**
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * The RelatedAssetProperties returns metadata about the asset at three levels of detail:
  * <ul>
  *     <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
- *     <li><b>assetDetail</b> - used to display all of the information known about the asset with summaries
+ *     <li><b>assetDetail</b> - used to display all the information known about the asset with summaries
  *     of the relationships to other metadata entities</li>
  *     <li><b>assetUniverse</b> - used to define the broader context for the asset</li>
  * </ul>
@@ -25,7 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * for the asset's properties.  Metadata repository implementations extend this class to add their
  * implementation of the refresh() method that calls to the metadata repository to populate the metadata properties.
  */
-public abstract class RelatedAssetProperties extends AssetPropertyElementBase
+public abstract class RelatedAssetProperties extends RelatedAsset
 {
     private static final long     serialVersionUID = 1L;
 
@@ -37,9 +38,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      *
      * If null is returned, the caller is not linked to a metadata repository.
      */
-    protected AssetUniverse     assetProperties = null;
-    protected AssetDescriptor   connectedAsset  = null;
-    protected AssetRelatedAsset relatedAsset    = null;
+    protected AssetUniverse   assetProperties = null;
 
 
     /**
@@ -54,16 +53,11 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
     /**
      * Typical constructor.
      *
-     * @param connectedAsset original top-level asset
      * @param relatedAsset asset to extract the full set of properties.
      */
-    public RelatedAssetProperties(AssetDescriptor connectedAsset, AssetRelatedAsset relatedAsset)
+    public RelatedAssetProperties(RelatedAsset relatedAsset)
     {
-        /*
-         * Remember the parent asset and details of the related asset to be retrieved.
-         */
-        this.connectedAsset = connectedAsset;
-        this.relatedAsset = relatedAsset;
+        super(relatedAsset);
     }
 
 
@@ -74,14 +68,14 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      */
     public RelatedAssetProperties(RelatedAssetProperties templateProperties)
     {
+        super (templateProperties);
+
         if (templateProperties != null)
         {
             AssetUniverse templateAssetUniverse = templateProperties.getAssetUniverse();
             if (templateAssetUniverse != null)
             {
                 assetProperties = new AssetUniverse(templateAssetUniverse);
-                connectedAsset = templateProperties.connectedAsset;
-                relatedAsset = templateProperties.relatedAsset;
             }
         }
     }
@@ -105,7 +99,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
 
 
     /**
-     * Returns all of the detail of the asset and information connected to it in organized in the assetUniverse
+     * Returns all the detail of the asset and information connected to it in organized in the assetUniverse
      * structure.
      *
      * @return AssetUniverse universe object
@@ -133,10 +127,29 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
     public String toString()
     {
         return "RelatedAssetProperties{" +
-                "assetProperties=" + assetProperties +
-                ", connectedAsset=" + connectedAsset +
-                ", relatedAsset=" + relatedAsset +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", relationshipName='" + getRelationshipName() + '\'' +
+                       ", attributeName='" + getAttributeName() + '\'' +
+                       '}';
     }
 }
 

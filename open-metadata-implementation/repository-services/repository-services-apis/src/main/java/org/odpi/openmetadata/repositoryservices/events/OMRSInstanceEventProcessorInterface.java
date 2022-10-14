@@ -100,7 +100,7 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     void processClassifiedEntityEvent(String         sourceName,
@@ -122,7 +122,7 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     void processDeclassifiedEntityEvent(String         sourceName,
@@ -144,7 +144,7 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */

@@ -20,8 +20,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class RestoreRelationshipExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 relationshipGUID;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 relationshipGUID;
+
     private Relationship           restoredRelationship = null;
 
 

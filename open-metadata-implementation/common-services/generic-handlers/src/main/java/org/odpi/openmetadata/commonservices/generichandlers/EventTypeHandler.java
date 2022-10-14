@@ -76,8 +76,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Create the event type object.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param topicGUID unique identifier of the owning topic
      * @param topicGUIDParameterName parameter supplying topicGUID
      * @param qualifiedName unique name for the event type - used in other configuration
@@ -89,9 +89,14 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param usage guidance on how the schema should be used.
      * @param encodingStandard format of the schema
      * @param namespace namespace where the schema is defined.
-     * @param additionalProperties additional properties for a event type
+     * @param additionalProperties additional properties for an event type
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a event type subtype
+     * @param extendedProperties  properties for an event type subtype
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new event type object
@@ -116,6 +121,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                   Map<String, String> additionalProperties,
                                   String              suppliedTypeName,
                                   Map<String, Object> extendedProperties,
+                                  Date                effectiveFrom,
+                                  Date                effectiveTo,
+                                  boolean             forLineage,
+                                  boolean             forDuplicateProcessing,
+                                  Date                effectiveTime,
                                   String              methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -144,6 +154,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                              topicGUID,
                                                              topicGUIDParameterName,
                                                              qualifiedName,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveFrom,
                                                              methodName);
 
         SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
@@ -170,9 +185,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                            externalSourceName,
                                                            typeGUID,
                                                            typeName,
-                                                           qualifiedName,
-                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                            builder,
+                                                           effectiveTime,
                                                            methodName);
 
         if (eventTypeGUID != null)
@@ -182,22 +196,23 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
              */
             final String eventTypeGUIDParameterName = "eventTypeGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      eventTypeListGUID,
-                                      eventTypeListGUIDParameterName,
-                                      OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                      eventTypeGUID,
-                                      eventTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               eventTypeListGUID,
+                                               eventTypeListGUIDParameterName,
+                                               OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
+                                               eventTypeGUID,
+                                               eventTypeGUIDParameterName,
+                                               OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveFrom,
+                                               methodName);
         }
 
         return eventTypeGUID;
@@ -205,17 +220,22 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a event type from a template.
+     * Create an event type from a template.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param topicGUID unique identifier of the owning topic
      * @param topicGUIDParameterName parameter supplying topicGUID
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the event type - used in other configuration
      * @param displayName short display name for the event type
      * @param description description of the event type
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -224,18 +244,23 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEventTypeFromTemplate(String userId,
-                                              String externalSourceGUID,
-                                              String externalSourceName,
-                                              String topicGUID,
-                                              String topicGUIDParameterName,
-                                              String templateGUID,
-                                              String qualifiedName,
-                                              String displayName,
-                                              String description,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public String createEventTypeFromTemplate(String  userId,
+                                              String  externalSourceGUID,
+                                              String  externalSourceName,
+                                              String  topicGUID,
+                                              String  topicGUIDParameterName,
+                                              String  templateGUID,
+                                              String  qualifiedName,
+                                              String  displayName,
+                                              String  description,
+                                              Date    effectiveFrom,
+                                              Date    effectiveTo,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -252,6 +277,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                              topicGUID,
                                                              topicGUIDParameterName,
                                                              qualifiedName,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveFrom,
                                                              methodName);
 
         SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
@@ -260,6 +290,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           repositoryHelper,
                                                           serviceName,
                                                           serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String eventTypeGUID = this.createBeanFromTemplate(userId,
                                                            externalSourceGUID,
@@ -271,6 +303,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                            qualifiedName,
                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                            builder,
+                                                           supportedZones,
                                                            methodName);
 
         /*
@@ -278,22 +311,23 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
          */
         final String eventTypeGUIDParameterName = "eventTypeGUID";
 
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  eventTypeListGUID,
-                                  eventTypeListGUIDParameterName,
-                                  OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                  eventTypeGUID,
-                                  eventTypeGUIDParameterName,
-                                  OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                  null,
-                                  methodName);
+        this.uncheckedLinkElementToElement(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           eventTypeListGUID,
+                                           eventTypeListGUIDParameterName,
+                                           OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
+                                           eventTypeGUID,
+                                           eventTypeGUIDParameterName,
+                                           OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           supportedZones,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                           null,
+                                           effectiveTime,
+                                           methodName);
 
         return eventTypeGUID;
     }
@@ -303,8 +337,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Update the event type.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param eventTypeGUID unique identifier for the event type to update
      * @param eventTypeGUIDParameterName parameter supplying the event type
      * @param qualifiedName unique name for the event type - used in other configuration
@@ -320,6 +354,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance event type subtype
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -343,7 +382,12 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                   Map<String, String> additionalProperties,
                                   String              suppliedTypeName,
                                   Map<String, Object> extendedProperties,
+                                  Date                effectiveFrom,
+                                  Date                effectiveTo,
                                   boolean             isMergeUpdate,
+                                  boolean             forLineage,
+                                  boolean             forDuplicateProcessing,
+                                  Date                effectiveTime,
                                   String              methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -384,6 +428,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -391,40 +437,46 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     eventTypeGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
-     * Remove the metadata element representing a event types.
+     * Remove the metadata element representing an event types.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param eventTypeGUID unique identifier of the metadata element to remove
      * @param eventTypeGUIDParameterName parameter for eventTypeGUID
      * @param qualifiedName validating property
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeEventType(String userId,
-                                String externalSourceGUID,
-                                String externalSourceName,
-                                String eventTypeGUID,
-                                String eventTypeGUIDParameterName,
-                                String qualifiedName,
-                                String methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void removeEventType(String  userId,
+                                String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  eventTypeGUID,
+                                String  eventTypeGUIDParameterName,
+                                String  qualifiedName,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -435,9 +487,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
-                                    false,
-                                    false,
-                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -451,7 +503,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -460,15 +514,17 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findEventTypes(String userId,
-                                  String searchString,
-                                  String searchStringParameterName,
-                                  int    startFrom,
-                                  int    pageSize,
-                                  Date   effectiveTime,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public List<B> findEventTypes(String  userId,
+                                  String  searchString,
+                                  String  searchStringParameterName,
+                                  int     startFrom,
+                                  int     pageSize,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -478,6 +534,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
                               effectiveTime,
                               methodName);
     }
@@ -492,7 +550,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param eventSetGUIDParameterName name of the parameter supplying eventSetGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of metadata elements describing the event types associated with the requested event set
@@ -501,15 +561,17 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getEventTypesForEventSet(String userId,
-                                              String eventSetGUID,
-                                              String eventSetGUIDParameterName,
-                                              int    startFrom,
-                                              int    pageSize,
-                                              Date   effectiveTime,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<B>   getEventTypesForEventSet(String  userId,
+                                              String  eventSetGUID,
+                                              String  eventSetGUIDParameterName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         eventSetGUID,
@@ -518,6 +580,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                         OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                         OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -534,7 +601,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -543,15 +612,17 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getEventTypesByName(String userId,
-                                         String name,
-                                         String nameParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         Date   effectiveTime,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<B>   getEventTypesByName(String  userId,
+                                         String  name,
+                                         String  nameParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -569,8 +640,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -589,6 +660,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param topicGUIDParameterName parameter name of the topicGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of event types element
@@ -597,17 +671,18 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getEventTypesForTopic(String userId,
-                                         String topicGUID,
-                                         String topicGUIDParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<B> getEventTypesForTopic(String  userId,
+                                         String  topicGUID,
+                                         String  topicGUIDParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        Date effectiveTime = new Date();
-
         /*
          * The event types are attached via an event list.
          */
@@ -618,8 +693,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                                                  false,
-                                                                  false,
+                                                                  2,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
                                                                   supportedZones,
                                                                   effectiveTime,
                                                                   methodName);
@@ -638,8 +714,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             2,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             startFrom,
                                             pageSize,
                                             effectiveTime,
@@ -654,10 +730,15 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Create/retrieve the event list for the topic.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param topicGUID topic to retrieve from
      * @param topicGUIDParameterName parameter name or topicGUID
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of event list
@@ -666,15 +747,20 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private String getEventTypeListGUID(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String topicGUID,
-                                        String topicGUIDParameterName,
-                                        String topicQualifiedName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    private String getEventTypeListGUID(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  topicGUID,
+                                        String  topicGUIDParameterName,
+                                        String  topicQualifiedName,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         String eventTypeListGUID;
 
@@ -685,10 +771,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                               OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                                              false,
-                                                              false,
+                                                              2,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
                                                               supportedZones,
-                                                              new Date(),
+                                                              effectiveTime,
                                                               methodName);
 
         if (eventListEntity == null)
@@ -701,6 +788,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               serverName);
 
             builder.setAnchors(userId, topicGUID, methodName);
+            builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
             eventTypeListGUID = repositoryHandler.createEntity(userId,
                                                                OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_GUID,
@@ -725,12 +813,15 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                           eventTypeListGUID,
                                           eventTypeListGUIDParameterName,
                                           OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
             else
@@ -753,6 +844,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -761,21 +855,24 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getEventTypeByGUID(String userId,
-                                String guid,
-                                String guidParameterName,
-                                String methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public B getEventTypeByGUID(String  userId,
+                                String  guid,
+                                String  guidParameterName,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
 
     }

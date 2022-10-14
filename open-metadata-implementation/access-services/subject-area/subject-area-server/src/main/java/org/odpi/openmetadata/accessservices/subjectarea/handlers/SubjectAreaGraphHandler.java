@@ -139,7 +139,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
     }
 
     private List<String> getEntityGuids(String nodeFilterStr) {
-        // if there was no NodeFilter supplied then limit to the the NodeType values,
+        // if there was no NodeFilter supplied then limit to the NodeType values,
         // so we only get the types that this omas is interested in.
         Stream<NodeType> nodeTypeStream = Arrays.stream(NodeType.values());
         if (nodeFilterStr == null) {
@@ -160,7 +160,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
     }
 
     private List<String> getRelationshipTypeGuids(String operation, String relationshipFilterStr) throws InvalidParameterException {
-        // if there was no relationship filter supplied then limit to the the relationshipType values,
+        // if there was no relationship filter supplied then limit to the relationshipType values,
         // so we only get the types that this omas is interested in.
         Stream<RelationshipType> relationshipTypeStream = Arrays.stream(RelationshipType.values());
         List<String> relationshipTypeGuids = new ArrayList<>();

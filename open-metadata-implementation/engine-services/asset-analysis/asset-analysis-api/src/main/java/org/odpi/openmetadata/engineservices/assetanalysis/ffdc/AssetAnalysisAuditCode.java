@@ -92,7 +92,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The Asset Analysis OMES in server {0} has initialized",
                        "The engine service has completed initialization.",
-                       "Verify that all of the configured discovery engines have successfully started and retrieved their configuration."),
+                       "Verify that all the configured discovery engines have successfully started and retrieved their configuration."),
 
     SERVER_SHUTTING_DOWN("OMES-ASSET-ANALYSIS-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -186,10 +186,10 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                  OMRSAuditLogRecordSeverity.INFO,
                                  "All discovery service configuration is being refreshed for discovery engine {0}",
                                  "The Asset Analysis OMES will call the Discovery Engine OMAS in the metadata server to " +
-                                                  "retrieve details of all of the discovery services configured for this engine." +
+                                                  "retrieve details of all the discovery services configured for this engine." +
                                                   "During this process, some discovery request may fail if the associated discovery" +
                                                   "service is only partially configured.",
-                                 "Monitor the Asset Analysis OMES to ensure all of the discovery services are retrieved." +
+                                 "Monitor the Asset Analysis OMES to ensure all the discovery services are retrieved." +
                                                   "Then it is ready to process new discovery requests."),
 
     FINISHED_ALL_DISCOVERY_SERVICE_CONFIG("OMES-ASSET-ANALYSIS-0026",
@@ -197,7 +197,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
                                           "Refreshing all discovery service configuration has being completed for discovery engine {0}",
                                           "The discovery engine is ready to receive discovery requests for all successfully loaded " +
                                                   "discovery services.",
-                                          "No action is required as long as all of the expected discovery services are loaded." +
+                                          "No action is required as long as all the expected discovery services are loaded." +
                                                   "If there are any discovery services missing then validate the configuration of" +
                                                   "the discovery engine in the metadata server."),
 

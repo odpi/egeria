@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +141,7 @@ public class DatabaseContextHandler {
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		try {
-			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, methodName);
+			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, false, false, new Date(), methodName);
 		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASES.getMessageDefinition(),
@@ -182,10 +183,10 @@ public class DatabaseContextHandler {
 		ctx.getInvalidParameterHandler().validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
 		
 		try {
-			Database db = relationalDataHandler.getDatabaseByGUID(userId, guidDatabase, methodName);
+			Database db = relationalDataHandler.getDatabaseByGUID(userId, guidDatabase, false, false, new Date(), methodName);
 			String dbName = db.getName();
 			
-			List<Schema> schemas = relationalDataHandler.getSchemasForDatabase(userId, guidDatabase, startFrom, pageSize, methodName);
+			List<Schema> schemas = relationalDataHandler.getSchemasForDatabase(userId, guidDatabase, startFrom, pageSize, false, false, new Date(), methodName);
 
 			return Optional.ofNullable(schemas).map(Collection::stream).orElseGet(Stream::empty)
 					.map(e->buildSchema(dbName, e))
@@ -203,7 +204,7 @@ public class DatabaseContextHandler {
 	/**
 	 * Helper function to build database schema response object from the schema element.
 	 * @param catalogName the schema belongs to.
-	 * @param dbSchemaEntity source of the schema data.
+	 * @param dbSchema source of the schema data.
 	 * @return response element.
 	 */
 	private ResponseContainerDatabaseSchema buildSchema(String catalogName, Schema dbSchema) {
@@ -424,7 +425,7 @@ public class DatabaseContextHandler {
 			}
 			
 			for (Relationship r : relationships) {
-				GlossaryTerm term = handlerGlossaryTerm.getTerm(ctx.getUserId(), r.getEntityTwoProxy().getGUID(), Constants.GUID, methodName);
+				GlossaryTerm term = handlerGlossaryTerm.getTerm(ctx.getUserId(), r.getEntityTwoProxy().getGUID(), Constants.GUID, false, false, new Date(), methodName);
 				String value = buildGlossaryTerm(term);
 				
 				if (value != null) {

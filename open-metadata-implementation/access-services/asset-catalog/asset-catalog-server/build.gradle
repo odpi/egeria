@@ -29,7 +29,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Asset Catalog OMAS Server-side'

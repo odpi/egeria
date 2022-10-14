@@ -15,15 +15,15 @@ import java.util.*;
  */
 public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 {
-    private OpenMetadataArchiveBuilder archiveBuilder;
-    private String                     archiveGUID;
-    private String                     archiveName;
-    private String                     originatorName;
-    private Date                       creationDate;
-    private long                       versionNumber;
-    private String                     versionName;
-    private InstanceProvenanceType     instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
-    private String                     license = null;
+    private final OpenMetadataArchiveBuilder archiveBuilder;
+    private final String                     archiveGUID;
+    private       String                     archiveName;
+    private final String                     originatorName;
+    private final Date                       creationDate;
+    private final long                       versionNumber;
+    private final String                     versionName;
+    private       InstanceProvenanceType     instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
+    private       String                     license = null;
 
 
     /**
@@ -1074,7 +1074,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * This is used when creating entity proxies.
      *
      * @param typeName name of instance's type
-     * @param allProperties all of the instance's properties
+     * @param allProperties all the instance's properties
      * @return just the unique properties
      */
     private InstanceProperties getUniqueProperties(String              typeName,
@@ -1424,5 +1424,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         classificationEntityExtension.setClassification(classification);
 
         return classificationEntityExtension;
+    }
+
+
+    /**
+     * Extract the enum value definition based on the ordinal.
+     *
+     * @param enumTypeName name of the enum type
+     * @param ordinal ordinal number for the enum value
+     * @return enum element def or its default value
+     */
+    public EnumElementDef getEnumElement(String enumTypeName,
+                                         int    ordinal)
+    {
+        EnumDef enumDef = archiveBuilder.getEnumDef(enumTypeName);
+
+        for (EnumElementDef enumElementDef : enumDef.getElementDefs())
+        {
+            if (enumElementDef.getOrdinal() == ordinal)
+            {
+                return enumElementDef;
+            }
+        }
+
+        return enumDef.getDefaultValue();
     }
 }

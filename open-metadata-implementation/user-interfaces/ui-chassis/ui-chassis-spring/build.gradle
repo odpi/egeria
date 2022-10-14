@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'javax.xml.bind:jaxb-api'
     implementation 'javax.servlet:javax.servlet-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-core'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
@@ -63,6 +63,16 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:view-services:tex-view:tex-view-server')
+    implementation project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
+    implementation project(':open-metadata-implementation:view-services:rex-view:rex-view-server')
+    implementation project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
+    implementation project(':open-metadata-implementation:view-services:dino-view:dino-view-server')
+    implementation project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
+    runtimeOnly 'org.springdoc:springdoc-openapi-ui'
+    implementation 'io.swagger.core.v3:swagger-annotations'
 }
 
 description = 'UI Server Platform Chassis for Spring'

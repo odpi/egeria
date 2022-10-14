@@ -75,22 +75,26 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param profileGUIDParameterName name of parameter supplying the GUID
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<B>  getContactDetails(String userId,
-                                      String profileGUID,
-                                      String profileGUIDParameterName,
-                                      int    startingFrom,
-                                      int    pageSize,
-                                      Date   effectiveTime,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public List<B>  getContactDetails(String              userId,
+                                      String              profileGUID,
+                                      String              profileGUIDParameterName,
+                                      int                 startingFrom,
+                                      int                 pageSize,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -103,9 +107,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
-                                        false,
-                                        false,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
@@ -118,13 +122,20 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Create a new contact method for a profile.
      *
      * @param userId      userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param profileGUID   unique identifier for the connected entity (Referenceable).
      * @param profileGUIDParameterName parameter supplying the profileGUID
+     * @param contactName name of this contact method - eg my office phone number
+     * @param contactType type of contact eg "Office phone number" - typically controlled from a valid value set
      * @param contactMethodType  ordinal for contact type
      * @param contactMethodService   name of the service to call
      * @param contactMethodValue   identity value to use for this profile through this contact method
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the contact method
      *
@@ -132,19 +143,28 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String createContactMethod(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String profileGUID,
-                                      String profileGUIDParameterName,
-                                      int    contactMethodType,
-                                      String contactMethodService,
-                                      String contactMethodValue,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public String createContactMethod(String              userId,
+                                      String              externalSourceGUID,
+                                      String              externalSourceName,
+                                      String              profileGUID,
+                                      String              profileGUIDParameterName,
+                                      String              contactName,
+                                      String              contactType,
+                                      int                 contactMethodType,
+                                      String              contactMethodService,
+                                      String              contactMethodValue,
+                                      Date                effectiveFrom,
+                                      Date                effectiveTo,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
-        ContactDetailsBuilder builder = new ContactDetailsBuilder(contactMethodType,
+        ContactDetailsBuilder builder = new ContactDetailsBuilder(contactName,
+                                                                  contactType,
+                                                                  contactMethodType,
                                                                   contactMethodService,
                                                                   contactMethodValue,
                                                                   repositoryHelper,
@@ -156,36 +176,38 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
             builder.setAnchors(userId, profileGUID, methodName);
         }
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         String contactMethodGUID = this.createBeanInRepository(userId,
                                                                externalSourceGUID,
                                                                externalSourceName,
                                                                OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
                                                                OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
-                                                               null,
-                                                               null,
                                                                builder,
+                                                               effectiveTime,
                                                                methodName);
 
         if ((contactMethodGUID != null) && (profileGUID != null))
         {
             final String contactMethodGUIDParameterName = "contactMethodGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profileGUID,
-                                      profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                      contactMethodGUID,
-                                      contactMethodGUIDParameterName,
-                                      OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               profileGUID,
+                                               profileGUIDParameterName,
+                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               contactMethodGUID,
+                                               contactMethodGUIDParameterName,
+                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return contactMethodGUID;
@@ -196,24 +218,30 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the requested contact method.
      *
      * @param userId       calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param contactMethodGUID   unique identifier for the connected entity (Referenceable).
      * @param contactMethodGUIDParameterName parameter supplying the contactMethodGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName   calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeContactDetail(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String contactMethodGUID,
-                                    String contactMethodGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public void removeContactDetail(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  contactMethodGUID,
+                                    String  contactMethodGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -224,9 +252,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 }

@@ -28,12 +28,12 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
 {
     private static final String  serviceName = "Community Profile OMAS";
 
-    private String        serverName;               /* Initialized in constructor */
-    private String        serverPlatformURLRoot;    /* Initialized in constructor */
-    private String        callerId;                 /* Initialized in constructor */
-    private OCFRESTClient restClient;               /* Initialized in constructor */
+    private final String        serverName;               /* Initialized in constructor */
+    private final String        serverPlatformURLRoot;    /* Initialized in constructor */
+    private final String        callerId;                 /* Initialized in constructor */
+    private final OCFRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private CommunityProfileOutTopicClientConnector configurationEventTopicConnector = null;
     private AuditLog                                auditLog                         = null;
@@ -160,7 +160,7 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/topics/out-topic-connection/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -172,7 +172,7 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
              * event bus.
              */
             ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
-                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    urlTemplate,
                                                                                     serverName,
                                                                                     userId,
                                                                                     callerId);

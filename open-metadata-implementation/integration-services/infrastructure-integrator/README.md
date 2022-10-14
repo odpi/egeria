@@ -1,13 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Infrastructure Integrator Open Metadata Integration Service (OMIS)
 
 The Infrastructure Integrator OMIS supports the exchange of IT infrastructure deployment knowledge.
 It is typically capturing metadata from deployment artifacts, or
 using metadata to generate deployment artifacts.
+
+* [Documentation](https://egeria-project.org/services/omis/infrastructure-integrator/overview)
 
 ## Module Implementation
 

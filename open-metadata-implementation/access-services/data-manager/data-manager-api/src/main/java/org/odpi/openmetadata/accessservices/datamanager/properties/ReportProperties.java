@@ -201,17 +201,25 @@ public class ReportProperties extends DataSetProperties
     public String toString()
     {
         return "ReportProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", id='" + id + '\'' +
+                       ", author='" + author + '\'' +
+                       ", url='" + url + '\'' +
+                       ", createTime=" + createTime +
+                       ", lastModifiedTime=" + lastModifiedTime +
+                       ", lastModifier='" + lastModifier + '\'' +
+                       '}';
     }
-
-
 
 
     /**
@@ -227,26 +235,43 @@ public class ReportProperties extends DataSetProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ReportProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         ReportProperties that = (ReportProperties) objectToCompare;
-        return Objects.equals(id, that.id) &&
-                       Objects.equals(author, that.author) &&
-                       Objects.equals(url, that.url) &&
-                       Objects.equals(createTime, that.createTime) &&
-                       Objects.equals(lastModifiedTime, that.lastModifiedTime) &&
-                       Objects.equals(lastModifier, that.lastModifier);
+
+        if (id != null ? ! id.equals(that.id) : that.id != null)
+        {
+            return false;
+        }
+        if (author != null ? ! author.equals(that.author) : that.author != null)
+        {
+            return false;
+        }
+        if (url != null ? ! url.equals(that.url) : that.url != null)
+        {
+            return false;
+        }
+        if (createTime != null ? ! createTime.equals(that.createTime) : that.createTime != null)
+        {
+            return false;
+        }
+        if (lastModifiedTime != null ? ! lastModifiedTime.equals(that.lastModifiedTime) : that.lastModifiedTime != null)
+        {
+            return false;
+        }
+        return lastModifier != null ? lastModifier.equals(that.lastModifier) : that.lastModifier == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

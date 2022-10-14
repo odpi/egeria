@@ -21,13 +21,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public class GovernanceEngineEventClient
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
-    private String                     callerId;                 /* Initialized in constructor */
-    private AuditLog                   auditLog;                 /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
+    private final String                     callerId;                 /* Initialized in constructor */
+    private final AuditLog                   auditLog;                 /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     private static final String  serviceName = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName();
@@ -90,7 +90,7 @@ public class GovernanceEngineEventClient
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/topics/out-topic-connection/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -102,7 +102,7 @@ public class GovernanceEngineEventClient
              * event bus.
              */
             ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
-                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    urlTemplate,
                                                                                     serverName,
                                                                                     userId,
                                                                                     callerId);

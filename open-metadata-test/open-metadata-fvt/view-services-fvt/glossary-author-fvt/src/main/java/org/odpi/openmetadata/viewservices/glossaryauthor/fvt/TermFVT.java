@@ -26,6 +26,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 //import java.security.InvalidParameterException;
@@ -47,7 +49,8 @@ public class TermFVT {
     private SubjectAreaDefinitionCategoryFVT subjectAreaFVT =null;
     private String userId =null;
     private int existingTermCount = 0;
-    private String omagServer = "";
+    private static Logger log = LoggerFactory.getLogger(TermFVT.class);
+
     /*
      * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
      * At the end of the test it will delete any remaining guids.
@@ -66,9 +69,9 @@ public class TermFVT {
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -79,54 +82,25 @@ public class TermFVT {
 
         glossaryAuthorViewTermClient = new GlossaryAuthorViewTermClient(client);
 
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url, serverName,userId);
         //optionKey
-        retrieveOmagConfig();
-        retrieveOmagServerName();
-        omagServer = retrieveOmagServerName("Glossary Author");
 
-        System.out.println("OMAGSERVER " + omagServer );
-
-        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,omagServer,userId);
+        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
 
         existingTermCount = findTerms("").size();
-        System.out.println("existingTermCount " + existingTermCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingTermCount " + existingTermCount);
+        }
     }
 
-    private String retrieveOmagConfig() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
-        OMAGServerConfig config = glossaryAuthorViewTermClient.getConfig(userId);
-//        System.out.println(config.toString());
-//        System.out.println(config.getViewServicesConfig().toString());
-        return config.getLocalServerName();
-    }
+
     private ViewServiceConfig retrieveGlossaryAuthorConfig() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
          return glossaryAuthorViewTermClient.getGlossaryAuthViewServiceConfig(userId);
 
-    }
-
-    private String retrieveOmagServerName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        ViewServiceConfig config = retrieveGlossaryAuthorConfig();
-//        System.out.println(config.toString());
-//        System.out.println(config.getOMAGServerName());//getViewServicesConfig().toString());
-        return config.getOMAGServerName();
-    }
-
-    private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
-        List<ViewServiceConfig> viewServiceConfigs = glossaryAuthorViewTermClient.getViewServiceConfigs(userId);
-//        Map<String,Object> viewServiceOptions;
-//        System.out.println("  viewServiceConfigs  " + viewServiceConfigs.toString());
-
-        for (ViewServiceConfig vsc: viewServiceConfigs){
-//            System.out.println(vsc.getViewServiceName());
-            if (vsc.getViewServiceName().equals(viewServiceName)) {
-//                    System.out.println("$$$$$$$$$$$$  FOUND GLOSSARY AUTHOR $$$$$$$$$$$");
-                    System.out.println("OMAG Server URL " + String.valueOf(vsc.getOMAGServerPlatformRootURL()));
-                    return  String.valueOf(vsc.getOMAGServerName());
-                }
-            }
-        return null;
     }
 
 
@@ -144,7 +118,7 @@ public class TermFVT {
             System.out.println("TermFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -155,14 +129,20 @@ public class TermFVT {
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term1");
+        }
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term1 using glossary userId");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term1 using glossary userId");
+        }
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
-        System.out.println("Create a term2 using glossary userId");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term2 using glossary userId");
+        }
 
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria("");
@@ -178,26 +158,40 @@ public class TermFVT {
 
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-        System.out.println("Get term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Get term1");
+        }
         String guid = term1.getSystemAttributes().getGUID();
         Term gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Update term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Update term1");
+        }
         Term updatedTerm = updateTerm(guid, termForUpdate);
         FVTUtils.validateNode(updatedTerm);
-        System.out.println("Get term1 again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get term1 again");
+        }
         gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Delete term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete term1");
+        }
         deleteTerm(guid);
-        System.out.println("Restore term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Restore term1");
+        }
         //FVTUtils.validateNode(gotTerm);
         gotTerm = restoreTerm(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Delete term1 again");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete term1 again");
+        }
         deleteTerm(guid);
         //FVTUtils.validateNode(gotTerm);
-        System.out.println("Create term3 with governance actions");
+        if (log.isDebugEnabled()) {
+            log.debug("Create term3 with governance actions");
+        }
         GovernanceClassifications governanceClassifications = createGovernanceClassifications();
         Term term3 = createTermWithGovernanceClassifications(DEFAULT_TEST_TERM_NAME, glossaryGuid, governanceClassifications);
         FVTUtils.validateNode(term3);
@@ -214,7 +208,9 @@ public class TermFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Governance actions criticality not returned  as expected. ");
         }
         GovernanceClassifications governanceClassifications2 = create2ndGovernanceClassifications();
-        System.out.println("Update term3 with and change governance actions");
+        if (log.isDebugEnabled()) {
+            log.debug("Update term3 with and change governance actions");
+        }
         Term term3ForUpdate = new Term();
         term3ForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
         term3ForUpdate.setGovernanceClassifications(governanceClassifications2);
@@ -240,7 +236,9 @@ public class TermFVT {
         int zzzcount = findTerms("zzz").size();
         int spacedTermcount = findTerms( spacedTermName).size();
 
-        System.out.println("create terms to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create terms to find");
+        }
         Term termForFind1 = getTermForInput("abc",glossaryGuid);
         termForFind1.setDescription("yyy");
         termForFind1 = issueCreateTerm(termForFind1);
@@ -370,20 +368,6 @@ public class TermFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected qualified name to be set");
         }
 
-/*        //test Multiple terms
-        List<Term> multipleTermList = new ArrayList<Term>();
-
-        for (int i = 1;i <5; i++) {
-            multipleTermList.add(getTermForInput(DEFAULT_TEST_TERM_LIST + String.valueOf(i), glossaryGuid));
-         //   DEFAULT_TEST_TERM_LIST
-        }
-        Term[] termArray = new Term[multipleTermList.size()];
-        termArray = multipleTermList.toArray(termArray);
-
-        List<Term> createdTermList = new ArrayList<Term>();
-        createdTermList = glossaryFVT.createMultipleTerms(userId, glossaryGuid, termArray); // multipleTermList.toArray());
-
-        System.out.println("*****^&*&*& " + createdTermList.toString() + " *****^&*&*& ");*/
         // test categories
 
         Category cat1 = categoryFVT.createCategoryWithGlossaryGuid("cat1", glossaryGuid);
@@ -415,9 +399,9 @@ public class TermFVT {
         if (!createdTerm4cats.getCategories().get(0).getGuid().equals(cat1Summary.getGuid())) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected response category guid to match the requested category guid.");
         }
-        if (cat1.getSystemAttributes().getGUID() != null) System.out.println("guid is null 1" + cat1.getSystemAttributes().getGUID());
+        if (cat1.getSystemAttributes().getGUID() != null) log.error("guid is null 1" + cat1.getSystemAttributes().getGUID());
 
-        if (categoryFVT.getTerms(cat1.getSystemAttributes().getGUID()) == null) System.out.println("Its null");
+        if (categoryFVT.getTerms(cat1.getSystemAttributes().getGUID()) == null) log.error("Its null");
         if (categoryFVT.getTerms(cat1.getSystemAttributes().getGUID()).size() != 1) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected the category to have 1 term.");
         }
@@ -499,7 +483,9 @@ public class TermFVT {
         if (newTerm != null)
         {
             String guid = newTerm.getSystemAttributes().getGUID();
-            System.out.println("Created Term " + newTerm.getName() + " with guid " + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Created Term " + newTerm.getName() + " with guid " + guid);
+            }
             createdTermsSet.add(guid);
         }
         return newTerm;
@@ -563,7 +549,9 @@ public class TermFVT {
         Term term = glossaryAuthorViewTermClient.getByGUID(this.userId, guid);
         if (term != null)
         {
-            System.out.println("Got Term " + term.getName() + " with userId " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
+            if (log.isDebugEnabled()) {
+                log.debug("Got Term " + term.getName() + " with userId " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
+            }
         }
         return term;
     }
@@ -578,7 +566,9 @@ public class TermFVT {
         Term updatedTerm = glossaryAuthorViewTermClient.update(this.userId, guid, term,false);
         if (updatedTerm != null)
         {
-            System.out.println("Updated Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Updated Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -586,7 +576,9 @@ public class TermFVT {
         Term updatedTerm = glossaryAuthorViewTermClient.update(this.userId, guid, term, true);
         if (updatedTerm != null)
         {
-            System.out.println("Replaced Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -594,7 +586,9 @@ public class TermFVT {
         Term restoredTerm = glossaryAuthorViewTermClient.restore(this.userId, guid);
         if (restoredTerm != null)
         {
-            System.out.println("Restored Term " + restoredTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Restored Term " + restoredTerm.getName());
+            }
             createdTermsSet.add(guid);
         }
         return restoredTerm;
@@ -602,17 +596,15 @@ public class TermFVT {
 
     public Term updateTermToFuture(long now, String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
 
-/*       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24).getTime());
-       term.setEffectiveToTime(new Date(now+7*1000*60*60*24).getTime());*/
-
         term.setEffectiveFromTime(new Date(now+1001*60*60*24).getTime());
         term.setEffectiveToTime(new Date(now+1999*60*60*24).getTime());
 
         Term updatedTerm = glossaryAuthorViewTermClient.update(this.userId, guid, term);
-//        Term updatedTerm = glossaryAuthorViewTermClient.update(this.userId, guid, term,true);
         if (updatedTerm != null)
         {
-            System.out.println("Updated Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Updated Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -620,7 +612,9 @@ public class TermFVT {
     public void deleteTerm(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
             glossaryAuthorViewTermClient.delete(this.userId, guid);
             createdTermsSet.remove(guid);
-            System.out.println("Delete succeeded");
+            if (log.isDebugEnabled()) {
+                log.debug("Delete succeeded");
+            }
     }
 
     public List<Relationship> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
@@ -661,10 +655,14 @@ public class TermFVT {
     }
 
     private void testCategorizedTermsWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary("Glossary name for CategorizedTermsWithSearchCriteria");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a ttt");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a ttt");
+        }
         Category category = categoryFVT.createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = category.getSystemAttributes().getGUID();
         // create 20 children
@@ -784,5 +782,4 @@ public class TermFVT {
         glossaryFVT.deleteGlossary(glossaryGuid);
 
     }
-
 }

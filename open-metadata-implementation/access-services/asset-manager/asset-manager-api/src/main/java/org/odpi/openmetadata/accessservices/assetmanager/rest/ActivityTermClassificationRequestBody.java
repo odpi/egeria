@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,12 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ActivityTermClassificationRequestBody implements Serializable
+public class ActivityTermClassificationRequestBody extends UpdateRequestBody
 {
     private static final long   serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private GlossaryTermActivityType      activityType                  = null;
+    private GlossaryTermActivityType activityType = null;
 
 
     /**
@@ -46,33 +43,12 @@ public class ActivityTermClassificationRequestBody implements Serializable
      */
     public ActivityTermClassificationRequestBody(ActivityTermClassificationRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             activityType = template.getActivityType();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -106,9 +82,10 @@ public class ActivityTermClassificationRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "CanonicalVocabularyClassificationRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", activityType='" + activityType + '\'' +
+        return "ActivityTermClassificationRequestBody{" +
+                       "activityType=" + activityType +
+                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -130,20 +107,23 @@ public class ActivityTermClassificationRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ActivityTermClassificationRequestBody that = (ActivityTermClassificationRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getActivityType(), that.getActivityType());
+        return activityType == that.activityType;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMetadataCorrelationProperties(), getActivityType());
+        return Objects.hash(super.hashCode(), activityType);
     }
 }

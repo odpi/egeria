@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png)
+![Released](../../../images/egeria-content-status-released.png)
 
 # Audit Log Framework (ALF)
 
@@ -33,7 +33,7 @@ to allow routing to different destinations for review and processing.
 
 ## Use of the Audit Log Framework
 
-The [Open Metadata Repository Services (OMRS)](../../repository-services/docs/component-descriptions/audit-log.md)
+The [Open Metadata Repository Services (OMRS)](https://egeria-project.org/concepts/audit-log)
 provides an extension to the audit log destination that supports
 audit log store connectors.
 This means that an OMAG Server can be configured to route 
@@ -41,7 +41,7 @@ audit log messages to different destinations.
 
 Details of the supported audit log store connectors and
 how to set them up are described in
-[Configuring the Audit Log](../../admin-services/docs/user/configuring-the-audit-log.md).
+[Configuring the Audit Log](https://egeria-project.org/guides/admin/servers/configuring-the-audit-log).
 
 ----
 Return to [frameworks](..).

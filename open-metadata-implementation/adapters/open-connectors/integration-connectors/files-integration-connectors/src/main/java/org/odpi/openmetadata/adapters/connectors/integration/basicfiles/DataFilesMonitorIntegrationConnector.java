@@ -105,7 +105,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * as well as any external REST API calls to explicitly refresh the connector.
      *
      * This method performs two sweeps.  It first retrieves the files in the directory and validates that are in the
-     * catalog - adding or updating them if necessary.  The second sweep is to ensure that all of the assets catalogued
+     * catalog - adding or updating them if necessary.  The second sweep is to ensure that all the assets catalogued
      * in this directory actually exist on the file system.
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
@@ -157,9 +157,9 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             if (dataFile != null)
                             {
                                 if ((dataFile.getElementHeader() != null) && (dataFile.getElementHeader().getGUID() != null) &&
-                                    (dataFile.getDataFileProperties() != null) && (dataFile.getDataFileProperties().getQualifiedName() != null))
+                                    (dataFile.getDataFileProperties() != null) && (dataFile.getDataFileProperties().getPathName() != null))
                                 {
-                                    File file = new File(dataFile.getDataFileProperties().getQualifiedName());
+                                    File file = new File(dataFile.getDataFileProperties().getPathName());
 
                                     if (! file.exists())
                                     {
@@ -234,8 +234,8 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         DataFileProperties properties = new DataFileProperties();
 
                         properties.setTypeName(this.getAssetTypeName(fileExtension));
-                        properties.setQualifiedName(file.getAbsolutePath());
-                        properties.setDisplayName(file.getName());
+                        properties.setPathName(file.getAbsolutePath());
+                        properties.setName(file.getName());
                         properties.setModifiedTime(new Date(file.lastModified()));
 
                         List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
@@ -244,7 +244,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
-                                                                                                                                properties.getQualifiedName(),
+                                                                                                                                properties.getPathName(),
                                                                                                                                 guids.get(
                                                                                                                                         guids.size() - 1)));
                         }
@@ -287,7 +287,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         {
                             TemplateProperties properties = new TemplateProperties();
 
-                            properties.setQualifiedName(file.getAbsolutePath());
+                            properties.setPathName(file.getAbsolutePath());
                             properties.setDisplayName(file.getName());
                             properties.setNetworkAddress(file.getAbsolutePath());
 
@@ -298,7 +298,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                 auditLog.logMessage(methodName,
                                                     BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
                                                             connectorName,
-                                                            properties.getQualifiedName(),
+                                                            properties.getPathName(),
                                                             guids.get(guids.size() - 1),
                                                             templateQualifiedName,
                                                             templateGUID));
@@ -406,18 +406,18 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 }
 
                 if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
-                            (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getQualifiedName() != null))
+                            (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getPathName() != null))
                 {
                     if (allowCatalogDelete)
                     {
                         this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
-                                                                    cataloguedElement.getDataFileProperties().getQualifiedName());
+                                                                    cataloguedElement.getDataFileProperties().getPathName());
 
                         if (auditLog != null)
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
-                                                                                                                                cataloguedElement.getDataFileProperties().getQualifiedName(),
+                                                                                                                                cataloguedElement.getDataFileProperties().getPathName(),
                                                                                                                                 cataloguedElement.getElementHeader().getGUID()));
                         }
                     }
@@ -434,7 +434,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
-                                                                                                                                 cataloguedElement.getDataFileProperties().getQualifiedName(),
+                                                                                                                                 cataloguedElement.getDataFileProperties().getPathName(),
                                                                                                                                  cataloguedElement.getElementHeader().getGUID()));
                         }
                     }
@@ -484,7 +484,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 if (dataFileInCatalog != null)
                 {
                     if ((dataFileInCatalog.getElementHeader() != null) && (dataFileInCatalog.getElementHeader().getGUID() != null) &&
-                                (dataFileInCatalog.getDataFileProperties() != null) && (dataFileInCatalog.getDataFileProperties().getQualifiedName() != null))
+                                (dataFileInCatalog.getDataFileProperties() != null) && (dataFileInCatalog.getDataFileProperties().getPathName() != null))
                     {
                         DataFileProperties properties = new DataFileProperties();
 
@@ -496,7 +496,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                dataFileInCatalog.getDataFileProperties().getQualifiedName(),
+                                                                                                                                dataFileInCatalog.getDataFileProperties().getPathName(),
                                                                                                                                 dataFileInCatalog.getElementHeader().getGUID()));
                         }
                     }

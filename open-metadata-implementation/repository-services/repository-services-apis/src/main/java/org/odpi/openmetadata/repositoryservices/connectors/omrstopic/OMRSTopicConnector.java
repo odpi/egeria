@@ -64,8 +64,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
     private List<Connector> embeddedConnectors = null;
 
-    private List<OMRSTopicListener>          internalTopicListeners = new ArrayList<>();
-    private List<OpenMetadataTopicConnector> eventBusConnectors     = new ArrayList<>();
+    private final List<OMRSTopicListener>          internalTopicListeners = new ArrayList<>();
+    private final List<OpenMetadataTopicConnector> eventBusConnectors     = new ArrayList<>();
 
     private String                    connectionName       = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR.getComponentName();
     private String                    topicName = "<Unknown>";
@@ -127,7 +127,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
-     * Setup the version of the protocol to use for events.
+     * Set up the version of the protocol to use for events.
      *
      * @param eventProtocolVersion version enum
      */
@@ -142,7 +142,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
-     * Register an OMRSTopicListener object.  This object will be supplied with all of the OMRS events
+     * Register an OMRSTopicListener object.  This object will be supplied with all the OMRS events
      * received on the topic.
      *
      * @param topicListener object implementing the OMRSTopicListener interface
@@ -167,7 +167,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param topicListener object implementing the OMRSTopicListener interface
@@ -195,7 +195,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param topicListener object implementing the OMRSTopicRepositoryEventListener interface

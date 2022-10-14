@@ -183,6 +183,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
@@ -194,31 +195,37 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
                                                                   governanceEngineGUID,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
                                                                   governanceEngineName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
                                                                   requestSourceName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME,
                                                                   governanceActionTypeGUID,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME,
                                                                   governanceActionTypeName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
                                                                   requestType,
                                                                   methodName);
+
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
                                                                      OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
@@ -230,6 +237,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                            OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,
                                                                            mandatoryGuards,
                                                                            methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
                                                                        OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,

@@ -115,7 +115,7 @@ public class InvalidParameterTest
 
 
     /**
-     * Test combinations of invalid parameters passed to createValidValueSet.
+     * Test combinations of invalid parameters passed to getAssetForConnection.
      *
      * @param userId calling user
      * @param client client to call

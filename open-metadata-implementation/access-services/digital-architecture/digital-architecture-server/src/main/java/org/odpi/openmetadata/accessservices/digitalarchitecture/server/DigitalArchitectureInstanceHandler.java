@@ -194,14 +194,14 @@ class DigitalArchitectureInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ValidValuesHandler<ValidValueElement,
+    ReferenceDataHandler<ValidValueElement,
                               ValidValueAssignmentConsumerElement,
                               ValidValueAssignmentDefinitionElement,
                               ValidValueImplAssetElement,
                               ValidValueImplDefinitionElement,
                               ValidValueMappingElement,
                               ReferenceValueAssignmentDefinitionElement,
-                              ReferenceValueAssignmentItemElement> getValidValuesHandler(String userId,
+                              ReferenceValueAssignmentItemElement> getReferenceDataHandler(String userId,
                                                                                          String serverName,
                                                                                          String serviceOperationName) throws InvalidParameterException,
                                                                                                                              UserNotAuthorizedException,
@@ -213,7 +213,7 @@ class DigitalArchitectureInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getValidValuesHandler();
+            return instance.getReferenceDataHandler();
         }
 
         return null;

@@ -213,6 +213,11 @@ public enum RexViewErrorCode implements ExceptionMessageSet
              "The repository explorer view service could not proceed as it could not create a handler for operation {0}.",
              "The system could not perform the requested action.",
              "Please check your view configuration exists for this tenant."),
+    INVALID_AS_OF_DATETIME
+            (400, "OMVS-REPOSITORY-EXPLORER-400-031",
+             "The repository explorer view service could not proceed as it was supplied a future asOfTime for operation {0}.",
+             "The system could not perform the requested action.",
+             "Please ensure that only past asOfTimes are supplied."),
     ;
     private ExceptionMessageDefinition messageDefinition;
 

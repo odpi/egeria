@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventC
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.List;
 
@@ -51,6 +52,24 @@ public class APIIntegratorContext
         this.userId                  = userId;
         this.apiManagerGUID          = apiManagerGUID;
         this.apiManagerName          = apiManagerName;
+    }
+
+
+
+    /* ========================================================
+     * Returning the API manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the API manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getAPIManagerName()
+    {
+        return apiManagerName;
     }
 
 
@@ -1292,8 +1311,8 @@ public class APIIntegratorContext
      * Create a new metadata element to represent a schema type.
      *
      * @param schemaTypeProperties properties about the schema type to store
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      *
      * @return unique identifier of the new schema type
      *

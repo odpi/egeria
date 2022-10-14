@@ -12,9 +12,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class InformalTagBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private String  tagName;
-    private String  tagDescription;
-    private boolean isPublic;
+    private final String  tagName;
+    private final String  tagDescription;
+    private final boolean isPublic;
 
 
     /**
@@ -59,23 +59,17 @@ public class InformalTagBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (tagName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
-                                                                      tagName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
+                                                                  tagName,
+                                                                  methodName);
 
-        if (tagDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.TAG_DESCRIPTION_PROPERTY_NAME,
-                                                                      tagDescription,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.TAG_DESCRIPTION_PROPERTY_NAME,
+                                                                  tagDescription,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -25,7 +25,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <artifactId>open-metadata-assemblies</artifactId>
@@ -240,6 +240,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-client</artifactId>
         </dependency>
         <dependency>
@@ -352,10 +356,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cloud-information-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-canonical-model</artifactId>
         </dependency>
 
@@ -371,7 +371,6 @@
             <artifactId>egeria</artifactId>
         </dependency-->
 
-        <!-- Deployment assembly needs some artifacts, but currently they are only pulled from source, so no binary dependency -->
   </dependencies>
 
     <build>
@@ -387,7 +386,6 @@
                         <configuration>
                             <descriptors>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
-                                <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <attach>true</attach>

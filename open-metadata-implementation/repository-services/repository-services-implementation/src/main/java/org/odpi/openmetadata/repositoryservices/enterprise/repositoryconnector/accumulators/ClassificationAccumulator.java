@@ -15,7 +15,7 @@ import java.util.Map;
  * ClassificationAccumulator accumulates and validates an entity received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest entity details object.
  *
- * This class may be called simultaneously from many different threads so it must be thread-safe.
+ * This class may be called simultaneously from multiple threads, so it must be thread-safe.
  */
 public abstract class ClassificationAccumulator extends MaintenanceAccumulator
 {
@@ -25,7 +25,7 @@ public abstract class ClassificationAccumulator extends MaintenanceAccumulator
 
 
     /**
-     * Construct a entity accumulator.  Its base class manages the common variables needed to
+     * Construct an entity accumulator.  Its base class manages the common variables needed to
      * control the execution of requests across all members of the cohort(s).
      *
      * @param auditLog audit log provides destination for log messages
@@ -89,7 +89,7 @@ public abstract class ClassificationAccumulator extends MaintenanceAccumulator
 
 
     /**
-     * Save the best classifications from all of the repositories.
+     * Save the best classifications from all the repositories.
      *
      * @param retrievedClassifications classifications from a repository
      */

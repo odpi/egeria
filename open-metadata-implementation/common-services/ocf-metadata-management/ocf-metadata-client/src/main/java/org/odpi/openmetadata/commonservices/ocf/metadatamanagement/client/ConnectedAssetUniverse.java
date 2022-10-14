@@ -29,8 +29,8 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
     private final int MAX_CACHE_SIZE = 100;
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
 
     /**
@@ -153,7 +153,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
 
     /**
-     * Constructor used by ConnectedAssetProperties.refresh() with no authentication
+     * Constructor used by EgeriaConnectedAssetProperties.refresh() with no authentication
      * information being attached to the HTTP requests.  The calling user of the specific
      * request flows as a property in the URL.
      *
@@ -193,7 +193,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
 
     /**
-     * Constructor used by ConnectedAssetProperties.refresh() with no authentication
+     * Constructor used by EgeriaConnectedAssetProperties.refresh() with no authentication
      * information being attached to the HTTP requests.  The calling user of the specific
      * request flows as a property in the URL.
      *
@@ -265,123 +265,112 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                        OCFRESTClient    restClient,
                                        AssetResponse    assetResponse)
     {
-        super.setAssetBean(assetResponse.getAsset());
-
         if (assetResponse.getExternalIdentifierCount() > 0)
         {
-            super.externalIdentifiers = new ConnectedAssetExternalIdentifiers(serviceName,
-                                                                              remoteServerName,
-                                                                              userId,
-                                                                              omasServerURL,
-                                                                              assetGUID,
-                                                                              this,
-                                                                              assetResponse.getExternalIdentifierCount(),
-                                                                              MAX_CACHE_SIZE,
-                                                                              restClient);
+            super.externalIdentifiers = new ConnectedExternalIdentifiers(serviceName,
+                                                                         remoteServerName,
+                                                                         userId,
+                                                                         omasServerURL,
+                                                                         assetGUID,
+                                                                         assetResponse.getExternalIdentifierCount(),
+                                                                         MAX_CACHE_SIZE,
+                                                                         restClient);
         }
 
         if (assetResponse.getRelatedMediaReferenceCount() > 0)
         {
-            super.relatedMediaReferences = new ConnectedAssetRelatedMediaReferences(serviceName,
-                                                                                    remoteServerName,
-                                                                                    userId,
-                                                                                    omasServerURL,
-                                                                                    assetGUID,
-                                                                                    this,
-                                                                                    assetResponse.getRelatedMediaReferenceCount(),
-                                                                                    MAX_CACHE_SIZE,
-                                                                                    restClient);
+            super.relatedMediaReferences = new ConnectedRelatedMediaReferences(serviceName,
+                                                                               remoteServerName,
+                                                                               userId,
+                                                                               omasServerURL,
+                                                                               assetGUID,
+                                                                               assetResponse.getRelatedMediaReferenceCount(),
+                                                                               MAX_CACHE_SIZE,
+                                                                               restClient);
         }
 
         if (assetResponse.getNoteLogsCount() > 0)
         {
-            super.noteLogs = new ConnectedAssetNoteLogs(serviceName,
-                                                        remoteServerName,
-                                                        userId,
-                                                        omasServerURL,
-                                                        assetGUID,
-                                                        this,
-                                                        assetResponse.getNoteLogsCount(),
-                                                        MAX_CACHE_SIZE,
-                                                        restClient);
+            super.noteLogs = new ConnectedNoteLogs(serviceName,
+                                                   remoteServerName,
+                                                   userId,
+                                                   omasServerURL,
+                                                   assetGUID,
+                                                   assetResponse.getNoteLogsCount(),
+                                                   MAX_CACHE_SIZE,
+                                                   restClient);
         }
 
         if (assetResponse.getExternalReferencesCount() > 0)
         {
-            super.externalReferences = new ConnectedAssetExternalReferences(serviceName,
-                                                                            remoteServerName,
-                                                                            userId,
-                                                                            omasServerURL,
-                                                                            assetGUID,
-                                                                            this,
-                                                                            assetResponse.getExternalReferencesCount(),
-                                                                            MAX_CACHE_SIZE,
-                                                                            restClient);
+            super.externalReferences = new ConnectedExternalReferences(serviceName,
+                                                                       remoteServerName,
+                                                                       userId,
+                                                                       omasServerURL,
+                                                                       assetGUID,
+                                                                       assetResponse.getExternalReferencesCount(),
+                                                                       MAX_CACHE_SIZE,
+                                                                       restClient);
         }
 
         if (assetResponse.getConnectionCount() > 0)
         {
-            super.connections = new ConnectedAssetConnections(serviceName,
-                                                              remoteServerName,
-                                                              userId,
-                                                              omasServerURL,
-                                                              assetGUID,
-                                                              this,
-                                                              assetResponse.getConnectionCount(),
-                                                              MAX_CACHE_SIZE,
-                                                              restClient);
+            super.connections = new ConnectedConnections(serviceName,
+                                                         remoteServerName,
+                                                         userId,
+                                                         omasServerURL,
+                                                         assetGUID,
+                                                         assetResponse.getConnectionCount(),
+                                                         MAX_CACHE_SIZE,
+                                                         restClient);
         }
 
         if (assetResponse.getLicenseCount() > 0)
         {
-            super.licenses = new ConnectedAssetLicenses(serviceName,
-                                                        remoteServerName,
-                                                        userId,
-                                                        omasServerURL,
-                                                        assetGUID,
-                                                        this,
-                                                        assetResponse.getLicenseCount(),
-                                                        MAX_CACHE_SIZE,
-                                                        restClient);
+            super.licenses = new ConnectedLicenses(serviceName,
+                                                   remoteServerName,
+                                                   userId,
+                                                   omasServerURL,
+                                                   assetGUID,
+                                                   assetResponse.getLicenseCount(),
+                                                   MAX_CACHE_SIZE,
+                                                   restClient);
         }
 
         if (assetResponse.getCertificationCount() > 0)
         {
-            super.certifications = new ConnectedAssetCertifications(serviceName,
-                                                                    remoteServerName,
-                                                                    userId,
-                                                                    omasServerURL,
-                                                                    assetGUID,
-                                                                    this,
-                                                                    assetResponse.getCertificationCount(),
-                                                                    MAX_CACHE_SIZE,
-                                                                    restClient);
-        }
-
-        super.feedback = new ConnectedAssetFeedback(serviceName,
-                                                    remoteServerName,
-                                                    userId,
-                                                    omasServerURL,
-                                                    assetGUID,
-                                                    this,
-                                                    assetResponse.getCommentCount(),
-                                                    assetResponse.getLikeCount(),
-                                                    assetResponse.getRatingsCount(),
-                                                    assetResponse.getInformalTagCount(),
-                                                    MAX_CACHE_SIZE,
-                                                    restClient);
-
-        if (assetResponse.getKnownLocationsCount() > 0)
-        {
-            super.knownLocations = new ConnectedAssetLocations(serviceName,
+            super.certifications = new ConnectedCertifications(serviceName,
                                                                remoteServerName,
                                                                userId,
                                                                omasServerURL,
                                                                assetGUID,
-                                                               this,
-                                                               assetResponse.getKnownLocationsCount(),
+                                                               assetResponse.getCertificationCount(),
                                                                MAX_CACHE_SIZE,
                                                                restClient);
+        }
+
+        super.feedback = new ConnectedFeedback(serviceName,
+                                               remoteServerName,
+                                               userId,
+                                               omasServerURL,
+                                               assetGUID,
+                                               assetResponse.getCommentCount(),
+                                               assetResponse.getLikeCount(),
+                                               assetResponse.getRatingsCount(),
+                                               assetResponse.getInformalTagCount(),
+                                               MAX_CACHE_SIZE,
+                                               restClient);
+
+        if (assetResponse.getKnownLocationsCount() > 0)
+        {
+            super.knownLocations = new ConnectedLocations(serviceName,
+                                                          remoteServerName,
+                                                          userId,
+                                                          omasServerURL,
+                                                          assetGUID,
+                                                          assetResponse.getKnownLocationsCount(),
+                                                          MAX_CACHE_SIZE,
+                                                          restClient);
         }
 
         super.lineage = new ConnectedAssetLineage(serviceName,
@@ -389,31 +378,29 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                   userId,
                                                   omasServerURL,
                                                   assetGUID,
-                                                  this,
                                                   MAX_CACHE_SIZE,
                                                   restClient);
 
         if (assetResponse.getRelatedAssetCount() > 0)
         {
-            super.relatedAssets = new ConnectedAssetRelatedAssets(serviceName,
-                                                                  remoteServerName,
-                                                                  userId,
-                                                                  omasServerURL,
-                                                                  assetGUID,
-                                                                  this,
-                                                                  assetResponse.getRelatedAssetCount(),
-                                                                  MAX_CACHE_SIZE,
-                                                                  restClient);
+            super.relatedAssets = new ConnectedRelatedAssets(serviceName,
+                                                             remoteServerName,
+                                                             userId,
+                                                             omasServerURL,
+                                                             assetGUID,
+                                                             assetResponse.getRelatedAssetCount(),
+                                                             MAX_CACHE_SIZE,
+                                                             restClient);
         }
 
         if (assetResponse.getSchemaType() != null)
         {
-            super.schema = this.getAssetSchemaType(serviceName,
-                                                   remoteServerName,
-                                                   omasServerURL,
-                                                   userId,
-                                                   assetResponse.getSchemaType(),
-                                                   restClient);
+            super.schema = this.getSchemaType(serviceName,
+                                              remoteServerName,
+                                              omasServerURL,
+                                              userId,
+                                              assetResponse.getSchemaType(),
+                                              restClient);
         }
     }
 
@@ -549,12 +536,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
      * @return subtype of AssetSchemaType
      */
-    private AssetSchemaType    getAssetSchemaType(String     serviceName,
-                                                  String     remoteServerName,
-                                                  String     omasServerURL,
-                                                  String     userId,
-                                                  SchemaType bean,
-                                                  OCFRESTClient restClient)
+    private SchemaType getSchemaType(String     serviceName,
+                                     String     remoteServerName,
+                                     String     omasServerURL,
+                                     String     userId,
+                                     SchemaType bean,
+                                     OCFRESTClient restClient)
     {
         if (bean == null)
         {
@@ -562,18 +549,17 @@ public class ConnectedAssetUniverse extends AssetUniverse
         }
         else if (bean instanceof ComplexSchemaType)
         {
-            return new ConnectedAssetComplexSchemaType(serviceName,
-                                                       remoteServerName,
-                                                       omasServerURL,
-                                                       userId,
-                                                       this,
-                                                       MAX_CACHE_SIZE,
-                                                       (ComplexSchemaType)bean,
-                                                       restClient);
+            return new ConnectedNestedSchemaType((ComplexSchemaType)bean,
+                                                 serviceName,
+                                                 remoteServerName,
+                                                 omasServerURL,
+                                                 userId,
+                                                 MAX_CACHE_SIZE,
+                                                 restClient);
         }
         else
         {
-            return AssetSchemaType.createAssetSchemaType(this, bean);
+            return bean;
         }
     }
 }

@@ -258,11 +258,7 @@ public class RexViewRESTServices {
             /*
              * Attempt to retrieve the entity
              */
-            Long asOfTime = requestBody.getAsOfTime();
-            Date asOfTimeDate = null;
-            if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.longValue());
-            }
+
 
             try {
 
@@ -273,6 +269,18 @@ public class RexViewRESTServices {
                                                       className,
                                                       methodName);
                 } else {
+                    long asOfTime = requestBody.getAsOfTime();
+                    Date asOfTimeDate = null;
+                    if (asOfTime != 0) {
+                        asOfTimeDate = new Date(asOfTime);
+                        if (asOfTimeDate.after(new Date())) {
+                            // we do not support future dates
+                            throw new RexViewServiceException(RexViewErrorCode.INVALID_AS_OF_DATETIME.getMessageDefinition(methodName),
+                                                              className,
+                                                              methodName);
+                        }
+                    }
+
                     response.setExpandedEntityDetail(handler.getEntity(userId,
                                                                        requestBody.getServerName(),
                                                                        requestBody.getPlatformName(),
@@ -364,26 +372,39 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Long asOfTime = requestBody.getAsOfTime();
-            Date asOfTimeDate = null;
-            if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.longValue());
-            }
+
 
             /*
              * Attempt to retrieve the relationship
              */
             try
             {
+                if (handler == null) {
 
-                response.setExpandedRelationship(handler.getRelationship(userId,
-                                                                         requestBody.getServerName(),
-                                                                         requestBody.getPlatformName(),
-                                                                         requestBody.getEnterpriseOption(),
-                                                                         requestBody.getRelationshipGUID(),
-                                                                         asOfTimeDate,
-                                                                         methodName));
+                    throw new RexViewServiceException(RexViewErrorCode.HANDLER_INVALID.getMessageDefinition(methodName),
+                                                      className,
+                                                      methodName);
+                } else {
+                    long asOfTime = requestBody.getAsOfTime();
+                    Date asOfTimeDate = null;
+                    if (asOfTime != 0) {
+                        asOfTimeDate = new Date(asOfTime);
+                        if (asOfTimeDate.after(new Date())) {
+                            // we do not support future dates
+                            throw new RexViewServiceException(RexViewErrorCode.INVALID_AS_OF_DATETIME.getMessageDefinition(methodName),
+                                                              className,
+                                                              methodName);
+                        }
+                    }
 
+                    response.setExpandedRelationship(handler.getRelationship(userId,
+                                                                             requestBody.getServerName(),
+                                                                             requestBody.getPlatformName(),
+                                                                             requestBody.getEnterpriseOption(),
+                                                                             requestBody.getRelationshipGUID(),
+                                                                             asOfTimeDate,
+                                                                             methodName));
+                }
             }
             catch (RexViewServiceException exception)
             {
@@ -467,29 +488,41 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Long asOfTime =requestBody.getAsOfTime();
-            Date asOfTimeDate = null;
-            if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.longValue());
-            }
+
             try
             {
+                if (handler == null) {
 
-                response.setEntities(handler.findEntities(userId,
-                                                          requestBody.getServerName(),
-                                                          requestBody.getPlatformName(),
-                                                          requestBody.getEnterpriseOption(),
-                                                          requestBody.getSearchText(),
-                                                          requestBody.getTypeName(),
-                                                          requestBody.getClassificationNames(),
-                                                          asOfTimeDate,
-                                                          methodName));
+                    throw new RexViewServiceException(RexViewErrorCode.HANDLER_INVALID.getMessageDefinition(methodName),
+                                                      className,
+                                                      methodName);
+                } else {
+                    long asOfTime = requestBody.getAsOfTime();
+                    Date asOfTimeDate = null;
+                    if (asOfTime != 0) {
+                        asOfTimeDate = new Date(asOfTime);
+                        if (asOfTimeDate.after(new Date())) {
+                            // we do not support future dates
+                            throw new RexViewServiceException(RexViewErrorCode.INVALID_AS_OF_DATETIME.getMessageDefinition(methodName),
+                                                              className,
+                                                              methodName);
+                        }
+                    }
+                    response.setEntities(handler.findEntities(userId,
+                                                              requestBody.getServerName(),
+                                                              requestBody.getPlatformName(),
+                                                              requestBody.getEnterpriseOption(),
+                                                              requestBody.getSearchText(),
+                                                              requestBody.getTypeName(),
+                                                              requestBody.getClassificationNames(),
+                                                              asOfTimeDate,
+                                                              methodName));
 
-                response.setSearchCategory("Entity");
-                response.setSearchText(requestBody.getSearchText());
-                response.setServerName(requestBody.getServerName());
+                    response.setSearchCategory("Entity");
+                    response.setSearchText(requestBody.getSearchText());
+                    response.setServerName(requestBody.getServerName());
 
-
+                }
             }
             catch (RexViewServiceException exception)
             {
@@ -574,31 +607,42 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Long asOfTime =requestBody.getAsOfTime();
-            Date asOfTimeDate = null;
-            if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.longValue());
-            }
 
             try
             {
+                if (handler == null) {
 
-                Map<String, RexRelationshipAndEntitiesDigest> superDigests = handler.findRelationships(userId,
-                                                                                                       requestBody.getServerName(),
-                                                                                                       requestBody.getPlatformName(),
-                                                                                                       requestBody.getEnterpriseOption(),
-                                                                                                       requestBody.getSearchText(),
-                                                                                                       requestBody.getTypeName(),
-                                                                                                       asOfTimeDate,
-                                                                                                       methodName);
+                    throw new RexViewServiceException(RexViewErrorCode.HANDLER_INVALID.getMessageDefinition(methodName),
+                                                      className,
+                                                      methodName);
+                } else {
+                    long asOfTime = requestBody.getAsOfTime();
+                    Date asOfTimeDate = null;
+                    if (asOfTime != 0) {
+                        asOfTimeDate = new Date(asOfTime);
+                        if (asOfTimeDate.after(new Date())) {
+                            // we do not support future dates
+                            throw new RexViewServiceException(RexViewErrorCode.INVALID_AS_OF_DATETIME.getMessageDefinition(methodName),
+                                                              className,
+                                                              methodName);
+                        }
+                    }
+                    Map<String, RexRelationshipAndEntitiesDigest> superDigests = handler.findRelationships(userId,
+                                                                                                           requestBody.getServerName(),
+                                                                                                           requestBody.getPlatformName(),
+                                                                                                           requestBody.getEnterpriseOption(),
+                                                                                                           requestBody.getSearchText(),
+                                                                                                           requestBody.getTypeName(),
+                                                                                                           asOfTimeDate,
+                                                                                                           methodName);
 
-                response.setRelationships(superDigests);
+                    response.setRelationships(superDigests);
 
 
-                response.setSearchCategory("Relationship");
-                response.setSearchText(requestBody.getSearchText());
-                response.setServerName(requestBody.getServerName());
-
+                    response.setSearchCategory("Relationship");
+                    response.setSearchText(requestBody.getSearchText());
+                    response.setServerName(requestBody.getServerName());
+                }
             }
             catch (RexViewServiceException exception)
             {

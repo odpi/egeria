@@ -110,6 +110,7 @@ public class OMAGServerConfigurationClient
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void clearOMAGServerConfig() throws OMAGNotAuthorizedException,
                                                OMAGInvalidParameterException,
@@ -624,6 +625,8 @@ public class OMAGServerConfigurationClient
 
     /**
      * Set up all audit log destinations for this server.  Any existing definitions are overwritten
+     *
+     * @param auditLogDestinations list of connections
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.

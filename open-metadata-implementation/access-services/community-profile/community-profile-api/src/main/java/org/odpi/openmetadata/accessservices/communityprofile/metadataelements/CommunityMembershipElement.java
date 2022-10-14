@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Objects;
 

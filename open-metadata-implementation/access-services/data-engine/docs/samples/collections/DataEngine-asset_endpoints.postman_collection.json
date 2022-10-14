@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ab10dfa2-2450-4249-b2ab-8e3d637df92f",
+		"_postman_id": "8099fb01-9085-42ff-8560-049eb7c9a8d4",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -159,7 +159,7 @@
 			"response": []
 		},
 		{
-			"name": "1.3 Create Database - all props, only database",
+			"name": "7.2 Create Incomplete Database - all props, only database",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -2615,7 +2615,7 @@
 			"response": []
 		},
 		{
-			"name": "7.1 Create incomplete Database Schema - required props only",
+			"name": "7.1 Create incomplete Database - required props only",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -2628,7 +2628,77 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n        \"displayName\": \"DB2INST1-basic-incomplete\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"incomplete\": true\n}"
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\",\n        \"networkAddress\": \"localhost\",\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"databases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.2 Create Incomplete Database - all props",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\":{\n        \t\"prop\":\"oherOrigin\"\n        },\n         \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"databases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.3 Create incomplete Database Schema - required props only",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n        \"displayName\": \"DB2INST1-basic-incomplete\",\n        \"incomplete\": true\n    },\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
@@ -2650,7 +2720,7 @@
 			"response": []
 		},
 		{
-			"name": "7.2 Create incomplete Database Schema - all props",
+			"name": "7.4 Create incomplete Database Schema - all props",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -2663,7 +2733,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props--basic-incomplete\",\n        \"displayName\": \"DB2INST1-all-props-incomplete\",\n        \"description\": \"DB2INST1 database schema incomplete description\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\": {\n            \"prop\": \"otherOrigin\"\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"incomplete\": true\n}"
+					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props--basic-incomplete\",\n        \"displayName\": \"DB2INST1-all-props-incomplete\",\n        \"description\": \"DB2INST1 database schema incomplete description\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\": {\n            \"prop\": \"otherOrigin\"\n        },\n        \"incomplete\": true\n    },\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
@@ -2685,7 +2755,7 @@
 			"response": []
 		},
 		{
-			"name": "7.3 Create incomplete Relational Table - required props only",
+			"name": "7.5 Create incomplete Relational Table - required props only",
 			"protocolProfileBehavior": {
 				"followRedirects": false
 			},
@@ -2701,7 +2771,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete\",\n        \"displayName\": \"EMPLNAME-basic\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"dataType\": \"STRING\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                  \"dataType\": \"STRING\"\n            }\n        ]\n    },\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n   \"incomplete\": true\n}"
+					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete\",\n        \"displayName\": \"EMPLNAME-basic\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"dataType\": \"STRING\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"dataType\": \"STRING\"\n            }\n        ],\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
@@ -2723,7 +2793,7 @@
 			"response": []
 		},
 		{
-			"name": "7.4 Create incomplete Relational Table - all properties",
+			"name": "7.6 Create incomplete Relational Table - all properties",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -2736,7 +2806,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete\",\n        \"displayName\": \"EMPLNAME-all-props-incomplete\",\n        \"description\": \"EMPLNAME-all-props-incomplete description\",\n        \"isDeprecated\": false,\n        \"aliases\": [\n            \"EMPLNAME2\"\n        ],\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"ID\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"id column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 2,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"First\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"first column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props-incomplete::(database_schema)=DB2INST1::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 3,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Last\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"surname column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 4,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Location\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"locid column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            }\n        ]\n    },\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n   \"incomplete\": true\n}"
+					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete\",\n        \"displayName\": \"EMPLNAME-all-props-incomplete\",\n        \"description\": \"EMPLNAME-all-props-incomplete description\",\n        \"isDeprecated\": false,\n        \"aliases\": [\n            \"EMPLNAME2\"\n        ],\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"ID\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"id column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 2,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"First\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"first column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props-incomplete::(database_schema)=DB2INST1::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 3,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Last\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"surname column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 4,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Location\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"locid column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            }\n        ],\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
@@ -2758,13 +2828,13 @@
 			"response": []
 		},
 		{
-			"name": "7.5 Create incomplete DataFile - required props only",
+			"name": "7.7 Create incomplete DataFile - required props only",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE-incomplete.DAT\",\n        \"displayName\": \"dataFile-incomplete.dat\",\n        \"pathName\": \"/home/files/dataFile-incomplete.dat\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    },\n    \"incomplete\": true\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE-incomplete.DAT\",\n        \"displayName\": \"dataFile-incomplete.dat\",\n        \"pathName\": \"/home/files/dataFile-incomplete.dat\",\n        \"networkAddress\": \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ],\n        \"incomplete\": true\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2791,13 +2861,13 @@
 			"response": []
 		},
 		{
-			"name": "7.6 Create incomplete DataFile - all properties",
+			"name": "7.8 Create incomplete DataFile - all properties",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT\",\n        \"displayName\": \"dataFile2-incomplete.dat\",\n        \"pathName\": \"/home/files/dataFile2-incomplete.dat\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ]\n    },\n    \"incomplete\": true\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT\",\n        \"displayName\": \"dataFile2-incomplete.dat\",\n        \"pathName\": \"/home/files/dataFile2-incomplete.dat\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\": \"ftp\",\n        \"networkAddress\": \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ],\n        \"incomplete\": true\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2824,13 +2894,13 @@
 			"response": []
 		},
 		{
-			"name": "7.7 Create incomplete CSVFile - required props only",
+			"name": "7.9 Create incomplete CSVFile - required props only",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV\",\n        \"displayName\": \"csvFile-incomplete.csv\",\n        \"pathName\": \"/home/files/csvFile-incomplete.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    },\n    \"incomplete\": true\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV\",\n        \"displayName\": \"csvFile-incomplete.csv\",\n        \"pathName\": \"/home/files/csvFile-incomplete.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ],\n         \"incomplete\": true\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2857,13 +2927,13 @@
 			"response": []
 		},
 		{
-			"name": "7.8  Create incomplete CSVFile - all properties",
+			"name": "7.10  Create incomplete CSVFile - all properties",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV\",\n        \"displayName\": \"csvFile2-incomplete.csv\",\n        \"pathName\": \"/home/files/csvFile2-incomplete.csv\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ]\n    },\n    \"incomplete\": true\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV\",\n        \"displayName\": \"csvFile2-incomplete.csv\",\n        \"pathName\": \"/home/files/csvFile2-incomplete.csv\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\": \"ftp\",\n        \"networkAddress\": \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ],\n        \"incomplete\": true\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3148,6 +3218,66 @@
 						"users",
 						"{{user-id}}",
 						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.1 Upsert Processing State Classification",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"processingState\": {\n        \"syncDatesByKey\" : {\n            \"{{criticalElement}}\" : \"{{criticalElementLastSyncTimestampLong}}\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processing-state",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processing-state"
 					]
 				}
 			},

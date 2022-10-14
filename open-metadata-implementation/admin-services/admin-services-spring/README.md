@@ -6,7 +6,7 @@
 The admin services with Spring module uses Spring to implement a REST API
 for the admin services server.
 
-The operation of the administration services is described [here](../docs/user).
+The operation of the administration services is described [here](https://egeria-project.org/guides/admin).
 
 
 

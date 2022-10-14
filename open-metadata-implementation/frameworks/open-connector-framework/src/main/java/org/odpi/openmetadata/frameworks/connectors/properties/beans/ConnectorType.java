@@ -127,19 +127,13 @@ public class ConnectorType extends Referenceable
         final String        elementTypeName                 = "ConnectorType";
         final long          elementTypeVersion              = 1;
         final String        elementTypeDescription          = "A set of properties describing a type of connector.";
-        final String        elementAccessServiceURL         = null;
-        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
-        final String        elementHomeMetadataCollectionId = null;
 
         ElementType elementType = new ElementType();
 
-        elementType.setElementTypeId(elementTypeId);
-        elementType.setElementTypeName(elementTypeName);
-        elementType.setElementTypeVersion(elementTypeVersion);
-        elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementSourceServer(elementAccessServiceURL);
-        elementType.setElementOrigin(elementOrigin);
-        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setTypeId(elementTypeId);
+        elementType.setTypeName(elementTypeName);
+        elementType.setTypeVersion(elementTypeVersion);
+        elementType.setTypeDescription(elementTypeDescription);
 
         return elementType;
     }
@@ -582,15 +576,6 @@ public class ConnectorType extends Referenceable
                        ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", securityTags=" + getSecurityTags() +
-                       ", searchKeywords=" + getSearchKeywords() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", latestChangeDetails=" + getLatestChangeDetails() +
-                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
                        ", URL='" + getURL() + '\'' +

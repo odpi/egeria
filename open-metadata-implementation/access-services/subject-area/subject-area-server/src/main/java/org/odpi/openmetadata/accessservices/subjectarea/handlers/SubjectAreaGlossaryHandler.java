@@ -114,31 +114,42 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                     null,
                                                                     OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                                    null,
-                                                                    null,
                                                                     builder,
+                                                                    null,
                                                                     methodName);
 
                 // set classifications if required
                 if (suppliedGlossary.getNodeType() == NodeType.Taxonomy || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
 
                     genericHandler.setClassificationInRepository(userId,
+                                                                 null,
+                                                                 null,
                                                                  guid,
                                                                  "guid",
                                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
                                                                  null,  // TODO properties
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 null,
                                                                  methodName);
                 }
                 if (suppliedGlossary.getNodeType() == NodeType.CanonicalGlossary || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
                     genericHandler.setClassificationInRepository(userId,
+                                                                 null,
+                                                                 null,
                                                                  guid,
                                                                  "guid",
                                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
                                                                  null,  // TODO properties
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 null,
                                                                  methodName);
                 }
 
@@ -346,6 +357,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             if (genericHandler.isBeanIsolated(userId,
                                               guid,
                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                              false,
+                                              false,
+                                              null,
                                               methodName)) {
 
                 issueDelete = true;
@@ -569,6 +583,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                !exactValue,
                                                                                ignoreCase,
                                                                                pageSize,
+                                                                               false,
                                                                                false,
                                                                                null,
                                                                                methodName);

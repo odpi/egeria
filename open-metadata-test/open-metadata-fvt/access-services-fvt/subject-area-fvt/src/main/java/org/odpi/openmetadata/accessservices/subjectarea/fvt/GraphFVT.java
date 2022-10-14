@@ -97,7 +97,7 @@ public class GraphFVT
             System.out.println("GraphFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }

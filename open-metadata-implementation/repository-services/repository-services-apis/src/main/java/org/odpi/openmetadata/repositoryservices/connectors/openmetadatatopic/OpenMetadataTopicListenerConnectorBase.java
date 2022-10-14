@@ -88,7 +88,7 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
         super.disconnect();
 
         /*
-         * Each of the event bus connectors need to be disconnected so they stop receiving inbound events.
+         * Each of the event bus connectors need to be disconnected, so they stop receiving inbound events.
          */
         for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {

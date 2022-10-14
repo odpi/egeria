@@ -206,20 +206,23 @@ public class ValidValue extends Referenceable
     public String toString()
     {
         return "ValidValue{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usage='" + usage + '\'' +
-                ", scope='" + scope + '\'' +
-                ", preferredValue='" + preferredValue + '\'' +
-                ", isDeprecated='" + isDeprecated + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties + '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", preferredValue='" + preferredValue + '\'' +
+                       ", isDeprecated=" + isDeprecated +
+                       '}';
     }
 
 
@@ -255,7 +258,7 @@ public class ValidValue extends Referenceable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

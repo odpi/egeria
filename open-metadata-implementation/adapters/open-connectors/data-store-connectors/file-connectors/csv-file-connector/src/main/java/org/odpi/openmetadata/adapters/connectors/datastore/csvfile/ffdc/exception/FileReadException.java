@@ -70,7 +70,7 @@ public class FileReadException extends ConnectorCheckedException
     public FileReadException(ExceptionMessageDefinition messageDefinition,
                              String                     className,
                              String                     actionDescription,
-                             Throwable                  caughtError,
+                             Exception                  caughtError,
                              String                     fileName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -91,7 +91,7 @@ public class FileReadException extends ConnectorCheckedException
     public FileReadException(ExceptionMessageDefinition messageDefinition,
                              String                     className,
                              String                     actionDescription,
-                             Throwable                  caughtError,
+                             Exception                  caughtError,
                              String                     fileName,
                              Map<String, Object>        relatedProperties)
     {

@@ -36,7 +36,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -76,7 +76,9 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
 
                     fileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     fileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    fileProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileProperties.setName(this.removeName(instanceProperties));
+                    fileProperties.setDisplayName(fileProperties.getName());
+                    fileProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     fileProperties.setDescription(this.removeDescription(instanceProperties));
                     fileProperties.setPathName(this.removePathName(instanceProperties));
                     fileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
@@ -142,7 +144,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

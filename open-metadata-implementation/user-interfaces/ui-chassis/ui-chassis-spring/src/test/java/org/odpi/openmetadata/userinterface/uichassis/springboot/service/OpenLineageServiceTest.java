@@ -19,6 +19,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
@@ -26,9 +27,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -69,12 +72,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
         checkResponse(ultimateSource);
     }
@@ -82,12 +81,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
         checkResponse(response);
     }
@@ -96,12 +91,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getUltimateDestination(USER_ID, guid, true);
         checkResponse(response);
     }
@@ -109,16 +100,29 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 
+    @Test
+    @DisplayName("Search")
+    public void search() throws PropertyServerException, InvalidParameterException, OpenLineageException {
+        LineageSearchRequest searchRequest = new LineageSearchRequest();
+        List<LineageVertex> lineageVertices = new ArrayList<>(lineageVerticesAndEdges.getLineageVertices());
+        when(openLineageClient.search(USER_ID, searchRequest))
+                .thenReturn(lineageVertices);
+        List<LineageVertex> response = openLineageService.search(USER_ID, searchRequest);
+        checkSearchResponse(response);
+    }
+
+    private void checkSearchResponse(List<LineageVertex> nodes) {
+        assertNotNull("List of nodes is null", nodes);
+        assertEquals("Response should contain 4 nodes", 4, nodes.size());
+        List<String> nodesIds = nodes.stream().map(LineageVertex::getNodeID).collect(Collectors.toList());
+        assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
+    }
 
     @SuppressWarnings("unchecked")
     private void checkResponse(Graph responseGraph) {
@@ -152,34 +156,35 @@ public class OpenLineageServiceTest {
                     .add(new LineageVertex("n"+i , "node"));
         }
 
+        AtomicInteger counter = new AtomicInteger(0);
         Set<LineageEdge> edges = lineageVerticesAndEdges.getLineageEdges();
-        edges.add( new LineageEdge("edge","n1","n2"));
-        edges.add( new LineageEdge("edge","n2","n3"));
-        edges.add( new LineageEdge("edge","n3","n7"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n1","n2"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n2","n3"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n3","n7"));
 
-        edges.add( new LineageEdge("edge","n4","n5"));
-        edges.add( new LineageEdge("edge","n5","n6"));
-        edges.add( new LineageEdge("edge","n6","n7"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n4","n5"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n5","n6"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n6","n7"));
 
-        edges.add( new LineageEdge("edge","n8","n9"));
-        edges.add( new LineageEdge("edge","n9","n10"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n8","n9"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n9","n10"));
 
-        edges.add( new LineageEdge("edge","n10","n11"));
-        edges.add( new LineageEdge("edge","n7","n11"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n10","n11"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n7","n11"));
 
-        edges.add( new LineageEdge("edge","n11","n12"));
-        edges.add( new LineageEdge("edge","n11","n19"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n11","n12"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n11","n19"));
 
-        edges.add( new LineageEdge("edge","n12","n13"));
-        edges.add( new LineageEdge("edge","n13","n14"));
-        edges.add( new LineageEdge("edge","n14","n15"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n12","n13"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n13","n14"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n14","n15"));
 
-        edges.add( new LineageEdge("edge","n12","n16"));
-        edges.add( new LineageEdge("edge","n16","n17"));
-        edges.add( new LineageEdge("edge","n17","n18"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n12","n16"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n16","n17"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n17","n18"));
 
-        edges.add( new LineageEdge("edge","n19","n20"));
-        edges.add( new LineageEdge("edge","n20","n21"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n19","n20"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n20","n21"));
 
     }
 

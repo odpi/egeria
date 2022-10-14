@@ -95,7 +95,7 @@ public class ReferenceValue extends PropertyBase
 
 
     /**
-     * Set up the the id of the steward responsible for the mapping.
+     * Set up the id of the steward responsible for the mapping.
      *
      * @param steward String id
      */

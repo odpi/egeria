@@ -39,11 +39,11 @@ public enum RetentionBasis implements Serializable
     public static final String ENUM_TYPE_GUID  = "de79bf78-ecb0-4fd0-978f-ecc2cb4ff6c7";
     public static final String ENUM_TYPE_NAME  = "RetentionBasis";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

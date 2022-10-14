@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.ArrayList;
 import java.util.Arrays;

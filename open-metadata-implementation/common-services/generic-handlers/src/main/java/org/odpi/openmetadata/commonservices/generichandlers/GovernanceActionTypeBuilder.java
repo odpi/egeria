@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.List;
 import java.util.Map;
@@ -15,10 +14,10 @@ import java.util.Map;
  */
 public class GovernanceActionTypeBuilder extends ReferenceableBuilder
 {
-    private int          domainIdentifier;
-    private String       displayName;
-    private String       description;
-    private List<String> supportedGuards;
+    private final int          domainIdentifier;
+    private final String       displayName;
+    private final String       description;
+    private final List<String> supportedGuards;
 
     /**
      * Create constructor

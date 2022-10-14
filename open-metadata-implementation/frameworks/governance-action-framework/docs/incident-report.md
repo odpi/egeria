@@ -17,9 +17,9 @@ Incident reports are typically created by
 
 ## Open metadata types
 
-[0470 Incident Reporting](../../../../open-metadata-publication/website/open-metadata-types/0470-Incident-Reporting.md)
+[0470 Incident Reporting](https://egeria-project.org/types/4/0470-Incident-Reporting)
 shows the structure of the incident report.
-It is a [Referenceable](../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)
+It is a [Referenceable](https://egeria-project.org/types/0/0010-Base-Model)
 so it can support comments and linked classifications and tags.
  
 

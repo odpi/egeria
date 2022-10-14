@@ -5,10 +5,8 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.RatingsResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetRating;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetRatings;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.Ratings;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 
 import java.util.ArrayList;
@@ -17,11 +15,11 @@ import java.util.List;
 
 /**
  * ConnectedAssetRatings provides the open metadata concrete implementation of the
- * Open Connector Framework (OCF) AssetRatings abstract class.
+ * Open Connector Framework (OCF) Ratings abstract class.
  * Its role is to query the property servers (metadata repository cohort) to extract ratings
  * related to the connected asset.
  */
-public class ConnectedAssetRatings extends AssetRatings
+public class ConnectedAssetRatings extends Ratings
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +28,6 @@ public class ConnectedAssetRatings extends AssetRatings
     private String                 userId;
     private String                 omasServerURL;
     private String                 assetGUID;
-    private ConnectedAssetUniverse connectedAsset;
     private OCFRESTClient          restClient;
 
 
@@ -43,7 +40,6 @@ public class ConnectedAssetRatings extends AssetRatings
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
      * @param assetGUID unique identifier of the asset.
-     * @param parentAsset descriptor of parent asset.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
@@ -54,19 +50,17 @@ public class ConnectedAssetRatings extends AssetRatings
                           String                 userId,
                           String                 omasServerURL,
                           String                 assetGUID,
-                          ConnectedAssetUniverse parentAsset,
                           int                    totalElementCount,
                           int                    maxCacheSize,
                           OCFRESTClient          restClient)
     {
-        super(parentAsset, totalElementCount, maxCacheSize);
+        super(totalElementCount, maxCacheSize);
 
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
-        this.connectedAsset  = parentAsset;
         this.restClient      = restClient;
     }
 
@@ -74,12 +68,11 @@ public class ConnectedAssetRatings extends AssetRatings
     /**
      * Copy/clone constructor.  Used to reset iterator element pointer to 0;
      *
-     * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetRatings(ConnectedAssetUniverse parentAsset, ConnectedAssetRatings template)
+    private ConnectedAssetRatings(ConnectedAssetRatings template)
     {
-        super(parentAsset, template);
+        super(template);
 
         if (template != null)
         {
@@ -88,7 +81,6 @@ public class ConnectedAssetRatings extends AssetRatings
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
             this.assetGUID      = template.assetGUID;
-            this.connectedAsset = parentAsset;
             this.restClient     = template.restClient;
         }
     }
@@ -97,29 +89,15 @@ public class ConnectedAssetRatings extends AssetRatings
     /**
      * Clones this iterator.
      *
-     * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
     @Override
-    protected  AssetRatings cloneIterator(AssetDescriptor parentAsset)
+    protected Ratings cloneIterator()
     {
-        return new ConnectedAssetRatings(connectedAsset, this);
+        return new ConnectedAssetRatings(this);
     }
 
 
-
-    /**
-     * Method implemented by a subclass that ensures the cloning process is a deep clone.
-     *
-     * @param parentAsset descriptor of parent asset
-     * @param template object to clone
-     * @return new cloned object.
-     */
-    @Override
-    protected  AssetPropertyBase cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase template)
-    {
-        return new AssetRating(parentAsset, (AssetRating)template);
-    }
 
 
     /**
@@ -131,10 +109,10 @@ public class ConnectedAssetRatings extends AssetRatings
      * @throws PropertyServerException there is a problem retrieving elements from the property (metadata) server.
      */
     @Override
-    protected  List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
-                                                     int  maximumSize) throws PropertyServerException
+    protected  List<ElementBase> getCachedList(int  cacheStartPointer,
+                                               int  maximumSize) throws PropertyServerException
     {
-        final String   methodName = "AssetRatings.getCachedList";
+        final String   methodName = "Ratings.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/ratings?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
@@ -161,13 +139,13 @@ public class ConnectedAssetRatings extends AssetRatings
             }
             else
             {
-                List<AssetPropertyBase>   resultList = new ArrayList<>();
+                List<ElementBase>   resultList = new ArrayList<>();
 
                 for (Rating  bean : beans)
                 {
                     if (bean != null)
                     {
-                        resultList.add(new AssetRating(connectedAsset, bean));
+                        resultList.add(new Rating(bean));
                     }
                 }
 

@@ -50,7 +50,7 @@ import java.util.Map;
  * <p>
  *     OMRSMetadataInstanceStore is the common interface for working with the contents of a metadata repository.
  *     Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
- *     Relationships).  OMRSMetadataCollectionBase provides empty implementation of the the abstract methods of
+ *     Relationships).  OMRSMetadataCollectionBase provides empty implementation of the abstract methods of
  *     OMRSMetadataInstanceStore.
  *
  *     The methods on OMRSMetadataInstanceStore are in the following major groups:
@@ -96,7 +96,7 @@ public class OMRSRepositoryRESTServices
 {
     private static final String                                serviceName     = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
     private static final Logger                                log             = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
-    private static       OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final String                                anonymousUserId = "anon"; // TODO add to config
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();
@@ -432,7 +432,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId     unique identifier for requesting user.
@@ -481,7 +481,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId     unique identifier for requesting user.
@@ -4191,7 +4191,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -4279,7 +4279,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -7101,7 +7101,7 @@ public class OMRSRepositoryRESTServices
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository or
+     * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -7164,7 +7164,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param requestBody the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository or
+     * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -7227,7 +7227,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -7314,7 +7314,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -7400,7 +7400,7 @@ public class OMRSRepositoryRESTServices
     }
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *

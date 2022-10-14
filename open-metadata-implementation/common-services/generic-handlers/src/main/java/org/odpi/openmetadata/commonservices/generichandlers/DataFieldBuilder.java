@@ -15,13 +15,13 @@ import java.util.Map;
  */
 class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private String              dataFieldName;
-    private String              dataFieldType;
-    private String              dataFieldDescription;
-    private List<String>        dataFieldAliases;
-    private int                 dataFieldSortOrder;
-    private String              defaultValue;
-    private Map<String, String> additionalProperties;
+    private final String              dataFieldName;
+    private final String              dataFieldType;
+    private final String              dataFieldDescription;
+    private final List<String>        dataFieldAliases;
+    private final int                 dataFieldSortOrder;
+    private final String              defaultValue;
+    private final Map<String, String> additionalProperties;
 
     /**
      * Constructor supporting all properties.
@@ -85,41 +85,29 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (dataFieldName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DATA_FIELD_NAME_PROPERTY_NAME,
-                                                                      dataFieldName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DATA_FIELD_NAME_PROPERTY_NAME,
+                                                                  dataFieldName,
+                                                                  methodName);
 
-        if (dataFieldType != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_PROPERTY_NAME,
-                                                                      dataFieldType,
-                                                                      methodName);
-        }
+       properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                 properties,
+                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_PROPERTY_NAME,
+                                                                 dataFieldType,
+                                                                 methodName);
 
-        if (dataFieldDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DATA_FIELD_DESCRIPTION_PROPERTY_NAME,
-                                                                      dataFieldDescription,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DATA_FIELD_DESCRIPTION_PROPERTY_NAME,
+                                                                  dataFieldDescription,
+                                                                  methodName);
 
-        if (dataFieldAliases != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.DATA_FIELD_ALIASES_PROPERTY_NAME,
-                                                                           dataFieldAliases,
-                                                                           methodName);
-        }
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.DATA_FIELD_ALIASES_PROPERTY_NAME,
+                                                                       dataFieldAliases,
+                                                                       methodName);
 
         try
         {
@@ -136,23 +124,16 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME);
         }
 
-        if (defaultValue != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
                                                                       defaultValue,
                                                                       methodName);
-        }
-
-        if (additionalProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                          properties,
                                                                          OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                                                                          additionalProperties,
                                                                          methodName);
-        }
 
         return properties;
     }

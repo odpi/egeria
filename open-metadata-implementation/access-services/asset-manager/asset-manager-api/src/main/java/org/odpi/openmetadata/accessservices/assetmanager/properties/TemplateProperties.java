@@ -24,10 +24,13 @@ public class TemplateProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private String qualifiedName  = null;
-    private String displayName    = null;
-    private String description    = null;
-    private String networkAddress = null;
+    private String qualifiedName     = null;
+    private String displayName       = null;
+    private String versionIdentifier = null;
+    private String description       = null;
+    private String pathName          = null;
+    private String networkAddress    = null;
+
 
     /**
      * Default constructor
@@ -47,10 +50,12 @@ public class TemplateProperties implements Serializable
     {
         if (template != null)
         {
-            qualifiedName  = template.getQualifiedName();
-            displayName    = template.getDisplayName();
-            description    = template.getDescription();
-            networkAddress = template.getNetworkAddress();
+            qualifiedName     = template.getQualifiedName();
+            displayName       = template.getDisplayName();
+            versionIdentifier = template.getVersionIdentifier();
+            description       = template.getDescription();
+            pathName          = template.getPathName();
+            networkAddress    = template.getNetworkAddress();
         }
     }
 
@@ -102,6 +107,28 @@ public class TemplateProperties implements Serializable
 
 
     /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored description property for the metadata entity.
      * If no description is provided then null is returned.
      *
@@ -125,13 +152,35 @@ public class TemplateProperties implements Serializable
 
 
     /**
+     * Return the path name to the physical resource - used when creating new data store assets such as databases, files and folders.
+     *
+     * @return string name
+     */
+    public String getPathName()
+    {
+        return pathName;
+    }
+
+
+    /**
+     * Set up the path name to the physical resource - used when creating new data store assets such as databases, files and folders.
+     *
+     * @param pathName string name
+     */
+    public void setPathName(String pathName)
+    {
+        this.pathName = pathName;
+    }
+
+
+    /**
      * Return the physical network address of this metadata element (if this makes sense).
      *
      * @return string name
      */
     public String getNetworkAddress()
     {
-        return networkAddress;
+        return pathName;
     }
 
 
@@ -142,7 +191,7 @@ public class TemplateProperties implements Serializable
      */
     public void setNetworkAddress(String networkAddress)
     {
-        this.networkAddress = networkAddress;
+        this.pathName = networkAddress;
     }
 
 
@@ -157,7 +206,9 @@ public class TemplateProperties implements Serializable
         return "TemplateProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", displayName='" + displayName + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", description='" + description + '\'' +
+                       ", pathName='" + pathName + '\'' +
                        ", networkAddress='" + networkAddress + '\'' +
                        '}';
     }
@@ -176,26 +227,45 @@ public class TemplateProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof TemplateProperties))
         {
             return false;
         }
+
         TemplateProperties that = (TemplateProperties) objectToCompare;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                       Objects.equals(networkAddress, that.networkAddress);
+
+        if (qualifiedName != null ? ! qualifiedName.equals(that.qualifiedName) : that.qualifiedName != null)
+        {
+            return false;
+        }
+        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        if (description != null ? ! description.equals(that.description) : that.description != null)
+        {
+            return false;
+        }
+        if (pathName != null ? ! pathName.equals(that.pathName) : that.pathName != null)
+        {
+            return false;
+        }
+        return networkAddress != null ? networkAddress.equals(that.networkAddress) : that.networkAddress == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description, networkAddress);
+        return Objects.hash(qualifiedName, displayName, versionIdentifier, description, pathName, networkAddress);
     }
 }

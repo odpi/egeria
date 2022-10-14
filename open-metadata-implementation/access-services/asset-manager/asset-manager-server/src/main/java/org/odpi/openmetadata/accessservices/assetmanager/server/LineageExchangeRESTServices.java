@@ -4,7 +4,11 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -14,17 +18,19 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 /**
  * LineageExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
  * support for processes, ports and lineage mapping.  It matches the LineageExchangeClient.
  */
 public class LineageExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(LineageExchangeRESTServices.class),
-                                                                                    instanceHandler.getServiceName());
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(LineageExchangeRESTServices.class),
+                                                                                          instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -76,6 +82,7 @@ public class LineageExchangeRESTServices
                                                        assetManagerIsHome,
                                                        requestBody.getElementProperties(),
                                                        requestBody.getProcessStatus(),
+                                                       requestBody.getEffectiveTime(),
                                                        methodName));
             }
             else
@@ -134,6 +141,7 @@ public class LineageExchangeRESTServices
                                                                    assetManagerIsHome,
                                                                    templateGUID,
                                                                    requestBody.getElementProperties(),
+                                                                   requestBody.getEffectiveTime(),
                                                                    methodName));
             }
             else
@@ -159,6 +167,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return void or
@@ -170,6 +180,8 @@ public class LineageExchangeRESTServices
                                       String             userId,
                                       String             processGUID,
                                       boolean            isMergeUpdate,
+                                      boolean            forLineage,
+                                      boolean            forDuplicateProcessing,
                                       ProcessRequestBody requestBody)
     {
         final String methodName = "updateProcess";
@@ -192,6 +204,9 @@ public class LineageExchangeRESTServices
                                       processGUID,
                                       isMergeUpdate,
                                       requestBody.getElementProperties(),
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
                                       methodName);
             }
             else
@@ -216,6 +231,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the process to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new status for the process
      *
      * @return void or
@@ -226,6 +243,8 @@ public class LineageExchangeRESTServices
     public VoidResponse updateProcessStatus(String                   serverName,
                                             String                   userId,
                                             String                   processGUID,
+                                            boolean                  forLineage,
+                                            boolean                  forDuplicateProcessing,
                                             ProcessStatusRequestBody requestBody)
     {
         final String methodName = "updateProcessStatus";
@@ -247,6 +266,9 @@ public class LineageExchangeRESTServices
                                             requestBody.getMetadataCorrelationProperties(),
                                             processGUID,
                                             requestBody.getProcessStatus(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
@@ -273,19 +295,23 @@ public class LineageExchangeRESTServices
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupProcessParent(String                            serverName,
-                                           String                            userId,
-                                           String                            parentProcessGUID,
-                                           String                            childProcessGUID,
-                                           boolean                           assetManagerIsHome,
-                                           ProcessContainmentTypeRequestBody requestBody)
+    public VoidResponse setupProcessParent(String                  serverName,
+                                           String                  userId,
+                                           String                  parentProcessGUID,
+                                           String                  childProcessGUID,
+                                           boolean                 assetManagerIsHome,
+                                           boolean                 forLineage,
+                                           boolean                 forDuplicateProcessing,
+                                           RelationshipRequestBody requestBody)
     {
         final String methodName = "setupProcessParent";
 
@@ -302,14 +328,40 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupProcessParent(userId,
-                                           requestBody.getAssetManagerGUID(),
-                                           requestBody.getAssetManagerName(),
-                                           assetManagerIsHome,
-                                           parentProcessGUID,
-                                           childProcessGUID,
-                                           requestBody.getProcessContainmentType(),
-                                           methodName);
+                if (requestBody.getProperties() instanceof ProcessContainmentProperties)
+                {
+                    ProcessContainmentProperties properties = (ProcessContainmentProperties) requestBody.getProperties();
+
+                    handler.setupProcessParent(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               assetManagerIsHome,
+                                               parentProcessGUID,
+                                               childProcessGUID,
+                                               properties.getProcessContainmentType(),
+                                               properties.getEffectiveFrom(),
+                                               properties.getEffectiveTo(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+                }
+                else
+                {
+                    handler.setupProcessParent(userId,
+                                               null,
+                                               null,
+                                               assetManagerIsHome,
+                                               parentProcessGUID,
+                                               childProcessGUID,
+                                               null,
+                                               null,
+                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+                }
             }
             else
             {
@@ -320,6 +372,11 @@ public class LineageExchangeRESTServices
                                            parentProcessGUID,
                                            childProcessGUID,
                                            null,
+                                           null,
+                                           null,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           new Date(),
                                            methodName);
             }
         }
@@ -341,18 +398,22 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearProcessParent(String                             serverName,
-                                           String                             userId,
-                                           String                             parentProcessGUID,
-                                           String                             childProcessGUID,
-                                           AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearProcessParent(String                        serverName,
+                                           String                        userId,
+                                           String                        parentProcessGUID,
+                                           String                        childProcessGUID,
+                                           boolean                       forLineage,
+                                           boolean                       forDuplicateProcessing,
+                                           EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearProcessParent";
 
@@ -374,6 +435,9 @@ public class LineageExchangeRESTServices
                                            requestBody.getAssetManagerName(),
                                            parentProcessGUID,
                                            childProcessGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody.getEffectiveTime(),
                                            methodName);
             }
             else
@@ -383,6 +447,9 @@ public class LineageExchangeRESTServices
                                            null,
                                            parentProcessGUID,
                                            childProcessGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           new Date(),
                                            methodName);
             }
         }
@@ -405,7 +472,9 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to publish
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
@@ -413,10 +482,12 @@ public class LineageExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse publishProcess(String                             serverName,
-                                       String                             userId,
-                                       String                             processGUID,
-                                       AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse publishProcess(String                        serverName,
+                                       String                        userId,
+                                       String                        processGUID,
+                                       boolean                       forLineage,
+                                       boolean                       forDuplicateProcessing,
+                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "publishProcess";
         
@@ -431,7 +502,19 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.publishProcess(userId, processGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.publishProcess(userId,
+                                       processGUID,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       requestBody.getEffectiveTime(),
+                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -452,6 +535,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return void or
@@ -460,10 +545,12 @@ public class LineageExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawProcess(String                             serverName,
-                                        String                             userId,
-                                        String                             processGUID,
-                                        AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse withdrawProcess(String                        serverName,
+                                        String                        userId,
+                                        String                        processGUID,
+                                        boolean                       forLineage,
+                                        boolean                       forDuplicateProcessing,
+                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "withdrawProcess";
 
@@ -478,7 +565,19 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.withdrawProcess(userId, processGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.withdrawProcess(userId,
+                                        processGUID,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        requestBody.getEffectiveTime(),
+                                        methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -497,6 +596,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -504,10 +605,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeProcess(String                        serverName,
-                                      String                        userId,
-                                      String                        processGUID,
-                                      MetadataCorrelationProperties requestBody)
+    public VoidResponse removeProcess(String            serverName,
+                                      String            userId,
+                                      String            processGUID,
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      UpdateRequestBody requestBody)
     {
         final String methodName = "removeProcess";
 
@@ -522,7 +625,20 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.removeProcess(userId, requestBody, processGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.removeProcess(userId,
+                                      requestBody.getMetadataCorrelationProperties(),
+                                      processGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
+                                      methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -543,6 +659,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -554,6 +672,8 @@ public class LineageExchangeRESTServices
                                                  String                  userId,
                                                  int                     startFrom,
                                                  int                     pageSize,
+                                                 boolean                 forLineage,
+                                                 boolean                 forDuplicateProcessing,
                                                  SearchStringRequestBody requestBody)
     {
         final String methodName = "findProcesses";
@@ -578,6 +698,9 @@ public class LineageExchangeRESTServices
                                                               requestBody.getSearchStringParameterName(),
                                                               startFrom,
                                                               pageSize,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              requestBody.getEffectiveTime(),
                                                               methodName));
             }
             else
@@ -603,18 +726,22 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return list of metadata elements describing the processes associated with the requested asset manager or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElementsResponse getProcessesForAssetManager(String                             serverName,
-                                                               String                             userId,
-                                                               int                                startFrom,
-                                                               int                                pageSize,
-                                                               AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementsResponse getProcessesForAssetManager(String                        serverName,
+                                                               String                        userId,
+                                                               int                           startFrom,
+                                                               int                           pageSize,
+                                                               boolean                       forLineage,
+                                                               boolean                       forDuplicateProcessing,
+                                                               EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getProcessesForAssetManager";
 
@@ -636,6 +763,9 @@ public class LineageExchangeRESTServices
                                                                             requestBody.getAssetManagerName(),
                                                                             startFrom,
                                                                             pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
             }
             else
@@ -662,6 +792,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -673,6 +805,8 @@ public class LineageExchangeRESTServices
                                                       String          userId,
                                                       int             startFrom,
                                                       int             pageSize,
+                                                      boolean         forLineage,
+                                                      boolean         forDuplicateProcessing,
                                                       NameRequestBody requestBody)
     {
         final String methodName = "getProcessesByName";
@@ -697,6 +831,9 @@ public class LineageExchangeRESTServices
                                                                    requestBody.getNameParameterName(),
                                                                    startFrom,
                                                                    pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
                                                                    methodName));
             }
             else
@@ -721,17 +858,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return requested metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElementResponse getProcessByGUID(String                             serverName,
-                                                   String                             userId,
-                                                   String                             processGUID,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementResponse getProcessByGUID(String                        serverName,
+                                                   String                        userId,
+                                                   String                        processGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getProcessByGUID";
 
@@ -752,6 +893,9 @@ public class LineageExchangeRESTServices
                                                              requestBody.getAssetManagerGUID(),
                                                              requestBody.getAssetManagerName(),
                                                              processGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
                                                              methodName));
             }
             else
@@ -760,6 +904,9 @@ public class LineageExchangeRESTServices
                                                              null,
                                                              null,
                                                              processGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             new Date(),
                                                              methodName));
             }
         }
@@ -780,17 +927,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return parent process element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElementResponse getProcessParent(String                             serverName,
-                                                   String                             userId,
-                                                   String                             processGUID,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementResponse getProcessParent(String                        serverName,
+                                                   String                        userId,
+                                                   String                        processGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getProcessParent";
 
@@ -811,6 +962,9 @@ public class LineageExchangeRESTServices
                                                              requestBody.getAssetManagerGUID(),
                                                              requestBody.getAssetManagerName(),
                                                              processGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
                                                              methodName));
             }
             else
@@ -819,6 +973,9 @@ public class LineageExchangeRESTServices
                                                              null,
                                                              null,
                                                              processGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             new Date(),
                                                              methodName));
             }
         }
@@ -841,19 +998,23 @@ public class LineageExchangeRESTServices
      * @param processGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return list of process elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElementsResponse getSubProcesses(String                             serverName,
-                                                   String                             userId,
-                                                   String                             processGUID,
-                                                   int                                startFrom,
-                                                   int                                pageSize,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementsResponse getSubProcesses(String                        serverName,
+                                                   String                        userId,
+                                                   String                        processGUID,
+                                                   int                           startFrom,
+                                                   int                           pageSize,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSubProcesses";
 
@@ -876,6 +1037,9 @@ public class LineageExchangeRESTServices
                                                                 processGUID,
                                                                 startFrom,
                                                                 pageSize,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                requestBody.getEffectiveTime(),
                                                                 methodName));
             }
             else
@@ -886,6 +1050,9 @@ public class LineageExchangeRESTServices
                                                                 processGUID,
                                                                 startFrom,
                                                                 pageSize,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                new Date(),
                                                                 methodName));
             }
         }
@@ -911,6 +1078,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the process manager can update this port
      * @param processGUID unique identifier of the process where the port is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the port
      *
      * @return unique identifier of the new metadata element for the port or
@@ -922,6 +1091,8 @@ public class LineageExchangeRESTServices
                                    String          userId,
                                    boolean         assetManagerIsHome,
                                    String          processGUID,
+                                   boolean         forLineage,
+                                   boolean         forDuplicateProcessing,
                                    PortRequestBody requestBody)
     {
         final String methodName = "createPort";
@@ -944,6 +1115,9 @@ public class LineageExchangeRESTServices
                                                     assetManagerIsHome,
                                                     processGUID,
                                                     requestBody.getElementProperties(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    requestBody.getEffectiveTime(),
                                                     methodName));
             }
             else
@@ -969,6 +1143,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the port to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the port
      *
      * @return void or
@@ -979,6 +1155,8 @@ public class LineageExchangeRESTServices
     public VoidResponse updatePort(String          serverName,
                                    String          userId,
                                    String          portGUID,
+                                   boolean         forLineage,
+                                   boolean         forDuplicateProcessing,
                                    PortRequestBody requestBody)
     {
         final String methodName = "updatePort";
@@ -1000,6 +1178,9 @@ public class LineageExchangeRESTServices
                                    requestBody.getMetadataCorrelationProperties(),
                                    portGUID,
                                    requestBody.getElementProperties(),
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   requestBody.getEffectiveTime(),
                                    methodName);
             }
             else
@@ -1026,19 +1207,23 @@ public class LineageExchangeRESTServices
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupProcessPort(String                             serverName,
-                                         String                             userId,
-                                         boolean                            assetManagerIsHome,
-                                         String                             processGUID,
-                                         String                             portGUID,
-                                         AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupProcessPort(String                  serverName,
+                                         String                  userId,
+                                         boolean                 assetManagerIsHome,
+                                         String                  processGUID,
+                                         String                  portGUID,
+                                         boolean                 forLineage,
+                                         boolean                 forDuplicateProcessing,
+                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "setupProcessPort";
 
@@ -1055,13 +1240,36 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupProcessPort(userId,
-                                         requestBody.getAssetManagerGUID(),
-                                         requestBody.getAssetManagerName(),
-                                         assetManagerIsHome,
-                                         processGUID,
-                                         portGUID,
-                                         methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupProcessPort(userId,
+                                             requestBody.getAssetManagerGUID(),
+                                             requestBody.getAssetManagerName(),
+                                             assetManagerIsHome,
+                                             processGUID,
+                                             portGUID,
+                                             requestBody.getProperties().getEffectiveFrom(),
+                                             requestBody.getProperties().getEffectiveTo(),
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             requestBody.getEffectiveTime(),
+                                             methodName);
+                }
+                else
+                {
+                    handler.setupProcessPort(userId,
+                                             null,
+                                             null,
+                                             assetManagerIsHome,
+                                             processGUID,
+                                             portGUID,
+                                             null,
+                                             null,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             requestBody.getEffectiveTime(),
+                                             methodName);
+                }
             }
             else
             {
@@ -1071,7 +1279,13 @@ public class LineageExchangeRESTServices
                                          assetManagerIsHome,
                                          processGUID,
                                          portGUID,
-                                         methodName);            }
+                                         null,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         new Date(),
+                                         methodName);
+            }
         }
         catch (Exception error)
         {
@@ -1091,18 +1305,22 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearProcessPort(String                             serverName,
-                                         String                             userId,
-                                         String                             processGUID,
-                                         String                             portGUID,
-                                         AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearProcessPort(String                        serverName,
+                                         String                        userId,
+                                         String                        processGUID,
+                                         String                        portGUID,
+                                         boolean                       forLineage,
+                                         boolean                       forDuplicateProcessing,
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearProcessPort";
 
@@ -1124,6 +1342,9 @@ public class LineageExchangeRESTServices
                                          requestBody.getAssetManagerName(),
                                          processGUID,
                                          portGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         requestBody.getEffectiveTime(),
                                          methodName);
             }
             else
@@ -1133,6 +1354,9 @@ public class LineageExchangeRESTServices
                                          null,
                                          processGUID,
                                          portGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         new Date(),
                                          methodName);
             }
         }
@@ -1156,19 +1380,23 @@ public class LineageExchangeRESTServices
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupPortDelegation(String                             serverName,
-                                            String                             userId,
-                                            boolean                            assetManagerIsHome,
-                                            String                             portOneGUID,
-                                            String                             portTwoGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupPortDelegation(String                  serverName,
+                                            String                  userId,
+                                            boolean                 assetManagerIsHome,
+                                            String                  portOneGUID,
+                                            String                  portTwoGUID,
+                                            boolean                 forLineage,
+                                            boolean                 forDuplicateProcessing,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "setupPortDelegation";
 
@@ -1185,13 +1413,36 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupPortDelegation(userId,
-                                            requestBody.getAssetManagerGUID(),
-                                            requestBody.getAssetManagerName(),
-                                            assetManagerIsHome,
-                                            portOneGUID,
-                                            portTwoGUID,
-                                            methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupPortDelegation(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                assetManagerIsHome,
+                                                portOneGUID,
+                                                portTwoGUID,
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                new Date(),
+                                                methodName);
+                }
+                else
+                {
+                    handler.setupPortDelegation(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                assetManagerIsHome,
+                                                portOneGUID,
+                                                portTwoGUID,
+                                                null,
+                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                new Date(),
+                                                methodName);
+                }
             }
             else
             {
@@ -1201,6 +1452,11 @@ public class LineageExchangeRESTServices
                                             assetManagerIsHome,
                                             portOneGUID,
                                             portTwoGUID,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -1222,18 +1478,22 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearPortDelegation(String                             serverName,
-                                            String                             userId,
-                                            String                             portOneGUID,
-                                            String                             portTwoGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearPortDelegation(String                        serverName,
+                                            String                        userId,
+                                            String                        portOneGUID,
+                                            String                        portTwoGUID,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearPortDelegation";
 
@@ -1255,6 +1515,9 @@ public class LineageExchangeRESTServices
                                             requestBody.getAssetManagerName(),
                                             portOneGUID,
                                             portTwoGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
@@ -1264,6 +1527,9 @@ public class LineageExchangeRESTServices
                                             null,
                                             portOneGUID,
                                             portTwoGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -1286,19 +1552,23 @@ public class LineageExchangeRESTServices
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupPortSchemaType(String                             serverName,
-                                            String                             userId,
-                                            boolean                            assetManagerIsHome,
-                                            String                             portGUID,
-                                            String                             schemaTypeGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupPortSchemaType(String                  serverName,
+                                            String                  userId,
+                                            boolean                 assetManagerIsHome,
+                                            String                  portGUID,
+                                            String                  schemaTypeGUID,
+                                            boolean                 forLineage,
+                                            boolean                 forDuplicateProcessing,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "setupPortSchemaType";
 
@@ -1315,13 +1585,36 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupPortSchemaType(userId,
-                                            requestBody.getAssetManagerGUID(),
-                                            requestBody.getAssetManagerName(),
-                                            assetManagerIsHome,
-                                            portGUID,
-                                            schemaTypeGUID,
-                                            methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupPortSchemaType(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                assetManagerIsHome,
+                                                portGUID,
+                                                schemaTypeGUID,
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
+                else
+                {
+                    handler.setupPortSchemaType(userId,
+                                                null,
+                                                null,
+                                                assetManagerIsHome,
+                                                portGUID,
+                                                schemaTypeGUID,
+                                                null,
+                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                new Date(),
+                                                methodName);
+                }
             }
             else
             {
@@ -1331,6 +1624,11 @@ public class LineageExchangeRESTServices
                                             assetManagerIsHome,
                                             portGUID,
                                             schemaTypeGUID,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -1352,18 +1650,22 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearPortSchemaType(String                             serverName,
-                                            String                             userId,
-                                            String                             portGUID,
-                                            String                             schemaTypeGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearPortSchemaType(String                        serverName,
+                                            String                        userId,
+                                            String                        portGUID,
+                                            String                        schemaTypeGUID,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearPortSchemaType";
 
@@ -1385,6 +1687,9 @@ public class LineageExchangeRESTServices
                                             requestBody.getAssetManagerName(),
                                             portGUID,
                                             schemaTypeGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
@@ -1394,6 +1699,9 @@ public class LineageExchangeRESTServices
                                             null,
                                             portGUID,
                                             schemaTypeGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -1414,6 +1722,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -1421,10 +1731,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removePort(String                        serverName,
-                                   String                        userId,
-                                   String                        portGUID,
-                                   MetadataCorrelationProperties requestBody)
+    public VoidResponse removePort(String            serverName,
+                                   String            userId,
+                                   String            portGUID,
+                                   boolean           forLineage,
+                                   boolean           forDuplicateProcessing,
+                                   UpdateRequestBody requestBody)
     {
         final String methodName = "removePort";
 
@@ -1435,11 +1747,19 @@ public class LineageExchangeRESTServices
 
         try
         {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.removePort(userId, requestBody, portGUID, methodName);
+                handler.removePort(userId, requestBody.getMetadataCorrelationProperties(), portGUID, forLineage, forDuplicateProcessing,
+                                   requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1460,6 +1780,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1471,6 +1793,8 @@ public class LineageExchangeRESTServices
                                           String                  userId,
                                           int                     startFrom,
                                           int                     pageSize,
+                                          boolean               forLineage,
+                                          boolean               forDuplicateProcessing,
                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findPorts";
@@ -1495,6 +1819,9 @@ public class LineageExchangeRESTServices
                                                           requestBody.getSearchStringParameterName(),
                                                           startFrom,
                                                           pageSize,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName));
             }
             else
@@ -1521,19 +1848,23 @@ public class LineageExchangeRESTServices
      * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return list of associated metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElementsResponse getPortsForProcess(String                             serverName,
-                                                   String                             userId,
-                                                   String                             processGUID,
-                                                   int                                startFrom,
-                                                   int                                pageSize,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public PortElementsResponse getPortsForProcess(String                        serverName,
+                                                   String                        userId,
+                                                   String                        processGUID,
+                                                   int                           startFrom,
+                                                   int                           pageSize,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getPortsForProcess";
 
@@ -1556,6 +1887,9 @@ public class LineageExchangeRESTServices
                                                                    processGUID,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
                                                                    methodName));
             }
             else
@@ -1566,6 +1900,9 @@ public class LineageExchangeRESTServices
                                                                    processGUID,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   new Date(),
                                                                    methodName));
             }
         }
@@ -1588,19 +1925,23 @@ public class LineageExchangeRESTServices
      * @param portGUID unique identifier of the starting port
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return list of associated metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElementsResponse getPortUse(String                             serverName,
-                                           String                             userId,
-                                           String                             portGUID,
-                                           int                                startFrom,
-                                           int                                pageSize,
-                                           AssetManagerIdentifiersRequestBody requestBody)
+    public PortElementsResponse getPortUse(String                        serverName,
+                                           String                        userId,
+                                           String                        portGUID,
+                                           int                           startFrom,
+                                           int                           pageSize,
+                                           boolean                       forLineage,
+                                           boolean                       forDuplicateProcessing,
+                                           EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getPortUse";
 
@@ -1623,6 +1964,9 @@ public class LineageExchangeRESTServices
                                                            portGUID,
                                                            startFrom,
                                                            pageSize,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
             }
             else
@@ -1633,6 +1977,9 @@ public class LineageExchangeRESTServices
                                                            portGUID,
                                                            startFrom,
                                                            pageSize,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           new Date(),
                                                            methodName));
             }
         }
@@ -1653,17 +2000,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the starting port alias
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElementResponse getPortDelegation(String                             serverName,
-                                                 String                             userId,
-                                                 String                             portGUID,
-                                                 AssetManagerIdentifiersRequestBody requestBody)
+    public PortElementResponse getPortDelegation(String                        serverName,
+                                                 String                        userId,
+                                                 String                        portGUID,
+                                                 boolean                       forLineage,
+                                                 boolean                       forDuplicateProcessing,
+                                                 EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getPortDelegation";
 
@@ -1685,6 +2036,9 @@ public class LineageExchangeRESTServices
                                                               requestBody.getAssetManagerGUID(),
                                                               requestBody.getAssetManagerName(),
                                                               portGUID,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              requestBody.getEffectiveTime(),
                                                               methodName));
             }
             else
@@ -1693,6 +2047,9 @@ public class LineageExchangeRESTServices
                                                               null,
                                                               null,
                                                               portGUID,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              new Date(),
                                                               methodName));
             }
         }
@@ -1715,6 +2072,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1726,6 +2085,8 @@ public class LineageExchangeRESTServices
                                                String          userId,
                                                int             startFrom,
                                                int             pageSize,
+                                               boolean         forLineage,
+                                               boolean         forDuplicateProcessing,
                                                NameRequestBody requestBody)
     {
         final String methodName = "getPortsByName";
@@ -1750,6 +2111,9 @@ public class LineageExchangeRESTServices
                                                                requestBody.getNameParameterName(),
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -1774,17 +2138,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the requested metadata element
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElementResponse getPortByGUID(String                             serverName,
-                                             String                             userId,
-                                             String                             portGUID,
-                                             AssetManagerIdentifiersRequestBody requestBody)
+    public PortElementResponse getPortByGUID(String                        serverName,
+                                             String                        userId,
+                                             String                        portGUID,
+                                             boolean                       forLineage,
+                                             boolean                       forDuplicateProcessing,
+                                             EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getPortByGUID";
 
@@ -1806,6 +2174,9 @@ public class LineageExchangeRESTServices
                                                           requestBody.getAssetManagerGUID(),
                                                           requestBody.getAssetManagerName(),
                                                           portGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName));
             }
             else
@@ -1814,6 +2185,9 @@ public class LineageExchangeRESTServices
                                                           null,
                                                           null,
                                                           portGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          new Date(),
                                                           methodName));
             }
         }
@@ -1834,11 +2208,13 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or process as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -1846,10 +2222,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setBusinessSignificant(String                        serverName,
-                                               String                        userId,
-                                               String                        elementGUID,
-                                               MetadataCorrelationProperties requestBody)
+    public VoidResponse setBusinessSignificant(String            serverName,
+                                               String            userId,
+                                               String            elementGUID,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               UpdateRequestBody requestBody)
     {
         final String methodName = "setBusinessSignificant";
 
@@ -1864,7 +2242,17 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.setBusinessSignificant(userId, requestBody, elementGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setBusinessSignificant(userId, requestBody.getMetadataCorrelationProperties(), elementGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1883,6 +2271,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -1890,10 +2280,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearBusinessSignificant(String                        serverName,
-                                                 String                        userId,
-                                                 String                        elementGUID,
-                                                 MetadataCorrelationProperties requestBody)
+    public VoidResponse clearBusinessSignificant(String            serverName,
+                                                 String            userId,
+                                                 String            elementGUID,
+                                                 boolean           forLineage,
+                                                 boolean           forDuplicateProcessing,
+                                                 UpdateRequestBody requestBody)
     {
         final String methodName = "clearBusinessSignificant";
 
@@ -1908,7 +2300,17 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            handler.clearBusinessSignificant(userId, requestBody, elementGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearBusinessSignificant(userId, requestBody.getMetadataCorrelationProperties(), elementGUID,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1929,6 +2331,8 @@ public class LineageExchangeRESTServices
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier of the relationship or
@@ -1936,12 +2340,14 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse setupDataFlow(String              serverName,
-                                      String              userId,
-                                      String              dataSupplierGUID,
-                                      String              dataConsumerGUID,
-                                      boolean             assetManagerIsHome,
-                                      DataFlowRequestBody requestBody)
+    public GUIDResponse setupDataFlow(String                  serverName,
+                                      String                  userId,
+                                      String                  dataSupplierGUID,
+                                      String                  dataConsumerGUID,
+                                      boolean                 assetManagerIsHome,
+                                      boolean                 forLineage,
+                                      boolean                 forDuplicateProcessing,
+                                      RelationshipRequestBody requestBody)
     {
         final String methodName = "setupDataFlow";
 
@@ -1954,9 +2360,11 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties))
             {
-                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+                DataFlowProperties dataFlowProperties = (DataFlowProperties) requestBody.getProperties();
 
                 response.setGUID(handler.setupDataFlow(userId,
                                                        requestBody.getAssetManagerGUID(),
@@ -1964,9 +2372,14 @@ public class LineageExchangeRESTServices
                                                        assetManagerIsHome,
                                                        dataSupplierGUID,
                                                        dataConsumerGUID,
-                                                       requestBody.getProperties().getQualifiedName(),
-                                                       requestBody.getProperties().getDescription(),
-                                                       requestBody.getProperties().getFormula(),
+                                                       dataFlowProperties.getQualifiedName(),
+                                                       dataFlowProperties.getDescription(),
+                                                       dataFlowProperties.getFormula(),
+                                                       dataFlowProperties.getEffectiveFrom(),
+                                                       dataFlowProperties.getEffectiveTo(),
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
                                                        methodName));
             }
             else
@@ -1994,6 +2407,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody optional name to search for
      *
      * @return unique identifier and properties of the relationship or
@@ -2005,6 +2420,8 @@ public class LineageExchangeRESTServices
                                                String          userId,
                                                String          dataSupplierGUID,
                                                String          dataConsumerGUID,
+                                               boolean         forLineage,
+                                               boolean         forDuplicateProcessing,
                                                NameRequestBody requestBody)
     {
         final String methodName = "getDataFlow";
@@ -2026,6 +2443,9 @@ public class LineageExchangeRESTServices
                                                         dataSupplierGUID,
                                                         dataConsumerGUID,
                                                         requestBody.getName(),
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        requestBody.getEffectiveTime(),
                                                         methodName));
             }
             else
@@ -2034,6 +2454,9 @@ public class LineageExchangeRESTServices
                                                         dataSupplierGUID,
                                                         dataConsumerGUID,
                                                         null,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        new Date(),
                                                         methodName));
             }
         }
@@ -2054,6 +2477,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -2061,10 +2486,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateDataFlow(String              serverName,
-                                       String              userId,
-                                       String              dataFlowGUID,
-                                       DataFlowRequestBody requestBody)
+    public VoidResponse updateDataFlow(String                  serverName,
+                                       String                  userId,
+                                       String                  dataFlowGUID,
+                                       boolean                 forLineage,
+                                       boolean                 forDuplicateProcessing,
+                                       RelationshipRequestBody requestBody)
     {
         final String methodName = "updateDataFlow";
 
@@ -2077,17 +2504,23 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties))
             {
                 ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
+                DataFlowProperties properties = (DataFlowProperties)requestBody.getProperties();
                 handler.updateDataFlow(userId,
                                        requestBody.getAssetManagerGUID(),
                                        requestBody.getAssetManagerName(),
                                        dataFlowGUID,
-                                       requestBody.getProperties().getQualifiedName(),
-                                       requestBody.getProperties().getDescription(),
-                                       requestBody.getProperties().getFormula(),
+                                       properties.getQualifiedName(),
+                                       properties.getDescription(),
+                                       properties.getFormula(),
+                                       properties.getEffectiveFrom(),
+                                       properties.getEffectiveTo(),
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       requestBody.getEffectiveTime(),
                                        methodName);
             }
             else
@@ -2112,17 +2545,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearDataFlow(String                             serverName,
-                                      String                             userId,
-                                      String                             dataFlowGUID,
-                                      AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearDataFlow(String                        serverName,
+                                      String                        userId,
+                                      String                        dataFlowGUID,
+                                      boolean                       forLineage,
+                                      boolean                       forDuplicateProcessing,
+                                      EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearDataFlow";
 
@@ -2143,6 +2580,9 @@ public class LineageExchangeRESTServices
                                       requestBody.getAssetManagerGUID(),
                                       requestBody.getAssetManagerName(),
                                       dataFlowGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
                                       methodName);
             }
             else
@@ -2151,6 +2591,9 @@ public class LineageExchangeRESTServices
                                       null,
                                       null,
                                       dataFlowGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      new Date(),
                                       methodName);
             }
         }
@@ -2166,23 +2609,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public DataFlowElementsResponse getDataFlowConsumers(String                             serverName,
-                                                         String                             userId,
-                                                         String                             dataSupplierGUID,
-                                                         AssetManagerIdentifiersRequestBody requestBody)
+    public DataFlowElementsResponse getDataFlowConsumers(String                        serverName,
+                                                         String                        userId,
+                                                         String                        dataSupplierGUID,
+                                                         int                           startFrom,
+                                                         int                           pageSize,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getDataFlowConsumers";
 
@@ -2197,7 +2647,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getDataFlowConsumers(userId, dataSupplierGUID, methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getDataFlowConsumers(userId,
+                                                                     dataSupplierGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getDataFlowConsumers(userId,
+                                                                     dataSupplierGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     new Date(),
+                                                                     methodName));
+            }
         }
         catch (Exception error)
         {
@@ -2211,23 +2682,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public DataFlowElementsResponse getDataFlowSuppliers(String                             serverName,
-                                                         String                             userId,
-                                                         String                             dataConsumerGUID,
-                                                         AssetManagerIdentifiersRequestBody requestBody)
+    public DataFlowElementsResponse getDataFlowSuppliers(String                        serverName,
+                                                         String                        userId,
+                                                         String                        dataConsumerGUID,
+                                                         int                           startFrom,
+                                                         int                           pageSize,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getDataFlowSuppliers";
 
@@ -2242,7 +2720,29 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getDataFlowSuppliers(userId, dataConsumerGUID, methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getDataFlowSuppliers(userId,
+                                                                     dataConsumerGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getDataFlowSuppliers(userId,
+                                                                     dataConsumerGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     new Date(),
+                                                                     methodName));
+            }
+
         }
         catch (Exception error)
         {
@@ -2263,6 +2763,8 @@ public class LineageExchangeRESTServices
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier for the control flow relationship or
@@ -2270,12 +2772,14 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse setupControlFlow(String                 serverName,
-                                         String                 userId,
-                                         String                 currentStepGUID,
-                                         String                 nextStepGUID,
-                                         boolean                assetManagerIsHome,
-                                         ControlFlowRequestBody requestBody)
+    public GUIDResponse setupControlFlow(String                  serverName,
+                                         String                  userId,
+                                         String                  currentStepGUID,
+                                         String                  nextStepGUID,
+                                         boolean                 assetManagerIsHome,
+                                         boolean                 forLineage,
+                                         boolean                 forDuplicateProcessing,
+                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "setupControlFlow";
 
@@ -2288,9 +2792,11 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties))
             {
-                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+                ControlFlowProperties properties = (ControlFlowProperties)requestBody.getProperties();
 
                 response.setGUID(handler.setupControlFlow(userId,
                                                           requestBody.getAssetManagerGUID(),
@@ -2298,9 +2804,14 @@ public class LineageExchangeRESTServices
                                                           assetManagerIsHome,
                                                           currentStepGUID,
                                                           nextStepGUID,
-                                                          requestBody.getProperties().getQualifiedName(),
-                                                          requestBody.getProperties().getDescription(),
-                                                          requestBody.getProperties().getGuard(),
+                                                          properties.getQualifiedName(),
+                                                          properties.getDescription(),
+                                                          properties.getGuard(),
+                                                          properties.getEffectiveFrom(),
+                                                          properties.getEffectiveTo(),
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName));
             }
             else
@@ -2328,6 +2839,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier for this relationship
      *
      * @return unique identifier and properties of the relationship or
@@ -2339,6 +2852,8 @@ public class LineageExchangeRESTServices
                                                      String          userId,
                                                      String          currentStepGUID,
                                                      String          nextStepGUID,
+                                                     boolean         forLineage,
+                                                     boolean         forDuplicateProcessing,
                                                      NameRequestBody requestBody)
     {
         final String methodName = "getControlFlow";
@@ -2360,6 +2875,9 @@ public class LineageExchangeRESTServices
                                                            currentStepGUID,
                                                            nextStepGUID,
                                                            requestBody.getName(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
             }
             else
@@ -2368,6 +2886,9 @@ public class LineageExchangeRESTServices
                                                            currentStepGUID,
                                                            nextStepGUID,
                                                            null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           new Date(),
                                                            methodName));
             }
         }
@@ -2388,6 +2909,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -2395,10 +2918,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateControlFlow(String                 serverName,
-                                          String                 userId,
-                                          String                 controlFlowGUID,
-                                          ControlFlowRequestBody requestBody)
+    public VoidResponse updateControlFlow(String                  serverName,
+                                          String                  userId,
+                                          String                  controlFlowGUID,
+                                          boolean                 forLineage,
+                                          boolean                 forDuplicateProcessing,
+                                          RelationshipRequestBody requestBody)
     {
         final String methodName = "updateControlFlow";
 
@@ -2411,17 +2936,24 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties))
             {
-                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+                ControlFlowProperties properties = (ControlFlowProperties)requestBody.getProperties();
 
                 handler.updateControlFlow(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
                                           controlFlowGUID,
-                                          requestBody.getProperties().getQualifiedName(),
-                                          requestBody.getProperties().getDescription(),
-                                          requestBody.getProperties().getGuard(),
+                                          properties.getQualifiedName(),
+                                          properties.getDescription(),
+                                          properties.getGuard(),
+                                          properties.getEffectiveFrom(),
+                                          properties.getEffectiveTo(),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -2446,17 +2978,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearControlFlow(String                             serverName,
-                                         String                             userId,
-                                         String                             controlFlowGUID,
-                                         AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearControlFlow(String                        serverName,
+                                         String                        userId,
+                                         String                        controlFlowGUID,
+                                         boolean                       forLineage,
+                                         boolean                       forDuplicateProcessing,
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearControlFlow";
 
@@ -2477,6 +3013,9 @@ public class LineageExchangeRESTServices
                                          requestBody.getAssetManagerGUID(),
                                          requestBody.getAssetManagerName(),
                                          controlFlowGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         requestBody.getEffectiveTime(),
                                          methodName);
             }
             else
@@ -2485,6 +3024,9 @@ public class LineageExchangeRESTServices
                                          null,
                                          null,
                                          controlFlowGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         new Date(),
                                          methodName);
             }
         }
@@ -2500,23 +3042,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public ControlFlowElementsResponse getControlFlowNextSteps(String                             serverName,
-                                                               String                             userId,
-                                                               String                             currentStepGUID,
-                                                               AssetManagerIdentifiersRequestBody requestBody)
+    public ControlFlowElementsResponse getControlFlowNextSteps(String                        serverName,
+                                                               String                        userId,
+                                                               String                        currentStepGUID,
+                                                               int                           startFrom,
+                                                               int                           pageSize,
+                                                               boolean                       forLineage,
+                                                               boolean                       forDuplicateProcessing,
+                                                               EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getControlFlowNextSteps";
 
@@ -2531,7 +3080,14 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getControlFlowNextSteps(userId, currentStepGUID, methodName));
+            response.setElementList(handler.getControlFlowNextSteps(userId,
+                                                                    currentStepGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
         }
         catch (Exception error)
         {
@@ -2545,23 +3101,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public ControlFlowElementsResponse getControlFlowPreviousSteps(String                             serverName,
-                                                                   String                             userId,
-                                                                   String                             currentStepGUID,
-                                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public ControlFlowElementsResponse getControlFlowPreviousSteps(String                        serverName,
+                                                                   String                        userId,
+                                                                   String                        currentStepGUID,
+                                                                   int                           startFrom,
+                                                                   int                           pageSize,
+                                                                   boolean                       forLineage,
+                                                                   boolean                       forDuplicateProcessing,
+                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getControlFlowPreviousSteps";
 
@@ -2576,7 +3139,14 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getControlFlowPreviousSteps(userId, currentStepGUID, methodName));
+            response.setElementList(handler.getControlFlowPreviousSteps(userId,
+                                                                        currentStepGUID,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime(),
+                                                                        methodName));
         }
         catch (Exception error)
         {
@@ -2597,6 +3167,8 @@ public class LineageExchangeRESTServices
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier of the new relationship or
@@ -2604,12 +3176,14 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse setupProcessCall(String                 serverName,
-                                         String                 userId,
-                                         String                 callerGUID,
-                                         String                 calledGUID,
-                                         boolean                assetManagerIsHome,
-                                         ProcessCallRequestBody requestBody)
+    public GUIDResponse setupProcessCall(String                  serverName,
+                                         String                  userId,
+                                         String                  callerGUID,
+                                         String                  calledGUID,
+                                         boolean                 assetManagerIsHome,
+                                         boolean                 forLineage,
+                                         boolean                 forDuplicateProcessing,
+                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "setupProcessCall";
 
@@ -2622,19 +3196,25 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
-            {
-                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties))
+            {
+                ProcessCallProperties properties = (ProcessCallProperties)requestBody.getProperties();
                 response.setGUID(handler.setupProcessCall(userId,
                                                           requestBody.getAssetManagerGUID(),
                                                           requestBody.getAssetManagerName(),
                                                           assetManagerIsHome,
                                                           callerGUID,
                                                           calledGUID,
-                                                          requestBody.getProperties().getQualifiedName(),
-                                                          requestBody.getProperties().getDescription(),
-                                                          requestBody.getProperties().getFormula(),
+                                                          properties.getQualifiedName(),
+                                                          properties.getDescription(),
+                                                          properties.getFormula(),
+                                                          properties.getEffectiveFrom(),
+                                                          properties.getEffectiveTo(),
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName));
             }
             else
@@ -2662,6 +3242,8 @@ public class LineageExchangeRESTServices
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier for this relationship
      *
      * @return unique identifier and properties of the relationship or
@@ -2673,6 +3255,8 @@ public class LineageExchangeRESTServices
                                                      String          userId,
                                                      String          callerGUID,
                                                      String          calledGUID,
+                                                     boolean         forLineage,
+                                                     boolean         forDuplicateProcessing,
                                                      NameRequestBody requestBody)
     {
         final String methodName = "getProcessCall";
@@ -2694,6 +3278,9 @@ public class LineageExchangeRESTServices
                                                            callerGUID,
                                                            calledGUID,
                                                            requestBody.getName(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
             }
             else
@@ -2702,6 +3289,9 @@ public class LineageExchangeRESTServices
                                                            callerGUID,
                                                            calledGUID,
                                                            null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           new Date(),
                                                            methodName));
             }
         }
@@ -2722,6 +3312,8 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processCallGUID unique identifier of the process call relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -2729,10 +3321,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateProcessCall(String                 serverName,
-                                          String                 userId,
-                                          String                 processCallGUID,
-                                          ProcessCallRequestBody requestBody)
+    public VoidResponse updateProcessCall(String                  serverName,
+                                          String                  userId,
+                                          String                  processCallGUID,
+                                          boolean                 forLineage,
+                                          boolean                 forDuplicateProcessing,
+                                          RelationshipRequestBody requestBody)
     {
         final String methodName = "updateProcessCall";
 
@@ -2745,17 +3339,24 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties))
             {
-                ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+                ProcessCallProperties properties = (ProcessCallProperties) requestBody.getProperties();
 
                 handler.updateProcessCall(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
                                           processCallGUID,
-                                          requestBody.getProperties().getQualifiedName(),
-                                          requestBody.getProperties().getDescription(),
-                                          requestBody.getProperties().getFormula(),
+                                          properties.getQualifiedName(),
+                                          properties.getDescription(),
+                                          properties.getFormula(),
+                                          properties.getEffectiveFrom(),
+                                          properties.getEffectiveTo(),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -2780,17 +3381,21 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processCallGUID unique identifier of the process call relationship
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearProcessCall(String                             serverName,
-                                         String                             userId,
-                                         String                             processCallGUID,
-                                         AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearProcessCall(String                        serverName,
+                                         String                        userId,
+                                         String                        processCallGUID,
+                                         boolean                       forLineage,
+                                         boolean                       forDuplicateProcessing,
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearProcessCall";
 
@@ -2811,6 +3416,9 @@ public class LineageExchangeRESTServices
                                          requestBody.getAssetManagerGUID(),
                                          requestBody.getAssetManagerName(),
                                          processCallGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         requestBody.getEffectiveTime(),
                                          methodName);
             }
             else
@@ -2819,6 +3427,9 @@ public class LineageExchangeRESTServices
                                          null,
                                          null,
                                          processCallGUID,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         new Date(),
                                          methodName);
             }
         }
@@ -2834,23 +3445,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public ProcessCallElementsResponse getProcessCalled(String                             serverName,
-                                                        String                             userId,
-                                                        String                             callerGUID,
-                                                        AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessCallElementsResponse getProcessCalled(String                        serverName,
+                                                        String                        userId,
+                                                        String                        callerGUID,
+                                                        int                           startFrom,
+                                                        int                           pageSize,
+                                                        boolean                       forLineage,
+                                                        boolean                       forDuplicateProcessing,
+                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getProcessCalled";
 
@@ -2865,7 +3483,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getProcessCalled(userId, callerGUID, methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getProcessCalled(userId,
+                                                                 callerGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getProcessCalled(userId,
+                                                                 callerGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 new Date(),
+                                                                 methodName));
+            }
         }
         catch (Exception error)
         {
@@ -2879,23 +3518,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public ProcessCallElementsResponse getProcessCallers(String                             serverName,
-                                                         String                             userId,
-                                                         String                             calledGUID,
-                                                         AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessCallElementsResponse getProcessCallers(String                        serverName,
+                                                         String                        userId,
+                                                         String                        calledGUID,
+                                                         int                           startFrom,
+                                                         int                           pageSize,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getProcessCallers";
 
@@ -2910,7 +3556,14 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getProcessCallers(userId, calledGUID, methodName));
+            response.setElementList(handler.getProcessCallers(userId,
+                                                              calledGUID,
+                                                              startFrom,
+                                                              pageSize,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              requestBody.getEffectiveTime(),
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -2925,25 +3578,29 @@ public class LineageExchangeRESTServices
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupLineageMapping(String                             serverName,
-                                            String                             userId,
-                                            String                             sourceElementGUID,
-                                            String                             destinationElementGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupLineageMapping(String                  serverName,
+                                            String                  userId,
+                                            String                  sourceElementGUID,
+                                            String                  destinationElementGUID,
+                                            boolean                 forLineage,
+                                            boolean                 forDuplicateProcessing,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "setupLineageMapping";
 
@@ -2960,12 +3617,39 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupLineageMapping(userId,
-                                            requestBody.getAssetManagerGUID(),
-                                            requestBody.getAssetManagerName(),
-                                            sourceElementGUID,
-                                            destinationElementGUID,
-                                            methodName);
+                if (requestBody.getProperties() instanceof DataFlowProperties)
+                {
+                    DataFlowProperties properties = (DataFlowProperties)requestBody.getProperties();
+                    handler.setupLineageMapping(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                sourceElementGUID,
+                                                destinationElementGUID,
+                                                properties.getQualifiedName(),
+                                                properties.getDescription(),
+                                                properties.getEffectiveFrom(),
+                                                properties.getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
+                else
+                {
+                    handler.setupLineageMapping(userId,
+                                                null,
+                                                null,
+                                                sourceElementGUID,
+                                                destinationElementGUID,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
             }
             else
             {
@@ -2974,7 +3658,154 @@ public class LineageExchangeRESTServices
                                             null,
                                             sourceElementGUID,
                                             destinationElementGUID,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            new Date(),
                                             methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public LineageMappingElementResponse getLineageMapping(String          serverName,
+                                                           String          userId,
+                                                           String          sourceElementGUID,
+                                                           String          destinationElementGUID,
+                                                           boolean         forLineage,
+                                                           boolean         forDuplicateProcessing,
+                                                           NameRequestBody requestBody)
+    {
+        final String methodName = "getLineageMapping";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        LineageMappingElementResponse response = new LineageMappingElementResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getLineageMapping(userId,
+                                                           sourceElementGUID,
+                                                           destinationElementGUID,
+                                                           requestBody.getName(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
+                                                           methodName));
+            }
+            else
+            {
+                response.setElement(handler.getLineageMapping(userId,
+                                                              sourceElementGUID,
+                                                              destinationElementGUID,
+                                                              null,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              new Date(),
+                                                              methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the lineage mapping between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateLineageMapping(String                  serverName,
+                                             String                  userId,
+                                             String                  lineageMappingGUID,
+                                             boolean                 forLineage,
+                                             boolean                 forDuplicateProcessing,
+                                             RelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateLineageMapping";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getProperties() instanceof LineageMappingProperties))
+            {
+                LineageMappingProperties properties = (LineageMappingProperties) requestBody.getProperties();
+                handler.updateLineageMapping(userId,
+                                            requestBody.getAssetManagerGUID(),
+                                            requestBody.getAssetManagerName(),
+                                            lineageMappingGUID,
+                                            properties.getQualifiedName(),
+                                            properties.getDescription(),
+                                            properties.getEffectiveFrom(),
+                                            properties.getEffectiveTo(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)
@@ -2993,20 +3824,22 @@ public class LineageExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearLineageMapping(String                             serverName,
-                                            String                             userId,
-                                            String                             sourceElementGUID,
-                                            String                             destinationElementGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearLineageMapping(String                        serverName,
+                                            String                        userId,
+                                            String                        lineageMappingGUID,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearLineageMapping";
 
@@ -3026,8 +3859,10 @@ public class LineageExchangeRESTServices
                 handler.clearLineageMapping(userId,
                                             requestBody.getAssetManagerGUID(),
                                             requestBody.getAssetManagerName(),
-                                            sourceElementGUID,
-                                            destinationElementGUID,
+                                            lineageMappingGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
@@ -3035,8 +3870,10 @@ public class LineageExchangeRESTServices
                 handler.clearLineageMapping(userId,
                                             null,
                                             null,
-                                            sourceElementGUID,
-                                            destinationElementGUID,
+                                            lineageMappingGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            null,
                                             methodName);
             }
         }
@@ -3052,23 +3889,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public LineageMappingElementsResponse getDestinationLineageMappings(String                             serverName,
-                                                                        String                             userId,
-                                                                        String                             sourceElementGUID,
-                                                                        AssetManagerIdentifiersRequestBody requestBody)
+    public LineageMappingElementsResponse getDestinationLineageMappings(String                        serverName,
+                                                                        String                        userId,
+                                                                        String                        sourceElementGUID,
+                                                                        int                           startFrom,
+                                                                        int                           pageSize,
+                                                                        boolean                       forLineage,
+                                                                        boolean                       forDuplicateProcessing,
+                                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getDestinationLineageMappings";
 
@@ -3083,7 +3927,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getDestinationLineageMappings(userId, sourceElementGUID, methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getDestinationLineageMappings(userId,
+                                                                              sourceElementGUID,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              requestBody.getEffectiveTime(),
+                                                                              methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getDestinationLineageMappings(userId,
+                                                                              sourceElementGUID,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              null,
+                                                                              methodName));
+            }
         }
         catch (Exception error)
         {
@@ -3097,23 +3962,30 @@ public class LineageExchangeRESTServices
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
-     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software capability representing the caller (optional)
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public LineageMappingElementsResponse getSourceLineageMappings(String                             serverName,
-                                                                   String                             userId,
-                                                                   String                             destinationElementGUID,
-                                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public LineageMappingElementsResponse getSourceLineageMappings(String                        serverName,
+                                                                   String                        userId,
+                                                                   String                        destinationElementGUID,
+                                                                   int                           startFrom,
+                                                                   int                           pageSize,
+                                                                   boolean                       forLineage,
+                                                                   boolean                       forDuplicateProcessing,
+                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSourceLineageMappings";
 
@@ -3128,7 +4000,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getSourceLineageMappings(userId, destinationElementGUID, methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getSourceLineageMappings(userId,
+                                                                         destinationElementGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getSourceLineageMappings(userId,
+                                                                         destinationElementGUID,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         null,
+                                                                         methodName));
+            }
         }
         catch (Exception error)
         {

@@ -181,13 +181,13 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
     {
         final String   methodName = "addCSVFileToCatalog";
         final String   pathParameter = "fullPath";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files/csv";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files/csv";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
 
         NewCSVFileAssetRequestBody requestBody = new NewCSVFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);
         requestBody.setColumnHeaders(columnHeaders);
@@ -195,7 +195,7 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
         requestBody.setQuoteCharacter(quoteCharacter);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);

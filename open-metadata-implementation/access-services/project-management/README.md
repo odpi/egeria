@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Project Management Open Metadata Access Service (OMAS)
 
@@ -12,6 +12,10 @@ The interface support the setting up, management and completion of projects
 along with the teams that are working on them.  It is aimed at linking the projects and tasks
 associated with the rollout and management of capability used to
 govern the organization's digital landscape and the people who use it.
+
+* [Documentation](https://egeria-project.org/services/omas/project-management/overview)
+
+## Design Information
 
 The module structure for the Project Management OMAS is as follows:
 

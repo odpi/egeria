@@ -11,7 +11,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.apache.kafka:kafka-clients'
     testImplementation 'org.testng:testng'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.apache.commons:commons-lang3'
 
 }
 
@@ -23,4 +24,6 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

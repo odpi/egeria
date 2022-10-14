@@ -7,7 +7,7 @@ The open metadata topic connector provides
 a topic interface to a generic string event.
 
 It is the interface implemented by specific
-[Event Bus](../../../../admin-services/docs/concepts/event-bus.md).
+[Event Bus](https://egeria-project.org/concepts/event-bus).
 
 Topic connectors for specific types of events
 (such as the [OMRS Topic Connector](omrs-topic-connector.md))

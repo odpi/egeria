@@ -12,6 +12,7 @@ dependencies {
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
     implementation 'org.springframework:spring-context'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Asset Lineage OMAS with Spring'

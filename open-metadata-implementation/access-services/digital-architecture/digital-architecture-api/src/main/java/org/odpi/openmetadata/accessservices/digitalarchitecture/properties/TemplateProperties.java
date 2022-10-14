@@ -25,6 +25,7 @@ public class TemplateProperties implements Serializable
     private static final long     serialVersionUID = 1L;
 
     private String qualifiedName  = null;
+    private String identifier     = null;
     private String displayName    = null;
     private String description    = null;
 
@@ -47,6 +48,7 @@ public class TemplateProperties implements Serializable
         if (template != null)
         {
             qualifiedName  = template.getQualifiedName();
+            identifier     = template.getIdentifier();
             displayName    = template.getDisplayName();
             description    = template.getDescription();
         }
@@ -73,6 +75,28 @@ public class TemplateProperties implements Serializable
     public void setQualifiedName(String qualifiedName)
     {
         this.qualifiedName = qualifiedName;
+    }
+
+
+    /**
+     * Return the code value or symbol used to identify the element - typically unique.
+     *
+     * @return string identifier
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the code value or symbol used to identify the element - typically unique.
+     *
+     * @param identifier string identifier
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
 
@@ -121,6 +145,7 @@ public class TemplateProperties implements Serializable
         this.description = description;
     }
 
+
     /**
      * Standard toString method.
      *
@@ -131,6 +156,7 @@ public class TemplateProperties implements Serializable
     {
         return "TemplateProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
+                       ", identifier='" + identifier + '\'' +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        '}';
@@ -156,19 +182,20 @@ public class TemplateProperties implements Serializable
         }
         TemplateProperties that = (TemplateProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+                       Objects.equals(identifier, that.identifier) &&
+                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description);
+        return Objects.hash(qualifiedName, identifier, displayName, description);
     }
 }

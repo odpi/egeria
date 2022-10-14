@@ -9,7 +9,7 @@ that needs to be performed on one or more metadata elements, or
 their counterparts in the digital landscape.
 
 A governance action is 
-[represented as a metadata entity](../../../../../open-metadata-publication/website/open-metadata-types/0463-Governance-Actions.md)
+[represented as a metadata entity](https://egeria-project.org/types/4/0463-Governance-Actions)
 in the open metadata repositories and linked to:
 
 * The source (cause) of the governance action.
@@ -40,7 +40,7 @@ governance actions.
 
 If the start date of the governance action is in the future, the
 [Engine Host Services](../../../../governance-servers/engine-host-services)
-running in the same [Engine Host](../../../../admin-services/docs/concepts/engine-host.md)
+running in the same [Engine Host](https://egeria-project.org/concepts/engine-host)
 OMAG Server as the nominated governance engine will schedule the
 governance service to run soon after the requested start date.
 If the start date is left blank, the requested governance service is run

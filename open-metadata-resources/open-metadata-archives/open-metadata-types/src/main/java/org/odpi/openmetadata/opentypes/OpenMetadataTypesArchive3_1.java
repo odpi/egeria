@@ -30,7 +30,7 @@ import java.util.List;
  * produce the same content.
  * <p>
  * Details of the open metadata types are documented on the wiki:
- * <a href="https://egeria.odpi.org/open-metadata-publication/website/open-metadata-types/">The Open Metadata Type System</a>
+ * <a href="https://egeria-project.org/types/">The Open Metadata Type System</a>
  * </p>
  * <p>
  * There are 8 areas, each covering a different topic area of metadata.  The module breaks down the process of creating
@@ -1001,7 +1001,7 @@ public class OpenMetadataTypesArchive3_1
 
 
     /**
-     * These types were originally coded in release 1.7 - however the top-level method was not called ans so these types did not make the archive.
+     * These types were originally coded in release 1.7 - however the top-level method was not called and so these types did not make the archive.
      */
 
     private void add0485DataProcessingPurposes()

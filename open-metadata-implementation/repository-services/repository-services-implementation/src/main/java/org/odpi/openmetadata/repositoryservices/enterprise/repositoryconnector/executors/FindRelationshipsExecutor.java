@@ -23,10 +23,10 @@ import java.util.List;
  */
 public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
 {
-    private SearchProperties matchProperties;
-    private List<String>     instanceSubtypeGUIDs;
+    private final SearchProperties matchProperties;
+    private final List<String>     instanceSubtypeGUIDs;
 
-    private RelationshipsAccumulator accumulator;
+    private final RelationshipsAccumulator accumulator;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and

@@ -7,14 +7,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Govern
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NextGovernanceActionTypeElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The GovernanceExchangeInterface enables the exchange of governance definitions between an external asset manager and open metadata.
@@ -27,14 +26,9 @@ public interface GovernanceExchangeInterface
      * Create a new definition.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionExternalIdentifier unique identifier of the definition in the external asset manager
-     * @param definitionExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param definitionExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param definitionExternalIdentifierSource component that issuing this request.
-     * @param definitionExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param typeName type of definition
      * @param definitionProperties properties of the definition
      *
@@ -48,12 +42,7 @@ public interface GovernanceExchangeInterface
                                       String                         assetManagerGUID,
                                       String                         assetManagerName,
                                       String                         typeName,
-                                      String                         definitionExternalIdentifier,
-                                      String                         definitionExternalIdentifierName,
-                                      String                         definitionExternalIdentifierUsage,
-                                      String                         definitionExternalIdentifierSource,
-                                      KeyPattern                     definitionExternalIdentifierKeyPattern,
-                                      Map<String, String>            mappingProperties,
+                                      ExternalIdentifierProperties   externalIdentifierProperties,
                                       GovernanceDefinitionProperties definitionProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
@@ -62,8 +51,8 @@ public interface GovernanceExchangeInterface
      * Update an existing definition.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID unique identifier of the definition to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param definitionProperties properties to update
@@ -86,8 +75,8 @@ public interface GovernanceExchangeInterface
      * Delete a specific governance definition.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID unique identifier of the definition to remove
      *
      * @throws InvalidParameterException guid is null or not known
@@ -107,8 +96,8 @@ public interface GovernanceExchangeInterface
      * If the link already exists the description is updated.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionOneGUID unique identifier of the first definition
      * @param definitionTwoGUID unique identifier of the second definition
      * @param description description of their relationship
@@ -131,8 +120,8 @@ public interface GovernanceExchangeInterface
      * Remove the link between two definitions.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionOneGUID unique identifier of the first definition
      * @param definitionTwoGUID unique identifier of the second definition
      *
@@ -154,8 +143,8 @@ public interface GovernanceExchangeInterface
      * If the link already exists the rationale is updated.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID unique identifier of the governance definition
      * @param delegatedToDefinitionGUID unique identifier of the governance definition that is delegated to
      * @param rationale description of how the delegation supports the definition
@@ -178,8 +167,8 @@ public interface GovernanceExchangeInterface
      * Remove the link between a governance definition and a governance definition that is delegated to (ie provides an implementation of).
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID unique identifier of the governance definition
      * @param delegatedToDefinitionGUID unique identifier of the governance definition that is delegated to
      *
@@ -200,8 +189,8 @@ public interface GovernanceExchangeInterface
      * Retrieve the governance definition by the unique identifier assigned by this service when it was created.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID identifier of the governance definition to retrieve
      *
      * @return properties of the matching definition
@@ -223,8 +212,8 @@ public interface GovernanceExchangeInterface
      * Retrieve the governance definition by its assigned unique document identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param documentIdentifier identifier to search for
      *
      * @return properties of the matching definition
@@ -245,8 +234,8 @@ public interface GovernanceExchangeInterface
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
      * @param methodName calling method
@@ -269,8 +258,8 @@ public interface GovernanceExchangeInterface
      * Remove the GovernedBy relationship between a governance definition and an element.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
      * @param methodName calling method
@@ -293,8 +282,8 @@ public interface GovernanceExchangeInterface
      * Classify the element to assert that it is part of a subject area definition.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementExternalIdentifier unique identifier of the element in the external asset manager
      * @param subjectAreaName qualified name of subject area
@@ -319,8 +308,8 @@ public interface GovernanceExchangeInterface
      * Remove the subject area designation from the identified element.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param externalElementIdentifier unique identifier of the equivalent element in the external asset manager
      * @param methodName calling method

@@ -4,11 +4,7 @@ package org.odpi.openmetadata.metadatasecurity.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The OpenMetadataSecurityErrorCode is used to define first failure data capture (FFDC) for errors that occur when
@@ -147,9 +143,23 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                              "Determine if the user should have access to this metadata instance and if they should then " +
                                          "change the configuration to give them the required update privileges."),
 
+    MULTIPLE_CONNECTIONS_FOUND(403, "OMAG-PLATFORM-SECURITY-403-015",
+                               "{0} connections are connected to the asset with unique identifier {1} but there is no security connector to select a connection for user {2}; the calling method is {3}",
+                               "The system is unable to process a request because multiple connections have been discovered and it is unsure which connection to return.",
+                               "Either add a server security connection or use a method such as getConnectionsForAsset() to page through the list of connections to select the one that is appropriate for their use case."),
+
+    NO_CONNECTIONS_ALLOWED(403, "OMAG-PLATFORM-SECURITY-403-016",
+                               "{0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}",
+                               "The system is unable to process a request because the calling user does not have sufficient privileges.",
+                               "No action is required if this user should not have access to the connection.  To gain access to the connection, either the security credentials of the user need changing, or a different userId is required."),
+
+    UNKNOWN_CONNECTION_RETURNED(500, "OMAG-PLATFORM-SECURITY-500-001",
+                           "{0} connections are connected to the asset with unique identifier {1} but the connector selecting the connection for user {2} has returned an unrecognized connection; the calling method is {3}",
+                           "The system is unable to process a request because the security connector is behaving strangely.",
+                           "Investigate and correct the behaviour of the server security connector."),
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
 
@@ -162,7 +172,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

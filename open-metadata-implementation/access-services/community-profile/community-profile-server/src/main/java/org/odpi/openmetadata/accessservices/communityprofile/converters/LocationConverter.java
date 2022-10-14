@@ -36,7 +36,7 @@ public class LocationConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -61,7 +61,11 @@ public class LocationConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (returnBean instanceof LocationElement)
             {
-                this.updateSimpleMetadataElement(beanClass, (LocationElement) returnBean, entity, methodName);
+                LocationElement bean = (LocationElement) returnBean;
+
+                this.updateSimpleMetadataElement(beanClass, bean, entity, methodName);
+
+                bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
             }
 
             return returnBean;
@@ -76,7 +80,7 @@ public class LocationConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -99,7 +103,7 @@ public class LocationConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (returnBean instanceof  LocationElement)
             {
-                this.updateSimpleMetadataElement(beanClass, ( LocationElement) returnBean, entity, methodName);
+                this.updateSimpleMetadataElement(beanClass, (LocationElement) returnBean, entity, methodName);
             }
 
             return returnBean;
@@ -137,7 +141,8 @@ public class LocationConverter<B> extends CommunityProfileOMASConverter<B>
 
             locationProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
             locationProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            locationProperties.setDisplayName(this.removeName(instanceProperties));
+            locationProperties.setIdentifier(this.removeIdentifier(instanceProperties));
+            locationProperties.setDisplayName(this.removeDisplayName(instanceProperties));
             locationProperties.setDescription(this.removeDescription(instanceProperties));
 
             /*

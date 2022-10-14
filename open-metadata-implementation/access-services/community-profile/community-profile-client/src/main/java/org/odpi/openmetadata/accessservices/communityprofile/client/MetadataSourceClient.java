@@ -32,12 +32,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  */
 public class MetadataSourceClient implements MetadataSourceInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody            nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody            nullRequestBody         = new NullRequestBody();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/metadata-sources";
 

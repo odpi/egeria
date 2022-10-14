@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -32,8 +33,8 @@ import java.util.List;
  */
 public class SchemaExchangeHandler extends ExchangeHandlerBase
 {
-    private SchemaTypeHandler<SchemaTypeElement>                              schemaTypeHandler;
-    private SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> schemaAttributeHandler;
+    private final SchemaTypeHandler<SchemaTypeElement>                              schemaTypeHandler;
+    private final SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> schemaAttributeHandler;
 
     private final static String schemaTypeGUIDParameterName      = "schemaTypeGUID";
     private final static String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
@@ -124,6 +125,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param results list of elements
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -135,6 +138,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        String                  assetManagerGUID,
                                                        String                  assetManagerName,
                                                        List<SchemaTypeElement> results,
+                                                       boolean                 forLineage,
+                                                       boolean                 forDuplicateProcessing,
                                                        Date                    effectiveTime,
                                                        String                  methodName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
@@ -142,7 +147,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement element : results)
+            for (SchemaTypeElement element : results)
             {
                 if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
@@ -152,8 +157,19 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
                                                                                 effectiveTime,
                                                                                 methodName));
+
+                    this.getSupplementaryProperties(element.getElementHeader().getGUID(),
+                                                    schemaTypeGUIDParameterName,
+                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                    element.getSchemaTypeProperties(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
                 }
             }
         }
@@ -167,6 +183,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param results list of elements
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -178,6 +196,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                             String                       assetManagerGUID,
                                                             String                       assetManagerName,
                                                             List<SchemaAttributeElement> results,
+                                                            boolean                      forLineage,
+                                                            boolean                      forDuplicateProcessing,
                                                             Date                         effectiveTime,
                                                             String                       methodName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
@@ -185,18 +205,29 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement schemaAttribute : results)
+            for (SchemaAttributeElement element : results)
             {
-                if ((schemaAttribute != null) && (schemaAttribute.getElementHeader() != null) && (schemaAttribute.getElementHeader().getGUID() != null))
+                if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
-                    schemaAttribute.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                         schemaAttribute.getElementHeader().getGUID(),
-                                                                                         schemaAttributeGUIDParameterName,
-                                                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                                         assetManagerGUID,
-                                                                                         assetManagerName,
-                                                                                         effectiveTime,
-                                                                                         methodName));
+                    element.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                element.getElementHeader().getGUID(),
+                                                                                schemaAttributeGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                assetManagerGUID,
+                                                                                assetManagerName,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName));
+
+                    this.getSupplementaryProperties(element.getElementHeader().getGUID(),
+                                                    schemaAttributeGUIDParameterName,
+                                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                    element.getSchemaAttributeProperties(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
                 }
             }
         }
@@ -214,6 +245,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param schemaTypeProperties properties about the schema type to store
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return unique identifier of the new schema type
@@ -226,6 +260,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                    MetadataCorrelationProperties correlationProperties,
                                    boolean                       assetManagerIsHome,
                                    SchemaTypeProperties          schemaTypeProperties,
+                                   boolean                       forLineage,
+                                   boolean                       forDuplicateProcessing,
+                                   Date                          effectiveTime,
                                    String                        methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -243,19 +280,31 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                               serverName,
                                                               methodName);
 
+        builder.setEffectivityDates(schemaTypeProperties.getEffectiveFrom(), schemaTypeProperties.getEffectiveTo());
+
         String schemaTypeGUID = schemaTypeHandler.addSchemaType(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                 builder,
+                                                                schemaTypeProperties.getEffectiveFrom(),
+                                                                schemaTypeProperties.getEffectiveTo(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
                                                                 methodName);
 
         if (schemaTypeGUID != null)
         {
             this.maintainSupplementaryProperties(userId,
                                                  schemaTypeGUID,
+                                                 schemaTypeGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                  schemaTypeProperties.getQualifiedName(),
                                                  schemaTypeProperties,
                                                  false,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
                                                  methodName);
 
             this.createExternalIdentifier(userId,
@@ -263,6 +312,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                           schemaTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                           correlationProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
         }
 
@@ -271,7 +323,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
 
     /**
-     * Recursively navigate through the schema type loading up the a new schema type builder to pass to the
+     * Recursively navigate through the schema type loading up a new schema type builder to pass to the
      * schemaTypeHandler.
      *
      * @param schemaType supplied schema type
@@ -455,6 +507,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                           schemaTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                           correlationProperties,
+                                          false,
+                                          false,
+                                          null,
                                           methodName);
         }
 
@@ -469,7 +524,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param schemaTypeProperties new properties for the metadata element
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -480,7 +538,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                  MetadataCorrelationProperties correlationProperties,
                                  String                        schemaTypeGUID,
                                  boolean                       isMergeUpdate,
+                                 boolean                       forLineage,
+                                 boolean                       forDuplicateProcessing,
                                  SchemaTypeProperties          schemaTypeProperties,
+                                 Date                          effectiveTime,
                                  String                        methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -498,6 +559,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         schemaTypeGUIDParameterName,
                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         SchemaTypeBuilder builder = this.getSchemaTypeBuilder(schemaTypeProperties,
@@ -513,7 +577,22 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                            schemaTypeGUIDParameterName,
                                            builder,
                                            isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
+
+        this.maintainSupplementaryProperties(userId,
+                                             schemaTypeGUID,
+                                             schemaTypeGUIDParameterName,
+                                             OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                             schemaTypeProperties.getQualifiedName(),
+                                             schemaTypeProperties,
+                                             isMergeUpdate,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
     }
 
 
@@ -527,12 +606,18 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
     public void setupSchemaTypeParent(String  userId,
                                       String  assetManagerGUID,
                                       String  assetManagerName,
@@ -540,9 +625,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                       String  schemaTypeGUID,
                                       String  parentElementGUID,
                                       String  parentElementTypeName,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
                                       String  methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
         final String parentElementGUIDParameterName = "parentElementGUID";
@@ -550,9 +640,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-        if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
-                                                                         parentElementTypeName,
-                                                                         OpenMetadataAPIMapper.PORT_TYPE_NAME))
+       if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataAPIMapper.PORT_TYPE_NAME))
         {
             schemaTypeHandler.linkElementToElement(userId,
                                                    this.getExternalSourceGUID(assetManagerGUID, assetManagerIsHome),
@@ -563,11 +651,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                    null,
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
                                                    methodName);
         }
         else
@@ -581,11 +672,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                    null,
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
                                                    methodName);
         }
     }
@@ -600,29 +694,33 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaTypeParent(String userId,
-                                      String assetManagerGUID,
-                                      String assetManagerName,
-                                      String schemaTypeGUID,
-                                      String parentElementGUID,
-                                      String parentElementTypeName,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearSchemaTypeParent(String  userId,
+                                      String  assetManagerGUID,
+                                      String  assetManagerName,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
         final String parentElementGUIDParameterName = "parentElementGUID";
         final String parentElementTypeParameterName = "parentElementTypeName";
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
-
-        Date effectiveTime = new Date();
 
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
@@ -639,8 +737,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        schemaTypeGUIDParameterName,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                        OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                        effectiveTime,
@@ -659,8 +757,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        schemaTypeGUIDParameterName,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                        effectiveTime,
@@ -675,6 +773,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param schemaTypeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -684,6 +785,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     public void removeSchemaType(String                        userId,
                                  MetadataCorrelationProperties correlationProperties,
                                  String                        schemaTypeGUID,
+                                 boolean                       forLineage,
+                                 boolean                       forDuplicateProcessing,
+                                 Date                          effectiveTime,
                                  String                        methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -696,6 +800,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         schemaTypeGUIDParameterName,
                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         schemaAttributeHandler.deleteBeanInRepository(userId,
@@ -707,9 +814,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                       null,
                                                       null,
-                                                      false,
-                                                      false,
-                                                      new Date(),
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
                                                       methodName);
     }
 
@@ -724,6 +831,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -732,26 +842,37 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaTypeElement> findSchemaType(String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<SchemaTypeElement> findSchemaType(String  userId,
+                                                  String  assetManagerGUID,
+                                                  String  assetManagerName,
+                                                  String  searchString,
+                                                  int     startFrom,
+                                                  int     pageSize,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        Date effectiveTime = new Date();
+       List<SchemaTypeElement> results = schemaTypeHandler.findSchemaTypes(userId,
+                                                                           null,
+                                                                           searchString,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           effectiveTime,
+                                                                           methodName);
 
-        List<SchemaTypeElement> results = schemaTypeHandler.findSchemaTypes(userId,
-                                                                            searchString,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            effectiveTime,
-                                                                            methodName);
-
-        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
+        addCorrelationPropertiesToSchemaTypes(userId,
+                                              assetManagerGUID,
+                                              assetManagerName,
+                                              results,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
 
         return results;
     }
@@ -765,6 +886,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @return metadata element describing the schema type associated with the requested parent element
@@ -773,14 +897,17 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElement getSchemaTypeForElement(String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String parentElementGUID,
-                                                     String parentElementTypeName,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public SchemaTypeElement getSchemaTypeForElement(String  userId,
+                                                     String  assetManagerGUID,
+                                                     String  assetManagerName,
+                                                     String  parentElementGUID,
+                                                     String  parentElementTypeName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String guidParameterName = "parentElementGUID";
 
@@ -789,8 +916,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         SchemaTypeElement schemaTypeElement;
 
-        Date effectiveTime = new Date();
-
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
                                                                          OpenMetadataAPIMapper.PORT_TYPE_NAME))
@@ -798,6 +923,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement = schemaTypeHandler.getSchemaTypeForPort(userId,
                                                                        parentElementGUID,
                                                                        guidParameterName,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        effectiveTime,
                                                                        methodName);
         }
@@ -806,6 +933,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement = schemaTypeHandler.getSchemaTypeForAsset(userId,
                                                                         parentElementGUID,
                                                                         guidParameterName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
                                                                         effectiveTime,
                                                                         methodName);
         }
@@ -818,8 +947,19 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
                                                                                   effectiveTime,
                                                                                   methodName));
+
+            this.getSupplementaryProperties(schemaTypeElement.getElementHeader().getGUID(),
+                                            schemaTypeGUIDParameterName,
+                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                            schemaTypeElement.getSchemaTypeProperties(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
         }
 
         return schemaTypeElement;
@@ -836,6 +976,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -844,21 +987,29 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaTypeElement>   getSchemaTypeByName(String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
-                                                         String name,
-                                                         int    startFrom,
-                                                         int    pageSize,
-                                                         String methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<SchemaTypeElement>   getSchemaTypeByName(String  userId,
+                                                         String  assetManagerGUID,
+                                                         String  assetManagerName,
+                                                         String  name,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        Date effectiveTime = new Date();
+        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, null, name, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
-        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, name, startFrom, pageSize, effectiveTime, methodName);
-
-        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
+        addCorrelationPropertiesToSchemaTypes(userId,
+                                              assetManagerGUID,
+                                              assetManagerName,
+                                              results,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
 
         return results;
     }
@@ -871,6 +1022,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -879,21 +1033,24 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElement getSchemaTypeByGUID(String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 String schemaTypeGUID,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public SchemaTypeElement getSchemaTypeByGUID(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 String  schemaTypeGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String guidParameterName = "schemaTypeGUID";
-
-        Date effectiveTime = new Date();
 
         SchemaTypeElement schemaTypeElement = schemaTypeHandler.getSchemaType(userId,
                                                                               schemaTypeGUID,
                                                                               guidParameterName,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
                                                                               effectiveTime,
                                                                               methodName);
 
@@ -905,8 +1062,19 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
                                                                                   effectiveTime,
                                                                                   methodName));
+
+            this.getSupplementaryProperties(schemaTypeElement.getElementHeader().getGUID(),
+                                            schemaTypeGUIDParameterName,
+                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                            schemaTypeElement.getSchemaTypeProperties(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
         }
 
         return schemaTypeElement;
@@ -920,6 +1088,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @return header for parent element (data asset, process, port)
@@ -929,20 +1100,21 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value="unused")
-    public ElementHeader getSchemaTypeParent(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String schemaTypeGUID,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public ElementHeader getSchemaTypeParent(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  schemaTypeGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String guidParameterName = "schemaTypeGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
-
-        Date effectiveTime = new Date();
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        invalidParameterHandler,
@@ -951,6 +1123,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                        null,
                                                                                        null,
+                                                                                       1,
+                                                                                       false,
                                                                                        false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
@@ -1003,6 +1177,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param schemaAttributeProperties properties for the schema attribute
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the schema attribute
@@ -1016,6 +1193,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         boolean                       assetManagerIsHome,
                                         String                        schemaElementGUID,
                                         SchemaAttributeProperties     schemaAttributeProperties,
+                                        boolean                       forLineage,
+                                        boolean                       forDuplicateProcessing,
+                                        Date                          effectiveTime,
                                         String                        methodName) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -1041,7 +1221,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                         schemaAttributeProperties.getQualifiedName(),
                                                                                         qualifiedNameParameterName,
                                                                                         schemaAttributeBuilder,
-                                                                                        new Date(),
+                                                                                        schemaAttributeProperties.getEffectiveFrom(),
+                                                                                        schemaAttributeProperties.getEffectiveTo(),
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
         if (schemaAttributeGUID != null)
@@ -1051,7 +1235,22 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                           schemaAttributeGUIDParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                           correlationProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
+
+            this.maintainSupplementaryProperties(userId,
+                                                 schemaAttributeGUID,
+                                                 schemaAttributeGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                 schemaAttributeProperties.getQualifiedName(),
+                                                 schemaAttributeProperties,
+                                                 false,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
         }
 
         return schemaAttributeGUID;
@@ -1140,6 +1339,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the schema attribute
@@ -1154,17 +1356,20 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                     String                        schemaElementGUID,
                                                     String                        templateGUID,
                                                     TemplateProperties            templateProperties,
+                                                    boolean                       forLineage,
+                                                    boolean                       forDuplicateProcessing,
+                                                    Date                          effectiveTime,
                                                     String                        methodName) throws InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        final String scehmaElementGUIDParameterName = "schemaElementGUID";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaElementGUID, scehmaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -1173,12 +1378,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                               getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                                               getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                                               schemaElementGUID,
-                                                                                              scehmaElementGUIDParameterName,
+                                                                                              schemaElementGUIDParameterName,
                                                                                               templateGUID,
                                                                                               templateProperties.getQualifiedName(),
                                                                                               templateProperties.getDisplayName(),
                                                                                               templateProperties.getDescription(),
-                                                                                              new Date(),
+                                                                                              forLineage,
+                                                                                              forDuplicateProcessing,
+                                                                                              effectiveTime,
                                                                                               methodName);
 
         if (schemaAttributeGUID != null)
@@ -1188,6 +1395,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                           schemaAttributeGUIDParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                           correlationProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
         }
 
@@ -1203,6 +1413,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaAttributeProperties new properties for the schema attribute
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1214,6 +1427,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                       String                        schemaAttributeGUID,
                                       boolean                       isMergeUpdate,
                                       SchemaAttributeProperties     schemaAttributeProperties,
+                                      boolean                       forLineage,
+                                      boolean                       forDuplicateProcessing,
+                                      Date                          effectiveTime,
                                       String                        methodName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
@@ -1231,6 +1447,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         schemaAttributeGUIDParameterName,
                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(userId,
@@ -1242,9 +1461,25 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      getExternalSourceName(correlationProperties),
                                                      schemaAttributeGUID,
                                                      schemaAttributeGUIDParameterName,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     supportedZones,
                                                      schemaAttributeBuilder.getInstanceProperties(methodName),
                                                      isMergeUpdate,
+                                                     effectiveTime,
                                                      methodName);
+
+        this.maintainSupplementaryProperties(userId,
+                                             schemaAttributeGUID,
+                                             schemaAttributeGUIDParameterName,
+                                             OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                             schemaAttributeProperties.getQualifiedName(),
+                                             schemaAttributeProperties,
+                                             isMergeUpdate,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
     }
 
 
@@ -1257,6 +1492,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the asset manager can update this relationship
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param formula formula used to calculate the value
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1269,6 +1507,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                   boolean assetManagerIsHome,
                                                   String  schemaElementGUID,
                                                   String  formula,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
                                                   String  methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1294,9 +1535,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                              properties,
                                                              false,
-                                                             false,
-                                                             false,
-                                                             new Date(),
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
                                                              methodName);
     }
 
@@ -1308,19 +1549,25 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaElementAsCalculatedValue(String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String schemaElementGUID,
-                                                    String methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void clearSchemaElementAsCalculatedValue(String  userId,
+                                                    String  assetManagerGUID,
+                                                    String  assetManagerName,
+                                                    String  schemaElementGUID,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String schemaElementGUIDParameterName = "schemaElementGUID";
 
@@ -1332,9 +1579,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                                  false,
-                                                                  false,
-                                                                  new Date(),
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveTime,
                                                                   methodName);
     }
 
@@ -1349,6 +1596,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaAttributeGUID unique identifier of the metadata element to update
      * @param primaryKeyName name of the primary key (if different from the column name)
      * @param primaryKeyPattern key pattern used to maintain the primary key
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1362,6 +1612,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         String     schemaAttributeGUID,
                                         String     primaryKeyName,
                                         KeyPattern primaryKeyPattern,
+                                        boolean    forLineage,
+                                        boolean    forDuplicateProcessing,
+                                        Date       effectiveTime,
                                         String     methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -1406,9 +1659,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
                                                              properties,
                                                              false,
-                                                             false,
-                                                             false,
-                                                             new Date(),
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
                                                              methodName);
     }
 
@@ -1420,19 +1673,25 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearColumnAsPrimaryKey(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String schemaAttributeGUID,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void clearColumnAsPrimaryKey(String  userId,
+                                        String  assetManagerGUID,
+                                        String  assetManagerName,
+                                        String  schemaAttributeGUID,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         schemaAttributeHandler.removeClassificationFromRepository(userId,
                                                                   assetManagerGUID,
@@ -1442,9 +1701,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
-                                                                  false,
-                                                                  false,
-                                                                  new Date(),
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveTime,
                                                                   methodName);
     }
 
@@ -1459,12 +1718,16 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
     public void setupForeignKeyRelationship(String               userId,
                                             String               assetManagerGUID,
                                             String               assetManagerName,
@@ -1472,6 +1735,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                             String               primaryKeyGUID,
                                             String               foreignKeyGUID,
                                             ForeignKeyProperties foreignKeyProperties,
+                                            boolean              forLineage,
+                                            boolean              forDuplicateProcessing,
+                                            Date                 effectiveTime,
                                             String               methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -1483,6 +1749,15 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateGUID(primaryKeyGUID, primaryKeyGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(foreignKeyGUID, foreignKeyGUIDParameterName, methodName);
 
+        Date effectiveFrom = null;
+        Date effectiveTo = null;
+
+        if (foreignKeyProperties != null)
+        {
+            effectiveFrom = foreignKeyProperties.getEffectiveFrom();
+            effectiveTo = foreignKeyProperties.getEffectiveTo();
+        }
+
         schemaAttributeHandler.linkElementToElement(userId,
                                                     getExternalSourceGUID(assetManagerGUID, assetManagerIsHome),
                                                     getExternalSourceName(assetManagerName, assetManagerIsHome),
@@ -1492,11 +1767,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                     foreignKeyGUID,
                                                     foreignKeyGUIDParameterName,
                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                    false,
-                                                    false,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
                                                     OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                     OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
                                                     this.getForeignKeyProperties(foreignKeyProperties, methodName),
+                                                    effectiveFrom,
+                                                    effectiveTo,
+                                                    effectiveTime,
                                                     methodName);
     }
 
@@ -1555,18 +1833,25 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
     public void updateForeignKeyRelationship(String               userId,
                                              String               assetManagerGUID,
                                              String               assetManagerName,
                                              String               primaryKeyGUID,
                                              String               foreignKeyGUID,
                                              ForeignKeyProperties foreignKeyProperties,
+                                             boolean              forLineage,
+                                             boolean              forDuplicateProcessing,
+                                             Date                 effectiveTime,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1587,9 +1872,14 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                           foreignKeyGUID,
                                                           foreignKeyGUIDParameterName,
                                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          supportedZones,
                                                           OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                           OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                          false,
                                                           this.getForeignKeyProperties(foreignKeyProperties, methodName),
+                                                          effectiveTime,
                                                           methodName);
     }
 
@@ -1602,20 +1892,26 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearForeignKeyRelationship(String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String primaryKeyGUID,
-                                            String foreignKeyGUID,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void clearForeignKeyRelationship(String  userId,
+                                            String  assetManagerGUID,
+                                            String  assetManagerName,
+                                            String  primaryKeyGUID,
+                                            String  foreignKeyGUID,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String primaryKeyGUIDParameterName = "primaryKeyGUID";
         final String foreignKeyGUIDParameterName = "foreignKeyGUID";
@@ -1635,11 +1931,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                         foreignKeyGUIDParameterName,
                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                         OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
-                                                        new Date(),
+                                                        effectiveTime,
                                                         methodName);
     }
 
@@ -1650,6 +1946,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1659,6 +1958,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     public void removeSchemaAttribute(String                        userId,
                                       MetadataCorrelationProperties correlationProperties,
                                       String                        schemaAttributeGUID,
+                                      boolean                       forLineage,
+                                      boolean                       forDuplicateProcessing,
+                                      Date                          effectiveTime,
                                       String                        methodName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -1671,6 +1973,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                         schemaAttributeGUIDParameterName,
                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         schemaAttributeHandler.deleteBeanInRepository(userId,
@@ -1682,9 +1987,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                       null,
                                                       null,
-                                                      false,
-                                                      false,
-                                                      new Date(),
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
                                                       methodName);
     }
 
@@ -1699,6 +2004,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @return list of matching metadata elements
@@ -1707,19 +2015,20 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaAttributeElement>   findSchemaAttributes(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String searchString,
-                                                               int    startFrom,
-                                                               int    pageSize,
-                                                               String methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<SchemaAttributeElement>   findSchemaAttributes(String  userId,
+                                                               String  assetManagerGUID,
+                                                               String  assetManagerName,
+                                                               String  searchString,
+                                                               int     startFrom,
+                                                               int     pageSize,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String searchStringParameterName = "searchString";
-
-        Date effectiveTime = new Date();
 
         List<SchemaAttributeElement> results = schemaAttributeHandler.findSchemaAttributes(userId,
                                                                                            searchString,
@@ -1730,10 +2039,12 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                            null,
                                                                                            startFrom,
                                                                                            pageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing,
                                                                                            effectiveTime,
                                                                                            methodName);
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         return results;
     }
@@ -1748,6 +2059,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -1756,19 +2070,20 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaAttributeElement> getNestedAttributes(String userId,
-                                                            String assetManagerGUID,
-                                                            String assetManagerName,
-                                                            String parentSchemaElementGUID,
-                                                            int    startFrom,
-                                                            int    pageSize,
-                                                            String methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<SchemaAttributeElement> getNestedAttributes(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  parentSchemaElementGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String elementGUIDParameterName    = "schemaAttributeGUID";
-
-        Date effectiveTime = new Date();
 
         List<SchemaAttributeElement> results = schemaAttributeHandler.getAttachedSchemaAttributes(userId,
                                                                                                   parentSchemaElementGUID,
@@ -1776,11 +2091,13 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                                   startFrom,
                                                                                                   pageSize,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
                                                                                                   effectiveTime,
                                                                                                   methodName);
 
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         return results;
     }
@@ -1796,6 +2113,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @return list of matching metadata elements
@@ -1804,30 +2124,34 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaAttributeElement>   getSchemaAttributesByName(String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String name,
-                                                                    int    startFrom,
-                                                                    int    pageSize,
-                                                                    String methodName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<SchemaAttributeElement>   getSchemaAttributesByName(String  userId,
+                                                                    String  assetManagerGUID,
+                                                                    String  assetManagerName,
+                                                                    String  name,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing,
+                                                                    Date    effectiveTime,
+                                                                    String  methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        Date effectiveTime = new Date();
-
         List<SchemaAttributeElement> results = schemaAttributeHandler.getSchemaAttributesByName(userId,
                                                                                                 OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
                                                                                                 OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                                                                 name,
                                                                                                 null,
                                                                                                 null,
+                                                                                                supportedZones,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                forLineage,
+                                                                                                forDuplicateProcessing,
                                                                                                 effectiveTime,
                                                                                                 methodName);
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         return results;
     }
@@ -1840,6 +2164,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName     calling method
      *
      * @return matching metadata element
@@ -1848,17 +2175,18 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElement getSchemaAttributeByGUID(String userId,
-                                                           String assetManagerGUID,
-                                                           String assetManagerName,
-                                                           String schemaAttributeGUID,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public SchemaAttributeElement getSchemaAttributeByGUID(String  userId,
+                                                           String  assetManagerGUID,
+                                                           String  assetManagerName,
+                                                           String  schemaAttributeGUID,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String guidParameterName = "schemaAttributeGUID";
-
-        Date effectiveTime = new Date();
 
         SchemaAttributeElement schemaAttributeElement = schemaAttributeHandler.getBeanFromRepository(userId,
                                                                                                      schemaAttributeGUID,
@@ -1877,8 +2205,19 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        assetManagerGUID,
                                                                                        assetManagerName,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
                                                                                        effectiveTime,
                                                                                        methodName));
+
+            this.getSupplementaryProperties(schemaAttributeElement.getElementHeader().getGUID(),
+                                            schemaAttributeGUIDParameterName,
+                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                            schemaAttributeElement.getSchemaAttributeProperties(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
         }
 
         return schemaAttributeElement;

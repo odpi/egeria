@@ -34,7 +34,6 @@ public class SchemaTypeProperties extends SchemaProperties
 
     private String versionNumber    = null;
     private String author           = null;
-    private String usage            = null;
     private String encodingStandard = null;
     private String namespace        = null;
 
@@ -66,7 +65,6 @@ public class SchemaTypeProperties extends SchemaProperties
         {
             versionNumber = template.getVersionNumber();
             author = template.getAuthor();
-            usage = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
             formula = template.getFormula();
@@ -110,25 +108,6 @@ public class SchemaTypeProperties extends SchemaProperties
     public void setAuthor(String author)
     {
         this.author = author;
-    }
-
-
-    /**
-     * Return the usage guidance for this schema element. Null means no guidance available.
-     *
-     * @return String usage guidance
-     */
-    public String getUsage() { return usage; }
-
-
-    /**
-     * Set up the usage guidance for this schema element. Null means no guidance available.
-     *
-     * @param usage String usage guidance
-     */
-    public void setUsage(String usage)
-    {
-        this.usage = usage;
     }
 
 
@@ -239,25 +218,27 @@ public class SchemaTypeProperties extends SchemaProperties
     public String toString()
     {
         return "SchemaTypeProperties{" +
-                       "versionNumber='" + versionNumber + '\'' +
+                       "qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", technicalName='" + getTechnicalName() + '\'' +
+                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
+                       ", versionNumber='" + versionNumber + '\'' +
                        ", author='" + author + '\'' +
-                       ", usage='" + usage + '\'' +
                        ", encodingStandard='" + encodingStandard + '\'' +
                        ", namespace='" + namespace + '\'' +
                        ", formula='" + formula + '\'' +
                        ", queries=" + queries +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", technicalName='" + getTechnicalName() + '\'' +
-                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties()  +
+                       ", usage='" + getUsage() + '\'' +
                        '}';
     }
 
@@ -286,7 +267,6 @@ public class SchemaTypeProperties extends SchemaProperties
         SchemaTypeProperties that = (SchemaTypeProperties) objectToCompare;
         return Objects.equals(versionNumber, that.versionNumber) &&
                 Objects.equals(author, that.author) &&
-                Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespace, that.namespace) &&
                 Objects.equals(formula, that.formula) &&
@@ -295,13 +275,13 @@ public class SchemaTypeProperties extends SchemaProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, queries);
+        return Objects.hash(super.hashCode(), versionNumber, author, encodingStandard, namespace, formula, queries);
     }
 }

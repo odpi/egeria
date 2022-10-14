@@ -14,7 +14,7 @@ dependencies {
     implementation 'org.springframework:spring-core'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

@@ -40,7 +40,7 @@ public class OMRSArchiveManager
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     /**
      * Constructor to save the initial list of open metadata archives from the server startup configuration.
@@ -90,6 +90,7 @@ public class OMRSArchiveManager
      * the local Content Manager and TypeDef Processor but the local Instance Processor is only available
      * if the local server has a metadata repository defined.
      *
+     * @param localMetadataCollectionId unique identifier of the local repository
      * @param repositoryContentManager typeDef processor for the local repository
      * @param instanceProcessor  instance processor for the local repository
      */
@@ -102,7 +103,7 @@ public class OMRSArchiveManager
         this.localInstanceEventProcessor = instanceProcessor;
 
         /*
-         * The repository content manager is seeded with all of the open metadata types.
+         * The repository content manager is seeded with all the open metadata types.
          */
         processOpenMetadataTypes();
 

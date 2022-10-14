@@ -21,7 +21,6 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
     protected String             entityTypeGUID;
     protected String             entityTypeName;
     protected String             sequencingPropertyName;
-    protected boolean            forLineage;
 
     protected List<EntityDetail> entitiesCache = null;
 
@@ -61,6 +60,7 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
               userId,
               startingFrom,
               pageSize,
+              forLineage,
               forDuplicateProcessing,
               effectiveTime,
               methodName);
@@ -68,7 +68,6 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
         this.entityTypeGUID          = entityTypeGUID;
         this.entityTypeName          = entityTypeName;
         this.sequencingPropertyName  = sequencingPropertyName;
-        this.forLineage              = forLineage;
     }
 
 
@@ -76,10 +75,12 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * Determine if there is more to receive.  It will populate the iterator's cache with more content.
      *
      * @return boolean flag
+     * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
-    public abstract boolean  moreToReceive() throws UserNotAuthorizedException,
+    public abstract boolean  moreToReceive() throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
                                                     PropertyServerException;
 
 
@@ -87,10 +88,12 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * Return the next entity.  It returns null if nothing left to retrieve.
      *
      * @return relationship or null
+     * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
-    public EntityDetail getNext() throws UserNotAuthorizedException,
+    public EntityDetail getNext() throws InvalidParameterException,
+                                         UserNotAuthorizedException,
                                          PropertyServerException
     {
         if (moreToReceive())

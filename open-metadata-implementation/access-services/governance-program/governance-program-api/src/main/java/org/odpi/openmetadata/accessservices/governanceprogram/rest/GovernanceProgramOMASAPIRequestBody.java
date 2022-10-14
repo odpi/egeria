@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AppointmentRequestBody.class, name = "AppointmentRequestBody"),
-                @JsonSubTypes.Type(value = PersonalProfileValidatorRequestBody.class, name = "PersonalProfileValidatorRequestBody"),
         })
 public abstract class GovernanceProgramOMASAPIRequestBody implements java.io.Serializable
 {

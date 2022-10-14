@@ -3,7 +3,7 @@
   
 # Glossary Author Open Metadata View Service (OMVS)
 
-![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
+![In Development](../../../images/egeria-content-status-in-development.png)
 
 Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface. The Glossary Author OMVS is for user interfaces that support subject matter experts
 who are defining glossaries, reference data and rules around data for a specific subject area, such as "customer data". 

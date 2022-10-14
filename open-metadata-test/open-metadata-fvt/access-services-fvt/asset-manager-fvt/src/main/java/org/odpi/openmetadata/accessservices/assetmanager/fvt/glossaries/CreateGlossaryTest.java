@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
@@ -14,6 +12,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -110,7 +110,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -186,7 +186,6 @@ public class CreateGlossaryTest extends AssetManagerTestBase
         String glossaryTermGUID = thisTest.getGlossaryTerm(client, assetManagerGUID, glossaryGUID, userId);
         String controlledGlossaryTermGUID = thisTest.getControlledGlossaryTerm(client, glossaryGUID, userId);
 
-
         thisTest.addTermToCategory(client,
                                    assetManagerGUID,
                                    glossaryCategoryGUID,
@@ -216,7 +215,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
         }
         catch (Exception unexpectedError)
         {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " => " + glossaryGUID, unexpectedError);
         }
 
         try
@@ -264,18 +263,21 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             properties.setQualifiedName(glossaryCategoryName);
             properties.setDisplayName(glossaryCategoryDisplayName);
             properties.setDescription(glossaryCategoryDescription);
-            
+
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(externalCategoryIdentifier);
+            externalIdentifierProperties.setExternalIdentifierName(externalCategoryIdentifierName);
+            externalIdentifierProperties.setExternalIdentifierUsage(externalCategoryIdentifierUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(externalCategoryIdentifierSource);
+            externalIdentifierProperties.setKeyPattern(externalCategoryIdentifierKeyPattern);
+            externalIdentifierProperties.setMappingProperties(null);
 
             String glossaryCategoryGUID = client.createGlossaryCategory(userId,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         glossaryGUID,
-                                                                        externalCategoryIdentifier,
-                                                                        externalCategoryIdentifierName,
-                                                                        externalCategoryIdentifierUsage,
-                                                                        externalCategoryIdentifierSource,
-                                                                        externalCategoryIdentifierKeyPattern,
-                                                                        null,
+                                                                        externalIdentifierProperties,
                                                                         properties);
 
             if (glossaryCategoryGUID == null)
@@ -283,7 +285,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for schemaCreate)");
             }
 
-            GlossaryCategoryElement    retrievedElement = client.getGlossaryCategoryByGUID(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID);
+            GlossaryCategoryElement    retrievedElement = client.getGlossaryCategoryByGUID(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, null, false, false);
             GlossaryCategoryProperties retrievedCategory  = retrievedElement.getGlossaryCategoryProperties();
 
             if (retrievedCategory == null)
@@ -310,7 +312,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             }
             
 
-            List<GlossaryCategoryElement> glossaryCategoryList = client.getGlossaryCategoriesByName(userId, assetManagerGUID, assetManagerName, glossaryCategoryName, 0, maxPageSize);
+            List<GlossaryCategoryElement> glossaryCategoryList = client.getGlossaryCategoriesByName(userId, assetManagerGUID, assetManagerName, glossaryCategoryName, 0, maxPageSize, null, false, false);
 
             if (glossaryCategoryList == null)
             {
@@ -390,9 +392,9 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             categorizationProperties.setDescription("Category for " + glossaryTermGUID);
             categorizationProperties.setStatus(GlossaryTermRelationshipStatus.ACTIVE);
 
-            client.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties);
+            client.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties, null, false, false);
 
-            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, 0 , 0);
+            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, 0 , 0, null, false, false);
 
             this.validateGlossaryTermElements(activityName,
                                               "RetrieveByCategory",
@@ -440,16 +442,20 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             mappingProperties.put("prop1", "One");
             mappingProperties.put("prop2", "Two");
 
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(externalTermIdentifier);
+            externalIdentifierProperties.setExternalIdentifierName(externalTermIdentifierName);
+            externalIdentifierProperties.setExternalIdentifierUsage(externalTermIdentifierUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(externalTermIdentifierSource);
+            externalIdentifierProperties.setKeyPattern(externalTermIdentifierKeyPattern);
+            externalIdentifierProperties.setMappingProperties(mappingProperties);
+
             String glossaryTermGUID = client.createGlossaryTerm(userId,
                                                                 assetManagerGUID,
                                                                 assetManagerName,
                                                                 glossaryGUID,
-                                                                externalTermIdentifier,
-                                                                externalTermIdentifierName,
-                                                                externalTermIdentifierUsage,
-                                                                externalTermIdentifierSource,
-                                                                externalTermIdentifierKeyPattern,
-                                                                mappingProperties,
+                                                                externalIdentifierProperties,
                                                                 properties);
 
             if (glossaryTermGUID == null)
@@ -512,11 +518,6 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                                                           null,
                                                                           glossaryGUID,
                                                                           null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
                                                                           properties,
                                                                           GlossaryTermStatus.DRAFT);
 
@@ -537,7 +538,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermDescription,
                                  ElementStatus.DRAFT);
 
-            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.PROPOSED);
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.PROPOSED, null, false, false);
 
             validateGlossaryTerm(client,
                                  userId,
@@ -551,7 +552,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermDescription,
                                  ElementStatus.PROPOSED);
 
-            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.APPROVED);
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.APPROVED, null, false, false);
 
             validateGlossaryTerm(client,
                                  userId,
@@ -565,7 +566,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermDescription,
                                  ElementStatus.APPROVED);
 
-            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.ACTIVE);
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.ACTIVE, null, false, false);
 
             validateGlossaryTerm(client,
                                  userId,
@@ -579,7 +580,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermDescription,
                                  ElementStatus.ACTIVE);
 
-            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.DRAFT);
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.DRAFT, null, false, false);
 
             validateGlossaryTerm(client,
                                  userId,
@@ -620,7 +621,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
     {
         try
         {
-            GlossaryTermElement    retrievedElement = client.getGlossaryTermByGUID(userId, assetManagerGUID, assetManagerName, glossaryTermGUID);
+            GlossaryTermElement    retrievedElement = client.getGlossaryTermByGUID(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -637,7 +638,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         description,
                                         status);
 
-            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, qualifiedName, 0, maxPageSize);
+            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, qualifiedName, 0, maxPageSize, null, false, false);
 
             validateGlossaryTermElements(activityName,
                                         "RetrieveByQualifiedName",
@@ -649,7 +650,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         description,
                                         status);
 
-            glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, displayName, 0, 0);
+            glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, displayName, 0, 0, null, false, false);
 
             validateGlossaryTermElements(activityName,
                                          "RetrieveTermsByGlossary",
@@ -661,7 +662,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                          description,
                                          status);
 
-            glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID, 0, 0);
+            glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID, 0, 0, null, false, false);
 
             validateGlossaryTermElements(activityName,
                                          "RetrieveTermsByGlossary",

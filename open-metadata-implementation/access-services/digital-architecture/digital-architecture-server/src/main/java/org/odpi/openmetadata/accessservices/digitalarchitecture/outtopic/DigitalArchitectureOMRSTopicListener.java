@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -30,10 +30,10 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(DigitalArchitectureOMRSTopicListener.class);
 
-    private DigitalArchitectureOutTopicPublisher eventPublisher;
-    private ReferenceableHandler<ElementHeader>  referenceableHandler;
-    private String                               localServerUserId;
-    private List<String>                         supportedZones;
+    private final DigitalArchitectureOutTopicPublisher eventPublisher;
+    private final ReferenceableHandler<ElementHeader>  referenceableHandler;
+    private final String                               localServerUserId;
+    private final List<String>                         supportedZones;
 
 
     /**
@@ -146,7 +146,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -185,7 +185,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -262,7 +262,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -301,7 +301,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -378,7 +378,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -419,7 +419,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -688,6 +688,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originalHomeMetadataCollectionId unique identifier for the original home repository.
      * @param entity                           new values for this entity, including the new home information.
      */
+    @Override
     public void processReHomedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,

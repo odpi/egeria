@@ -8,9 +8,9 @@ and governance services.
 
 Further information about this server can be found on the ODPi Egeria website:
 
-* [Description of the OMAG Server](https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/omag-server.html).
-* [Tutorial describing how to operate the OMAG Server](https://egeria.odpi.org/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial).
-* [Reference Guide for the OMAG Server Administration Services](https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/)
+* [Description of the OMAG Server](https://egeria-project.org/concepts/omag-server).
+* [Tutorial describing how to operate the OMAG Server](https://egeria-project.org/education/tutorials/omag-server-tutorial/overview/).
+* [Reference Guide for the OMAG Server Administration Services](https://egeria-project.org/guides/admin)
 used to configure which capabilities
 that you want to be active in the server.
 

@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * PersonalProfileListResponse is the response structure used on the OMAS REST API calls that return a
+ * PersonalProfileListResponse is the response structure used on the OMAS REST API calls that return
  * a list of personal profile objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

@@ -1,6 +1,6 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../../../../images/egeria-content-status-released.png#pagewidth)
 
 # OMRS REST API Repository Connector Implementation
 

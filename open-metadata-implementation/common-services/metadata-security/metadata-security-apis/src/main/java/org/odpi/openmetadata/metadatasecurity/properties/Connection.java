@@ -135,7 +135,7 @@ public class Connection extends Referenceable
 
 
     /**
-     * Set up the the userId to use on this connection.
+     * Set up the userId to use on this connection.
      *
      * @param userId string
      */
@@ -320,7 +320,7 @@ public class Connection extends Referenceable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

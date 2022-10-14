@@ -62,7 +62,7 @@ public class ReferenceValueAssignmentDefinitionElement extends ReferenceValueAss
 
 
     /**
-     * Set up the the valid value bean (may be a definition or a set).
+     * Set up the valid value bean (maybe a definition or a set).
      *
      * @param validValueElement bean
      */

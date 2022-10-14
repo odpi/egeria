@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,11 +26,11 @@ public class PersonalProfileUniverse extends PersonalProfileElement
 {
     private static final long     serialVersionUID = 1L;
 
-    private ContributionRecordElement    contributionRecord        = null;
-    private List<ProfileIdentityElement> userIdentities            = null;
-    private List<ContactMethodElement>   contactMethods            = null;
-    private List<ElementStub>            peers                     = null;
-    private List<ElementStub>            roles                     = null;
+    private ContributionRecordElement    contributionRecord = null;
+    private List<ProfileIdentityElement> userIdentities     = null;
+    private List<ContactMethodElement>   contactMethods     = null;
+    private List<ElementStub>            peers              = null;
+    private List<ElementStub>            roles              = null;
 
     /**
      * Default constructor

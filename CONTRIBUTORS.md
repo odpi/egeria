@@ -23,9 +23,10 @@ This file recognizes the people who have make an important contribution to Egeri
 | Federica Donald | federica.donald@ibm.com |
 | Adinarayana Harida | adharida@in.ibm.com |
 | Sachin Naik |  sachin.naik@ibm.com |
+| Liz McIntosh | liz.mcintosh@sas.com |
 
 
-To understand how to become an Egeria contributor see the [Egeria Operations Guide](Egeria-Operations.md).
+To understand how to become an Egeria contributor see the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

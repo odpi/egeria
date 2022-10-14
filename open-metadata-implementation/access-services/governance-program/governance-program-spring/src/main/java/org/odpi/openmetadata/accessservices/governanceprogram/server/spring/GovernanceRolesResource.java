@@ -4,11 +4,9 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceRolesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class GovernanceRolesResource
 {
-    private GovernanceRolesRESTServices restAPI = new GovernanceRolesRESTServices();
+    private final GovernanceRolesRESTServices restAPI = new GovernanceRolesRESTServices();
 
     /**
      * Default constructor
@@ -51,9 +49,9 @@ public class GovernanceRolesResource
      */
     @PostMapping(path = "/governance-roles")
 
-    public GUIDResponse createGovernanceRole(@PathVariable String                   serverName,
-                                             @PathVariable String                   userId,
-                                             @RequestBody  GovernanceRoleProperties requestBody)
+    public GUIDResponse createGovernanceRole(@PathVariable String                    serverName,
+                                             @PathVariable String                    userId,
+                                             @RequestBody  GovernanceRoleRequestBody requestBody)
 
     {
         return restAPI.createGovernanceRole(serverName, userId, requestBody);
@@ -70,18 +68,18 @@ public class GovernanceRolesResource
      * @param requestBody  properties of the governance role
      * @return void response or
      * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
-     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
+     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match
      *                                   the existing values associated with the governanceRoleGUID or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @PostMapping(path = "/governance-roles/{governanceRoleGUID}")
 
-    public VoidResponse   updateGovernanceRole(@PathVariable String                   serverName,
-                                               @PathVariable String                   userId,
-                                               @PathVariable String                   governanceRoleGUID,
-                                               @RequestParam boolean                  isMergeUpdate,
-                                               @RequestBody  GovernanceRoleProperties requestBody)
+    public VoidResponse   updateGovernanceRole(@PathVariable String                    serverName,
+                                               @PathVariable String                    userId,
+                                               @PathVariable String                    governanceRoleGUID,
+                                               @RequestParam boolean                   isMergeUpdate,
+                                               @RequestBody  GovernanceRoleRequestBody requestBody)
     {
         return restAPI.updateGovernanceRole(serverName, userId, governanceRoleGUID, isMergeUpdate, requestBody);
     }
@@ -95,7 +93,7 @@ public class GovernanceRolesResource
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param responsibilityGUID unique identifier of the governance responsibility control
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -109,7 +107,7 @@ public class GovernanceRolesResource
                                                  @PathVariable String          governanceRoleGUID,
                                                  @PathVariable String          responsibilityGUID,
                                                  @RequestBody(required = false)
-                                                               NullRequestBody requestBody)
+                                                               RelationshipRequestBody requestBody)
     {
         return restAPI.linkRoleToResponsibility(serverName, userId, governanceRoleGUID, responsibilityGUID, requestBody);
     }
@@ -122,7 +120,7 @@ public class GovernanceRolesResource
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param responsibilityGUID unique identifier of the governance responsibility control
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -136,7 +134,7 @@ public class GovernanceRolesResource
                                                      @PathVariable String          governanceRoleGUID,
                                                      @PathVariable String          responsibilityGUID,
                                                      @RequestBody(required = false)
-                                                                   NullRequestBody requestBody)
+                                                                   RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkRoleFromResponsibility(serverName, userId, governanceRoleGUID, responsibilityGUID, requestBody);
     }
@@ -149,7 +147,7 @@ public class GovernanceRolesResource
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param resourceGUID unique identifier of the resource description
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -163,7 +161,7 @@ public class GovernanceRolesResource
                                            @PathVariable String          governanceRoleGUID,
                                            @PathVariable String          resourceGUID,
                                            @RequestBody(required = false)
-                                                         NullRequestBody requestBody)
+                                                         RelationshipRequestBody requestBody)
     {
         return restAPI.linkRoleToResource(serverName, userId, governanceRoleGUID, resourceGUID, requestBody);
     }
@@ -176,7 +174,7 @@ public class GovernanceRolesResource
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param resourceGUID unique identifier of the resource description
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -190,7 +188,7 @@ public class GovernanceRolesResource
                                                @PathVariable String          governanceRoleGUID,
                                                @PathVariable String          resourceGUID,
                                                @RequestBody(required = false)
-                                                             NullRequestBody requestBody)
+                                                             RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkRoleFromResource(serverName, userId, governanceRoleGUID, resourceGUID, requestBody);
     }
@@ -215,7 +213,7 @@ public class GovernanceRolesResource
                                                @PathVariable String          userId,
                                                @PathVariable String          governanceRoleGUID,
                                                @RequestBody(required = false)
-                                                             NullRequestBody requestBody)
+                                                             ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteGovernanceRole(serverName, userId, governanceRoleGUID, requestBody);
     }
@@ -269,7 +267,7 @@ public class GovernanceRolesResource
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param serverName name of server instance to call
@@ -292,7 +290,7 @@ public class GovernanceRolesResource
 
 
     /**
-     * Return all of the defined governance roles.
+     * Return all the defined governance roles.
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
@@ -318,7 +316,7 @@ public class GovernanceRolesResource
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param serverName name of server instance to call
      * @param userId calling user
@@ -344,7 +342,7 @@ public class GovernanceRolesResource
 
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user

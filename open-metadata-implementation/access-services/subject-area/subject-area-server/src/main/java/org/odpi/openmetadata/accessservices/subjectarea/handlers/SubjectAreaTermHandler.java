@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
 import java.util.*;
@@ -124,8 +125,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
                                                                       suppliedTerm.getName(),
-                                                                      suppliedTerm.getDescription(),
                                                                       suppliedTerm.getSummary(),
+                                                                      suppliedTerm.getDescription(),
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
@@ -145,9 +146,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                         null,
                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                        null,
-                                                                        null,
                                                                         builder,
+                                                                        null,
                                                                         methodName);
                 if (createdTermGuid != null) {
 
@@ -187,12 +187,18 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                             TypeDef typeDef = genericHandler.getRepositoryHelper().getTypeDefByName(methodName, classificationTypeName);
                             if (typeDef != null) {
                                 genericHandler.setClassificationInRepository(userId,
+                                                                             null,
+                                                                             null,
                                                                              createdTermGuid,
                                                                              "guid",
                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                              typeDef.getGUID(),
                                                                              classificationTypeName,
                                                                              classification.getProperties(),
+                                                                             true,
+                                                                             false,
+                                                                             false,
+                                                                             null,
                                                                              methodName);
                             } else {
                                 //TODO Error invalid classification
@@ -475,7 +481,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                       false,
                                                       suppliedEntity.getProperties(),
                                                       !isReplace,
-                                                      effectiveFrom,
+                                                      null,
                                                       methodName);
 
                 // the update properties should not have updated the classifications so we can use
@@ -542,11 +548,16 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                             classificationTypeGUID = typeDef.getGUID();
                         }
                         genericHandler.removeClassificationFromRepository(userId,
+                                                           null,
+                                                           null,
                                                            guid,
                                                            "guid",
                                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                            classificationTypeGUID,
                                                            deClassifyName,
+                                                           false,
+                                                           false,
+                                                           null,
                                                            methodName);
 
 
@@ -628,6 +639,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                             false,
                                             OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                             OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                            (InstanceProperties) null,
+                                            null,
+                                            null,
                                             null,
                                             methodName);
 
@@ -777,7 +791,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                                                                          1,      // get the categories

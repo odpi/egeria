@@ -336,8 +336,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException {
+    public String upsertDatabase(String userId, Database database) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATABASE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -345,7 +345,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DatabaseRequestBody requestBody = new DatabaseRequestBody();
         requestBody.setDatabase(database);
         requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
     }
@@ -354,10 +353,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
-                                       boolean incomplete) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException {
+    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException {
         final String methodName = DATABASE_SCHEMA_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -365,7 +363,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DatabaseSchemaRequestBody requestBody = new DatabaseSchemaRequestBody();
         requestBody.setDatabaseSchema(databaseSchema);
         requestBody.setDatabaseQualifiedName(databaseQualifiedName);
-        requestBody.setIncomplete(incomplete);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
@@ -375,10 +372,10 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
-                                        boolean incomplete) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName) throws
+                                                                                                                            InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException {
         final String methodName = RELATIONAL_TABLE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -386,7 +383,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
         requestBody.setRelationalTable(relationalTable);
         requestBody.setDatabaseSchemaQualifiedName(databaseSchemaQualifiedName);
-        requestBody.setIncomplete(incomplete);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
@@ -396,8 +392,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException {
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATA_FILE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -405,7 +401,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DataFileRequestBody requestBody = new DataFileRequestBody();
         requestBody.setDataFile(dataFile);
         requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
     }
@@ -498,7 +493,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException,
+                                                                                        UserNotAuthorizedException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, FIND_METHOD_NAME);
 
         return callGUIDListPostRESTCall(FIND_METHOD_NAME, serverPlatformRootURL + FIND_URL_TEMPLATE, findRequestBody, serverName, userId);

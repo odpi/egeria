@@ -35,7 +35,7 @@ public class Constants {
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String DISPLAY_NAME = "displayName";
     public static final String SOFTWARE_SERVER_CAPABILITY_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
-    public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareServerCapability";
+    public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareCapability";
 
     private Constants() {
     }

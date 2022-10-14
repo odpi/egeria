@@ -16,8 +16,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class VerifyTypeDefExecutor extends RepositoryExecutorBase
 {
-    private TypeDef                typeDef;
-    private MaintenanceAccumulator accumulator;
+    private final TypeDef                typeDef;
+    private final MaintenanceAccumulator accumulator;
+
     private boolean                result      = false;
     private boolean                resultSet   = false;
 

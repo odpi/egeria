@@ -31,7 +31,7 @@ public enum KafkaOpenMetadataEventConsumerProperty
 	 * This specifies the poll timeout (in ms) that we provide to kafka when we poll for
 	 * messages.
 	 */
-	POLL_TIMEOUT("poll_timeout_ms", "1000"),
+	POLL_TIMEOUT("poll_timeout_ms", "10000"),
 	
 	/*
 	 * The amount of time to sleep after we encounter a Kafka error, in seconds

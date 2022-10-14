@@ -23,7 +23,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
 
     private OMRSTopicListener                fullListener;
     private OMRSTopicRepositoryEventListener repositoryListener;
-    private AuditLog                         auditLog;
+    private final AuditLog                   auditLog;
     private String                           serviceName = "<Unknown Service>";
 
 

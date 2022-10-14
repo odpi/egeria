@@ -3,21 +3,19 @@
 package org.odpi.openmetadata.accessservices.digitalservice.handlers;
 
 import org.odpi.openmetadata.accessservices.digitalservice.builders.DigitalServiceBuilder;
-import org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceEvent;
 import org.odpi.openmetadata.accessservices.digitalservice.mappers.DigitalServiceMapper;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.Classification;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalService;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
- * The Egeria DigitalService entity handler.
+ * The Egeria DigitalServiceProperties entity handler.
  */
 public class DigitalServiceEntityHandler
 {
@@ -44,16 +42,17 @@ public class DigitalServiceEntityHandler
      * Create digital service referencable string.
      * @param userId calling user
      * @param serverName              the server name
-     * @param digitalService the digital service
+     * @param digitalServiceProperties the digital service
      * @return the string
      * @throws PropertyServerException    the property server exception
      * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException  user not authorized
      */
     public String createDigitalServiceEntity(String userId,
                                              String serverName,
-                                             DigitalService digitalService) throws PropertyServerException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   InvalidParameterException
+                                             DigitalServiceProperties digitalServiceProperties) throws PropertyServerException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       InvalidParameterException
     {
 
         String methodName = "createDigitalServiceEntity";
@@ -61,9 +60,9 @@ public class DigitalServiceEntityHandler
         invalidParameterHandler.validateUserId(userId, methodName);
 
 
-        DigitalServiceBuilder digitalServiceBuilder = new DigitalServiceBuilder(digitalService.getDisplayName(),
-                                                                                digitalService.getDescription(),
-                                                                                digitalService.getVersion(),
+        DigitalServiceBuilder digitalServiceBuilder = new DigitalServiceBuilder(digitalServiceProperties.getDisplayName(),
+                                                                                digitalServiceProperties.getDescription(),
+                                                                                digitalServiceProperties.getVersion(),
                                                                                 repositoryHelper,
                                                                                 DigitalServiceMapper.SERVICE_NAME,
                                                                                 serverName);

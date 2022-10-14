@@ -99,7 +99,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
 
 
     /**
-     * Return the list of analysis parameters that are passed the the discovery service (via
+     * Return the list of analysis parameters that are passed to the discovery service (via
      * the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @return map of parameter name to parameter value
@@ -122,7 +122,7 @@ public class DiscoveryServiceRegistrationRequestBody extends ODFOMASAPIRequestBo
 
 
     /**
-     * Set up the  list of analysis parameters that are passed the the discovery service (via
+     * Set up the list of analysis parameters that are passed to the discovery service (via
      * the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @param defaultAnalysisParameters map of parameter name to parameter value

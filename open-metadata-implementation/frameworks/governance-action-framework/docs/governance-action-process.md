@@ -22,9 +22,9 @@ next governance action in the flow.
 
 ## Open metadata types
 
-[0462 Governance Action Types](../../../../open-metadata-publication/website/open-metadata-types/0470-Incident-Reporting.md)
+[0462 Governance Action Types](https://egeria-project.org/types/4/0470-Incident-Reporting)
 shows the structure of the incident report.
-It is a [Referenceable](../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)
+It is a [Referenceable](https://egeria-project.org/types/0/0010-Base-Model)
 so it can support comments and have [governance actions](governance-action.md) linked to it.
 
 ## Further information

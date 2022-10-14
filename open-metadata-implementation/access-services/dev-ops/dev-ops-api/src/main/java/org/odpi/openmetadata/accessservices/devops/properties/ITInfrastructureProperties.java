@@ -69,6 +69,7 @@ public class ITInfrastructureProperties extends AssetProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         return super.cloneToAsset(subTypeName);
@@ -84,7 +85,7 @@ public class ITInfrastructureProperties extends AssetProperties
     public String toString()
     {
         return "ITInfrastructureProperties{" +
-                       "displayName='" + getDisplayName() + '\'' +
+                       "displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

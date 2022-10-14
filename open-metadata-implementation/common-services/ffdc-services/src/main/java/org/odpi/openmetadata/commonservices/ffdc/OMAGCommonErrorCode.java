@@ -70,7 +70,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
 
     NEGATIVE_PAGE_SIZE(400, "OMAG-COMMON-400-009",
                         "The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative",
-                        "The system is unable to process the request with this invalid value.  It should be zero to return all of the result, or greater than zero to set a maximum",
+                        "The system is unable to process the request with this invalid value.  It should be zero to return all the result, or greater than zero to set a maximum",
                         "Correct the code in the caller to provide a non-negative value for the page size."),
 
     MAX_PAGE_SIZE(400, "OMAG-COMMON-400-010",
@@ -180,6 +180,11 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                        "The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}",
                        "The system is unable to process the request with this search string.",
                        "Correct the code in the caller to provide a valid regular expression search string."),
+
+    INVALID_PROPERTIES_OBJECT(400, "OMAG-COMMON-400-029",
+                          "The properties object passed on the {0} operation is either null or not of the correct {1} class",
+                          "The system is unable to proceed because it can not interpret the properties needed to execute the request.",
+                          "Correct the code in the caller to provide a valid properties object."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",

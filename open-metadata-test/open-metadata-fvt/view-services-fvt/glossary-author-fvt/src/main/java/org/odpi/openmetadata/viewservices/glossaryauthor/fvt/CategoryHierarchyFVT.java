@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -27,6 +29,8 @@ public class CategoryHierarchyFVT
 
     private GlossaryFVT glossaryFVT =null;
     private CategoryFVT categoryFVT = null;
+    private static Logger log = LoggerFactory.getLogger(CategoryHierarchyFVT.class);
+
 
     public static void main(String args[])
     {
@@ -38,9 +42,9 @@ public class CategoryHierarchyFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -63,17 +67,21 @@ public class CategoryHierarchyFVT
             System.out.println("CategoryHierarchyFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create category hierarchy");
+        if (log.isDebugEnabled()) {
+            log.debug("Create category hierarchy");
+        }
         Set<Category> categories = createTopCategories(glossaryGuid);
         while (depth_counter < DEPTH)
         {
@@ -101,7 +109,9 @@ public class CategoryHierarchyFVT
             String categoryName = createName(0, width_counter);
             Category category =categoryFVT.createCategoryWithGlossaryGuid(categoryName,glossaryGuid);
             FVTUtils.validateNode(category);
-            System.out.println("Created category with name  " + categoryName + " with no parent");
+            if (log.isDebugEnabled()) {
+                log.debug("Created category with name  " + categoryName + " with no parent");
+            }
             categories.add(category);
         }
         return categories;
@@ -135,7 +145,9 @@ public class CategoryHierarchyFVT
             String categoryName = createName(depth_counter, width_counter);
             Category category = categoryFVT.createCategoryWithParentGlossary(categoryName, parent, glossaryGuid);
             FVTUtils.validateNode(category);
-            System.out.println("Created category with name  " + categoryName + " with parent " + parent.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Created category with name  " + categoryName + " with parent " + parent.getName());
+            }
             categories.add(category);
         }
         return categories;

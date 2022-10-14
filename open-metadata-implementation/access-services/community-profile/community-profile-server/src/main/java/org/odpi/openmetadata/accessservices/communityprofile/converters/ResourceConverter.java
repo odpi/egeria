@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ResourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -45,6 +46,7 @@ public class ResourceConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -107,6 +109,8 @@ public class ResourceConverter<B> extends CommunityProfileOMASConverter<B>
     }
 
 
+
+
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
@@ -118,13 +122,20 @@ public class ResourceConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
-    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return this.getNewBean(beanClass, entity, methodName);
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof CollectionElement)
+        {
+            CollectionElement bean = (CollectionElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

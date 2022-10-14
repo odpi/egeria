@@ -29,8 +29,10 @@ public class AssetProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String              displayName                  = null;
-    private String              description                  = null;
+    private String name              = null;
+    private String versionIdentifier = null;
+    private String displayName       = null;
+    private String description       = null;
 
 
 
@@ -53,6 +55,8 @@ public class AssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            name                         = template.getName();
+            versionIdentifier            = template.getVersionIdentifier();
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
         }
@@ -60,13 +64,67 @@ public class AssetProperties extends ReferenceableProperties
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    public String getName()
+    {
+        if (name == null)
+        {
+            return displayName;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * If no display name is available then name is returned.
      *
      * @return String name
      */
     public String getDisplayName()
     {
+        if (displayName == null)
+        {
+            return name;
+        }
+
         return displayName;
     }
 
@@ -114,14 +172,18 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -138,27 +200,41 @@ public class AssetProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        {
+            return false;
+        }
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
+
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, displayName, description);
     }
 }

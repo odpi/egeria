@@ -30,7 +30,7 @@ access the Asset.
 ## Further information
 
  * The open metadata type for an endpoint is defined in 
-   [model 0026](../../../../../open-metadata-publication/website/open-metadata-types/0026-Endpoints.md).
+   [model 0026](https://egeria-project.org/types/0/0026-Endpoints).
 
 
 ----

@@ -2,17 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
+import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -20,6 +24,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +45,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineFolderHierarchyHandler {
 
     private final InvalidParameterHandler invalidParameterHandler;
-    private final RepositoryHandler repositoryHandler;
+    private final OpenMetadataAPIGenericHandler<Referenceable> genericHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final AssetHandler<FileFolder> folderHandler;
 
@@ -48,16 +53,17 @@ public class DataEngineFolderHierarchyHandler {
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
+     * @param genericHandler          manages calls to the repository services
      * @param dataEngineCommonHandler provides common Data Engine Omas utilities
      * @param folderHandler           provides utilities specific for manipulating FileFolders
      */
     public DataEngineFolderHierarchyHandler(InvalidParameterHandler invalidParameterHandler,
-                                            RepositoryHandler repositoryHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                            OpenMetadataAPIGenericHandler<Referenceable> genericHandler,
+                                            DataEngineCommonHandler dataEngineCommonHandler,
                                             AssetHandler<FileFolder> folderHandler) {
 
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
+        this.genericHandler = genericHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.folderHandler = folderHandler;
     }
@@ -67,6 +73,7 @@ public class DataEngineFolderHierarchyHandler {
      * taken to maintain uniqueness of the relationship NestedFile that is between the file and the first folder.
      *
      * @param fileGuid           data file guid
+     * @param fileType           data file type
      * @param pathName           file path
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
@@ -77,8 +84,8 @@ public class DataEngineFolderHierarchyHandler {
      * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
-    public void upsertFolderHierarchy(String fileGuid, String pathName, String externalSourceGuid, String externalSourceName,
-                                      String userId, String methodName)
+    public void upsertFolderHierarchy(String fileGuid, String fileType, String pathName, String externalSourceGuid,
+                                      String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         if (StringUtils.isEmpty(pathName)) {
@@ -89,6 +96,7 @@ public class DataEngineFolderHierarchyHandler {
 
         String folderGuid = "";
         String previousEntityGuid = fileGuid;
+        String previousEntityType = fileType;
         String relationshipTypeName = NESTED_FILE_TYPE_NAME;
         for (FileFolder folder : folders) {
             if (relationshipTypeName.equals(NESTED_FILE_TYPE_NAME)) {
@@ -96,14 +104,15 @@ public class DataEngineFolderHierarchyHandler {
             }
             folderGuid = upsertFolder(externalSourceGuid, externalSourceName, folder, userId, methodName);
             dataEngineCommonHandler.upsertExternalRelationship(userId, folderGuid, previousEntityGuid, relationshipTypeName,
-                    FILE_FOLDER_TYPE_NAME, externalSourceName, null);
+                    FILE_FOLDER_TYPE_NAME, previousEntityType, externalSourceName, null);
 
             previousEntityGuid = folderGuid;
+            previousEntityType = FILE_FOLDER_TYPE_NAME;
             relationshipTypeName = FOLDER_HIERARCHY_TYPE_NAME;
         }
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, externalSourceGuid, folderGuid, SERVER_ASSET_USE_TYPE_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, externalSourceName, null);
+                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, FILE_FOLDER_TYPE_NAME, externalSourceName, null);
     }
 
     /**
@@ -133,15 +142,19 @@ public class DataEngineFolderHierarchyHandler {
     }
 
     private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
-                                                       String methodName) throws UserNotAuthorizedException, PropertyServerException {
-        Optional<List<Relationship>> optionalRelationships =
-                Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
-                        NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));
-        if (!optionalRelationships.isPresent()) {
+                                                       String methodName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+
+        Date now = dataEngineCommonHandler.getNow();
+        List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, fileGuid, CommonMapper.GUID_PROPERTY_NAME,
+                DATA_FILE_TYPE_NAME, NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, null, null, 2,
+               false, false,0, invalidParameterHandler.getMaxPagingSize(),  now, methodName);
+
+        if (CollectionUtils.isEmpty(relationships)) {
             return;
         }
-        for (Relationship relationship : optionalRelationships.get()) {
-            repositoryHandler.removeRelationship(userId, externalSourceGuid, externalSourceName, relationship, methodName);
+        for (Relationship relationship : relationships) {
+            genericHandler.deleteRelationship(userId, externalSourceGuid, externalSourceName, relationship.getGUID(),
+                    CommonMapper.GUID_PROPERTY_NAME, relationship.getType().getTypeDefName(), false, false,now, methodName);
         }
     }
 
@@ -154,10 +167,11 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                folder.getQualifiedName(), folder.getDisplayName(), null, folder.getDescription(), folder.getZoneMembership(),
                 folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
                 null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, methodName);
+                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, null, null,
+                InstanceStatus.ACTIVE, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**

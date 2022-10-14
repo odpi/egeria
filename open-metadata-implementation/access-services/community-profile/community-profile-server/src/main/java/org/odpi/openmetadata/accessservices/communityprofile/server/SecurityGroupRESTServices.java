@@ -19,6 +19,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 
 
 /**
@@ -28,12 +29,12 @@ import org.slf4j.LoggerFactory;
  */
 public class SecurityGroupRESTServices
 {
-    static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    private static final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SecurityGroupRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SecurityGroupRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -99,6 +100,9 @@ public class SecurityGroupRESTServices
                                                                       requestBody.getAdditionalProperties(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getExtendedProperties(),
+                                                                      null,
+                                                                      null,
+                                                                      new Date(),
                                                                       methodName);
 
                 response.setGUID(groupGUID);
@@ -177,6 +181,11 @@ public class SecurityGroupRESTServices
                                                    requestBody.getTypeName(),
                                                    requestBody.getExtendedProperties(),
                                                    isMergeUpdate,
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -231,6 +240,9 @@ public class SecurityGroupRESTServices
                 handler.removeGovernanceDefinition(userId,
                                                    securityGroupGUID,
                                                    guidParameterName,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -249,7 +261,7 @@ public class SecurityGroupRESTServices
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param serverName called server
      * @param userId calling user
@@ -290,6 +302,9 @@ public class SecurityGroupRESTServices
                                                                                       OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                                       startFrom,
                                                                                       pageSize,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
                                                                                       methodName));
         }
         catch (Exception error)
@@ -366,12 +381,14 @@ public class SecurityGroupRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
                                                                           startFrom,
                                                                           pageSize,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
             }
             else
@@ -419,7 +436,13 @@ public class SecurityGroupRESTServices
             GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getGovernanceDefinitionByGUID(userId, securityGroupGUID, guidParameterName, methodName));
+            response.setElement(handler.getGovernanceDefinitionByGUID(userId,
+                                                                      securityGroupGUID,
+                                                                      guidParameterName,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName));
         }
         catch (Exception error)
         {

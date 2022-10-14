@@ -5,27 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementsListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -52,11 +33,11 @@ import java.util.Date;
  */
 public class GovernanceEngineRESTServices
 {
-    private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
+    private final static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
 
-    private        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private final        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -156,7 +137,7 @@ public class GovernanceEngineRESTServices
      * @param effectiveTime milliseconds since epoch or 0 to mean null (any time)
      * @return date object or null
      */
-    private Date getEffectIveTimeFromLong(long effectiveTime)
+    private Date getEffectiveTimeFromLong(long effectiveTime)
     {
         Date result = null;
 
@@ -211,7 +192,7 @@ public class GovernanceEngineRESTServices
                                                                  elementGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
-                                                                 this.getEffectIveTimeFromLong(effectiveTime),
+                                                                 this.getEffectiveTimeFromLong(effectiveTime),
                                                                  methodName));
         }
         catch (Exception error)
@@ -267,7 +248,7 @@ public class GovernanceEngineRESTServices
                                                                            requestBody.getNamePropertyName(),
                                                                            forLineage,
                                                                            forDuplicateProcessing,
-                                                                           this.getEffectIveTimeFromLong(effectiveTime),
+                                                                           this.getEffectiveTimeFromLong(effectiveTime),
                                                                            methodName));
             }
             else
@@ -328,7 +309,7 @@ public class GovernanceEngineRESTServices
                                                                             requestBody.getNamePropertyName(),
                                                                             forLineage,
                                                                             forDuplicateProcessing,
-                                                                            this.getEffectIveTimeFromLong(effectiveTime),
+                                                                            this.getEffectiveTimeFromLong(effectiveTime),
                                                                             methodName));
             }
             else
@@ -393,7 +374,7 @@ public class GovernanceEngineRESTServices
                                                                                requestBody.getSearchString(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
-                                                                               this.getEffectIveTimeFromLong(effectiveTime),
+                                                                               this.getEffectiveTimeFromLong(effectiveTime),
                                                                                startFrom,
                                                                                pageSize,
                                                                                methodName));
@@ -463,7 +444,7 @@ public class GovernanceEngineRESTServices
                                                                        relationshipTypeName,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
-                                                                       this.getEffectIveTimeFromLong(effectiveTime),
+                                                                       this.getEffectiveTimeFromLong(effectiveTime),
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName));
@@ -525,11 +506,12 @@ public class GovernanceEngineRESTServices
                                                                      requestBody.getSearchProperties(),
                                                                      requestBody.getLimitResultsByStatus(),
                                                                      requestBody.getMatchClassifications(),
+                                                                     requestBody.getAsOfTime(),
                                                                      requestBody.getSequencingProperty(),
                                                                      requestBody.getSequencingOrder(),
                                                                      forLineage,
                                                                      forDuplicateProcessing,
-                                                                     this.getEffectIveTimeFromLong(effectiveTime),
+                                                                     this.getEffectiveTimeFromLong(effectiveTime),
                                                                      startFrom,
                                                                      pageSize,
                                                                      methodName));
@@ -594,11 +576,13 @@ public class GovernanceEngineRESTServices
                 response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                          requestBody.getMetadataElementTypeName(),
                                                                                          requestBody.getSearchProperties(),
+                                                                                         requestBody.getLimitResultsByStatus(),
+                                                                                         requestBody.getAsOfTime(),
                                                                                          requestBody.getSequencingProperty(),
                                                                                          requestBody.getSequencingOrder(),
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
-                                                                                         this.getEffectIveTimeFromLong(effectiveTime),
+                                                                                         this.getEffectiveTimeFromLong(effectiveTime),
                                                                                          startFrom,
                                                                                          pageSize,
                                                                                          methodName));
@@ -660,6 +644,7 @@ public class GovernanceEngineRESTServices
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
                                                                       requestBody.getTemplateGUID(),
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else
@@ -679,7 +664,7 @@ public class GovernanceEngineRESTServices
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param serverName     name of server instance to route request to
@@ -739,8 +724,7 @@ public class GovernanceEngineRESTServices
 
     /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.  The effectivity dates control the visibility of the element
-     * through specific APIs.
+     * assigned when it was created.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -778,10 +762,66 @@ public class GovernanceEngineRESTServices
                                                            requestBody.getNewStatus(),
                                                            requestBody.getForLineage(),
                                                            requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getEffectiveFrom(),
-                                                           requestBody.getEffectiveTo(),
                                                            requestBody.getEffectiveTime(),
                                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the effectivity dates control the visibility of the element through specific APIs.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateMetadataElementEffectivityInStore(String                            serverName,
+                                                                String                            userId,
+                                                                String                            metadataElementGUID,
+                                                                UpdateEffectivityDatesRequestBody requestBody)
+    {
+        final String methodName = "updateMetadataElementEffectivityInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateMetadataElementEffectivityInStore(userId,
+                                                                metadataElementGUID,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveFrom(),
+                                                                requestBody.getEffectiveTo(),
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName);
             }
             else
             {
@@ -998,11 +1038,11 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateClassificationStatusInStore(String                            serverName,
-                                                          String                            userId,
-                                                          String                            metadataElementGUID,
-                                                          String                            classificationName,
-                                                          UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateClassificationEffectivityInStore(String                            serverName,
+                                                               String                            userId,
+                                                               String                            metadataElementGUID,
+                                                               String                            classificationName,
+                                                               UpdateEffectivityDatesRequestBody requestBody)
     {
         final String methodName = "updateClassificationStatusInStore";
 
@@ -1166,9 +1206,10 @@ public class GovernanceEngineRESTServices
         return response;
     }
 
+
     /**
-     * Create a simple relationship between two elements. If the relationship already exists,
-     * the properties are updated.
+     * Link elements as peer duplicates. Create a simple relationship between two elements.
+     * If the relationship already exists, the properties are updated.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1179,9 +1220,9 @@ public class GovernanceEngineRESTServices
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse linkElementsAsDuplicates(String                serverName,
-                                                 String                userId,
-                                                 DuplicatesRequestBody requestBody)
+    public VoidResponse linkElementsAsDuplicates(String                    serverName,
+                                                 String                    userId,
+                                                 PeerDuplicatesRequestBody requestBody)
     {
         final String methodName = "linkElementsAsDuplicates";
 
@@ -1206,14 +1247,82 @@ public class GovernanceEngineRESTServices
                                                      element1GUIDParameterName,
                                                      requestBody.getMetadataElement2GUID(),
                                                      element2GUIDParameterName,
-                                                     true,
+                                                     requestBody.getSetKnownDuplicate(),
                                                      requestBody.getStatusIdentifier(),
                                                      requestBody.getSteward(),
                                                      requestBody.getStewardTypeName(),
                                                      requestBody.getStewardPropertyName(),
                                                      requestBody.getSource(),
                                                      requestBody.getNotes(),
+                                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                      methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Identify an element that acts as a consolidated version for a set of duplicate elements.
+     * (The consolidated element is created using createMetadataElement.)
+     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
+     * classification already exists, the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkConsolidatedDuplicate(String                            serverName,
+                                                  String                            userId,
+                                                  ConsolidatedDuplicatesRequestBody requestBody)
+    {
+        final String methodName = "linkConsolidatedDuplicate";
+
+        final String elementGUIDParameterName = "consolidatedElementGUID";
+        final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.linkConsolidatedDuplicate(userId,
+                                                  requestBody.getConsolidatedElementGUID(),
+                                                  elementGUIDParameterName,
+                                                  requestBody.getStatusIdentifier(),
+                                                  requestBody.getSteward(),
+                                                  requestBody.getStewardTypeName(),
+                                                  requestBody.getStewardPropertyName(),
+                                                  requestBody.getSource(),
+                                                  requestBody.getNotes(),
+                                                  requestBody.getSourceElementGUIDs(),
+                                                  sourceElementGUIDsParameterName,
+                                                  instanceHandler.getSupportedZones(userId, serverName,methodName),
+                                                  methodName);
             }
             else
             {
@@ -1269,7 +1378,10 @@ public class GovernanceEngineRESTServices
                 handler.updateRelatedElementsInStore(userId,
                                                      relationshipGUID,
                                                      requestBody.getReplaceProperties(),
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
                                                      requestBody.getProperties(),
+                                                     requestBody.getEffectiveTime(),
                                                      methodName);
             }
             else
@@ -1302,10 +1414,10 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateRelatedElementsStatusInStore(String                            serverName,
-                                                           String                            userId,
-                                                           String                            relationshipGUID,
-                                                           UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateRelatedElementsEffectivityInStore(String                            serverName,
+                                                                String                            userId,
+                                                                String                            relationshipGUID,
+                                                                UpdateEffectivityDatesRequestBody requestBody)
     {
         final String methodName = "updateRelatedElementsStatusInStore";
 
@@ -1326,6 +1438,9 @@ public class GovernanceEngineRESTServices
                                                            relationshipGUID,
                                                            requestBody.getEffectiveFrom(),
                                                            requestBody.getEffectiveTo(),
+                                                           requestBody.getForLineage(),
+                                                           requestBody.getForDuplicateProcessing(),
+                                                           requestBody.getEffectiveTime(),
                                                            methodName);
             }
             else
@@ -1357,10 +1472,10 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse deleteRelatedElementsInStore(String          serverName,
-                                                     String          userId,
-                                                     String          relationshipGUID,
-                                                     NullRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(String            serverName,
+                                                     String            userId,
+                                                     String            relationshipGUID,
+                                                     UpdateRequestBody requestBody)
     {
         final String methodName = "deleteRelatedElementsInStore";
 
@@ -1377,7 +1492,12 @@ public class GovernanceEngineRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.deleteRelatedElementsInStore(userId, relationshipGUID, methodName);
+                handler.deleteRelatedElementsInStore(userId,
+                                                     relationshipGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
             }
             else
             {
@@ -1516,7 +1636,7 @@ public class GovernanceEngineRESTServices
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -1721,7 +1841,7 @@ public class GovernanceEngineRESTServices
      * @return unique identifier of the resulting incident report or
      *
      *  InvalidParameterException null or non-unique qualified name for the incident report
-     *  UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse createIncidentReport(String                    serverName,
@@ -1790,7 +1910,8 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId identifier of calling user
-     * @param governanceActionGUID identifier of the governance action request.
+     * @param governanceActionGUID identifier of the governance action request
+     * @param requestBody null request body
      *
      * @return void or
      *

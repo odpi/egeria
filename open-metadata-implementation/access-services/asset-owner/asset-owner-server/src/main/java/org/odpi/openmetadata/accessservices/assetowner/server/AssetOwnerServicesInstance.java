@@ -13,8 +13,6 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandl
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBeanConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.DataFieldHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.DiscoveryAnalysisReportHandler;
@@ -38,34 +36,27 @@ import java.util.List;
  */
 public class AssetOwnerServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
-    private AssetHandler<AssetElement>                                        assetHandler;
-    private SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> schemaAttributeHandler;
-    private SchemaTypeHandler<SchemaTypeElement>                              schemaTypeHandler;
+    private final AssetHandler<AssetElement>                                        assetHandler;
+    private final SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> schemaAttributeHandler;
+    private final SchemaTypeHandler<SchemaTypeElement>                              schemaTypeHandler;
 
-    private ReferenceableHandler<ReferenceableElement> referenceableHandler;
+    private final ReferenceableHandler<ReferenceableElement> referenceableHandler;
 
-    private FilesAndFoldersHandler<FileSystemElement,
-                                   FolderElement,
-                                   FileElement> filesAndFoldersHandler;
+    private final FilesAndFoldersHandler<FileSystemElement,
+                                         FolderElement,
+                                         FileElement> filesAndFoldersHandler;
 
-    private ValidValuesHandler<ValidValueElement,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean> validValuesHandler;
+    private final ValidValuesHandler<ValidValueElement> validValuesHandler;
 
-    private DataFieldHandler<DataField>                             dataFieldHandler;
-    private AnnotationHandler<Annotation>                           annotationHandler;
-    private DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
+    private final DataFieldHandler<DataField>                             dataFieldHandler;
+    private final AnnotationHandler<Annotation>                           annotationHandler;
+    private final DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
 
-    private ConnectionHandler<ConnectionElement>       connectionHandler;
-    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
-    private EndpointHandler<EndpointElement>           endpointHandler;
+    private final ConnectionHandler<ConnectionElement>       connectionHandler;
+    private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private final EndpointHandler<EndpointElement>           endpointHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -183,20 +174,6 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
 
         this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
                                                            ValidValueElement.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
                                                            serviceName,
                                                            serverName,
                                                            invalidParameterHandler,
@@ -381,14 +358,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ValidValuesHandler<ValidValueElement,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean> getValidValuesHandler() throws PropertyServerException
+    ValidValuesHandler<ValidValueElement> getValidValuesHandler() throws PropertyServerException
     {
         final String methodName = "getValidValuesHandler";
 

@@ -201,7 +201,7 @@ public class DiscoveryMetadataStoreResource
      * @param serverName name of server instance to route request to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset being analysed
-     * @param requestBody  all of the other parameters
+     * @param requestBody  all the other parameters
      *
      * @return the unique identifier of the new discovery report or
      *

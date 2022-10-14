@@ -21,7 +21,7 @@ import java.util.Date;
  *
  * The two phases are used to take advantage of an optimization in the OMRSRESTRepositoryConnector which remembers if a
  * remote repository does not support a call.
- * The getHomeClassifications methods are only supported by repositories that support the the ability to home classifications on
+ * The getHomeClassifications methods are only supported by repositories that support the ability to home classifications on
  * entities from other repositories.  This means that the phase two calls will only go remote if the remote repository
  * supports the getHomeClassifications method.
  */
@@ -30,7 +30,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
     private boolean      allExceptions = true;
     private Date         asOfTime      = null;
 
-    private EntityDetailAccumulator accumulator;
+    private final EntityDetailAccumulator accumulator;
 
 
     /**

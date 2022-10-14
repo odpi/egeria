@@ -242,7 +242,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
     /**
      * Set up the Ownership classification for this entity.
-     * This method overrides an previously defined AssetOwnership classification for this entity.
+     * This method overrides a previously defined AssetOwnership classification for this entity.
      *
      * @param userId calling user
      * @param owner name of the owner
@@ -285,8 +285,6 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
     }
 
 
-
-
     /**
      * Return the bean properties describing the element's owner in an InstanceProperties object.
      *
@@ -295,7 +293,6 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param ownerPropertyName name of property used to identify owner
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException the owner enum type is not supported
      */
     InstanceProperties getOwnershipProperties(String owner,
                                               String ownerTypeName,
@@ -324,6 +321,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                       ownerPropertyName,
                                                                       methodName);
         }
+
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -383,34 +382,27 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                              Map<String, String> additionalProperties,
                                              String              methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
-        if (name != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.TEMPLATE_NAME_PROPERTY_NAME,
-                                                                      name,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.TEMPLATE_NAME_PROPERTY_NAME,
+                                                                  name,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.TEMPLATE_DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.TEMPLATE_DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (additionalProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                         additionalProperties,
-                                                                         methodName);
-        }
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                     additionalProperties,
+                                                                     methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -477,37 +469,26 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                             String              methodName)
     {
         InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    null,
-                                                                    OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    archiveDate != null ? archiveDate : new Date(),
-                                                                    methodName);
+                                                                                   null,
+                                                                                   OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
+                                                                                   archiveDate != null ? archiveDate : new Date(),
+                                                                                   methodName);
 
-        if (archiveUser != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
-                                                                      archiveUser,
-                                                                      methodName);
-        }
-
-        if (archiveProcess != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ARCHIVE_PROCESS_PROPERTY_NAME,
-                                                                      archiveProcess,
-                                                                      methodName);
-        }
-
-        if (archiveProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ARCHIVE_PROPERTIES_PROPERTY_NAME,
-                                                                         archiveProperties,
-                                                                         methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
+                                                                  archiveUser,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ARCHIVE_PROCESS_PROPERTY_NAME,
+                                                                  archiveProcess,
+                                                                  methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.ARCHIVE_PROPERTIES_PROPERTY_NAME,
+                                                                     archiveProperties,
+                                                                     methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
@@ -521,13 +502,15 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                   methodName,
                                                                   methodName);
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 
 
     /**
      * Set up the SecurityTags classification for this entity.
-     * This method overrides an previously defined SecurityTags classification for this entity.
+     * This method overrides a previously defined SecurityTags classification for this entity.
      *
      * @param userId calling user
      * @param securityLabels list of security labels
@@ -587,12 +570,14 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                securityProperties,
                                                                methodName);
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 
 
     /**
-     * Return the security tag properties in an InstanceProperties object.
+     * Return the business significance properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method
      * @param description description of why this is significant
@@ -622,6 +607,160 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                   OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
                                                                   businessCapabilityGUID,
                                                                   methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the data flow relationship.
+     *
+     * @param qualifiedName unique name of this relationship
+     * @param description description of this relationship
+     * @param formula logic describing any filtering of data
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getDataFlowProperties(String qualifiedName,
+                                             String description,
+                                             String formula,
+                                             String methodName)
+    {
+        InstanceProperties properties;
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  qualifiedName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  formula,
+                                                                  methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the control flow relationship.
+     *
+     * @param qualifiedName unique name of this relationship
+     * @param description description of this relationship
+     * @param guard logic describing what must be true for control to pass down this control flow
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getControlFlowProperties(String qualifiedName,
+                                                String description,
+                                                String guard,
+                                                String methodName)
+    {
+        InstanceProperties properties;
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  qualifiedName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                  guard,
+                                                                  methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the process call relationship.
+     *
+     * @param qualifiedName unique name of this relationship
+     * @param description description of this relationship
+     * @param formula logic describing any filtering of data on the call
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getProcessCallProperties(String qualifiedName,
+                                                String description,
+                                                String formula,
+                                                String methodName)
+    {
+        InstanceProperties properties;
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  qualifiedName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  formula,
+                                                                  methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the lineage mapping relationship.
+     *
+     * @param qualifiedName unique name of this relationship
+     * @param description description of this relationship
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getLineageMappingProperties(String qualifiedName,
+                                                   String description,
+                                                   String methodName)
+    {
+        InstanceProperties properties;
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  qualifiedName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }

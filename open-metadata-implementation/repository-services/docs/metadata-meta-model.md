@@ -133,7 +133,7 @@ And this results in a JSON structure like the following:
         "category": "PRIMITIVE",
         "guid": "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4",
         "name": "string",
-        "primitiveDefCategory": "OM_PRIMITIVE_TYPE_STRING"
+        "primitiveTypeCategory": "OM_PRIMITIVE_TYPE_STRING"
       },
       "attributeDescription": "Unique identifier for the entity.",
       "valuesMinCount": 0,
@@ -367,7 +367,7 @@ omrsRelationship.setGUID("...");
 ## More information on types
 
 For more information on the OpenMetadataTypes that are covered by and included 
-with Egeria, see [the open metadata type system](../../../open-metadata-publication/website/open-metadata-types).
+with Egeria, see [the open metadata type system](https://egeria-project.org/types).
 
 
 

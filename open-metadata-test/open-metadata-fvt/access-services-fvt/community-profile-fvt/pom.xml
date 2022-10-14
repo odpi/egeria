@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -28,7 +28,7 @@
 
     <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
     <properties>
-        <fvt.serverport>10449</fvt.serverport>
+        <fvt.serverport>10441</fvt.serverport>
         <fvt.servername>fvtServer</fvt.servername>
         <fvt.user>testUser</fvt.user>
         <fvt.maxwait>10</fvt.maxwait>

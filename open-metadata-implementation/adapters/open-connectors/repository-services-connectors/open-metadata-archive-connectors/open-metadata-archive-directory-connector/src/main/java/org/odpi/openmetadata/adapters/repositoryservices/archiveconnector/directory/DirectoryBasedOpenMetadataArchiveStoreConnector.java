@@ -701,6 +701,26 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
     }
 
 
+
+    /**
+     * Retrieve an entity from the archive.
+     *
+     * @param guid unique identifier
+     * @return requested entity
+     */
+    @Override
+    public EntityDetail queryEntity(String   guid)
+    {
+        final String methodName = "queryEntity";
+
+        EntityDetail dummyEntity = new EntityDetail();
+
+        dummyEntity.setGUID(guid);
+
+        return (EntityDetail)archiveStore.readElement(archiveStore.getFileName(dummyEntity), 0, methodName);
+    }
+
+
     /**
      * Add a new relationship to the archive.
      *
@@ -744,6 +764,25 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
 
     /**
+     * Retrieve a relationship from the archive.
+     *
+     * @param guid unique identifier
+     * @return requested relationship
+     */
+    @Override
+    public Relationship queryRelationship(String   guid)
+    {
+        final String methodName = "queryRelationship";
+
+        Relationship dummyRelationship = new Relationship();
+
+        dummyRelationship.setGUID(guid);
+
+        return (Relationship)archiveStore.readElement(archiveStore.getFileName(dummyRelationship), 0, methodName);
+    }
+
+
+    /**
      * Add a new classification to the archive.
      *
      * @param classification instance to add
@@ -755,8 +794,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
         archiveStore.writeElement(archiveStore.getFileName(classification), classification, 0, methodName);
     }
-
-
 
 
     /**
@@ -791,6 +828,32 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
         }
 
         return extension;
+    }
+
+
+    /**
+     * Retrieve a classification extension from the archive.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    @Override
+    public ClassificationEntityExtension queryClassification(String entityGUID,
+                                                             String classificationName)
+    {
+        final String methodName = "queryClassification";
+
+        Classification                dummyClassification = new Classification();
+        EntityProxy                   dummyEntity         = new EntityProxy();
+        ClassificationEntityExtension dummyExtension      = new ClassificationEntityExtension();
+
+        dummyClassification.setName(classificationName);
+        dummyEntity.setGUID(entityGUID);
+        dummyExtension.setClassification(dummyClassification);
+        dummyExtension.setEntityToClassify(dummyEntity);
+
+        return (ClassificationEntityExtension)archiveStore.readElement(archiveStore.getFileName(dummyExtension), 0, methodName);
     }
 
 

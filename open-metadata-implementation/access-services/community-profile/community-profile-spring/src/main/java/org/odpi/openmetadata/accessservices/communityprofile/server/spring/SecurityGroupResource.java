@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class SecurityGroupResource
 {
-    private SecurityGroupRESTServices restAPI = new SecurityGroupRESTServices();
+    private final SecurityGroupRESTServices restAPI = new SecurityGroupRESTServices();
 
     /**
      * Default constructor

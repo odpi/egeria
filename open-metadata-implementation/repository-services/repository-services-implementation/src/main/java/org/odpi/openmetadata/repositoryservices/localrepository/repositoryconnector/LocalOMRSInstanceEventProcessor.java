@@ -36,31 +36,32 @@ import java.util.UUID;
  */
 public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor implements OMRSInstanceRetrievalEventProcessor
 {
-    final private static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
+    private final static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
 
-    final private static MessageFormatter messageFormatter = new MessageFormatter();
+    private final static MessageFormatter messageFormatter = new MessageFormatter();
 
-    private String                          localMetadataCollectionId;
-    private String                          localServerName;
-    private OMRSRepositoryConnector         localRepositoryConnector;
-    private OMRSRepositoryHelper            repositoryHelper;
-    private OMRSRepositoryValidator         repositoryValidator;
-    private OMRSRepositoryEventExchangeRule saveExchangeRule;
+    private final String                          localMetadataCollectionId;
+    private final String                          localServerName;
+    private final OMRSRepositoryConnector         localRepositoryConnector;
+    private final OMRSRepositoryHelper            repositoryHelper;
+    private final OMRSRepositoryValidator         repositoryValidator;
+    private final OMRSRepositoryEventExchangeRule saveExchangeRule;
+    private final boolean                         produceRefreshEvents;
+    private final OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
+
     private OMRSMetadataCollection          localMetadataCollection = null;
-    private boolean                         produceRefreshEvents;
-    private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
 
     /*
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
 
 
     /**
-     * Constructor saves all of the information necessary to process incoming instance events.  It is intolerant
+     * Constructor saves all the information necessary to process incoming instance events.  It is intolerant
      * of nulls in any of its parameters and will throw a logic error exception is it finds any.
      *
      * @param localMetadataCollectionId        local metadata collection identifier
@@ -884,7 +885,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -924,7 +925,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  proxy of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  proxy of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     public void processClassifiedEntityEvent(String         sourceName,
@@ -963,7 +964,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -1003,7 +1004,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  proxy of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  proxy of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     public void processDeclassifiedEntityEvent(String         sourceName,
@@ -1042,7 +1043,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -1084,7 +1085,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  proxy of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  proxy of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */

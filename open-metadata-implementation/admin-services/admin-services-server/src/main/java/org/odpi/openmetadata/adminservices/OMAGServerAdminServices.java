@@ -37,13 +37,13 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
 
-    private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -1955,6 +1955,7 @@ public class OMAGServerAdminServices
      *
      * @param userId                      user that is issuing the request.
      * @param serverName                  local server name.
+     * @param metadataCollectionId        new value for the metadata collection id
      * @return guid response or
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or name parameter or

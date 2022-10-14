@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,10 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareCapability;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 
@@ -215,8 +218,8 @@ public class AnalyticsArtifactHandler {
 	private String createSchemaType(AnalyticsAsset asset, String assetGUID)
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
-		String methodName = "createSchemaType";
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String             methodName = "createSchemaType";
+		SoftwareCapability ssc        = ctx.getServerSoftwareCapability();
 		SchemaTypeBuilder builder = new SchemaTypeBuilder(
 				QualifiedNameUtils.buildQualifiedName(asset.getQualifiedName(), IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME, asset.getType()),
 				IdMap.COMPLEX_SCHEMA_TYPE_TYPE_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
@@ -224,10 +227,10 @@ public class AnalyticsArtifactHandler {
 		
 		builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
 		
-		String schemaTypeGUID = schemaTypeHandler.addSchemaType(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), builder, methodName);
+		String schemaTypeGUID = schemaTypeHandler.addSchemaType(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), builder, null, null, false, false, new Date(), methodName);
 		
 		assetHandler.attachSchemaTypeToAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), assetGUID, Constants.PARAM_NAME_ASSET_GUID, 
-				schemaTypeGUID, "schemaTypeGUID", methodName);
+				schemaTypeGUID, "schemaTypeGUID", null, null, false, false, new Date(), methodName);
 		return schemaTypeGUID;
 	}
 
@@ -243,28 +246,32 @@ public class AnalyticsArtifactHandler {
 	private String createAssetEntity(AnalyticsAsset asset, boolean bModuleAsset)
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
-		String methodName = "createAsset";
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
-		String assetTypeName = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_NAME : IdMap.DEPLOYED_REPORT_TYPE_NAME;
+		String             methodName    = "createAsset";
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
+		String             assetTypeName = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_NAME : IdMap.DEPLOYED_REPORT_TYPE_NAME;
 		String assetTypeGuid = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_GUID : IdMap.DEPLOYED_REPORT_TYPE_GUID;
 		String qualifiedName = QualifiedNameUtils.buildQualifiedName(ssc.getQualifiedName(), assetTypeName, asset.getUid());
 		
 
         asset.setQualifiedName(qualifiedName);
 		String assetGUID = assetHandler.createAssetInRepository(ctx.getUserId(),
-				ssc.getGUID(), ssc.getSource(),
-				qualifiedName, asset.getDisplayName(),
-				asset.getDescription(),
-				ctx.getSupportedZones(), // zoneMembership,
-				null,	// owner
-				0,		// ownerType (0 = OWNS),
-				null,	//originOrganizationCapabilityGUID,
-				null,	//originBusinessCapabilityGUID,
-				null,	//otherOriginValues,
-				AnalyticsAssetUtils.buildAdditionalProperties(asset),	//additionalProperties, 
-				assetTypeGuid, assetTypeName,
-				null,	//extended properties
-				methodName);
+																ssc.getGUID(), ssc.getSource(),
+																qualifiedName, asset.getDisplayName(), null,
+																asset.getDescription(),
+																ctx.getSupportedZones(), // zoneMembership,
+																null,    // owner
+																0,        // ownerType (0 = OWNS),
+																null,    //originOrganizationCapabilityGUID,
+																null,    //originBusinessCapabilityGUID,
+																null,    //otherOriginValues,
+																AnalyticsAssetUtils.buildAdditionalProperties(asset),    //additionalProperties,
+																assetTypeGuid, assetTypeName,
+																null,    //extended properties
+																null,
+																null,
+																InstanceStatus.ACTIVE,
+																new Date(),
+																methodName);
 		
 		ctx.getRepositoryHandler().createRelationship(ctx.getUserId(),
 				IdMap.SERVER_ASSET_USE_TYPE_GUID, 
@@ -398,8 +405,8 @@ public class AnalyticsArtifactHandler {
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
 		String methodName = "createContainer";
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, container.getIdentifier());
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String             qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, container.getIdentifier());
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
 		container.setQualifiedName(qualifiedName);
 
 		String guid = bNested 
@@ -407,18 +414,18 @@ public class AnalyticsArtifactHandler {
 						parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
 		                qualifiedName, "qualifiedName",
-		                createAnalyticsMetadataBuilder(container, anchorGUID, true), methodName)
+		                createAnalyticsMetadataBuilder(container, anchorGUID, true),null, null,  false, false, null, methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
-						createAnalyticsMetadataBuilder(container, anchorGUID, true), methodName);
+						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+						createAnalyticsMetadataBuilder(container, anchorGUID, true), new Date(), methodName);
 		
 		if (!bNested) {
 			// global calculation connects to the schema
 			assetHandler.linkElementToElement(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
-					parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, false, false,
-					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_GUID,
-					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME, null, methodName);
+											  parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+											  guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, false, false,
+											  IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_GUID, IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME,
+											  (InstanceProperties) null, null, null, new Date(), methodName);
 		}
 		
 		if (newItem != null) {
@@ -457,8 +464,8 @@ public class AnalyticsArtifactHandler {
 					throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
 		String methodName = "updateContainer";
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, container.getIdentifier());
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String             qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, container.getIdentifier());
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
 		container.setQualifiedName(qualifiedName);
 		
 		EntityDetail entity = assetEntities.remove(qualifiedName);
@@ -473,7 +480,8 @@ public class AnalyticsArtifactHandler {
 		
 		if (!container.equals(containerOld)) {
 			metadataHandler.updateSchemaAttribute(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), entity.getGUID(),
-					createAnalyticsMetadataBuilder(container, null, false).getInstanceProperties(methodName));
+					createAnalyticsMetadataBuilder(container, null, false).getInstanceProperties(methodName),
+					false, false, new Date(), methodName);
 		}
 		
 		// update nested containers
@@ -506,8 +514,8 @@ public class AnalyticsArtifactHandler {
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
 		String methodName = "createItem";
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, item.getIdentifier());
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String             qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, item.getIdentifier());
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
 		item.setQualifiedName(qualifiedName);
 
 		String guid = bNested 
@@ -515,10 +523,10 @@ public class AnalyticsArtifactHandler {
 						parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
 		                qualifiedName, "qualifiedName",
-		                createAnalyticsMetadataBuilder(item, anchorGUID, true), methodName)
+		                createAnalyticsMetadataBuilder(item, anchorGUID, true), null, null, false, false, new Date(), methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
-						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, ssc.getGUID(), ssc.getSource(),
-						createAnalyticsMetadataBuilder(item, anchorGUID, true), methodName);
+						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+						createAnalyticsMetadataBuilder(item, anchorGUID, true), new Date(), methodName);
 
 		item.setGuid(guid);
 
@@ -528,7 +536,7 @@ public class AnalyticsArtifactHandler {
 					parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
 					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, false, false,
 					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_GUID,
-					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME, null, methodName);
+					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME, (InstanceProperties) null, null, null, new Date(), methodName);
 		}
 
 		if (newItem != null) {
@@ -588,8 +596,8 @@ public class AnalyticsArtifactHandler {
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
 		String methodName = "updateItem";
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, item.getIdentifier());
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		String             qualifiedName = QualifiedNameUtils.buildQualifiedName(parentQName, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, item.getIdentifier());
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
 		item.setQualifiedName(qualifiedName);
 
 		EntityDetail entity = assetEntities.remove(qualifiedName);
@@ -606,7 +614,7 @@ public class AnalyticsArtifactHandler {
 
 		if (!item.equals(itemOld)) {
 			metadataHandler.updateSchemaAttribute(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), entity.getGUID(),
-					createAnalyticsMetadataBuilder(item, null, false).getInstanceProperties(methodName));
+					createAnalyticsMetadataBuilder(item, null, false).getInstanceProperties(methodName), false, false, new Date(), methodName);
 		}
 
 		// update nested items
@@ -727,7 +735,7 @@ public class AnalyticsArtifactHandler {
 					}
 				});
 			}
-		} catch (UserNotAuthorizedException | PropertyServerException e1) {
+		} catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e1) {
 			// log warning in execution context: relationships for item are not fetched from repository.
 			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_UPDATE_METADATA_LINK
 					.getMessageDefinition(item.getGuid(), e1.getLocalizedMessage()));
@@ -882,7 +890,8 @@ public class AnalyticsArtifactHandler {
 		
 			List<EntityDetail> dependants = metadataHandler.getAttachedEntities(ctx.getUserId(), guid, "guid", IdMap.ASSET_TYPE_NAME, 
 					IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME, 
-					IdMap.ASSET_TYPE_NAME, 0, 0, methodName);
+					IdMap.ASSET_TYPE_NAME, null, null, 0,
+					false, false, 0, 0, new Date(), methodName);
 			
 			for(EntityDetail entity : dependants) {
 				if (!filter.contains(entity.getGUID())) {
@@ -1070,7 +1079,7 @@ public class AnalyticsArtifactHandler {
 	public void removeMetadataObject(EntityDetail entity, String methodName)
 			throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException 
 	{
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+		SoftwareCapability ssc = ctx.getServerSoftwareCapability();
 		ctx.getRepositoryHandler().removeEntity(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), 
 				entity.getGUID(), "entityGuid", 
 				IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
@@ -1090,14 +1099,17 @@ public class AnalyticsArtifactHandler {
 	private boolean updateAssetAttributes(AnalyticsAsset asset, boolean bModuleAsset)
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AnalyticsModelingCheckedException 
 	{
-		String methodName = "updateAssetAttributes";
-		SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
-		String assetTypeName = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_NAME : IdMap.DEPLOYED_REPORT_TYPE_NAME;
+		String             methodName    = "updateAssetAttributes";
+		SoftwareCapability ssc           = ctx.getServerSoftwareCapability();
+		String             assetTypeName = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_NAME : IdMap.DEPLOYED_REPORT_TYPE_NAME;
 		String assetTypeGuid = bModuleAsset ? IdMap.INFOTMATION_VIEW_TYPE_GUID : IdMap.DEPLOYED_REPORT_TYPE_GUID;
 		asset.setQualifiedName(QualifiedNameUtils.buildQualifiedName(ssc.getQualifiedName(), assetTypeName, asset.getUid()));
 
 		AnalyticsAsset assetRepo = assetHandler.getBeanByQualifiedName(
-				ctx.getUserId(), assetTypeGuid, assetTypeName, asset.getQualifiedName(), Constants.QUALIFIED_NAME, methodName);
+				ctx.getUserId(), assetTypeGuid, assetTypeName, asset.getQualifiedName(), Constants.QUALIFIED_NAME,
+				false,
+				false,
+				new Date(), methodName);
 
 		if (assetRepo == null) {
 		    throw new AnalyticsModelingCheckedException(
@@ -1114,10 +1126,10 @@ public class AnalyticsArtifactHandler {
 		
 		if (!asset.equals(assetRepo)) {
 			assetHandler.updateAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
-					asset.getGuid(), Constants.PARAM_NAME_ASSET_GUID, 
-					asset.getQualifiedName(), asset.getDisplayName(), asset.getDescription(), 
-					AnalyticsAssetUtils.buildAdditionalProperties(asset), assetTypeGuid, assetTypeName, 
-					null, methodName);
+									 asset.getGuid(), Constants.PARAM_NAME_ASSET_GUID,
+									 asset.getQualifiedName(), asset.getDisplayName(), null, asset.getDescription(),
+									 AnalyticsAssetUtils.buildAdditionalProperties(asset), assetTypeGuid, assetTypeName, null,
+									 null,null, false, false, false, new Date(), methodName);
 			return true;
 		}
 		// nothing changed
@@ -1128,11 +1140,12 @@ public class AnalyticsArtifactHandler {
 	 * Update relationships of the asset merging existing and new asset references.
 	 * @param asset updated definition.
 	 * @param assetRepo repository version of the asset.
+	 * @throws InvalidParameterException
 	 * @throws PropertyServerException 
 	 * @throws UserNotAuthorizedException 
 	 */
 	private void updateAssetReferences(AnalyticsAsset asset, AnalyticsAsset assetRepo) 
-			throws UserNotAuthorizedException, PropertyServerException 
+			throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
 	{
 		String methodName = "updateAssetReferences";
 		List<AssetReference> refAssets = asset.getReference();
@@ -1191,7 +1204,7 @@ public class AnalyticsArtifactHandler {
 	 * @throws PropertyServerException
 	 */
 	private Map<String, Relationship> selectReferencedAssets(AnalyticsAsset asset) 
-			throws UserNotAuthorizedException, PropertyServerException 
+			throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException
 	{
 		List<Relationship> refAssetsOld = ctx.getRepositoryHandler().getRelationshipsByType(
 				ctx.getUserId(),
@@ -1238,7 +1251,7 @@ public class AnalyticsArtifactHandler {
 		
 		try {
 			List<EntityDetail> assets = getArtifactAssets(identifier);
-			SoftwareServerCapability ssc = ctx.getServerSoftwareCapability();
+			SoftwareCapability ssc    = ctx.getServerSoftwareCapability();
 			
 			for(EntityDetail asset : assets) {
 				guids.add(asset.getGUID());
@@ -1258,7 +1271,7 @@ public class AnalyticsArtifactHandler {
 					ssc.getGUID(), ssc.getSource(), 
 					asset.getGUID(), Constants.PARAM_NAME_ASSET_GUID,
 					asset.getType().getTypeDefGUID(), asset.getType().getTypeDefName(),
-					null, null, methodName);
+					null, null, false, false, new Date(),  methodName);
 
 			}
 			
@@ -1285,7 +1298,7 @@ public class AnalyticsArtifactHandler {
 	public List<EntityDetail> getArtifactAssets(String identifier) throws AnalyticsModelingCheckedException {
 		
 		String methodName = "getArtifactAssets";
-		// like "(SoftwareServerCapability)=name::(InformationView | DeployedReport)=identifier"
+		// like "(SoftwareCapability)=name::(InformationView | DeployedReport)=identifier"
 		String pattern = ctx.getRepositoryHelper().getEndsWithRegex(")=" + identifier); 
 		
 		try {

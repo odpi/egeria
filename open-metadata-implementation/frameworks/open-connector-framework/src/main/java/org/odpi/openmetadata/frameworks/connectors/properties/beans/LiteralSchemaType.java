@@ -124,27 +124,45 @@ public class LiteralSchemaType extends SchemaType
     public String toString()
     {
         return "LiteralSchemaType{" +
-                "dataType='" + dataType + '\'' +
-                ", fixedValue='" + fixedValue + '\'' +
-                ", versionNumber='" + versionNumber + '\'' +
-                ", author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
-                ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", dataType='" + dataType + '\'' +
+                       ", fixedValue='" + fixedValue + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", anchorGUID='" + getAnchorGUID() + '\'' +
+                       ", calculatedValue=" + isCalculatedValue() +
+                       ", expression='" + getExpression() + '\'' +
+                       ", formula='" + getFormula() + '\'' +
+                       ", queries=" + getQueries() +
+                       ", cloneSchemaElement=" + cloneSchemaElement() +
+                       ", cloneSchemaType=" + cloneSchemaType() +
+                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       '}';
     }
-
-
 
 
     /**

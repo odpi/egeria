@@ -36,7 +36,7 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -73,7 +73,9 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
 
                     databaseSchemaProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     databaseSchemaProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    databaseSchemaProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseSchemaProperties.setName(this.removeName(instanceProperties));
+                    databaseSchemaProperties.setDisplayName(databaseSchemaProperties.getName());
+                    databaseSchemaProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     databaseSchemaProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*
@@ -103,7 +105,7 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

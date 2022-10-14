@@ -276,7 +276,7 @@ public class FileSystemOnboardingResource
 
     /**
      * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly, for the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -303,7 +303,7 @@ public class FileSystemOnboardingResource
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly, for the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user

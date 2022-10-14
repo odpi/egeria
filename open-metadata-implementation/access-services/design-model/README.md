@@ -1,13 +1,17 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Design Model Open Metadata Access Service (OMAS)
 
 The Design Model OMAS supports the management of design model intellectual
 property that has either been provided as standard or created in a
 software architecture and design modeling tool.
+
+* [Documentation](https://egeria-project.org/services/omas/desing-model/overview)
+
+## Design Information
 
 The module structure for the Design Model OMAS is as follows:
 

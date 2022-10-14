@@ -101,10 +101,20 @@ public class LineageGraphQueryHelper {
         Set<LineageEdge> lineageEdges = new HashSet<>();
         while (originalEdges.hasNext()) {
             Edge next = originalEdges.next();
-            LineageEdge newLineageEdge = new LineageEdge(next.label(), getNodeID(next.outVertex()), getNodeID(next.inVertex()));
+            LineageEdge newLineageEdge = new LineageEdge(getEdgeID(next), next.label(), getNodeID(next.outVertex()), getNodeID(next.inVertex()));
             lineageEdges.add(newLineageEdge);
         }
         return lineageEdges;
+    }
+
+    private String getEdgeID(Edge edge) {
+        String edgeID;
+        if (edge.property("edge--guid").isPresent()) {
+            edgeID = edge.property("edge--guid").value().toString();
+        } else {
+            edgeID = edge.id().toString();
+        }
+        return edgeID;
     }
 
     private void condenseProcesses(boolean includeProcesses, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
@@ -133,7 +143,7 @@ public class LineageGraphQueryHelper {
                 if (edge.getDestinationNodeID().equalsIgnoreCase(vertexName)) {
                     for (LineageEdge destinationEdge : lineageEdges) {
                         if (destinationEdge.getSourceNodeID().equalsIgnoreCase(vertexName)) {
-                            edgesToReplaceProcesses.add(new LineageEdge(EDGE_LABEL_CONDENSED,
+                            edgesToReplaceProcesses.add(new LineageEdge(edge.getId(), EDGE_LABEL_CONDENSED,
                                     edge.getSourceNodeID(), destinationEdge.getDestinationNodeID()));
                         }
                     }
@@ -238,7 +248,7 @@ public class LineageGraphQueryHelper {
     private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
         List<String> types = new ArrayList<>();
         types.addAll(DATA_FILE_AND_SUBTYPES);
-        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
+        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, GLOSSARY, PROCESS,
                 TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS, TOPIC, EVENT_SCHEMA_ATTRIBUTE));
         return types.contains(lineageVertex.getNodeType());
     }

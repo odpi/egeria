@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 {
-    private OpenMetadataAPIGenericConverter<B> schemaTypeConverter;
+    private final OpenMetadataAPIGenericConverter<B> schemaTypeConverter;
 
     /**
      * Construct the handler with information needed to work with B objects.
@@ -82,9 +82,14 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Store a new schema type (and optional attributes) in the repository and return its unique identifier (GUID).
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param schemaTypeBuilder properties for new schemaType
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -97,6 +102,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                  String            externalSourceGUID,
                                  String            externalSourceName,
                                  SchemaTypeBuilder schemaTypeBuilder,
+                                 Date              effectiveFrom,
+                                 Date              effectiveTo,
+                                 boolean           forLineage,
+                                 boolean           forDuplicateProcessing,
+                                 Date              effectiveTime,
                                  String            methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -108,9 +118,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                             externalSourceName,
                                                             schemaTypeBuilder.getTypeGUID(),
                                                             schemaTypeBuilder.getTypeName(),
-                                                            schemaTypeBuilder.getQualifiedName(),
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             schemaTypeBuilder,
+                                                            effectiveTime,
                                                             methodName);
 
 
@@ -121,6 +130,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                          schemaTypeGUIDParameterName,
                          schemaTypeBuilder.getTypeName(),
                          schemaTypeBuilder,
+                         effectiveFrom,
+                         effectiveTo,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
 
         return schemaTypeGUID;
@@ -132,8 +146,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -146,6 +160,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -169,6 +188,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
                                 Map<String, Object> extendedProperties,
+                                Date                effectiveFrom,
+                                Date                effectiveTo,
+                                boolean             forLineage,
+                                boolean             forDuplicateProcessing,
+                                Date                effectiveTime,
                                 String              methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -207,10 +231,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -219,8 +250,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a primitive schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -235,6 +266,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -260,6 +296,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveFrom,
+                                         Date                effectiveTo,
+                                         boolean             forLineage,
+                                         boolean             forDuplicateProcessing,
+                                         Date                effectiveTime,
                                          String              methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -300,11 +341,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         builder.setDataType(dataType);
         builder.setDefaultValue(defaultValue);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -313,8 +360,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a literal schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -329,6 +376,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -354,6 +406,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                        Map<String, String> additionalProperties,
                                        String              suppliedTypeName,
                                        Map<String, Object> extendedProperties,
+                                       Date                effectiveFrom,
+                                       Date                effectiveTo,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
                                        String              methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -394,11 +451,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         builder.setDataType(dataType);
         builder.setFixedValue(fixedValue);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -408,8 +471,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create an enum schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -425,6 +488,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -451,6 +519,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     Map<String, String> additionalProperties,
                                     String              suppliedTypeName,
                                     Map<String, Object> extendedProperties,
+                                    Date                effectiveFrom,
+                                    Date                effectiveTo,
+                                    boolean             forLineage,
+                                    boolean             forDuplicateProcessing,
+                                    Date                effectiveTime,
                                     String              methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -492,11 +565,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         builder.setDataType(dataType);
         builder.setDefaultValue(defaultValue);
         builder.setValidValuesSetGUID(validValuesSetGUID);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -505,8 +584,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a struct schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -519,6 +598,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -542,6 +626,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                       Map<String, String> additionalProperties,
                                       String              suppliedTypeName,
                                       Map<String, Object> extendedProperties,
+                                      Date                effectiveFrom,
+                                      Date                effectiveTo,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
                                       String              methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -580,10 +669,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -592,8 +688,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a schema type choice.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -606,6 +702,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -629,6 +730,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                       Map<String, String> additionalProperties,
                                       String              suppliedTypeName,
                                       Map<String, Object> extendedProperties,
+                                      Date                effectiveFrom,
+                                      Date                effectiveTo,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
                                       String              methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -667,10 +773,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -679,8 +792,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a map schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -690,11 +803,16 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param usage guidance on how the schema should be used.
      * @param encodingStandard format of the schema.
      * @param namespace namespace where the schema is defined.
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      * @param additionalProperties additional properties
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -720,6 +838,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -763,11 +886,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                           serverName);
 
         builder.setMapGUIDs(mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return addSchemaType(userId,
                              externalSourceGUID,
                              externalSourceName,
                              builder,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -777,8 +906,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * The template defines additional classifications and relationships that should be added to the new schema type.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the schema type - used in other configuration
      * @param displayName short display name for the schema type
@@ -826,42 +955,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
-    }
-
-
-    /**
-     * Update a stored schemaType.
-     *
-     * @param userId                 userId
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
-     * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
-     * @param existingSchemaTypeGUIDParameterName name of parameter for existingSchemaTypeGUID
-     * @param builder             new schemaType values
-     * @throws InvalidParameterException  the schemaType bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void   updateSchemaType(String            userId,
-                                   String            externalSourceGUID,
-                                   String            externalSourceName,
-                                   String            existingSchemaTypeGUID,
-                                   String            existingSchemaTypeGUIDParameterName,
-                                   SchemaTypeBuilder builder) throws InvalidParameterException, 
-                                                                     PropertyServerException, 
-                                                                     UserNotAuthorizedException
-    {
-        final String methodName = "updateSchemaType";
-
-        this.updateSchemaType(userId,
-                              externalSourceGUID,
-                              externalSourceName,
-                              existingSchemaTypeGUID,
-                              existingSchemaTypeGUIDParameterName,
-                              builder,
-                              false,
-                              methodName);
     }
 
 
@@ -870,12 +965,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * through the nested schemas.
      *
      * @param userId                 userId
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
      * @param existingSchemaTypeGUIDParameterName name of parameter for existingSchemaTypeGUID
      * @param builder                new schemaType values
      * @param isMergeUpdate          should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName             calling method
      *
      * @throws InvalidParameterException  the schemaType bean properties are invalid
@@ -889,6 +987,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                    String            existingSchemaTypeGUIDParameterName,
                                    SchemaTypeBuilder builder,
                                    boolean           isMergeUpdate,
+                                   boolean           forLineage,
+                                   boolean           forDuplicateProcessing,
+                                   Date              effectiveTime,
                                    String            methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -902,12 +1003,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     existingSchemaTypeGUIDParameterName,
                                     this.getSchemaTypeTypeGUID(builder),
                                     this.getSchemaTypeTypeName(builder),
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     properties,
                                     isMergeUpdate,
-                                    this.getEffectiveTime(properties),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -916,8 +1017,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Create a schema type.
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
@@ -932,6 +1033,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param suppliedTypeName unique name of schema sub type
      * @param extendedProperties  properties from the subtype.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the bean properties are invalid
@@ -954,7 +1060,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                  Map<String, String> additionalProperties,
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  boolean             isMergeUpdate,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -994,6 +1105,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         updateSchemaType(userId,
                          externalSourceGUID,
                          externalSourceName,
@@ -1001,6 +1114,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                          elementGUIDParameterName,
                          builder,
                          isMergeUpdate,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
     }
 
@@ -1046,21 +1162,27 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * Remove the requested schemaType if it is no longer connected to any other entity.
      *
      * @param userId       calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param schemaTypeGUID object to delete
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException  the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaType(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String schemaTypeGUID,
-                                 String methodName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public void removeSchemaType(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  schemaTypeGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
         final String guidParameterName = "schemaTypeGUID";
 
@@ -1073,9 +1195,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1086,7 +1208,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId     calling user
      * @param assetGUID identifier for the entity that the object is attached to
      * @param assetGUIDParameterName name of parameter for assetGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1098,6 +1222,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaTypeForAsset(String   userId,
                                    String   assetGUID,
                                    String   assetGUIDParameterName,
+                                   boolean  forLineage,
+                                   boolean  forDuplicateProcessing,
                                    Date     effectiveTime,
                                    String   methodName) throws InvalidParameterException,
                                                                PropertyServerException,
@@ -1109,6 +1235,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            effectiveTime,
                                            methodName);
     }
@@ -1120,7 +1248,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId     calling user
      * @param portGUID identifier for the entity that the object is attached to
      * @param portGUIDParameterName name of parameter for portGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1132,6 +1262,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaTypeForPort(String   userId,
                                   String   portGUID,
                                   String   portGUIDParameterName,
+                                  boolean  forLineage,
+                                  boolean  forDuplicateProcessing,
                                   Date     effectiveTime,
                                   String   methodName) throws InvalidParameterException,
                                                               PropertyServerException,
@@ -1143,6 +1275,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                            OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                            OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            effectiveTime,
                                            methodName);
     }
@@ -1158,7 +1292,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param parentTypeName type name of anchor
      * @param relationshipTypeGUID unique identifier of the relationship type to search along
      * @param relationshipTypeName unique name of the relationship type to search along
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1173,6 +1309,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     String   parentTypeName,
                                     String   relationshipTypeGUID,
                                     String   relationshipTypeName,
+                                    boolean  forLineage,
+                                    boolean  forDuplicateProcessing,
                                     Date     effectiveTime,
                                     String   methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -1185,24 +1323,32 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                 relationshipTypeGUID,
                                                                 relationshipTypeName,
                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                false,
-                                                                false,
+                                                                2,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
                                                                 supportedZones,
                                                                 effectiveTime,
                                                                 methodName);
 
-        return getSchemaTypeFromEntity(userId, schemaTypeEntity, effectiveTime, methodName);
+        return getSchemaTypeFromEntity(userId,
+                                       schemaTypeEntity,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
     }
 
 
     /**
-     * Retrieve a specific schema type based on its unique identifier (GUID).  This is use to do updates
+     * Retrieve a specific schema type based on its unique identifier (GUID).  This is used to do updates
      * and to retrieve a linked schema.
      *
      * @param userId calling user
      * @param schemaTypeGUID guid of schema type to retrieve.
      * @param guidParameterName parameter describing where the guid came from
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schema type or null depending on whether the object is found
@@ -1213,6 +1359,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaType(String   userId,
                            String   schemaTypeGUID,
                            String   guidParameterName,
+                           boolean  forLineage,
+                           boolean  forDuplicateProcessing,
                            Date     effectiveTime,
                            String   methodName) throws InvalidParameterException,
                                                        PropertyServerException,
@@ -1224,44 +1372,18 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                       null,
                                                                       null,
-                                                                      false,
-                                                                      false,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
                                                                       supportedZones,
                                                                       effectiveTime,
                                                                       methodName);
 
-        return getSchemaTypeFromEntity(userId, schemaTypeEntity, effectiveTime, methodName);
-    }
-
-
-
-    /**
-     * Retrieve the list of schema type metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param userId calling user
-     * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B> findSchemaTypes(String userId,
-                                   String searchString,
-                                   int    startFrom,
-                                   int    pageSize,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
-    {
-        return findSchemaTypes(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, searchString, startFrom, pageSize, effectiveTime, methodName);
+        return getSchemaTypeFromEntity(userId,
+                                       schemaTypeEntity,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
     }
 
 
@@ -1274,7 +1396,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1283,15 +1407,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findSchemaTypes(String userId,
-                                   String suppliedTypeName,
-                                   String searchString,
-                                   int    startFrom,
-                                   int    pageSize,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public List<B> findSchemaTypes(String  userId,
+                                   String  suppliedTypeName,
+                                   String  searchString,
+                                   int     startFrom,
+                                   int     pageSize,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -1318,40 +1444,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         null,
                                                         startFrom,
                                                         pageSize,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         effectiveTime,
                                                         methodName);
 
-        return getSchemaTypesFromEntities(userId, entities, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Retrieve the list of schema type metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B> getSchemaTypeByName(String userId,
-                                       String name,
-                                       int    startFrom,
-                                       int    pageSize,
-                                       Date   effectiveTime,
-                                       String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        return getSchemaTypeByName(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, name, startFrom, pageSize, effectiveTime, methodName);
+        return getSchemaTypesFromEntities(userId,
+                                          entities,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
     }
 
 
@@ -1364,7 +1467,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1373,15 +1478,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getSchemaTypeByName(String userId,
-                                       String suppliedTypeName,
-                                       String name,
-                                       int    startFrom,
-                                       int    pageSize,
-                                       Date   effectiveTime,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<B> getSchemaTypeByName(String  userId,
+                                       String  suppliedTypeName,
+                                       String  name,
+                                       int     startFrom,
+                                       int     pageSize,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String nameParameterName = "name";
 
@@ -1412,8 +1519,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               true,
                                                               null,
                                                               null,
-                                                              false,
-                                                              false,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
                                                               supportedZones,
                                                               null,
                                                               startFrom,
@@ -1421,7 +1528,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               effectiveTime,
                                                               methodName);
 
-        return getSchemaTypesFromEntities(userId, entities, effectiveTime, methodName);
+        return getSchemaTypesFromEntities(userId,
+                                          entities,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime, methodName);
     }
 
 
@@ -1431,35 +1542,104 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is connected to
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return metadata element describing the schema type associated with the requested parent element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getSchemaTypeForElement(String userId,
-                                     String parentElementGUID,
-                                     String parentElementTypeName,
-                                     Date   effectiveTime,
-                                     String methodName)
+     * @return metadata element describing the schema type associated with the requested parent element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+    */
+    public B getSchemaTypeForElement(String  userId,
+                                     String  parentElementGUID,
+                                     String  parentElementTypeName,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String parentElementGUIDParameterName = "parentElementGUID";
+        final String schemaTypeGUIDParameterName = "schemaTypeEnd.getGUID";
 
-        // todo
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
+                                                                      parentElementGUID,
+                                                                      parentElementGUIDParameterName,
+                                                                      parentElementTypeName,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      0,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      supportedZones,
+                                                                      0,
+                                                                      0,
+                                                                      effectiveTime,
+                                                                      methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
+                {
+                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                }
+            }
+        }
+
         return null;
     }
 
 
     /**
-     * Transform a ;ist of schema type entities into a list of schema type beans.  To completely fill out each schema type
+     * Transform a list of schema type entities into a list of schema type beans.  To completely fill out each schema type
      * it may be necessary to retrieve additional entities.  For example, a map schema type includes links
      * to the two types that are being mapped together.
      *
      * @param userId calling user
      * @param schemaTypeEntities list of entities retrieved from the repositories
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -1470,6 +1650,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      */
     private List<B> getSchemaTypesFromEntities(String             userId,
                                                List<EntityDetail> schemaTypeEntities,
+                                               boolean            forLineage,
+                                               boolean            forDuplicateProcessing,
                                                Date               effectiveTime,
                                                String             methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
@@ -1483,7 +1665,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             {
                 if (entity != null)
                 {
-                    results.add(this.getSchemaTypeFromEntity(userId, entity, effectiveTime, methodName));
+                    results.add(this.getSchemaTypeFromEntity(userId,
+                                                             entity,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
+                                                             methodName));
                 }
             }
         }
@@ -1504,7 +1691,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      *
      * @param userId calling user
      * @param schemaTypeEntity entity retrieved from the repository
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schema type bean
@@ -1515,6 +1704,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      */
     private B getSchemaTypeFromEntity(String       userId,
                                       EntityDetail schemaTypeEntity,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -1527,6 +1718,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                              schemaTypeEntity.getType().getTypeDefName(),
                                              schemaTypeEntity.getProperties(),
                                              schemaTypeEntity.getClassifications(),
+                                             forLineage,
+                                             forDuplicateProcessing,
                                              effectiveTime,
                                              methodName);
         }
@@ -1545,7 +1738,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param schemaRootTypeName name of type of the schema element that holds the root information
      * @param instanceProperties properties describing the schema type
      * @param entityClassifications classifications from the root entity
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return schema type bean
@@ -1558,6 +1753,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                         String               schemaRootTypeName,
                                         InstanceProperties   instanceProperties,
                                         List<Classification> entityClassifications,
+                                        boolean              forLineage,
+                                        boolean              forDuplicateProcessing,
                                         Date                 effectiveTime,
                                         String               methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
@@ -1589,8 +1786,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                            2,
-                                                                           false,
-                                                                           false,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
                                                                            supportedZones,
                                                                            effectiveTime,
                                                                            methodName);
@@ -1598,12 +1795,17 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             if (externalSchemaTypeEntity != null)
             {
                 externalSchemaTypeGUID = externalSchemaTypeEntity.getGUID();
-                externalSchemaType = this.getSchemaTypeFromEntity(userId, externalSchemaTypeEntity, effectiveTime, methodName);
+                externalSchemaType = this.getSchemaTypeFromEntity(userId,
+                                                                  externalSchemaTypeEntity,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveTime,
+                                                                  methodName);
             }
         }
 
         /*
-         * Collect up the interesting information about the schema type that is outside of the entity.
+         * Collect up the interesting information about the schema type that is outside the entity.
          */
         if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
         {
@@ -1622,8 +1824,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
-                                                                       false,
-                                                                       false,
+                                                                       2,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        supportedZones,
                                                                        effectiveTime,
                                                                        methodName);
@@ -1642,8 +1845,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                          false,
-                                                                          false,
+                                                                          2,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
                                                                           supportedZones,
                                                                           effectiveTime,
                                                                           methodName);
@@ -1651,7 +1855,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             if (mapFromSchemaTypeEntity != null)
             {
                 mapFromSchemaTypeGUID = mapFromSchemaTypeEntity.getGUID();
-                mapFromSchemaType = this.getSchemaTypeFromEntity(userId, mapFromSchemaTypeEntity, effectiveTime, methodName);
+                mapFromSchemaType = this.getSchemaTypeFromEntity(userId,
+                                                                 mapFromSchemaTypeEntity,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
             }
 
             EntityDetail mapToSchemaTypeEntity = this.getAttachedEntity(userId,
@@ -1661,8 +1870,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                        false,
-                                                                        false,
+                                                                        2,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
                                                                         supportedZones,
                                                                         effectiveTime,
                                                                         methodName);
@@ -1670,7 +1880,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             if (mapToSchemaTypeEntity != null)
             {
                 mapToSchemaTypeGUID = mapToSchemaTypeEntity.getGUID();
-                mapToSchemaType = this.getSchemaTypeFromEntity(userId, mapToSchemaTypeEntity, effectiveTime, methodName);
+                mapToSchemaType = this.getSchemaTypeFromEntity(userId,
+                                                               mapToSchemaTypeEntity,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
             }
         }
         else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
@@ -1685,8 +1900,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                null,
                                                                                null,
                                                                                0,
-                                                                               false,
-                                                                               false,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
                                                                                supportedZones,
                                                                                0,
                                                                                invalidParameterHandler.getMaxPagingSize(),
@@ -1703,7 +1918,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                     if (schemaTypeOptionEntity != null)
                     {
                         schemaTypeOptionGUIDs.add(schemaTypeOptionEntity.getGUID());
-                        schemaTypeOptions.add(this.getSchemaTypeFromEntity(userId, schemaTypeOptionEntity, effectiveTime, methodName));
+                        schemaTypeOptions.add(this.getSchemaTypeFromEntity(userId,
+                                                                           schemaTypeOptionEntity,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           effectiveTime,
+                                                                           methodName));
                     }
                 }
             }
@@ -1718,7 +1938,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   2,
-                                                                  false,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  supportedZones,
                                                                   0,
                                                                   0,
                                                                   effectiveTime,

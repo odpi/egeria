@@ -4,7 +4,12 @@ package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,7 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * The GovernanceMetricsInterface supports the definition of the metrics that measure the success of the governance program.  Typically a
+ * The GovernanceMetricsInterface supports the definition of the metrics that measure the success of the governance program.  Typically, a
  * metric is associated with a governance definition.
  */
 public interface GovernanceMetricsInterface
@@ -84,12 +89,12 @@ public interface GovernanceMetricsInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void setupGovernanceDefinitionMetric(String userId,
-                                         String metricGUID,
-                                         String governanceDefinitionGUID,
-                                         String rationale) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+    void setupGovernanceDefinitionMetric(String                               userId,
+                                         String                               metricGUID,
+                                         String                               governanceDefinitionGUID,
+                                         GovernanceDefinitionMetricProperties rationale) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
@@ -108,6 +113,143 @@ public interface GovernanceMetricsInterface
                                          String governanceDefinitionGUID) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException;
+
+
+    /**
+     * Create a link to show which data set holds the measurements for a data set.
+     *
+     * @param userId calling user
+     * @param metricGUID unique identifier of the governance metric
+     * @param dataSetGUID unique identifier of the governance definition
+     * @param properties description of how the data set supports the metric
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void setupGovernanceResults(String                      userId,
+                                String                      metricGUID,
+                                String                      dataSetGUID,
+                                GovernanceResultsProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Remove the link between a governance metric and a data set.
+     *
+     * @param userId calling user
+     * @param metricGUID unique identifier of the governance metric
+     * @param dataSetGUID unique identifier of the data set
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void clearGovernanceResults(String userId,
+                                String metricGUID,
+                                String dataSetGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
+
+
+    /**
+     * Classify the data set to indicate that contains governance measurements.
+     *
+     * @param userId        calling user
+     * @param dataSetGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setGovernanceMeasurementsDataSet(String                                  userId,
+                                          String                                  dataSetGUID,
+                                          GovernanceMeasurementsDataSetProperties properties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException;
+
+
+    /**
+     * Remove the governance data designation from the data set.
+     *
+     * @param userId       calling user
+     * @param dataSetGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearGovernanceMeasurementsDataSet(String userId,
+                                            String dataSetGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
+
+    /**
+     * Classify the element to indicate the expected values of the governance measurements. Can be used to create or update the values.
+     *
+     * @param userId        calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setGovernanceExpectations(String                           userId,
+                                   String                           elementGUID,
+                                   GovernanceExpectationsProperties properties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
+
+
+    /**
+     * Remove the governance expectations classification from the element.
+     *
+     * @param userId       calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearGovernanceExpectations(String userId,
+                                     String elementGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
+
+
+
+    /**
+     * Classify the element with relevant governance measurements. Can be used to create or update the values.
+     *
+     * @param userId        calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setGovernanceMeasurements(String                           userId,
+                                   String                           elementGUID,
+                                   GovernanceMeasurementsProperties properties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
+
+
+
+    /**
+     * Remove the measurements from the element.
+     *
+     * @param userId       calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearGovernanceMeasurements(String userId,
+                                     String elementGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
+
 
     /**
      * Return information about a specific governance metric.

@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapp
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PortBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -33,6 +33,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 
 /**
  * PortHandler manages Port objects from the property server. It runs server-side in the DataEngine OMAS
@@ -57,16 +58,14 @@ public class DataEnginePortHandler {
      * @param serviceName             name of this service
      * @param serverName              name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param portHandler             provides utilities for manipulating the repository services ports
      * @param registrationHandler     provides utilities for manipulating software server capability entities
      */
     public DataEnginePortHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                 RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                 DataEngineCommonHandler dataEngineCommonHandler, PortHandler<Port> portHandler,
-                                 DataEngineRegistrationHandler registrationHandler) {
+                                 OMRSRepositoryHelper repositoryHelper, DataEngineCommonHandler dataEngineCommonHandler,
+                                 PortHandler<Port> portHandler, DataEngineRegistrationHandler registrationHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -179,7 +178,8 @@ public class DataEnginePortHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
-                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName, null, methodName);
+               port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName,
+              null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -212,7 +212,8 @@ public class DataEnginePortHandler {
         }
 
         portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
-                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null, methodName);
+                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null,
+                null, null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -237,11 +238,13 @@ public class DataEnginePortHandler {
         invalidParameterHandler.validateGUID(portGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
-        if (!dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID, PORT_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME)
-                .isPresent()) {
+        Optional<Relationship> relationship = dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID,
+                PORT_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
+        if (relationship.isEmpty()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, methodName);
+                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, null, null, false, false,
+                    dataEngineCommonHandler.getNow(), methodName);
         }
     }
 
@@ -260,7 +263,8 @@ public class DataEnginePortHandler {
     public Optional<EntityDetail> findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException {
-        return dataEngineCommonHandler.getEntityForRelationship(userId, portGUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME);
+        return dataEngineCommonHandler.getEntityForRelationship(userId, portGUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                PORT_TYPE_NAME);
     }
 
     /**
@@ -286,21 +290,24 @@ public class DataEnginePortHandler {
         invalidParameterHandler.validateName(delegatesToQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         Optional<EntityDetail> delegatedPortEntity = findPortEntity(userId, delegatesToQualifiedName);
-        if (!delegatedPortEntity.isPresent()) {
+        if (delegatedPortEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName, delegatesToQualifiedName);
         }
 
         String delegatedPortType = getPortType(delegatedPortEntity.get());
         if (!portType.getName().equalsIgnoreCase(delegatedPortType)) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName,
-                    delegatedPortType);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName,
+                    delegatesToQualifiedName, delegatedPortType);
         }
 
         String delegatedPortGUID = delegatedPortEntity.get().getGUID();
-        if (!dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME).isPresent()) {
+        Optional<Relationship> relationship = dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID,
+                PORT_TYPE_NAME, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME);
+        if (relationship.isEmpty()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
-                    PORT_GUID_PARAMETER_NAME, methodName);
+                    PORT_GUID_PARAMETER_NAME, null, null, false, false,
+                    dataEngineCommonHandler.getNow(), methodName);
         }
     }
 
@@ -325,7 +332,8 @@ public class DataEnginePortHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, methodName);
+        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
+                 false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -380,7 +388,7 @@ public class DataEnginePortHandler {
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException {
         Optional<EntityDetail> portEntity = findPortAliasEntity(userId, qualifiedName);
-        if (!portEntity.isPresent()) {
+        if (portEntity.isEmpty()) {
             portEntity = findPortImplementationEntity(userId, qualifiedName);
         }
         return portEntity;

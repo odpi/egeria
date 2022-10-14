@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.GlossaryExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class GlossaryExchangeResource
 {
-    private GlossaryExchangeRESTServices restAPI = new GlossaryExchangeRESTServices();
+    private final GlossaryExchangeRESTServices restAPI = new GlossaryExchangeRESTServices();
 
     /**
      * Default constructor
@@ -40,8 +40,8 @@ public class GlossaryExchangeResource
 
 
     /* ========================================================
-     * The glossary is the root object for a glossary.  All of the glossary's categories and terms are anchored
-     * to it so that if the glossary is deleted, all of the categories and terms within it are also deleted.
+     * The glossary is the root object for a glossary.  All the glossary's categories and terms are anchored
+     * to it so that if the glossary is deleted, all the categories and terms within it are also deleted.
      */
 
 
@@ -103,6 +103,7 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param requestBody new properties for this element
      *
      * @return  void or
@@ -115,9 +116,11 @@ public class GlossaryExchangeResource
     public VoidResponse updateGlossary(@PathVariable String              serverName,
                                        @PathVariable String              userId,
                                        @PathVariable String              glossaryGUID,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean             isMergeUpdate,
                                        @RequestBody  GlossaryRequestBody requestBody)
     {
-        return restAPI.updateGlossary(serverName, userId, glossaryGUID, requestBody);
+        return restAPI.updateGlossary(serverName, userId, glossaryGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -153,7 +156,7 @@ public class GlossaryExchangeResource
      * with a single root category.
      *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
-     * are linked to the assets etc and as such they are logically categorized by the linked category.
+     * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -203,7 +206,7 @@ public class GlossaryExchangeResource
 
     /**
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
-     * the same name.  This means there is only one definition for each term.  Typically the terms are also of a similar
+     * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
      *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
@@ -418,6 +421,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return  void or
@@ -430,9 +435,13 @@ public class GlossaryExchangeResource
     public VoidResponse updateGlossaryCategory(@PathVariable String                      serverName,
                                                @PathVariable String                      userId,
                                                @PathVariable String                      glossaryCategoryGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody  GlossaryCategoryRequestBody requestBody)
     {
-        return restAPI.updateGlossaryCategory(serverName, userId, glossaryCategoryGUID, requestBody);
+        return restAPI.updateGlossaryCategory(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -443,6 +452,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -456,10 +467,14 @@ public class GlossaryExchangeResource
                                             @PathVariable String                             userId,
                                             @PathVariable String                             glossaryParentCategoryGUID,
                                             @PathVariable String                             glossaryChildCategoryGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
                                             @RequestBody(required = false)
-                                                          AssetManagerIdentifiersRequestBody requestBody)
+                                                          RelationshipRequestBody requestBody)
     {
-        return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, requestBody);
+        return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -470,6 +485,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -483,10 +500,14 @@ public class GlossaryExchangeResource
                                             @PathVariable String                            userId,
                                             @PathVariable String                            glossaryParentCategoryGUID,
                                             @PathVariable String                            glossaryChildCategoryGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
                                             @RequestBody(required = false)
-                                                         AssetManagerIdentifiersRequestBody requestBody)
+                                                         EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, requestBody);
+        return restAPI.clearCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -496,6 +517,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -508,10 +531,14 @@ public class GlossaryExchangeResource
     public VoidResponse removeGlossaryCategory(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        glossaryCategoryGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody(required = false)
-                                                             MetadataCorrelationProperties requestBody)
+                                                             UpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossaryCategory(serverName, userId, glossaryCategoryGUID, requestBody);
+        return restAPI.removeGlossaryCategory(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -523,6 +550,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties and correlators
      *
      * @return list of matching metadata elements or
@@ -536,9 +565,13 @@ public class GlossaryExchangeResource
                                                                    @PathVariable String                  userId,
                                                                    @RequestParam int                     startFrom,
                                                                    @RequestParam int                     pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
                                                                    @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryCategories(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findGlossaryCategories(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -550,6 +583,8 @@ public class GlossaryExchangeResource
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of metadata elements describing the categories associated with the requested glossary or
@@ -564,10 +599,14 @@ public class GlossaryExchangeResource
                                                                      @PathVariable String                             glossaryGUID,
                                                                      @RequestParam int                                startFrom,
                                                                      @RequestParam int                                pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   AssetManagerIdentifiersRequestBody requestBody)
+                                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getCategoriesForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, requestBody);
+        return restAPI.getCategoriesForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -580,6 +619,8 @@ public class GlossaryExchangeResource
      * @param requestBody name to search for and correlators
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -592,9 +633,13 @@ public class GlossaryExchangeResource
                                                                           @PathVariable String          userId,
                                                                           @RequestParam int             startFrom,
                                                                           @RequestParam int             pageSize,
+                                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                                  boolean                      forLineage,
+                                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                                  boolean                      forDuplicateProcessing,
                                                                           @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getGlossaryCategoriesByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getGlossaryCategoriesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -604,6 +649,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return requested metadata element or
@@ -616,10 +663,14 @@ public class GlossaryExchangeResource
     public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   AssetManagerIdentifiersRequestBody requestBody)
+                                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getGlossaryCategoryByGUID(serverName, userId, glossaryCategoryGUID, requestBody);
+        return restAPI.getGlossaryCategoryByGUID(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -629,6 +680,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return parent glossary category element or
@@ -641,10 +694,14 @@ public class GlossaryExchangeResource
     public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   AssetManagerIdentifiersRequestBody requestBody)
+                                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getGlossaryCategoryParent(serverName, userId, glossaryCategoryGUID, requestBody);
+        return restAPI.getGlossaryCategoryParent(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -656,6 +713,8 @@ public class GlossaryExchangeResource
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of glossary category elements or
@@ -670,10 +729,14 @@ public class GlossaryExchangeResource
                                                                      @PathVariable String                             glossaryCategoryGUID,
                                                                      @RequestParam int                                startFrom,
                                                                      @RequestParam int                                pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   AssetManagerIdentifiersRequestBody requestBody)
+                                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getGlossarySubCategories(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, requestBody);
+        return restAPI.getGlossarySubCategories(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -761,6 +824,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the glossary term
      *
      * @return  void or
@@ -773,9 +838,13 @@ public class GlossaryExchangeResource
     public VoidResponse updateGlossaryTerm(@PathVariable String                  serverName,
                                            @PathVariable String                  userId,
                                            @PathVariable String                  glossaryTermGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
                                            @RequestBody  GlossaryTermRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTerm(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.updateGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -786,6 +855,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody status and correlation properties
      *
      * @return  void or
@@ -798,9 +869,13 @@ public class GlossaryExchangeResource
     public VoidResponse updateGlossaryTermStatus(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        glossaryTermGUID,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
                                                  @RequestBody  GlossaryTermStatusRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTermStatus(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.updateGlossaryTermStatus(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -811,6 +886,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the categorization relationship
      *
      * @return  void or
@@ -820,13 +897,17 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms/{glossaryTermGUID}")
 
-    public VoidResponse setupTermCategory(@PathVariable String                    serverName,
-                                          @PathVariable String                    userId,
-                                          @PathVariable String                    glossaryCategoryGUID,
-                                          @PathVariable String                    glossaryTermGUID,
-                                          @RequestBody  CategorizationRequestBody requestBody)
+    public VoidResponse setupTermCategory(@PathVariable String                  serverName,
+                                          @PathVariable String                  userId,
+                                          @PathVariable String                  glossaryCategoryGUID,
+                                          @PathVariable String                  glossaryTermGUID,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                       forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                       forDuplicateProcessing,
+                                          @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, requestBody);
+        return restAPI.setupTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -837,6 +918,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -850,10 +933,14 @@ public class GlossaryExchangeResource
                                           @PathVariable String                             userId,
                                           @PathVariable String                             glossaryCategoryGUID,
                                           @PathVariable String                             glossaryTermGUID,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
                                           @RequestBody(required = false)
-                                                        AssetManagerIdentifiersRequestBody requestBody)
+                                                        EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, requestBody);
+        return restAPI.clearTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -865,6 +952,8 @@ public class GlossaryExchangeResource
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the relationship
      *
      * @return  void or
@@ -879,9 +968,13 @@ public class GlossaryExchangeResource
                                               @PathVariable String                      glossaryTermOneGUID,
                                               @PathVariable String                      relationshipTypeName,
                                               @PathVariable String                      glossaryTermTwoGUID,
-                                              @RequestBody  TermRelationshipRequestBody requestBody)
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                       forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                       forDuplicateProcessing,
+                                              @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
+        return restAPI.setupTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -893,6 +986,8 @@ public class GlossaryExchangeResource
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the relationship
      *
      * @return  void or
@@ -907,9 +1002,13 @@ public class GlossaryExchangeResource
                                                @PathVariable String                      glossaryTermOneGUID,
                                                @PathVariable String                      relationshipTypeName,
                                                @PathVariable String                      glossaryTermTwoGUID,
-                                               @RequestBody  TermRelationshipRequestBody requestBody)
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                       forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                       forDuplicateProcessing,
+                                               @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.updateTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
+        return restAPI.updateTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -921,6 +1020,8 @@ public class GlossaryExchangeResource
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return  void or
@@ -935,10 +1036,14 @@ public class GlossaryExchangeResource
                                               @PathVariable String                             glossaryTermOneGUID,
                                               @PathVariable String                             relationshipTypeName,
                                               @PathVariable String                             glossaryTermTwoGUID,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
                                               @RequestBody(required = false)
-                                                            AssetManagerIdentifiersRequestBody requestBody)
+                                                            EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
+        return restAPI.clearTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -948,6 +1053,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -960,10 +1067,14 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsAbstractConcept(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        glossaryTermGUID,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
                                                  @RequestBody(required = false)
-                                                               MetadataCorrelationProperties requestBody)
+                                                               UpdateRequestBody requestBody)
     {
-        return restAPI.setTermAsAbstractConcept(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsAbstractConcept(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -973,6 +1084,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -985,10 +1098,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsAbstractConcept(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
                                                    @PathVariable String                        glossaryTermGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
                                                    @RequestBody(required = false)
-                                                                 MetadataCorrelationProperties requestBody)
+                                                                 UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsAbstractConcept(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsAbstractConcept(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
     /**
@@ -997,6 +1114,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1009,10 +1128,14 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsDataValue(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
                                            @RequestBody(required = false)
-                                                         MetadataCorrelationProperties requestBody)
+                                                         UpdateRequestBody requestBody)
     {
-        return restAPI.setTermAsDataValue(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsDataValue(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1022,6 +1145,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1034,10 +1159,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsDataValue(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
                                              @PathVariable String                        glossaryTermGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forDuplicateProcessing,
                                              @RequestBody(required = false)
-                                                           MetadataCorrelationProperties requestBody)
+                                                           UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsDataValue(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsDataValue(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1047,6 +1176,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody type of activity and correlators
      *
      * @return  void or
@@ -1059,9 +1190,13 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsActivity(@PathVariable String                                serverName,
                                           @PathVariable String                                userId,
                                           @PathVariable String                                glossaryTermGUID,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
                                           @RequestBody  ActivityTermClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsActivity(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsActivity(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1071,6 +1206,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1083,10 +1220,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsActivity(@PathVariable String                        serverName,
                                             @PathVariable String                        userId,
                                             @PathVariable String                        glossaryTermGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
                                             @RequestBody(required = false)
-                                                          MetadataCorrelationProperties requestBody)
+                                                          UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsActivity(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsActivity(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1096,6 +1237,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody more details of the context
      *
      * @return  void or
@@ -1108,9 +1251,13 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsContext(@PathVariable String                                     serverName,
                                          @PathVariable String                                     userId,
                                          @PathVariable String                                     glossaryTermGUID,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
                                          @RequestBody  ContextDefinitionClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsContext(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsContext(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1120,6 +1267,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1132,10 +1281,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsContext(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
                                            @RequestBody(required = false)
-                                                         MetadataCorrelationProperties requestBody)
+                                                         UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsContext(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsContext(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1145,6 +1298,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1157,10 +1312,14 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsSpineObject(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
                                              @PathVariable String                        glossaryTermGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forDuplicateProcessing,
                                              @RequestBody(required = false)
-                                                           MetadataCorrelationProperties requestBody)
+                                                           UpdateRequestBody requestBody)
     {
-        return restAPI.setTermAsSpineObject(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsSpineObject(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1170,6 +1329,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1182,10 +1343,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsSpineObject(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        glossaryTermGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody(required = false)
-                                                             MetadataCorrelationProperties requestBody)
+                                                             UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsSpineObject(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsSpineObject(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1195,6 +1360,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1207,10 +1374,14 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsSpineAttribute(@PathVariable String                        serverName,
                                                 @PathVariable String                        userId,
                                                 @PathVariable String                        glossaryTermGUID,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
                                                 @RequestBody(required = false)
-                                                              MetadataCorrelationProperties requestBody)
+                                                              UpdateRequestBody requestBody)
     {
-        return restAPI.setTermAsSpineAttribute(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1220,6 +1391,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1232,10 +1405,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsSpineAttribute(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
+                                                  @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                      forLineage,
+                                                  @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                      forDuplicateProcessing,
                                                   @RequestBody(required = false)
-                                                                MetadataCorrelationProperties requestBody)
+                                                                UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsSpineAttribute(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1245,6 +1422,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1257,10 +1436,14 @@ public class GlossaryExchangeResource
     public VoidResponse setTermAsObjectIdentifier(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
+                                                  @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                      forLineage,
+                                                  @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                      forDuplicateProcessing,
                                                   @RequestBody(required = false)
-                                                                MetadataCorrelationProperties requestBody)
+                                                                UpdateRequestBody requestBody)
     {
-        return restAPI.setTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.setTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1270,6 +1453,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1282,10 +1467,14 @@ public class GlossaryExchangeResource
     public VoidResponse clearTermAsObjectIdentifier(@PathVariable String                        serverName,
                                                     @PathVariable String                        userId,
                                                     @PathVariable String                        glossaryTermGUID,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forDuplicateProcessing,
                                                     @RequestBody(required = false)
-                                                                  MetadataCorrelationProperties requestBody)
+                                                                  UpdateRequestBody requestBody)
     {
-        return restAPI.clearTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.clearTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1295,6 +1484,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1307,10 +1498,14 @@ public class GlossaryExchangeResource
     public VoidResponse removeGlossaryTerm(@PathVariable String                        serverName,
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
                                            @RequestBody(required = false)
-                                                         MetadataCorrelationProperties requestBody)
+                                                         UpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1322,6 +1517,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and search string
      *
      * @return list of matching metadata elements or
@@ -1335,9 +1532,13 @@ public class GlossaryExchangeResource
                                                           @PathVariable String                  userId,
                                                           @RequestParam int                     startFrom,
                                                           @RequestParam int                     pageSize,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forLineage,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forDuplicateProcessing,
                                                           @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryTerms(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findGlossaryTerms(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1349,6 +1550,8 @@ public class GlossaryExchangeResource
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
@@ -1363,10 +1566,14 @@ public class GlossaryExchangeResource
                                                             @PathVariable String                             glossaryGUID,
                                                             @RequestParam int                                startFrom,
                                                             @RequestParam int                                pageSize,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forLineage,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forDuplicateProcessing,
                                                             @RequestBody(required = false)
-                                                                          AssetManagerIdentifiersRequestBody requestBody)
+                                                                          EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getTermsForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, requestBody);
+        return restAPI.getTermsForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1378,6 +1585,8 @@ public class GlossaryExchangeResource
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
@@ -1392,10 +1601,14 @@ public class GlossaryExchangeResource
                                                                     @PathVariable String                             glossaryCategoryGUID,
                                                                     @RequestParam int                                startFrom,
                                                                     @RequestParam int                                pageSize,
+                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                      forLineage,
+                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                      forDuplicateProcessing,
                                                                     @RequestBody(required = false)
-                                                                                  AssetManagerIdentifiersRequestBody requestBody)
+                                                                                  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getTermsForGlossaryCategory(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, requestBody);
+        return restAPI.getTermsForGlossaryCategory(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1407,6 +1620,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and name
      *
      * @return list of matching metadata elements or
@@ -1420,9 +1635,13 @@ public class GlossaryExchangeResource
                                                                  @PathVariable String          userId,
                                                                  @RequestParam int             startFrom,
                                                                  @RequestParam int             pageSize,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                      forLineage,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                      forDuplicateProcessing,
                                                                  @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getGlossaryTermsByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getGlossaryTermsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1432,6 +1651,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
@@ -1444,10 +1665,14 @@ public class GlossaryExchangeResource
     public GlossaryTermElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                              @PathVariable String                             userId,
                                                              @PathVariable String                             glossaryTermGUID,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                      forLineage,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                      forDuplicateProcessing,
                                                              @RequestBody(required = false)
-                                                                           AssetManagerIdentifiersRequestBody requestBody)
+                                                                           EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getGlossaryTermByGUID(serverName, userId, glossaryTermGUID, requestBody);
+        return restAPI.getGlossaryTermByGUID(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1489,6 +1714,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -1501,9 +1728,13 @@ public class GlossaryExchangeResource
     public VoidResponse updateExternalGlossaryLink(@PathVariable String                          serverName,
                                                    @PathVariable String                          userId,
                                                    @PathVariable String                          externalLinkGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
                                                    @RequestBody  ExternalGlossaryLinkRequestBody requestBody)
     {
-        return restAPI.updateExternalGlossaryLink(serverName, userId, externalLinkGUID, requestBody);
+        return restAPI.updateExternalGlossaryLink(serverName, userId, externalLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1513,6 +1744,8 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1525,10 +1758,14 @@ public class GlossaryExchangeResource
     public VoidResponse removeExternalGlossaryLink(@PathVariable String                             serverName,
                                                    @PathVariable String                             userId,
                                                    @PathVariable String                             externalLinkGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
                                                    @RequestBody(required = false)
-                                                                 AssetManagerIdentifiersRequestBody requestBody)
+                                                                 EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.removeExternalGlossaryLink(serverName, userId, externalLinkGUID, requestBody);
+        return restAPI.removeExternalGlossaryLink(serverName, userId, externalLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1539,6 +1776,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to attach
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1552,10 +1791,14 @@ public class GlossaryExchangeResource
                                                      @PathVariable String                             userId,
                                                      @PathVariable String                             glossaryGUID,
                                                      @PathVariable String                             externalLinkGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
                                                      @RequestBody(required = false)
-                                                                   AssetManagerIdentifiersRequestBody requestBody)
+                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.attachExternalLinkToGlossary(serverName, userId, glossaryGUID, externalLinkGUID, requestBody);
+        return restAPI.attachExternalLinkToGlossary(serverName, userId, glossaryGUID, externalLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1566,6 +1809,8 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1579,10 +1824,14 @@ public class GlossaryExchangeResource
                                                        @PathVariable String                             userId,
                                                        @PathVariable String                             externalLinkGUID,
                                                        @PathVariable String                             glossaryGUID,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                      forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                      forDuplicateProcessing,
                                                        @RequestBody(required = false)
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.detachExternalLinkFromGlossary(serverName, userId, externalLinkGUID, glossaryGUID, requestBody);
+        return restAPI.detachExternalLinkFromGlossary(serverName, userId, externalLinkGUID, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1594,6 +1843,9 @@ public class GlossaryExchangeResource
      * @param glossaryGUID unique identifier of the metadata element for the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody effective time
      *
      * @return list of attached links to external glossary resources or
      * InvalidParameterException  one of the parameters is invalid
@@ -1606,9 +1858,15 @@ public class GlossaryExchangeResource
                                                                             @PathVariable String userId,
                                                                             @PathVariable String glossaryGUID,
                                                                             @RequestParam int    startFrom,
-                                                                            @RequestParam int    pageSize)
+                                                                            @RequestParam int    pageSize,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                    boolean                      forLineage,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                    boolean                      forDuplicateProcessing,
+                                                                            @RequestBody(required = false)
+                                                                                    EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getExternalLinksForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize);
+        return restAPI.getExternalLinksForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1620,6 +1878,8 @@ public class GlossaryExchangeResource
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of glossaries or
@@ -1634,10 +1894,14 @@ public class GlossaryExchangeResource
                                                                  @PathVariable String externalLinkGUID,
                                                                  @RequestParam int    startFrom,
                                                                  @RequestParam int    pageSize,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                      forLineage,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                      forDuplicateProcessing,
                                                                  @RequestBody(required = false)
-                                                                               AssetManagerIdentifiersRequestBody requestBody)
+                                                                               EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getGlossariesForExternalLink(serverName, userId, externalLinkGUID, startFrom, pageSize, requestBody);
+        return restAPI.getGlossariesForExternalLink(serverName, userId, externalLinkGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1648,7 +1912,9 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -1662,9 +1928,13 @@ public class GlossaryExchangeResource
                                                    @PathVariable String                                 userId,
                                                    @PathVariable String                                 glossaryCategoryGUID,
                                                    @PathVariable String                                 externalLinkGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
                                                    @RequestBody  ExternalGlossaryElementLinkRequestBody requestBody)
     {
-        return restAPI.attachExternalCategoryLink(serverName, userId, glossaryCategoryGUID, externalLinkGUID, requestBody);
+        return restAPI.attachExternalCategoryLink(serverName, userId, glossaryCategoryGUID, externalLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1674,7 +1944,9 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1688,10 +1960,14 @@ public class GlossaryExchangeResource
                                                    @PathVariable String                             userId,
                                                    @PathVariable String                             externalLinkGUID,
                                                    @PathVariable String                             glossaryCategoryGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
                                                    @RequestBody(required = false)
-                                                                 AssetManagerIdentifiersRequestBody requestBody)
+                                                                 EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.detachExternalCategoryLink(serverName, userId, externalLinkGUID, glossaryCategoryGUID, requestBody);
+        return restAPI.detachExternalCategoryLink(serverName, userId, externalLinkGUID, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1702,7 +1978,9 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -1716,9 +1994,13 @@ public class GlossaryExchangeResource
                                                @PathVariable String                                 userId,
                                                @PathVariable String                                 externalLinkGUID,
                                                @PathVariable String                                 glossaryTermGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody  ExternalGlossaryElementLinkRequestBody requestBody)
     {
-        return restAPI.attachExternalTermLink(serverName, userId, externalLinkGUID, glossaryTermGUID, requestBody);
+        return restAPI.attachExternalTermLink(serverName, userId, externalLinkGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1728,7 +2010,9 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1742,9 +2026,13 @@ public class GlossaryExchangeResource
                                                @PathVariable String                             userId,
                                                @PathVariable String                             externalLinkGUID,
                                                @PathVariable String                             glossaryTermGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody(required = false)
-                                                             AssetManagerIdentifiersRequestBody requestBody)
+                                                             EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.detachExternalTermLink(serverName, userId, externalLinkGUID, glossaryTermGUID, requestBody);
+        return restAPI.detachExternalTermLink(serverName, userId, externalLinkGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

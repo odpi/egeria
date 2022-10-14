@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
  *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerType - type of the the person or organization that owns the asset.
+ *     <li>ownerType - type of the person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
@@ -52,10 +52,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Asset extends Referenceable
+public class Asset extends GovernedReferenceable
 {
     private static final long     serialVersionUID = 1L;
 
+    protected String              name              = null;
+    protected String              versionIdentifier = null;
     protected String              displayName       = null;
     protected String              shortDescription  = null;
     protected String              description       = null;
@@ -87,6 +89,8 @@ public class Asset extends Referenceable
 
         if (template != null)
         {
+            name                   = template.getName();
+            versionIdentifier      = template.getVersionIdentifier();
             displayName            = template.getDisplayName();
             shortDescription       = template.getShortDescription();
             description            = template.getDescription();
@@ -95,20 +99,69 @@ public class Asset extends Referenceable
             ownerPropertyName      = template.getOwnerPropertyName();
             ownerType              = template.getOwnerType();
             zoneMembership         = template.getZoneMembership();
-            origin                 = template.getOrigin();
+            origin                 = template.getAssetOrigin();
             isReferenceData        = template.isReferenceData();
         }
     }
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * If no display name is available then name is returned.
      *
      * @return String name
      */
     public String getDisplayName()
     {
+        if (displayName == null)
+        {
+            return name;
+        }
+
         return displayName;
     }
 
@@ -294,7 +347,7 @@ public class Asset extends Referenceable
      *
      * @return map of name value pairs, all strings
      */
-    public Map<String, String> getOrigin()
+    public Map<String, String> getAssetOrigin()
     {
         if (origin == null)
         {
@@ -316,7 +369,7 @@ public class Asset extends Referenceable
      *
      * @param origin map of name value pairs, all strings
      */
-    public void setOrigin(Map<String, String> origin)
+    public void setAssetOrigin(Map<String, String> origin)
     {
         this.origin = origin;
     }
@@ -353,25 +406,52 @@ public class Asset extends Referenceable
     public String toString()
     {
         return "Asset{" +
-                       "displayName='" + displayName + '\'' +
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
                        ", shortDescription='" + shortDescription + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
+                       ", ownerTypeName='" + ownerTypeName + '\'' +
+                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
                        ", ownerType=" + ownerType +
-                       ", ownerTypeName=" + ownerTypeName +
-                       ", ownerPropertyName=" + ownerPropertyName+
                        ", zoneMembership=" + zoneMembership +
                        ", origin=" + origin +
+                       ", isReferenceData=" + isReferenceData +
+                       ", assetOrigin=" + getAssetOrigin() +
+                       ", referenceData=" + isReferenceData() +
+                       ", url='" + url + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", meanings=" + meanings +
+                       ", securityTags=" + securityTags +
+                       ", searchKeywords=" + searchKeywords +
                        ", latestChange='" + latestChange + '\'' +
+                       ", latestChangeDetails=" + latestChangeDetails +
+                       ", confidentialityGovernanceClassification=" + confidentialityGovernanceClassification +
+                       ", confidenceGovernanceClassification=" + confidenceGovernanceClassification +
+                       ", criticalityGovernanceClassification=" + criticalityGovernanceClassification +
+                       ", retentionGovernanceClassification=" + retentionGovernanceClassification +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 
@@ -389,37 +469,32 @@ public class Asset extends Referenceable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof Asset))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return isReferenceData == asset.isReferenceData &&
-                       Objects.equals(displayName, asset.displayName) &&
-                       Objects.equals(shortDescription, asset.shortDescription) &&
-                       Objects.equals(description, asset.description) &&
-                       Objects.equals(owner, asset.owner) &&
-                       Objects.equals(ownerTypeName, asset.ownerTypeName) &&
-                       Objects.equals(ownerPropertyName, asset.ownerPropertyName) &&
-                       ownerType == asset.ownerType &&
-                       Objects.equals(zoneMembership, asset.zoneMembership) &&
-                       Objects.equals(origin, asset.origin);
+        return isReferenceData == asset.isReferenceData && Objects.equals(name, asset.name) && Objects.equals(versionIdentifier, asset.versionIdentifier) && Objects.equals(
+                displayName, asset.displayName) && Objects.equals(shortDescription, asset.shortDescription) && Objects.equals(
+                description, asset.description) && Objects.equals(owner, asset.owner) && Objects.equals(ownerTypeName, asset.ownerTypeName) && Objects.equals(
+                ownerPropertyName, asset.ownerPropertyName) && ownerType == asset.ownerType && Objects.equals(zoneMembership, asset.zoneMembership) && Objects.equals(
+                origin, asset.origin);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, shortDescription, description, owner, ownerTypeName, ownerPropertyName, ownerType,
-                            zoneMembership, origin, isReferenceData);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, displayName, shortDescription, description, owner, ownerTypeName,
+                            ownerPropertyName, ownerType, zoneMembership, origin, isReferenceData);
     }
 }

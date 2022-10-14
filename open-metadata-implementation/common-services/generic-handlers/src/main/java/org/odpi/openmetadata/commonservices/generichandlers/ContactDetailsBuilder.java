@@ -13,14 +13,18 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
  */
 public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private int    contactMethodType;
-    private String contactMethodService;
-    private String contactMethodValue;
+    private final String name;
+    private final String contactType;
+    private final int    contactMethodType;
+    private final String contactMethodService;
+    private final String contactMethodValue;
 
 
     /**
      * Constructor.
      *
+     * @param name name of this contact method - eg my office phone number
+     * @param contactType type of contact eg "Office phone number" - typically controlled from a valid value set
      * @param contactMethodType type of contact method
      * @param contactMethodService service to call
      * @param contactMethodValue identity of recipient for this service
@@ -28,7 +32,9 @@ public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public ContactDetailsBuilder(int                  contactMethodType,
+    public ContactDetailsBuilder(String               name,
+                                 String               contactType,
+                                 int                  contactMethodType,
                                  String               contactMethodService,
                                  String               contactMethodValue,
                                  OMRSRepositoryHelper repositoryHelper,
@@ -41,6 +47,8 @@ public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
               serviceName,
               serverName);
 
+        this.name = name;
+        this.contactType = contactType;
         this.contactMethodType = contactMethodType;
         this.contactMethodService = contactMethodService;
         this.contactMethodValue = contactMethodValue;
@@ -75,10 +83,22 @@ public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CONTACT_METHOD_SERVICE_PROPERTY_NAME,
-                                                                      contactMethodService,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  name,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CONTACT_TYPE_PROPERTY_NAME,
+                                                                  contactType,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CONTACT_METHOD_SERVICE_PROPERTY_NAME,
+                                                                  contactMethodService,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,

@@ -13,8 +13,9 @@ import java.util.Map;
  */
 public class ConnectionBuilder extends ReferenceableBuilder
 {
-    private String              displayName;
-    private String              description;
+    private final String displayName;
+    private final String description;
+
     private Map<String, String> securedProperties;
     private Map<String, Object> configurationProperties;
     private String              connectorUserId;
@@ -120,68 +121,46 @@ public class ConnectionBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (securedProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                          properties,
                                                                          OpenMetadataAPIMapper.SECURED_PROPERTIES_PROPERTY_NAME,
                                                                          securedProperties,
                                                                          methodName);
-        }
 
-        if (configurationProperties != null)
-        {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
+        properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                    properties,
                                                                    OpenMetadataAPIMapper.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                    configurationProperties,
                                                                    methodName);
-        }
 
-        if (connectorUserId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME,
                                                                       connectorUserId,
                                                                       methodName);
-        }
 
-        if (clearPassword != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.CLEAR_PASSWORD_PROPERTY_NAME,
                                                                       clearPassword,
                                                                       methodName);
-        }
 
-        if (encryptedPassword != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ENCRYPTED_PASSWORD_PROPERTY_NAME,
                                                                       encryptedPassword,
                                                                       methodName);
-        }
 
         return properties;
     }

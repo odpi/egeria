@@ -43,13 +43,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{0}";
 
-    private String              localServerUserId   = null;
-    private String              localServerPassword = null;
+    private final String              localServerUserId   = null;
+    private final String              localServerPassword = null;
 
-    protected String              restURLRoot;                /* Initialized in constructor */
-    private   String              serviceURLMarker;           /* Initialized in constructor */
-    protected RESTClientConnector restClient;                 /* Initialized in constructor */
-    protected String              repositoryName;             /* Initialized in constructor */
+    protected       String              restURLRoot;                /* Initialized in constructor */
+    private   final String              serviceURLMarker;           /* Initialized in constructor */
+    protected       RESTClientConnector restClient;                 /* Initialized in constructor */
+    protected       String              repositoryName;             /* Initialized in constructor */
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -336,7 +336,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
      * @param category enum value for the category of TypeDef to return.
@@ -367,7 +367,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
      * @param category enum value for the category of an AttributeTypeDef to return.
@@ -435,7 +435,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -472,7 +472,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param userId         unique identifier for requesting user.
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -907,7 +907,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException         the TypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException         the TypeDef can not be deleted because there are instances of this type in
      *                                       the metadata collection.  These instances need to be purged before the
      *                                       TypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -954,7 +954,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException         the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException         the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                       the metadata collection.  These instances need to be purged before the
      *                                       AttributeTypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -1321,7 +1321,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param userId                  unique identifier for requesting user.
      * @param entityGUID              String unique identifier for the entity.
-     * @param relationshipTypeGUID    String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID    String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -1644,7 +1644,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -2353,7 +2353,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -2703,7 +2703,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -2940,9 +2940,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the call to delete().
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param userId unique identifier for requesting user.
@@ -3370,7 +3370,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -3577,7 +3577,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -3772,7 +3772,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -3958,7 +3958,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change an existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -4152,7 +4152,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -4192,7 +4192,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -4230,7 +4230,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity.
@@ -4283,14 +4283,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove
      * relationships attached to the entity.
      *
      * This method is called when a remote repository calls the variant of purgeEntity that
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * @param userId unique identifier for requesting server.
      * @param entity details of the entity to purge.
@@ -4340,7 +4340,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -4727,7 +4727,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     /**
      * This method is called when a remote repository calls the variant of purgeRelationship that
      * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -5021,7 +5021,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a AttributeTypeDefListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body for REST Call
      * @param params  a list of parameters that are slotted into the url template
      * @return AttributeTypeDefListResponse
@@ -5044,7 +5044,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a AttributeTypeDefResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return AttributeTypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5064,7 +5064,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a AttributeTypeDefResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return AttributeTypeDefResponse
@@ -5087,7 +5087,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a BooleanResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return BooleanResponse
@@ -5110,7 +5110,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a EntityDetailResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5130,7 +5130,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a EntityDetailResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
@@ -5153,7 +5153,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a ClassificationListResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5173,7 +5173,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a ClassificationListResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
@@ -5196,7 +5196,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a EntitySummaryResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return EntitySummaryResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5216,7 +5216,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a RelationshipResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5236,7 +5236,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a EntityListResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityListResponse
@@ -5260,7 +5260,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a RelationshipListResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipListResponse
@@ -5283,7 +5283,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a RelationshipResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipResponse
@@ -5305,7 +5305,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a InstanceGraphResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return InstanceGraphResponse
@@ -5328,7 +5328,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a TypeDefGalleryResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param params a list of parameters that are slotted into the url template
      * @return TypeDefGalleryResponseObject
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5348,7 +5348,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a TypeDefListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5368,7 +5368,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a TypeDefListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefListResponse
@@ -5391,7 +5391,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a GET REST call that returns a TypeDefResponse object.
      *
      * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5411,7 +5411,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a TypeDefResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return TypeDefResponse
@@ -5434,7 +5434,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Issue a POST REST call that returns a VoidResponse object.
      *
      * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return VoidResponse
@@ -5459,7 +5459,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param <T> class name
      * @param methodName  name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
@@ -5477,7 +5477,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param <T> class name
      * @param methodName  name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -5511,7 +5511,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param <T> class name
      * @param methodName name of the method being called
      * @param returnClass class name of response object
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
      * @param request request body object
      * @param params a list of parameters that are slotted into the url template
      * @return VoidResponse
@@ -6388,7 +6388,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         else if (restResult.getExceptionClassName() != null)
         {
             /*
-             * All of the other expected exceptions have been processed so default exception to RepositoryErrorException
+             * All the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
             throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
                                                this.getClass().getName(),

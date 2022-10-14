@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * EndpointProperties describes the properties of a server endpoint.  The endpoint is linked
- * the the data platform's server and describes its network endpoint.  It is also linked to connection objects
+ * to the data platform's server and describes its network endpoint.  It is also linked to connection objects
  * that are used by clients to connect to the data platform.  A connection is linked to each asset
  * that is hosted on the data platform.
  */
@@ -233,7 +233,7 @@ public class EndpointProperties extends ConfigurationItemProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

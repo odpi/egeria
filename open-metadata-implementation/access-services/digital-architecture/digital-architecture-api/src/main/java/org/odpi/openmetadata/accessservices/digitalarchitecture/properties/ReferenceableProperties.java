@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
 import java.io.Serializable;
 import java.util.*;
@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
+                @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties")
         })
 public class ReferenceableProperties implements Serializable
@@ -261,7 +262,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

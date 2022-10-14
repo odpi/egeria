@@ -46,7 +46,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * </ul>
      *
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatinated with the the guid.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatenated with the guid.
      *
      * <p>
      * Failure to create the Categories classifications, link to its glossary or its icon, results in the create failing and the category being deleted

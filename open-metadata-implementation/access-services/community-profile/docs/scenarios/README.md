@@ -8,7 +8,7 @@ Below are the list of tasks supported by the Community Profile OMAS.
 ## One time set up by the administrator
 
 Many organizations already have [a system that maintains information about their employees
-and/or customers and/or business partners](../../../docs/concepts/server-capabilities/master-data-manager.md).
+and/or customers and/or business partners](https://egeria-project.org/concepts/basic-concepts/#master-data-manager).
 The Community Profile OMAS therefore supports an event exchange with such a system
 to keep the profiles synchronized. 
 The following tasks cover the work of the IT team to integrate the Community Profile
@@ -21,7 +21,7 @@ OMAS with other systems.
   into an open metadata repository.
 * [Synchronizing the organization's departmental structure with another system](synchronizing-departmental-structure.md)
 * [Capturing karma point plateaus](capturing-karma-point-plateaus.md)
-  emitted from the Community Profile OMAS [OutTopic](../../../docs/concepts/client-server/out-topic.md).
+  emitted from the Community Profile OMAS [OutTopic](https://egeria-project.org/concepts/out-topic).
 * [Synchronizing collaboration activity with another system](synchronizing-collaboration-activity.md)
 
 
@@ -49,8 +49,8 @@ when they contribute content to open metadata.  An individual can query their ka
 * [Retrieving my karma points](retrieving-my-karma-points.md)
 
 The individual can also maintain [collections](../concepts/favorite-things-collection.md) of their
-favourite [Assets](../../../docs/concepts/assets), [Projects](../../../docs/concepts/projects)
-and [Communities](../concepts/community.md) and control notifications
+favourite [Assets](https://egeria-project.org/concepts/asset), Projects
+and [Communities](https://egeria-project.org/concepts/community) and control notifications
 about changes to the contents of these lists.
 
 * [Accessing my favorite assets](accessing-my-favorite-assets.md)
@@ -78,8 +78,8 @@ They are visible to other users who can comment on and review the content.
 * [Updating a personal note](updating-a-personal-note.md)
 * [Removing a personal note](removing-a-personal-note.md)
 
-An individual can query the [teams](../../../docs/concepts/organizations/team.md) and
-[communities](../concepts/community.md) they belong to.
+An individual can query the [teams](https://egeria-project.org/concepts/team) and
+[communities](https://egeria-project.org/concepts/community) they belong to.
 
 * [Accessing my communities](accessing-my-communities.md)
 * [Accessing my teams](accessing-my-teams.md)

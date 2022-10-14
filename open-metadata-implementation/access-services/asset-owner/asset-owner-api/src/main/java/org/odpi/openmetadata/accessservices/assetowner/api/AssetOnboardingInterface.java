@@ -218,7 +218,7 @@ public interface AssetOnboardingInterface
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
      * @param parentGUID unique identifier of the schema element to anchor these attributes to.
-     * @param schemaAttribute schema attribute object to add the the schema.
+     * @param schemaAttribute schema attribute object to add to the schema.
      *
      * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
      *

@@ -10,7 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-server')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Asset Analysis OMES with Spring'

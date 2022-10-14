@@ -9,7 +9,7 @@ how it is implemented and the function supported for this concept.
 The list is in alphabetical order.
 
 * [Action](to-do.md)
-* [Anchor](../../../docs/concepts/anchor.md)
+* [Anchor](https://egeria-project.org/concepts/anchor)
 * [Collection (of favorite things)](favorite-things-collection.md)
 * [Comments](comment.md)
 * [Communities](community.md)
@@ -28,8 +28,8 @@ The list is in alphabetical order.
 * [Karma Points](karma-point.md)
   * [Karma Point Plateau](karma-point-plateau.md)
 * [Like](like.md)
-* [Master Data Manager](../../../docs/concepts/server-capabilities/master-data-manager.md)
-* [Organization](../../../docs/concepts/organizations)
+* Master Data Manager
+* Organization
 * [Peer Network](peer-network.md)
 * [Personal Messages](personal-message.md)
 * [Personal Note Log and Notes](personal-notes.md)
@@ -38,9 +38,9 @@ The list is in alphabetical order.
 * [Review](review.md)
 * [Role](personal-roles.md)
 * [Tag](tag.md)
-* [Team](../../../docs/concepts/organizations/team.md)
-   * [Team Leader](../../../docs/concepts/organizations/team-leader.md)
-   * [Team Member](../../../docs/concepts/organizations/team-member.md)
+* Team
+   * Team Leader
+   * Team Member
 * [To Do](to-do.md)
 * [Useful Resources and Useful Resources List](useful-resource.md)
 

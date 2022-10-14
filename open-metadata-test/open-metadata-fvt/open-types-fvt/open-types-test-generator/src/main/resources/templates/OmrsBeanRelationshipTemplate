@@ -111,25 +111,25 @@ public class <$$uname$$> extends OMRSLine {
                  log.debug("==> Method: " + methodName);
           }
           InstanceProperties instanceProperties = new InstanceProperties();
-          EnumPropertyValue enumPropertyValue=null;
+          EnumPropertyValue enumTypePropertyValue=null;
           <$Enum$$
-          enumPropertyValue = new EnumPropertyValue();
+          enumTypePropertyValue = new EnumPropertyValue();
           // <$$description$$>
-          enumPropertyValue.setOrdinal(<$$EnumName$$>.ordinal());
-          enumPropertyValue.setSymbolicName(<$$EnumName$$>.name());
-          instanceProperties.setProperty("<$$EnumName$$>",enumPropertyValue);
+          enumTypePropertyValue.setOrdinal(<$$EnumName$$>.ordinal());
+          enumTypePropertyValue.setSymbolicName(<$$EnumName$$>.name());
+          instanceProperties.setProperty("<$$EnumName$$>",enumTypePropertyValue);
           $Enum$$>
-          MapPropertyValue mapPropertyValue=null;
+          MapPropertyValue mapTypePropertyValue=null;
           <$Map$$
           // <$$description$$>
-          mapPropertyValue = new MapPropertyValue();
+          mapTypePropertyValue = new MapPropertyValue();
           $Map$$>
-          PrimitivePropertyValue primitivePropertyValue=null;
+          PrimitivePropertyValue primitiveTypePropertyValue=null;
            <$$$
-          primitivePropertyValue = new PrimitivePropertyValue();
+          primitiveTypePropertyValue = new PrimitivePropertyValue();
           // TODO  description + change null to value
-          primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("<$$PropertyName$$>",primitivePropertyValue);
+          primitiveTypePropertyValue.setPrimitiveValue(null);
+          instanceProperties.setProperty("<$$PropertyName$$>",primitiveTypePropertyValue);
            $$$>
           if (log.isDebugEnabled()) {
                  log.debug("<== Method: " + methodName);

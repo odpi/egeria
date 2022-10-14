@@ -57,7 +57,7 @@ public class CategoryFVT {
         } catch (SubjectAreaFVTCheckedException e) {
             log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            log.error("The FVT Encountered an Exception", e);
         }
 
     }
@@ -89,7 +89,7 @@ public class CategoryFVT {
         System.out.println("CategoryFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }

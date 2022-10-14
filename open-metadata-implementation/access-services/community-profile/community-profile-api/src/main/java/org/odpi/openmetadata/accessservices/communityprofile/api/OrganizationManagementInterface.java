@@ -24,7 +24,7 @@ import java.util.List;
 public interface OrganizationManagementInterface
 {
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
@@ -225,10 +225,31 @@ public interface OrganizationManagementInterface
 
 
     /**
-     * Return information about a named actor profile.
+     * Return information about matching named actor profiles.
      *
      * @param userId calling user
      * @param name unique name for the actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ActorProfileElement> getActorProfilesByName(String userId,
+                                                     String name,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
+
+
+    /**
+     * Return information about all actor profiles.
+     *
+     * @param userId calling user
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -238,12 +259,33 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ActorProfileElement> getActorProfileByName(String userId,
-                                                    String name,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    List<ActorProfileElement> getActorProfiles(String userId,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
+
+    /**
+     * Return information about the actor profiles associated with a location.
+     *
+     * @param userId calling user
+     * @param locationGUID unique locationGUID for the actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles
+     *
+     * @throws InvalidParameterException locationGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ActorProfileElement> getActorProfilesByLocation(String userId,
+                                                         String locationGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**
@@ -260,10 +302,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<ActorProfileElement> findActorProfile(String userId,
-                                               String searchString,
-                                               int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
+    List<ActorProfileElement> findActorProfiles(String userId,
+                                                String searchString,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException;
 
@@ -437,7 +479,7 @@ public interface OrganizationManagementInterface
      * @param teamRoleGUID unique identifier of the person role
      * @param teamProfileGUID unique identifier of the team profile
      * @param position position name of the role in the team
-     * @param leadershipPosition is this a leadership position
+     * @param leadershipPosition is this a leadership position?
      *
      *
      * @throws InvalidParameterException one of the guids is null or not known; the person role is not a team member or team leader
@@ -463,7 +505,7 @@ public interface OrganizationManagementInterface
      * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param teamRoleGUID unique identifier of the person role
      * @param teamProfileGUID unique identifier of the team profile
-     * @param leadershipPosition is this a leadership position
+     * @param leadershipPosition is this a leadership position?
      *
      * @throws InvalidParameterException one of the guids is null or not known; the person role is not a team member or team leader
      * @throws PropertyServerException problem accessing property server
@@ -511,12 +553,56 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getPersonRoleByName(String userId,
-                                                String name,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    List<PersonRoleElement> getPersonRolesByName(String userId,
+                                                 String name,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+    /**
+     * Return information about the leadership person roles linked to a team.
+     *
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<PersonRoleElement> getLeadershipRolesForTeam(String userId,
+                                                      String teamGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Return information about the membership person roles linked to a team.
+     *
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<PersonRoleElement> getMembershipRolesForTeam(String userId,
+                                                      String teamGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -533,10 +619,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<PersonRoleElement> findPersonRole(String userId,
-                                           String searchString,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
+    List<PersonRoleElement> findPersonRoles(String userId,
+                                            String searchString,
+                                            int    startFrom,
+                                            int    pageSize) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException;
 }

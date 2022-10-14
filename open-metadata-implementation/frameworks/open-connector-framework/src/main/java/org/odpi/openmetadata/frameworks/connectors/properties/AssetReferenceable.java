@@ -3,19 +3,16 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
- * properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
- * for the entity through extending ElementHeader.  There is also the possibility that referenceable may have
+ * properties.  In addition, the Referenceable class adds support for the parent asset, guid, url and type
+ * for the entity through extending ElementBase.  There is also the possibility that referenceable may have
  * meanings (glossary terms) and security tags assigned.
  *
  * Asset meanings are extracted on demand by the caller.
@@ -29,12 +26,10 @@ public class AssetReferenceable extends AssetElementHeader
 
     /**
      * Constructor used by the subclasses
-     *
-     * @param parentAsset descriptor of asset that this property relates to.
      */
-    protected AssetReferenceable(AssetDescriptor parentAsset)
+    protected AssetReferenceable()
     {
-        super(parentAsset);
+        super();
         this.referenceableBean = new Referenceable();
     }
 
@@ -42,7 +37,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param referenceableBean bean containing all of the properties
+     * @param referenceableBean bean containing all the properties
      */
     protected AssetReferenceable(Referenceable referenceableBean)
     {
@@ -60,39 +55,13 @@ public class AssetReferenceable extends AssetElementHeader
 
 
     /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset descriptor for parent asset
-     * @param referenceableBean bean containing properties
-     */
-    protected AssetReferenceable(AssetDescriptor parentAsset,
-                                 Referenceable referenceableBean)
-    {
-        super(parentAsset, referenceableBean);
-
-        if (referenceableBean == null)
-        {
-            this.referenceableBean = new Referenceable();
-        }
-        else
-        {
-            this.referenceableBean = referenceableBean;
-        }
-    }
-
-
-    /**
      * Copy/clone constructor with parent asset.
      *
-     * @param parentAsset descriptor for parent asset
      * @param template element to copy
      */
-    public AssetReferenceable(AssetDescriptor parentAsset, AssetReferenceable template)
+    public AssetReferenceable(AssetReferenceable template)
     {
-        /*
-         * Save the parent asset description.
-         */
-        super(parentAsset, template);
+        super(template);
 
         if (template == null)
         {
@@ -108,7 +77,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Set up the bean that contains the properties of the referenceable.
      *
-     * @param referenceableBean bean containing all of the properties
+     * @param referenceableBean bean containing all the properties
      */
     protected void  setBean(Referenceable referenceableBean)
     {
@@ -120,7 +89,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Return the bean for this referenceable.
      *
-     * @return Referenceable object with all of the properties
+     * @return Referenceable object with all the properties
      */
     protected Referenceable getReferenceableBean()
     {
@@ -141,61 +110,11 @@ public class AssetReferenceable extends AssetElementHeader
 
 
     /**
-     * Return a list of the glossary terms attached to this referenceable object.  Null means no terms available.
-     *
-     * @return list of glossary terms (summary)
-     */
-    public List<AssetMeaning>  getMeanings()
-    {
-        List<Meaning>       meanings = referenceableBean.getMeanings();
-
-        if (meanings != null)
-        {
-            List<AssetMeaning> assetMeanings = new ArrayList<>();
-
-            for (Meaning  meaning : meanings)
-            {
-                if (meaning != null)
-                {
-                    assetMeanings.add(new AssetMeaning(parentAsset, meaning));
-                }
-            }
-
-            if (! assetMeanings.isEmpty())
-            {
-                return assetMeanings;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the information used by security engines to secure access to the asset's content.  Null means no tags available.
-     *
-     * @return security labels and properties
-     */
-    public AssetSecurityTags  getSecurityTags()
-    {
-        SecurityTags bean = referenceableBean.getSecurityTags();
-
-        if (bean != null)
-        {
-            return new AssetSecurityTags(parentAsset, bean);
-        }
-
-        return null;
-    }
-
-
-
-    /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
      * @return AdditionalProperties
      */
-    public AdditionalProperties getAdditionalProperties()
+    public Map<String, String>  getAdditionalProperties()
     {
         Map<String, String>   additionalProperties = referenceableBean.getAdditionalProperties();
 
@@ -205,7 +124,7 @@ public class AssetReferenceable extends AssetElementHeader
         }
         else
         {
-            return new AdditionalProperties(super.getParentAsset(), additionalProperties);
+            return new HashMap<>(additionalProperties);
         }
     }
 

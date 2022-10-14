@@ -18,7 +18,7 @@ dependencies {
     implementation 'org.springframework:spring-core'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
@@ -30,5 +30,5 @@ java {
 
 test {
     //TODO: Maven build is currently not running these failing tests
-    ignoreFailures = true
+    //ignoreFailures = true
 }

@@ -62,7 +62,7 @@ public enum DynamicArchiverConnectorsAuditCode implements AuditLogMessageSet
                               OMRSAuditLogRecordSeverity.ERROR,
                               "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern.",
                               "This message is logged and the governance action is marked as failed",
-                              "Since no exception occurred it means that there are currently files already occupying all of the possible file names allowed by the file pattern.  " +
+                              "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
                                       "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern."),
 
 

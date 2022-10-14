@@ -7,109 +7,162 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementOrigin defines where the metadata comes from and, hence if it can be updated.
- * <ul>
- *     <li>
- *         LOCAL_COHORT: the element is being maintained within the local cohort.
- *         The metadata collection id is for one of the repositories in the cohort.
- *         This metadata collection id identifies the home repository for this element.
- *     </li>
- *     <li>
- *         EXPORT_ARCHIVE: the element was created from an export archive.
- *         The metadata collection id for the element is the metadata collection id of the originating server.
- *         If the originating server later joins the cohort with the same metadata collection id then these
- *         elements will be refreshed from the originating server's current repository.
- *     </li>
- *     <li>
- *         CONTENT_PACK: the element comes from an open metadata content pack.
- *         The metadata collection id of the elements is set to the GUID of the pack.
- *     </li>
- *     <li>
- *         DEREGISTERED_REPOSITORY: the element comes from a metadata repository that used to be a part
- *         of the repository cohort but has been deregistered. The metadata collection id remains the same.
- *         If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
- *     </li>
- * </ul>
+ * The ElementType bean provides details of the type information associated with a metadata element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ElementOrigin implements Serializable
+public class ElementOrigin implements Serializable
 {
-    UNKNOWN                 (0, "<Unknown>",               "Unknown provenance"),
-    LOCAL_COHORT            (1, "Local to cohort",         "The element is being maintained within one of the local cohort members. " +
-                                                                  "The metadata collection id is for one of the repositories in the cohort. " +
-                                                                  "This metadata collection id identifies the home repository for this element. "),
-    EXPORT_ARCHIVE          (2, "Export Archive",          "The element was created from an export archive. " +
-                                                                  "The metadata collection id for the element is the metadata collection id of the originating server. " +
-                                                                  "If the originating server later joins the cohort with the same metadata collection Id " +
-                                                                  "then these elements will be refreshed from the originating server's current repository."),
-    CONTENT_PACK            (3, "Content Pack",            "The element comes from an open metadata content pack. " +
-                                                                  "The metadata collection id of the elements is set to the GUID of the pack."),
-    DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The element comes from a metadata repository that " +
-                                                                  "used to be a member of the one of the local repository's cohorts but it has been deregistered. " +
-                                                                  "The metadata collection id remains the same. If the repository rejoins the cohort " +
-                                                                  "then these elements can be refreshed from the rejoining repository."),
-    CONFIGURATION           (5, "Configuration",           "The element is part of a service's configuration.  The metadata collection id is null."),
-    EXTERNAL_SOURCE         (6, "External Source",         "The element is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
-
     private static final long     serialVersionUID = 1L;
 
-    private int    originCode;
-    private String originName;
-    private String originDescription;
+    private String                sourceServer               = null;
+    private ElementOriginCategory originCategory             = null;
+    private String                homeMetadataCollectionId   = null;
+    private String                homeMetadataCollectionName = null;
+    private String                license                    = null;
 
 
     /**
-     * Constructor for the enum.
-     *
-     * @param originCode code number for origin
-     * @param originName name for origin
-     * @param originDescription description for origin
+     * Default constructor
      */
-    ElementOrigin(int originCode, String originName, String originDescription)
+    public ElementOrigin()
     {
-        this.originCode = originCode;
-        this.originName = originName;
-        this.originDescription = originDescription;
     }
 
 
     /**
-     * Return the code for metadata element.
+     * Copy/clone constructor
      *
-     * @return int code for the origin
+     * @param templateType type to clone
      */
-    public int getOrdinal()
+    public ElementOrigin(ElementOrigin templateType)
     {
-        return originCode;
+        if (templateType != null)
+        {
+            sourceServer               = templateType.getSourceServer();
+            originCategory             = templateType.getOriginCategory();
+            homeMetadataCollectionId   = templateType.getHomeMetadataCollectionId();
+            homeMetadataCollectionName = templateType.getHomeMetadataCollectionName();
+            license                    = templateType.getLicense();
+        }
     }
 
 
     /**
-     * Return the name of the metadata element origin.
+     * Set up the name of the server where the element was retrieved from.  Typically this is
+     * a server where the OMAS interfaces are activated.  If no name is known for the server then null is returned.
      *
-     * @return String name
+     * @param sourceServer URL of the server
      */
-    public String getName()
+    public void setSourceServer(String sourceServer)
     {
-        return originName;
+        this.sourceServer = sourceServer;
     }
 
 
     /**
-     * Return the description of the metadata element origin.
+     * Return the name of the server where the element was retrieved from.  Typically this is
+     * a server where the OMAS interfaces are activated.  If no name is known for the server then null is returned.
      *
-     * @return String description
+     * @return elementSourceServerURL the url of the server where the element came from
      */
-    public String getDescription()
+    public String getSourceServer()
     {
-        return originDescription;
+        return sourceServer;
+    }
+
+
+    /**
+     * Set up the details of this element's origin.
+     *
+     * @param originCategory see ElementOriginCategory enum
+     */
+    public void setOriginCategory(ElementOriginCategory originCategory)
+    {
+        this.originCategory = originCategory;
+    }
+
+
+    /**
+     * Return the origin of the metadata element.
+     *
+     * @return ElementOriginCategory enum
+     */
+    public ElementOriginCategory getOriginCategory() { return originCategory; }
+
+
+    /**
+     * Returns the OMRS identifier for the metadata collection that is managed by the repository
+     * where the element originates (its home repository).
+     *
+     * @return String metadata collection id
+     */
+    public String getHomeMetadataCollectionId()
+    {
+        return homeMetadataCollectionId;
+    }
+
+
+    /**
+     * Set up the unique identifier for the metadata collection that is managed by the repository
+     * where the element originates (its home repository).
+     *
+     * @param homeMetadataCollectionId String unique identifier for the home metadata repository
+     */
+    public void setHomeMetadataCollectionId(String homeMetadataCollectionId)
+    {
+        this.homeMetadataCollectionId = homeMetadataCollectionId;
+    }
+
+
+    /**
+     * Return the name of the metadata collection that this asset belongs to.
+     *
+     * @return name string
+     */
+    public String getHomeMetadataCollectionName()
+    {
+        return homeMetadataCollectionName;
+    }
+
+
+    /**
+     * Set up the name of the metadata collection that this asset belongs to.
+     *
+     * @param homeMetadataCollectionName name string
+     */
+    public void setHomeMetadataCollectionName(String homeMetadataCollectionName)
+    {
+        this.homeMetadataCollectionName = homeMetadataCollectionName;
+    }
+
+
+    /**
+     * Return the license associated with this metadata element (null means none).
+     *
+     * @return string license name
+     */
+    public String getLicense()
+    {
+        return license;
+    }
+
+
+    /**
+     * Set up the license associated with this metadata element (null means none)
+     *
+     * @param license string license name
+     */
+    public void setLicense(String license)
+    {
+        this.license = license;
     }
 
 
@@ -122,9 +175,51 @@ public enum ElementOrigin implements Serializable
     public String toString()
     {
         return "ElementOrigin{" +
-                "originCode=" + originCode +
-                ", originName='" + originName + '\'' +
-                ", originDescription='" + originDescription + '\'' +
+                "sourceServer='" + sourceServer + '\'' +
+                ", originCategory=" + originCategory +
+                ", homeMetadataCollectionId='" + homeMetadataCollectionId + '\'' +
+                ", homeMetadataCollectionName='" + homeMetadataCollectionName + '\'' +
+                ", license='" + license + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof ElementOrigin))
+        {
+            return false;
+        }
+        ElementOrigin that = (ElementOrigin) objectToCompare;
+        return Objects.equals(getSourceServer(), that.getSourceServer()) &&
+                getOriginCategory() == that.getOriginCategory() &&
+                Objects.equals(getHomeMetadataCollectionId(), that.getHomeMetadataCollectionId()) &&
+                Objects.equals(getHomeMetadataCollectionName(), that.getHomeMetadataCollectionName()) &&
+                Objects.equals(getLicense(), that.getLicense());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getSourceServer(), getOriginCategory(),
+                            getHomeMetadataCollectionId(), getHomeMetadataCollectionName(),
+                            getLicense());
     }
 }

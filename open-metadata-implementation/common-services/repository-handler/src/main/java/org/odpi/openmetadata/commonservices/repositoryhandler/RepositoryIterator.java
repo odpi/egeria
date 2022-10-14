@@ -22,6 +22,7 @@ public class RepositoryIterator
     protected int                     startingFrom;
     protected int                     pageSize;
     protected String                  methodName;
+    protected boolean                 forLineage;
     protected boolean                 forDuplicateProcessing;
     protected Date                    effectiveTime;
 
@@ -32,6 +33,7 @@ public class RepositoryIterator
      * @param userId  user making the request
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
@@ -42,6 +44,7 @@ public class RepositoryIterator
                               String                  userId,
                               int                     startingFrom,
                               int                     pageSize,
+                              boolean                 forLineage,
                               boolean                 forDuplicateProcessing,
                               Date                    effectiveTime,
                               String                  methodName) throws InvalidParameterException
@@ -51,6 +54,7 @@ public class RepositoryIterator
         this.userId = userId;
         this.startingFrom = startingFrom;
         this.methodName = methodName;
+        this.forLineage = forLineage;
         this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime = effectiveTime;
         this.pageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);

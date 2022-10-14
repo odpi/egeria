@@ -26,8 +26,7 @@ import java.util.Map;
 public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 {
     /**
-     * Construct the discovery engine configuration handler caching the objects
-     * needed to operate within a single server instance.
+     * Construct the glossary term handler caching the objects needed to operate within a single server instance.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -77,6 +76,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Create a new metadata element to represent a glossary term (or a subtype).
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the owning glossary
      * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
@@ -90,6 +91,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a term subtype
      * @param initialStatus glossary term status to use when the object is created
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -99,6 +103,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createGlossaryTerm(String              userId,
+                                     String              externalSourceGUID,
+                                     String              externalSourceName,
                                      String              glossaryGUID,
                                      String              glossaryGUIDParameterName,
                                      String              qualifiedName,
@@ -112,6 +118,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                      String              suppliedTypeName,
                                      Map<String, Object> extendedProperties,
                                      InstanceStatus      initialStatus,
+                                     Date                effectiveFrom,
+                                     Date                effectiveTo,
+                                     Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -156,40 +165,41 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serverName);
 
         builder.setAnchors(userId, glossaryGUID, methodName);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String glossaryTermGUID = this.createBeanInRepository(userId,
-                                                              null,
-                                                              null,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
+                                                              effectiveTime,
                                                               methodName);
 
         if (glossaryTermGUID != null)
         {
             /*
-             * Link the term to its glossary.
+             * Link the term to its glossary.  This relationship is always effective.
              */
             final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      glossaryGUID,
-                                      glossaryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                      glossaryTermGUID,
-                                      glossaryTermGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               false,
+                                               false,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return glossaryTermGUID;
@@ -200,6 +210,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the term - used in other configuration
      * @param displayName short display name for the term
@@ -213,6 +225,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createGlossaryTermFromTemplate(String userId,
+                                                 String externalSourceGUID,
+                                                 String externalSourceName,
                                                  String templateGUID,
                                                  String qualifiedName,
                                                  String displayName,
@@ -236,8 +250,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serverName);
 
         return this.createBeanFromTemplate(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
@@ -245,6 +259,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -253,6 +268,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Update the properties of the metadata element representing a glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
@@ -265,6 +282,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a term
      * @param typeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a term subtype
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -272,6 +295,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateGlossaryTerm(String              userId,
+                                   String              externalSourceGUID,
+                                   String              externalSourceName,
                                    String              glossaryTermGUID,
                                    String              glossaryTermGUIDParameterName,
                                    String              qualifiedName,
@@ -284,6 +309,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                    Map<String, String> additionalProperties,
                                    String              typeName,
                                    Map<String, Object> extendedProperties,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   boolean             isMergeUpdate,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -314,19 +345,21 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     glossaryTermGUID,
                                     glossaryTermGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
-                                    new Date(),
+                                    isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -336,10 +369,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * a controlled glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermGUIDParameterName parameter name for glossaryTermGUID
      * @param glossaryTermStatus new status value for the glossary term
      * @param glossaryTermStatusParameterName parameter name for the status value
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -347,27 +385,32 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateGlossaryTermStatus(String         userId,
+                                         String         externalSourceGUID,
+                                         String         externalSourceName,
                                          String         glossaryTermGUID,
                                          String         glossaryTermGUIDParameterName,
                                          InstanceStatus glossaryTermStatus,
                                          String         glossaryTermStatusParameterName,
+                                         Date           effectiveTime,
+                                         boolean        forLineage,
+                                         boolean        forDuplicateProcessing,
                                          String         methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
         this.updateBeanStatusInRepository(userId,
-                                          null,
-                                          null,
+                                          externalSourceGUID,
+                                          externalSourceName,
                                           glossaryTermGUID,
                                           glossaryTermGUIDParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           glossaryTermStatus,
                                           glossaryTermStatusParameterName,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -376,28 +419,42 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Link a term to a category.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryCategoryGUIDParameterName parameter supplying glossaryCategoryGUID
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
      * @param description description of the categorization
      * @param relationshipStatus ordinal for the relationship status enum
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupTermCategory(String userId,
-                                  String glossaryCategoryGUID,
-                                  String glossaryCategoryGUIDParameterName,
-                                  String glossaryTermGUID,
-                                  String glossaryTermGUIDParameterName,
-                                  String description,
-                                  int    relationshipStatus,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void setupTermCategory(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  glossaryCategoryGUID,
+                                  String  glossaryCategoryGUIDParameterName,
+                                  String  glossaryTermGUID,
+                                  String  glossaryTermGUIDParameterName,
+                                  String  description,
+                                  int     relationshipStatus,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
@@ -406,20 +463,23 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
 
         this.linkElementToElement(userId,
-                                  null,
-                                  null,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   glossaryCategoryGUID,
                                   glossaryCategoryGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                   builder.getTermCategorizationProperties(description, relationshipStatus, methodName),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -428,24 +488,34 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Unlink a term from a category.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryCategoryGUIDParameterName parameter supplying glossaryCategoryGUID
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermCategory(String userId,
-                                  String glossaryCategoryGUID,
-                                  String glossaryCategoryGUIDParameterName,
-                                  String glossaryTermGUID,
-                                  String glossaryTermGUIDParameterName,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void clearTermCategory(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  glossaryCategoryGUID,
+                                  String  glossaryCategoryGUIDParameterName,
+                                  String  glossaryTermGUID,
+                                  String  glossaryTermGUIDParameterName,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
@@ -453,8 +523,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       glossaryCategoryGUID,
                                       glossaryCategoryGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
@@ -462,11 +532,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       glossaryTermGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -475,6 +545,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Link two terms together using a specialist relationship.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermOneGUIDParameterName parameter supplying glossaryTermOneGUID
      * @param relationshipTypeName name of the type of relationship to create
@@ -486,6 +558,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
      * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
      * @param source id of the source of the knowledge of the relationship
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -493,93 +570,25 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupTermRelationship(String userId,
-                                      String glossaryTermOneGUID,
-                                      String glossaryTermOneGUIDParameterName,
-                                      String relationshipTypeName,
-                                      String relationshipTypeParameterName,
-                                      String glossaryTermTwoGUID,
-                                      String glossaryTermTwoGUIDParameterName,
-                                      String expression,
-                                      String description,
-                                      int    relationshipStatus,
-                                      String steward,
-                                      String source,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryTermOneGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(glossaryTermTwoGUID, glossaryTermTwoGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
-
-        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
-                                                                               relationshipTypeName,
-                                                                               serviceName,
-                                                                               methodName,
-                                                                               repositoryHelper);
-
-        GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
-
-
-        this.linkElementToElement(userId,
-                                  null,
-                                  null,
-                                  glossaryTermOneGUID,
-                                  glossaryTermOneGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                  glossaryTermTwoGUID,
-                                  glossaryTermTwoGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  relationshipTypeGUID,
-                                  relationshipTypeName,
-                                  builder.getTermRelationshipProperties(expression,
-                                                                        description,
-                                                                        relationshipStatus,
-                                                                        steward,
-                                                                        source,
-                                                                        methodName),
-                                  methodName);
-    }
-
-
-    /**
-     * Update the relationship properties for the two terms.
-     *
-     * @param userId calling user
-     * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
-     * @param glossaryTermOneGUIDParameterName parameter supplying glossaryTermOneGUID
-     * @param relationshipTypeName name of the type of relationship to create
-     * @param relationshipTypeParameterName name of parameter passing the relationship
-     * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param glossaryTermTwoGUIDParameterName parameter supplying glossaryTermTwoGUID
-     * @param description description of the relationship
-     * @param expression expression that describes the relationship
-     * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
-     * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
-     * @param source id of the source of the knowledge of the relationship
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateTermRelationship(String userId,
-                                       String glossaryTermOneGUID,
-                                       String glossaryTermOneGUIDParameterName,
-                                       String relationshipTypeName,
-                                       String relationshipTypeParameterName,
-                                       String glossaryTermTwoGUID,
-                                       String glossaryTermTwoGUIDParameterName,
-                                       String expression,
-                                       String description,
-                                       int    relationshipStatus,
-                                       String steward,
-                                       String source,
-                                       String methodName) throws InvalidParameterException,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  glossaryTermOneGUID,
+                                      String  glossaryTermOneGUIDParameterName,
+                                      String  relationshipTypeName,
+                                      String  relationshipTypeParameterName,
+                                      String  glossaryTermTwoGUID,
+                                      String  glossaryTermTwoGUIDParameterName,
+                                      String  expression,
+                                      String  description,
+                                      int     relationshipStatus,
+                                      String  steward,
+                                      String  source,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
@@ -596,24 +605,123 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
 
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  glossaryTermOneGUID,
+                                  glossaryTermOneGUIDParameterName,
+                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  glossaryTermTwoGUID,
+                                  glossaryTermTwoGUIDParameterName,
+                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  relationshipTypeGUID,
+                                  relationshipTypeName,
+                                  builder.getTermRelationshipProperties(expression,
+                                                                        description,
+                                                                        relationshipStatus,
+                                                                        steward,
+                                                                        source,
+                                                                        methodName),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Update the relationship properties for the two terms.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param glossaryTermOneGUIDParameterName parameter supplying glossaryTermOneGUID
+     * @param relationshipTypeName name of the type of relationship to create
+     * @param relationshipTypeParameterName name of parameter passing the relationship
+     * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param glossaryTermTwoGUIDParameterName parameter supplying glossaryTermTwoGUID
+     * @param description description of the relationship
+     * @param expression expression that describes the relationship
+     * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
+     * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
+     * @param source id of the source of the knowledge of the relationship
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateTermRelationship(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  glossaryTermOneGUID,
+                                       String  glossaryTermOneGUIDParameterName,
+                                       String  relationshipTypeName,
+                                       String  relationshipTypeParameterName,
+                                       String  glossaryTermTwoGUID,
+                                       String  glossaryTermTwoGUIDParameterName,
+                                       String  expression,
+                                       String  description,
+                                       int     relationshipStatus,
+                                       String  steward,
+                                       String  source,
+                                       Date    effectiveFrom,
+                                       Date    effectiveTo,
+                                       boolean isMergeUpdate,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryTermOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermTwoGUID, glossaryTermTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               relationshipTypeName,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateElementToElementLink(userId,
-                                        null,
-                                        null,
+                                        externalSourceGUID,
+                                        externalSourceName,
                                         glossaryTermOneGUID,
                                         glossaryTermOneGUIDParameterName,
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                         glossaryTermTwoGUID,
                                         glossaryTermTwoGUIDParameterName,
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
                                         relationshipTypeGUID,
                                         relationshipTypeName,
+                                        isMergeUpdate,
                                         builder.getTermRelationshipProperties(expression,
                                                                               description,
                                                                               relationshipStatus,
                                                                               steward,
                                                                               source,
                                                                               methodName),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -622,28 +730,38 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the relationship between two terms.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermOneGUIDParameterName parameter supplying glossaryTermOneGUID
      * @param relationshipTypeName name of the type of relationship to create
      * @param relationshipTypeParameterName name of parameter passing the relationship
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param glossaryTermTwoGUIDParameterName parameter supplying glossaryTermTwoGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermRelationship(String userId,
-                                      String glossaryTermOneGUID,
-                                      String glossaryTermOneGUIDParameterName,
-                                      String relationshipTypeName,
-                                      String relationshipTypeParameterName,
-                                      String glossaryTermTwoGUID,
-                                      String glossaryTermTwoGUIDParameterName,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearTermRelationship(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  glossaryTermOneGUID,
+                                      String  glossaryTermOneGUIDParameterName,
+                                      String  relationshipTypeName,
+                                      String  relationshipTypeParameterName,
+                                      String  glossaryTermTwoGUID,
+                                      String  glossaryTermTwoGUIDParameterName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryTermOneGUIDParameterName, methodName);
@@ -658,8 +776,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       glossaryTermOneGUID,
                                       glossaryTermOneGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
@@ -667,11 +785,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       glossaryTermTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -680,31 +798,53 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes an abstract concept.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsAbstractConcept(String userId,
-                                         String glossaryTermGUID,
-                                         String glossaryTermGUIDParameterName,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void setTermAsAbstractConcept(String  userId,
+                                         String  externalSourceGUID,
+                                         String  externalSourceName,
+                                         String  glossaryTermGUID,
+                                         String  glossaryTermGUIDParameterName,
+                                         Date    effectiveFrom,
+                                         Date    effectiveTo,
+                                         boolean isMergeUpdate,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -713,30 +853,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the abstract concept designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsAbstractConcept(String userId,
-                                           String glossaryTermGUID,
-                                           String glossaryTermGUIDParameterName,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void clearTermAsAbstractConcept(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  glossaryTermGUID,
+                                           String  glossaryTermGUIDParameterName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -745,31 +900,53 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsDataValue(String userId,
-                                   String glossaryTermGUID,
-                                   String glossaryTermGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void setTermAsDataValue(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   boolean isMergeUpdate,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -780,28 +957,43 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsDataValue(String userId,
-                                     String glossaryTermGUID,
-                                     String glossaryTermGUIDParameterName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void clearTermAsDataValue(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  glossaryTermGUID,
+                                     String  glossaryTermGUIDParameterName,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -810,35 +1002,59 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
      * @param activityType ordinal for type of activity
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsActivity(String userId,
-                                  String glossaryTermGUID,
-                                  String glossaryTermGUIDParameterName,
-                                  int    activityType,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void setTermAsActivity(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  glossaryTermGUID,
+                                  String  glossaryTermGUIDParameterName,
+                                  int     activityType,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  boolean isMergeUpdate,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
                                            builder.getActivityTypeProperties(activityType, methodName),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -847,30 +1063,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the activity designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsActivity(String userId,
-                                    String glossaryTermGUID,
-                                    String glossaryTermGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearTermAsActivity(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  glossaryTermGUID,
+                                    String  glossaryTermGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -879,37 +1110,61 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes a context.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
      * @param description description of the context
      * @param scope the scope of where the context applies
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsContext(String userId,
-                                 String glossaryTermGUID,
-                                 String glossaryTermGUIDParameterName,
-                                 String description,
-                                 String scope,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void setTermAsContext(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  glossaryTermGUID,
+                                 String  glossaryTermGUIDParameterName,
+                                 String  description,
+                                 String  scope,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean isMergeUpdate,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(repositoryHelper, serviceName, serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
                                            builder.getContextDescriptionProperties(description, scope, methodName),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -918,30 +1173,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the context definition designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsContext(String userId,
-                                   String glossaryTermGUID,
-                                   String glossaryTermGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void clearTermAsContext(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -950,31 +1220,53 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes a spine object.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsSpineObject(String userId,
-                                     String glossaryTermGUID,
-                                     String glossaryTermGUIDParameterName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void setTermAsSpineObject(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  glossaryTermGUID,
+                                     String  glossaryTermGUIDParameterName,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     boolean isMergeUpdate,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -983,30 +1275,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the spine object designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsSpineObject(String userId,
-                                       String glossaryTermGUID,
-                                       String glossaryTermGUIDParameterName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void clearTermAsSpineObject(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  glossaryTermGUID,
+                                       String  glossaryTermGUIDParameterName,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1015,31 +1322,53 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes a spine attribute.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsSpineAttribute(String userId,
-                                        String glossaryTermGUID,
-                                        String glossaryTermGUIDParameterName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void setTermAsSpineAttribute(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  glossaryTermGUID,
+                                        String  glossaryTermGUIDParameterName,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
+                                        boolean isMergeUpdate,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1048,30 +1377,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the spine attribute designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsSpineAttribute(String userId,
-                                          String glossaryTermGUID,
-                                          String glossaryTermGUIDParameterName,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void clearTermAsSpineAttribute(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermGUIDParameterName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1080,31 +1424,53 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Classify the glossary term to indicate that it describes an object identifier.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsObjectIdentifier(String userId,
-                                          String glossaryTermGUID,
-                                          String glossaryTermGUIDParameterName,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void setTermAsObjectIdentifier(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermGUIDParameterName,
+                                          Date    effectiveFrom,
+                                          Date    effectiveTo,
+                                          boolean isMergeUpdate,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                            OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1113,30 +1479,45 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the object identifier designation from the glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsObjectIdentifier(String userId,
-                                            String glossaryTermGUID,
-                                            String glossaryTermGUIDParameterName,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void clearTermAsObjectIdentifier(String  userId,
+                                            String  externalSourceGUID,
+                                            String  externalSourceName,
+                                            String  glossaryTermGUID,
+                                            String  glossaryTermGUIDParameterName,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1145,33 +1526,43 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Remove the metadata element representing a glossary term.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGlossaryTerm(String userId,
-                                   String glossaryTermGUID,
-                                   String glossaryTermGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void removeGlossaryTerm(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     glossaryTermGUID,
                                     glossaryTermGUIDParameterName,
                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1184,6 +1575,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of glossary terms retrieved from property server
@@ -1196,6 +1590,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   String    nameParameterName,
                                   int       startFrom,
                                   int       pageSize,
+                                  boolean   forLineage,
+                                  boolean   forDuplicateProcessing,
+                                  Date      effectiveTime,
                                   String    methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -1213,13 +1610,13 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1229,9 +1626,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId  String - userId of user making request.
      * @param name  this may be the qualifiedName or displayName of the term
-     * @param nameParameterName property that provided the name - interpreted as a to be a regular expression
+     * @param nameParameterName property that provided the name - interpreted as a regular expression
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of glossary terms retrieved from property server
@@ -1244,6 +1644,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                              String    nameParameterName,
                              int       startFrom,
                              int       pageSize,
+                             boolean   forLineage,
+                             boolean   forDuplicateProcessing,
+                             Date      effectiveTime,
                              String    methodName) throws InvalidParameterException,
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
@@ -1261,13 +1664,13 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     false,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1278,6 +1681,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param userId  String - userId of user making request
      * @param guid  the unique id for the glossary term within the property server
      * @param guidParameter name of parameter supplying the guid
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return Glossary Term retrieved from the property server
@@ -1285,20 +1691,23 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getTerm(String     userId,
-                     String     guid,
-                     String     guidParameter,
-                     String     methodName) throws InvalidParameterException,
-                                                   PropertyServerException,
-                                                   UserNotAuthorizedException
+    public B getTerm(String    userId,
+                     String    guid,
+                     String    guidParameter,
+                     boolean   forLineage,
+                     boolean   forDuplicateProcessing,
+                     Date      effectiveTime,
+                     String    methodName) throws InvalidParameterException,
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameter,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                          false,
-                                          false,
-                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -1311,6 +1720,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryGUIDParameterName property supplying the glossaryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -1319,14 +1731,17 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getTermsForGlossary(String userId,
-                                        String glossaryGUID,
-                                        String glossaryGUIDParameterName,
-                                        int    startFrom,
-                                        int    pageSize,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public List<B>  getTermsForGlossary(String    userId,
+                                        String    glossaryGUID,
+                                        String    glossaryGUIDParameterName,
+                                        int       startFrom,
+                                        int       pageSize,
+                                        boolean   forLineage,
+                                        boolean   forDuplicateProcessing,
+                                        Date      effectiveTime,
+                                        String    methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         glossaryGUID,
@@ -1335,9 +1750,14 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1350,6 +1770,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryCategoryGUIDParameterName property supplying the glossaryCategoryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -1358,14 +1781,17 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>    getTermsForGlossaryCategory(String userId,
-                                                  String glossaryCategoryGUID,
-                                                  String glossaryCategoryGUIDParameterName,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<B>    getTermsForGlossaryCategory(String    userId,
+                                                  String    glossaryCategoryGUID,
+                                                  String    glossaryCategoryGUIDParameterName,
+                                                  int       startFrom,
+                                                  int       pageSize,
+                                                  boolean   forLineage,
+                                                  boolean   forDuplicateProcessing,
+                                                  Date      effectiveTime,
+                                                  String    methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         glossaryCategoryGUID,
@@ -1374,9 +1800,14 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1391,6 +1822,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -1404,6 +1838,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         List<String> serviceSupportedZones,
                                         int          startingFrom,
                                         int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -1420,12 +1857,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 

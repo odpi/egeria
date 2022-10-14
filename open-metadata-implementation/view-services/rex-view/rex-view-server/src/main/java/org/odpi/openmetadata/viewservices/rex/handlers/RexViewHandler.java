@@ -979,7 +979,7 @@ public class RexViewHandler
                                         boolean         enterpriseOption,
                                         String          entityGUID,
                                         int             depth,
-                                        Long            asOfTime,
+                                        long            asOfTime,
                                         String          methodName)
     throws
     RexViewServiceException
@@ -1021,7 +1021,7 @@ public class RexViewHandler
             if (depth > 0)
             {
                 Date asOfTimeDate = null;
-                if (asOfTime !=null) {
+                if (asOfTime != 0) {
                     asOfTimeDate = new Date(asOfTime);
                 }
                 instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
@@ -1238,14 +1238,14 @@ public class RexViewHandler
                                   List<String>    entityTypeGUIDs,
                                   List<String>    relationshipTypeGUIDs,
                                   List<String>    classificationNames,
-                                  Long            asOfTime,
+                                  long            asOfTime,
                                   String          methodName)
     throws
     RexViewServiceException
 
     {
         Date asOfTimeDate = null;
-        if (asOfTime !=null) {
+        if (asOfTime != 0) {
             asOfTimeDate = new Date(asOfTime);
         }
 

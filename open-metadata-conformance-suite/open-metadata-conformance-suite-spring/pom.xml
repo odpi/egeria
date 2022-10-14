@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-conformance-suite</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Conformance Suite with Spring</name>

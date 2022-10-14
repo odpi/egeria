@@ -4,8 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,12 +27,12 @@ public class AssetUniverse extends AssetDetail
 {
     private static final long     serialVersionUID = 1L;
 
-    protected List<AssetMeaning> meanings       = null;
-    protected AssetSchemaType    schema         = null;
-    protected AssetFeedback      feedback       = null;
-    protected AssetLocations     knownLocations = null;
-    protected AssetLineage       lineage        = null;
-    protected AssetRelatedAssets relatedAssets  = null;
+    protected List<Meaning> meanings       = null;
+    protected SchemaType    schema         = null;
+    protected AssetFeedback feedback       = null;
+    protected Locations     knownLocations = null;
+    protected AssetLineage  lineage        = null;
+    protected RelatedAssets relatedAssets  = null;
 
 
     /**
@@ -61,22 +61,22 @@ public class AssetUniverse extends AssetDetail
      * @param feedback Feedback object to query the feedback.
      * @param knownLocations Locations list
      * @param lineage lineage object to query the origin of the asset.
-     * @param relatedAssets AssetRelatedAssets list
+     * @param relatedAssets RelatedAssets list
      */
-    public AssetUniverse(Asset                       assetBean,
-                         AssetExternalIdentifiers    externalIdentifiers,
-                         AssetRelatedMediaReferences relatedMediaReferences,
-                         AssetNoteLogs               noteLogs,
-                         AssetExternalReferences     externalReferences,
-                         AssetConnections            connections,
-                         AssetLicenses               licenses,
-                         AssetCertifications         certifications,
-                         List<AssetMeaning>          meanings,
-                         AssetSchemaType             schema,
-                         AssetFeedback               feedback,
-                         AssetLocations              knownLocations,
-                         AssetLineage                lineage,
-                         AssetRelatedAssets relatedAssets)
+    public AssetUniverse(Asset                  assetBean,
+                         ExternalIdentifiers    externalIdentifiers,
+                         RelatedMediaReferences relatedMediaReferences,
+                         NoteLogs               noteLogs,
+                         ExternalReferences     externalReferences,
+                         Connections            connections,
+                         Licenses               licenses,
+                         Certifications         certifications,
+                         List<Meaning>          meanings,
+                         SchemaType             schema,
+                         AssetFeedback          feedback,
+                         Locations              knownLocations,
+                         AssetLineage           lineage,
+                         RelatedAssets          relatedAssets)
     {
         super(assetBean,
               externalIdentifiers,
@@ -112,31 +112,31 @@ public class AssetUniverse extends AssetDetail
              * Create the top-level property objects for this new asset using the values from the template.
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
-            AssetSchemaType    templateSchema        = template.getSchema();
-            AssetFeedback      templateFeedback      = template.getFeedback();
-            AssetLocations     templateLocations     = template.getKnownLocations();
-            AssetLineage       templateLineage       = template.getLineage();
-            AssetRelatedAssets templateRelatedAssets = template.getRelatedAssets();
+            SchemaType    templateSchema        = template.getSchema();
+            AssetFeedback templateFeedback  = template.getFeedback();
+            Locations     templateLocations = template.getKnownLocations();
+            AssetLineage  templateLineage   = template.getLineage();
+            RelatedAssets templateRelatedAssets = template.getRelatedAssets();
 
             if (templateSchema != null)
             {
-                templateSchema.cloneAssetSchemaType(this);
+                schema = templateSchema;
             }
             if (templateFeedback != null)
             {
-                feedback = new AssetFeedback(this, templateFeedback);
+                feedback = new AssetFeedback(templateFeedback);
             }
             if (templateLocations != null)
             {
-                knownLocations = templateLocations.cloneIterator(this);
+                knownLocations = templateLocations.cloneIterator();
             }
             if (templateLineage != null)
             {
-                lineage = new AssetLineage(this, templateLineage);
+                lineage = new AssetLineage(templateLineage);
             }
             if (templateRelatedAssets != null)
             {
-                relatedAssets = templateRelatedAssets.cloneIterator(this);
+                relatedAssets = templateRelatedAssets.cloneIterator();
             }
         }
     }
@@ -147,29 +147,18 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Meanings list of glossary definitions.
      */
-    public List<AssetMeaning> getMeanings()
+    public List<Meaning> getMeanings()
     {
-        List<Meaning>       meanings = assetBean.getMeanings();
-
-        if (meanings != null)
+        if (meanings == null)
         {
-            List<AssetMeaning> assetMeanings = new ArrayList<>();
-
-            for (Meaning  meaning : meanings)
-            {
-                if (meaning != null)
-                {
-                    assetMeanings.add(new AssetMeaning(this, meaning));
-                }
-            }
-
-            if (! assetMeanings.isEmpty())
-            {
-                return assetMeanings;
-            }
+            return null;
+        }
+        if (meanings.isEmpty())
+        {
+            return null;
         }
 
-        return null;
+        return meanings;
     }
 
 
@@ -178,23 +167,16 @@ public class AssetUniverse extends AssetDetail
      *
      * @return SchemaElement schema object to query the schema associated with the connected asset.
      */
-    public AssetSchemaType getSchema()
+    public SchemaType getSchema()
     {
-        if (schema == null)
-        {
-            return null;
-        }
-        else
-        {
-            return schema.cloneAssetSchemaType(this);
-        }
+        return schema;
     }
 
 
     /**
      * Return details of the people, products and feedback that are connected to the asset.
      *
-     * @return Feedback feedback object to query the feedback on the asset.
+     * @return Feedback object to query the feedback on the asset.
      */
     public AssetFeedback getFeedback()
     {
@@ -204,7 +186,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return new AssetFeedback(this, feedback);
+            return new AssetFeedback(feedback);
         }
     }
 
@@ -214,7 +196,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Locations list of locations.
      */
-    public AssetLocations getKnownLocations()
+    public Locations getKnownLocations()
     {
         if (knownLocations == null)
         {
@@ -222,7 +204,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return knownLocations.cloneIterator(this);
+            return knownLocations.cloneIterator();
         }
     }
 
@@ -230,7 +212,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return details of the lineage for the asset.
      *
-     * @return Lineage  lineage object that allows queries about the lineage of the asset.
+     * @return Lineage object that allows queries about the lineage of the asset.
      */
     public AssetLineage getLineage()
     {
@@ -240,7 +222,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return new AssetLineage(this, lineage);
+            return new AssetLineage(lineage);
         }
     }
 
@@ -248,9 +230,9 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return the list of assets related to this asset.
      *
-     * @return AssetRelatedAssets list
+     * @return RelatedAssets list
      */
-    public AssetRelatedAssets getRelatedAssets()
+    public RelatedAssets getRelatedAssets()
     {
         if (relatedAssets == null)
         {
@@ -258,7 +240,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return relatedAssets.cloneIterator(this);
+            return relatedAssets.cloneIterator();
         }
     }
 
@@ -272,21 +254,26 @@ public class AssetUniverse extends AssetDetail
     public String toString()
     {
         return "AssetUniverse{" +
-                "assetBean=" + assetBean +
-                ", assetMeanings=" + meanings +
-                ", schema=" + schema +
-                ", feedback=" + feedback +
-                ", knownLocations=" + knownLocations +
-                ", lineage=" + lineage +
-                ", relatedAssets=" + relatedAssets +
-                ", externalIdentifiers=" + externalIdentifiers +
-                ", relatedMediaReferences=" + relatedMediaReferences +
-                ", noteLogs=" + noteLogs +
-                ", externalReferences=" + externalReferences +
-                ", connections=" + connections +
-                ", licenses=" + licenses +
-                ", certifications=" + certifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

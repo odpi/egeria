@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+![TechPreview](../../../../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Avro File Connector
 

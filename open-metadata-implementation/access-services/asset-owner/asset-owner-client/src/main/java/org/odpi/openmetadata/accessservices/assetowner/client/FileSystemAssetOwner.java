@@ -167,7 +167,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "createFileSystemInCatalog";
         final String   pathParameter = "uniqueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, pathParameter, methodName);
@@ -184,7 +184,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         requestBody.setEncryption(encryption);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -199,7 +199,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * "one/two" and the last one called "one/two/three".
      *
      * @param userId calling user
-     * @param anchorGUID root object to connect the folder to
+     * @param parentGUID root object to connect the folder to
      * @param pathName pathname of the folder (or folders)
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname
@@ -210,14 +210,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      */
     @Override
     public List<String> createFolderStructureInCatalog(String   userId,
-                                                       String   anchorGUID,
+                                                       String   parentGUID,
                                                        String   pathName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
         final String   methodName = "createFolderStructureInCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
@@ -226,11 +226,11 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         requestBody.setFullPath(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId,
-                                                                          anchorGUID);
+                                                                          parentGUID);
 
         return restResult.getGUIDs();
     }
@@ -258,7 +258,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "createFolderStructureInCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
@@ -267,7 +267,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         requestBody.setFullPath(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);
@@ -297,14 +297,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "attachFolderToFileSystem";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/attach";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/attach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -334,14 +334,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "detachFolderFromFileSystem";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/detach";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/detach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -378,18 +378,18 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "addDataFileAssetToCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);
@@ -428,18 +428,18 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "addDataFolderAssetToCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-folders";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-folders";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);
@@ -470,14 +470,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "attachDataFileAssetToFolder";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/attach";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/attach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -509,14 +509,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "detachDataFileAssetFromFolder";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/detach";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/detach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -527,7 +527,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
     /**
      * Move a file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param folderGUID new parent folder
@@ -547,14 +547,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "moveDataFileInCatalog";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/move-to";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/move-to";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -565,7 +565,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param folderGUID new parent folder
@@ -585,14 +585,14 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   methodName = "moveDataFileInCatalog";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-folders/{3}/move-to";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-folders/{3}/move-to";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFolderGUID, fileGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -621,13 +621,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getFileSystemByGUID";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
 
         FileSystemResponse restResult = restClient.callFileSystemGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              fileSystemGUID);
@@ -656,13 +656,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "uniqueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/by-name/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/by-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameter, methodName);
 
         FileSystemResponse restResult = restClient.callFileSystemGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              uniqueName);
@@ -692,16 +692,16 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                    PropertyServerException
     {
         final String   methodName = "getFileSystems";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems?startingFrom={2}&maximumResults={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems?startingFrom={2}&maximumResults={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
-                                                                          serverName,
-                                                                          userId,
-                                                                          Integer.toString(startingFrom),
-                                                                          Integer.toString(maxPageSize));
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         Integer.toString(startingFrom),
+                                                                         Integer.toString(maxPageSize));
 
         return restResult.getGUIDs();
     }
@@ -727,13 +727,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getFileSystemByGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
         FolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
-                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                     urlTemplate,
                                                                      serverName,
                                                                      userId,
                                                                      folderGUID);
@@ -762,13 +762,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/by-path-name/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/by-path-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameter, methodName);
 
         FolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
-                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                     urlTemplate,
                                                                      serverName,
                                                                      userId,
                                                                      pathName);
@@ -801,13 +801,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getNestedFolders";
         final String   anchorGUIDParameter = "anchorGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/anchor/{2}/folders?startingFrom={3}&maximumResults={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/anchor/{2}/folders?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentGUID, anchorGUIDParameter, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          parentGUID,
@@ -842,13 +842,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
     {
         final String   methodName = "getFolderFiles";
         final String   anchorGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files?startingFrom={3}&maximumResults={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, anchorGUIDParameter, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          folderGUID,

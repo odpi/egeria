@@ -38,7 +38,7 @@ class RESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception     error)
         {
             ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
             String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
@@ -81,7 +81,7 @@ class RESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception     error)
         {
             ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
             String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, error.getMessage());

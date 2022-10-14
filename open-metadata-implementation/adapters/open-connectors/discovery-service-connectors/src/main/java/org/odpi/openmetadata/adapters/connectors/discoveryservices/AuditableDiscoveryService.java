@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,11 +69,11 @@ public abstract class AuditableDiscoveryService extends DiscoveryService
     protected String getAssetTypeName(AssetUniverse     asset,
                                       String            methodName) throws ConnectorCheckedException
     {
-        AssetElementType elementType = asset.getType();
+        ElementType elementType = asset.getType();
 
         if (elementType != null)
         {
-            return elementType.getElementTypeName();
+            return elementType.getTypeName();
         }
 
         throw new ConnectorCheckedException(DiscoveryServiceErrorCode.NO_ASSET_TYPE.getMessageDefinition(asset.toString(), discoveryServiceName),
@@ -89,19 +92,19 @@ public abstract class AuditableDiscoveryService extends DiscoveryService
     {
         if (asset != null)
         {
-            AssetConnections assetConnections = asset.getConnections();
+            Connections connections = asset.getConnections();
 
-            if (assetConnections != null)
+            if (connections != null)
             {
                 List<String>  networkAddresses = new ArrayList<>();
 
-                while (assetConnections.hasNext())
+                while (connections.hasNext())
                 {
-                    ConnectionProperties connectionProperties = assetConnections.next();
+                    Connection connectionProperties = connections.next();
 
                     if (connectionProperties != null)
                     {
-                        EndpointProperties endpointProperties = connectionProperties.getEndpoint();
+                        Endpoint endpointProperties = connectionProperties.getEndpoint();
 
                         if (endpointProperties != null)
                         {

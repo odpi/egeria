@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.context;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
@@ -44,13 +45,12 @@ import java.util.UUID;
  */
 public class OpenMetadataStoreClient extends OpenMetadataClient
 {
+    private final String                    engineUserId;              /* Initialized in constructor */
 
-    private String                    engineUserId;              /* Initialized in constructor */
-
-    private String                    connectorId = UUID.randomUUID().toString();
-    private GovernanceEngineClient    governanceEngineClient;    /* Initialized in constructor */
-    private GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
-    private GovernanceServiceHandler  governanceServiceHandler;  /* Initialized in constructor */
+    private final String                    connectorId = UUID.randomUUID().toString();
+    private final GovernanceEngineClient    governanceEngineClient;    /* Initialized in constructor */
+    private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
+    private final GovernanceServiceHandler  governanceServiceHandler;  /* Initialized in constructor */
 
 
     /**
@@ -58,8 +58,9 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param governanceEngineClient client that does all of the work
+     * @param governanceEngineClient client that does all the work
      * @param governanceListenerManager governance listener manager
+     * @param governanceServiceHandler handler for this service
      * @param engineUserId engine userId
      * @throws InvalidParameterException the server name of platform URL root is null.
      */
@@ -359,7 +360,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -390,7 +391,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
@@ -427,15 +428,12 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
     /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.  The effectivity dates control the visibility of the element
-     * through specific APIs.
+     * assigned when it was created.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param newElementStatus new status value - or null to leave as is
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -447,8 +445,6 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                    boolean       forLineage,
                                                    boolean       forDuplicateProcessing,
                                                    ElementStatus newElementStatus,
-                                                   Date          effectiveFrom,
-                                                   Date          effectiveTo,
                                                    Date          effectiveTime) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -458,9 +454,41 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   newElementStatus,
-                                                                  effectiveFrom,
-                                                                  effectiveTo,
                                                                   effectiveTime);
+    }
+
+
+    /**
+     * Update the effectivity dates control the visibility of the element through specific APIs.
+     *
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void updateMetadataElementEffectivityInStore(String        metadataElementGUID,
+                                                        boolean       forLineage,
+                                                        boolean       forDuplicateProcessing,
+                                                        Date          effectiveFrom,
+                                                        Date          effectiveTo,
+                                                        Date          effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        governanceEngineClient.updateMetadataElementEffectivityInStore(engineUserId,
+                                                                       metadataElementGUID,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveFrom,
+                                                                       effectiveTo,
+                                                                       effectiveTime);
     }
 
 
@@ -591,24 +619,24 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void updateClassificationStatusInStore(String  metadataElementGUID,
-                                                  String  classificationName,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing,
-                                                  Date    effectiveFrom,
-                                                  Date    effectiveTo,
-                                                  Date    effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void updateClassificationEffectivityInStore(String  metadataElementGUID,
+                                                       String  classificationName,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveFrom,
+                                                       Date    effectiveTo,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        governanceEngineClient.updateClassificationStatusInStore(engineUserId,
-                                                                 metadataElementGUID,
-                                                                 classificationName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveFrom,
-                                                                 effectiveTo,
-                                                                 effectiveTime);
+        governanceEngineClient.updateClassificationEffectivityInStore(engineUserId,
+                                                                      metadataElementGUID,
+                                                                      classificationName,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveFrom,
+                                                                      effectiveTo,
+                                                                      effectiveTime);
     }
 
 
@@ -692,53 +720,15 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
 
     /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements.
-     * If the relationship already exists, the properties are updated.
-     *
-     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
-     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public void linkElementsAsPeerDuplicates(String metadataElement1GUID,
-                                             String metadataElement2GUID,
-                                             int    statusIdentifier,
-                                             String steward,
-                                             String stewardTypeName,
-                                             String stewardPropertyName,
-                                             String source,
-                                             String notes) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        governanceEngineClient.linkElementsAsPeerDuplicates(engineUserId,
-                                                            metadataElement1GUID,
-                                                            metadataElement2GUID,
-                                                            statusIdentifier,
-                                                            steward,
-                                                            stewardTypeName,
-                                                            stewardPropertyName,
-                                                            source,
-                                                            notes);
-    }
-
-
-    /**
      * Update the properties associated with a relationship.
      *
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -748,11 +738,20 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
     @Override
     public void updateRelatedElementsInStore(String            relationshipGUID,
                                              boolean           replaceProperties,
-                                             ElementProperties properties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             ElementProperties properties,
+                                             Date              effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        governanceEngineClient.updateRelatedElementsInStore(engineUserId, relationshipGUID, replaceProperties, properties);
+        governanceEngineClient.updateRelatedElementsInStore(engineUserId,
+                                                            relationshipGUID,
+                                                            replaceProperties,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            properties,
+                                                            effectiveTime);
     }
 
 
@@ -761,21 +760,33 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param relationshipGUID unique identifier of the relationship to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public  void updateRelatedElementsStatusInStore(String relationshipGUID,
-                                                    Date   effectiveFrom,
-                                                    Date   effectiveTo) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public  void updateRelatedElementsEffectivityInStore(String  relationshipGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveFrom,
+                                                         Date    effectiveTo,
+                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        governanceEngineClient.updateRelatedElementsStatusInStore(engineUserId, relationshipGUID, effectiveFrom, effectiveTo);
+        governanceEngineClient.updateRelatedElementsEffectivityInStore(engineUserId,
+                                                                       relationshipGUID,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveFrom,
+                                                                       effectiveTo,
+                                                                       effectiveTime);
     }
 
 
@@ -783,17 +794,27 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * Delete a relationship between two metadata elements.
      *
      * @param relationshipGUID unique identifier of the relationship to delete
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void deleteRelatedElementsInStore(String relationshipGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void deleteRelatedElementsInStore(String  relationshipGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        governanceEngineClient.deleteRelatedElementsInStore(engineUserId, relationshipGUID);
+        governanceEngineClient.deleteRelatedElementsInStore(engineUserId,
+                                                            relationshipGUID,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            effectiveTime);
     }
 
 
@@ -829,7 +850,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -956,7 +977,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      *
      * @return unique identifier of the resulting incident report
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -979,6 +1000,90 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                            incidentClassifiers,
                                                            additionalProperties,
                                                            governanceServiceHandler.getGovernanceServiceGUID());
+    }
+
+
+    /**
+     * Link elements as peer duplicates. Create a simple relationship between two elements.
+     * If the relationship already exists, the properties are updated.
+     *
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param setKnownDuplicate boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.
+     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void linkElementsAsPeerDuplicates(String  metadataElement1GUID,
+                                             String  metadataElement2GUID,
+                                             int     statusIdentifier,
+                                             String  steward,
+                                             String  stewardTypeName,
+                                             String  stewardPropertyName,
+                                             String  source,
+                                             String  notes,
+                                             boolean setKnownDuplicate) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        governanceEngineClient.linkElementsAsPeerDuplicates(engineUserId,
+                                                            metadataElement1GUID,
+                                                            metadataElement2GUID,
+                                                            statusIdentifier,
+                                                            steward,
+                                                            stewardTypeName,
+                                                            stewardPropertyName,
+                                                            source,
+                                                            notes,
+                                                            setKnownDuplicate);
+    }
+
+
+    /**
+     * Identify an element that acts as a consolidated version for a set of duplicate elements.
+     * (The consolidated element is created using createMetadataElement.)
+     *
+     * @param consolidatedElementGUID unique identifier of the metadata element
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
+     *                           have the KnownDuplicateClassification.
+     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void linkConsolidatedDuplicate(String       consolidatedElementGUID,
+                                          int          statusIdentifier,
+                                          String       steward,
+                                          String       stewardTypeName,
+                                          String       stewardPropertyName,
+                                          String       source,
+                                          String       notes,
+                                          List<String> sourceElementGUIDs) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        governanceEngineClient.linkConsolidatedDuplicate(engineUserId,
+                                                         consolidatedElementGUID,
+                                                         statusIdentifier,
+                                                         steward,
+                                                         stewardTypeName,
+                                                         stewardPropertyName,
+                                                         source,
+                                                         notes,
+                                                         sourceElementGUIDs);
     }
 
 

@@ -5,8 +5,8 @@
 
 The asset analysis engine services API provides the property structures and
 REST structures used to drive 
-[open discovery engines](../../../frameworks/open-discovery-framework/docs/discovery-engine.md) running inside a
-[engine host server](../../../admin-services/docs/concepts/engine-host.md).
+[open discovery engines](https://egeria-project.org/concepts/open-discovery-engine) running inside a
+[engine host server](https://egeria-project.org/concepts/engine-host).
 
 
 

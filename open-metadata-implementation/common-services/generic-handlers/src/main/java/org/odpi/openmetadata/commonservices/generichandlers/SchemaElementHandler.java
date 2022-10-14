@@ -75,13 +75,17 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * schema attribute.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - if null a local element is created
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - if null a local element is created
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the database schema where the database table is located
      * @param assetGUIDParameterName name of the parameter of assetGUID
      * @param assetTypeName the name of the asset's type
      * @param schemaTypeTypeGUID unique identifier of the type
      * @param schemaTypeTypeName unique name of the type
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return properties of the anchor schema type for the database schema
@@ -90,18 +94,22 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String getAssetSchemaTypeGUID(String userId,
-                                  String externalSourceGUID,
-                                  String externalSourceName,
-                                  String assetGUID,
-                                  String assetGUIDParameterName,
-                                  String assetTypeName,
-                                  String schemaTypeTypeGUID,
-                                  String schemaTypeTypeName,
-                                  Date   effectiveTime,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    String getAssetSchemaTypeGUID(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  assetGUID,
+                                  String  assetGUIDParameterName,
+                                  String  assetTypeName,
+                                  String  schemaTypeTypeGUID,
+                                  String  schemaTypeTypeName,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
@@ -140,8 +148,9 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                schemaTypeTypeName,
-                                                               false,
-                                                               false,
+                                                               2,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                supportedZones,
                                                                effectiveTime,
                                                                methodName);
@@ -167,9 +176,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                 externalSourceName,
                                                                 schemaTypeTypeGUID,
                                                                 schemaTypeTypeName,
-                                                                schemaTypeQualifiedName,
-                                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                 builder,
+                                                                effectiveTime,
                                                                 methodName);
 
             final String schemaTypeGUIDParameterName = "schemaTypeGUID";
@@ -185,12 +193,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
                                           schemaTypeTypeName,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
 
@@ -207,12 +218,17 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * Add additional schema types that are part of a schema type.  Specifically for maps and schema type choices.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param schemaTypeGUID schema type entity to link to
      * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
      * @param schemaTypeTypeName name of schema type's type
      * @param schemaTypeBuilder properties of complete schema type
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException  the schemaType bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -225,6 +241,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                           String            schemaTypeGUIDParameterName,
                           String            schemaTypeTypeName,
                           SchemaTypeBuilder schemaTypeBuilder,
+                          Date              effectiveFrom,
+                          Date              effectiveTo,
+                          boolean           forLineage,
+                          boolean           forDuplicateProcessing,
+                          Date              effectiveTime,
                           String            methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -249,12 +270,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           externalSchemaGUID,
                                           externalParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
         }
@@ -275,6 +299,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                             externalSourceName,
                                             mapFromBuilder.qualifiedName,
                                             mapFromBuilder,
+                                            effectiveFrom,
+                                            effectiveTo,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
                                             methodName);
             }
 
@@ -289,12 +318,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           mapFromGUID,
                                           mapFromParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
 
@@ -305,6 +337,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           externalSourceName,
                                           mapToBuilder.qualifiedName,
                                           mapToBuilder,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
             }
 
@@ -319,12 +356,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           mapToGUID,
                                           mapToParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
         }
@@ -343,6 +383,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                           externalSourceName,
                                                           schemaOptionBuilder.qualifiedName,
                                                           schemaOptionBuilder,
+                                                          effectiveFrom,
+                                                          effectiveTo,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
                                                           methodName);
 
                         if (optionGUID != null)
@@ -356,12 +401,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                       optionGUID,
                                                       optionParameterName,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                      false,
-                                                      false,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
                                                       supportedZones,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_GUID,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
                                                       null,
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      effectiveTime,
                                                       methodName);
                         }
                     }
@@ -372,12 +420,17 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Store a new schema type (and optional attributes in the repository and return its unique identifier (GUID).
+     * Store a new schema type (and optional attributes in the repository and return its unique identifier (GUID)).
      *
      * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software server capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
+     * @param externalSourceName unique name of software capability representing the caller
      * @param schemaTypeBuilder properties for new schemaType
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the schemaType in the repository.
@@ -391,6 +444,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                   String            externalSourceName,
                                   String            qualifiedName,
                                   SchemaTypeBuilder schemaTypeBuilder,
+                                  Date              effectiveFrom,
+                                  Date              effectiveTo,
+                                  boolean           forLineage,
+                                  boolean           forDuplicateProcessing,
+                                  Date              effectiveTime,
                                   String            methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -402,9 +460,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             schemaTypeBuilder.getTypeGUID(),
                                                             schemaTypeBuilder.getTypeName(),
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             schemaTypeBuilder,
+                                                            effectiveTime,
                                                             methodName);
 
         addEmbeddedTypes(userId,
@@ -414,6 +471,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                          schemaTypeGUIDParameterName,
                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                          schemaTypeBuilder,
+                         effectiveFrom,
+                         effectiveTo,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
 
         return schemaTypeGUID;
@@ -421,7 +483,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of attributes attached to an parent schema attribute or schema type.
+     * Count the number of attributes attached to a parent schema attribute or schema type.
      *
      * @param userId     calling user
      * @param schemaElementGUID identifier for the parent complex schema type - this could be a schemaAttribute or a
@@ -450,22 +512,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       2,
+                                                                       false,
                                                                        false,
                                                                        effectiveTime,
                                                                        methodName);
-
-
-        if (count == 0)
-        {
-            count = repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                       schemaElementGUID,
-                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                       false,
-                                                                       effectiveTime,
-                                                                       methodName);
-        }
 
         return count;
     }
@@ -475,8 +526,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * Create a new query relationship for a derived schema element.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param schemaElementGUID unique identifier of the schema element that this query supports
      * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
      * @param schemaElementTypeName name of type for schema element
@@ -484,94 +535,33 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @param query the query that is made on the targetGUID
      * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
      * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupQueryTargetRelationship(String userId,
-                                             String externalSourceGUID,
-                                             String externalSourceName,
-                                             String schemaElementGUID,
-                                             String schemaElementGUIDParameterName,
-                                             String schemaElementTypeName,
-                                             String queryId,
-                                             String query,
-                                             String queryTargetGUID,
-                                             String queryTargetGUIDParameterName,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        final String queryParameterName = "query";
-
-        invalidParameterHandler.validateObject(query, queryParameterName, methodName);
-
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                     null,
-                                                                                     OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
-                                                                                     query,
-                                                                                     methodName);
-
-        if (queryId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
-                                                                      queryId,
-                                                                      methodName);
-        }
-
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  schemaElementGUID,
-                                  schemaElementGUIDParameterName,
-                                  schemaElementTypeName,
-                                  queryTargetGUID,
-                                  queryTargetGUIDParameterName,
-                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
-                                  properties,
-                                  methodName);
-    }
-
-
-    /**
-     * Update the query properties for a query relationship for a derived schema element.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
-     * @param schemaElementGUID unique identifier of the schema element that this query supports
-     * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
-     * @param schemaElementTypeName name of type for schema element
-     * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
-     * @param query the query that is made on the targetGUID
-     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
-     * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateQueryTargetRelationship(String userId,
-                                              String externalSourceGUID,
-                                              String externalSourceName,
-                                              String schemaElementGUID,
-                                              String schemaElementGUIDParameterName,
-                                              String schemaElementTypeName,
-                                              String queryId,
-                                              String query,
-                                              String queryTargetGUID,
-                                              String queryTargetGUIDParameterName,
-                                              String methodName) throws InvalidParameterException,
+    public void setupQueryTargetRelationship(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  schemaElementGUID,
+                                             String  schemaElementGUIDParameterName,
+                                             String  schemaElementTypeName,
+                                             String  queryId,
+                                             String  query,
+                                             String  queryTargetGUID,
+                                             String  queryTargetGUIDParameterName,
+                                             Date    effectiveFrom,
+                                             Date    effectiveTo,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -585,14 +575,94 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                                      query,
                                                                                      methodName);
 
-        if (queryId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
-                                                                      queryId,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                  queryId,
+                                                                  methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  schemaElementGUID,
+                                  schemaElementGUIDParameterName,
+                                  schemaElementTypeName,
+                                  queryTargetGUID,
+                                  queryTargetGUIDParameterName,
+                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Update the query properties for a query relationship for a derived schema element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
+     * @param schemaElementGUID unique identifier of the schema element that this query supports
+     * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
+     * @param schemaElementTypeName name of type for schema element
+     * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
+     * @param query the query that is made on the targetGUID
+     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
+     * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateQueryTargetRelationship(String  userId,
+                                              String  externalSourceGUID,
+                                              String  externalSourceName,
+                                              String  schemaElementGUID,
+                                              String  schemaElementGUIDParameterName,
+                                              String  schemaElementTypeName,
+                                              String  queryId,
+                                              String  query,
+                                              String  queryTargetGUID,
+                                              String  queryTargetGUIDParameterName,
+                                              Date    effectiveFrom,
+                                              Date    effectiveTo,
+                                              boolean isMergeUpdate,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String queryParameterName = "query";
+
+        invalidParameterHandler.validateObject(query, queryParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                                                     query,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                  queryId,
+                                                                  methodName);
 
         this.updateElementToElementLink(userId,
                                         externalSourceGUID,
@@ -603,9 +673,14 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                         queryTargetGUID,
                                         queryTargetGUIDParameterName,
                                         OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
                                         OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
                                         OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
-                                        properties,
+                                        isMergeUpdate,
+                                        this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -615,8 +690,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * Update the query properties for a query relationship for a derived schema element.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param schemaElementGUID unique identifier of the schema element that this query supports
      * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
      * @param schemaElementTypeName name of type for schema element

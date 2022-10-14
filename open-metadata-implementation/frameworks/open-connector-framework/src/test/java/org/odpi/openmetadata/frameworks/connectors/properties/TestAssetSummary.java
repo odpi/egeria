@@ -29,7 +29,7 @@ public class TestAssetSummary
      */
     public TestAssetSummary()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
 
         ElementClassification classification = new ElementClassification();
 
@@ -129,10 +129,10 @@ public class TestAssetSummary
      */
     private void validateResultObject(AssetSummary resultObject)
     {
-        assertTrue(resultObject.getType().getElementTypeBean().equals(type));
+        assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getAssetClassifications() != null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
@@ -156,7 +156,7 @@ public class TestAssetSummary
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getAssetClassifications() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);
@@ -203,7 +203,7 @@ public class TestAssetSummary
         Map<String, Object>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", 2);
 
         Asset assetBean = new Asset();
         assetBean.setExtendedProperties(propertyMap);
@@ -220,7 +220,7 @@ public class TestAssetSummary
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(assetProperties.get(propertyName).equals(new Integer(2)));
+        assertTrue(assetProperties.get(propertyName).equals(2));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
@@ -255,65 +255,6 @@ public class TestAssetSummary
 
 
     /**
-     * Validate that additional properties are handled properly.
-     */
-    @Test public void testAdditionalProperties()
-    {
-        Map<String, String>  propertyMap = new HashMap<>();
-
-        propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", "Two");
-
-        Asset assetBean = new Asset();
-        assetBean.setAdditionalProperties(propertyMap);
-
-        AssetSummary testObject = new AssetSummary(assetBean);
-
-        AdditionalProperties additionalProperties = testObject.getAdditionalProperties();
-
-        assertTrue(additionalProperties.getPropertyNames() != null);
-
-        Iterator<String> iterator = additionalProperties.getPropertyNames();
-
-        String propertyName;
-
-        propertyName = iterator.next();
-        assertTrue(propertyName.equals("property2"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals("Two"));
-
-        propertyName = iterator.next();
-        assertTrue(propertyName.equals("property1"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals("TestString"));
-
-        try
-        {
-            iterator.next();
-            assertTrue(false);
-        }
-        catch (Throwable   exc)
-        {
-            assertTrue(true);
-        }
-
-        assetBean = new Asset();
-        testObject = new AssetSummary(assetBean);
-
-        additionalProperties = testObject.getAdditionalProperties();
-
-        assertTrue(additionalProperties == null);
-
-        propertyMap = new HashMap<>();
-        assetBean = new Asset();
-        assetBean.setAdditionalProperties(propertyMap);
-        testObject = new AssetSummary(assetBean);
-
-        additionalProperties = testObject.getAdditionalProperties();
-
-        assertTrue(additionalProperties == null);
-    }
-
-
-    /**
      * Test that classification lists are handled
      */
     @Test public void testClassifications()
@@ -329,25 +270,16 @@ public class TestAssetSummary
 
         AssetSummary testObject = new AssetSummary(assetBean);
 
-        List<AssetClassification> assetClassifications = testObject.getAssetClassifications();
+        List<ElementClassification> assetClassifications = testObject.getClassifications();
 
-        assertTrue(assetClassifications.get(0).getName().equals("TestClassification"));
+        assertTrue(assetClassifications.get(0).getClassificationName().equals("TestClassification"));
 
         classificationList = new ArrayList<>();
 
         assetBean = new Asset();
         assetBean.setClassifications(classificationList);
         testObject = new AssetSummary(assetBean);
-        assetClassifications = testObject.getAssetClassifications();
-
-        assertTrue(assetClassifications == null);
-
-        classificationList.add(null);
-
-        assetBean = new Asset();
-        assetBean.setClassifications(classificationList);
-        testObject = new AssetSummary(assetBean);
-        assetClassifications = testObject.getAssetClassifications();
+        assetClassifications = testObject.getClassifications();
 
         assertTrue(assetClassifications == null);
     }

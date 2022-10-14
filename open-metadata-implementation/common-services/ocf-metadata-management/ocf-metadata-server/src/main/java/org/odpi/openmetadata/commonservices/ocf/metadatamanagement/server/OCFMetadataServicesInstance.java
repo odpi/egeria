@@ -20,28 +20,28 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OCFMetadataServicesInstance extends OMASServiceInstance
 {
-    private AssetHandler<Asset>                                   assetHandler;
-    private CertificationHandler<Certification>                   certificationHandler;
-    private CommentHandler<Comment>                               commentHandler;
-    private ConnectionHandler<Connection>                         connectionHandler;
-    private ConnectorTypeHandler<ConnectorType>                   connectorTypeHandler;
-    private EndpointHandler<Endpoint>                             endpointHandler;
-    private ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler;
-    private ExternalReferenceLinkHandler<ExternalReference>       externalReferenceHandler;
-    private GlossaryTermHandler<Meaning>                          glossaryTermHandler;
-    private InformalTagHandler<InformalTag>                       informalTagHandler;
-    private LicenseHandler<License>                               licenseHandler;
-    private LikeHandler<Like>                                     likeHandler;
-    private SearchKeywordHandler<SearchKeyword>                   keywordHandler;
-    private LocationHandler<Location>                             locationHandler;
-    private NoteLogHandler<NoteLog>                               noteLogHandler;
-    private NoteHandler<Note>                                     noteHandler;
-    private RatingHandler<Rating>                                 ratingHandler;
-    private ReferenceableHandler<Referenceable>                   referenceableHandler;
-    private RelatedAssetHandler<RelatedAsset>                     relatedAssetHandler;
-    private RelatedMediaHandler<RelatedMediaReference>            relatedMediaHandler;
-    private SchemaAttributeHandler<SchemaAttribute, SchemaType>   schemaAttributeHandler;
-    private SchemaTypeHandler<SchemaType>                         schemaTypeHandler;
+    private final AssetHandler<Asset>                                   assetHandler;
+    private final CertificationHandler<Certification>                   certificationHandler;
+    private final CommentHandler<Comment>                               commentHandler;
+    private final ConnectionHandler<Connection>                         connectionHandler;
+    private final ConnectorTypeHandler<ConnectorType>                   connectorTypeHandler;
+    private final EndpointHandler<Endpoint>                             endpointHandler;
+    private final ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler;
+    private final ExternalReferenceLinkHandler<ExternalReference>       externalReferenceHandler;
+    private final GlossaryTermHandler<Meaning>                          glossaryTermHandler;
+    private final InformalTagHandler<InformalTag>                       informalTagHandler;
+    private final LicenseHandler<License>                               licenseHandler;
+    private final LikeHandler<Like>                                     likeHandler;
+    private final SearchKeywordHandler<SearchKeyword>                   keywordHandler;
+    private final LocationHandler<Location>                             locationHandler;
+    private final NoteLogHandler<NoteLogHeader>                         noteLogHandler;
+    private final NoteHandler<Note>                                     noteHandler;
+    private final RatingHandler<Rating>                                 ratingHandler;
+    private final ReferenceableHandler<Referenceable>                   referenceableHandler;
+    private final RelatedAssetHandler<RelatedAsset>                     relatedAssetHandler;
+    private final RelatedMediaHandler<RelatedMediaReference>            relatedMediaHandler;
+    private final SchemaAttributeHandler<SchemaAttribute, SchemaType>   schemaAttributeHandler;
+    private final SchemaTypeHandler<SchemaType>                         schemaTypeHandler;
 
 
     /**
@@ -270,7 +270,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                          auditLog);
 
             this.noteLogHandler = new NoteLogHandler<>(new NoteLogConverter<>(repositoryHelper, serviceName, serverName),
-                                                       NoteLog.class,
+                                                       NoteLogHeader.class,
                                                        serviceName,
                                                        serverName,
                                                        invalidParameterHandler,
@@ -623,7 +623,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    NoteLogHandler<NoteLog> getNoteLogHandler() throws PropertyServerException
+    NoteLogHandler<NoteLogHeader> getNoteLogHandler() throws PropertyServerException
     {
         final String methodName = "getNoteLogHandler";
 

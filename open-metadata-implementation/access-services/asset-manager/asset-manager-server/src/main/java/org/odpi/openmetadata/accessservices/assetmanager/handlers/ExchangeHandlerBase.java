@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -114,7 +115,7 @@ class ExchangeHandlerBase
 
     /**
      * Retrieve the external source unique identifier if needed.
-     * Otherwise return null.
+     * Otherwise, return null.
      *
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
@@ -152,7 +153,7 @@ class ExchangeHandlerBase
 
     /**
      * Retrieve the external source unique name from the correlation properties if available or needed.
-     * Otherwise return null.
+     * Otherwise, return null.
      *
      * @param correlationProperties correlation properties containing the asset manager information
      * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
@@ -172,7 +173,7 @@ class ExchangeHandlerBase
 
     /**
      * Retrieve the external source unique name if needed.
-     * Otherwise return null.
+     * Otherwise, return null.
      *
      * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
@@ -192,7 +193,7 @@ class ExchangeHandlerBase
 
     /**
      * Retrieve the external source unique name from the correlation properties if available or needed.
-     * Otherwise return null.
+     * Otherwise, return null.
      *
      * @param correlationProperties correlation properties containing the asset manager information
      * @return unique name or null
@@ -221,6 +222,9 @@ class ExchangeHandlerBase
      * @param elementGUIDParameterName name of the open metadata identifier
      * @param elementTypeName type name of the open metadata element
      * @param correlationProperties properties to store in the external identifier
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  the parameters are invalid
@@ -232,6 +236,9 @@ class ExchangeHandlerBase
                                   String                        elementGUIDParameterName,
                                   String                        elementTypeName,
                                   MetadataCorrelationProperties correlationProperties,
+                                  boolean                       forLineage,
+                                  boolean                       forDuplicateProcessing,
+                                  Date                          effectiveTime,
                                   String                        methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -270,6 +277,10 @@ class ExchangeHandlerBase
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
                                                                   null,
+                                                                  null,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveTime,
                                                                   methodName);
             }
         }
@@ -322,6 +333,9 @@ class ExchangeHandlerBase
      * @param elementGUIDParameterName name of the open metadata identifier
      * @param elementTypeName type name of the open metadata element
      * @param correlationProperties properties to store in the external identifier
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      * @return external identity (or null if none associated)
      *
@@ -334,6 +348,9 @@ class ExchangeHandlerBase
                                             String                        elementGUIDParameterName,
                                             String                        elementTypeName,
                                             MetadataCorrelationProperties correlationProperties,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            Date                          effectiveTime,
                                             String                        methodName) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -356,7 +373,9 @@ class ExchangeHandlerBase
                                                                     scopeGUIDParameterName,
                                                                     correlationProperties.getAssetManagerName(),
                                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                    null,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveTime,
                                                                     methodName);
         }
 
@@ -375,6 +394,8 @@ class ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      * @return list of correlation properties
      *
@@ -382,16 +403,18 @@ class ExchangeHandlerBase
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem detected in the repository services
      */
-    List<MetadataCorrelationHeader> getCorrelationProperties(String userId,
-                                                             String elementGUID,
-                                                             String elementGUIDParameterName,
-                                                             String elementTypeName,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             Date   effectiveTime,
-                                                             String methodName) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    List<MetadataCorrelationHeader> getCorrelationProperties(String  userId,
+                                                             String  elementGUID,
+                                                             String  elementGUIDParameterName,
+                                                             String  elementTypeName,
+                                                             String  assetManagerGUID,
+                                                             String  assetManagerName,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing,
+                                                             Date    effectiveTime,
+                                                             String  methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         return externalIdentifierHandler.getExternalIdentifiersForScope(userId,
                                                                         elementGUID,
@@ -400,6 +423,8 @@ class ExchangeHandlerBase
                                                                         assetManagerGUID,
                                                                         OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                         assetManagerName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
                                                                         0,
                                                                         invalidParameterHandler.getMaxPagingSize(),
                                                                         effectiveTime,
@@ -417,8 +442,13 @@ class ExchangeHandlerBase
      * The glossary term needs to be connected to the
      * @param userId calling user
      * @param elementGUID unique identifier for the element connected to the supplementary properties
+     * @param elementGUIDParameterName name of guid parameter
+     * @param elementTypeName type of element
      * @param elementQualifiedName unique name for the element connected to the supplementary properties
      * @param supplementaryProperties properties to save
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -426,9 +456,14 @@ class ExchangeHandlerBase
      */
     void maintainSupplementaryProperties(String                  userId,
                                          String                  elementGUID,
+                                         String                  elementGUIDParameterName,
+                                         String                  elementTypeName,
                                          String                  elementQualifiedName,
                                          SupplementaryProperties supplementaryProperties,
                                          boolean                 isMergeUpdate,
+                                         boolean                 forLineage,
+                                         boolean                 forDuplicateProcessing,
+                                         Date                    effectiveTime,
                                          String                  methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -437,6 +472,8 @@ class ExchangeHandlerBase
         {
             externalIdentifierHandler.maintainSupplementaryProperties(userId,
                                                                       elementGUID,
+                                                                      elementGUIDParameterName,
+                                                                      elementTypeName,
                                                                       elementQualifiedName,
                                                                       supplementaryProperties.getDisplayName(),
                                                                       supplementaryProperties.getSummary(),
@@ -444,12 +481,17 @@ class ExchangeHandlerBase
                                                                       supplementaryProperties.getAbbreviation(),
                                                                       supplementaryProperties.getUsage(),
                                                                       isMergeUpdate,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
                                                                       methodName);
         }
         else if (! isMergeUpdate)
         {
             externalIdentifierHandler.maintainSupplementaryProperties(userId,
                                                                       elementGUID,
+                                                                      elementGUIDParameterName,
+                                                                      elementTypeName,
                                                                       elementQualifiedName,
                                                                       null,
                                                                       null,
@@ -457,7 +499,70 @@ class ExchangeHandlerBase
                                                                       null,
                                                                       null,
                                                                       false,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
                                                                       methodName);
+        }
+    }
+
+
+    /**
+     * Retrieve the supplementary properties for an element.
+     *
+     * @param elementGUID unique identifier for the element connected to the supplementary properties
+     * @param elementGUIDParameterName name of guid parameter
+     * @param elementTypeName type of element
+     * @param supplementaryProperties properties to save
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     */
+    void getSupplementaryProperties(String                  elementGUID,
+                                    String                  elementGUIDParameterName,
+                                    String                  elementTypeName,
+                                    SupplementaryProperties supplementaryProperties,
+                                    boolean                 forLineage,
+                                    boolean                 forDuplicateProcessing,
+                                    Date                    effectiveTime,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        EntityDetail glossaryEntity = externalIdentifierHandler.getSupplementaryProperties(elementGUID,
+                                                                                           elementGUIDParameterName,
+                                                                                           elementTypeName,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing,
+                                                                                           effectiveTime,
+                                                                                           methodName);
+
+        if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
+        {
+            supplementaryProperties.setDisplayName(repositoryHelper.getStringProperty(serviceName,
+                                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                                      glossaryEntity.getProperties(),
+                                                                                      methodName));
+
+            supplementaryProperties.setSummary(repositoryHelper.getStringProperty(serviceName,
+                                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                                  glossaryEntity.getProperties(),
+                                                                                  methodName));
+            supplementaryProperties.setDescription(repositoryHelper.getStringProperty(serviceName,
+                                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                      glossaryEntity.getProperties(),
+                                                                                      methodName));
+            supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
+                                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                                       glossaryEntity.getProperties(),
+                                                                                       methodName));
+            supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                                glossaryEntity.getProperties(),
+                                                                                methodName));
         }
     }
 }

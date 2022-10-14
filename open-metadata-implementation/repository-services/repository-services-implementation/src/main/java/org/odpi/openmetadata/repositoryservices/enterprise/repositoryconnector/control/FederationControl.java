@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
  * executor object that is able to issue the appropriate query and handle the response.
  *
  * The federation control class calls the executor repeatedly, passing in the metadata collection
- * until the executor tells it to stop or it runs out of registered repositories.
+ * until the executor tells it to stop, or it runs out of registered repositories.
  *
  * The caller (enterprise connector) then requests the response from the executor.
  */

@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.http.HttpHelper;
 
+import java.util.List;
 
 
 /**
@@ -17,9 +19,9 @@ import org.odpi.openmetadata.http.HttpHelper;
  */
 public class CreateGovernanceZoneSample
 {
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String  serverName;
+    private final String  serverURLRoot;
+    private final String  clientUserId;
 
     private GovernanceZoneManager client = null;
 
@@ -61,7 +63,7 @@ public class CreateGovernanceZoneSample
         System.out.println("------------------------------------------------------------------------");
         System.out.println(zoneName);
         System.out.println("------------------------------------------------------------------------");
-        System.out.println(" ==> qualifiedName: " + zoneName);
+        System.out.println(" ==> zoneName: " + zoneName);
         System.out.println(" ==> displayName:   " + displayName);
         System.out.println(" ==> description:   " + description);
         System.out.println(" ==> criteria:      " + criteria);
@@ -69,7 +71,8 @@ public class CreateGovernanceZoneSample
 
         GovernanceZoneProperties zoneProperties = new GovernanceZoneProperties();
 
-        zoneProperties.setQualifiedName(zoneName);
+        zoneProperties.setQualifiedName("GovernanceZone:" + zoneName);
+        zoneProperties.setZoneName(zoneName);
         zoneProperties.setDisplayName(displayName);
         zoneProperties.setDescription(description);
         zoneProperties.setCriteria(criteria);
@@ -97,11 +100,39 @@ public class CreateGovernanceZoneSample
                            zoneDefinition.getCriteria());
             }
 
+            List<GovernanceZoneElement> zones = client.getGovernanceZonesForDomain(clientUserId, 0, 0, 0);
 
+            int matchingZones = 0;
+
+            for (GovernanceZoneElement zone : zones)
+            {
+                for (GovernanceZoneSampleDefinitions zoneDefinition : zoneSampleDefinitions)
+                {
+                     if (zoneDefinition.getZoneName().equals(zone.getGovernanceZoneProperties().getZoneName()))
+                     {
+                         if ((zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())) &&
+                             (zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())) &&
+                             (zoneDefinition.getDisplayName().equals(zone.getGovernanceZoneProperties().getDisplayName())))
+                         {
+                             matchingZones++;
+                         }
+                         else
+                         {
+                             System.out.println("Retrieved zone: " + zone + " does not match zone definition: " + zoneDefinition);
+                         }
+                     }
+                }
+            }
+
+            if (matchingZones != zoneSampleDefinitions.length)
+            {
+                System.out.println("Retrieved " + matchingZones + " zones: " + zones);
+            }
         }
         catch (Exception error)
         {
             System.out.println("There was an exception when calling the GovernanceZoneManager client.  Error message is: " + error.getMessage());
+            System.exit(-1);
         }
     }
 

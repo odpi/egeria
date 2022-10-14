@@ -48,7 +48,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
 
     /**
-     * Return the bean properties describing a the link between a host and a software server platform in an InstanceProperties object.
+     * Return the bean properties describing the link between a host and a software server platform in an InstanceProperties object.
      *
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
@@ -78,23 +78,27 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         try
         {
-            return repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                              properties,
-                                                              OpenMetadataAPIMapper.PLATFORM_STATUS_PROPERTY_NAME,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
-                                                              platformStatus,
-                                                              methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.PLATFORM_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    platformStatus,
+                                                                    methodName);
         }
         catch (TypeErrorException error)
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.PLATFORM_STATUS_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
     /**
-     * Return the bean properties describing a the link between a host and a software server platform in an InstanceProperties object.
+     * Return the bean properties describing the link between a host and a software server platform in an InstanceProperties object.
      *
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
@@ -124,23 +128,27 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         try
         {
-            return repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                              properties,
-                                                              OpenMetadataAPIMapper.SERVER_STATUS_PROPERTY_NAME,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
-                                                              serverStatus,
-                                                              methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.SERVER_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    serverStatus,
+                                                                    methodName);
         }
         catch (TypeErrorException error)
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.SERVER_STATUS_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
     /**
-     * Return the bean properties describing a the link between a software server and a software server capability in an InstanceProperties object.
+     * Return the bean properties describing the link between a software server and a software capability in an InstanceProperties object.
      *
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
@@ -170,23 +178,27 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         try
         {
-            return repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                              properties,
-                                                              OpenMetadataAPIMapper.SERVER_CAPABILITY_STATUS_PROPERTY_NAME,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
-                                                              serverCapabilityStatus,
-                                                              methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.SERVER_CAPABILITY_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    serverCapabilityStatus,
+                                                                    methodName);
         }
         catch (TypeErrorException error)
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.SERVER_CAPABILITY_STATUS_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
     /**
-     * Return the bean properties describing a the link between a software server and a software server capability in an InstanceProperties object.
+     * Return the bean properties describing the link between a software server and a software capability in an InstanceProperties object.
      *
      * @param description description of the use
      * @param useType server asset use type
@@ -198,28 +210,30 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
                                                                        int    useType,
                                                                        String methodName) throws InvalidParameterException
     {
-        InstanceProperties properties;
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  null,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                  description,
-                                                                  methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     description,
+                                                                                     methodName);
 
         try
         {
-            return repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                              properties,
-                                                              OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                              OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                              useType,
-                                                              methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                    useType,
+                                                                    methodName);
         }
         catch (TypeErrorException error)
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -233,11 +247,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     InstanceProperties getCloudProviderProperties(String providerName,
                                                   String methodName)
     {
-        return repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                            null,
-                                                            OpenMetadataAPIMapper.PROVIDER_NAME_PROPERTY_NAME,
-                                                            providerName,
-                                                            methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.PROVIDER_NAME_PROPERTY_NAME,
+                                                                                     providerName,
+                                                                                     methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -251,11 +269,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     InstanceProperties getCloudPlatformProperties(String implementationType,
                                                   String methodName)
     {
-        return repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                            null,
-                                                            OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
-                                                            implementationType,
-                                                            methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                     implementationType,
+                                                                                     methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -268,8 +290,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
      * @return InstanceProperties object
      */
     InstanceProperties getCloudTenantProperties(String tenantName,
-                                                  String tenantType,
-                                                  String methodName)
+                                                String tenantType,
+                                                String methodName)
     {
         InstanceProperties properties;
 
@@ -284,6 +306,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
                                                                   OpenMetadataAPIMapper.TENANT_TYPE_PROPERTY_NAME,
                                                                   tenantType,
                                                                   methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -314,6 +338,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
                                                                   OpenMetadataAPIMapper.SERVICE_TYPE_PROPERTY_NAME,
                                                                   serviceType,
                                                                   methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }

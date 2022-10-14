@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * GovernanceRoleElement is the bean used to return a governance role description.
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = GovernanceRoleHistory.class, name = "GovernanceRoleAppointee")
+                      @JsonSubTypes.Type(value = GovernanceRoleAppointee.class, name = "GovernanceRoleAppointee")
               })
 public class GovernanceRoleElement  implements MetadataElement, Serializable
 {

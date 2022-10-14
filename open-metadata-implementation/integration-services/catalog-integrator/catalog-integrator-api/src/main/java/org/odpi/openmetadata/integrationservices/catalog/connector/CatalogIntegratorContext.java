@@ -5,16 +5,15 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * CatalogIntegratorContext provides a wrapper around the Asset Manager OMAS client.
@@ -22,36 +21,36 @@ import java.util.Map;
  */
 public class CatalogIntegratorContext
 {
-    private static String collaborationExchangeServiceName     = "CollaborationExchangeService";
-    private static String connectionExchangeServiceName        = "ConnectionExchangeService";
-    private static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
-    private static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
-    private static String glossaryExchangeServiceName          = "GlossaryExchangeService";
-    private static String governanceExchangeServiceName        = "GovernanceExchangeService";
-    private static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
-    private static String lineageExchangeServiceName           = "LineageExchangeService";
-    private static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
-    private static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
+    private final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
+    private final static String connectionExchangeServiceName        = "ConnectionExchangeService";
+    private final static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
+    private final static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
+    private final static String glossaryExchangeServiceName          = "GlossaryExchangeService";
+    private final static String governanceExchangeServiceName        = "GovernanceExchangeService";
+    private final static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
+    private final static String lineageExchangeServiceName           = "LineageExchangeService";
+    private final static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
+    private final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
-    private ExternalAssetManagerClient       assetManagerClient;
-    private AssetManagerEventClient          eventClient;
-    private CollaborationExchangeService     collaborationExchangeService;
-    private ConnectionExchangeService        connectionExchangeService;
-    private DataAssetExchangeService         dataAssetExchangeService;
-    private ExternalReferenceExchangeService externalReferenceExchangeService;
-    private GlossaryExchangeService          glossaryExchangeService;
-    private GovernanceExchangeService        governanceExchangeService;
-    private InfrastructureExchangeService    infrastructureExchangeService;
-    private LineageExchangeService           lineageExchangeService;
-    private StewardshipExchangeService       stewardshipExchangeService;
-    private ValidValuesExchangeService       validValuesExchangeService;
-    private String                           userId;
-    private String                           assetManagerGUID;
-    private String                           assetManagerName;
-    private String                           connectorName;
-    private String                           integrationServiceName;
-    private SynchronizationDirection         synchronizationDirection;
+    private final ExternalAssetManagerClient       assetManagerClient;
+    private final AssetManagerEventClient          eventClient;
+    private final CollaborationExchangeService     collaborationExchangeService;
+    private final ConnectionExchangeService        connectionExchangeService;
+    private final DataAssetExchangeService         dataAssetExchangeService;
+    private final ExternalReferenceExchangeService externalReferenceExchangeService;
+    private final GlossaryExchangeService          glossaryExchangeService;
+    private final GovernanceExchangeService        governanceExchangeService;
+    private final InfrastructureExchangeService    infrastructureExchangeService;
+    private final LineageExchangeService           lineageExchangeService;
+    private final StewardshipExchangeService       stewardshipExchangeService;
+    private final ValidValuesExchangeService       validValuesExchangeService;
+    private final String                           userId;
+    private final String                           assetManagerGUID;
+    private final String                           assetManagerName;
+    private final String                           connectorName;
+    private final String                           integrationServiceName;
+    private final SynchronizationDirection         synchronizationDirection;
 
     private boolean glossaryExchangeActive          = true;
     private boolean externalReferenceExchangeActive = true;
@@ -72,6 +71,7 @@ public class CatalogIntegratorContext
      * @param eventClient client to register for events
      * @param collaborationExchangeClient client for collaboration requests
      * @param connectionExchangeClient client for connection requests
+     * @param dataAssetExchangeClient client for asset requests
      * @param externalReferenceExchangeClient client for data asset requests
      * @param glossaryExchangeClient client for glossary requests
      * @param governanceExchangeClient client for governance requests
@@ -243,6 +243,23 @@ public class CatalogIntegratorContext
     }
 
 
+    /* ========================================================
+     * Returning the asset manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the asset manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getAssetManagerName()
+    {
+        return assetManagerName;
+    }
+
+
 
     /* ========================================================
      * Register for inbound events from the Asset Manager OMAS OutTopic
@@ -283,39 +300,24 @@ public class CatalogIntegratorContext
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the third party asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addExternalIdentifier(String                   openMetadataElementGUID,
-                                      String                   openMetadataElementTypeName,
-                                      String                   externalIdentifier,
-                                      String                   externalIdentifierName,
-                                      String                   externalIdentifierUsage,
-                                      KeyPattern               keyPattern,
-                                      Map<String, String>      mappingProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void addExternalIdentifier(String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         assetManagerClient.addExternalIdentifier(userId,
                                                  assetManagerGUID,
                                                  assetManagerName,
-                                                 synchronizationDirection,
-                                                 null,
                                                  openMetadataElementGUID,
                                                  openMetadataElementTypeName,
-                                                 externalIdentifier,
-                                                 externalIdentifierName,
-                                                 externalIdentifierUsage,
-                                                 connectorName,
-                                                 keyPattern,
-                                                 mappingProperties);
+                                                 externalIdentifierProperties);
     }
 
 
@@ -324,39 +326,24 @@ public class CatalogIntegratorContext
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updateExternalIdentifier(String              openMetadataElementGUID,
-                                         String              openMetadataElementTypeName,
-                                         String              externalIdentifier,
-                                         String              externalIdentifierName,
-                                         String              externalIdentifierUsage,
-                                         KeyPattern          keyPattern,
-                                         Map<String, String> mappingProperties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void updateExternalIdentifier(String                       openMetadataElementGUID,
+                                         String                       openMetadataElementTypeName,
+                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         assetManagerClient.updateExternalIdentifier(userId,
                                                     assetManagerGUID,
                                                     assetManagerName,
-                                                    synchronizationDirection,
-                                                    null,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
-                                                    externalIdentifier,
-                                                    externalIdentifierName,
-                                                    externalIdentifierUsage,
-                                                    connectorName,
-                                                    keyPattern,
-                                                    mappingProperties);
+                                                    externalIdentifierProperties);
     }
 
 
@@ -367,38 +354,23 @@ public class CatalogIntegratorContext
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifier unique identifier of this element in the third party asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeExternalIdentifier(String                   openMetadataElementGUID,
-                                         String                   openMetadataElementTypeName,
-                                         String                   externalIdentifier,
-                                         String                   externalIdentifierName,
-                                         String                   externalIdentifierUsage,
-                                         KeyPattern               keyPattern,
-                                         Map<String, String>      mappingProperties) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public void removeExternalIdentifier(String openMetadataElementGUID,
+                                         String openMetadataElementTypeName,
+                                         String externalIdentifier) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         assetManagerClient.removeExternalIdentifier(userId,
                                                     assetManagerGUID,
                                                     assetManagerName,
-                                                    synchronizationDirection,
-                                                    null,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
-                                                    externalIdentifier,
-                                                    externalIdentifierName,
-                                                    externalIdentifierUsage,
-                                                    connectorName,
-                                                    keyPattern,
-                                                    mappingProperties);
+                                                    externalIdentifier);
     }
 
 
@@ -522,6 +494,32 @@ public class CatalogIntegratorContext
         {
             throw new UserNotAuthorizedException(
                     CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(dataAssetExchangeServiceName,
+                                                                                              integrationServiceName),
+                    this.getClass().getName(),
+                    methodName,
+                    userId);
+        }
+    }
+
+
+    /**
+     * Return the interface for exchanging data asset information (assets, schemas, connections).
+     *
+     * @return data asset exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public ExternalReferenceExchangeService getExternalReferenceService() throws UserNotAuthorizedException
+    {
+        final String methodName = "getExternalReferenceService";
+
+        if (externalReferenceExchangeActive)
+        {
+            return externalReferenceExchangeService;
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(
+                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(externalReferenceExchangeServiceName,
                                                                                               integrationServiceName),
                     this.getClass().getName(),
                     methodName,

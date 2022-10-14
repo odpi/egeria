@@ -105,7 +105,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
             else
             {
                 /*
-                 * Retrieve all the the rest endpoint already catalogued.
+                 * Retrieve all the rest endpoint already catalogued.
                  */
                 getRESTClients();
             }
@@ -182,7 +182,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
 
     /**
-     * Retrieve all of the Endpoints
+     * Retrieve all the Endpoints
      */
     private void getRESTClients()
     {
@@ -358,7 +358,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                             }
 
                             /*
-                             * All of the discovered APIs are added to the server's endpoint.
+                             * all the discovered APIs are added to the server's endpoint.
                              */
                             String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
 
@@ -581,7 +581,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                 APIProperties properties = new APIProperties();
 
                 properties.setQualifiedName(apiQualifiedName);
-                properties.setDisplayName(tag.getName());
+                properties.setName(tag.getName());
                 properties.setDescription(tag.getDescription());
 
                 apiGUID = myContext.createAPI(endpointGUID, properties);

@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-docker</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -40,25 +40,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>get git version info</id>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <dotGitDirectory>${maven.multiModuleProjectDirectory}/.git</dotGitDirectory>
-                    <prefix>git</prefix>
-                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
-                    <skipPoms>false</skipPoms>
-                </configuration>
-            </plugin>
 
             <!-- We need to copy required assemblies locally - Docker requires this due to the way all files
                  in context are sent to the server -->

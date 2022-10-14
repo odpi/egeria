@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class PropertyFacetBuilder extends ReferenceableBuilder
 {
-    private String              schemaVersion;
-    private String              description;
-    private Map<String, String> properties;
+    private final String              schemaVersion;
+    private final String              description;
+    private final Map<String, String> properties;
 
 
     /**

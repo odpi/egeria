@@ -8,7 +8,8 @@ Several operations are available for querying lineage. This can be achieved by s
 * Get the end to end lineage graph for an entity
 * Get the ultimate source/destination lineage graph for an entity
 * Get the vertical lineage graph for an entity
-
+* Get the available entities types from the lineage graph
+* Get a list of node names of certain type that contain a certain search value in the display name
  ```
    /**
        * Returns the graph that the user will initially see when querying lineage. In the future, this method will be

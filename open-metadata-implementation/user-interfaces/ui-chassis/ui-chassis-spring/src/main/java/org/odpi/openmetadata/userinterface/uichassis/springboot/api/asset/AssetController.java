@@ -56,7 +56,7 @@ public class AssetController {
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
-        if(CollectionUtils.isNotEmpty(types) ) {
+        if (CollectionUtils.isNotEmpty(types)) {
             searchParameters.setEntityTypes(types);
         }
         searchParameters.setPageSize(pageSize);
@@ -66,6 +66,35 @@ public class AssetController {
         searchParameters.setCaseInsensitive(!caseSensitive);
         searchParameters.setExactMatch(exactMatch);
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
+    }
+
+    /**
+     *
+     * @param typeName the assets type name to search for
+     * @return list of assets by type name
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    @GetMapping( path = "/search-by-type-name/{typeName}")
+    public List<Elements> searchAssetsByTypeName(@PathVariable("typeName") String typeName)
+            throws PropertyServerException, InvalidParameterException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return assetCatalogOMASService.searchAssetsByTypeName(user, typeName);
+    }
+
+    /**
+     *
+     * @param typeGUID the assets type GUID to search for
+     * @return list of assets by type GUID
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    @GetMapping( path = "/search-by-type-guid/{typeGUID}")
+    public List<Elements> searchAssetsByTypeGUID(
+            @PathVariable("typeGUID") String typeGUID)
+            throws PropertyServerException, InvalidParameterException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return assetCatalogOMASService.searchAssetsByTypeGUID(user, typeGUID);
     }
 
     /**

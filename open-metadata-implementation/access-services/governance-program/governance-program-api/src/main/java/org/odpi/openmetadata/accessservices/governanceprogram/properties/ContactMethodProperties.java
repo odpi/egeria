@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -17,13 +21,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ContactMethodProperties extends ReferenceableProperties
+public class ContactMethodProperties implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ContactMethodType type = null;
-    private String            service = null;
-    private String            value = null;
+    private String               name = null;
+    private String               contactType = null;
+
+    private ContactMethodType    contactMethodType    = null;
+    private String               contactMethodService = null;
+    private String               contactMethodValue   = null;
+
+    private Date                 effectiveFrom = null;
+    private Date                 effectiveTo   = null;
+
+    private String               typeName             = null;
+    private Map<String, Object>  extendedProperties   = null;
 
 
     /**
@@ -44,10 +57,58 @@ public class ContactMethodProperties extends ReferenceableProperties
     {
         if (template != null)
         {
-            type = template.getType();
-            service = template.getService();
-            value = template.getValue();
+            contactMethodType = template.getContactMethodType();
+            contactMethodService = template.getContactMethodService();
+            contactMethodValue = template.getContactMethodValue();
+            effectiveFrom = template.getEffectiveFrom();
+            effectiveTo = template.getEffectiveTo();
+            typeName = template.getTypeName();
+            extendedProperties = template.getExtendedProperties();
         }
+    }
+
+
+    /**
+     * Return the name to give this contact method (imagine a list of contact methods).
+     *
+     * @return string
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name to give this contact method (imagine a list of contact methods).
+     *
+     * @param name string
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the type of contact - is it related to work or personal etc.
+     *
+     * @return string type name - often controlled by a valid value set
+     */
+    public String getContactType()
+    {
+        return contactType;
+    }
+
+
+    /**
+     * Set up the type of contact - is it related to work or personal etc.
+     *
+     * @param contactType string type name - often controlled by a valid value set
+     */
+    public void setContactType(String contactType)
+    {
+        this.contactType = contactType;
     }
 
 
@@ -56,20 +117,20 @@ public class ContactMethodProperties extends ReferenceableProperties
      *
      * @return contact method type enum
      */
-    public ContactMethodType getType()
+    public ContactMethodType getContactMethodType()
     {
-        return type;
+        return contactMethodType;
     }
 
 
     /**
      * Set up the type of the contact method.
      *
-     * @param type contact method type enum
+     * @param contactMethodType contact method type enum
      */
-    public void setType(ContactMethodType type)
+    public void setContactMethodType(ContactMethodType contactMethodType)
     {
-        this.type = type;
+        this.contactMethodType = contactMethodType;
     }
 
 
@@ -78,20 +139,20 @@ public class ContactMethodProperties extends ReferenceableProperties
      *
      * @return service URL
      */
-    public String getService()
+    public String getContactMethodService()
     {
-        return service;
+        return contactMethodService;
     }
 
 
     /**
      * Set up theURL of the service used to contact the individual.
      *
-     * @param service service URL
+     * @param contactMethodService service URL
      */
-    public void setService(String service)
+    public void setContactMethodService(String contactMethodService)
     {
-        this.service = service;
+        this.contactMethodService = contactMethodService;
     }
 
 
@@ -100,20 +161,122 @@ public class ContactMethodProperties extends ReferenceableProperties
      *
      * @return value string
      */
-    public String getValue()
+    public String getContactMethodValue()
     {
-        return value;
+        return contactMethodValue;
     }
 
 
     /**
      * Set up the account name or similar value used to direct the message to the individual.
      *
-     * @param value value string
+     * @param contactMethodValue value string
      */
-    public void setValue(String value)
+    public void setContactMethodValue(String contactMethodValue)
     {
-        this.value = value;
+        this.contactMethodValue = contactMethodValue;
+    }
+
+
+
+    /**
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
+
+    /**
+     * Return the name of the open metadata type for this metadata element.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the name of the open metadata type for this element.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
+     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @param extendedProperties property map
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
     }
 
 
@@ -126,13 +289,13 @@ public class ContactMethodProperties extends ReferenceableProperties
     public String toString()
     {
         return "ContactMethodProperties{" +
-                       "type=" + type +
-                       ", service='" + service + '\'' +
-                       ", value='" + value + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "type=" + contactMethodType +
+                       ", service='" + contactMethodService + '\'' +
+                       ", value='" + contactMethodValue + '\'' +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
                        '}';
     }
 
@@ -154,14 +317,14 @@ public class ContactMethodProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         ContactMethodProperties that = (ContactMethodProperties) objectToCompare;
-        return getType() == that.getType() &&
-                Objects.equals(getService(), that.getService()) &&
-                Objects.equals(getValue(), that.getValue());
+        return contactMethodType == that.contactMethodType &&
+                       Objects.equals(contactMethodService, that.contactMethodService) &&
+                       Objects.equals(contactMethodValue, that.contactMethodValue) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -173,6 +336,6 @@ public class ContactMethodProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getType(), getService(), getValue());
+        return Objects.hash(contactMethodType, contactMethodService, contactMethodValue, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

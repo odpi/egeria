@@ -25,6 +25,7 @@ public class TemplateRequestBody extends TemplateProperties
 
     private String externalSourceGUID         = null;
     private String externalSourceName         = null;
+    private String parentGUID = null;
 
 
     /**
@@ -46,8 +47,9 @@ public class TemplateRequestBody extends TemplateProperties
 
         if (template != null)
         {
-            externalSourceGUID         = template.getExternalSourceGUID();
-            externalSourceName         = template.getExternalSourceName();
+            externalSourceGUID = template.getExternalSourceGUID();
+            externalSourceName = template.getExternalSourceName();
+            parentGUID         = template.getParentGUID();
         }
     }
 
@@ -108,6 +110,29 @@ public class TemplateRequestBody extends TemplateProperties
 
 
     /**
+     * Return an optional parent GUID to attach the new element to.
+     *
+     * @return guid
+     */
+    public String getParentGUID()
+    {
+        return parentGUID;
+    }
+
+
+    /**
+     * Set up an optional parent GUID to attach the new element to.
+     *
+     * @param parentGUID guid
+     */
+    public void setParentGUID(String parentGUID)
+    {
+        this.parentGUID = parentGUID;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -116,11 +141,15 @@ public class TemplateRequestBody extends TemplateProperties
     public String toString()
     {
         return "TemplateRequestBody{" +
-                       "externalSourceGUID='" + externalSourceGUID + '\'' +
-                       ", externalSourceName='" + externalSourceName + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       "qualifiedName='" + getQualifiedName() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", networkAddress='" + getNetworkAddress() + '\'' +
+                       ", externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", parentGUID='" + parentGUID + '\'' +
                        '}';
     }
 
@@ -138,17 +167,17 @@ public class TemplateRequestBody extends TemplateProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof TemplateRequestBody))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         TemplateRequestBody that = (TemplateRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
-                Objects.equals(externalSourceName, that.externalSourceName);
+                       Objects.equals(externalSourceName, that.externalSourceName) && Objects.equals(parentGUID, that.parentGUID);
     }
 
 
@@ -160,6 +189,6 @@ public class TemplateRequestBody extends TemplateProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, parentGUID);
     }
 }

@@ -6,7 +6,9 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -25,19 +27,19 @@ public class TestAssetUniverse
     private ElementType                 type                   = new ElementType();
     private List<ElementClassification> classifications        = new ArrayList<>();
     private Map<String, Object>         assetProperties        = new HashMap<>();
-    private AssetExternalIdentifiers    externalIdentifiers    = null;
-    private AssetRelatedMediaReferences relatedMediaReferences = null;
-    private AssetNoteLogs               noteLogs               = null;
-    private AssetExternalReferences     externalReferences     = null;
-    private AssetConnections            connections            = null;
-    private AssetLicenses               licenses               = null;
-    private AssetCertifications certifications = null;
-    private List<AssetMeaning>  meanings       = null;
-    private AssetSchemaType     schema         = null;
-    private AssetFeedback       feedback       = null;
-    private AssetLocations      knownLocations = null;
-    private AssetLineage        lineage        = null;
-    private AssetRelatedAssets  relatedAssets  = null;
+    private ExternalIdentifiers         externalIdentifiers    = null;
+    private RelatedMediaReferences      relatedMediaReferences = null;
+    private NoteLogs                    noteLogs               = null;
+    private ExternalReferences          externalReferences     = null;
+    private Connections                 connections            = null;
+    private Licenses                    licenses               = null;
+    private Certifications              certifications         = null;
+    private List<Meaning>               meanings               = null;
+    private SchemaType                  schema                 = null;
+    private AssetFeedback               feedback               = null;
+    private Locations                   knownLocations         = null;
+    private AssetLineage                lineage                = null;
+    private RelatedAssets               relatedAssets          = null;
 
 
     /**
@@ -45,7 +47,7 @@ public class TestAssetUniverse
      */
     public TestAssetUniverse()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
     }
 
 
@@ -168,12 +170,12 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructorWithNulls()
     {
-        List<AssetMeaning> meanings       = null;
-        AssetSchemaType    schema         = null;
-        AssetFeedback      feedback       = null;
-        AssetLocations     knownLocations = null;
-        AssetLineage       lineage        = null;
-        AssetRelatedAssets relatedAssets  = null;
+        List<Meaning> meanings       = null;
+        SchemaType    schema         = null;
+        AssetFeedback feedback       = null;
+        Locations     knownLocations = null;
+        AssetLineage  lineage        = null;
+        RelatedAssets relatedAssets = null;
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -204,20 +206,19 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructor()
     {
-        AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
-        AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments      comments     = new MockAssetComments(null, 15, 50);
-        List<AssetMeaning> meanings     = new ArrayList<>();
-        AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
-        AssetFeedback      feedback             = new AssetFeedback(null,
-                                                                 informalTags,
+        InformalTags informalTags = new MockInformalTags(15, 50);
+        Likes        likes        = new MockLikes(15, 50);
+        Ratings      ratings      = new MockRatings( 15, 50);
+        Comments   comments = new MockComments( 15, 50);
+        List<Meaning> meanings = new ArrayList<>();
+        SchemaType    schema       = new PrimitiveSchemaType();
+        AssetFeedback      feedback             = new AssetFeedback(informalTags,
                                                                  likes,
                                                                  ratings,
                                                                  comments);
-        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
-        AssetLineage       lineage        = new AssetLineage();
-        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        Locations    knownLocations = new MockLocations( 15, 50);
+        AssetLineage lineage        = new AssetLineage();
+        RelatedAssets relatedAssets = new MockRelatedAssets(15, 50);
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -244,7 +245,7 @@ public class TestAssetUniverse
 
 
     /**
-     * Validate the subclass constructor works all of the way up the inheritance hierarchy.
+     * Validate the subclass constructor works all the way up the inheritance hierarchy.
      */
     @Test public void testSubclassInitialization()
     {
@@ -259,16 +260,16 @@ public class TestAssetUniverse
     @Test
     public void testToString()
     {
-        AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
-        AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments      comments       = new MockAssetComments(null, 15, 50);
-        List<AssetMeaning> meanings       = new ArrayList<>();
-        AssetSchemaType    schema         = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
-        AssetFeedback      feedback       = new AssetFeedback(null, informalTags, likes, ratings, comments);
-        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
-        AssetLineage       lineage        = new AssetLineage();
-        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        InformalTags informalTags = new MockInformalTags(15, 50);
+        Likes        likes        = new MockLikes(15, 50);
+        Ratings      ratings      = new MockRatings(15, 50);
+        Comments   comments = new MockComments( 15, 50);
+        List<Meaning> meanings = new ArrayList<>();
+        SchemaType    schema         = new PrimitiveSchemaType();
+        AssetFeedback feedback       = new AssetFeedback( informalTags, likes, ratings, comments);
+        Locations     knownLocations = new MockLocations( 15, 50);
+        AssetLineage  lineage        = new AssetLineage();
+        RelatedAssets relatedAssets = new MockRelatedAssets( 15, 50);
 
         AssetUniverse testTemplate = new AssetUniverse(new Asset(),
                                                        externalIdentifiers,

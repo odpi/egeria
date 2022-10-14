@@ -159,6 +159,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         AssetProperties assetProperties = super.cloneToAsset(subTypeName);
@@ -290,10 +291,8 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "SoftwareServerProperties{" +
-                       "softwareServerType='" + softwareServerType + '\'' +
-                       ", softwareServerVersion='" + softwareServerVersion + '\'' +
-                       ", softwareServerSource='" + softwareServerSource + '\'' +
-                       ", softwareServerUserId='" + softwareServerUserId + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -303,6 +302,11 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", softwareServerType='" + softwareServerType + '\'' +
+                       ", softwareServerVersion='" + softwareServerVersion + '\'' +
+                       ", softwareServerSource='" + softwareServerSource + '\'' +
+                       ", softwareServerUserId='" + softwareServerUserId + '\'' +
+                       ", cloneToAsset=" + cloneToAsset() +
                        '}';
     }
 
@@ -337,7 +341,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

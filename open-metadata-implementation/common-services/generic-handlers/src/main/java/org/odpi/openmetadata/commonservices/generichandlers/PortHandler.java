@@ -77,8 +77,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Create a new metadata element to represent a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process where the port is located
      * @param processGUIDParameterName parameter supplying processGUID
      * @param qualifiedName unique name for the port - used in other configuration
@@ -87,6 +87,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the port
@@ -106,6 +109,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                              Map<String, String> additionalProperties,
                              String              suppliedTypeName,
                              Map<String, Object> extendedProperties,
+                             boolean             forLineage,
+                             boolean             forDuplicateProcessing,
+                             Date                effectiveTime,
                              String              methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -144,9 +150,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       externalSourceName,
                                                       typeGUID,
                                                       typeName,
-                                                      qualifiedName,
-                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                       builder,
+                                                      effectiveTime,
                                                       methodName);
 
         if (portGUID != null)
@@ -156,22 +161,23 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
              */
             final String portGUIDParameterName = "portGUID";
 
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      processGUID,
-                                      processGUIDParameterName,
-                                      OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                      portGUID,
-                                      portGUIDParameterName,
-                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               processGUID,
+                                               processGUIDParameterName,
+                                               OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                               portGUID,
+                                               portGUIDParameterName,
+                                               OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return portGUID;
@@ -183,8 +189,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * all existing properties with the supplied properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port to update
      * @param portGUIDParameterName parameter supplying portGUID
      * @param qualifiedName unique name for the port - used in other configuration
@@ -193,6 +199,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -210,6 +221,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                            Map<String, String> additionalProperties,
                            String              suppliedTypeName,
                            Map<String, Object> extendedProperties,
+                           Date                effectiveFrom,
+                           Date                effectiveTo,
+                           boolean             forLineage,
+                           boolean             forDuplicateProcessing,
+                           Date                effectiveTime,
                            String              methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -244,6 +260,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               serviceName,
                                               serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -251,12 +269,12 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     portGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -265,28 +283,38 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Link a port to a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process
      * @param processGUIDParameterName parameter supplying processGUID
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessPort(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String processGUID,
-                                 String processGUIDParameterName,
-                                 String portGUID,
-                                 String portGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void setupProcessPort(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  processGUID,
+                                 String  processGUIDParameterName,
+                                 String  portGUID,
+                                 String  portGUIDParameterName,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -297,12 +325,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   portGUID,
                                   portGUIDParameterName,
                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                   OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -311,28 +342,34 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Unlink a port from a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process
      * @param processGUIDParameterName parameter supplying processGUID
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *                 
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessPort(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String processGUID,
-                                 String processGUIDParameterName,
-                                 String portGUID,
-                                 String portGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void clearProcessPort(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  processGUID,
+                                 String  processGUIDParameterName,
+                                 String  portGUID,
+                                 String  portGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -345,11 +382,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       portGUIDParameterName,
                                       OpenMetadataAPIMapper.PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -359,28 +396,38 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * portTwo.)
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portOneGUID unique identifier of the port at end 1
      * @param portOneGUIDParameterName parameter supplying portOneGUID
      * @param portTwoGUID unique identifier of the port at end 2
      * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPortDelegation(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portOneGUID,
-                                    String portOneGUIDParameterName,
-                                    String portTwoGUID,
-                                    String portTwoGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupPortDelegation(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portOneGUID,
+                                    String  portOneGUIDParameterName,
+                                    String  portTwoGUID,
+                                    String  portTwoGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -391,12 +438,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   portTwoGUID,
                                   portTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -405,28 +455,34 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the port delegation relationship between two ports.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portOneGUID unique identifier of the port at end 1
      * @param portOneGUIDParameterName parameter supplying portOneGUID
      * @param portTwoGUID unique identifier of the port at end 2
      * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *                    
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearPortDelegation(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portOneGUID,
-                                    String portOneGUIDParameterName,
-                                    String portTwoGUID,
-                                    String portTwoGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearPortDelegation(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portOneGUID,
+                                    String  portOneGUIDParameterName,
+                                    String  portTwoGUID,
+                                    String  portTwoGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -439,11 +495,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       portTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -452,28 +508,38 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Link a schema type to a port to show the structure of data it accepts.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
      * @param schemaTypeGUID unique identifier of the schemaType
      * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPortSchemaType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portGUID,
-                                    String portGUIDParameterName,
-                                    String schemaTypeGUID,
-                                    String schemaTypeGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupPortSchemaType(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portGUID,
+                                    String  portGUIDParameterName,
+                                    String  schemaTypeGUID,
+                                    String  schemaTypeGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -484,12 +550,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -498,28 +567,34 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the schema type from a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
      * @param schemaTypeGUID unique identifier of the schemaType
      * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *                       
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearPortSchemaType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portGUID,
-                                    String portGUIDParameterName,
-                                    String schemaTypeGUID,
-                                    String schemaTypeGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearPortSchemaType(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portGUID,
+                                    String  portGUIDParameterName,
+                                    String  schemaTypeGUID,
+                                    String  schemaTypeGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -532,11 +607,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       schemaTypeGUIDParameterName,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -545,24 +620,30 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the metadata element representing a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removePort(String userId,
-                           String externalSourceGUID,
-                           String externalSourceName,
-                           String portGUID,
-                           String portGUIDParameterName,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public void removePort(String  userId,
+                           String  externalSourceGUID,
+                           String  externalSourceName,
+                           String  portGUID,
+                           String  portGUIDParameterName,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing,
+                           Date    effectiveTime,
+                           String  methodName) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -573,9 +654,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -589,6 +670,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -597,24 +681,30 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findPorts(String userId,
-                             String searchString,
-                             String searchStringParameterName,
-                             int    startFrom,
-                             int    pageSize,
-                             String methodName) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public List<B> findPorts(String  userId,
+                             String  searchString,
+                             String  searchStringParameterName,
+                             int     startFrom,
+                             int     pageSize,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
                               OpenMetadataAPIMapper.PORT_TYPE_GUID,
                               OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              effectiveTime,
                               methodName);
     }
 
@@ -627,6 +717,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param processGUIDParameterName parameter passing processGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -635,14 +728,17 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getPortsForProcess(String userId,
-                                      String processGUID,
-                                      String processGUIDParameterName,
-                                      int    startFrom,
-                                      int    pageSize,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public List<B> getPortsForProcess(String  userId,
+                                      String  processGUID,
+                                      String  processGUIDParameterName,
+                                      int     startFrom,
+                                      int     pageSize,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         processGUID,
@@ -654,11 +750,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         2,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -671,6 +767,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param portGUIDParameterName parameter passing portGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -679,14 +778,17 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getPortUse(String userId,
-                               String portGUID,
-                               String portGUIDParameterName,
-                               int    startFrom,
-                               int    pageSize,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public List<B>  getPortUse(String  userId,
+                               String  portGUID,
+                               String  portGUIDParameterName,
+                               int     startFrom,
+                               int     pageSize,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         portGUID,
@@ -698,11 +800,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         1,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -713,6 +815,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param portGUID unique identifier of the starting port alias
      * @param portGUIDParameterName parameter passing portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -721,12 +826,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getPortDelegation(String userId,
-                               String portGUID,
-                               String portGUIDParameterName,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public B getPortDelegation(String  userId,
+                               String  portGUID,
+                               String  portGUIDParameterName,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         List<B> results = this.getAttachedElements(userId,
                                                    portGUID,
@@ -738,11 +846,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    null,
                                                    null,
                                                    2,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
-                                                   null,
+                                                   effectiveTime,
                                                    methodName);
 
         if ((results == null) || (results.isEmpty()))
@@ -776,6 +884,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -784,14 +895,17 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getPortsByName(String userId,
-                                  String name,
-                                  String nameParameterName,
-                                  int    startFrom,
-                                  int    pageSize,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public List<B> getPortsByName(String  userId,
+                                  String  name,
+                                  String  nameParameterName,
+                                  int     startFrom,
+                                  int     pageSize,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -806,13 +920,13 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -823,6 +937,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param portGUID unique identifier of the requested metadata element
      * @param portGUIDParameterName parameter passing portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -831,21 +948,24 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getPortByGUID(String userId,
-                           String portGUID,
-                           String portGUIDParameterName,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public B getPortByGUID(String  userId,
+                           String  portGUID,
+                           String  portGUIDParameterName,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing,
+                           Date    effectiveTime,
+                           String  methodName) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           portGUID,
                                           portGUIDParameterName,
                                           OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 }

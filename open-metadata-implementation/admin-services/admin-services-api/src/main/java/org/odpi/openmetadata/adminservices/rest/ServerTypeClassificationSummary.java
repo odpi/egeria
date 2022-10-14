@@ -133,7 +133,7 @@ public class ServerTypeClassificationSummary extends AdminServicesAPIResponse
 
 
     /**
-     * Set up the the description of the supertype (if any).
+     * Set up the description of the supertype (if any).
      *
      * @param serverSuperType classification summary or null
      */

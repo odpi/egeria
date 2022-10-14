@@ -3,23 +3,18 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * PersonRoleConverter generates a PersonRoleProperties bean from an PersonRoleProperties entity and the relationships connected to it.
@@ -42,21 +37,19 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
-     *                      content of the bean
-     * @param relationships relationships linking the entities
+     * @param entity entity containing the properties
      * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
+     * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
         try
         {
@@ -70,19 +63,21 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
                 PersonRoleElement    bean           = (PersonRoleElement) returnBean;
                 PersonRoleProperties roleProperties = new PersonRoleProperties();
 
-                if (primaryEntity != null)
+                if (entity != null)
                 {
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
                     /*
                      * The initial set of values come from the entity.
                      */
-                    InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    roleProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setRoleId(this.removeIdentifier(instanceProperties));
                     roleProperties.setTitle(this.removeTitle(instanceProperties));
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
+                    roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
@@ -97,38 +92,6 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
                      */
                     roleProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     roleProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    if (relationships != null)
-                    {
-                        List<ElementStub> appointees     = new ArrayList<>();
-
-                        for (Relationship relationship : relationships)
-                        {
-                            if (relationship != null)
-                            {
-                                InstanceType instanceType = relationship.getType();
-
-                                if (instanceType != null)
-                                {
-                                    if (repositoryHelper.isTypeOf(serviceName,
-                                                                  instanceType.getTypeDefName(),
-                                                                  OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
-                                    {
-                                        EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
-
-                                        ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
-
-                                        appointees.add(elementStub);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (! appointees.isEmpty())
-                        {
-                            bean.setAppointees(appointees);
-                        }
-                    }
 
                     bean.setProperties(roleProperties);
                 }
@@ -146,5 +109,35 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof PersonRoleElement)
+        {
+            PersonRoleElement bean = (PersonRoleElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

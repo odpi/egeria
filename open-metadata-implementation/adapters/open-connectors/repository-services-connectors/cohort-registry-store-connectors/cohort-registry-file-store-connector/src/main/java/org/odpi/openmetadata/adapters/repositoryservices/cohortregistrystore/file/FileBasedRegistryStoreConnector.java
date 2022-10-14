@@ -141,7 +141,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * Remove details of the local registration from the cohort registry store.  This is used when the local
      * repository unregisters from the open metadata repository cohort.
      *
-     * There is a side-effect that all of the remote registrations are removed to since the local repository is
+     * There is a side-effect that all the remote registrations are removed to since the local repository is
      * no longer a member of this cohort.
      */
     @Override
@@ -234,7 +234,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
 
     /**
-     * Return a list of all of the remote metadata repositories registered in the metadata repository cohort.
+     * Return a list of all the remote metadata repositories registered in the metadata repository cohort.
      *
      * @return Remote registrations list
      */
@@ -376,7 +376,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         {
             super.disconnect();
         }
-        catch (Throwable  exec)
+        catch (Exception  exec)
         {
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }

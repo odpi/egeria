@@ -14,8 +14,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * GlossaryExchangeClient is the client for managing resources from a glossary.
@@ -131,12 +131,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryExternalIdentifierSource component that issuing this request.
-     * @param glossaryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -146,18 +141,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossary(String              userId,
-                                 String              assetManagerGUID,
-                                 String              assetManagerName,
-                                 String              glossaryExternalIdentifier,
-                                 String              glossaryExternalIdentifierName,
-                                 String              glossaryExternalIdentifierUsage,
-                                 String              glossaryExternalIdentifierSource,
-                                 KeyPattern          glossaryExternalIdentifierKeyPattern,
-                                 Map<String, String> mappingProperties,
-                                 GlossaryProperties  glossaryProperties) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public String createGlossary(String                       userId,
+                                 String                       assetManagerGUID,
+                                 String                       assetManagerName,
+                                 ExternalIdentifierProperties externalIdentifierProperties,
+                                 GlossaryProperties           glossaryProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName                  = "createGlossary";
         final String propertiesParameterName     = "glossaryProperties";
@@ -171,12 +161,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(glossaryProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryExternalIdentifier,
-                                                                                   glossaryExternalIdentifierName,
-                                                                                   glossaryExternalIdentifierUsage,
-                                                                                   glossaryExternalIdentifierSource,
-                                                                                   glossaryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries";
@@ -201,13 +186,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     * @param glossaryExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryExternalIdentifierSource component that issuing this request.
-     * @param glossaryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -217,19 +197,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossaryFromTemplate(String              userId,
-                                             String              assetManagerGUID,
-                                             String              assetManagerName,
-                                             String              templateGUID,
-                                             String              glossaryExternalIdentifier,
-                                             String              glossaryExternalIdentifierName,
-                                             String              glossaryExternalIdentifierUsage,
-                                             String              glossaryExternalIdentifierSource,
-                                             KeyPattern          glossaryExternalIdentifierKeyPattern,
-                                             Map<String, String> mappingProperties,
-                                             TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public String createGlossaryFromTemplate(String                       userId,
+                                             String                       assetManagerGUID,
+                                             String                       assetManagerName,
+                                             String                       templateGUID,
+                                             ExternalIdentifierProperties externalIdentifierProperties,
+                                             TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName                  = "createGlossaryFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
@@ -245,12 +220,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(templateProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryExternalIdentifier,
-                                                                                   glossaryExternalIdentifierName,
-                                                                                   glossaryExternalIdentifierUsage,
-                                                                                   glossaryExternalIdentifierSource,
-                                                                                   glossaryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/from-template/{2}";
@@ -324,7 +294,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * with a single root category.
      *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
-     * are linked to the assets etc and as such they are logically categorized by the linked category.
+     * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
@@ -415,7 +385,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
 
     /**
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
-     * the same name.  This means there is only one definition for each term.  Typically the terms are also of a similar
+     * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
      *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
@@ -507,7 +477,6 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
     }
 
 
-
     /**
      * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
      * and terms.
@@ -560,8 +529,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
      * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
+     * @param pageSize maximum results that can be returned*
      * @return list of matching metadata elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -569,14 +537,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryElement>   findGlossaries(String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<GlossaryElement>   findGlossaries(String  userId,
+                                                  String  assetManagerGUID,
+                                                  String  assetManagerName,
+                                                  String  searchString,
+                                                  int     startFrom,
+                                                  int     pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                = "findGlossaries";
         final String searchStringParameterName = "searchString";
@@ -623,14 +591,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryElement>   getGlossariesByName(String userId,
-                                                       String assetManagerGUID,
-                                                       String assetManagerName,
-                                                       String name,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<GlossaryElement>   getGlossariesByName(String  userId,
+                                                       String  assetManagerGUID,
+                                                       String  assetManagerName,
+                                                       String  name,
+                                                       int     startFrom,
+                                                       int     pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName        = "getGlossariesByName";
         final String nameParameterName = "name";
@@ -676,13 +644,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryElement>   getGlossariesForAssetManager(String userId,
-                                                                String assetManagerGUID,
-                                                                String assetManagerName,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<GlossaryElement>   getGlossariesForAssetManager(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                int     startFrom,
+                                                                int     pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName = "getGlossariesForAssetManager";
 
@@ -693,8 +661,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                          assetManagerName),
+                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                                                                     serverName,
                                                                                     userId,
                                                                                     startFrom,
@@ -719,12 +686,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public GlossaryElement getGlossaryByGUID(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String guid) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public GlossaryElement getGlossaryByGUID(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  guid) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String methodName = "getGlossaryByGUID";
         final String guidParameterName = "guid";
@@ -736,8 +703,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
 
         GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
                                                                                  urlTemplate,
-                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                       assetManagerName),
+                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                                                                  serverName,
                                                                                  userId,
                                                                                  guid);
@@ -758,13 +724,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the category is located
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
-     * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
-     * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryCategoryProperties properties about the glossary category to store
      *
      * @return unique identifier of the new glossary category
@@ -774,19 +734,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossaryCategory(String                     userId,
-                                         String                     assetManagerGUID,
-                                         String                     assetManagerName,
-                                         String                     glossaryGUID,
-                                         String                     glossaryCategoryExternalIdentifier,
-                                         String                     glossaryCategoryExternalIdentifierName,
-                                         String                     glossaryCategoryExternalIdentifierUsage,
-                                         String                     glossaryCategoryExternalIdentifierSource,
-                                         KeyPattern                 glossaryCategoryExternalIdentifierKeyPattern,
-                                         Map<String, String>        mappingProperties,
-                                         GlossaryCategoryProperties glossaryCategoryProperties) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public String createGlossaryCategory(String                       userId,
+                                         String                       assetManagerGUID,
+                                         String                       assetManagerName,
+                                         String                       glossaryGUID,
+                                         ExternalIdentifierProperties externalIdentifierProperties,
+                                         GlossaryCategoryProperties   glossaryCategoryProperties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName                  = "createGlossaryCategory";
         final String guidParameterName           = "glossaryGUID";
@@ -802,12 +757,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(glossaryCategoryProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryCategoryExternalIdentifier,
-                                                                                   glossaryCategoryExternalIdentifierName,
-                                                                                   glossaryCategoryExternalIdentifierUsage,
-                                                                                   glossaryCategoryExternalIdentifierSource,
-                                                                                   glossaryCategoryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories";
@@ -830,13 +780,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
-     * @param glossaryCategoryExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryCategoryExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryCategoryExternalIdentifierSource component that issuing this request.
-     * @param glossaryCategoryExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new glossary category
@@ -846,19 +790,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossaryCategoryFromTemplate(String              userId,
-                                                     String              assetManagerGUID,
-                                                     String              assetManagerName,
-                                                     String              templateGUID,
-                                                     String              glossaryCategoryExternalIdentifier,
-                                                     String              glossaryCategoryExternalIdentifierName,
-                                                     String              glossaryCategoryExternalIdentifierUsage,
-                                                     String              glossaryCategoryExternalIdentifierSource,
-                                                     KeyPattern          glossaryCategoryExternalIdentifierKeyPattern,
-                                                     Map<String, String> mappingProperties,
-                                                     TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public String createGlossaryCategoryFromTemplate(String                       userId,
+                                                     String                       assetManagerGUID,
+                                                     String                       assetManagerName,
+                                                     String                       templateGUID,
+                                                     ExternalIdentifierProperties externalIdentifierProperties,
+                                                     TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
     {
         final String methodName                  = "createGlossaryCategoryFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
@@ -874,12 +813,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(templateProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryCategoryExternalIdentifier,
-                                                                                   glossaryCategoryExternalIdentifierName,
-                                                                                   glossaryCategoryExternalIdentifierUsage,
-                                                                                   glossaryCategoryExternalIdentifierSource,
-                                                                                   glossaryCategoryExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/from-template/{1}";
@@ -903,7 +837,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryCategoryProperties new properties for the metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -915,9 +853,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                        String                     assetManagerName,
                                        String                     glossaryCategoryGUID,
                                        String                     glossaryCategoryExternalIdentifier,
-                                       GlossaryCategoryProperties glossaryCategoryProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                       boolean                    isMergeUpdate,
+                                       GlossaryCategoryProperties glossaryCategoryProperties,
+                                       Date                       effectiveTime,
+                                       boolean                    forLineage,
+                                       boolean                    forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName                  = "updateGlossaryCategory";
         final String glossaryGUIDParameterName   = "glossaryCategoryGUID";
@@ -935,15 +877,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                    assetManagerName,
                                                                                    glossaryCategoryExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        glossaryCategoryGUID);
+                                        glossaryCategoryGUID,
+                                        isMergeUpdate,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -955,19 +901,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupCategoryParent(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String glossaryParentCategoryGUID,
-                                    String glossaryChildCategoryGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void setupCategoryParent(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  glossaryParentCategoryGUID,
+                                    String  glossaryChildCategoryGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                      = "setupCategoryParent";
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
@@ -978,15 +930,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryChildCategoryGUID, glossaryChildGUIDParameterName, methodName);
 
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryParentCategoryGUID,
-                                        glossaryChildCategoryGUID);
+                                        glossaryChildCategoryGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -998,19 +952,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearCategoryParent(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String glossaryParentCategoryGUID,
-                                    String glossaryChildCategoryGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void clearCategoryParent(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  glossaryParentCategoryGUID,
+                                    String  glossaryChildCategoryGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                      = "clearCategoryParent";
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
@@ -1020,15 +980,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryParentCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryChildCategoryGUID, glossaryChildGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategory/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategory/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryParentCategoryGUID,
-                                        glossaryChildCategoryGUID);
+                                        glossaryChildCategoryGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1040,19 +1002,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeGlossaryCategory(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String glossaryCategoryGUID,
-                                       String glossaryCategoryExternalIdentifier) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void removeGlossaryCategory(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  glossaryCategoryGUID,
+                                       String  glossaryCategoryExternalIdentifier,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                  = "removeGlossaryCategory";
         final String glossaryGUIDParameterName   = "glossaryCategoryGUID";
@@ -1060,17 +1028,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryCategoryExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryCategoryExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryCategoryGUID);
+                                        glossaryCategoryGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1084,6 +1051,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -1092,14 +1062,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryCategoryElement>   findGlossaryCategories(String userId,
-                                                                  String assetManagerGUID,
-                                                                  String assetManagerName,
-                                                                  String searchString,
-                                                                  int    startFrom,
-                                                                  int    pageSize) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<GlossaryCategoryElement> findGlossaryCategories(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String  searchString,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName                = "findGlossaryCategories";
         final String searchStringParameterName = "searchString";
@@ -1112,8 +1085,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
@@ -1121,7 +1095,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     startFrom,
-                                                                                                    validatedPageSize);
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1136,6 +1112,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of metadata elements describing the categories associated with the requested glossary
      *
@@ -1144,14 +1123,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryCategoryElement>   getCategoriesForGlossary(String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String glossaryGUID,
-                                                                    int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<GlossaryCategoryElement>   getCategoriesForGlossary(String  userId,
+                                                                    String  assetManagerGUID,
+                                                                    String  assetManagerName,
+                                                                    String  glossaryGUID,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    Date    effectiveTime,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName        = "getCategoriesForGlossary";
         final String guidParameterName = "glossaryGUID";
@@ -1160,17 +1142,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
-                                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                          assetManagerName),
+                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     glossaryGUID,
                                                                                                     startFrom,
-                                                                                                    validatedPageSize);
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1186,6 +1169,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -1194,14 +1180,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String userId,
-                                                                       String assetManagerGUID,
-                                                                       String assetManagerName,
-                                                                       String name,
-                                                                       int    startFrom,
-                                                                       int    pageSize) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String  userId,
+                                                                       String  assetManagerGUID,
+                                                                       String  assetManagerName,
+                                                                       String  name,
+                                                                       int     startFrom,
+                                                                       int     pageSize,
+                                                                       Date    effectiveTime,
+                                                                       boolean forLineage,
+                                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
     {
         final String methodName        = "getGlossaryCategoriesByName";
         final String nameParameterName = "name";
@@ -1215,8 +1204,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
@@ -1224,7 +1214,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     startFrom,
-                                                                                                    validatedPageSize);
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1237,6 +1229,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return requested metadata element
      *
@@ -1245,12 +1240,15 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public GlossaryCategoryElement getGlossaryCategoryByGUID(String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String glossaryCategoryGUID) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public GlossaryCategoryElement getGlossaryCategoryByGUID(String  userId,
+                                                             String  assetManagerGUID,
+                                                             String  assetManagerName,
+                                                             String  glossaryCategoryGUID,
+                                                             Date    effectiveTime,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "getGlossaryCategoryByGUID";
         final String guidParameterName = "glossaryCategoryGUID";
@@ -1258,15 +1256,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
                                                                                                  urlTemplate,
-                                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                       assetManagerName),
+                                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                  serverName,
                                                                                                  userId,
-                                                                                                 glossaryCategoryGUID);
+                                                                                                 glossaryCategoryGUID,
+                                                                                                 forLineage,
+                                                                                                 forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1279,6 +1278,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return parent glossary category element
      *
@@ -1287,12 +1289,15 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public GlossaryCategoryElement getGlossaryCategoryParent(String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String glossaryCategoryGUID) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public GlossaryCategoryElement getGlossaryCategoryParent(String  userId,
+                                                             String  assetManagerGUID,
+                                                             String  assetManagerName,
+                                                             String  glossaryCategoryGUID,
+                                                             Date    effectiveTime,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "getGlossaryCategoryParent";
         final String guidParameterName = "glossaryCategoryGUID";
@@ -1300,15 +1305,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/parent/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/parent/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
                                                                                                  urlTemplate,
-                                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                       assetManagerName),
+                                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                  serverName,
                                                                                                  userId,
-                                                                                                 glossaryCategoryGUID);
+                                                                                                 glossaryCategoryGUID,
+                                                                                                 forLineage,
+                                                                                                 forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1323,6 +1329,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of glossary category element
      *
@@ -1331,14 +1340,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
-                                                                  String assetManagerGUID,
-                                                                  String assetManagerName,
-                                                                  String glossaryCategoryGUID,
-                                                                  int    startFrom,
-                                                                  int    pageSize) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public List<GlossaryCategoryElement> getGlossarySubCategories(String  userId,
+                                                                  String  assetManagerGUID,
+                                                                  String  assetManagerName,
+                                                                  String  glossaryCategoryGUID,
+                                                                  int     startFrom,
+                                                                  int     pageSize,
+                                                                  Date    effectiveTime,
+                                                                  boolean forLineage,
+                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName        = "getGlossaryCategoriesByName";
         final String guidParameterName = "glossaryCategoryGUID";
@@ -1347,17 +1359,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
-                                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                          assetManagerName),
+                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     glossaryCategoryGUID,
                                                                                                     startFrom,
-                                                                                                    validatedPageSize);
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1374,12 +1387,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryTermExternalIdentifierSource component that issuing this request.
-     * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryTermProperties properties for the glossary term
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1389,19 +1397,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossaryTerm(String                 userId,
-                                     String                 assetManagerGUID,
-                                     String                 assetManagerName,
-                                     String                 glossaryGUID,
-                                     String                 glossaryTermExternalIdentifier,
-                                     String                 glossaryTermExternalIdentifierName,
-                                     String                 glossaryTermExternalIdentifierUsage,
-                                     String                 glossaryTermExternalIdentifierSource,
-                                     KeyPattern             glossaryTermExternalIdentifierKeyPattern,
-                                     Map<String, String>    mappingProperties,
-                                     GlossaryTermProperties glossaryTermProperties) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public String createGlossaryTerm(String                       userId,
+                                     String                       assetManagerGUID,
+                                     String                       assetManagerName,
+                                     String                       glossaryGUID,
+                                     ExternalIdentifierProperties externalIdentifierProperties,
+                                     GlossaryTermProperties       glossaryTermProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName                  = "createGlossaryTerm";
         final String guidParameterName           = "glossaryGUID";
@@ -1417,12 +1420,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(glossaryTermProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier,
-                                                                                   glossaryTermExternalIdentifierName,
-                                                                                   glossaryTermExternalIdentifierUsage,
-                                                                                   glossaryTermExternalIdentifierSource,
-                                                                                   glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms";
@@ -1445,12 +1443,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryTermExternalIdentifierSource component that issuing this request.
-     * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryTermProperties properties for the glossary term
      * @param initialStatus glossary term status to use when the object is created
      *
@@ -1461,20 +1454,15 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createControlledGlossaryTerm(String                 userId,
-                                               String                 assetManagerGUID,
-                                               String                 assetManagerName,
-                                               String                 glossaryGUID,
-                                               String                 glossaryTermExternalIdentifier,
-                                               String                 glossaryTermExternalIdentifierName,
-                                               String                 glossaryTermExternalIdentifierUsage,
-                                               String                 glossaryTermExternalIdentifierSource,
-                                               KeyPattern             glossaryTermExternalIdentifierKeyPattern,
-                                               Map<String, String>    mappingProperties,
-                                               GlossaryTermProperties glossaryTermProperties,
-                                               GlossaryTermStatus     initialStatus) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public String createControlledGlossaryTerm(String                       userId,
+                                               String                       assetManagerGUID,
+                                               String                       assetManagerName,
+                                               String                       glossaryGUID,
+                                               ExternalIdentifierProperties externalIdentifierProperties,
+                                               GlossaryTermProperties       glossaryTermProperties,
+                                               GlossaryTermStatus           initialStatus) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String methodName                  = "createControlledGlossaryTerm";
         final String guidParameterName           = "glossaryGUID";
@@ -1491,12 +1479,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setInitialStatus(initialStatus);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier,
-                                                                                   glossaryTermExternalIdentifierName,
-                                                                                   glossaryTermExternalIdentifierUsage,
-                                                                                   glossaryTermExternalIdentifierSource,
-                                                                                   glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/new-controlled";
@@ -1519,13 +1502,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param glossaryTermExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param glossaryTermExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param glossaryTermExternalIdentifierSource component that issuing this request.
-     * @param glossaryTermExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1535,19 +1512,14 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createGlossaryTermFromTemplate(String              userId,
-                                                 String              assetManagerGUID,
-                                                 String              assetManagerName,
-                                                 String              templateGUID,
-                                                 String              glossaryTermExternalIdentifier,
-                                                 String              glossaryTermExternalIdentifierName,
-                                                 String              glossaryTermExternalIdentifierUsage,
-                                                 String              glossaryTermExternalIdentifierSource,
-                                                 KeyPattern          glossaryTermExternalIdentifierKeyPattern,
-                                                 Map<String, String> mappingProperties,
-                                                 TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public String createGlossaryTermFromTemplate(String                       userId,
+                                                 String                       assetManagerGUID,
+                                                 String                       assetManagerName,
+                                                 String                       templateGUID,
+                                                 ExternalIdentifierProperties externalIdentifierProperties,
+                                                 TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName                  = "createGlossaryTermFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
@@ -1563,12 +1535,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setElementProperties(templateProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   glossaryTermExternalIdentifier,
-                                                                                   glossaryTermExternalIdentifierName,
-                                                                                   glossaryTermExternalIdentifierUsage,
-                                                                                   glossaryTermExternalIdentifierSource,
-                                                                                   glossaryTermExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/from-template/{1}";
@@ -1592,7 +1559,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryTermProperties new properties for the glossary term
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1604,7 +1575,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                    String                 assetManagerName,
                                    String                 glossaryTermGUID,
                                    String                 glossaryTermExternalIdentifier,
-                                   GlossaryTermProperties glossaryTermProperties) throws InvalidParameterException,
+                                   boolean                isMergeUpdate,
+                                   GlossaryTermProperties glossaryTermProperties,
+                                   Date                   effectiveTime,
+                                   boolean                forLineage,
+                                   boolean                forDuplicateProcessing) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
@@ -1624,15 +1599,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                    assetManagerName,
                                                                                    glossaryTermExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        isMergeUpdate,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1646,6 +1625,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermStatus new properties for the glossary term
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1657,9 +1639,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                          String             assetManagerName,
                                          String             glossaryTermGUID,
                                          String             glossaryTermExternalIdentifier,
-                                         GlossaryTermStatus glossaryTermStatus) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                         GlossaryTermStatus glossaryTermStatus,
+                                         Date               effectiveTime,
+                                         boolean            forLineage,
+                                         boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String methodName                  = "updateGlossaryTermStatus";
         final String glossaryGUIDParameterName   = "glossaryTermGUID";
@@ -1675,15 +1660,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                    assetManagerName,
                                                                                    glossaryTermExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/status";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/status?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1696,6 +1684,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param categorizationProperties properties for the categorization relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1707,9 +1698,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                   String                     assetManagerName,
                                   String                     glossaryCategoryGUID,
                                   String                     glossaryTermGUID,
-                                  GlossaryTermCategorization categorizationProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                  GlossaryTermCategorization categorizationProperties,
+                                  Date                       effectiveTime,
+                                  boolean                    forLineage,
+                                  boolean                    forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName                      = "setupTermCategory";
         final String glossaryParentGUIDParameterName = "glossaryCategoryGUID";
@@ -1719,20 +1713,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryChildGUIDParameterName, methodName);
 
-        CategorizationRequestBody requestBody = new CategorizationRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setCategorizationProperties(categorizationProperties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, categorizationProperties),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1744,19 +1735,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
-
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermCategory(String userId,
-                                  String assetManagerGUID,
-                                  String assetManagerName,
-                                  String glossaryCategoryGUID,
-                                  String glossaryTermGUID) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void clearTermCategory(String  userId,
+                                  String  assetManagerGUID,
+                                  String  assetManagerName,
+                                  String  glossaryCategoryGUID,
+                                  String  glossaryTermGUID,
+                                  Date    effectiveTime,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName                      = "clearTermCategory";
         final String glossaryParentGUIDParameterName = "glossaryCategoryGUID";
@@ -1766,15 +1763,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryChildGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1788,6 +1787,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param relationshipsProperties properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1800,9 +1802,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                       String                   relationshipTypeName,
                                       String                   glossaryTermOneGUID,
                                       String                   glossaryTermTwoGUID,
-                                      GlossaryTermRelationship relationshipsProperties) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                      GlossaryTermRelationship relationshipsProperties,
+                                      Date                     effectiveTime,
+                                      boolean                  forLineage,
+                                      boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName                      = "setupTermRelationship";
         final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
@@ -1819,7 +1824,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1828,7 +1833,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                         userId,
                                         glossaryTermOneGUID,
                                         relationshipTypeName,
-                                        glossaryTermTwoGUID);
+                                        glossaryTermTwoGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1842,6 +1849,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param relationshipsProperties properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1854,9 +1864,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                        String                   relationshipTypeName,
                                        String                   glossaryTermOneGUID,
                                        String                   glossaryTermTwoGUID,
-                                       GlossaryTermRelationship relationshipsProperties) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+                                       GlossaryTermRelationship relationshipsProperties,
+                                       Date                     effectiveTime,
+                                       boolean                  forLineage,
+                                       boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName                      = "updateTermRelationship";
         final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
@@ -1871,7 +1884,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/update?forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1880,7 +1893,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                         userId,
                                         glossaryTermOneGUID,
                                         relationshipTypeName,
-                                        glossaryTermTwoGUID);
+                                        glossaryTermTwoGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1893,20 +1908,26 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermRelationship(String userId,
-                                      String assetManagerGUID,
-                                      String assetManagerName,
-                                      String relationshipTypeName,
-                                      String glossaryTermOneGUID,
-                                      String glossaryTermTwoGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void clearTermRelationship(String  userId,
+                                      String  assetManagerGUID,
+                                      String  assetManagerName,
+                                      String  relationshipTypeName,
+                                      String  glossaryTermOneGUID,
+                                      String  glossaryTermTwoGUID,
+                                      Date    effectiveTime,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String methodName                      = "clearTermRelationship";
         final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
@@ -1916,18 +1937,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermTwoGUID, glossaryChildGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove?forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryTermOneGUID,
                                         relationshipTypeName,
-                                        glossaryTermTwoGUID);
+                                        glossaryTermTwoGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
-
 
 
     /**
@@ -1938,19 +1960,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setTermAsAbstractConcept(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String glossaryTermGUID,
-                                         String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void setTermAsAbstractConcept(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  glossaryTermGUID,
+                                         String  glossaryTermExternalIdentifier,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "setTermAsAbstractConcept";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -1958,17 +1986,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1980,19 +2007,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsAbstractConcept(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String glossaryTermGUID,
-                                           String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void clearTermAsAbstractConcept(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  glossaryTermGUID,
+                                           String  glossaryTermExternalIdentifier,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName = "clearTermAsAbstractConcept";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2000,17 +2033,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2022,19 +2054,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setTermAsDataValue(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void setTermAsDataValue(String  userId,
+                                   String  assetManagerGUID,
+                                   String  assetManagerName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermExternalIdentifier,
+                                   Date    effectiveTime,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "setTermAsDataValue";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2042,17 +2080,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2064,19 +2101,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsDataValue(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String glossaryTermGUID,
-                                     String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public void clearTermAsDataValue(String  userId,
+                                     String  assetManagerGUID,
+                                     String  assetManagerName,
+                                     String  glossaryTermGUID,
+                                     String  glossaryTermExternalIdentifier,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "clearTermAsDataValue";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2084,17 +2127,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-value/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2107,6 +2149,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param activityType type of activity
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2118,9 +2163,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                   String                   assetManagerName,
                                   String                   glossaryTermGUID,
                                   String                   glossaryTermExternalIdentifier,
-                                  GlossaryTermActivityType activityType) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                  GlossaryTermActivityType activityType,
+                                  Date                     effectiveTime,
+                                  boolean                  forLineage,
+                                  boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "setTermAsActivity";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2134,15 +2182,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                    assetManagerName,
                                                                                    glossaryTermExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2154,19 +2205,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsActivity(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String glossaryTermGUID,
-                                    String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void clearTermAsActivity(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  glossaryTermGUID,
+                                    String  glossaryTermExternalIdentifier,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName = "clearTermAsActivity";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2174,17 +2231,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-activity/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2197,6 +2253,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param contextDefinition more details of the context
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2208,9 +2267,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                  String                        assetManagerName,
                                  String                        glossaryTermGUID,
                                  String                        glossaryTermExternalIdentifier,
-                                 GlossaryTermContextDefinition contextDefinition) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                 GlossaryTermContextDefinition contextDefinition,
+                                 Date                          effectiveTime,
+                                 boolean                       forLineage,
+                                 boolean                       forDuplicateProcessing) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName = "setTermAsContext";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2224,15 +2286,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                    assetManagerName,
                                                                                    glossaryTermExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2244,19 +2309,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsContext(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void clearTermAsContext(String  userId,
+                                   String  assetManagerGUID,
+                                   String  assetManagerName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermExternalIdentifier,
+                                   Date    effectiveTime,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "clearTermAsContext";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2264,17 +2335,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-context-definition/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2286,17 +2356,23 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setTermAsSpineObject(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String glossaryTermGUID,
-                                     String glossaryTermExternalIdentifier) throws InvalidParameterException,
+    public void setTermAsSpineObject(String  userId,
+                                     String  assetManagerGUID,
+                                     String  assetManagerName,
+                                     String  glossaryTermGUID,
+                                     String  glossaryTermExternalIdentifier,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
@@ -2306,17 +2382,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2328,19 +2403,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsSpineObject(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String glossaryTermGUID,
-                                       String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void clearTermAsSpineObject(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  glossaryTermGUID,
+                                       String  glossaryTermExternalIdentifier,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "clearTermAsSpineObject";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2348,19 +2429,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-object/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
-
 
 
     /**
@@ -2371,19 +2450,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setTermAsSpineAttribute(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String glossaryTermGUID,
-                                        String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public void setTermAsSpineAttribute(String  userId,
+                                        String  assetManagerGUID,
+                                        String  assetManagerName,
+                                        String  glossaryTermGUID,
+                                        String  glossaryTermExternalIdentifier,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "setTermAsSpineAttribute";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2391,17 +2476,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2413,19 +2497,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsSpineAttribute(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String glossaryTermGUID,
-                                          String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public void clearTermAsSpineAttribute(String  userId,
+                                          String  assetManagerGUID,
+                                          String  assetManagerName,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermExternalIdentifier,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "clearTermAsSpineAttribute";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2433,17 +2523,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-spine-attribute/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2455,19 +2544,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setTermAsObjectIdentifier(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String glossaryTermGUID,
-                                          String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public void setTermAsObjectIdentifier(String  userId,
+                                          String  assetManagerGUID,
+                                          String  assetManagerName,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermExternalIdentifier,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "setTermAsObjectIdentifier";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2475,17 +2570,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2497,19 +2591,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearTermAsObjectIdentifier(String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String glossaryTermGUID,
-                                            String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public void clearTermAsObjectIdentifier(String  userId,
+                                            String  assetManagerGUID,
+                                            String  assetManagerName,
+                                            String  glossaryTermGUID,
+                                            String  glossaryTermExternalIdentifier,
+                                            Date    effectiveTime,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName = "clearTermAsObjectIdentifier";
         final String glossaryGUIDParameterName = "glossaryTermGUID";
@@ -2517,17 +2617,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-object-identifier/remove&forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2539,19 +2638,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to remove
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeGlossaryTerm(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void removeGlossaryTerm(String  userId,
+                                   String  assetManagerGUID,
+                                   String  assetManagerName,
+                                   String  glossaryTermGUID,
+                                   String  glossaryTermExternalIdentifier,
+                                   Date    effectiveTime,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName                  = "removeGlossaryTerm";
         final String glossaryGUIDParameterName   = "glossaryTermGUID";
@@ -2559,17 +2664,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      glossaryTermExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        glossaryTermGUID);
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2583,6 +2687,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -2591,14 +2698,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>   findGlossaryTerms(String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<GlossaryTermElement>   findGlossaryTerms(String  userId,
+                                                         String  assetManagerGUID,
+                                                         String  assetManagerName,
+                                                         String  searchString,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         Date    effectiveTime,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName                = "findGlossaryTerms";
         final String searchStringParameterName = "searchString";
@@ -2612,8 +2722,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
@@ -2621,7 +2732,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                            serverName,
                                                                                            userId,
                                                                                            startFrom,
-                                                                                           validatedPageSize);
+                                                                                           validatedPageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2636,6 +2749,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of associated metadata elements
      *
@@ -2644,14 +2760,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>    getTermsForGlossary(String userId,
-                                                            String assetManagerGUID,
-                                                            String assetManagerName,
-                                                            String glossaryGUID,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<GlossaryTermElement>    getTermsForGlossary(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  glossaryGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName        = "getTermsForGlossary";
         final String guidParameterName = "glossaryGUID";
@@ -2660,21 +2779,21 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                 assetManagerName),
+                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryGUID,
                                                                                            startFrom,
-                                                                                           validatedPageSize);
+                                                                                           validatedPageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
-
 
 
     /**
@@ -2686,6 +2805,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of associated metadata elements
      *
@@ -2694,14 +2816,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String glossaryCategoryGUID,
-                                                                    int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String  userId,
+                                                                    String  assetManagerGUID,
+                                                                    String  assetManagerName,
+                                                                    String  glossaryCategoryGUID,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    Date    effectiveTime,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName        = "getTermsForGlossaryCategory";
         final String guidParameterName = "glossaryCategoryGUID";
@@ -2710,17 +2835,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                 assetManagerName),
+                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryCategoryGUID,
                                                                                            startFrom,
-                                                                                           validatedPageSize);
+                                                                                           validatedPageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2736,6 +2862,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -2744,14 +2873,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>   getGlossaryTermsByName(String userId,
-                                                              String assetManagerGUID,
-                                                              String assetManagerName,
-                                                              String name,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<GlossaryTermElement>   getGlossaryTermsByName(String  userId,
+                                                              String  assetManagerGUID,
+                                                              String  assetManagerName,
+                                                              String  name,
+                                                              int     startFrom,
+                                                              int     pageSize,
+                                                              Date    effectiveTime,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName        = "getGlossaryTermsByName";
         final String nameParameterName = "name";
@@ -2765,8 +2897,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
@@ -2774,7 +2907,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                                                                            serverName,
                                                                                            userId,
                                                                                            startFrom,
-                                                                                           validatedPageSize);
+                                                                                           validatedPageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2787,6 +2922,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return matching metadata element
      *
@@ -2795,12 +2933,15 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public GlossaryTermElement getGlossaryTermByGUID(String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String glossaryTermGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public GlossaryTermElement getGlossaryTermByGUID(String  userId,
+                                                     String  assetManagerGUID,
+                                                     String  assetManagerName,
+                                                     String  glossaryTermGUID,
+                                                     Date    effectiveTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "getGlossaryTermByGUID";
         final String guidParameterName = "glossaryTermGUID";
@@ -2808,15 +2949,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         GlossaryTermElementResponse restResult = restClient.callGlossaryTermPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                               assetManagerName),
+                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                          serverName,
                                                                                          userId,
-                                                                                         glossaryTermGUID);
+                                                                                         glossaryTermGUID,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -2883,7 +3025,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param linkProperties properties of the link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2894,9 +3040,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                            String                         assetManagerGUID,
                                            String                         assetManagerName,
                                            String                         externalLinkGUID,
-                                           ExternalGlossaryLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+                                           boolean                        isMergeUpdate,
+                                           ExternalGlossaryLinkProperties linkProperties,
+                                           Date                           effectiveTime,
+                                           boolean                        forLineage,
+                                           boolean                        forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName                  = "updateExternalGlossaryLink";
         final String guidParameterName           = "externalLinkGUID";
@@ -2910,15 +3060,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        isMergeUpdate,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2929,18 +3083,24 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeExternalGlossaryLink(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String externalLinkGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void removeExternalGlossaryLink(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  externalLinkGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName        = "removeExternalGlossaryLink";
         final String guidParameterName = "externalLinkGUID";
@@ -2948,14 +3108,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/external-links/{2}/remove&forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2967,19 +3129,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to attach
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void attachExternalLinkToGlossary(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String externalLinkGUID,
-                                             String glossaryGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void attachExternalLinkToGlossary(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  externalLinkGUID,
+                                             String  glossaryGUID,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String methodName                = "attachExternalLinkToGlossary";
         final String guidParameterName         = "externalLinkGUID";
@@ -2989,15 +3157,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -3009,19 +3179,25 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void detachExternalLinkFromGlossary(String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String externalLinkGUID,
-                                               String glossaryGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void detachExternalLinkFromGlossary(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  externalLinkGUID,
+                                               String  glossaryGUID,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName                = "detachExternalLinkFromGlossary";
         final String guidParameterName         = "externalLinkGUID";
@@ -3031,15 +3207,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -3050,6 +3228,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param glossaryGUID unique identifier of the metadata element for the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of attached links to external glossary resources
      *
@@ -3058,12 +3239,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String userId,
-                                                                         String glossaryGUID,
-                                                                         int    startFrom,
-                                                                         int    pageSize) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String  userId,
+                                                                         String  assetManagerGUID,
+                                                                         String  assetManagerName,
+                                                                         String  glossaryGUID,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         Date    effectiveTime,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         final String methodName        = "getExternalLinksForGlossary";
         final String guidParameterName = "glossaryGUID";
@@ -3072,15 +3258,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        ExternalGlossaryLinkElementsResponse restResult = restClient.callExternalGlossaryLinksGetRESTCall(methodName,
-                                                                                                          urlTemplate,
-                                                                                                          serverName,
-                                                                                                          userId,
-                                                                                                          glossaryGUID,
-                                                                                                          startFrom,
-                                                                                                          validatedPageSize);
+        ExternalGlossaryLinkElementsResponse restResult = restClient.callExternalGlossaryLinksPostRESTCall(methodName,
+                                                                                                           urlTemplate,
+                                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                           serverName,
+                                                                                                           userId,
+                                                                                                           glossaryGUID,
+                                                                                                           startFrom,
+                                                                                                           validatedPageSize,
+                                                                                                           forLineage,
+                                                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3095,6 +3284,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of glossaries
      *
@@ -3103,14 +3295,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryElement> getGlossariesForExternalLink(String userId,
-                                                              String assetManagerGUID,
-                                                              String assetManagerName,
-                                                              String externalLinkGUID,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<GlossaryElement> getGlossariesForExternalLink(String  userId,
+                                                              String  assetManagerGUID,
+                                                              String  assetManagerName,
+                                                              String  externalLinkGUID,
+                                                              int     startFrom,
+                                                              int     pageSize,
+                                                              Date    effectiveTime,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName        = "getGlossariesForExternalLink";
         final String guidParameterName = "externalLinkGUID";
@@ -3119,17 +3314,18 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                          assetManagerName),
+                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                     serverName,
                                                                                     userId,
                                                                                     externalLinkGUID,
                                                                                     startFrom,
-                                                                                    validatedPageSize);
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3143,8 +3339,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
      * @param linkProperties properties of the link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -3156,9 +3355,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                            String                                assetManagerName,
                                            String                                externalLinkGUID,
                                            String                                glossaryCategoryGUID,
-                                           ExternalGlossaryElementLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                           ExternalGlossaryElementLinkProperties linkProperties,
+                                           Date                                  effectiveTime,
+                                           boolean                               forLineage,
+                                           boolean                               forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         final String methodName                = "attachExternalCategoryLink";
         final String guidParameterName         = "externalLinkGUID";
@@ -3173,7 +3375,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -3181,7 +3383,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -3192,20 +3396,26 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void detachExternalCategoryLink(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String externalLinkGUID,
-                                           String glossaryCategoryGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public void detachExternalCategoryLink(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  externalLinkGUID,
+                                           String  glossaryCategoryGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName                = "detachExternalCategoryLink";
         final String guidParameterName         = "externalLinkGUID";
@@ -3215,15 +3425,17 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/external-links/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryCategoryGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -3235,8 +3447,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
      * @param linkProperties properties of the link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -3248,9 +3463,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                        String                                assetManagerName,
                                        String                                externalLinkGUID,
                                        String                                glossaryTermGUID,
-                                       ExternalGlossaryElementLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                       ExternalGlossaryElementLinkProperties linkProperties,
+                                       Date                                  effectiveTime,
+                                       boolean                               forLineage,
+                                       boolean                               forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName                = "attachExternalTermLink";
         final String guidParameterName         = "externalLinkGUID";
@@ -3265,7 +3483,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setElementProperties(linkProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -3273,7 +3491,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
                                         serverName,
                                         userId,
                                         glossaryTermGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -3284,20 +3504,26 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void detachExternalTermLink(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String externalLinkGUID,
-                                       String glossaryTermGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void detachExternalTermLink(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  externalLinkGUID,
+                                       String  glossaryTermGUID,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                = "detachExternalTermLink";
         final String guidParameterName         = "externalLinkGUID";
@@ -3307,16 +3533,16 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
 
-
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/external-links/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         glossaryTermGUID,
-                                        externalLinkGUID);
+                                        externalLinkGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 }

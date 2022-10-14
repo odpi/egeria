@@ -27,16 +27,21 @@ public class LineageEdge implements Serializable {
 
     public LineageEdge(){}
 
+    protected Object id;
     protected String edgeType;
     protected String sourceNodeID;
     protected String destinationNodeID;
 
-    public LineageEdge(String edgeType, String sourceNodeID, String destinationNodeID) {
+    public LineageEdge(Object id, String edgeType, String sourceNodeID, String destinationNodeID) {
+        this.id = id;
         this.edgeType = edgeType;
         this.sourceNodeID = sourceNodeID;
         this.destinationNodeID = destinationNodeID;
     }
 
+    public Object getId(){
+        return id;
+    }
     public String getEdgeType() {
         return edgeType;
     }
@@ -52,13 +57,14 @@ public class LineageEdge implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineageEdge that = (LineageEdge) o;
-        return Objects.equals(edgeType, that.edgeType) &&
+        return Objects.equals(id, that.id) &&
+                Objects.equals(edgeType, that.edgeType) &&
                 Objects.equals(sourceNodeID, that.sourceNodeID) &&
                 Objects.equals(destinationNodeID, that.destinationNodeID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edgeType, sourceNodeID, destinationNodeID);
+        return Objects.hash(id, edgeType, sourceNodeID, destinationNodeID);
     }
 }

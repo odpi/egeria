@@ -100,7 +100,7 @@ public class DataFolderConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }

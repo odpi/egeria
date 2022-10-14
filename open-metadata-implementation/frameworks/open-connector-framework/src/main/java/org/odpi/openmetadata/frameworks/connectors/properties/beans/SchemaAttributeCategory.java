@@ -29,9 +29,9 @@ public enum SchemaAttributeCategory implements Serializable
                "The instances are unordered and the same value may appear in different instances."),
     SINGLETON (4, "Singleton", "There is at maximum, only one instance of the attribute.");
 
-    private int      schemaTypeCode;
-    private String   schemaTypeName;
-    private String   schemaTypeDescription;
+    private final int      schemaTypeCode;
+    private final String   schemaTypeName;
+    private final String   schemaTypeDescription;
 
     private static final long     serialVersionUID = 1L;
 

@@ -47,7 +47,8 @@ public class PersonRoleProperties extends PersonalRoleProperties
 
         if (template != null)
         {
-
+            this.headCountLimitSet = template.getHeadCountLimitSet();
+            this.headCount = template.getHeadCount();
         }
     }
 
@@ -108,10 +109,12 @@ public class PersonRoleProperties extends PersonalRoleProperties
         return "PersonRoleProperties{" +
                        "headCountLimitSet=" + headCountLimitSet +
                        ", headCount=" + headCount +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", roleId='" + getRoleId() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", title='" + getTitle() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", domainIdentifier=" + getDomainIdentifier() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementStub;
 
 import java.io.Serializable;
 import java.util.HashMap;

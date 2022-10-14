@@ -2,9 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,36 +24,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = Referenceable.class, name = "Referenceable"),
-                @JsonSubTypes.Type(value = InformalTag.class, name = "InformalTag"),
-                @JsonSubTypes.Type(value = Like.class, name = "Like"),
-                @JsonSubTypes.Type(value = Meaning.class, name = "Meaning"),
-                @JsonSubTypes.Type(value = Rating.class, name = "Rating")
+                @JsonSubTypes.Type(value = ElementStub.class, name = "ElementStub"),
         })
-public class ElementHeader extends PropertyBase
+public class ElementHeader extends ElementControlHeader
 {
     private static final long     serialVersionUID = 1L;
 
     /*
-     * Common header for first class elements from a metadata repository
+     * Common header for entities from a metadata repository
      */
-    protected ElementType type = null;
-    protected String      guid = null;
-    protected String      url  = null;
+    private String          guid = null;
 
-    protected List<ElementClassification> classifications    = null;
-    protected Map<String, Object>         extendedProperties = null;
+    private List<ElementClassification> classifications  = null;
+
 
     /**
      * Default constructor used by subclasses
      */
     public ElementHeader()
     {
-        super();
     }
 
 
@@ -62,42 +61,9 @@ public class ElementHeader extends PropertyBase
 
         if (template != null)
         {
-            type               = template.getType();
-            guid               = template.getGUID();
-            url                = template.getURL();
-            classifications    = template.getClassifications();
-            extendedProperties = template.getExtendedProperties();
+            guid             = template.getGUID();
+            classifications  = template.getClassifications();
         }
-    }
-
-
-    /**
-     * Return the element type properties for this properties object.  These values are set up by the metadata repository
-     * and define details to the metadata entity used to represent this element.
-     *
-     * @return ElementType type information.
-     */
-    public ElementType getType()
-    {
-        if (type == null)
-        {
-            return null;
-        }
-        else
-        {
-            return type;
-        }
-    }
-
-
-    /**
-     * Set up the type of this element.
-     *
-     * @param type element type properties
-     */
-    public void setType(ElementType type)
-    {
-        this.type = type;
     }
 
 
@@ -124,31 +90,7 @@ public class ElementHeader extends PropertyBase
 
 
     /**
-     * Returns the URL to access the properties object in the metadata repository.
-     * If no url is available then null is returned.
-     *
-     * @return String URL
-     */
-    public String getURL()
-    {
-        return url;
-    }
-
-
-    /**
-     * Set up the URL of this element.
-     *
-     * @param url String
-     */
-    public void setURL(String url)
-    {
-        this.url = url;
-    }
-
-
-    /**
-     * Return the list of classifications associated with the asset.   This is an  list and the
-     * pointers are set to the start of the list of classifications
+     * Return the list of classifications associated with the metadata element.
      *
      * @return Classifications  list of classifications
      */
@@ -170,48 +112,13 @@ public class ElementHeader extends PropertyBase
 
 
     /**
-     * Set up the classifications associated with this connection.
+     * Set up the classifications associated with this metadata element.
      *
      * @param classifications list of classifications
      */
     public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
-    }
-
-
-    /**
-     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @return property map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @param extendedProperties property map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
     }
 
 
@@ -224,12 +131,15 @@ public class ElementHeader extends PropertyBase
     public String toString()
     {
         return "ElementHeader{" +
-                "type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", guid='" + guid + '\'' +
+                       ", classifications=" + classifications +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -246,16 +156,16 @@ public class ElementHeader extends PropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ElementHeader that = (ElementHeader) objectToCompare;
-        return Objects.equals(getType(), that.getType()) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(url, that.url) &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+        return Objects.equals(guid, that.guid) && Objects.equals(classifications, that.classifications);
     }
 
 
@@ -267,6 +177,6 @@ public class ElementHeader extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid);
+        return Objects.hash(super.hashCode(), guid, classifications);
     }
 }

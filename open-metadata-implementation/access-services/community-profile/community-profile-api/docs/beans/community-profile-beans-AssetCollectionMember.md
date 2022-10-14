@@ -4,7 +4,7 @@
 
 # AssetCollectionMember Bean
 
-AssetCollectionMember describes an [Asset](../../../../docs/concepts/assets)
+AssetCollectionMember describes an [Asset](https://egeria-project.org/concepts/asset)
 and its linkage into a [personal profile](../../../docs/concepts/personal-profile.md)
 as part of a [collection of favorite things](../../../docs/concepts/favorite-things-collection.md).
 

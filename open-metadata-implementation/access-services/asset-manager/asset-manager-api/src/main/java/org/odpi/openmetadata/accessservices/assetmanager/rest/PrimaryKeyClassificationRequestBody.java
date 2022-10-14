@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PrimaryKeyClassificationRequestBody extends AssetManagerIdentifiersRequestBody
+public class PrimaryKeyClassificationRequestBody extends EffectiveTimeQueryRequestBody
 {
     private static final long   serialVersionUID = 1L;
 
@@ -45,9 +45,11 @@ public class PrimaryKeyClassificationRequestBody extends AssetManagerIdentifiers
      */
     public PrimaryKeyClassificationRequestBody(PrimaryKeyClassificationRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            primaryKeyProperties          = template.getPrimaryKeyProperties();
+            primaryKeyProperties = template.getPrimaryKeyProperties();
         }
     }
 
@@ -83,9 +85,10 @@ public class PrimaryKeyClassificationRequestBody extends AssetManagerIdentifiers
     public String toString()
     {
         return "PrimaryKeyClassificationRequestBody{" +
-                       "primaryKeyProperties=" + primaryKeyProperties +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       "assetManagerGUID='" + getAssetManagerGUID() + '\'' +
                        ", assetManagerName='" + getAssetManagerName() + '\'' +
+                       ", effectiveTime=" + getEffectiveTime() +
+                       ", primaryKeyProperties=" + primaryKeyProperties +
                        '}';
     }
 
@@ -113,7 +116,7 @@ public class PrimaryKeyClassificationRequestBody extends AssetManagerIdentifiers
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

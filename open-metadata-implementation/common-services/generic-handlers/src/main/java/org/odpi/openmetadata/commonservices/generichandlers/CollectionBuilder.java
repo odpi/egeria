@@ -124,7 +124,7 @@ public class CollectionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
                                                                   displayName,
                                                                   methodName);
 
@@ -229,6 +229,8 @@ public class CollectionBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME,
                                                                   orderPropertyName,
                                                                   methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }

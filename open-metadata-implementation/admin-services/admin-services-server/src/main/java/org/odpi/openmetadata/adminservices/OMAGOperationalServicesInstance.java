@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
+import org.odpi.openmetadata.commonservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -31,11 +32,12 @@ import java.util.Map;
 class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
     private ServerActiveStatus                   serverActiveStatus                  = ServerActiveStatus.INACTIVE;
-    private Map<String, ServerActiveStatus>      serviceStatusMap                    = new HashMap<>();
-    private ServerTypeClassification             serverTypeClassification            = null;
+    private final Map<String, ServerActiveStatus> serviceStatusMap                   = new HashMap<>();
+    private final ServerTypeClassification        serverTypeClassification;
     private OMAGServerConfig                     operationalConfiguration            = null;
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
+    private GAFMetadataOperationalServices       operationalGAFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
@@ -202,6 +204,30 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalOCFMetadataServices(OCFMetadataOperationalServices operationalOCFMetadataServices)
     {
         this.operationalOCFMetadataServices = operationalOCFMetadataServices;
+    }
+
+
+
+
+    /**
+     * Return the running instance of the Governance Action Framework (GAF) metadata services.
+     *
+     * @return OCFMetadataOperationalServices object
+     */
+    GAFMetadataOperationalServices getOperationalGAFMetadataServices()
+    {
+        return operationalGAFMetadataServices;
+    }
+
+
+    /**
+     * Set up the running instance of the Governance Action Framework (GAF) metadata services.
+     *
+     * @param operationalGAFMetadataServices GAFMetadataOperationalServices object
+     */
+    void setOperationalGAFMetadataServices(GAFMetadataOperationalServices operationalGAFMetadataServices)
+    {
+        this.operationalGAFMetadataServices = operationalGAFMetadataServices;
     }
 
 

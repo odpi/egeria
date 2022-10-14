@@ -25,31 +25,38 @@ public enum CommonServicesDescription implements Serializable
                                       "OMAG Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
-                                      "https://egeria-project.org/services/admin-services"),
+                                      "https://egeria-project.org/services/admin-services/overview"),
 
     OCF_METADATA_MANAGEMENT          (182,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Connected Asset Services",
                                       "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
                                       "https://egeria-project.org/services/ocf-metadata-management"),
 
     OPEN_METADATA_SECURITY           (183,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://egeria-project.org/services/metadata-security-services");
+                                      "https://egeria-project.org/services/metadata-security-services"),
+
+    GAF_METADATA_MANAGEMENT          (184,
+                                      ComponentDevelopmentStatus.STABLE,
+                                      "Open Metadata Store Services",
+                                      "open-metadata-store",
+                                      "Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
+                                      "https://egeria-project.org/services/gaf-metadata-management"),;
 
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                        serviceCode;
-    private ComponentDevelopmentStatus serviceDevelopmentStatus;
-    private String                     serviceName;
-    private String                     serviceURLMarker;
-    private String                     serviceDescription;
-    private String                     serviceWiki;
+    private final int                        serviceCode;
+    private final ComponentDevelopmentStatus serviceDevelopmentStatus;
+    private final String                     serviceName;
+    private final String                     serviceURLMarker;
+    private final String                     serviceDescription;
+    private final String                     serviceWiki;
 
 
     /**
@@ -156,7 +163,7 @@ public enum CommonServicesDescription implements Serializable
     /**
      * Return the URL for the wiki page describing this access service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getServiceWiki()
     {

@@ -114,21 +114,27 @@ public class RelatedMediaReference extends ExternalReference
     public String toString()
     {
         return "RelatedMediaReference{" +
-                "mediaId='" + referenceId + '\'' +
-                ", linkDescription='" + linkDescription + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", uri='" + uri + '\'' +
-                ", resourceDescription='" + resourceDescription + '\'' +
-                ", version='" + version + '\'' +
-                ", organization='" + organization + '\'' +
-                ", mediaType=" + mediaType +
-                ", mediaUsageList=" + mediaUsageList +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", referenceId='" + getReferenceId() + '\'' +
+                       ", linkDescription='" + getLinkDescription() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", URI='" + getURI() + '\'' +
+                       ", resourceDescription='" + getResourceDescription() + '\'' +
+                       ", version='" + getVersion() + '\'' +
+                       ", organization='" + getOrganization() + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", mediaType=" + mediaType +
+                       ", mediaUsageList=" + mediaUsageList +
+                       '}';
     }
 
 

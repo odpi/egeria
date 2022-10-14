@@ -110,7 +110,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
 
     KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC-CONNECTOR-0015",
               OMRSAuditLogRecordSeverity.STARTUP,
-             "The local server is attempting to connect to Kafka, attempt {0}",
+             "The local server is attempting to connect to Kafka brokers at {0} [ attempt {1} of {2} ]",
              "The system retries the connection after a short wait.",
              "Ensure the Kafka Cluster has started"),
     UNEXPECTED_SHUTDOWN_EXCEPTION( "OCF-KAFKA-TOPIC-CONNECTOR-0016",

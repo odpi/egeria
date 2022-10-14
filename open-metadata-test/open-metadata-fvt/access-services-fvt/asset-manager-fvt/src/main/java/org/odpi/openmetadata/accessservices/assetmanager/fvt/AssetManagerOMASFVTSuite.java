@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.fvt;
 
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors.ClientConstructorTest;
+import org.odpi.openmetadata.accessservices.assetmanager.fvt.connections.CreateConnectionTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers.ManageExternalIdsTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries.CreateGlossaryTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling.InvalidParameterTest;
@@ -10,16 +11,50 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 import org.odpi.openmetadata.http.HttpHelper;
 
+import java.io.IOException;
+
+import static java.lang.System.exit;
+
 
 /**
  * AssetManagerOMASFVTSuite provides the main program for the Asset Manager OMAS
  * Functional Verification Tests (FVTs).  It is used when running the test suite standalone
- * (ie outside of the failsafe test framework).
+ * (ie outside the failsafe test framework).
  */
 public class AssetManagerOMASFVTSuite extends FVTSuiteBase
 {
     /**
-     * Run all of the defined tests and capture the results.
+     * Run the FVT Suite.
+     *
+     * @param args user input
+     */
+    public static void main(String[] args)
+    {
+        int exitCode;
+
+        try
+        {
+            String url = getUrl(args);
+            String serverName = getServerName(args);
+            String userId = getUserId(args);
+
+            AssetManagerOMASFVTSuite fvtSuite = new AssetManagerOMASFVTSuite();
+
+            exitCode = fvtSuite.performFVT(serverName, url, userId);
+        }
+        catch (IOException error)
+        {
+            System.out.println("Error getting user input");
+            error.printStackTrace();
+            exitCode = -99;
+        }
+
+        exit(exitCode);
+    }
+
+
+    /**
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -27,9 +62,9 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
      * @return combined results of running test
      */
     @Override
-    protected int performFVT(String   serverName,
-                             String   serverPlatformRootURL,
-                             String   userId)
+    public int performFVT(String   serverName,
+                          String   serverPlatformRootURL,
+                          String   userId)
     {
         HttpHelper.noStrictSSL();
 
@@ -59,6 +94,13 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
         results.printResults(serverName);
 
         results = CreateGlossaryTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = CreateConnectionTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

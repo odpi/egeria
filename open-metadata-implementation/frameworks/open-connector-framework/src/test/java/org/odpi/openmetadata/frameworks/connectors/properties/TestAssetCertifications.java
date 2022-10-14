@@ -20,9 +20,9 @@ public class TestAssetCertifications
      * @param maxCacheSize size of cache
      * @return property iterator
      */
-    private AssetCertifications  getPropertyIterator(int    totalElementCount, int    maxCacheSize)
+    private Certifications  getPropertyIterator(int    totalElementCount, int    maxCacheSize)
     {
-        return new MockAssetCertifications(null, totalElementCount, maxCacheSize);
+        return new MockAssetCertifications(totalElementCount, maxCacheSize);
     }
 
 
@@ -34,7 +34,7 @@ public class TestAssetCertifications
      */
     private void  validatePropertyIterator(int    totalElementCount, int    maxCacheSize)
     {
-        AssetCertifications iterator = getPropertyIterator(totalElementCount, maxCacheSize);
+        Certifications iterator = getPropertyIterator(totalElementCount, maxCacheSize);
 
         int elementCount = 0;
         while (iterator.hasNext())
@@ -52,11 +52,11 @@ public class TestAssetCertifications
      */
     @Test public void  testClonedIterator()
     {
-        AssetCertifications propertyIterator = getPropertyIterator(10, 100);
+        Certifications propertyIterator = getPropertyIterator(10, 100);
 
         propertyIterator.next();
 
-        AssetCertifications propertyIteratorClone = new MockAssetCertifications(null, propertyIterator);
+        Certifications propertyIteratorClone = new MockAssetCertifications( propertyIterator);
 
         int elementCount = 0;
         while (propertyIteratorClone.hasNext())
@@ -123,17 +123,13 @@ public class TestAssetCertifications
      */
     @Test public void testElementCount()
     {
-        AssetCertifications  propertyIterator = getPropertyIterator(30, 10);
+        Certifications  propertyIterator = getPropertyIterator(30, 10);
 
         assertTrue(propertyIterator.getElementCount() == 30);
 
-        AssetCertifications  clonedPropertyIterator = new MockAssetCertifications(null, propertyIterator);
+        Certifications  clonedPropertyIterator = new MockAssetCertifications( propertyIterator);
 
         assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockAssetCertifications(null, null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 
@@ -162,6 +158,6 @@ public class TestAssetCertifications
      */
     @Test public void testToString()
     {
-        assertTrue(getPropertyIterator(10, 100).toString().contains("AssetCertifications"));
+        assertTrue(getPropertyIterator(10, 100).toString().contains("Certifications"));
     }
 }

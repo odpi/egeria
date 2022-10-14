@@ -7,13 +7,10 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogDestination;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecordOriginator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +28,7 @@ public class OMRSAuditLogDestination extends AuditLogDestination
 
 
     /**
-     * Initialize the static values used in all log records.  These values help to pin-point the source of messages
+     * Initialize the static values used in all log records.  These values help to pinpoint the source of messages
      * when audit log records from many servers are consolidated into centralized operational tooling.
      *
      * @param localServerName name of the local server
@@ -72,7 +69,7 @@ public class OMRSAuditLogDestination extends AuditLogDestination
 
 
     /**
-     * Set up the local metadata collection Id.  This is null if there is no local repository.
+     * Set up the local metadata collection id.  This is null if there is no local repository.
      *
      * @param localMetadataCollectionId String unique identifier for the metadata collection
      */

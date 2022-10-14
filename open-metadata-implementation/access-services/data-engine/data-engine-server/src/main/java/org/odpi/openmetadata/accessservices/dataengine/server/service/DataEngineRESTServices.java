@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
@@ -39,6 +40,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
@@ -98,6 +100,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
@@ -322,8 +325,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, schemaTypeRequestBody, methodName);
 
             String externalSourceName = schemaTypeRequestBody.getExternalSourceName();
             String schemasTypeGUID = upsertSchemaType(userId, serverName, null, schemaTypeRequestBody.getSchemaType(),
@@ -352,8 +354,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteSchemaType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -407,8 +408,7 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, portImplementationRequestBody, methodName);
 
             String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -444,8 +444,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, portAliasRequestBody, methodName);
 
             String processGUID = getEntityGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -477,8 +476,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deletePort(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(), portType,
                     requestBody.getDeleteSemantic());
@@ -540,8 +538,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, processHierarchyRequestBody, methodName))
-                return response;
+            validateRequestBody(userId, serverName, processHierarchyRequestBody, methodName);
 
             response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
                     processHierarchyRequestBody.getExternalSourceName()));
@@ -565,7 +562,7 @@ public class DataEngineRESTServices {
         final String methodName = "upsertProcess";
         GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, processRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, processRequestBody, methodName);
 
             Process process = processRequestBody.getProcess();
             if (process == null) {
@@ -594,7 +591,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteProcess(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -768,7 +765,7 @@ public class DataEngineRESTServices {
      * @param serverName               name of server instance to call
      * @param softwareServerCapability the software server values
      *
-           @return The unique identifier (guid) of the created external data engine
+     * @return The unique identifier (guid) of the created external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -940,10 +937,9 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
+            validateDatabaseRequestBody(userId, serverName, databaseRequestBody, methodName);
 
-            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(),
-                    databaseRequestBody.getIncomplete(), databaseRequestBody.getExternalSourceName());
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -965,18 +961,19 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabase(String userId, String serverName, Database database, boolean incomplete,
-                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
         List<RelationalTable> tables = database.getTables();
-        if(databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
+        if (databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
             log.debug(UPSERT_METHOD_CALLS_FOR, methodName, databaseSchema, tables);
         }
 
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, incomplete, externalSourceName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
         return databaseGUID;
@@ -996,12 +993,10 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (!isDatabaseSchemaRequestBodyValid(userId, serverName, databaseSchemaRequestBody, methodName)) {
-                return response;
-            }
+            validateDatabaseSchemaRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
-            String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(),
-                    databaseSchemaRequestBody.getIncomplete(), databaseSchemaRequestBody.getDatabaseSchema(),
+            DatabaseSchema databaseSchema = databaseSchemaRequestBody.getDatabaseSchema();
+            String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(), databaseSchema,
                     databaseSchemaRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
@@ -1025,10 +1020,9 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, boolean incomplete,
-                                       DatabaseSchema databaseSchema, String externalSourceName) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException {
+    public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, DatabaseSchema databaseSchema,
+                                       String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                         PropertyServerException {
 
         final String methodName = "upsertDatabaseSchema";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
@@ -1042,8 +1036,7 @@ public class DataEngineRESTServices {
             databaseGUID = databaseEntityOptional.get().getGUID();
         }
 
-        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete,
-                externalSourceName);
+        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
         return databaseSchemaGUID;
@@ -1064,7 +1057,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDatabase(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1119,7 +1112,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDatabaseSchema(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(),
                     requestBody.getQualifiedName(), requestBody.getDeleteSemantic());
@@ -1175,13 +1168,10 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRelationalTableRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
-                return response;
-            }
+            validateRelationalTableRequestBody(userId, serverName, relationalTableRequestBody, methodName);
 
             String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseSchemaQualifiedName(),
-                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName(),
-                    relationalTableRequestBody.getIncomplete());
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName());
             response.setGUID(relationalTableGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1205,7 +1195,7 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertRelationalTable(String userId, String serverName, String databaseSchemaQualifiedName, RelationalTable relationalTable,
-                                        String externalSourceName, boolean incomplete) throws InvalidParameterException,
+                                        String externalSourceName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertRelationalTable";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
@@ -1214,7 +1204,7 @@ public class DataEngineRESTServices {
                 serverName, methodName);
 
         String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseSchemaQualifiedName,
-                relationalTable, externalSourceName, incomplete);
+                relationalTable, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
         return relationalTableGUID;
@@ -1235,7 +1225,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteRelationalTable(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1292,12 +1282,9 @@ public class DataEngineRESTServices {
         String guid;
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
-                return response;
-            }
+            validateRequestBody(userId, serverName, dataFileRequestBody, methodName);
 
-            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getIncomplete(),
-                    dataFileRequestBody.getExternalSourceName());
+            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
             response.setGUID(guid);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1319,8 +1306,9 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDataFile(String userId, String serverName, DataFile file, boolean incomplete,
-                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException {
         String methodName = "upsertDataFile";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
@@ -1345,7 +1333,7 @@ public class DataEngineRESTServices {
             });
         }
 
-        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, incomplete, schemaType,
+        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType,
                 extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
         return guid;
@@ -1366,7 +1354,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDataFile(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1423,7 +1411,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteFolder(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1478,7 +1466,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteConnection(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1537,7 +1525,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteEndpoint(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1786,9 +1774,7 @@ public class DataEngineRESTServices {
 
 
     private void upsertPortImplementations(String userId, String serverName, List<PortImplementation> portImplementations, String processGUID,
-                                           GUIDResponse response, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                           GUIDResponse response, String externalSourceName) {
         final String methodName = "upsertPortImplementations";
         if (CollectionUtils.isEmpty(portImplementations)) {
             return;
@@ -1835,55 +1821,42 @@ public class DataEngineRESTServices {
         }
     }
 
-    private boolean isDatabaseRequestBodyValid(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
+    private void validateDatabaseRequestBody(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
                                                                                                                                              InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, databaseRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, databaseRequestBody, methodName);
 
         if (databaseRequestBody.getDatabase() == null) {
             restExceptionHandler.handleMissingValue(DATABASE_PARAMETER_NAME, methodName);
-            return false;
         }
-        return true;
     }
 
-    private boolean isDatabaseSchemaRequestBodyValid(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
-                                                     String methodName) throws InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, databaseSchemaRequestBody, methodName)) {
-            return false;
-        }
+    private void validateDatabaseSchemaRequestBody(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
+                                                      String methodName) throws InvalidParameterException {
+        validateRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
         if (databaseSchemaRequestBody.getDatabaseSchema() == null) {
             restExceptionHandler.handleMissingValue(DATABASE_SCHEMA_PARAMETER_NAME, methodName);
-            return false;
         }
-        return true;
     }
 
-    private boolean isRelationalTableRequestBodyInvalid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
-                                                        String methodName) throws InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
-            return true;
-        }
+    private void validateRelationalTableRequestBody(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
+                                                    String methodName) throws InvalidParameterException {
+        validateRequestBody(userId, serverName, relationalTableRequestBody, methodName);
 
         if (relationalTableRequestBody.getRelationalTable() == null) {
             restExceptionHandler.handleMissingValue(RELATIONAL_TABLE_PARAMETER_NAME, methodName);
-            return true;
         }
-        return false;
 
     }
 
-    private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
+    private void validateRequestBody(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
             throws InvalidParameterException {
         if (requestBody == null) {
             restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            return true;
         }
         if (StringUtils.isEmpty(requestBody.getExternalSourceName())) {
             restExceptionHandler.handleMissingValue(EXTERNAL_SOURCE_NAME_PARAMETER_NAME, methodName);
-            return true;
         }
-        return false;
     }
 
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {
@@ -2038,7 +2011,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteTopic(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -2066,7 +2039,7 @@ public class DataEngineRESTServices {
      */
     public void deleteTopic(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                   EntityNotDeletedException, FunctionNotSupportedException {
+                                                                  EntityNotDeletedException, FunctionNotSupportedException {
         final String methodName = "deleteTopic";
 
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
@@ -2106,9 +2079,10 @@ public class DataEngineRESTServices {
     /**
      * Get the unique identifier of a topic
      *
-     * @param serverName    name of the service to route the request to
-     * @param userId        identifier of calling user
+     * @param serverName         name of the service to route the request to
+     * @param userId             identifier of calling user
      * @param topicQualifiedName qualified name of the topic
+     * @param methodName         the name of the calling method
      *
      * @return the unique identifier of the entity
      *
@@ -2117,8 +2091,8 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String getTopicGUID(String userId, String serverName, String topicQualifiedName, String methodName) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       PropertyServerException {
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException {
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
@@ -2171,7 +2145,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteEventType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -2199,8 +2173,8 @@ public class DataEngineRESTServices {
      */
     public void deleteEventType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                       UserNotAuthorizedException, EntityNotDeletedException,
-                                                                       FunctionNotSupportedException {
+                                                                      UserNotAuthorizedException, EntityNotDeletedException,
+                                                                      FunctionNotSupportedException {
 
         final String methodName = "deleteEventType";
 
@@ -2211,9 +2185,58 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, TOPIC_TYPE_NAME);
     }
 
+    /**
+     * Create or update the ProcessingState with provided map of critical elements and sync states
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param processingStateRequestBody map of critical elements and sync states
+     * @return void response
+     */
+    public VoidResponse upsertProcessingState(String userId, String serverName, ProcessingStateRequestBody processingStateRequestBody) {
+        final String methodName = "upsertProcessingState";
+
+        VoidResponse response = new VoidResponse();
+        try {
+            validateRequestBody(userId, serverName, processingStateRequestBody, methodName);
+
+            ProcessingState processingState = processingStateRequestBody.getProcessingState();
+            if (processingState == null) {
+                restExceptionHandler.handleMissingValue("processingState", methodName);
+                return response;
+            }
+            return upsertProcessingState(userId, serverName, processingState, processingStateRequestBody.getExternalSourceName());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    /**
+     * Create or update the ProcessingState with provided map of critical elements and sync states
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param processingState    map of critical elements and sync states
+     * @param externalSourceName the unique name of the external source
+     * @return void response
+     */
+    public VoidResponse upsertProcessingState(String userId, String serverName, ProcessingState processingState, String externalSourceName) {
+        final String methodName = "upsertProcessingState";
+
+        VoidResponse response = new VoidResponse();
+        try {
+            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+            handler.createDataEngineClassification(userId, processingState, externalSourceName);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
     private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws
                                                                                                                                     InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, topicRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, topicRequestBody, methodName);
 
         if (topicRequestBody.getTopic() == null) {
             restExceptionHandler.handleMissingValue(TOPIC_PARAMETER_NAME, methodName);
@@ -2224,7 +2247,7 @@ public class DataEngineRESTServices {
 
     private boolean isEventTypeRequestBodyValid(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody, String methodName) throws
                                                                                                                                                 InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, eventTypeRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, eventTypeRequestBody, methodName);
 
         if (eventTypeRequestBody.getTopicQualifiedName() == null) {
             restExceptionHandler.handleMissingValue(TOPIC_QUALIFIED_NAME_PARAMETER_NAME, methodName);

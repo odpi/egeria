@@ -19,7 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.springframework:spring-core'
     implementation 'org.apache.commons:commons-collections4'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.springframework:spring-core'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'

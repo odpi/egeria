@@ -650,7 +650,7 @@ public class OMAGServerAdminForViewServices
 
 
     /**
-     * Set up the configuration for all of the open metadata view services (OMASs).  This overrides
+     * Set up the configuration for all the open metadata view services (OMASs).  This overrides
      * the current values.
      *
      * @param userId             user that is issuing the request.
@@ -678,7 +678,7 @@ public class OMAGServerAdminForViewServices
 
 
     /**
-     * Set up the configuration for all of the open metadata view services (OMASs).  This overrides
+     * Set up the configuration for all the open metadata view services (OMASs).  This overrides
      * the current values.
      *
      * @param userId             user that is issuing the request.

@@ -34,15 +34,15 @@ public class RelationalDataHandler<DATABASE,
                                    SCHEMA_TYPE>
 
 {
-    private String                                               serviceName;
-    private String                                               serverName;
-    private OMRSRepositoryHelper                                 repositoryHelper;
-    private InvalidParameterHandler                              invalidParameterHandler;
-    private AssetHandler<DATABASE>                               databaseHandler;
-    private AssetHandler<DATABASE_SCHEMA>                        databaseSchemaHandler;
-    private SchemaAttributeHandler<DATABASE_TABLE, SCHEMA_TYPE>  databaseTableHandler;
-    private SchemaAttributeHandler<DATABASE_VIEW, SCHEMA_TYPE>   databaseViewHandler;
-    private SchemaAttributeHandler<DATABASE_COLUMN, SCHEMA_TYPE> databaseColumnHandler;
+    private final String                                               serviceName;
+    private final String                                               serverName;
+    private final OMRSRepositoryHelper                                 repositoryHelper;
+    private final InvalidParameterHandler                              invalidParameterHandler;
+    private final AssetHandler<DATABASE>                               databaseHandler;
+    private final AssetHandler<DATABASE_SCHEMA>                        databaseSchemaHandler;
+    private final SchemaAttributeHandler<DATABASE_TABLE, SCHEMA_TYPE>  databaseTableHandler;
+    private final SchemaAttributeHandler<DATABASE_VIEW, SCHEMA_TYPE>   databaseViewHandler;
+    private final SchemaAttributeHandler<DATABASE_COLUMN, SCHEMA_TYPE> databaseColumnHandler;
 
     protected RepositoryErrorHandler errorHandler;
 
@@ -195,7 +195,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
+     * @param versionIdentifier version identifier for the database
      * @param description the stored description property associated with the database
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -218,6 +219,11 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -230,7 +236,8 @@ public class RelationalDataHandler<DATABASE,
                                  String               databaseManagerGUID,
                                  String               databaseManagerName,
                                  String               qualifiedName,
-                                 String               displayName,
+                                 String               technicalName,
+                                 String               versionIdentifier,
                                  String               description,
                                  String               owner,
                                  int                  ownerTypeOrdinal,
@@ -253,6 +260,11 @@ public class RelationalDataHandler<DATABASE,
                                  String               typeName,
                                  Map<String, Object>  extendedProperties,
                                  Map<String, String>  vendorProperties,
+                                 Date                 effectiveFrom,
+                                 Date                 effectiveTo,
+                                 boolean              forLineage,
+                                 boolean              forDuplicateProcessing,
+                                 Date                 effectiveTime,
                                  String               methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -267,9 +279,9 @@ public class RelationalDataHandler<DATABASE,
         databaseHandler.verifyExternalSourceIdentity(userId,
                                                      databaseManagerGUID,
                                                      databaseManagerName,
-                                                     false,
-                                                     false,
-                                                     null,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
                                                      methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
@@ -306,7 +318,8 @@ public class RelationalDataHandler<DATABASE,
                                                                       databaseManagerGUID,
                                                                       databaseManagerName,
                                                                       qualifiedName,
-                                                                      displayName,
+                                                                      technicalName,
+                                                                      versionIdentifier,
                                                                       description,
                                                                       zoneMembership,
                                                                       owner,
@@ -318,174 +331,10 @@ public class RelationalDataHandler<DATABASE,
                                                                       assetTypeId,
                                                                       assetTypeName,
                                                                       assetExtendedProperties,
-                                                                      methodName);
-
-        if (databaseGUID != null)
-        {
-            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
-            {
-                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
-                                                                                         encodingLanguage,
-                                                                                         encodingDescription,
-                                                                                         encodingProperties,
-                                                                                         methodName);
-
-
-                databaseHandler.setClassificationInRepository(userId,
-                                                              databaseGUID,
-                                                              databaseGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
-                                                              classificationProperties,
-                                                              methodName);
-            }
-
-            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, methodName);
-
-            try
-            {
-                InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                                                       null,
-                                                                                                       OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
-                                                                                                       methodName);
-
-                databaseHandler.linkElementToElement(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     databaseManagerGUID,
-                                                     databaseManagerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                     databaseGUID,
-                                                     databaseGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                     false,
-                                                     false,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     relationshipProperties,
-                                                     methodName);
-            }
-            catch (TypeErrorException error)
-            {
-                throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
-            }
-        }
-
-        return databaseGUID;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database that is owned by an external element.
-     *
-     * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
-     * @param description the stored description property associated with the database
-     * @param pathName the fully qualified physical location of the data store
-     * @param createTime the time that the database was created
-     * @param modifiedTime the last known time the data store was modified
-     * @param encodingType the name of the encoding style used in the database
-     * @param encodingLanguage the name of the natural language used for text strings within the database
-     * @param encodingDescription the description of the encoding used in the database
-     * @param encodingProperties properties used to control encoding
-     * @param databaseType a description of the database type
-     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
-     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
-     * @param databaseImportedFrom the source (typically connection name) of the database information
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of Database - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param vendorProperties additional properties relating to the source of the database technology
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabase(String               userId,
-                                 String               databaseManagerGUID,
-                                 String               databaseManagerName,
-                                 String               qualifiedName,
-                                 String               displayName,
-                                 String               description,
-                                 String               pathName,
-                                 Date                 createTime,
-                                 Date                 modifiedTime,
-                                 String               encodingType,
-                                 String               encodingLanguage,
-                                 String               encodingDescription,
-                                 Map<String, String>  encodingProperties,
-                                 String               databaseType,
-                                 String               databaseVersion,
-                                 String               databaseInstance,
-                                 String               databaseImportedFrom,
-                                 Map<String, String>  additionalProperties,
-                                 String               typeName,
-                                 Map<String, Object>  extendedProperties,
-                                 Map<String, String>  vendorProperties,
-                                 String               methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String databaseManagerGUIDParameterName  = "databaseManagerGUID";
-        final String databaseGUIDParameterName         = "databaseGUID";
-        final String qualifiedNameParameterName        = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        databaseHandler.verifyExternalSourceIdentity(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     false,
-                                                     false,
-                                                     null,
-                                                     methodName);
-
-        String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-
-        if (typeName != null)
-        {
-            assetTypeName = typeName;
-        }
-
-
-        Map<String, Object> assetExtendedProperties = new HashMap<>();
-        if (extendedProperties != null)
-        {
-            assetExtendedProperties.putAll(extendedProperties);
-        }
-
-        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
-        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
-
-        /*
-         * This call will set up the default zones and give ownership of the asset to the calling user.
-         */
-        String databaseGUID = databaseHandler.createAssetInRepository(userId,
-                                                                      databaseManagerGUID,
-                                                                      databaseManagerName,
-                                                                      qualifiedName,
-                                                                      displayName,
-                                                                      description,
-                                                                      additionalProperties,
-                                                                      assetTypeName,
-                                                                      assetExtendedProperties,
+                                                                      effectiveFrom,
+                                                                      effectiveTo,
                                                                       InstanceStatus.ACTIVE,
+                                                                      effectiveFrom,
                                                                       methodName);
 
         if (databaseGUID != null)
@@ -508,14 +357,14 @@ public class RelationalDataHandler<DATABASE,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                               classificationProperties,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              new Date(),
+                                                              true,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveTime,
                                                               methodName);
             }
 
-            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, methodName);
+            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
             try
             {
@@ -536,11 +385,207 @@ public class RelationalDataHandler<DATABASE,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                     false,
-                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      relationshipProperties,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime,
+                                                     methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
+            }
+        }
+
+        return databaseGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database that is owned by an external element.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
+     * @param qualifiedName unique name for this database
+     * @param name the stored name property for the database
+     * @param versionIdentifier the stored version property for the database
+     * @param description the stored description property associated with the database
+     * @param pathName the fully qualified physical location of the database
+     * @param createTime the time that the database was created
+     * @param modifiedTime the last known time the data store was modified
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
+     * @param databaseType a description of the database type
+     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
+     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
+     * @param databaseImportedFrom the source (typically connection name) of the database information
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabase(String               userId,
+                                 String               databaseManagerGUID,
+                                 String               databaseManagerName,
+                                 String               qualifiedName,
+                                 String               name,
+                                 String               versionIdentifier,
+                                 String               description,
+                                 String               pathName,
+                                 Date                 createTime,
+                                 Date                 modifiedTime,
+                                 String               encodingType,
+                                 String               encodingLanguage,
+                                 String               encodingDescription,
+                                 Map<String, String>  encodingProperties,
+                                 String               databaseType,
+                                 String               databaseVersion,
+                                 String               databaseInstance,
+                                 String               databaseImportedFrom,
+                                 Map<String, String>  additionalProperties,
+                                 String               typeName,
+                                 Map<String, Object>  extendedProperties,
+                                 Map<String, String>  vendorProperties,
+                                 Date                 effectiveFrom,
+                                 Date                 effectiveTo,
+                                 boolean              forLineage,
+                                 boolean              forDuplicateProcessing,
+                                 Date                 effectiveTime,
+                                 String               methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String databaseManagerGUIDParameterName  = "databaseManagerGUID";
+        final String databaseGUIDParameterName         = "databaseGUID";
+        final String qualifiedNameParameterName        = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseHandler.verifyExternalSourceIdentity(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+
+        Map<String, Object> assetExtendedProperties = new HashMap<>();
+        if (extendedProperties != null)
+        {
+            assetExtendedProperties.putAll(extendedProperties);
+        }
+
+        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+
+        /*
+         * This call will set up the default zones and give ownership of the asset to the calling user.
+         */
+        String databaseGUID = databaseHandler.createAssetInRepository(userId,
+                                                                      databaseManagerGUID,
+                                                                      databaseManagerName,
+                                                                      qualifiedName,
+                                                                      name,
+                                                                      versionIdentifier,
+                                                                      description,
+                                                                      additionalProperties,
+                                                                      assetTypeName,
+                                                                      assetExtendedProperties,
+                                                                      InstanceStatus.ACTIVE,
+                                                                      effectiveFrom,
+                                                                      effectiveTo,
+                                                                      effectiveTime,
+                                                                      methodName);
+
+        if (databaseGUID != null)
+        {
+            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
+            {
+                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                         encodingLanguage,
+                                                                                         encodingDescription,
+                                                                                         encodingProperties,
+                                                                                         methodName);
+
+
+                databaseHandler.setClassificationInRepository(userId,
+                                                              databaseManagerGUID,
+                                                              databaseManagerName,
+                                                              databaseGUID,
+                                                              databaseGUIDParameterName,
+                                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                              classificationProperties,
+                                                              true,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveTime,
+                                                              methodName);
+            }
+
+            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
+            try
+            {
+                InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                                       null,
+                                                                                                       OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
+                                                                                                       methodName);
+
+                databaseHandler.linkElementToElement(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     databaseManagerGUID,
+                                                     databaseManagerGUIDParameterName,
+                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                     databaseGUID,
+                                                     databaseGUIDParameterName,
+                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     relationshipProperties,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime,
                                                      methodName);
             }
             catch (TypeErrorException error)
@@ -557,13 +602,18 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for this database - must not be null
-     * @param displayName the stored display name property for the database - if null, the value from the template is used
+     * @param technicalName the stored name property for the database - if null, the value from the template is used
+     * @param versionIdentifier version identifier property for the database - if null, the value from the template is used
      * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param pathName the fully qualified physical location of the data store
      * @param networkAddress physical location of the database - used to connect to it
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -577,9 +627,14 @@ public class RelationalDataHandler<DATABASE,
                                              String               databaseManagerName,
                                              String               templateGUID,
                                              String               qualifiedName,
-                                             String               displayName,
+                                             String               technicalName,
+                                             String               versionIdentifier,
                                              String               description,
+                                             String               pathName,
                                              String               networkAddress,
+                                             boolean              forLineage,
+                                             boolean              forDuplicateProcessing,
+                                             Date                 effectiveTime,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -600,9 +655,14 @@ public class RelationalDataHandler<DATABASE,
                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                     qualifiedName,
                                                     qualifiedNameParameterName,
-                                                    displayName,
+                                                    technicalName,
+                                                    versionIdentifier,
                                                     description,
+                                                    pathName,
                                                     networkAddress,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
                                                     methodName);
     }
 
@@ -611,11 +671,11 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
      * @param description the stored description property associated with the database
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -637,6 +697,12 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -648,7 +714,7 @@ public class RelationalDataHandler<DATABASE,
                                String               databaseManagerName,
                                String               databaseGUID,
                                String               qualifiedName,
-                               String               displayName,
+                               String               technicalName,
                                String               description,
                                String               owner,
                                int                  ownerTypeOrdinal,
@@ -670,6 +736,12 @@ public class RelationalDataHandler<DATABASE,
                                String               typeName,
                                Map<String, Object>  extendedProperties,
                                Map<String, String>  vendorProperties,
+                               Date                 effectiveFrom,
+                               Date                 effectiveTo,
+                               boolean              isMergeUpdate,
+                               boolean              forLineage,
+                               boolean              forDuplicateProcessing,
+                               Date                 effectiveTime,
                                String               methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -681,8 +753,10 @@ public class RelationalDataHandler<DATABASE,
                             databaseManagerName,
                             databaseGUID,
                             qualifiedName,
-                            displayName,
+                            technicalName,
+                            null,
                             description,
+                            null,
                             createTime,
                             modifiedTime,
                             encodingType,
@@ -697,6 +771,12 @@ public class RelationalDataHandler<DATABASE,
                             typeName,
                             extendedProperties,
                             vendorProperties,
+                            effectiveFrom,
+                            effectiveTo,
+                            isMergeUpdate,
+                            forLineage,
+                            forDuplicateProcessing,
+                            effectiveTime,
                             methodName);
 
         this.updateGovernanceClassifications(userId,
@@ -708,6 +788,12 @@ public class RelationalDataHandler<DATABASE,
                                              originOrganizationGUID,
                                              originBusinessCapabilityGUID,
                                              otherOriginValues,
+                                             effectiveFrom,
+                                             effectiveTo,
+                                             isMergeUpdate,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
                                              methodName);
     }
 
@@ -724,6 +810,12 @@ public class RelationalDataHandler<DATABASE,
      * @param originOrganizationGUID the properties that characterize where this database is from
      * @param originBusinessCapabilityGUID the properties that characterize where this database is from
      * @param otherOriginValues the properties that characterize where this database is from
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -740,16 +832,22 @@ public class RelationalDataHandler<DATABASE,
                                                 String               originOrganizationGUID,
                                                 String               originBusinessCapabilityGUID,
                                                 Map<String, String>  otherOriginValues,
+                                                Date                 effectiveFrom,
+                                                Date                 effectiveTo,
+                                                boolean              isMergeUpdate,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                Date                 effectiveTime,
                                                 String               methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
         if (owner != null)
         {
-            databaseHandler.updateAssetOwner(userId, elementGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+            databaseHandler.updateAssetOwner(userId, elementGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
 
-        databaseHandler.updateAssetZones(userId, elementGUID, elementGUIDParameterName, zoneMembership, methodName);
+        databaseHandler.updateAssetZones(userId, elementGUID, elementGUIDParameterName, zoneMembership, isMergeUpdate, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
 
         if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
@@ -765,13 +863,17 @@ public class RelationalDataHandler<DATABASE,
                                            originBusinessCapabilityGUID,
                                            businessCapabilityGUIDParameterName,
                                            otherOriginValues,
-                                           null,
-                                           null,
+                                           effectiveFrom,
+                                           effectiveTo,
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
         }
         else
         {
-            databaseHandler.removeAssetOrigin(userId, elementGUID, elementGUIDParameterName, methodName);
+            databaseHandler.removeAssetOrigin(userId, elementGUID, elementGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
     }
 
@@ -782,12 +884,14 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
+     * @param versionIdentifier the stored version identifier for  the database
      * @param description the stored description property associated with the database
+     * @param pathName the fully qualified physical location of the database
      * @param createTime the time that the database was created
      * @param modifiedTime the last known time the data store was modified
      * @param encodingType the name of the encoding style used in the database
@@ -802,6 +906,12 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -813,8 +923,10 @@ public class RelationalDataHandler<DATABASE,
                                String               databaseManagerName,
                                String               databaseGUID,
                                String               qualifiedName,
-                               String               displayName,
+                               String               technicalName,
+                               String               versionIdentifier,
                                String               description,
+                               String               pathName,
                                Date                 createTime,
                                Date                 modifiedTime,
                                String               encodingType,
@@ -829,6 +941,12 @@ public class RelationalDataHandler<DATABASE,
                                String               typeName,
                                Map<String, Object>  extendedProperties,
                                Map<String, String>  vendorProperties,
+                               Date                 effectiveFrom,
+                               Date                 effectiveTo,
+                               boolean              isMergeUpdate,
+                               boolean              forLineage,
+                               boolean              forDuplicateProcessing,
+                               Date                 effectiveTime,
                                String               methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -859,6 +977,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
+        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
 
@@ -873,12 +992,19 @@ public class RelationalDataHandler<DATABASE,
                                     databaseGUID,
                                     elementGUIDParameterName,
                                     qualifiedName,
-                                    displayName,
+                                    technicalName,
+                                    versionIdentifier,
                                     description,
                                     additionalProperties,
                                     assetTypeId,
                                     assetTypeName,
                                     assetExtendedProperties,
+                                    effectiveFrom,
+                                    effectiveTo,
+                                    isMergeUpdate,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
 
         if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
@@ -891,12 +1017,18 @@ public class RelationalDataHandler<DATABASE,
 
 
             databaseHandler.setClassificationInRepository(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
                                                           databaseGUID,
                                                           elementGUIDParameterName,
                                                           OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                           OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
                                                           OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                           classificationProperties,
+                                                          isMergeUpdate,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
                                                           methodName);
         }
 
@@ -905,6 +1037,9 @@ public class RelationalDataHandler<DATABASE,
             databaseHandler.setVendorProperties(userId,
                                                 databaseGUID,
                                                 vendorProperties,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
         }
     }
@@ -926,46 +1061,32 @@ public class RelationalDataHandler<DATABASE,
                                                      Map<String, String>  encodingProperties,
                                                      String               methodName)
     {
-        InstanceProperties classificationProperties = null;
+        InstanceProperties classificationProperties;
 
-        if (encodingType != null)
-        {
-            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                     null,
                                                                                     OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
                                                                                     encodingType,
                                                                                     methodName);
-        }
-
-        if (encodingLanguage != null)
-        {
-            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                     classificationProperties,
                                                                                     OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
                                                                                     encodingLanguage,
                                                                                     methodName);
-        }
-
-        if (encodingDescription != null)
-        {
-            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                     classificationProperties,
                                                                                     OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
                                                                                     encodingDescription,
                                                                                     methodName);
-        }
-
-        if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
-        {
-            classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+        classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                        classificationProperties,
                                                                                        OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
                                                                                        encodingProperties,
                                                                                        methodName);
-        }
 
         return classificationProperties;
     }
+
 
     /**
      * Update the zones for the database asset so that it becomes visible to consumers.
@@ -974,21 +1095,33 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to publish
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishDatabase(String userId,
-                                String databaseGUID,
-                                String methodName) throws InvalidParameterException,
+    public void publishDatabase(String  userId,
+                                String  databaseGUID,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
         final String elementGUIDParameterName = "databaseGUID";
 
-        databaseHandler.publishAsset(userId, databaseGUID, elementGUIDParameterName, methodName);
+        databaseHandler.publishAsset(userId,
+                                     databaseGUID,
+                                     elementGUIDParameterName,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
+                                     methodName);
     }
 
 
@@ -999,21 +1132,33 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to withdraw
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawDatabase(String userId,
-                                 String databaseGUID,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void withdrawDatabase(String  userId,
+                                 String  databaseGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String elementGUIDParameterName = "databaseGUID";
 
-        databaseHandler.withdrawAsset(userId, databaseGUID,elementGUIDParameterName, methodName);
+        databaseHandler.withdrawAsset(userId,
+                                      databaseGUID,
+                                      elementGUIDParameterName,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
     }
 
 
@@ -1021,55 +1166,78 @@ public class RelationalDataHandler<DATABASE,
      * Remove the metadata element representing a database.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName optional unique name of the metadata element to remove
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDatabase(String userId,
-                               String databaseManagerGUID,
-                               String databaseManagerName,
-                               String databaseGUID,
-                               String qualifiedName,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void removeDatabase(String  userId,
+                               String  databaseManagerGUID,
+                               String  databaseManagerName,
+                               String  databaseGUID,
+                               String  qualifiedName,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        Date effectiveTime = new Date();
+        databaseHandler.removeLinkedDataSets(userId,
+                                             databaseManagerGUID,
+                                             databaseManagerName,
+                                             databaseGUID,
+                                             OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
 
-        databaseHandler.removeLinkedDataSet(userId,
-                                            databaseManagerGUID,
-                                            databaseManagerName,
-                                            databaseGUID,
-                                            OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                            effectiveTime,
-                                            methodName);
-
-        databaseHandler.deleteBeanInRepository(userId,
-                                               databaseManagerGUID,
-                                               databaseManagerName,
-                                               databaseGUID,
-                                               elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                               qualifiedName,
-                                               false,
-                                               false,
-                                               effectiveTime,
-                                               methodName);
+        if (qualifiedName != null)
+        {
+            databaseHandler.deleteBeanInRepository(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   elementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                   qualifiedName,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+        }
+        else
+        {
+            databaseHandler.deleteBeanInRepository(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   elementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   null,
+                                                   null,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+        }
     }
 
 
@@ -1081,6 +1249,9 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1089,13 +1260,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE> findDatabases(String userId,
-                                        String searchString,
-                                        int    startFrom,
-                                        int    pageSize,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public List<DATABASE> findDatabases(String  userId,
+                                        String  searchString,
+                                        int     startFrom,
+                                        int     pageSize,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -1106,7 +1280,9 @@ public class RelationalDataHandler<DATABASE,
                                           searchStringParameterName,
                                           startFrom,
                                           pageSize,
-                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
     }
     
@@ -1116,6 +1292,9 @@ public class RelationalDataHandler<DATABASE,
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of database metadata elements
@@ -1124,12 +1303,15 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE> getDatabases(String userId,
-                                       int    startFrom,
-                                       int    pageSize,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<DATABASE> getDatabases(String  userId,
+                                       int     startFrom,
+                                       int     pageSize,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         return databaseHandler.getBeansByType(userId,
                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
@@ -1137,7 +1319,9 @@ public class RelationalDataHandler<DATABASE,
                                               null,
                                               startFrom,
                                               pageSize,
-                                              null,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
                                               methodName);
     }
 
@@ -1150,6 +1334,9 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1158,13 +1345,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE>   getDatabasesByName(String userId,
-                                               String name,
-                                               int    startFrom,
-                                               int    pageSize,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public List<DATABASE>   getDatabasesByName(String  userId,
+                                               String  name,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String nameParameterName = "name";
 
@@ -1175,7 +1365,9 @@ public class RelationalDataHandler<DATABASE,
                                                nameParameterName,
                                                startFrom,
                                                pageSize,
-                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
                                                methodName);
     }
 
@@ -1184,10 +1376,13 @@ public class RelationalDataHandler<DATABASE,
      * Retrieve the list of databases created for the requested database manager.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1197,14 +1392,17 @@ public class RelationalDataHandler<DATABASE,
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public List<DATABASE>   getDatabasesForDatabaseManager(String userId,
-                                                           String databaseManagerGUID,
-                                                           String databaseManagerName,
-                                                           int    startFrom,
-                                                           int    pageSize,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<DATABASE>   getDatabasesForDatabaseManager(String  userId,
+                                                           String  databaseManagerGUID,
+                                                           String  databaseManagerName,
+                                                           int     startFrom,
+                                                           int     pageSize,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String databaseManagerGUIDParameterName = "databaseManagerGUID";
 
@@ -1215,9 +1413,14 @@ public class RelationalDataHandler<DATABASE,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   null,
+                                                   null,
+                                                   0,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    startFrom,
                                                    pageSize,
-                                                   null,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -1227,6 +1430,9 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -1235,11 +1441,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATABASE getDatabaseByGUID(String userId,
-                                      String guid,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public DATABASE getDatabaseByGUID(String  userId,
+                                      String  guid,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -1249,7 +1458,14 @@ public class RelationalDataHandler<DATABASE,
         /*
          * This call checks type of entity, zones and security.
          */
-        return databaseHandler.getBeanFromRepository(userId, guid, guidParameterName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, false, false,null, methodName);
+        return databaseHandler.getBeanFromRepository(userId,
+                                                     guid,
+                                                     guidParameterName,
+                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
     }
 
 
@@ -1261,16 +1477,22 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database schema.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for this database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier versionIdentifier property
+     * @param technicalDescription the stored description property associated with the database schema
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new database schema
@@ -1284,12 +1506,18 @@ public class RelationalDataHandler<DATABASE,
                                        String               databaseManagerName,
                                        String               databaseGUID,
                                        String               qualifiedName,
-                                       String               displayName,
-                                       String               description,
+                                       String               technicalName,
+                                       String               versionIdentifier,
+                                       String               technicalDescription,
                                        Map<String, String>  additionalProperties,
                                        String               typeName,
                                        Map<String, Object>  extendedProperties,
                                        Map<String, String>  vendorProperties,
+                                       Date                 effectiveFrom,
+                                       Date                 effectiveTo,
+                                       boolean              forLineage,
+                                       boolean              forDuplicateProcessing,
+                                       Date                 effectiveTime,
                                        String               methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -1304,9 +1532,9 @@ public class RelationalDataHandler<DATABASE,
         databaseSchemaHandler.verifyExternalSourceIdentity(userId,
                                                            databaseManagerGUID,
                                                            databaseManagerName,
-                                                           false,
-                                                           false,
-                                                           new Date(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
                                                            methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
@@ -1329,12 +1557,16 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  displayName,
-                                                                                  description,
+                                                                                  technicalName,
+                                                                                  versionIdentifier,
+                                                                                  technicalDescription,
                                                                                   additionalProperties,
                                                                                   assetTypeName,
                                                                                   extendedProperties,
                                                                                   InstanceStatus.ACTIVE,
+                                                                                  effectiveFrom,
+                                                                                  effectiveTo,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (databaseGUID != null)
@@ -1351,11 +1583,14 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseSchemaGUID,
                                                        createdElementGUIDParameterName,
                                                        OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                        null,
+                                                       effectiveFrom,
+                                                       effectiveTo,
+                                                       effectiveTime,
                                                        methodName);
 
             if (vendorProperties != null)
@@ -1363,6 +1598,9 @@ public class RelationalDataHandler<DATABASE,
                 databaseHandler.setVendorProperties(userId,
                                                     databaseSchemaGUID,
                                                     vendorProperties,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
                                                     methodName);
             }
 
@@ -1375,12 +1613,13 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database schema.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for this database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored  name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
+     * @param technicalDescription the stored description property associated with the database schema
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
      * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
@@ -1391,6 +1630,11 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new database schema
@@ -1404,8 +1648,9 @@ public class RelationalDataHandler<DATABASE,
                                        String               databaseManagerName,
                                        String               databaseGUID,
                                        String               qualifiedName,
-                                       String               displayName,
-                                       String               description,
+                                       String               technicalName,
+                                       String               versionIdentifier,
+                                       String               technicalDescription,
                                        String               owner,
                                        int                  ownerTypeOrdinal,
                                        List<String>         zoneMembership,
@@ -1416,6 +1661,11 @@ public class RelationalDataHandler<DATABASE,
                                        String               typeName,
                                        Map<String, Object>  extendedProperties,
                                        Map<String, String>  vendorProperties,
+                                       Date                 effectiveFrom,
+                                       Date                 effectiveTo,
+                                       boolean              forLineage,
+                                       boolean              forDuplicateProcessing,
+                                       Date                 effectiveTime,
                                        String               methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -1430,9 +1680,9 @@ public class RelationalDataHandler<DATABASE,
         databaseSchemaHandler.verifyExternalSourceIdentity(userId,
                                                            databaseManagerGUID,
                                                            databaseManagerName,
-                                                           false,
-                                                           false,
-                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
                                                            methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
@@ -1455,8 +1705,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  displayName,
-                                                                                  description,
+                                                                                  technicalName,
+                                                                                  versionIdentifier,
+                                                                                  technicalDescription,
                                                                                   zoneMembership,
                                                                                   owner,
                                                                                   ownerTypeOrdinal,
@@ -1467,6 +1718,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                   assetTypeId,
                                                                                   assetTypeName,
                                                                                   extendedProperties,
+                                                                                  effectiveFrom,
+                                                                                  effectiveTo,
+                                                                                  InstanceStatus.ACTIVE,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (databaseGUID != null)
@@ -1483,11 +1738,14 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseSchemaGUID,
                                                        createdElementGUIDParameterName,
                                                        OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                        null,
+                                                       effectiveFrom,
+                                                       effectiveTo,
+                                                       effectiveTime,
                                                        methodName);
 
             if (vendorProperties != null)
@@ -1495,6 +1753,9 @@ public class RelationalDataHandler<DATABASE,
                 databaseHandler.setVendorProperties(userId,
                                                     databaseSchemaGUID,
                                                     vendorProperties,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
                                                     methodName);
             }
         }
@@ -1507,13 +1768,19 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database schema using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
+     * @param technicalDescription the stored description property associated with the database schema
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new database schema
@@ -1522,22 +1789,28 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseSchemaFromTemplate(String userId,
-                                                   String databaseManagerGUID,
-                                                   String databaseManagerName,
-                                                   String templateGUID,
-                                                   String databaseGUID,
-                                                   String qualifiedName,
-                                                   String displayName,
-                                                   String description,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public String createDatabaseSchemaFromTemplate(String  userId,
+                                                   String  databaseManagerGUID,
+                                                   String  databaseManagerName,
+                                                   String  templateGUID,
+                                                   String  databaseGUID,
+                                                   String  qualifiedName,
+                                                   String  technicalName,
+                                                   String  versionIdentifier,
+                                                   String  technicalDescription,
+                                                   Date    effectiveFrom,
+                                                   Date    effectiveTo,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        final String templateGUIDParameterName      = "templateGUID";
-        final String parentElementGUIDParameterName = "databaseGUID";
+        final String templateGUIDParameterName       = "templateGUID";
+        final String parentElementGUIDParameterName  = "databaseGUID";
         final String createdElementGUIDParameterName = "databaseSchemaGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String qualifiedNameParameterName      = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
@@ -1552,9 +1825,14 @@ public class RelationalDataHandler<DATABASE,
                                                                                OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                qualifiedName,
                                                                                qualifiedNameParameterName,
-                                                                               displayName,
-                                                                               description,
+                                                                               technicalName,
+                                                                               versionIdentifier,
+                                                                               technicalDescription,
                                                                                null,
+                                                                               null,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               effectiveTime,
                                                                                methodName);
 
         if (databaseGUID != null)
@@ -1571,11 +1849,14 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseSchemaGUID,
                                                        createdElementGUIDParameterName,
                                                        OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                        null,
+                                                       effectiveFrom,
+                                                       effectiveTo,
+                                                       effectiveTime,
                                                        methodName);
         }
 
@@ -1587,11 +1868,12 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database schema.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
      * @param description the stored description property associated with the database schema
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -1603,19 +1885,25 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "deprecation")
     public void updateDatabaseSchema(String              userId,
                                      String              databaseManagerGUID,
                                      String              databaseManagerName,
                                      String              databaseSchemaGUID,
                                      String              qualifiedName,
-                                     String              displayName,
+                                     String              technicalName,
+                                     String              versionIdentifier,
                                      String              description,
                                      String              owner,
                                      int                 ownerTypeOrdinal,
@@ -1627,6 +1915,12 @@ public class RelationalDataHandler<DATABASE,
                                      String              typeName,
                                      Map<String, Object> extendedProperties,
                                      Map<String, String> vendorProperties,
+                                     Date                effectiveFrom,
+                                     Date                effectiveTo,
+                                     boolean             isMergeUpdate,
+                                     boolean             forLineage,
+                                     boolean             forDuplicateProcessing,
+                                     Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1657,12 +1951,19 @@ public class RelationalDataHandler<DATABASE,
                                           databaseSchemaGUID,
                                           elementGUIDParameterName,
                                           qualifiedName,
-                                          displayName,
+                                          technicalName,
+                                          versionIdentifier,
                                           description,
                                           additionalProperties,
                                           assetTypeId,
                                           assetTypeName,
                                           extendedProperties,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          isMergeUpdate,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
 
         this.updateGovernanceClassifications(userId,
@@ -1674,41 +1975,22 @@ public class RelationalDataHandler<DATABASE,
                                              originOrganizationGUID,
                                              originBusinessCapabilityGUID,
                                              otherOriginValues,
+                                             effectiveFrom,
+                                             effectiveTo,
+                                             isMergeUpdate,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
                                              methodName);
-        if (owner != null)
-        {
-            databaseHandler.updateAssetOwner(userId, databaseSchemaGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
-        }
-
-        databaseHandler.updateAssetZones(userId, databaseSchemaGUID, elementGUIDParameterName, zoneMembership, methodName);
-
-        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
-        {
-            final String organizationGUIDParameterName = "originOrganizationGUID";
-            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
-
-            databaseHandler.addAssetOrigin(userId,
-                                           databaseSchemaGUID,
-                                           elementGUIDParameterName,
-                                           originOrganizationGUID,
-                                           organizationGUIDParameterName,
-                                           originBusinessCapabilityGUID,
-                                           businessCapabilityGUIDParameterName,
-                                           otherOriginValues,
-                                           null,
-                                           null,
-                                           methodName);
-        }
-        else
-        {
-            databaseHandler.removeAssetOrigin(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
-        }
 
         if (vendorProperties != null)
         {
             databaseHandler.setVendorProperties(userId,
                                                 databaseSchemaGUID,
                                                 vendorProperties,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
         }
     }
@@ -1721,24 +2003,36 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to publish
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishDatabaseSchema(String userId,
-                                      String databaseSchemaGUID,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void publishDatabaseSchema(String  userId,
+                                      String  databaseSchemaGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        final String elementGUIDParameterName    = "databaseSchemaGUID";
+        final String elementGUIDParameterName = "databaseSchemaGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        databaseSchemaHandler.publishAsset(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
+        databaseSchemaHandler.publishAsset(userId,
+                                           databaseSchemaGUID,
+                                           elementGUIDParameterName,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
     }
 
 
@@ -1749,24 +2043,35 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawDatabaseSchema(String userId,
-                                       String databaseSchemaGUID,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void withdrawDatabaseSchema(String  userId,
+                                       String  databaseSchemaGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String elementGUIDParameterName = "databaseSchemaGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        databaseSchemaHandler.withdrawAsset(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
+        databaseSchemaHandler.withdrawAsset(userId,
+                                            databaseSchemaGUID,
+                                            elementGUIDParameterName,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime, methodName);
     }
 
 
@@ -1774,45 +2079,68 @@ public class RelationalDataHandler<DATABASE,
      * Remove the metadata element representing a database schema.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName optional unique name of the metadata element to remove
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDatabaseSchema(String userId,
-                                     String databaseManagerGUID,
-                                     String databaseManagerName,
-                                     String databaseSchemaGUID,
-                                     String qualifiedName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void removeDatabaseSchema(String  userId,
+                                     String  databaseManagerGUID,
+                                     String  databaseManagerName,
+                                     String  databaseSchemaGUID,
+                                     String  qualifiedName,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseSchemaGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseSchemaHandler.deleteBeanInRepository(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     databaseSchemaGUID,
-                                                     elementGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                     qualifiedName,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName);
+        if (qualifiedName != null)
+        {
+            databaseSchemaHandler.deleteBeanInRepository(userId,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
+                                                         databaseSchemaGUID,
+                                                         elementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                         qualifiedName,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime,
+                                                         methodName);
+        }
+        else
+        {
+            databaseSchemaHandler.deleteBeanInRepository(userId,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
+                                                         databaseSchemaGUID,
+                                                         elementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         null,
+                                                         null,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime,
+                                                         methodName);
+        }
     }
 
 
@@ -1824,6 +2152,9 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1832,13 +2163,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_SCHEMA>   findDatabaseSchemas(String userId,
-                                                       String searchString,
-                                                       int    startFrom,
-                                                       int    pageSize,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<DATABASE_SCHEMA>   findDatabaseSchemas(String  userId,
+                                                       String  searchString,
+                                                       int     startFrom,
+                                                       int     pageSize,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -1849,7 +2183,9 @@ public class RelationalDataHandler<DATABASE,
                                                 searchStringParameterName,
                                                 startFrom,
                                                 pageSize,
-                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1861,6 +2197,9 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseGUID unique identifier of the database to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of metadata elements describing the schemas associated with the requested database
@@ -1869,13 +2208,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_SCHEMA>   getSchemasForDatabase(String userId,
-                                                         String databaseGUID,
-                                                         int    startFrom,
-                                                         int    pageSize,
-                                                         String methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<DATABASE_SCHEMA>   getSchemasForDatabase(String  userId,
+                                                         String  databaseGUID,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseGUID";
 
@@ -1889,9 +2231,14 @@ public class RelationalDataHandler<DATABASE,
                                                          OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                          OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                          OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         null,
+                                                         null,
+                                                         0,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
                                                          startFrom,
                                                          pageSize,
-                                                         null,
+                                                         effectiveTime,
                                                          methodName);
     }
 
@@ -1904,6 +2251,9 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1912,13 +2262,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_SCHEMA>   getDatabaseSchemasByName(String userId,
-                                                            String name,
-                                                            int    startFrom,
-                                                            int    pageSize,
-                                                            String methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DATABASE_SCHEMA>   getDatabaseSchemasByName(String  userId,
+                                                            String  name,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String nameParameterName = "name";
 
@@ -1929,7 +2282,9 @@ public class RelationalDataHandler<DATABASE,
                                                      nameParameterName,
                                                      startFrom,
                                                      pageSize,
-                                                     null,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
                                                      methodName);
     }
 
@@ -1939,6 +2294,9 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -1947,11 +2305,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATABASE_SCHEMA getDatabaseSchemaByGUID(String userId,
-                                                   String guid,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public DATABASE_SCHEMA getDatabaseSchemaByGUID(String  userId,
+                                                   String  guid,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -1965,16 +2326,16 @@ public class RelationalDataHandler<DATABASE,
                                                            guid,
                                                            guidParameterName,
                                                            OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                           false,
-                                                           false,
-                                                           new Date(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
                                                            methodName);
     }
 
 
     /* ==========================================================================
      * A database or database schema may contain multiple database tables and database views.
-     * These are linked to the database asset using a RelationalDBSchemaType. It is possible to
+     * These are linked to the database asset using a RelationalDBSchemaType. It is possible
      * to create the schema type, attach the tables and views to it and then attach the schema type to
      * the asset.  Alternatively it is possible to attach the tables/views directly to the database asset
      * and let this handler manage the creation of the RelationalDBSchemaType.  The first approach is
@@ -1987,9 +2348,12 @@ public class RelationalDataHandler<DATABASE,
      * Create a database top-level schema type used to attach tables and views to the database/database schema.
      *
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerGUID guid of the software capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software capability entity that represented the external source - null for local
      * @param qualifiedName qualified name ofr the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the database schema type
      * @throws InvalidParameterException the bean properties are invalid
@@ -2000,6 +2364,9 @@ public class RelationalDataHandler<DATABASE,
                                            String               databaseManagerGUID,
                                            String               databaseManagerName,
                                            String               qualifiedName,
+                                           Date                 effectiveFrom,
+                                           Date                 effectiveTo,
+                                           Date                 effectiveTime,
                                            String               methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -2015,28 +2382,34 @@ public class RelationalDataHandler<DATABASE,
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return databaseTableHandler.createBeanInRepository(userId,
                                                            databaseManagerGUID,
                                                            databaseManagerName,
                                                            OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                            OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                           qualifiedName,
-                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                            builder,
+                                                           effectiveTime,
                                                            methodName);
     }
 
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside the AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerGUID guid of the software capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software capability entity that represented the external source - null for local
      * @param databaseAssetGUID unique identifier of the asset to connect the schema to
      * @param schemaTypeGUID identifier for schema Type object
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -2047,6 +2420,11 @@ public class RelationalDataHandler<DATABASE,
                                                  String  databaseManagerName,
                                                  String  databaseAssetGUID,
                                                  String  schemaTypeGUID,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
                                                  String  methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
@@ -2061,6 +2439,11 @@ public class RelationalDataHandler<DATABASE,
                                                 databaseAssetGUIDParameterName,
                                                 schemaTypeGUID,
                                                 schemaTypeGUIDParameterName,
+                                                effectiveFrom,
+                                                effectiveTo,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -2070,8 +2453,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located
      * @param qualifiedName unique name for the database table
      * @param displayName the stored display name property for the database table
@@ -2121,6 +2504,10 @@ public class RelationalDataHandler<DATABASE,
                                         typeName,
                                         extendedProperties,
                                         vendorProperties,
+                                        null,
+                                        null,
+                                        false,
+                                        false,
                                         new Date(),
                                         methodName);
     }
@@ -2130,8 +2517,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located
      * @param qualifiedName unique name for the database table
      * @param displayName the stored display name property for the database table
@@ -2142,6 +2529,10 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of RelationalTable - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2164,6 +2555,10 @@ public class RelationalDataHandler<DATABASE,
                                       String               typeName,
                                       Map<String, Object>  extendedProperties,
                                       Map<String, String>  vendorProperties,
+                                      Date                 effectiveFrom,
+                                      Date                 effectiveTo,
+                                      boolean              forLineage,
+                                      boolean              forDuplicateProcessing,
                                       Date                 effectiveTime,
                                       String               methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
@@ -2179,6 +2574,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -2195,6 +2594,10 @@ public class RelationalDataHandler<DATABASE,
                                                 typeName,
                                                 extendedProperties,
                                                 vendorProperties,
+                                                effectiveFrom,
+                                                effectiveTo,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 effectiveTime,
                                                 methodName);
     }
@@ -2204,8 +2607,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
      * @param qualifiedName unique name for the database table
      * @param displayName the stored display name property for the database table
@@ -2216,6 +2619,10 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of RelationalTable - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2238,6 +2645,10 @@ public class RelationalDataHandler<DATABASE,
                                                    String               typeName,
                                                    Map<String, Object>  extendedProperties,
                                                    Map<String, String>  vendorProperties,
+                                                   Date                 effectiveFrom,
+                                                   Date                 effectiveTo,
+                                                   boolean              forLineage,
+                                                   boolean              forDuplicateProcessing,
                                                    Date                 effectiveTime,
                                                    String               methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -2266,24 +2677,13 @@ public class RelationalDataHandler<DATABASE,
         }
 
         /*
-         * The schema type that connects the database schema asset to the tables has been created/retrieved.
-         * Now work out the position of the new table in the database schema type.  This is used to set the element position.
-         * Since this value begins with 0 as the first element, the table count is this table's position.
-         */
-        int tableCount = databaseTableHandler.countSchemaAttributes(userId,
-                                                                    databaseSchemaTypeGUID,
-                                                                    schemaTypeGUIDParameterName,
-                                                                    effectiveTime,
-                                                                    methodName);
-
-        /*
          * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
          * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
          */
         SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
                                                                                    displayName,
                                                                                    description,
-                                                                                   tableCount,
+                                                                                   0,
                                                                                    1,
                                                                                    1,
                                                                                    isDeprecated,
@@ -2316,6 +2716,8 @@ public class RelationalDataHandler<DATABASE,
 
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
+        schemaAttributeBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         String databaseTableGUID = databaseTableHandler.createNestedSchemaAttribute(userId,
                                                                                     databaseManagerGUID,
                                                                                     databaseManagerName,
@@ -2327,11 +2729,22 @@ public class RelationalDataHandler<DATABASE,
                                                                                     qualifiedName,
                                                                                     qualifiedNameParameterName,
                                                                                     schemaAttributeBuilder,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseTableGUID != null)
         {
-            databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
+            databaseHandler.setVendorProperties(userId,
+                                                databaseTableGUID,
+                                                vendorProperties,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
         }
 
         return databaseTableGUID;
@@ -2342,13 +2755,18 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database table using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS - if null a local element is created
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS - if null a local element is created
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database table
+     * @param technicalName the stored name property for the database table
      * @param description the stored description property associated with the database table
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new database schema
@@ -2357,18 +2775,22 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseTableFromTemplate(String userId,
-                                                  String databaseManagerGUID,
-                                                  String databaseManagerName,
-                                                  String templateGUID,
-                                                  String databaseAssetGUID,
-                                                  String qualifiedName,
-                                                  String displayName,
-                                                  String description,
-                                                  Date   effectiveTime,
-                                                  String methodName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String createDatabaseTableFromTemplate(String  userId,
+                                                  String  databaseManagerGUID,
+                                                  String  databaseManagerName,
+                                                  String  templateGUID,
+                                                  String  databaseAssetGUID,
+                                                  String  qualifiedName,
+                                                  String  technicalName,
+                                                  String  description,
+                                                  Date    effectiveFrom,
+                                                  Date    effectiveTo,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String guidParameterName = "databaseAssetGUID";
         final String parentElementGUIDParameterName = "databaseAssetGUID";
@@ -2391,13 +2813,17 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
         {
             SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
-                                                                        displayName,
+                                                                        technicalName,
                                                                         description,
                                                                         repositoryHelper,
                                                                         serviceName,
@@ -2431,11 +2857,14 @@ public class RelationalDataHandler<DATABASE,
                                                           databaseTableGUID,
                                                           databaseTableGUIDParameterName,
                                                           OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
-                                                          false,
-                                                          false,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                           null,
+                                                          effectiveFrom,
+                                                          effectiveTo,
+                                                          effectiveTime,
                                                           methodName);
                 return databaseTableGUID;
             }
@@ -2449,8 +2878,8 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table to update
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -2461,6 +2890,12 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2480,6 +2915,12 @@ public class RelationalDataHandler<DATABASE,
                                     String               typeName,
                                     Map<String, Object>  extendedProperties,
                                     Map<String, String>  vendorProperties,
+                                    Date                 effectiveFrom,
+                                    Date                 effectiveTo,
+                                    boolean              isMergeUpdate,
+                                    boolean              forLineage,
+                                    boolean              forDuplicateProcessing,
+                                    Date                 effectiveTime,
                                     String               methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -2514,23 +2955,17 @@ public class RelationalDataHandler<DATABASE,
                                                                                      qualifiedName,
                                                                                      methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
@@ -2538,23 +2973,18 @@ public class RelationalDataHandler<DATABASE,
                                                                    isDeprecated,
                                                                    methodName);
 
-        if ((aliases != null) && (!aliases.isEmpty()))
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.ALIASES_PROPERTY_NAME,
-                                                                           aliases,
-                                                                           methodName);
-        }
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.ALIASES_PROPERTY_NAME,
+                                                                       aliases,
+                                                                       methodName);
 
-        if (additionalProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                         additionalProperties,
-                                                                         methodName);
-        }
+
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                     additionalProperties,
+                                                                     methodName);
 
         if (extendedProperties != null)
         {
@@ -2580,11 +3010,20 @@ public class RelationalDataHandler<DATABASE,
                                                     elementGUIDParameterName,
                                                     attributeTypeId,
                                                     attributeTypeName,
-                                                    properties,
-                                                    true,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    databaseTableHandler.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                                    isMergeUpdate,
+                                                    effectiveTime,
                                                     methodName);
 
-        databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
+        databaseHandler.setVendorProperties(userId,
+                                            databaseTableGUID,
+                                            vendorProperties,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
     }
 
 
@@ -2592,44 +3031,65 @@ public class RelationalDataHandler<DATABASE,
      * Remove the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
      * @param databaseTableGUIDParameterName name of parameter supplying databaseTableGUID
      * @param qualifiedName unique name of the metadata element to remove
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDatabaseTable(String userId,
-                                    String databaseManagerGUID,
-                                    String databaseManagerName,
-                                    String databaseTableGUID,
-                                    String databaseTableGUIDParameterName,
-                                    String qualifiedName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void removeDatabaseTable(String  userId,
+                                    String  databaseManagerGUID,
+                                    String  databaseManagerName,
+                                    String  databaseTableGUID,
+                                    String  databaseTableGUIDParameterName,
+                                    String  qualifiedName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        databaseTableHandler.deleteBeanInRepository(userId,
-                                                    databaseManagerGUID,
-                                                    databaseManagerName,
-                                                    databaseTableGUID,
-                                                    databaseTableGUIDParameterName,
-                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                    qualifiedName,
-                                                    false,
-                                                    false,
-                                                    new Date(),
-                                                    methodName);
+        if (qualifiedName != null)
+        {
+            databaseTableHandler.deleteBeanInRepository(userId,
+                                                        databaseManagerGUID,
+                                                        databaseManagerName,
+                                                        databaseTableGUID,
+                                                        databaseTableGUIDParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                        qualifiedName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+        }
+        else
+        {
+            databaseTableHandler.deleteBeanInRepository(userId,
+                                                        databaseManagerGUID,
+                                                        databaseManagerName,
+                                                        databaseTableGUID,
+                                                        databaseTableGUIDParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+        }
     }
 
 
@@ -2641,6 +3101,8 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2650,14 +3112,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_TABLE>   findDatabaseTables(String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     Date   effectiveTime,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<DATABASE_TABLE>   findDatabaseTables(String  userId,
+                                                     String  searchString,
+                                                     int     startFrom,
+                                                     int     pageSize,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -2673,6 +3137,8 @@ public class RelationalDataHandler<DATABASE,
                                                          OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                          startFrom,
                                                          pageSize,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
                                                          effectiveTime,
                                                          methodName);
     }
@@ -2685,6 +3151,10 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2694,14 +3164,18 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_TABLE> getTablesForDatabaseAsset(String userId,
-                                                          String databaseAssetGUID,
-                                                          int    startFrom,
-                                                          int    pageSize,
-                                                          Date   effectiveTime,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<DATABASE_TABLE> getTablesForDatabaseAsset(String  userId,
+                                                          String  databaseAssetGUID,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          Date    effectiveFrom,
+                                                          Date    effectiveTo,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseAssetGUID";
 
@@ -2717,6 +3191,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -2731,6 +3209,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
                                                                                 effectiveTime,
                                                                                 methodName);
         }
@@ -2747,6 +3227,8 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2756,14 +3238,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_TABLE> getDatabaseTablesByName(String userId,
-                                                        String name,
-                                                        int    startFrom,
-                                                        int    pageSize,
-                                                        Date   effectiveTime,
-                                                        String methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<DATABASE_TABLE> getDatabaseTablesByName(String  userId,
+                                                        String  name,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        String  methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         return databaseTableHandler.getSchemaAttributesByName(userId,
                                                               OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
@@ -2773,6 +3257,8 @@ public class RelationalDataHandler<DATABASE,
                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                               startFrom,
                                                               pageSize,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
                                                               effectiveTime,
                                                               methodName);
     }
@@ -2783,6 +3269,8 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2792,12 +3280,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATABASE_TABLE getDatabaseTableByGUID(String userId,
-                                                 String guid,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public DATABASE_TABLE getDatabaseTableByGUID(String  userId,
+                                                 String  guid,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -2807,6 +3297,8 @@ public class RelationalDataHandler<DATABASE,
                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                        null,
                                                        null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
     }
@@ -2816,8 +3308,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database view.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -2829,6 +3321,10 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2852,6 +3348,10 @@ public class RelationalDataHandler<DATABASE,
                                      String               typeName,
                                      Map<String, Object>  extendedProperties,
                                      Map<String, String>  vendorProperties,
+                                     Date                 effectiveFrom,
+                                     Date                 effectiveTo,
+                                     boolean              forLineage,
+                                     boolean              forDuplicateProcessing,
                                      Date                 effectiveTime,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -2867,6 +3367,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   effectiveFrom,
+                                                                                   effectiveTo,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
                                                                                    effectiveTime,
                                                                                    methodName);
 
@@ -2884,6 +3388,10 @@ public class RelationalDataHandler<DATABASE,
                                                typeName,
                                                extendedProperties,
                                                vendorProperties,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               forDuplicateProcessing,
+                                               forLineage,
                                                effectiveTime,
                                                methodName);
     }
@@ -2893,8 +3401,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database view.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -2906,6 +3414,10 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2929,6 +3441,10 @@ public class RelationalDataHandler<DATABASE,
                                                   String               typeName,
                                                   Map<String, Object>  extendedProperties,
                                                   Map<String, String>  vendorProperties,
+                                                  Date                 effectiveFrom,
+                                                  Date                 effectiveTo,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
                                                   Date                 effectiveTime,
                                                   String               methodName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
@@ -3006,7 +3522,7 @@ public class RelationalDataHandler<DATABASE,
                                                                     serverName);
 
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
-
+        schemaAttributeBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
         schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, expression, methodName);
 
         /*
@@ -3024,11 +3540,22 @@ public class RelationalDataHandler<DATABASE,
                                                                                   qualifiedName,
                                                                                   qualifiedNameParameterName,
                                                                                   schemaAttributeBuilder,
+                                                                                  effectiveFrom,
+                                                                                  effectiveTo,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (databaseViewGUID != null)
         {
-            databaseViewHandler.setVendorProperties(userId, databaseViewGUID, vendorProperties, methodName);
+            databaseViewHandler.setVendorProperties(userId,
+                                                    databaseViewGUID,
+                                                    vendorProperties,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
 
         }
 
@@ -3040,13 +3567,17 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database view using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3056,18 +3587,22 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseViewFromTemplate(String userId,
-                                                 String databaseManagerGUID,
-                                                 String databaseManagerName,
-                                                 String templateGUID,
-                                                 String databaseAssetGUID,
-                                                 String qualifiedName,
-                                                 String displayName,
-                                                 String description,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public String createDatabaseViewFromTemplate(String  userId,
+                                                 String  databaseManagerGUID,
+                                                 String  databaseManagerName,
+                                                 String  templateGUID,
+                                                 String  databaseAssetGUID,
+                                                 String  qualifiedName,
+                                                 String  displayName,
+                                                 String  description,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         return this.createDatabaseTableFromTemplate(userId,
                                                     databaseManagerGUID,
@@ -3077,6 +3612,10 @@ public class RelationalDataHandler<DATABASE,
                                                     qualifiedName,
                                                     displayName,
                                                     description,
+                                                    effectiveFrom,
+                                                    effectiveTo,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
                                                     effectiveTime,
                                                     methodName);
     }
@@ -3086,8 +3625,8 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseViewGUID unique identifier of the database view to update
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -3098,6 +3637,12 @@ public class RelationalDataHandler<DATABASE,
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param vendorProperties additional properties relating to the source of the database technology
      * @param methodName calling method
      *
@@ -3119,6 +3664,12 @@ public class RelationalDataHandler<DATABASE,
                                    String               typeName,
                                    Map<String, Object>  extendedProperties,
                                    Map<String, String>  vendorProperties,
+                                   Date                 effectiveFrom,
+                                   Date                 effectiveTo,
+                                   boolean              isMergeUpdate,
+                                   boolean              forLineage,
+                                   boolean              forDuplicateProcessing,
+                                   Date                 effectiveTime,
                                    String               methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -3149,6 +3700,12 @@ public class RelationalDataHandler<DATABASE,
                                  typeName,
                                  extendedProperties,
                                  vendorProperties,
+                                 effectiveFrom,
+                                 effectiveTo,
+                                 isMergeUpdate,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime,
                                  methodName);
 
         InstanceProperties properties = null;
@@ -3170,10 +3727,10 @@ public class RelationalDataHandler<DATABASE,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                           properties,
-                                                          false,
-                                                          false,
-                                                          false,
-                                                          new Date(),
+                                                          isMergeUpdate,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
                                                           methodName);
     }
 
@@ -3186,6 +3743,8 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3195,14 +3754,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_VIEW> findDatabaseViews(String userId,
-                                                 String searchString,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<DATABASE_VIEW> findDatabaseViews(String  userId,
+                                                 String  searchString,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -3218,6 +3779,8 @@ public class RelationalDataHandler<DATABASE,
                                                         null,
                                                         startFrom,
                                                         pageSize,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         effectiveTime,
                                                         methodName);
     }
@@ -3230,6 +3793,10 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3239,14 +3806,18 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_VIEW> getViewsForDatabaseAsset(String userId,
-                                                        String databaseAssetGUID,
-                                                        int    startFrom,
-                                                        int    pageSize,
-                                                        Date   effectiveTime,
-                                                        String methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<DATABASE_VIEW> getViewsForDatabaseAsset(String  userId,
+                                                        String  databaseAssetGUID,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        Date    effectiveFrom,
+                                                        Date    effectiveTo,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        String  methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseAssetGUID";
 
@@ -3262,6 +3833,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   effectiveFrom,
+                                                                                   effectiveTo,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
                                                                                    effectiveTime,
                                                                                    methodName);
 
@@ -3276,6 +3851,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                null,
                                                                                startFrom,
                                                                                pageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
                                                                                effectiveTime,
                                                                                methodName);
         }
@@ -3290,8 +3867,11 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param name name to search for
+     * @param nameParameterName name of the search name parameter
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3301,17 +3881,18 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_VIEW>   getDatabaseViewsByName(String userId,
-                                                        String name,
-                                                        int    startFrom,
-                                                        int    pageSize,
-                                                        Date   effectiveTime,
-                                                        String methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<DATABASE_VIEW>   getDatabaseViewsByName(String  userId,
+                                                        String  name,
+                                                        String  nameParameterName,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        String  methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        final String nameParameterName = "name";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
@@ -3323,6 +3904,8 @@ public class RelationalDataHandler<DATABASE,
                                                              null,
                                                              startFrom,
                                                              pageSize,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              effectiveTime,
                                                              methodName);
     }
@@ -3333,6 +3916,8 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3342,12 +3927,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATABASE_VIEW getDatabaseViewByGUID(String userId,
-                                               String guid,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public DATABASE_VIEW getDatabaseViewByGUID(String  userId,
+                                               String  guid,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -3357,6 +3944,8 @@ public class RelationalDataHandler<DATABASE,
                                                       OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                       null,
                                                       null,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
                                                       effectiveTime,
                                                       methodName);
     }
@@ -3371,8 +3960,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -3476,6 +4065,10 @@ public class RelationalDataHandler<DATABASE,
                                          typeName,
                                          extendedProperties,
                                          vendorProperties,
+                                         null,
+                                         null,
+                                         false,
+                                         false,
                                          new Date(),
                                          methodName);
     }
@@ -3484,8 +4077,8 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -3514,6 +4107,10 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3554,6 +4151,10 @@ public class RelationalDataHandler<DATABASE,
                                        String               typeName,
                                        Map<String, Object>  extendedProperties,
                                        Map<String, String>  vendorProperties,
+                                       Date                 effectiveFrom,
+                                       Date                 effectiveTo,
+                                       boolean              forLineage,
+                                       boolean              forDuplicateProcessing,
                                        Date                 effectiveTime,
                                        String               methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
@@ -3584,8 +4185,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                                                          null,
                                                                                          null,
-                                                                                         false,
-                                                                                         false,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
                                                                                          effectiveTime,
                                                                                          methodName);
 
@@ -3662,8 +4263,8 @@ public class RelationalDataHandler<DATABASE,
                                                                              OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                              2,
-                                                                             false,
-                                                                             false,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
                                                                              effectiveTime,
                                                                              methodName);
 
@@ -3715,6 +4316,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                              validValuesSetGUID);
 
             schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+            schemaAttributeBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
             /*
              * The formula is set if the column is derived
@@ -3733,9 +4335,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                      databaseManagerName,
                                                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                                                     qualifiedName,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                      schemaAttributeBuilder,
+                                                                                     effectiveTime,
                                                                                      methodName);
 
             if (databaseColumnGUID != null)
@@ -3754,14 +4355,22 @@ public class RelationalDataHandler<DATABASE,
                                                            databaseColumnGUID,
                                                            databaseColumnGUIDParameterName,
                                                            OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                           false,
-                                                           false,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
                                                            parentAttachmentTypeGUID,
                                                            parentAttachmentTypeName,
                                                            null,
+                                                           effectiveFrom,
+                                                           effectiveTo,
+                                                           effectiveTime,
                                                            methodName);
 
-                databaseColumnHandler.setVendorProperties(userId, databaseColumnGUID, vendorProperties, methodName);
+                databaseColumnHandler.setVendorProperties(userId,
+                                                          databaseColumnGUID,
+                                                          vendorProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime, methodName);
                 return databaseColumnGUID;
             }
 
@@ -3786,12 +4395,17 @@ public class RelationalDataHandler<DATABASE,
      * Create a new query relationship for a derived database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the database column that this query supports
      * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
      * @param query the query that is made on the targetGUID
      * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a column)
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -3805,6 +4419,11 @@ public class RelationalDataHandler<DATABASE,
                                           String               queryId,
                                           String               query,
                                           String               queryTargetGUID,
+                                          Date                 effectiveFrom,
+                                          Date                 effectiveTo,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          Date                 effectiveTime,
                                           String               methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -3821,14 +4440,11 @@ public class RelationalDataHandler<DATABASE,
                                                                                      query,
                                                                                      methodName);
 
-        if (queryId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
-                                                                      queryId,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                  queryId,
+                                                                  methodName);
 
         databaseColumnHandler.linkElementToElement(userId,
                                                    databaseManagerGUID,
@@ -3839,11 +4455,14 @@ public class RelationalDataHandler<DATABASE,
                                                    queryTargetGUID,
                                                    targetElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
                                                    properties,
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -3852,13 +4471,17 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database column using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3868,18 +4491,22 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseColumnFromTemplate(String userId,
-                                                   String databaseManagerGUID,
-                                                   String databaseManagerName,
-                                                   String templateGUID,
-                                                   String databaseTableGUID,
-                                                   String qualifiedName,
-                                                   String displayName,
-                                                   String description,
-                                                   Date   effectiveTime,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public String createDatabaseColumnFromTemplate(String  userId,
+                                                   String  databaseManagerGUID,
+                                                   String  databaseManagerName,
+                                                   String  templateGUID,
+                                                   String  databaseTableGUID,
+                                                   String  qualifiedName,
+                                                   String  displayName,
+                                                   String  description,
+                                                   Date    effectiveFrom,
+                                                   Date    effectiveTo,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String templateGUIDParameterName      = "templateGUID";
         final String databaseTableGUIDParameterName = "databaseTableGUID";
@@ -3906,8 +4533,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                                                          null,
                                                                                          null,
-                                                                                         false,
-                                                                                         false,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
                                                                                          effectiveTime,
                                                                                          methodName);
 
@@ -3959,8 +4586,8 @@ public class RelationalDataHandler<DATABASE,
                                                                           OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                           2,
-                                                                          false,
-                                                                          false,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
                                                                           effectiveTime,
                                                                           methodName);
             }
@@ -4021,11 +4648,14 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseColumnGUID,
                                                        databaseColumnGUIDParameterName,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        parentAttachmentTypeGUID,
                                                        parentAttachmentTypeName,
                                                        null,
+                                                       effectiveFrom,
+                                                       effectiveTo,
+                                                       effectiveTime,
                                                        methodName);
         }
 
@@ -4037,8 +4667,8 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -4065,6 +4695,12 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of RelationalColumn - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -4100,6 +4736,12 @@ public class RelationalDataHandler<DATABASE,
                                      String               typeName,
                                      Map<String, Object>  extendedProperties,
                                      Map<String, String>  vendorProperties,
+                                     Date                 effectiveFrom,
+                                     Date                 effectiveTo,
+                                     boolean              isMergeUpdate,
+                                     boolean              forLineage,
+                                     boolean              forDuplicateProcessing,
+                                     Date                 effectiveTime,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -4135,6 +4777,12 @@ public class RelationalDataHandler<DATABASE,
                                   typeName,
                                   extendedProperties,
                                   vendorProperties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  isMergeUpdate,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -4143,8 +4791,8 @@ public class RelationalDataHandler<DATABASE,
      * Update the metadata element representing a database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
@@ -4173,6 +4821,12 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate  combine supplied properties with existing properties?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -4210,6 +4864,12 @@ public class RelationalDataHandler<DATABASE,
                                      String               typeName,
                                      Map<String, Object>  extendedProperties,
                                      Map<String, String>  vendorProperties,
+                                     Date                 effectiveFrom,
+                                     Date                 effectiveTo,
+                                     boolean              isMergeUpdate,
+                                     boolean              forLineage,
+                                     boolean              forDuplicateProcessing,
+                                     Date                 effectiveTime,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -4269,12 +4929,20 @@ public class RelationalDataHandler<DATABASE,
                                                     additionalProperties,
                                                     attributeTypeName,
                                                     extendedProperties,
-                                                    false,
+                                                    effectiveFrom,
+                                                    effectiveTo,
+                                                    isMergeUpdate,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
                                                     methodName);
 
         databaseColumnHandler.setVendorProperties(userId,
                                                   databaseColumnGUID,
                                                   vendorProperties,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveTime,
                                                   methodName);
     }
 
@@ -4283,31 +4951,33 @@ public class RelationalDataHandler<DATABASE,
      * Remove the metadata element representing a database column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDatabaseColumn(String userId,
-                                     String databaseManagerGUID,
-                                     String databaseManagerName,
-                                     String databaseColumnGUID,
-                                     String qualifiedName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void removeDatabaseColumn(String  userId,
+                                     String  databaseManagerGUID,
+                                     String  databaseManagerName,
+                                     String  databaseColumnGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseColumnGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         databaseColumnHandler.deleteBeanInRepository(userId,
                                                      databaseManagerGUID,
@@ -4316,11 +4986,11 @@ public class RelationalDataHandler<DATABASE,
                                                      elementGUIDParameterName,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                     qualifiedName,
-                                                     false,
-                                                     false,
                                                      null,
+                                                     null,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
                                                      methodName);
     }
 
@@ -4333,6 +5003,8 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -4342,12 +5014,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_COLUMN>   findDatabaseColumns(String userId,
-                                                       String searchString,
-                                                       int    startFrom,
-                                                       int    pageSize,
-                                                       Date   effectiveTime,
-                                                       String methodName) throws InvalidParameterException,
+    public List<DATABASE_COLUMN>   findDatabaseColumns(String  userId,
+                                                       String  searchString,
+                                                       int     startFrom,
+                                                       int     pageSize,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       String  methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
@@ -4365,6 +5039,8 @@ public class RelationalDataHandler<DATABASE,
                                                           null,
                                                           startFrom,
                                                           pageSize,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
                                                           effectiveTime,
                                                           methodName);
     }
@@ -4377,6 +5053,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseTableGUID unique identifier of the database table of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -4386,14 +5064,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_COLUMN> getColumnsForDatabaseTable(String userId,
-                                                            String databaseTableGUID,
-                                                            int    startFrom,
-                                                            int    pageSize,
-                                                            Date   effectiveTime,
-                                                            String methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DATABASE_COLUMN> getColumnsForDatabaseTable(String  userId,
+                                                            String  databaseTableGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseTableGUID";
 
@@ -4405,6 +5085,8 @@ public class RelationalDataHandler<DATABASE,
                                                                parentElementGUIDParameterName,
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                effectiveTime,
                                                                methodName);
     }
@@ -4418,6 +5100,8 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -4427,11 +5111,13 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_COLUMN>   getDatabaseColumnsByName(String userId,
-                                                            String name,
-                                                            int    startFrom,
-                                                            int    pageSize,
-                                                            Date   effectiveTime,
+    public List<DATABASE_COLUMN>   getDatabaseColumnsByName(String  userId,
+                                                            String  name,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
                                                             String methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -4449,6 +5135,8 @@ public class RelationalDataHandler<DATABASE,
                                                                null,
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                effectiveTime,
                                                                methodName);
     }
@@ -4459,6 +5147,8 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -4468,12 +5158,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATABASE_COLUMN getDatabaseColumnByGUID(String userId,
-                                                   String guid,
-                                                   Date   effectiveTime,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public DATABASE_COLUMN getDatabaseColumnByGUID(String  userId,
+                                                   String  guid,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -4486,6 +5178,8 @@ public class RelationalDataHandler<DATABASE,
                                                         OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         effectiveTime,
                                                         methodName);
     }
@@ -4497,14 +5191,20 @@ public class RelationalDataHandler<DATABASE,
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
      * @param name name of primary key
      * @param keyPatternOrdinal type of lifecycle and scope
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -4517,6 +5217,12 @@ public class RelationalDataHandler<DATABASE,
                                       String     databaseColumnGUID,
                                       String     name,
                                       int        keyPatternOrdinal,
+                                      Date       effectiveFrom,
+                                      Date       effectiveTo,
+                                      boolean    isMergeUpdate,
+                                      boolean    forLineage,
+                                      boolean    forDuplicateProcessing,
+                                      Date       effectiveTime,
                                       String     methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -4547,6 +5253,8 @@ public class RelationalDataHandler<DATABASE,
             throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.PRIMARY_KEY_PATTERN_PROPERTY_NAME);
         }
 
+        databaseColumnHandler.setUpEffectiveDates(properties, effectiveFrom, effectiveTo);
+
         databaseColumnHandler.setClassificationInRepository(userId,
                                                             databaseManagerGUID,
                                                             databaseManagerName,
@@ -4556,10 +5264,10 @@ public class RelationalDataHandler<DATABASE,
                                                             OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
                                                             OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
                                                             properties,
-                                                            false,
-                                                            false,
-                                                            false,
-                                                            new Date(),
+                                                            isMergeUpdate,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            effectiveTime,
                                                             methodName);
     }
 
@@ -4568,22 +5276,28 @@ public class RelationalDataHandler<DATABASE,
      * Remove the classification that this column is a primary key.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removePrimaryKeyFromColumn(String userId,
-                                           String databaseManagerGUID,
-                                           String databaseManagerName,
-                                           String databaseColumnGUID,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void removePrimaryKeyFromColumn(String  userId,
+                                           String  databaseManagerGUID,
+                                           String  databaseManagerName,
+                                           String  databaseColumnGUID,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseColumnGUID";
 
@@ -4598,9 +5312,9 @@ public class RelationalDataHandler<DATABASE,
                                                                  OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
-                                                                 false,
-                                                                 false,
-                                                                 new Date(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
                                                                  methodName);
     }
 
@@ -4610,8 +5324,8 @@ public class RelationalDataHandler<DATABASE,
      * to form a link.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
      * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
      * @param name the display name for UIs and reports
@@ -4619,23 +5333,33 @@ public class RelationalDataHandler<DATABASE,
      * @param confidence the level of confidence that the foreign key is correct.  This is a value between 0 and 100
      * @param steward the name of the steward who assigned the foreign key (or approved the discovered value)
      * @param source the id of the source of the knowledge of the foreign key
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addForeignKeyRelationship(String userId,
-                                          String databaseManagerGUID,
-                                          String databaseManagerName,
-                                          String primaryKeyColumnGUID,
-                                          String foreignKeyColumnGUID,
-                                          String name,
-                                          String description,
-                                          int    confidence,
-                                          String steward,
-                                          String source,
-                                          String methodName) throws InvalidParameterException,
+    public void addForeignKeyRelationship(String  userId,
+                                          String  databaseManagerGUID,
+                                          String  databaseManagerName,
+                                          String  primaryKeyColumnGUID,
+                                          String  foreignKeyColumnGUID,
+                                          String  name,
+                                          String  description,
+                                          int     confidence,
+                                          String  steward,
+                                          String  source,
+                                          Date    effectiveFrom,
+                                          Date    effectiveTo,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
@@ -4681,11 +5405,14 @@ public class RelationalDataHandler<DATABASE,
                                                    foreignKeyColumnGUID,
                                                    foreignElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
-                                                   properties,
+                                                   databaseColumnHandler.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -4694,24 +5421,30 @@ public class RelationalDataHandler<DATABASE,
      * Remove the foreign key relationship for the requested columns.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
+     * @param databaseManagerName unique name of software capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
      * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeForeignKeyRelationship(String userId,
-                                             String databaseManagerGUID,
-                                             String databaseManagerName,
-                                             String primaryKeyColumnGUID,
-                                             String foreignKeyColumnGUID,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void removeForeignKeyRelationship(String  userId,
+                                             String  databaseManagerGUID,
+                                             String  databaseManagerName,
+                                             String  primaryKeyColumnGUID,
+                                             String  foreignKeyColumnGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
         final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
@@ -4731,11 +5464,11 @@ public class RelationalDataHandler<DATABASE,
                                                        foreignElementGUIDParameterName,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                       false,
-                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                        OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
-                                                       null,
+                                                       effectiveTime,
                                                        methodName);
     }
 }

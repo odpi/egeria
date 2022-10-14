@@ -13,13 +13,8 @@ This may be for:
 
 Karma points are awarded automatically.  They are stored in an individual's [personal profile](personal-profile.md).
 When an individual's karma point total reaches a multiple of the karma point notification threshold,
-the Community Profile OMAS sends a notification on its [OutTopic](../../../docs/concepts/client-server/out-topic.md).
+the Community Profile OMAS sends a notification on its [OutTopic](https://egeria-project.org/concepts/out-topic).
 
-
-
-## Related information
-
-* [Configuring the notification threshold for karma points]
 
 
 ----

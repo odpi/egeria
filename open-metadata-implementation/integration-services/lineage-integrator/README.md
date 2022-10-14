@@ -1,14 +1,16 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 
 # Lineage Integrator Open Metadata Integration Service (OMIS)
 
 The Lineage Integrator OMIS supports the loading lineage information
-from a third party technology.  Specifically this include process structure, ports,
+from a third party technology.  Specifically this includes process structure, ports,
 schemas and the data assets they are working with.
+
+* [Documentation](https://egeria-project.org/services/omis/lineage-integrator/overview)
 
 ## Module Implementation
 

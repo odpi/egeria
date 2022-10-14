@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -45,6 +46,7 @@ public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -70,10 +72,12 @@ public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    profileProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    profileProperties.setRoleId(this.removeIdentifier(instanceProperties));
                     profileProperties.setTitle(this.removeTitle(instanceProperties));
                     profileProperties.setDescription(this.removeDescription(instanceProperties));
                     profileProperties.setScope(this.removeScope(instanceProperties));
+                    profileProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     profileProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     profileProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
@@ -104,6 +108,8 @@ public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
     }
 
 
+
+
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
@@ -115,13 +121,20 @@ public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
-    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return this.getNewBean(beanClass, entity, methodName);
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof PersonalRoleElement)
+        {
+            PersonalRoleElement bean = (PersonalRoleElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

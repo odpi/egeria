@@ -7,7 +7,6 @@ It is possible to maintain a list of [useful resources](../concepts/useful-resou
 with a [personal profile](../concepts/personal-profile.md), a [team](../../../docs/concepts/organizations/team.md)
 or a [community](../concepts/community.md).
 
-First locate the unique identifier (guid) of the element acting as an anchor ofr
 
 
 

@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class FindEntitiesByPropertyExecutor extends PageableEntityRepositoryExecutorBase
 {
-    private InstanceProperties matchProperties;
-    private MatchCriteria      matchCriteria;
-    private List<String>       limitResultsByClassification;
+    private final InstanceProperties matchProperties;
+    private final MatchCriteria      matchCriteria;
+    private final List<String>       limitResultsByClassification;
 
 
     /**

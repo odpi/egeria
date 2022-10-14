@@ -21,7 +21,7 @@ public abstract class OMAGServerServiceInstance
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
-    private   OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    private final  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     protected OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 

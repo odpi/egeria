@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -66,6 +66,8 @@ class AssetContextHandlerTest {
     private List<String> supportedZones;
     @Mock
     private OpenMetadataAPIGenericHandler genericHandler;
+    @Mock
+    ClockService clockService;
     @InjectMocks
     private AssetContextHandler assetContextHandler;
 
@@ -98,7 +100,8 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION,
+                 true, false, null, "isInternalTabularColumn"))
                 .thenReturn(true);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);
@@ -114,7 +117,7 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, true, false, null, "isInternalTabularColumn"))
                 .thenReturn(false);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);

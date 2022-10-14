@@ -36,16 +36,4 @@ public class DatabaseEvent extends DataEngineEventHeader {
      * @param database the database
      */
     private Database database;
-
-    /**
-     * Determines if the entities inside the database are incomplete
-     * -- GETTER --
-     * Return if the entities inside the database are incomplete
-     *
-     * @return if the entities inside the database are incomplete
-     * -- SETTER --
-     * Sets up if the entities inside the database are incomplete
-     * @param incomplete if the entities inside the database are incomplete
-     */
-    private boolean incomplete;
 }

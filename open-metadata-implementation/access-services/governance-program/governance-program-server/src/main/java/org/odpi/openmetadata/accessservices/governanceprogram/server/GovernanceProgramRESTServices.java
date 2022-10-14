@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class GovernanceProgramRESTServices
 {
-    static private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    static final private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GovernanceProgramRESTServices.class),
+    private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GovernanceProgramRESTServices.class),
                                                                       instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor

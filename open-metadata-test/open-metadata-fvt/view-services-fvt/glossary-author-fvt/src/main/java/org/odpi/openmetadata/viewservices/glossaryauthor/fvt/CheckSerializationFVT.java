@@ -15,6 +15,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
@@ -29,6 +31,8 @@ public class CheckSerializationFVT {
     private final GlossaryAuthorViewRelationshipsClient glossaryAuthorViewRelationship;
     private final GlossaryAuthorViewTermClient glossaryAuthorViewTerm;
     private final GlossaryAuthorViewGlossaryClient glossaryAuthorViewGlossary;
+    private static Logger log = LoggerFactory.getLogger(CheckSerializationFVT.class);
+
 
     private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
@@ -67,9 +71,9 @@ public class CheckSerializationFVT {
         } catch (IOException e1) {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR: " + e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -88,7 +92,7 @@ public class CheckSerializationFVT {
             System.out.println("CheckSerializationFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -121,7 +125,9 @@ public class CheckSerializationFVT {
     public void checkChildrenSerialization(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         List<Relationship> termAnchors = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
         checkCastChild(termAnchors.get(0), TermAnchor.class);
-        System.out.println("TermAnchor is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("TermAnchor is ok.");
+        }
 
         createHasA(oneTermGuid, twoTermGuid);
         List<Relationship> hasAList = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -133,7 +139,9 @@ public class CheckSerializationFVT {
 
         glossaryAuthorViewRelationship.deleteRel(userId, hasA.getGuid(), type, HAS_A);
 
-        System.out.println("HasA is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("HasA is ok.");
+        }
 
         createIsA(oneTermGuid, twoTermGuid);
         List<Relationship> isAList = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -143,7 +151,9 @@ public class CheckSerializationFVT {
         ParameterizedTypeReference<GenericResponse<IsA>> typeIsA = ParameterizedTypeReference.forType(resolvableType.getType());
 
         glossaryAuthorViewRelationship.deleteRel(userId, isA.getGuid(),typeIsA, IS_A);
-        System.out.println("IsA is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("IsA is ok.");
+        }
 
         createRelatedTerm(oneTermGuid,twoTermGuid);
         List<Relationship> relatedTerms = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -154,7 +164,9 @@ public class CheckSerializationFVT {
         ParameterizedTypeReference<GenericResponse<RelatedTerm>> typeRT = ParameterizedTypeReference.forType(resolvableType.getType());
 
         glossaryAuthorViewRelationship.deleteRel(userId, relatedTerm.getGuid(),typeRT, RELATED_TERM);
-        System.out.println("RelatedTerm is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("RelatedTerm is ok.");
+        }
 
         createTranslation(oneTermGuid, twoTermGuid);
         List<Relationship> translations = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -165,7 +177,9 @@ public class CheckSerializationFVT {
         ParameterizedTypeReference<GenericResponse<Translation>> typeT = ParameterizedTypeReference.forType(resolvableType.getType());
 
         glossaryAuthorViewRelationship.deleteRel(userId, translation.getGuid(),typeT,TRANSLATION);
-        System.out.println("Translation is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("Translation is ok.");
+        }
 
         createPreferredTerm(oneTermGuid, twoTermGuid);
         List<Relationship> preferredTerms = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -177,7 +191,9 @@ public class CheckSerializationFVT {
 
 
         glossaryAuthorViewRelationship.deleteRel(userId, preferredTerm.getGuid(),typePT,PREFERRED_TERM);
-        System.out.println("PreferredTerm is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("PreferredTerm is ok.");
+        }
 
         createSynonym(oneTermGuid, twoTermGuid);
         List<Relationship> synonyms = glossaryAuthorViewTerm.getAllRelationships(userId, oneTermGuid);
@@ -187,7 +203,9 @@ public class CheckSerializationFVT {
         ParameterizedTypeReference<GenericResponse<Synonym>> typeS = ParameterizedTypeReference.forType(resolvableType.getType());
 
         glossaryAuthorViewRelationship.deleteRel(userId, synonym.getGuid(), typeS,SYNONYM);
-        System.out.println("Synonym is ok.");
+        if (log.isDebugEnabled()) {
+            log.debug("Synonym is ok.");
+        }
     }
 
     private  <L extends Relationship, ForCast extends Relationship>ForCast checkCastChild(L line, Class<ForCast> lClass) throws GlossaryAuthorFVTCheckedException {

@@ -4,7 +4,7 @@
 # Asset Consumer's Asset Interface (AssetConsumerAssetInterface)
 
 AssetConsumerAssetInterface provides the ability to query information about an
-[asset](../../../../docs/concepts/assets).
+[asset](https://egeria-project.org/concepts/asset).
 
 The first 3 methods provide the ability to locate assets by names and descriptions.
 
@@ -21,14 +21,14 @@ The first 3 methods provide the ability to locate assets by names and descriptio
   [REST](../../../asset-consumer-server/docs/user/get-asset-list-by-name-with-rest.md)
 
 * **getAssetsByToken** - returns a list of unique identifiers for assets that exactly match the supplied token either by unique
-  identifier ([GUID](../../../../../../open-metadata-publication/website/basic-concepts/guid.md)) or name.
+  identifier ([GUID](https://egeria-project.org/concepts/guid)) or name.
   
   Implementation: 
   [Java](../../../asset-consumer-client/docs/user/java-client/get-asset-list-by-token-with-java.md)
 
 
 These next two methods enable the caller to extract the unique identifier
-([GUID](../../../../../../open-metadata-publication/website/basic-concepts/guid.md)) of an asset from a connection that is linked to it.
+([GUID](https://egeria-project.org/concepts/guid)) of an asset from a connection that is linked to it.
 
 * **getAssetForConnection** - returns the unique identifier for the asset connected to the requested connection.
   

@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -52,6 +53,7 @@ public class CommonHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final RepositoryErrorHandler errorHandler;
+    private final ClockService clockService;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -63,12 +65,14 @@ public class CommonHandler {
      * @param errorHandler      provides common validation routines for the other handler classes
      */
     CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                  OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, RepositoryErrorHandler errorHandler) {
+                  OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, RepositoryErrorHandler errorHandler,
+                  ClockService clockService) {
         this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
         this.assetHandler = assetHandler;
         this.errorHandler = errorHandler;
+        this.clockService = clockService;
     }
 
     OMRSMetadataCollection getOMRSMetadataCollection() {
@@ -76,7 +80,7 @@ public class CommonHandler {
     }
 
     /**
-     * Returns a list containing the type and all of the sub-types of the provided type
+     * Returns a list containing the type and all the sub-types of the provided type
      *
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name
@@ -205,7 +209,7 @@ public class CommonHandler {
         String methodName = "getEntityByGUID";
         return assetHandler.getEntityFromRepository(userId, guid, GUID_PARAMETER, entityTypeName,
                 null, null, false, false,
-                null, methodName);
+                clockService.getNow(), methodName);
     }
 
     /**

@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Infrastructure Integrator OMIS API'

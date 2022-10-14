@@ -17,6 +17,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
@@ -42,8 +44,10 @@ public class ProjectFVT
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for project FVT";
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A1";
     private static final String PROJECT_SCOPE = "project-scopes";
+    private static Logger log = LoggerFactory.getLogger(ProjectFVT.class);
 
-  //  private SubjectAreaProjectClient<Project> subjectAreaProject = null;
+
+    //  private SubjectAreaProjectClient<Project> subjectAreaProject = null;
     private GlossaryAuthorViewProjectClient glossaryAuthorViewProjectClient = null;
     private GlossaryAuthorViewRelationshipsClient glossaryAuthorViewRelationshipsClient = null;
     private GlossaryFVT glossaryFVT =null;
@@ -72,7 +76,9 @@ public class ProjectFVT
         this.serverName=serverName;
         this.userId=userId;
         existingProjectCount = findProjects("").size();
-        System.out.println("existingProjectCount " + existingProjectCount);
+        if (log.isDebugEnabled()) {
+            System.out.println("existingProjectCount " + existingProjectCount);
+        }
     }
     public static void runWith2Servers(String url) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
@@ -89,9 +95,9 @@ public class ProjectFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
     }
 
@@ -106,7 +112,7 @@ public class ProjectFVT
             System.out.println("ProjectFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -117,7 +123,9 @@ public class ProjectFVT
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        System.out.println("Create a project");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a project");
+        }
         Project project = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
         Project project2 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME2);
@@ -130,30 +138,46 @@ public class ProjectFVT
 
         Project projectForUpdate = new Project();
         projectForUpdate.setName(serverName+" "+DEFAULT_TEST_PROJECT_NAME3);
-        System.out.println("Get the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the project");
+        }
         String guid = project.getSystemAttributes().getGUID();
         Project gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Update the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Update the project");
+        }
         Project updatedProject = updateProject(guid, projectForUpdate);
         FVTUtils.validateNode(updatedProject);
-        System.out.println("Get the project again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the project again");
+        }
         gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Delete the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the project");
+        }
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        System.out.println("restore the project");
+        if (log.isDebugEnabled()) {
+            log.debug("restore the project");
+        }
         gotProject = restoreProject(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Delete the project again");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the project again");
+        }
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        System.out.println("Create project with the same name as a deleted one");
+        if (log.isDebugEnabled()) {
+            log.debug("Create project with the same name as a deleted one");
+        }
         project = createProject(serverName + " " + DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
 
-        System.out.println("create projects to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create projects to find");
+        }
         Project projectForFind1 = getProjectForInput(DEFAULT_TEST_PROJECT_NAME7);
         projectForFind1.setQualifiedName(DEFAULT_TEST_PROJECT_NAME6);
         projectForFind1 = issueCreateProject(projectForFind1);
@@ -197,10 +221,14 @@ public class ProjectFVT
         //create relationhip for a project and retriev it
         Project project8 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME8);
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        }
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
-        System.out.println("Create a project scope relationship between called " + DEFAULT_TEST_TERM_NAME + " and " + DEFAULT_TEST_PROJECT_NAME8);
+        if (log.isDebugEnabled()) {
+            log.debug("Create a project scope relationship between called " + DEFAULT_TEST_TERM_NAME + " and " + DEFAULT_TEST_PROJECT_NAME8);
+        }
         createProjectScope(project8,term1);
 
         List<Relationship> prjRelationships = getProjectRelationships(project8);
@@ -221,7 +249,9 @@ public class ProjectFVT
         if (newProject != null)
         {
             createdProjectsSet.add(newProject.getSystemAttributes().getGUID());
-            System.out.println("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
+            if (log.isDebugEnabled()) {
+                log.debug("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
+            }
         }
         return newProject;
     }
@@ -247,7 +277,9 @@ public class ProjectFVT
     public  Project getProjectByGUID(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Project project = glossaryAuthorViewProjectClient.getByGUID(this.userId, guid);
         FVTUtils.validateNode(project);
-        System.out.println("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        if (log.isDebugEnabled()) {
+            log.debug("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        }
 
         return project;
     }
@@ -255,20 +287,26 @@ public class ProjectFVT
     public  Project updateProject(String guid, Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Project updatedProject = glossaryAuthorViewProjectClient.update(this.userId, guid, project,false);
         FVTUtils.validateNode(updatedProject);
-        System.out.println("Updated Project name to " + updatedProject.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Project name to " + updatedProject.getName());
+        }
         return updatedProject;
     }
 
     public void deleteProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         glossaryAuthorViewProjectClient.delete(this.userId, guid);
             createdProjectsSet.remove(guid);
-            System.out.println("Deleted Project succeeded");
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Project succeeded");
+        }
     }
     public Project restoreProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Project restoredProject = glossaryAuthorViewProjectClient.restore(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
         createdProjectsSet.add(restoredProject.getSystemAttributes().getGUID());
-        System.out.println("Restored Project name is " + restoredProject.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Project name is " + restoredProject.getName());
+        }
         return restoredProject;
     }
 
@@ -287,7 +325,6 @@ public class ProjectFVT
 
         ProjectScope createdProjectScope = glossaryAuthorViewRelationshipsClient.createRel(this.userId, projectScope,type, PROJECT_SCOPE);
         FVTUtils.validateRelationship(createdProjectScope);
-//        System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
         return createdProjectScope;
     }
 

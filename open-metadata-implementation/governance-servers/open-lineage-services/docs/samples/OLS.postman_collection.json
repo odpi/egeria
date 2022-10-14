@@ -1,17 +1,16 @@
 {
 	"info": {
-		"_postman_id": "436076a7-e08e-4e6a-8ae5-291d0bced55c",
+		"_postman_id": "6f3888a2-91c6-4250-b867-2270d5600201",
 		"name": "OLS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "0.1.event bus",
+			"name": "0.1 Event Bus",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "34d958cd-930e-4188-ab32-b07ea9c06664",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -70,12 +69,11 @@
 			"response": []
 		},
 		{
-			"name": "0.2.set server url",
+			"name": "0.2 Set Server URL",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "d3768d0b-1e7a-49c5-ba40-9a0587b17098",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -130,12 +128,11 @@
 			"response": []
 		},
 		{
-			"name": "0.3.cohort",
+			"name": "0.3 Cohort",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "a2902433-40e0-4a74-a999-67452a342213",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -185,12 +182,11 @@
 			"response": []
 		},
 		{
-			"name": "0.4.1.configure OLS - embedded",
+			"name": "0.4.1 Configure OLS - Embedded",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "eea1c191-4d1a-47d6-9558-0f647374a2f5",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -240,12 +236,11 @@
 			"response": []
 		},
 		{
-			"name": "0.4.1.configure OLS - remote",
+			"name": "0.4.1 Configure OLS - Remote",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "96bc2b97-f5de-49bb-b864-953bbf439830",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -295,12 +290,11 @@
 			"response": []
 		},
 		{
-			"name": "0.4.2. get configuration OLS",
+			"name": "0.4.2 Get Configuration OLS",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "8a70b642-46f0-48c3-b14e-ad5832452ec3",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -352,12 +346,11 @@
 			"response": []
 		},
 		{
-			"name": "0.5.Start",
+			"name": "0.5 Start",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "f01d02d1-0993-4589-bc0d-69fa7eb8306c",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -404,7 +397,7 @@
 			"response": []
 		},
 		{
-			"name": "Query Lineage - End to end",
+			"name": "1. Query Lineage - End to end",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -440,7 +433,7 @@
 			"response": []
 		},
 		{
-			"name": "Query Lineage - Vertical",
+			"name": "2. Query Lineage - Vertical",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -476,7 +469,7 @@
 			"response": []
 		},
 		{
-			"name": "Query Lineage - Source and Destination",
+			"name": "3. Query Lineage - Source and Destination",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -506,6 +499,115 @@
 						"lineage",
 						"entities",
 						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Query Lineage - Types",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Query Lineage - Nodes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/nodes?type={{type}}&name={{name}}&limit={{limit}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"nodes"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "{{type}}"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}"
+						},
+						{
+							"key": "limit",
+							"value": "{{limit}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Search Database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"queriedNode\": {\n        \"type\": \"Process\"\n    },\n    \"relatedNodes\": [\n        {\n            \"type\": \"RelationalTable\",\n            \"name\": \"table_name\"\n        }\n        \n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/search",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"search"
 					]
 				}
 			},

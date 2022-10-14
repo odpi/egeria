@@ -23,7 +23,7 @@ public class ITInfrastructureOutTopicClientConnector extends OpenMetadataTopicLi
 {
     private static final Logger log = LoggerFactory.getLogger(ITInfrastructureOutTopicClientConnector.class);
 
-    private List<ITInfrastructureEventListener> internalEventListeners = new ArrayList<>();
+    private final List<ITInfrastructureEventListener> internalEventListeners = new ArrayList<>();
 
 
     /**

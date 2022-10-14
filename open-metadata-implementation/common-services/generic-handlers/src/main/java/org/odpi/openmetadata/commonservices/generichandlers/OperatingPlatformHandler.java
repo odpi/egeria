@@ -70,21 +70,22 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
 
 
     /**
-     * Create a definition of a operating platform. 
+     * Create a definition of an operating platform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the operating platform - used in other configuration
      * @param name short display name for the operating platform
      * @param description description of the operating platform
      * @param operatingSystem the operating system running on this platform
      * @param byteOrdering the identifier of the endianness
-     * @param additionalProperties additional properties for a operating platform
+     * @param additionalProperties additional properties for an operating platform
      * @param suppliedTypeName type of operatingPlatform
-     * @param extendedProperties  properties for a operating platform subtype
+     * @param extendedProperties  properties for an operating platform subtype
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -104,6 +105,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                          Map<String, Object> extendedProperties,
                                          Date                effectiveFrom,
                                          Date                effectiveTo,
+                                         Date                effectiveTime,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -141,9 +143,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     externalSourceName,
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
-                                    qualifiedName,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     builder,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -152,8 +153,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * Update the operating platform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param operatingPlatformGUID unique identifier of the operating platform to update
      * @param operatingPlatformGUIDParameterName parameter passing the operatingPlatformGUID
      * @param qualifiedName unique name for the operating platform - used in other configuration
@@ -162,11 +163,14 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param operatingSystem name of the operating system running on the platform
      * @param byteOrdering byte ordering used by the hardware
      * @param additionalProperties additional properties for a governance operatingPlatform
-     * @param suppliedTypeName name of sub type or null
+     * @param suppliedTypeName name of subtype or null
      * @param extendedProperties  properties for a governance operatingPlatform subtype
      * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -189,6 +193,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                           boolean             isMergeUpdate,
                                           Date                effectiveFrom,
                                           Date                effectiveTo,
+                                          boolean             forLineage,
+                                          boolean             forDuplicateProcessing,
+                                          Date                effectiveTime,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -227,8 +234,6 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
-
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -236,8 +241,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     operatingPlatformGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
@@ -250,32 +255,38 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * Create a relationship between a host and an operating platform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param hostGUID unique identifier of the host
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param operatingPlatformGUID unique identifier of the operating platform
      * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupHostOperatingPlatform(String userId,
-                                           String externalSourceGUID,
-                                           String externalSourceName,
-                                           String hostGUID,
-                                           String hostGUIDParameterName,
-                                           String operatingPlatformGUID,
-                                           String operatingPlatformGUIDParameterName,
-                                           Date   effectiveFrom,
-                                           Date   effectiveTo,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void setupHostOperatingPlatform(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  hostGUID,
+                                           String  hostGUIDParameterName,
+                                           String  operatingPlatformGUID,
+                                           String  operatingPlatformGUIDParameterName,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -286,12 +297,15 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   operatingPlatformGUID,
                                   operatingPlatformGUIDParameterName,
                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
-                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -300,13 +314,15 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * Remove a relationship between a host and an operating platform..
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param hostGUID unique identifier of the host
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param operatingPlatformGUID unique identifier of the operating platform
      * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -320,10 +336,12 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                              String hostGUIDParameterName,
                                              String operatingPlatformGUID,
                                              String operatingPlatformGUIDParameterName,
-                                             Date   effectiveTime,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -336,8 +354,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       operatingPlatformGUIDParameterName,
                                       OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                       OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
                                       effectiveTime,
@@ -349,24 +367,30 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * Remove the metadata element representing a operatingPlatform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param operatingPlatformGUID unique identifier of the metadata element to remove
      * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeOperatingPlatform(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String operatingPlatformGUID,
-                                        String operatingPlatformGUIDParameterName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void removeOperatingPlatform(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  operatingPlatformGUID,
+                                        String  operatingPlatformGUIDParameterName,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -377,9 +401,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
     
@@ -390,7 +414,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param userId calling user
      * @param qualifiedName unique name for the operating platform
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the operating platform
@@ -399,13 +425,15 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public B getOperatingPlatform(String userId,
-                                  String qualifiedName,
-                                  String qualifiedNameParameter,
-                                  Date   effectiveTime,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public B getOperatingPlatform(String  userId,
+                                  String  qualifiedName,
+                                  String  qualifiedNameParameter,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         return this.getBeanByUniqueName(userId,
                                         qualifiedName,
@@ -413,6 +441,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                         OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
     }
@@ -423,7 +453,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      *
      * @param userId calling user
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *

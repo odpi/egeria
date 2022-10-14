@@ -1,17 +1,17 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-Certification-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.CertificationManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,15 +23,8 @@ import java.util.List;
 /**
  * CertificationManager is the java client for managing certification types and the certification of elements.
  */
-public class CertificationManager implements CertificationManagementInterface
+public class CertificationManager extends GovernanceProgramBaseClient implements CertificationManagementInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -43,13 +36,7 @@ public class CertificationManager implements CertificationManagementInterface
     public CertificationManager(String serverName,
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -69,13 +56,7 @@ public class CertificationManager implements CertificationManagementInterface
                                 String     userId,
                                 String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -95,14 +76,7 @@ public class CertificationManager implements CertificationManagementInterface
                                 int      maxPageSize,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -126,19 +100,12 @@ public class CertificationManager implements CertificationManagementInterface
                                 int        maxPageSize,
                                 AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -152,14 +119,7 @@ public class CertificationManager implements CertificationManagementInterface
                                 GovernanceProgramRESTClient restClient,
                                 int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -184,33 +144,14 @@ public class CertificationManager implements CertificationManagementInterface
     public String createCertificationType(String                      userId,
                                           CertificationTypeProperties properties,
                                           GovernanceDefinitionStatus  initialStatus) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        final String   methodName = "createCertificationType";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";
+        final String methodName = "createCertificationType";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";
+        final String propertiesParameterName = "properties";
 
-        final String   docIdParameterName = "documentIdentifier";
-        final String   titleParameterName = "title";
-        final String   propertiesParameterName = "properties";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-
-        CertificationTypeRequestBody requestBody = new CertificationTypeRequestBody();
-
-        requestBody.setProperties(properties);
-        requestBody.setInitialStatus(initialStatus);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
     }
 
 
@@ -235,30 +176,18 @@ public class CertificationManager implements CertificationManagementInterface
                                                                                        PropertyServerException
     {
         final String methodName = "updateCertificationType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/update?isMergeUpdate={3}";
-
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/update?isMergeUpdate={3}";
         final String guidParameterName = "certificationTypeGUID";
-        final String docIdParameterName = "documentIdentifier";
-        final String titleParameterName = "title";
         final String propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(certificationTypeGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        certificationTypeGUID,
-                                        isMergeUpdate);
+        super.updateGovernanceDefinition(userId,
+                                         certificationTypeGUID,
+                                         guidParameterName,
+                                         isMergeUpdate,
+                                         properties,
+                                         propertiesParameterName,
+                                         urlTemplate,
+                                         methodName);
     }
 
 
@@ -279,18 +208,10 @@ public class CertificationManager implements CertificationManagementInterface
                                                                              PropertyServerException
     {
         final String methodName = "deleteCertificationType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/delete";
         final String guidParameterName = "certificationTypeGUID";
 
-        invalidParameterHandler.validateGUID(certificationTypeGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        certificationTypeGUID);
+        super.removeReferenceable(userId, certificationTypeGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
@@ -313,7 +234,7 @@ public class CertificationManager implements CertificationManagementInterface
                                                                                                     PropertyServerException
     {
         final String methodName = "getCertificationTypeByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}";
 
         final String guidParameterName = "certificationTypeGUID";
 
@@ -321,7 +242,7 @@ public class CertificationManager implements CertificationManagementInterface
         invalidParameterHandler.validateGUID(certificationTypeGUID, guidParameterName, methodName);
 
         CertificationTypeResponse restResult = restClient.callCertificationTypeGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      certificationTypeGUID);
@@ -349,7 +270,7 @@ public class CertificationManager implements CertificationManagementInterface
                                                                                                   PropertyServerException
     {
         final String   methodName = "getCertificationTypeByDocId";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-document-id/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-document-id/{2}";
 
         final String   documentIdParameterName = "documentId";
 
@@ -357,7 +278,7 @@ public class CertificationManager implements CertificationManagementInterface
         invalidParameterHandler.validateName(documentIdentifier, documentIdParameterName, methodName);
 
         CertificationTypeResponse restResult = restClient.callCertificationTypeGetRESTCall(methodName,
-                                                                                           serverPlatformURLRoot + urlTemplate,
+                                                                                           urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            documentIdentifier);
@@ -367,14 +288,14 @@ public class CertificationManager implements CertificationManagementInterface
 
 
     /**
-     * Retrieve all of the certification types for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the certification types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title short description of the role
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *
-     * @return list of matching roles (null if no matching elements)
+     * @return list of matching certification types (null if no matching elements)
      *
      * @throws InvalidParameterException title or userId is null
      * @throws PropertyServerException problem accessing property server
@@ -389,7 +310,7 @@ public class CertificationManager implements CertificationManagementInterface
                                                                                                PropertyServerException
     {
         final String methodName = "getCertificationTypesByTitle";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-title?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-title?startFrom={2}&pageSize={3}";
         final String titleParameterName = "title";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -403,7 +324,7 @@ public class CertificationManager implements CertificationManagementInterface
         requestBody.setSearchStringParameterName(titleParameterName);
 
         CertificationTypeListResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
-                                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                                    urlTemplate,
                                                                                                     requestBody,
                                                                                                     serverName,
                                                                                                     userId,
@@ -415,7 +336,7 @@ public class CertificationManager implements CertificationManagementInterface
 
 
     /**
-     * Retrieve all of the certification type definitions for a specific governance domain.
+     * Retrieve all the certification type definitions for a specific governance domain.
      *
      * @param userId calling user
      * @param domainIdentifier identifier to search for
@@ -437,14 +358,14 @@ public class CertificationManager implements CertificationManagementInterface
                                                                                                          PropertyServerException
     {
         final String methodName = "getCertificationTypeByDomainId";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-domain/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-domain/{2}?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         CertificationTypeListResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    domainIdentifier,
@@ -467,45 +388,42 @@ public class CertificationManager implements CertificationManagementInterface
      * @param certificationTypeGUID unique identifier for the certification type
      * @param properties the properties of the certification
      *
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void certifyElement(String                  userId,
-                               String                  elementGUID,
-                               String                  certificationTypeGUID,
-                               CertificationProperties properties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String certifyElement(String                  userId,
+                                 String                  elementGUID,
+                                 String                  certificationTypeGUID,
+                                 CertificationProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "certifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/elements/{3}/certify";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certification-types/{3}/certify";
 
         final String elementGUIDParameterName = "elementGUID";
         final String certificationTypeGUIDParameterName = "certificationTypeGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(certificationTypeGUID, certificationTypeGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        certificationTypeGUID,
-                                        elementGUID);
+        return super.setupMultiLinkRelationship(userId,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                null,
+                                                properties,
+                                                certificationTypeGUID,
+                                                certificationTypeGUIDParameterName,
+                                                urlTemplate,
+                                                methodName);
     }
 
 
     /**
-     * Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
-     * certifications for the same certification type.
+     * Update the properties of a certification.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being certified
-     * @param certificationTypeGUID unique identifier for the certification type
+     * @param certificationGUID unique identifier of the certification relationship being updated
      * @param isMergeUpdate should the supplied properties overlay the existing properties or replace them
      * @param properties the properties of the certification
      *
@@ -515,31 +433,25 @@ public class CertificationManager implements CertificationManagementInterface
      */
     @Override
     public void updateCertification(String                  userId,
-                                    String                  elementGUID,
-                                    String                  certificationTypeGUID,
+                                    String                  certificationGUID,
                                     boolean                 isMergeUpdate,
                                     CertificationProperties properties)  throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
         final String methodName = "updateCertification";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/elements/{3}/update?isMergeUpdate={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/update?isMergeUpdate={3}";
 
-        final String elementGUIDParameterName = "elementGUID";
-        final String certificationTypeGUIDParameterName = "certificationTypeGUID";
+        final String certificationGUIDParameterName = "certificationGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(certificationTypeGUID, certificationTypeGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        certificationTypeGUID,
-                                        elementGUID,
-                                        isMergeUpdate);
+        super.updateRelationship(userId,
+                                 certificationGUID,
+                                 certificationGUIDParameterName,
+                                 isMergeUpdate,
+                                 null,
+                                 properties,
+                                 urlTemplate,
+                                 methodName);
     }
 
 
@@ -547,9 +459,7 @@ public class CertificationManager implements CertificationManagementInterface
      * Remove the certification for an element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being certified
-     * @param certificationTypeGUID unique identifier for the certification type
-     * @param certificateId optional unique identifier from the certification authority - it is used to disambiguate the certifications for the element.
+     * @param certificationGUID unique identifier of the certification relationship
      *
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
@@ -557,32 +467,94 @@ public class CertificationManager implements CertificationManagementInterface
      */
     @Override
     public void decertifyElement(String userId,
-                                 String elementGUID,
-                                 String certificationTypeGUID,
-                                 String certificateId)  throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                 String certificationGUID)  throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String methodName = "decertifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/elements/{3}/decertify";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/delete";
 
-        final String elementGUIDParameterName = "elementGUID";
-        final String certificationTypeGUIDParameterName = "certificationTypeGUID";
+        final String certificationGUIDParameterName = "certificationGUID";
+
+        super.clearRelationship(userId,
+                                certificationGUID,
+                                certificationGUIDParameterName,
+                                null,
+                                urlTemplate,
+                                methodName);
+    }
+
+
+
+    /**
+     * Return information about the elements linked to a certification.
+     *
+     * @param userId calling user
+     * @param certificationTypeGUID unique identifier for the certification
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the certification
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<RelatedElement> getCertifiedElements(String userId,
+                                                     String certificationTypeGUID,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "getCertifiedElements";
+        final String guidParameter = "certificationTypeGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/certifications/{2}?&startFrom={3}&pageSize={4}";
+
+        return super.getRelatedElements(userId, certificationTypeGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return information about the certifications linked to an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the certification
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the certification
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<RelatedElement> getCertifications(String userId,
+                                                  String elementGUID,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String methodName = "getLicences";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certifications?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(certificationTypeGUID, certificationTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
-        CertificateIdRequestBody requestBody = new CertificateIdRequestBody();
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        requestBody.setCertificateId(certificateId);
+        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             elementGUID,
+                                                                                             startFrom,
+                                                                                             queryPageSize);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        certificationTypeGUID,
-                                        elementGUID);
+        return restResult.getElementList();
     }
 }

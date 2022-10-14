@@ -25,16 +25,16 @@ import java.util.Map;
  */
 public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL, LINEAGE_MAPPING> extends ReferenceableHandler<PROCESS>
 {
-    private AssetHandler<PROCESS>                            processHandler;
-    private PortHandler<PORT>                                portHandler;
-    private OpenMetadataAPIGenericConverter<DATA_FLOW>       dataFlowConverter;
-    private Class<DATA_FLOW>                                 dataFlowBeanClass;
-    private OpenMetadataAPIGenericConverter<CONTROL_FLOW>    controlFlowConverter;
-    private Class<CONTROL_FLOW>                              controlFlowBeanClass;
-    private OpenMetadataAPIGenericConverter<PROCESS_CALL>    processCallConverter;
-    private Class<PROCESS_CALL>                              processCallBeanClass;
-    private OpenMetadataAPIGenericConverter<LINEAGE_MAPPING> lineageMappingConverter;
-    private Class<LINEAGE_MAPPING>                           lineageMappingClass;
+    private final AssetHandler<PROCESS>                            processHandler;
+    private final PortHandler<PORT>                                portHandler;
+    private final OpenMetadataAPIGenericConverter<DATA_FLOW>       dataFlowConverter;
+    private final Class<DATA_FLOW>                                 dataFlowBeanClass;
+    private final OpenMetadataAPIGenericConverter<CONTROL_FLOW>    controlFlowConverter;
+    private final Class<CONTROL_FLOW>                              controlFlowBeanClass;
+    private final OpenMetadataAPIGenericConverter<PROCESS_CALL>    processCallConverter;
+    private final Class<PROCESS_CALL>                              processCallBeanClass;
+    private final OpenMetadataAPIGenericConverter<LINEAGE_MAPPING> lineageMappingConverter;
+    private final Class<LINEAGE_MAPPING>                           lineageMappingClass;
 
 
     /**
@@ -150,17 +150,21 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Create a new metadata element to represent a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param technicalName the stored name property for the process
+     * @param versionIdentifier the stored version identifier property for the process
+     * @param technicalDescription the stored description property associated with the process
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param suppliedExtendedProperties properties from any subtype
      * @param initialStatus status value for the new process (default = ACTIVE)
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new process
@@ -174,6 +178,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              externalSourceName,
                                 String              qualifiedName,
                                 String              technicalName,
+                                String              versionIdentifier,
                                 String              technicalDescription,
                                 String              formula,
                                 String              implementationLanguage,
@@ -181,6 +186,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              suppliedTypeName,
                                 Map<String, Object> suppliedExtendedProperties,
                                 InstanceStatus      initialStatus,
+                                Date                effectiveFrom,
+                                Date                effectiveTo,
+                                Date                effectiveTime,
                                 String              methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -225,11 +233,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       externalSourceName,
                                                       qualifiedName,
                                                       technicalName,
+                                                      versionIdentifier,
                                                       technicalDescription,
                                                       additionalProperties,
                                                       typeName,
                                                       extendedProperties,
                                                       initialStatus,
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      effectiveTime,
                                                       methodName);
     }
 
@@ -238,14 +250,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Create a new metadata element to represent a process using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateGUIDParameterName parameter supplying templateGUID
      * @param qualifiedName unique name for the term - used in other configuration
      * @param qualifiedNameParameterName parameter supplying qualifiedName
-     * @param displayName short display name for the term
-     * @param description description of the  term
+     * @param technicalName short name for the process
+     * @param versionIdentifier version identifier for the process
+     * @param description description of the process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new process
@@ -254,18 +270,22 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcessFromTemplate(String userId,
-                                            String externalSourceGUID,
-                                            String externalSourceName,
-                                            String templateGUID,
-                                            String templateGUIDParameterName,
-                                            String qualifiedName,
-                                            String qualifiedNameParameterName,
-                                            String displayName,
-                                            String description,
-                                            String methodName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String createProcessFromTemplate(String  userId,
+                                            String  externalSourceGUID,
+                                            String  externalSourceName,
+                                            String  templateGUID,
+                                            String  templateGUIDParameterName,
+                                            String  qualifiedName,
+                                            String  qualifiedNameParameterName,
+                                            String  technicalName,
+                                            String  versionIdentifier,
+                                            String  description,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         return processHandler.addAssetFromTemplate(userId,
                                                    externalSourceGUID,
@@ -276,9 +296,14 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                    qualifiedName,
                                                    qualifiedNameParameterName,
-                                                   displayName,
+                                                   technicalName,
+                                                   versionIdentifier,
                                                    description,
                                                    null,
+                                                   null,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -287,19 +312,25 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Update the metadata element representing a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the metadata element to update
      * @param processGUIDParameterName unique identifier of the process in the external process manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param technicalName the stored name property for the process
+     * @param versionIdentifier version identifier for the process
+     * @param technicalDescription the stored description property associated with the process
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param suppliedExtendedProperties properties from any subtype
+     * @param effectiveFrom time when this process becomes visible to queries - null for any time
+     * @param effectiveTo time when this process stops being visible to queries - null for never
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -314,12 +345,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               boolean             isMergeUpdate,
                               String              qualifiedName,
                               String              technicalName,
+                              String              versionIdentifier,
                               String              technicalDescription,
                               String              formula,
                               String              implementationLanguage,
                               Map<String, String> additionalProperties,
                               String              suppliedTypeName,
                               Map<String, Object> suppliedExtendedProperties,
+                              Date                effectiveFrom,
+                              Date                effectiveTo,
+                              boolean             forLineage,
+                              boolean             forDuplicateProcessing,
+                              Date                effectiveTime,
                               String              methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -366,12 +403,19 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    processGUIDParameterName,
                                    qualifiedName,
                                    technicalName,
+                                   versionIdentifier,
                                    technicalDescription,
                                    additionalProperties,
                                    typeGUID,
                                    typeName,
+                                   supportedZones,
                                    extendedProperties,
+                                   effectiveFrom,
+                                   effectiveTo,
                                    isMergeUpdate,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -380,12 +424,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Update the status of the metadata element representing a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process to update
      * @param processGUIDParameterName unique identifier of the process in the external process manager
      * @param processStatus new status for the process
      * @param processStatusParameterName parameter supplying processStatus
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -399,6 +446,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                     String         processGUIDParameterName,
                                     InstanceStatus processStatus,
                                     String         processStatusParameterName,
+                                    boolean        forLineage,
+                                    boolean        forDuplicateProcessing,
+                                    Date           effectiveTime,
                                     String         methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -410,12 +460,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                           processGUIDParameterName,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           processStatus,
                                           processStatusParameterName,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -424,8 +474,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Create a parent-child relationship between two processes.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param parentProcessGUIDParameterName parameter supplying parentProcessGUID
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
@@ -433,25 +483,31 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param containmentType describes the ownership of the sub-process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessParent(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String parentProcessGUID,
-                                   String parentProcessGUIDParameterName,
-                                   String childProcessGUID,
-                                   String childProcessGUIDParameterName,
-                                   Date   effectiveFrom,
-                                   Date   effectiveTo,
-                                   int    containmentType,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void setupProcessParent(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  parentProcessGUID,
+                                   String  parentProcessGUIDParameterName,
+                                   String  childProcessGUID,
+                                   String  childProcessGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   int     containmentType,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         InstanceProperties properties;
 
@@ -479,15 +535,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                             childProcessGUID,
                                             childProcessGUIDParameterName,
                                             OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             supportedZones,
                                             OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
                                             OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
                                             properties,
                                             effectiveFrom,
                                             effectiveTo,
-                                            null,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -496,28 +552,34 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove a parent-child relationship between two processes.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param parentProcessGUIDParameterName parameter supplying parentProcessGUID
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
      * @param childProcessGUIDParameterName parameter supplying childProcessGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessParent(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String parentProcessGUID,
-                                   String parentProcessGUIDParameterName,
-                                   String childProcessGUID,
-                                   String childProcessGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void clearProcessParent(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  parentProcessGUID,
+                                   String  parentProcessGUIDParameterName,
+                                   String  childProcessGUID,
+                                   String  childProcessGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         processHandler.unlinkElementFromElement(userId,
                                                 false,
@@ -530,12 +592,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                 childProcessGUIDParameterName,
                                                 OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                                false,
-                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 supportedZones,
                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
-                                                null,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -548,20 +610,32 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to publish
      * @param processGUIDParameterName parameter supplying processGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishProcess(String userId,
-                               String processGUID,
-                               String processGUIDParameterName,
-                               String methodName) throws InvalidParameterException,
+    public void publishProcess(String  userId,
+                               String  processGUID,
+                               String  processGUIDParameterName,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        processHandler.publishAsset(userId, processGUID, processGUIDParameterName, methodName);
+        processHandler.publishAsset(userId,
+                                    processGUID,
+                                    processGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -571,20 +645,32 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
      * @param processGUIDParameterName parameter supplying processGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawProcess(String userId,
-                                String processGUID,
-                                String processGUIDParameterName,
-                                String methodName) throws InvalidParameterException,
+    public void withdrawProcess(String  userId,
+                                String  processGUID,
+                                String  processGUIDParameterName,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        processHandler.publishAsset(userId, processGUID, processGUIDParameterName, methodName);
+        processHandler.publishAsset(userId,
+                                    processGUID,
+                                    processGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -592,24 +678,30 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the metadata element representing a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the metadata element to remove
      * @param processGUIDParameterName unique identifier of the process in the external process manager
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeProcess(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String processGUID,
-                              String processGUIDParameterName,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void removeProcess(String  userId,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
+                              String  processGUID,
+                              String  processGUIDParameterName,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
         processHandler.deleteBeanInRepository(userId,
                                               externalSourceGUID,
@@ -620,9 +712,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                               null,
                                               null,
-                                              false,
-                                              false,
-                                              new Date(),
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
                                               methodName);
     }
 
@@ -636,6 +728,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -644,14 +739,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PROCESS> findProcesses(String userId,
-                                       String searchString,
-                                       String searchStringParameterName,
-                                       int    startFrom,
-                                       int    pageSize,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<PROCESS> findProcesses(String  userId,
+                                       String  searchString,
+                                       String  searchStringParameterName,
+                                       int     startFrom,
+                                       int     pageSize,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -664,7 +762,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                          searchStringParameterName,
                                          startFrom,
                                          validatedPageSize,
-                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
                                          methodName);
     }
 
@@ -678,7 +778,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -687,15 +789,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PROCESS>   getProcessesByName(String userId,
-                                              String name,
-                                              String nameParameterName,
-                                              int    startFrom,
-                                              int    pageSize,
-                                              Date   effectiveTime,
-                                              String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<PROCESS>   getProcessesByName(String  userId,
+                                              String  name,
+                                              String  nameParameterName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         return processHandler.getAssetsByName(userId,
                                               OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
@@ -705,6 +809,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               supportedZones,
                                               startFrom,
                                               pageSize,
+                                              forLineage,
+                                              forDuplicateProcessing,
                                               effectiveTime,
                                               methodName);
     }
@@ -716,7 +822,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -725,20 +833,22 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PROCESS getProcessByGUID(String userId,
-                                    String processGUID,
-                                    String processGUIDParameterName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public PROCESS getProcessByGUID(String  userId,
+                                    String  processGUID,
+                                    String  processGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         return processHandler.getBeanFromRepository(userId,
                                                     processGUID,
                                                     processGUIDParameterName,
                                                     OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                                    false,
-                                                    false,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
                                                     effectiveTime,
                                                     methodName);
     }
@@ -750,7 +860,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return parent process element
@@ -759,13 +871,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PROCESS getProcessParent(String userId,
-                                    String processGUID,
-                                    String processGUIDParameterName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public PROCESS getProcessParent(String  userId,
+                                    String  processGUID,
+                                    String  processGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         return processHandler.getAttachedElement(userId,
                                                  processGUID,
@@ -775,8 +889,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                  OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                  2,
-                                                 false,
-                                                 false,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
                                                  supportedZones,
                                                  effectiveTime,
                                                  methodName);
@@ -791,6 +905,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processGUIDParameterName parameter supplying processGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -800,15 +916,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PROCESS> getSubProcesses(String userId,
-                                         String processGUID,
-                                         String processGUIDParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         Date   effectiveTime,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<PROCESS> getSubProcesses(String  userId,
+                                         String  processGUID,
+                                         String  processGUIDParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
@@ -827,8 +945,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                   null,
                                                   null,
                                                   2,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   supportedZones,
                                                   startFrom,
                                                   validatedPageSize,
@@ -846,8 +964,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Create a new metadata element to represent a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process where the port is located
      * @param processGUIDParameterName parameter supplying processGUID
      * @param qualifiedName unique name for the port - used in other configuration
@@ -856,6 +974,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the port
@@ -875,6 +996,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                              Map<String, String> additionalProperties,
                              String              suppliedTypeName,
                              Map<String, Object> extendedProperties,
+                             boolean             forLineage,
+                             boolean             forDuplicateProcessing,
+                             Date                effectiveTime,
                              String              methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -890,6 +1014,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                       additionalProperties,
                                       suppliedTypeName,
                                       extendedProperties,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -899,8 +1026,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * all existing properties with the supplied properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port to update
      * @param portGUIDParameterName parameter supplying portGUID
      * @param qualifiedName unique name for the port - used in other configuration
@@ -909,6 +1036,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -926,6 +1058,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                            Map<String, String> additionalProperties,
                            String              suppliedTypeName,
                            Map<String, Object> extendedProperties,
+                           Date                effectiveFrom,
+                           Date                effectiveTo,
+                           boolean             forLineage,
+                           boolean             forDuplicateProcessing,
+                           Date                effectiveTime,
                            String              methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -941,6 +1078,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                additionalProperties,
                                suppliedTypeName,
                                extendedProperties,
+                               effectiveFrom,
+                               effectiveTo,
+                               forLineage,
+                               forDuplicateProcessing,
+                               effectiveTime,
                                methodName);
     }
 
@@ -949,28 +1091,38 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Link a port to a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process
      * @param processGUIDParameterName parameter supplying processGUID
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessPort(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String processGUID,
-                                 String processGUIDParameterName,
-                                 String portGUID,
-                                 String portGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void setupProcessPort(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  processGUID,
+                                 String  processGUIDParameterName,
+                                 String  portGUID,
+                                 String  portGUIDParameterName,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         portHandler.setupProcessPort(userId,
                                      externalSourceGUID,
@@ -979,6 +1131,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                      processGUIDParameterName,
                                      portGUID,
                                      portGUIDParameterName,
+                                     effectiveFrom,
+                                     effectiveTo,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -987,28 +1144,34 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Unlink a port from a process.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processGUID unique identifier of the process
      * @param processGUIDParameterName parameter supplying processGUID
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessPort(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String processGUID,
-                                 String processGUIDParameterName,
-                                 String portGUID,
-                                 String portGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void clearProcessPort(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  processGUID,
+                                 String  processGUIDParameterName,
+                                 String  portGUID,
+                                 String  portGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         portHandler.clearProcessPort(userId,
                                      externalSourceGUID,
@@ -1017,6 +1180,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                      processGUIDParameterName,
                                      portGUID,
                                      portGUIDParameterName,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -1026,28 +1192,38 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * portTwo.)
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portOneGUID unique identifier of the port at end 1
      * @param portOneGUIDParameterName parameter supplying portOneGUID
      * @param portTwoGUID unique identifier of the port at end 2
      * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPortDelegation(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portOneGUID,
-                                    String portOneGUIDParameterName,
-                                    String portTwoGUID,
-                                    String portTwoGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupPortDelegation(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portOneGUID,
+                                    String  portOneGUIDParameterName,
+                                    String  portTwoGUID,
+                                    String  portTwoGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         portHandler.setupPortDelegation(userId,
                                         externalSourceGUID,
@@ -1056,6 +1232,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                         portOneGUIDParameterName,
                                         portTwoGUID,
                                         portTwoGUIDParameterName,
+                                        effectiveFrom,
+                                        effectiveTo,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1064,28 +1245,34 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the port delegation relationship between two ports.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portOneGUID unique identifier of the port at end 1
      * @param portOneGUIDParameterName parameter supplying portOneGUID
      * @param portTwoGUID unique identifier of the port at end 2
      * @param portTwoGUIDParameterName parameter supplying portTwoGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearPortDelegation(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portOneGUID,
-                                    String portOneGUIDParameterName,
-                                    String portTwoGUID,
-                                    String portTwoGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearPortDelegation(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portOneGUID,
+                                    String  portOneGUIDParameterName,
+                                    String  portTwoGUID,
+                                    String  portTwoGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         portHandler.clearPortDelegation(userId,
                                         externalSourceGUID,
@@ -1094,6 +1281,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                         portOneGUIDParameterName,
                                         portTwoGUID,
                                         portTwoGUIDParameterName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1102,28 +1292,38 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Link a schema type to a port to show the structure of data it accepts.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
      * @param schemaTypeGUID unique identifier of the schemaType
      * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPortSchemaType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portGUID,
-                                    String portGUIDParameterName,
-                                    String schemaTypeGUID,
-                                    String schemaTypeGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupPortSchemaType(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portGUID,
+                                    String  portGUIDParameterName,
+                                    String  schemaTypeGUID,
+                                    String  schemaTypeGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         portHandler.setupPortSchemaType(userId,
                                         externalSourceGUID,
@@ -1132,6 +1332,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                         portGUIDParameterName,
                                         schemaTypeGUID,
                                         schemaTypeGUIDParameterName,
+                                        effectiveFrom,
+                                        effectiveTo,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1140,28 +1345,34 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the schema type from a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the port
      * @param portGUIDParameterName parameter supplying portGUID
      * @param schemaTypeGUID unique identifier of the schemaType
      * @param schemaTypeGUIDParameterName parameter supplying schemaTypeGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearPortSchemaType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String portGUID,
-                                    String portGUIDParameterName,
-                                    String schemaTypeGUID,
-                                    String schemaTypeGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearPortSchemaType(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  portGUID,
+                                    String  portGUIDParameterName,
+                                    String  schemaTypeGUID,
+                                    String  schemaTypeGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         portHandler.clearPortSchemaType(userId,
                                         externalSourceGUID,
@@ -1170,6 +1381,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                         portGUIDParameterName,
                                         schemaTypeGUID,
                                         schemaTypeGUIDParameterName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1178,26 +1392,39 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the metadata element representing a port.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
      * @param portGUIDParameterName parameter supplying portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removePort(String userId,
-                           String externalSourceGUID,
-                           String externalSourceName,
-                           String portGUID,
-                           String portGUIDParameterName,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public void removePort(String  userId,
+                           String  externalSourceGUID,
+                           String  externalSourceName,
+                           String  portGUID,
+                           String  portGUIDParameterName,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing,
+                           Date    effectiveTime,
+                           String  methodName) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
-        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, methodName);
+        portHandler.removePort(userId,
+                               externalSourceGUID,
+                               externalSourceName,
+                               portGUID,
+                               portGUIDParameterName,
+                               forLineage,
+                               forDuplicateProcessing,
+                               effectiveTime, methodName);
     }
 
 
@@ -1210,6 +1437,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param searchStringParameterName parameter supplying searchString
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1218,16 +1448,26 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PORT> findPorts(String userId,
-                                String searchString,
-                                String searchStringParameterName,
-                                int    startFrom,
-                                int    pageSize,
-                                String methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public List<PORT> findPorts(String  userId,
+                                String  searchString,
+                                String  searchStringParameterName,
+                                int     startFrom,
+                                int     pageSize,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
-        return portHandler.findPorts(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName);
+        return portHandler.findPorts(userId,
+                                     searchString,
+                                     searchStringParameterName,
+                                     startFrom,
+                                     pageSize,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime, methodName);
     }
 
 
@@ -1239,6 +1479,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processGUIDParameterName parameter passing processGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -1247,16 +1490,27 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PORT> getPortsForProcess(String userId,
-                                         String processGUID,
-                                         String processGUIDParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<PORT> getPortsForProcess(String  userId,
+                                         String  processGUID,
+                                         String  processGUIDParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        return portHandler.getPortsForProcess(userId, processGUID, processGUIDParameterName, startFrom, pageSize, methodName);
+        return portHandler.getPortsForProcess(userId,
+                                              processGUID,
+                                              processGUIDParameterName,
+                                              startFrom,
+                                              pageSize,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
     }
 
 
@@ -1268,6 +1522,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param portGUIDParameterName parameter passing portGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -1276,16 +1533,27 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PORT>  getPortUse(String userId,
-                                  String portGUID,
-                                  String portGUIDParameterName,
-                                  int    startFrom,
-                                  int    pageSize,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public List<PORT>  getPortUse(String  userId,
+                                  String  portGUID,
+                                  String  portGUIDParameterName,
+                                  int     startFrom,
+                                  int     pageSize,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        return portHandler.getPortUse(userId, portGUID, portGUIDParameterName, startFrom, pageSize, methodName);
+        return portHandler.getPortUse(userId,
+                                      portGUID,
+                                      portGUIDParameterName,
+                                      startFrom,
+                                      pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
     }
 
 
@@ -1295,6 +1563,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param portGUID unique identifier of the starting port alias
      * @param portGUIDParameterName parameter passing portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -1303,14 +1574,23 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PORT getPortDelegation(String userId,
-                                  String portGUID,
-                                  String portGUIDParameterName,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public PORT getPortDelegation(String  userId,
+                                  String  portGUID,
+                                  String  portGUIDParameterName,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        return portHandler.getPortDelegation(userId, portGUID, portGUIDParameterName, methodName);
+        return portHandler.getPortDelegation(userId,
+                                             portGUID,
+                                             portGUIDParameterName,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
     }
 
 
@@ -1323,6 +1603,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1331,16 +1614,26 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PORT> getPortsByName(String userId,
-                                     String name,
-                                     String nameParameterName,
-                                     int    startFrom,
-                                     int    pageSize,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public List<PORT> getPortsByName(String  userId,
+                                     String  name,
+                                     String  nameParameterName,
+                                     int     startFrom,
+                                     int     pageSize,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        return portHandler.getPortsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+        return portHandler.getPortsByName(userId,
+                                          name,
+                                          nameParameterName,
+                                          startFrom,
+                                          pageSize,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime, methodName);
     }
 
 
@@ -1350,6 +1643,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param portGUID unique identifier of the requested metadata element
      * @param portGUIDParameterName parameter passing portGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -1358,14 +1654,23 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PORT getPortByGUID(String userId,
-                              String portGUID,
-                              String portGUIDParameterName,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public PORT getPortByGUID(String  userId,
+                              String  portGUID,
+                              String  portGUIDParameterName,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        return portHandler.getPortByGUID(userId, portGUID, portGUIDParameterName, methodName);
+        return portHandler.getPortByGUID(userId,
+                                         portGUID,
+                                         portGUIDParameterName,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
     }
 
 
@@ -1378,8 +1683,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Link two elements together to show that data flows from one to the other.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
@@ -1389,6 +1694,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the relationship
@@ -1397,21 +1705,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupDataFlow(String userId,
-                                String externalSourceGUID,
-                                String externalSourceName,
-                                String dataSupplierGUID,
-                                String dataSupplierGUIDParameterName,
-                                String dataConsumerGUID,
-                                String dataConsumerGUIDParameterName,
-                                Date   effectiveFrom,
-                                Date   effectiveTo,
-                                String qualifiedName,
-                                String description,
-                                String formula,
-                                String methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public String setupDataFlow(String  userId,
+                                String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  dataSupplierGUID,
+                                String  dataSupplierGUIDParameterName,
+                                String  dataConsumerGUID,
+                                String  dataConsumerGUIDParameterName,
+                                Date    effectiveFrom,
+                                Date    effectiveTo,
+                                String  qualifiedName,
+                                String  description,
+                                String  formula,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
@@ -1434,34 +1745,23 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                               formula,
                                                                               methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (relationshipProperties == null)
-            {
-                relationshipProperties = new InstanceProperties();
-            }
-
-            relationshipProperties.setEffectiveFromTime(effectiveFrom);
-            relationshipProperties.setEffectiveToTime(effectiveTo);
-        }
-
         return super.multiLinkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          dataSupplierGUID,
-                                          dataSupplierGUIDParameterName,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                          dataConsumerGUID,
-                                          dataConsumerGUIDParameterName,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                          false,
-                                          false,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
-                                          relationshipProperties,
-                                          null,
-                                          methodName);
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               dataSupplierGUID,
+                                               dataSupplierGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               dataConsumerGUID,
+                                               dataConsumerGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
+                                               OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                               this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                               effectiveTime,
+                                               methodName);
     }
 
 
@@ -1475,8 +1775,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
-     * @param effectiveTime time when the relationship is effective
      * @param qualifiedName unique identifier for this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1485,16 +1787,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DATA_FLOW getDataFlow(String userId,
-                                 String dataSupplierGUID,
-                                 String dataSupplierGUIDParameterName,
-                                 String dataConsumerGUID,
-                                 String dataConsumerGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String qualifiedName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public DATA_FLOW getDataFlow(String  userId,
+                                 String  dataSupplierGUID,
+                                 String  dataSupplierGUIDParameterName,
+                                 String  dataConsumerGUID,
+                                 String  dataConsumerGUIDParameterName,
+                                 String  qualifiedName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
@@ -1509,12 +1813,13 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     dataConsumerGUID,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
                                                                     0,
                                                                     0,
                                                                     effectiveTime,
                                                                     methodName);
-
 
         if (relationships != null)
         {
@@ -1549,8 +1854,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Update relationship between two elements that shows that data flows from one to the other.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
      * @param dataFlowGUIDParameterName parameter supplying dataFlowGUID
      * @param effectiveFrom the date when this element is active - null for active now
@@ -1558,26 +1863,31 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     *
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateDataFlow(String userId,
-                               String externalSourceGUID,
-                               String externalSourceName,
-                               String dataFlowGUID,
-                               String dataFlowGUIDParameterName,
-                               Date   effectiveFrom,
-                               Date   effectiveTo,
-                               String qualifiedName,
-                               String description,
-                               String formula,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void updateDataFlow(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  dataFlowGUID,
+                               String  dataFlowGUIDParameterName,
+                               Date    effectiveFrom,
+                               Date    effectiveTo,
+                               String  qualifiedName,
+                               String  description,
+                               String  formula,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
@@ -1599,17 +1909,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                   formula,
                                                                   methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (properties == null)
-            {
-                properties = new InstanceProperties();
-
-                properties.setEffectiveFromTime(effectiveFrom);
-                properties.setEffectiveToTime(effectiveTo);
-            }
-        }
-
         super.updateRelationshipProperties(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -1617,7 +1916,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            dataFlowGUIDParameterName,
                                            OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
                                            false,
-                                           properties,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1626,26 +1928,30 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the data flow relationship between two elements.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
      * @param dataFlowGUIDParameterName parameter supplying dataFlowGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
 
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataFlow(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String dataFlowGUID,
-                              String dataFlowGUIDParameterName,
-                              Date   effectiveTime,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void clearDataFlow(String  userId,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
+                              String  dataFlowGUID,
+                              String  dataFlowGUIDParameterName,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
@@ -1656,18 +1962,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  dataFlowGUID,
                                  dataFlowGUIDParameterName,
                                  OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                 forLineage,
+                                 forDuplicateProcessing,
                                  effectiveTime,
                                  methodName);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1676,13 +1988,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATA_FLOW> getDataFlowConsumers(String userId,
-                                                String dataSupplierGUID,
-                                                String dataSupplierGUIDParameterName,
-                                                Date   effectiveTime,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<DATA_FLOW> getDataFlowConsumers(String  userId,
+                                                String  dataSupplierGUID,
+                                                String  dataSupplierGUIDParameterName,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
@@ -1696,9 +2012,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -1725,11 +2043,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1738,13 +2061,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATA_FLOW> getDataFlowSuppliers(String userId,
-                                                String dataConsumerGUID,
-                                                String dataConsumerGUIDParameterName,
-                                                Date   effectiveTime,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<DATA_FLOW> getDataFlowSuppliers(String  userId,
+                                                String  dataConsumerGUID,
+                                                String  dataConsumerGUIDParameterName,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
@@ -1758,9 +2085,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     1,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -1790,8 +2119,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Link two elements to show that when one completes the next is started.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param currentStepGUID unique identifier of the previous step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param nextStepGUID unique identifier of the next step
@@ -1799,8 +2128,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
+     * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier for the control flow relationship
@@ -1809,21 +2141,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupControlFlow(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String currentStepGUID,
-                                   String currentStepGUIDParameterName,
-                                   String nextStepGUID,
-                                   String nextStepGUIDParameterName,
-                                   Date   effectiveFrom,
-                                   Date   effectiveTo,
-                                   String qualifiedName,
-                                   String description,
-                                   String guard,
-                                   String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public String setupControlFlow(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  currentStepGUID,
+                                   String  currentStepGUIDParameterName,
+                                   String  nextStepGUID,
+                                   String  nextStepGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  guard,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
@@ -1846,34 +2181,23 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                               guard,
                                                                               methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (relationshipProperties == null)
-            {
-                relationshipProperties = new InstanceProperties();
-            }
-
-            relationshipProperties.setEffectiveFromTime(effectiveFrom);
-            relationshipProperties.setEffectiveToTime(effectiveTo);
-        }
-
         return super.multiLinkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          currentStepGUID,
-                                          currentStepGUIDParameterName,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                          nextStepGUID,
-                                          nextStepGUIDParameterName,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                          false,
-                                          false,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
-                                          relationshipProperties,
-                                          null,
-                                          methodName);
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               currentStepGUID,
+                                               currentStepGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               nextStepGUID,
+                                               nextStepGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                               this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                               effectiveTime,
+                                               methodName);
     }
 
 
@@ -1888,7 +2212,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nextStepGUID unique identifier of the next step
      * @param nextStepGUIDParameterName parameter supplying nextStepGUID
      * @param qualifiedName unique identifier for this relationship
-     * @param effectiveTime time when the relationship is effective
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1897,16 +2223,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CONTROL_FLOW getControlFlow(String userId,
-                                       String currentStepGUID,
-                                       String currentStepGUIDParameterName,
-                                       String nextStepGUID,
-                                       String nextStepGUIDParameterName,
-                                       Date   effectiveTime,
-                                       String qualifiedName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public CONTROL_FLOW getControlFlow(String  userId,
+                                       String  currentStepGUID,
+                                       String  currentStepGUIDParameterName,
+                                       String  nextStepGUID,
+                                       String  nextStepGUIDParameterName,
+                                       String  qualifiedName,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
@@ -1921,7 +2249,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     nextStepGUID,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
                                                                     0,
                                                                     0,
                                                                     effectiveTime,
@@ -1961,34 +2291,40 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Update the relationship between two elements that shows that when one completes the next is started.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
      * @param controlFlowGUIDParameterName parameter supplying controlFlowGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
+     * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateControlFlow(String userId,
-                                  String externalSourceGUID,
-                                  String externalSourceName,
-                                  String controlFlowGUID,
-                                  String controlFlowGUIDParameterName,
-                                  Date   effectiveFrom,
-                                  Date   effectiveTo,
-                                  String qualifiedName,
-                                  String description,
-                                  String guard,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void updateControlFlow(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  controlFlowGUID,
+                                  String  controlFlowGUIDParameterName,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  String  qualifiedName,
+                                  String  description,
+                                  String  guard,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
@@ -2010,17 +2346,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                   guard,
                                                                   methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (properties == null)
-            {
-                properties = new InstanceProperties();
-
-                properties.setEffectiveFromTime(effectiveFrom);
-                properties.setEffectiveToTime(effectiveTo);
-            }
-        }
-
         super.updateRelationshipProperties(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -2028,7 +2353,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            controlFlowGUIDParameterName,
                                            OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
                                            false,
-                                           properties,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -2037,26 +2365,30 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the control flow relationship between two elements.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
      * @param controlFlowGUIDParameterName parameter supplying controlFlowGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearControlFlow(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String controlFlowGUID,
-                                 String controlFlowGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void clearControlFlow(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  controlFlowGUID,
+                                 String  controlFlowGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
@@ -2067,18 +2399,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  controlFlowGUID,
                                  controlFlowGUIDParameterName,
                                  OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                 forLineage,
+                                 forDuplicateProcessing,
                                  effectiveTime,
                                  methodName);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -2087,13 +2425,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<CONTROL_FLOW> getControlFlowNextSteps(String userId,
-                                                      String currentStepGUID,
-                                                      String currentStepGUIDParameterName,
-                                                      Date   effectiveTime,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<CONTROL_FLOW> getControlFlowNextSteps(String  userId,
+                                                      String  currentStepGUID,
+                                                      String  currentStepGUIDParameterName,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveTime,
+                                                      String  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
@@ -2107,9 +2449,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -2136,12 +2480,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -2150,13 +2498,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<CONTROL_FLOW> getControlFlowPreviousSteps(String userId,
-                                                          String currentStepGUID,
-                                                          String currentStepGUIDParameterName,
-                                                          Date   effectiveTime,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<CONTROL_FLOW> getControlFlowPreviousSteps(String  userId,
+                                                          String  currentStepGUID,
+                                                          String  currentStepGUIDParameterName,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
@@ -2170,9 +2522,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     1,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -2202,17 +2556,20 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Link two elements together to show a request-response call between them.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
      * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
      * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
+     * @param description description and/or purpose of the process call
      * @param formula function that determines the subset of the data that flows
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new relationship
@@ -2221,21 +2578,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupProcessCall(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String callerGUID,
-                                   String callerGUIDParameterName,
-                                   String calledGUID,
-                                   String calledGUIDParameterName,
-                                   Date   effectiveFrom,
-                                   Date   effectiveTo,
-                                   String qualifiedName,
-                                   String description,
-                                   String formula,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public String setupProcessCall(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  callerGUID,
+                                   String  callerGUIDParameterName,
+                                   String  calledGUID,
+                                   String  calledGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  formula,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
@@ -2258,17 +2618,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                               formula,
                                                                               methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (relationshipProperties == null)
-            {
-                relationshipProperties = new InstanceProperties();
-            }
-
-            relationshipProperties.setEffectiveFromTime(effectiveFrom);
-            relationshipProperties.setEffectiveToTime(effectiveTo);
-        }
-
         return super.multiLinkElementToElement(userId,
                                                externalSourceGUID,
                                                externalSourceName,
@@ -2278,13 +2627,13 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                calledGUID,
                                                calledGUIDParameterName,
                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                               false,
-                                               false,
+                                               forLineage,
+                                               forDuplicateProcessing,
                                                supportedZones,
                                                OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
                                                OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
-                                               relationshipProperties,
-                                               null,
+                                               this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                               effectiveTime,
                                                methodName);
     }
 
@@ -2300,7 +2649,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
      * @param qualifiedName unique identifier for this relationship
-     * @param effectiveTime time when the relationship is effective
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -2309,16 +2660,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PROCESS_CALL getProcessCall(String userId,
-                                       String callerGUID,
-                                       String callerGUIDParameterName,
-                                       String calledGUID,
-                                       String calledGUIDParameterName,
-                                       Date   effectiveTime,
-                                       String qualifiedName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public PROCESS_CALL getProcessCall(String  userId,
+                                       String  callerGUID,
+                                       String  callerGUIDParameterName,
+                                       String  calledGUID,
+                                       String  calledGUIDParameterName,
+                                       String  qualifiedName,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
@@ -2333,7 +2686,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     calledGUID,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
                                                                     0,
                                                                     0,
                                                                     effectiveTime,
@@ -2373,34 +2728,40 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Update the relationship between two elements that shows a request-response call between them.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
      * @param processCallGUIDParameterName parameter supplying processCallGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
+     * @param description description and/or purpose of the process call
      * @param formula function that determines the subset of the data that flows
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProcessCall(String userId,
-                                  String externalSourceGUID,
-                                  String externalSourceName,
-                                  String processCallGUID,
-                                  String processCallGUIDParameterName,
-                                  Date   effectiveFrom,
-                                  Date   effectiveTo,
-                                  String qualifiedName,
-                                  String description,
-                                  String formula,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void updateProcessCall(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  processCallGUID,
+                                  String  processCallGUIDParameterName,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  String  qualifiedName,
+                                  String  description,
+                                  String  formula,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
@@ -2422,17 +2783,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                   formula,
                                                                   methodName);
 
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            if (properties == null)
-            {
-                properties = new InstanceProperties();
-
-                properties.setEffectiveFromTime(effectiveFrom);
-                properties.setEffectiveToTime(effectiveTo);
-            }
-        }
-
         super.updateRelationshipProperties(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -2440,7 +2790,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            processCallGUIDParameterName,
                                            OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
                                            false,
-                                           properties,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -2449,26 +2802,30 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Remove the process call relationship.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
      * @param processCallGUIDParameterName parameter supplying processCallGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
 
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessCall(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String processCallGUID,
-                                 String processCallGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void clearProcessCall(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  processCallGUID,
+                                 String  processCallGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
@@ -2479,18 +2836,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  processCallGUID,
                                  processCallGUIDParameterName,
                                  OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                 forLineage,
+                                 forDuplicateProcessing,
                                  effectiveTime,
                                  methodName);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
      * @param callerGUIDParameterName parameter supplying callerGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -2499,13 +2862,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PROCESS_CALL> getProcessCalled(String userId,
-                                               String callerGUID,
-                                               String callerGUIDParameterName,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public List<PROCESS_CALL> getProcessCalled(String  userId,
+                                               String  callerGUID,
+                                               String  callerGUIDParameterName,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
@@ -2519,9 +2886,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -2548,12 +2917,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -2562,13 +2935,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<PROCESS_CALL> getProcessCallers(String userId,
-                                                String calledGUID,
-                                                String calledGUIDParameterName,
-                                                Date   effectiveTime,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<PROCESS_CALL> getProcessCallers(String  userId,
+                                                String  calledGUID,
+                                                String  calledGUIDParameterName,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
@@ -2582,9 +2959,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     1,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -2612,7 +2991,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param userId calling user
@@ -2620,8 +2999,13 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the mapping
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new relationship
@@ -2630,30 +3014,36 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupLineageMapping(String userId,
-                                      String sourceElementGUID,
-                                      String sourceElementGUIDParameterName,
-                                      String destinationElementGUID,
-                                      String destinationElementGUIDParameterName,
-                                      Date   effectiveFrom,
-                                      Date   effectiveTo,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public String setupLineageMapping(String  userId,
+                                      String  sourceElementGUID,
+                                      String  sourceElementGUIDParameterName,
+                                      String  destinationElementGUID,
+                                      String  destinationElementGUIDParameterName,
+                                      String  qualifiedName,
+                                      String  description,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
 
-        InstanceProperties relationshipProperties = null;
-
-        if ((effectiveFrom != null) || (effectiveTo != null))
-        {
-            relationshipProperties = new InstanceProperties();
-
-            relationshipProperties.setEffectiveFromTime(effectiveFrom);
-            relationshipProperties.setEffectiveToTime(effectiveTo);
-        }
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         return super.multiLinkElementToElement(userId,
                                                null,
@@ -2664,41 +3054,51 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                destinationElementGUID,
                                                destinationElementGUIDParameterName,
                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                               false,
-                                               false,
+                                               forLineage,
+                                               forDuplicateProcessing,
                                                supportedZones,
                                                OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
                                                OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
-                                               relationshipProperties,
-                                               null,
+                                               this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                               effectiveTime,
                                                methodName);
     }
 
 
     /**
-     * Remove the lineage mapping between two elements.
+     * Retrieve the lineage mapping relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one lineage mapping relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param qualifiedName unique identifier for this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
+     *
+     * @return unique identifier and properties of the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearLineageMapping(String userId,
-                                    String sourceElementGUID,
-                                    String sourceElementGUIDParameterName,
-                                    String destinationElementGUID,
-                                    String destinationElementGUIDParameterName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public LINEAGE_MAPPING getLineageMapping(String  userId,
+                                             String  sourceElementGUID,
+                                             String  sourceElementGUIDParameterName,
+                                             String  destinationElementGUID,
+                                             String  destinationElementGUIDParameterName,
+                                             String  qualifiedName,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
@@ -2712,8 +3112,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
                                                                     destinationElementGUID,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    0,
-                                                                    false,
+                                                                    2,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
                                                                     0,
                                                                     0,
                                                                     effectiveTime,
@@ -2726,27 +3128,143 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
             {
                 if (relationship != null)
                 {
-                    super.deleteRelationship(userId,
-                                             null,
-                                             null,
-                                             relationship.getGUID(),
-                                             destinationElementGUIDParameterName,
-                                             OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
-                                             effectiveTime,
-                                             methodName);
+                    if (qualifiedName == null)
+                    {
+                        return lineageMappingConverter.getNewRelationshipBean(lineageMappingClass, relationship, methodName);
+                    }
+
+                    String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          relationship.getProperties(),
+                                                                                          methodName);
+
+                    if (qualifiedName.equals(relationshipQualifiedName))
+                    {
+                        return lineageMappingConverter.getNewRelationshipBean(lineageMappingClass, relationship, methodName);
+                    }
+
                 }
             }
         }
+
+        return null;
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Update the relationship between two elements that shows a request-response call between them.
+     *
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the process call relationship
+     * @param lineageMappingGUIDParameterName parameter supplying lineageMappingGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the mapping
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateLineageMapping(String  userId,
+                                     String  lineageMappingGUID,
+                                     String  lineageMappingGUIDParameterName,
+                                     String  qualifiedName,
+                                     String  description,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, lineageMappingGUIDParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        super.updateRelationshipProperties(userId,
+                                           null,
+                                           null,
+                                           lineageMappingGUID,
+                                           lineageMappingGUIDParameterName,
+                                           OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                           false,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the lineage mapping relationship.
+     *
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the lineage mapping relationship
+     * @param lineageMappingGUIDParameterName parameter supplying lineageMappingGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearLineageMapping(String  userId,
+                                    String  lineageMappingGUID,
+                                    String  lineageMappingGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, lineageMappingGUIDParameterName, methodName);
+
+        super.deleteRelationship(userId,
+                                 null,
+                                 null,
+                                 lineageMappingGUID,
+                                 lineageMappingGUIDParameterName,
+                                 OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime,
+                                 methodName);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of lineage mapping relationships
@@ -2755,13 +3273,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<LINEAGE_MAPPING> getDestinationLineageMappings(String userId,
-                                                               String sourceElementGUID,
-                                                               String sourceElementGUIDParameterName,
-                                                               Date   effectiveTime,
-                                                               String methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<LINEAGE_MAPPING> getDestinationLineageMappings(String  userId,
+                                                               String  sourceElementGUID,
+                                                               String  sourceElementGUIDParameterName,
+                                                               int     startFrom,
+                                                               int     pageSize,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
@@ -2775,9 +3297,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     2,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -2804,12 +3328,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
-     * @param effectiveTime time when the relationship is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of lineage mapping relationships
@@ -2818,13 +3346,17 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<LINEAGE_MAPPING> getSourceLineageMappings(String userId,
-                                                          String destinationElementGUID,
-                                                          String destinationElementGUIDParameterName,
-                                                          Date   effectiveTime,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<LINEAGE_MAPPING> getSourceLineageMappings(String  userId,
+                                                          String  destinationElementGUID,
+                                                          String  destinationElementGUIDParameterName,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
@@ -2838,9 +3370,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     null,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     1,
-                                                                    false,
-                                                                    0,
-                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
                                                                     effectiveTime,
                                                                     methodName);
 

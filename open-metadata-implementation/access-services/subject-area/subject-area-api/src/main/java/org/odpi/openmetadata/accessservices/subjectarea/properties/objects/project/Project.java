@@ -34,9 +34,15 @@ public class Project extends Node{
         nodeType = NodeType.Project;
     }
 
+    private String identifier = null;
     private Date startDate = null;
     private Date plannedEndDate = null;
     private String status = null;
+
+
+    public String getIdentifier() { return identifier; }
+
+    public void setIdentifier(String identifier) { this.identifier = identifier;}
 
     public Date getStartDate() {
         return startDate;
@@ -107,6 +113,7 @@ public class Project extends Node{
 
         Project project = (Project) o;
         if (!(this.equals(o))) return false;
+        if (!Objects.equals(identifier, project.identifier)) return false;
         if (!Objects.equals(startDate, project.startDate)) return false;
         if (!Objects.equals(plannedEndDate, project.plannedEndDate)) return false;
         return Objects.equals(status, project.status);
@@ -115,6 +122,7 @@ public class Project extends Node{
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (plannedEndDate != null ? plannedEndDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);

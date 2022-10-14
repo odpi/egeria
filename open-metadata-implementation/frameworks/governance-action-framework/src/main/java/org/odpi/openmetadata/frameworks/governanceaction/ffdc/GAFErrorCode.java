@@ -2,11 +2,6 @@
 package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The GAF error code is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -70,7 +65,7 @@ public enum GAFErrorCode
 
     ARRAY_OUT_OF_BOUNDS(500, "GAF-PROPERTIES-400-009",
                         "{0} is unable to add a new element to location {1} of an array of size {2} value",
-                        "There is an error in the update of an ArrayPropertyValue.",
+                        "There is an error in the update of an ArrayTypePropertyValue.",
                         "Recode the call to the property object with a valid element location and retry."),
 
 
@@ -83,11 +78,11 @@ public enum GAFErrorCode
 
 
     INVALID_PRIMITIVE_CLASS_NAME(500, "GAF-PROPERTIES-500-001",
-                                 "The Java class {0} for PrimitiveDefCategory {1} is not known",
-                                 "There is an internal error in Java class PrimitiveDefCategory as it has been set up with an invalid class.",
+                                 "The Java class {0} for PrimitiveTypeCategory {1} is not known",
+                                 "There is an internal error in Java class PrimitiveTypeCategory as it has been set up with an invalid class.",
                                  "Raise a Github issue to get this fixed."),
     INVALID_PRIMITIVE_VALUE(500, "GAF-PROPERTIES-500-002",
-                            "The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveDefCategory {2}",
+                            "The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}",
                             "There is an internal error in the creation of a PrimitiveTypeValue.",
                             "Open an issue on GitHub to get this addressed."),
     INVALID_PRIMITIVE_CATEGORY(500, "GAF-PROPERTIES-500-003",
@@ -95,7 +90,7 @@ public enum GAFErrorCode
                                "There is an internal error during the creation of a PrimitiveTypeValue.",
                                "Open a Github issue to get this looked into."),
     INVALID_PRIMITIVE_TYPE(500, "GAF-PROPERTIES-500-004",
-                           "The value supplied for an attribute of PrimitiveDefCategory {0} is expected as Java class {1} but was supplied as Java class {2}",
+                           "The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}",
                            "There is an internal error - code that sets a primitive property value is using an incorrect Java class.",
                            "Report as a Github issue to get this addressed."),
 
@@ -110,7 +105,7 @@ public enum GAFErrorCode
                            "Review the code around the original exception to detect the source of the error."),
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for GAFErrorCode expects to be passed one of the enumeration rows defined in
@@ -121,7 +116,7 @@ public enum GAFErrorCode
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

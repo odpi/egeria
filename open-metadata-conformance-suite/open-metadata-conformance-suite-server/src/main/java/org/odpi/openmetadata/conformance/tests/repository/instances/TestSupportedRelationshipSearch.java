@@ -3326,7 +3326,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
 
             /*
-             * Need a 'good' PrimitivePropertyValue to use in the search properties.
+             * Need a 'good' PrimitiveTypePropertyValue to use in the search properties.
              */
 
             PrimitivePropertyValue ppvGood = new PrimitivePropertyValue();
@@ -4129,7 +4129,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
      *
      * @param primDefCat the primitive category of the property
      * @param primValue  the value of the actual property
-     * @return PrimitivePropertyValue object
+     * @return PrimitiveTypePropertyValue object
      */
     private PrimitivePropertyValue getWrongPrimitivePropertyValue(PrimitiveDefCategory primDefCat,
                                                                   Object primValue)

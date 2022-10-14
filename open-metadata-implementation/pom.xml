@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Implementation</name>
@@ -44,5 +44,15 @@
         <module>server-chassis</module>
         <module>user-interfaces</module>
     </modules>
+
+    <dependencies>
+    <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

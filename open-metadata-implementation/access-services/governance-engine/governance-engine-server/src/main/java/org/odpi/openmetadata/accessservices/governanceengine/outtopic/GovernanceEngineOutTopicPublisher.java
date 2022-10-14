@@ -14,9 +14,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernan
  */
 public class GovernanceEngineOutTopicPublisher
 {
-    private GovernanceEngineOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                                outTopicAuditLog;
-    private String                                  outTopicName;
+    private final GovernanceEngineOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                                outTopicAuditLog;
+    private final String                                  outTopicName;
 
     private final String actionDescription = "Out topic event publishing";
 

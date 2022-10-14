@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.AssetConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -14,9 +15,12 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -25,14 +29,13 @@ import java.util.List;
 
 
 /**
- * DataAssetExchangeClient is the server-side for managing Data Assets, Schemas and Connections.
+ * DataAssetExchangeClient is the server-side for managing Data Assets.
  */
 public class DataAssetExchangeHandler extends ExchangeHandlerBase
 {
-    private AssetHandler<DataAssetElement> assetHandler;
+    private final AssetHandler<DataAssetElement>             assetHandler;
 
     private final static String assetGUIDParameterName = "assetGUID";
-
 
 
     /**
@@ -104,6 +107,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param results list of elements
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -114,29 +120,42 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                       String                 assetManagerGUID,
                                                       String                 assetManagerName,
                                                       List<DataAssetElement> results,
+                                                      boolean                forLineage,
+                                                      boolean                forDuplicateProcessing,
+                                                      Date                   effectiveTime,
                                                       String                 methodName) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement element : results)
+            for (DataAssetElement element : results)
             {
                 if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                 element.getElementHeader().getGUID(),
-                                                                                 assetGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                 assetManagerGUID,
-                                                                                 assetManagerName,
-                                                                                 null,
-                                                                                 methodName));
+                                                                                element.getElementHeader().getGUID(),
+                                                                                assetGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                assetManagerGUID,
+                                                                                assetManagerName,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName));
+
+                    this.getSupplementaryProperties(element.getElementHeader().getGUID(),
+                                                    assetGUIDParameterName,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    element.getDataAssetProperties(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
                 }
             }
         }
     }
-
 
 
     /* ======================================================================================
@@ -150,6 +169,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param assetProperties properties to store
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -162,6 +184,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                   MetadataCorrelationProperties correlationProperties,
                                   boolean                       assetManagerIsHome,
                                   DataAssetProperties           assetProperties,
+                                  boolean                       forLineage,
+                                  boolean                       forDuplicateProcessing,
+                                  Date                          effectiveTime,
                                   String                        methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -185,20 +210,29 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                 assetProperties.getQualifiedName(),
                                                                 assetProperties.getTechnicalName(),
+                                                                assetProperties.getVersionIdentifier(),
                                                                 assetProperties.getTechnicalDescription(),
                                                                 assetProperties.getAdditionalProperties(),
                                                                 typeName,
                                                                 assetProperties.getExtendedProperties(),
                                                                 InstanceStatus.ACTIVE,
+                                                                assetProperties.getEffectiveFrom(),
+                                                                assetProperties.getEffectiveTo(),
+                                                                effectiveTime,
                                                                 methodName);
 
         if (assetGUID != null)
         {
             this.maintainSupplementaryProperties(userId,
                                                  assetGUID,
+                                                 assetGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                  assetProperties.getQualifiedName(),
                                                  assetProperties,
-                                                 false,
+                                                 true,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
                                                  methodName);
 
             this.createExternalIdentifier(userId,
@@ -206,6 +240,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                           assetGUIDParameterName,
                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                           correlationProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
                                           methodName);
         }
 
@@ -258,8 +295,13 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                              templateProperties.getQualifiedName(),
                                                              qualifiedNameParameterName,
                                                              templateProperties.getDisplayName(),
+                                                             templateProperties.getVersionIdentifier(),
                                                              templateProperties.getDescription(),
+                                                             templateProperties.getPathName(),
                                                              templateProperties.getNetworkAddress(),
+                                                             false,
+                                                             false,
+                                                             new Date(),
                                                              methodName);
         if (assetGUID != null)
         {
@@ -268,6 +310,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                           assetGUIDParameterName,
                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                           correlationProperties,
+                                          false,
+                                          false,
+                                          null,
                                           methodName);
         }
 
@@ -283,6 +328,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param assetProperties new properties for this element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -294,6 +342,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                 String                        assetGUID,
                                 boolean                       isMergeUpdate,
                                 DataAssetProperties           assetProperties,
+                                boolean                       forLineage,
+                                boolean                       forDuplicateProcessing,
+                                Date                          effectiveTime,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -312,6 +363,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         assetGUIDParameterName,
                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         assetHandler.updateAsset(userId,
@@ -321,19 +375,31 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  assetGUIDParameterName,
                                  assetProperties.getQualifiedName(),
                                  assetProperties.getTechnicalName(),
+                                 assetProperties.getVersionIdentifier(),
                                  assetProperties.getTechnicalDescription(),
                                  assetProperties.getAdditionalProperties(),
                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                 supportedZones,
                                  assetProperties.getExtendedProperties(),
+                                 assetProperties.getEffectiveFrom(),
+                                 assetProperties.getEffectiveTo(),
                                  isMergeUpdate,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime,
                                  methodName);
 
         this.maintainSupplementaryProperties(userId,
                                              assetGUID,
+                                             assetGUIDParameterName,
+                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                              assetProperties.getQualifiedName(),
                                              assetProperties,
                                              isMergeUpdate,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
                                              methodName);
     }
     
@@ -345,15 +411,21 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to publish
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishDataAsset(String userId,
-                                 String assetGUID,
-                                 String methodName) throws InvalidParameterException,
+    public void publishDataAsset(String  userId,
+                                 String  assetGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
@@ -362,7 +434,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
 
-        assetHandler.publishAsset(userId, assetGUID, assetGUIDParameterName, methodName);
+        assetHandler.publishAsset(userId, assetGUID, assetGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -373,21 +445,27 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to withdraw
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawDataAsset(String userId,
-                                  String assetGUID,
-                                  String methodName) throws InvalidParameterException,
+    public void withdrawDataAsset(String  userId,
+                                  String  assetGUID,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
 
-        assetHandler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, methodName);
+        assetHandler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -398,6 +476,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -407,6 +488,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
     public void removeDataAsset(String                        userId,
                                 MetadataCorrelationProperties correlationProperties,
                                 String                        assetGUID,
+                                boolean                       forLineage,
+                                boolean                       forDuplicateProcessing,
+                                Date                          effectiveTime,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -421,6 +505,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         assetGUIDParameterName,
                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                         correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
 
         assetHandler.deleteBeanInRepository(userId,
@@ -432,9 +519,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                             null,
                                             null,
-                                            false,
-                                            false,
-                                            new Date(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -444,21 +531,27 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setDataAssetAsReferenceData(String userId,
-                                            String assetGUID,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void setDataAssetAsReferenceData(String  userId,
+                                            String  assetGUID,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
         
-        assetHandler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
+        assetHandler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -467,21 +560,526 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataAssetAsReferenceData(String userId,
-                                              String assetGUID,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public void clearDataAssetAsReferenceData(String  userId,
+                                              String  assetGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
         
-        assetHandler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
+        assetHandler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
+
+
+
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param relationshipProperties unique identifier for this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupRelatedDataAsset(String                 userId,
+                                        String                 assetManagerGUID,
+                                        String                 assetManagerName,
+                                        boolean                assetManagerIsHome,
+                                        String                 relationshipTypeName,
+                                        String                 fromAssetGUID,
+                                        String                 toAssetGUID,
+                                        RelationshipProperties relationshipProperties,
+                                        boolean                forLineage,
+                                        boolean                forDuplicateProcessing,
+                                        Date                   effectiveTime,
+                                        String                 methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String toAssetGUIDParameterName   = "toAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName, null, serviceName, methodName, repositoryHelper);
+
+        InstanceProperties instanceProperties = null;
+        Date               effectiveFrom = new Date();
+        Date               effectiveTo = new Date();
+
+        if (relationshipProperties != null)
+        {
+            if (relationshipProperties instanceof DataContentForDataSetProperties)
+            {
+                DataContentForDataSetProperties dataContentForDataSetProperties = (DataContentForDataSetProperties) relationshipProperties;
+
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+            }
+        }
+
+        if (assetManagerIsHome)
+        {
+            return assetHandler.linkElementToElement(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     fromAssetGUID,
+                                                     fromAssetGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     toAssetGUID,
+                                                     toAssetGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     supportedZones,
+                                                     relationshipTypeGUID,
+                                                     relationshipTypeName,
+                                                     instanceProperties,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime,
+                                                     methodName);
+        }
+        else
+        {
+            return assetHandler.linkElementToElement(userId,
+                                                     null,
+                                                     null,
+                                                     fromAssetGUID,
+                                                     fromAssetGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     toAssetGUID,
+                                                     toAssetGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     supportedZones,
+                                                     relationshipTypeGUID,
+                                                     relationshipTypeName,
+                                                     instanceProperties,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime,
+                                                     methodName);
+        }
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public RelationshipElement getAssetRelationship(String  userId,
+                                                    String  assetManagerGUID,
+                                                    String  assetManagerName,
+                                                    String  relationshipTypeName,
+                                                    String  fromAssetGUID,
+                                                    String  toAssetGUID,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String toAssetGUIDParameterName   = "toAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName, null, serviceName, methodName, repositoryHelper);
+
+        Relationship  relationship = assetHandler.getUniqueAttachmentLink(userId,
+                                                                          fromAssetGUID,
+                                                                          fromAssetGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          relationshipTypeGUID,
+                                                                          relationshipTypeName,
+                                                                          toAssetGUID,
+                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          2,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        return getRelationshipElement(relationship, methodName);
+    }
+
+
+    /**
+     * Concert an OMRS relationship into an Asset Manager's RelationshipElement.
+     *
+     * @param relationship retrieved relationship
+     * @param methodName calling method
+     * @return element to return
+     */
+    private RelationshipElement getRelationshipElement(Relationship relationship,
+                                                       String       methodName) throws PropertyServerException
+    {
+        RelationshipElement relationshipElement = null;
+
+        if (relationship != null)
+        {
+            ElementHeaderConverter<ElementHeader> elementHeaderConverter = new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName);
+
+            relationshipElement = new RelationshipElement();
+
+            relationshipElement.setRelationshipHeader(elementHeaderConverter.getNewBean(ElementHeader.class, relationship, methodName));
+            relationshipElement.setEnd1GUID(elementHeaderConverter.getNewBean(ElementHeader.class, relationship.getEntityOneProxy(), methodName));
+            relationshipElement.setEnd2GUID(elementHeaderConverter.getNewBean(ElementHeader.class, relationship.getEntityTwoProxy(), methodName));
+
+            if (relationship.getProperties() != null)
+            {
+                if (OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                {
+                    DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
+
+                    properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
+
+                    properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
+                    properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());
+
+                    relationshipElement.setRelationshipProperties(properties);
+                }
+                else
+                {
+                    RelationshipProperties properties = new RelationshipProperties();
+
+                    properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
+                    properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());
+
+                    relationshipElement.setRelationshipProperties(properties);
+                }
+            }
+        }
+
+        return relationshipElement;
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param relationshipProperties description and/or purpose of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void   updateAssetRelationship(String                 userId,
+                                          String                 assetManagerGUID,
+                                          String                 assetManagerName,
+                                          String                 relationshipTypeName,
+                                          String                 relationshipGUID,
+                                          boolean                isMergeUpdate,
+                                          RelationshipProperties relationshipProperties,
+                                          boolean                forLineage,
+                                          boolean                forDuplicateProcessing,
+                                          Date                   effectiveTime,
+                                          String                 methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String relationshipGUIDParameterName = "relationshipGUID";
+        final String typeNameParameterName         = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        InstanceProperties instanceProperties = null;
+
+        if (relationshipProperties != null)
+        {
+            if (relationshipProperties instanceof DataContentForDataSetProperties)
+            {
+                DataContentForDataSetProperties dataContentForDataSetProperties = (DataContentForDataSetProperties) relationshipProperties;
+
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+            }
+        }
+
+        assetHandler.updateElementToElementLink(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                relationshipGUID,
+                                                relationshipGUIDParameterName,
+                                                relationshipTypeName,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                supportedZones,
+                                                isMergeUpdate,
+                                                instanceProperties,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetRelationship(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  relationshipTypeName,
+                                       String  relationshipGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String relationshipGUIDParameterName = "relationshipGUID";
+        final String typeNameParameterName         = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        assetHandler.deleteRelationship(userId,
+                                        assetManagerGUID,
+                                        assetManagerName,
+                                        relationshipGUID,
+                                        relationshipGUIDParameterName,
+                                        relationshipTypeName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public List<RelationshipElement> getRelatedAssetsAtEnd2(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  relationshipTypeName,
+                                                            String  fromAssetGUID,
+                                                            int     startingFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName, null, serviceName, methodName, repositoryHelper);
+
+        List<Relationship> relationships = assetHandler.getAttachmentLinks(userId,
+                                                                           fromAssetGUID,
+                                                                           fromAssetGUIDParameterName,
+                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           relationshipTypeGUID,
+                                                                           relationshipTypeName,
+                                                                           null,
+                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           2,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           startingFrom,
+                                                                           pageSize,
+                                                                           effectiveTime,
+                                                                           methodName);
+
+        if (relationships != null)
+        {
+            List<RelationshipElement> relationshipElements = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                relationshipElements.add(getRelationshipElement(relationship, methodName));
+            }
+
+            return relationshipElements;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public List<RelationshipElement> getRelatedAssetsAtEnd1(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  relationshipTypeName,
+                                                            String  toAssetGUID,
+                                                            int     startingFrom,
+                                                            int     pageSize,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String toAssetGUIDParameterName = "toAssetGUID";
+        final String typeNameParameterName    = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName, null, serviceName, methodName, repositoryHelper);
+
+        List<Relationship> relationships = assetHandler.getAttachmentLinks(userId,
+                                                                           toAssetGUID,
+                                                                           toAssetGUIDParameterName,
+                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           relationshipTypeGUID,
+                                                                           relationshipTypeName,
+                                                                           null,
+                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           1,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           startingFrom,
+                                                                           pageSize,
+                                                                           effectiveTime,
+                                                                           methodName);
+
+        if (relationships != null)
+        {
+            List<RelationshipElement> relationshipElements = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                relationshipElements.add(getRelationshipElement(relationship, methodName));
+            }
+
+            return relationshipElements;
+        }
+
+        return null;
     }
 
 
@@ -495,6 +1093,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -503,15 +1104,18 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> findDataAssets(String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 String searchString,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<DataAssetElement> findDataAssets(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 String  searchString,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -520,10 +1124,19 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                  searchStringParameterName,
                                                                  startFrom,
                                                                  pageSize,
-                                                                 new Date(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
                                                                  methodName);
         
-        addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToDataAssets(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             results,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
         
         return results;
     }
@@ -537,6 +1150,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -545,12 +1161,15 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> scanDataAssets(String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 String methodName) throws InvalidParameterException,
+    public List<DataAssetElement> scanDataAssets(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
@@ -559,10 +1178,19 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
-                                                                new Date(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
                                                                 methodName);
 
-        addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToDataAssets(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             results,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
 
         return results;
     }
@@ -578,6 +1206,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -586,15 +1217,18 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> getDataAssetsByName(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String name,
-                                                      int    startFrom,
-                                                      int    pageSize,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<DataAssetElement> getDataAssetsByName(String  userId,
+                                                      String  assetManagerGUID,
+                                                      String  assetManagerName,
+                                                      String  name,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveTime,
+                                                      String  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String nameParameterName = "name";
 
@@ -605,10 +1239,19 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       new Date(),
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
                                                                        methodName);
 
-        addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToDataAssets(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             results,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
 
         return results;
     }
@@ -622,6 +1265,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -630,14 +1276,17 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> getDataAssetsForAssetManager(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               int    startFrom,
-                                                               int    pageSize,
-                                                               String methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(String  userId,
+                                                               String  assetManagerGUID,
+                                                               String  assetManagerName,
+                                                               int     startFrom,
+                                                               int     pageSize,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String assetManagerGUIDParameterName = "assetManagerGUID";
         final String assetEntityParameterName = "assetEntity";
@@ -645,8 +1294,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-
-        Date effectiveTime = new Date();
 
         List<DataAssetElement> results = new ArrayList<>();
 
@@ -658,6 +1305,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                                 startFrom,
                                                                                                 pageSize,
                                                                                                 effectiveTime,
+                                                                                                forLineage,
+                                                                                                forDuplicateProcessing,
                                                                                                 methodName);
 
         if (assetEntities != null)
@@ -679,8 +1328,19 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                              assetManagerGUID,
                                                                                              assetManagerName,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
                                                                                              effectiveTime,
                                                                                              methodName));
+
+                        this.getSupplementaryProperties(dataAssetElement.getElementHeader().getGUID(),
+                                                        assetGUIDParameterName,
+                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        dataAssetElement.getDataAssetProperties(),
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
 
                         results.add(dataAssetElement);
                     }
@@ -706,6 +1366,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -714,24 +1377,25 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataAssetElement getDataAssetByGUID(String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String openMetadataGUID,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public DataAssetElement getDataAssetByGUID(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  openMetadataGUID,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String guidParameterName = "openMetadataGUID";
-
-        Date effectiveTime = new Date();
 
         DataAssetElement asset = assetHandler.getBeanFromRepository(userId,
                                                                     openMetadataGUID,
                                                                     guidParameterName,
                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                    false,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -743,48 +1407,21 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                       assetManagerGUID,
                                                                       assetManagerName,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
                                                                       effectiveTime,
                                                                       methodName));
+
+            this.getSupplementaryProperties(asset.getElementHeader().getGUID(),
+                                            assetGUIDParameterName,
+                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            asset.getDataAssetProperties(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
         }
 
         return asset;
-    }
-
-
-
-    /**
-     * Test to see if the entity is going to be sent out as an event - it must be a referenceable - and if an asset or anchored to an asset
-     * then it must be in one of the supported zones.
-     *
-     * @param userId callers userId
-     * @param entity entity to test
-     * @return boolean flag - true means send event.
-     */
-    public boolean entityOfInterest(String       userId,
-                                    EntityDetail entity)
-    {
-        final String methodName = "entityOfInterest";
-        final String guidParameterName = "entity.getGUID()";
-
-        try
-        {
-            assetHandler.validateAnchorEntity(userId,
-                                              entity.getGUID(),
-                                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                              entity,
-                                              guidParameterName,
-                                              false,
-                                              true,
-                                              false,
-                                              supportedZones,
-                                              new Date(),
-                                              methodName);
-
-            return true;
-        }
-        catch (Exception error)
-        {
-            return false;
-        }
     }
 }

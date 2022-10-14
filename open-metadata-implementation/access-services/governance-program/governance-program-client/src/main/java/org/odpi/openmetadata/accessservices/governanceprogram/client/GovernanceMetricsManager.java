@@ -5,10 +5,14 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceMetricsInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -20,15 +24,8 @@ import java.util.List;
 /**
  * GovernanceMetricsManager is the java client for managing governance metrics and their links to all types of governance definitions.
  */
-public class GovernanceMetricsManager implements GovernanceMetricsInterface
+public class GovernanceMetricsManager extends GovernanceProgramBaseClient implements GovernanceMetricsInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -40,13 +37,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
     public GovernanceMetricsManager(String serverName,
                                     String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -66,13 +57,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                     String     userId,
                                     String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -92,14 +77,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                     int      maxPageSize,
                                     AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -123,19 +101,12 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                     int        maxPageSize,
                                     AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -149,14 +120,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                     GovernanceProgramRESTClient restClient,
                                     int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -179,22 +143,10 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                                              PropertyServerException
     {
         final String methodName = "createGovernanceMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics";
-
-        final String qualifiedNameParameterName = "qualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics";
         final String propertiesParameterName = "metricProperties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(metricProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(metricProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  metricProperties,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createReferenceable(userId, metricProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -219,27 +171,12 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                                             PropertyServerException
     {
         final String methodName = "updateGovernanceMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/update?isMergeUpdate={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/update?isMergeUpdate={4}";
 
-        final String qualifiedNameParameterName = "qualifiedName";
         final String guidParameterName = "metricGUID";
         final String propertiesParameterName = "metricProperties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metricGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(metricProperties, propertiesParameterName, methodName);
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(metricProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        metricProperties,
-                                        serverName,
-                                        userId,
-                                        metricGUID,
-                                        isMergeUpdate);
+        super.updateReferenceable(userId, metricGUID, guidParameterName, isMergeUpdate, metricProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -260,18 +197,10 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                   PropertyServerException
     {
         final String methodName = "deleteExternalReference";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/delete";
         final String guidParameterName = "metricGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metricGUID, guidParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        metricGUID);
+        super.removeReferenceable(userId, metricGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
@@ -282,41 +211,27 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
      * @param userId calling user
      * @param metricGUID unique identifier of the governance metric
      * @param governanceDefinitionGUID unique identifier of the governance definition
-     * @param rationale description of how the metric supports the driver
+     * @param rationale description of how the metric supports the metric
      *
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void setupGovernanceDefinitionMetric(String userId,
-                                                String metricGUID,
-                                                String governanceDefinitionGUID,
-                                                String rationale) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void setupGovernanceDefinitionMetric(String                               userId,
+                                                String                               metricGUID,
+                                                String                               governanceDefinitionGUID,
+                                                GovernanceDefinitionMetricProperties rationale) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName = "setupGovernanceDefinitionMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/link";
 
         final String metricGUIDParameterName = "metricGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metricGUID, metricGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(governanceDefinitionGUID, governanceDefinitionGUIDParameterName, methodName);
-
-        StringRequestBody requestBody = new StringRequestBody();
-
-        requestBody.setString(rationale);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        metricGUID,
-                                        governanceDefinitionGUID);
+        super.setupRelationship(userId, metricGUID, metricGUIDParameterName, null, rationale, governanceDefinitionGUID,governanceDefinitionGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -338,23 +253,216 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        final String methodName = "setupGovernanceDefinitionMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/unlink";
+        final String methodName = "clearGovernanceDefinitionMetric";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/unlink";
 
         final String metricGUIDParameterName = "metricGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metricGUID, metricGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(governanceDefinitionGUID, governanceDefinitionGUIDParameterName, methodName);
+        super.clearRelationship(userId, metricGUID, metricGUIDParameterName, null, governanceDefinitionGUID, governanceDefinitionGUIDParameterName, urlTemplate, methodName);
+    }
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        metricGUID,
-                                        governanceDefinitionGUID);
+
+    /**
+     * Create a link to show which data set holds the measurements for a data set.
+     *
+     * @param userId calling user
+     * @param metricGUID unique identifier of the governance metric
+     * @param dataSetGUID unique identifier of the governance definition
+     * @param properties description of how the data set supports the metric
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void setupGovernanceResults(String                      userId,
+                                       String                      metricGUID,
+                                       String                      dataSetGUID,
+                                       GovernanceResultsProperties properties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "setupGovernanceResults";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/link";
+
+        final String metricGUIDParameterName = "metricGUID";
+        final String dataSetGUIDParameterName = "dataSetGUID";
+
+        super.setupRelationship(userId, metricGUID, metricGUIDParameterName, null, properties, dataSetGUID, dataSetGUIDParameterName, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Remove the link between a governance metric and a data set.
+     *
+     * @param userId calling user
+     * @param metricGUID unique identifier of the governance metric
+     * @param dataSetGUID unique identifier of the data set
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void clearGovernanceResults(String userId,
+                                       String metricGUID,
+                                       String dataSetGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String methodName = "clearGovernanceResults";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/unlink";
+
+        final String metricGUIDParameterName = "metricGUID";
+        final String governanceDefinitionGUIDParameterName = "dataSetGUID";
+
+        clearRelationship(userId, metricGUID, metricGUIDParameterName, null, dataSetGUID, governanceDefinitionGUIDParameterName, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Classify the data set to indicate that contains governance measurements.
+     *
+     * @param userId        calling user
+     * @param dataSetGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGovernanceMeasurementsDataSet(String                                  userId,
+                                                 String                                  dataSetGUID,
+                                                 GovernanceMeasurementsDataSetProperties properties) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        final String methodName = "setGovernanceMeasurementsDataSet";
+        final String guidParameter = "dataSetGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set";
+
+        super.setReferenceableClassification(userId, dataSetGUID, guidParameter, properties, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Remove the governance data designation from the data set.
+     *
+     * @param userId       calling user
+     * @param dataSetGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGovernanceMeasurementsDataSet(String userId,
+                                                   String dataSetGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String methodName = "clearGovernanceMeasurementsDataSet";
+        final String guidParameter = "dataSetGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set/delete";
+
+        super.removeReferenceableClassification(userId, dataSetGUID, guidParameter, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Classify the element to indicate the expected values of the governance measurements. Can be used to create or update the values.
+     *
+     * @param userId        calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGovernanceExpectations(String                           userId,
+                                          String                           elementGUID,
+                                          GovernanceExpectationsProperties properties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "setGovernanceExpectations";
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations";
+
+        super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Remove the governance expectations classification from the element.
+     *
+     * @param userId       calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGovernanceExpectations(String userId,
+                                            String elementGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "clearGovernanceExpectations";
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations/delete";
+
+        super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
+    }
+
+
+
+    /**
+     * Classify the element with relevant governance measurements. Can be used to create or update the values.
+     *
+     * @param userId        calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @param properties    properties of the data set's measurements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGovernanceMeasurements(String                           userId,
+                                          String                           elementGUID,
+                                          GovernanceMeasurementsProperties properties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "setGovernanceMeasurements";
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements";
+
+        super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Remove the measurements from the element.
+     *
+     * @param userId       calling user
+     * @param elementGUID  unique identifier of the metadata element to classify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGovernanceMeasurements(String userId,
+                                            String elementGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "clearGovernanceMeasurements";
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements/delete";
+
+        super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }
 
 
@@ -377,7 +485,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                                        PropertyServerException
     {
         final String methodName = "getGovernanceMetricByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}";
 
         final String guidParameterName = "metricGUID";
 
@@ -385,10 +493,10 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
         invalidParameterHandler.validateGUID(metricGUID, guidParameterName, methodName);
 
         GovernanceMetricResponse restResult = restClient.callGovernanceMetricGetRESTCall(methodName,
-                                                                                          serverPlatformURLRoot + urlTemplate,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          metricGUID);
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         metricGUID);
 
         return restResult.getElement();
     }
@@ -417,10 +525,9 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
                                                                                        UserNotAuthorizedException
     {
         final String methodName = "findGovernanceMetrics";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/by-search-string?startFrom={2}&pageSize={3}";
         final String searchStringParameterName = "searchString";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
@@ -431,7 +538,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceMetricListResponse restResult = restClient.callGovernanceMetricListPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   userId,

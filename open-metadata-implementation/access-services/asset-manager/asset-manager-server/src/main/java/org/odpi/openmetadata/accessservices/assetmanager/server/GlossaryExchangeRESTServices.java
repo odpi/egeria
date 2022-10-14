@@ -4,7 +4,9 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -22,11 +24,11 @@ import org.slf4j.LoggerFactory;
  */
 public class GlossaryExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(GlossaryExchangeRESTServices.class),
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(GlossaryExchangeRESTServices.class),
                                                                                     instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -160,6 +162,7 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param requestBody new properties for this element
      *
      * @return  void or
@@ -170,6 +173,7 @@ public class GlossaryExchangeRESTServices
     public VoidResponse updateGlossary(String              serverName,
                                        String              userId,
                                        String              glossaryGUID,
+                                       boolean             isMergeUpdate,
                                        GlossaryRequestBody requestBody)
     {
         final String methodName = "updateGlossary";
@@ -191,6 +195,7 @@ public class GlossaryExchangeRESTServices
                                        requestBody.getMetadataCorrelationProperties(),
                                        glossaryGUID,
                                        requestBody.getElementProperties(),
+                                       isMergeUpdate,
                                        methodName);
             }
             else
@@ -260,7 +265,7 @@ public class GlossaryExchangeRESTServices
      * with a single root category.
      *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
-     * are linked to the assets etc and as such they are logically categorized by the linked category.
+     * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -360,7 +365,7 @@ public class GlossaryExchangeRESTServices
 
     /**
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
-     * the same name.  This means there is only one definition for each term.  Typically the terms are also of a similar
+     * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
      *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
@@ -826,6 +831,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return  void or
@@ -836,6 +843,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse updateGlossaryCategory(String                      serverName,
                                                String                      userId,
                                                String                      glossaryCategoryGUID,
+                                               boolean                     forLineage,
+                                               boolean                     forDuplicateProcessing,
                                                GlossaryCategoryRequestBody requestBody)
     {
         final String methodName = "updateGlossaryCategory";
@@ -857,6 +866,9 @@ public class GlossaryExchangeRESTServices
                                                requestBody.getMetadataCorrelationProperties(),
                                                glossaryCategoryGUID,
                                                requestBody.getElementProperties(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
                                                methodName);
             }
             else
@@ -882,6 +894,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -889,11 +903,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupCategoryParent(String                             serverName,
-                                            String                             userId,
-                                            String                             glossaryParentCategoryGUID,
-                                            String                             glossaryChildCategoryGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupCategoryParent(String                  serverName,
+                                            String                  userId,
+                                            String                  glossaryParentCategoryGUID,
+                                            String                  glossaryChildCategoryGUID,
+                                            boolean                 forLineage,
+                                            boolean                 forDuplicateProcessing,
+                                            RelationshipRequestBody requestBody)
     {
         final String methodName = "setupCategoryParent";
 
@@ -910,12 +926,34 @@ public class GlossaryExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setupCategoryParent(userId,
-                                            requestBody.getAssetManagerGUID(),
-                                            requestBody.getAssetManagerName(),
-                                            glossaryParentCategoryGUID,
-                                            glossaryChildCategoryGUID,
-                                            methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupCategoryParent(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                glossaryParentCategoryGUID,
+                                                glossaryChildCategoryGUID,
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
+                else
+                {
+                    handler.setupCategoryParent(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                glossaryParentCategoryGUID,
+                                                glossaryChildCategoryGUID,
+                                                null,
+                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
             }
             else
             {
@@ -924,6 +962,11 @@ public class GlossaryExchangeRESTServices
                                             null,
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            null,
                                             methodName);
             }
         }
@@ -945,6 +988,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -952,11 +997,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearCategoryParent(String                             serverName,
-                                            String                             userId,
-                                            String                             glossaryParentCategoryGUID,
-                                            String                             glossaryChildCategoryGUID,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearCategoryParent(String                        serverName,
+                                            String                        userId,
+                                            String                        glossaryParentCategoryGUID,
+                                            String                        glossaryChildCategoryGUID,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearCategoryParent";
 
@@ -978,6 +1025,9 @@ public class GlossaryExchangeRESTServices
                                             requestBody.getAssetManagerName(),
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
                                             methodName);
             }
             else
@@ -987,6 +1037,9 @@ public class GlossaryExchangeRESTServices
                                             null,
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            null,
                                             methodName);
             }
         }
@@ -1007,6 +1060,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -1014,10 +1069,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeGlossaryCategory(String                        serverName,
-                                               String                        userId,
-                                               String                        glossaryCategoryGUID,
-                                               MetadataCorrelationProperties requestBody)
+    public VoidResponse removeGlossaryCategory(String            serverName,
+                                               String            userId,
+                                               String            glossaryCategoryGUID,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               UpdateRequestBody requestBody)
     {
         final String methodName = "removeGlossaryCategory";
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1031,7 +1088,25 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.removeGlossaryCategory(userId, requestBody, glossaryCategoryGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.removeGlossaryCategory(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryCategoryGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                handler.removeGlossaryCategory(userId,
+                                               null,
+                                               glossaryCategoryGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               null,
+                                               methodName);
+            }
         }
         catch (Exception error)
         {
@@ -1052,6 +1127,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties and correlators
      *
      * @return list of matching metadata elements or
@@ -1063,6 +1140,8 @@ public class GlossaryExchangeRESTServices
                                                                    String                  userId,
                                                                    int                     startFrom,
                                                                    int                     pageSize,
+                                                                   boolean                 forLineage,
+                                                                   boolean                 forDuplicateProcessing,
                                                                    SearchStringRequestBody requestBody)
     {
         final String methodName = "findGlossaryCategories";
@@ -1070,7 +1149,7 @@ public class GlossaryExchangeRESTServices
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
-        AuditLog                 auditLog = null;
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1087,6 +1166,9 @@ public class GlossaryExchangeRESTServices
                                                                        requestBody.getSearchStringParameterName(),
                                                                        startFrom,
                                                                        pageSize,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        methodName));
             }
             else
@@ -1113,6 +1195,8 @@ public class GlossaryExchangeRESTServices
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of metadata elements describing the categories associated with the requested glossary or
@@ -1120,12 +1204,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElementsResponse getCategoriesForGlossary(String                             serverName,
-                                                                     String                             userId,
-                                                                     String                             glossaryGUID,
-                                                                     int                                startFrom,
-                                                                     int                                pageSize,
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryCategoryElementsResponse getCategoriesForGlossary(String                        serverName,
+                                                                     String                        userId,
+                                                                     String                        glossaryGUID,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getCategoriesForGlossary";
 
@@ -1148,6 +1234,9 @@ public class GlossaryExchangeRESTServices
                                                                          glossaryGUID,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         requestBody.getEffectiveTime(),
                                                                          methodName));
             }
             else
@@ -1158,6 +1247,9 @@ public class GlossaryExchangeRESTServices
                                                                          glossaryGUID,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         null,
                                                                          methodName));
             }
         }
@@ -1181,6 +1273,8 @@ public class GlossaryExchangeRESTServices
      * @param requestBody name to search for and correlators
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -1191,6 +1285,8 @@ public class GlossaryExchangeRESTServices
                                                                           String          userId,
                                                                           int             startFrom,
                                                                           int             pageSize,
+                                                                          boolean         forLineage,
+                                                                          boolean         forDuplicateProcessing,
                                                                           NameRequestBody requestBody)
     {
         final String methodName = "getGlossaryCategoriesByName";
@@ -1215,6 +1311,9 @@ public class GlossaryExchangeRESTServices
                                                                             requestBody.getNameParameterName(),
                                                                             startFrom,
                                                                             pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
             }
             else
@@ -1239,6 +1338,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return requested metadata element or
@@ -1246,10 +1347,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(String                             serverName,
-                                                                     String                             userId,
-                                                                     String                             glossaryCategoryGUID,
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(String                        serverName,
+                                                                     String                        userId,
+                                                                     String                        glossaryCategoryGUID,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossaryCategoryByGUID";
 
@@ -1270,6 +1373,9 @@ public class GlossaryExchangeRESTServices
                                                                       requestBody.getAssetManagerGUID(),
                                                                       requestBody.getAssetManagerName(),
                                                                       glossaryCategoryGUID,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else
@@ -1278,6 +1384,9 @@ public class GlossaryExchangeRESTServices
                                                                       null,
                                                                       null,
                                                                       glossaryCategoryGUID,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      null,
                                                                       methodName));
             }
         }
@@ -1299,6 +1408,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return parent glossary category element or
@@ -1306,10 +1417,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElementResponse getGlossaryCategoryParent(String                             serverName,
-                                                                     String                             userId,
-                                                                     String                             glossaryCategoryGUID,
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryCategoryElementResponse getGlossaryCategoryParent(String                        serverName,
+                                                                     String                        userId,
+                                                                     String                        glossaryCategoryGUID,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossaryCategoryParent";
 
@@ -1330,6 +1443,9 @@ public class GlossaryExchangeRESTServices
                                                                       requestBody.getAssetManagerGUID(),
                                                                       requestBody.getAssetManagerName(),
                                                                       glossaryCategoryGUID,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else
@@ -1338,6 +1454,9 @@ public class GlossaryExchangeRESTServices
                                                                       null,
                                                                       null,
                                                                       glossaryCategoryGUID,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      null,
                                                                       methodName));
             }
         }
@@ -1360,6 +1479,8 @@ public class GlossaryExchangeRESTServices
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of glossary category elements or
@@ -1367,12 +1488,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElementsResponse getGlossarySubCategories(String                             serverName,
-                                                                     String                             userId,
-                                                                     String                             glossaryCategoryGUID,
-                                                                     int                                startFrom,
-                                                                     int                                pageSize,
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryCategoryElementsResponse getGlossarySubCategories(String                        serverName,
+                                                                     String                        userId,
+                                                                     String                        glossaryCategoryGUID,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossarySubCategories";
 
@@ -1395,6 +1518,9 @@ public class GlossaryExchangeRESTServices
                                                                          glossaryCategoryGUID,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         requestBody.getEffectiveTime(),
                                                                          methodName));
             }
             else
@@ -1405,6 +1531,9 @@ public class GlossaryExchangeRESTServices
                                                                          glossaryCategoryGUID,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         null,
                                                                          methodName));
             }
         }
@@ -1595,6 +1724,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the glossary term
      *
      * @return  void or
@@ -1605,6 +1736,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse updateGlossaryTerm(String                  serverName,
                                            String                  userId,
                                            String                  glossaryTermGUID,
+                                           boolean                 forLineage,
+                                           boolean                 forDuplicateProcessing,
                                            GlossaryTermRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTerm";
@@ -1626,6 +1759,9 @@ public class GlossaryExchangeRESTServices
                                            requestBody.getMetadataCorrelationProperties(),
                                            glossaryTermGUID,
                                            requestBody.getElementProperties(),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody.getEffectiveTime(),
                                            methodName);
             }
             else
@@ -1651,6 +1787,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody status and correlation properties
      *
      * @return  void or
@@ -1661,6 +1799,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse updateGlossaryTermStatus(String                        serverName,
                                                  String                        userId,
                                                  String                        glossaryTermGUID,
+                                                 boolean                       forLineage,
+                                                 boolean                       forDuplicateProcessing,
                                                  GlossaryTermStatusRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTermStatus";
@@ -1682,6 +1822,9 @@ public class GlossaryExchangeRESTServices
                                                  requestBody.getMetadataCorrelationProperties(),
                                                  glossaryTermGUID,
                                                  requestBody.getGlossaryTermStatus(),
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime(),
                                                  methodName);
             }
             else
@@ -1707,6 +1850,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the categorization relationship
      *
      * @return  void or
@@ -1714,11 +1859,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupTermCategory(String                    serverName,
-                                          String                    userId,
-                                          String                    glossaryCategoryGUID,
-                                          String                    glossaryTermGUID,
-                                          CategorizationRequestBody requestBody)
+    public VoidResponse setupTermCategory(String                   serverName,
+                                          String                   userId,
+                                          String                   glossaryCategoryGUID,
+                                          String                   glossaryTermGUID,
+                                          boolean                  forLineage,
+                                          boolean                  forDuplicateProcessing,
+                                          RelationshipRequestBody  requestBody)
     {
         final String methodName = "setupTermCategory";
 
@@ -1731,16 +1878,21 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getProperties() instanceof GlossaryTermCategorization))
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+                GlossaryTermCategorization properties = (GlossaryTermCategorization)requestBody.getProperties();
 
                 handler.setupTermCategory(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
                                           glossaryCategoryGUID,
                                           glossaryTermGUID,
-                                          requestBody.getCategorizationProperties(),
+                                          properties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -1766,6 +1918,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -1773,11 +1927,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermCategory(String                             serverName,
-                                          String                             userId,
-                                          String                             glossaryCategoryGUID,
-                                          String                             glossaryTermGUID,
-                                          AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearTermCategory(String                        serverName,
+                                          String                        userId,
+                                          String                        glossaryCategoryGUID,
+                                          String                        glossaryTermGUID,
+                                          boolean                       forLineage,
+                                          boolean                       forDuplicateProcessing,
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearTermCategory";
 
@@ -1799,6 +1955,9 @@ public class GlossaryExchangeRESTServices
                                           requestBody.getAssetManagerName(),
                                           glossaryCategoryGUID,
                                           glossaryTermGUID,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -1808,6 +1967,9 @@ public class GlossaryExchangeRESTServices
                                           null,
                                           glossaryCategoryGUID,
                                           glossaryTermGUID,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          null,
                                           methodName);
             }
         }
@@ -1830,6 +1992,8 @@ public class GlossaryExchangeRESTServices
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the relationship
      *
      * @return  void or
@@ -1837,12 +2001,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupTermRelationship(String                      serverName,
-                                              String                      userId,
-                                              String                      glossaryTermOneGUID,
-                                              String                      relationshipTypeName,
-                                              String                      glossaryTermTwoGUID,
-                                              TermRelationshipRequestBody requestBody)
+    public VoidResponse setupTermRelationship(String                  serverName,
+                                              String                  userId,
+                                              String                  glossaryTermOneGUID,
+                                              String                  relationshipTypeName,
+                                              String                  glossaryTermTwoGUID,
+                                              boolean                 forLineage,
+                                              boolean                 forDuplicateProcessing,
+                                              RelationshipRequestBody requestBody)
     {
         final String methodName = "setupTermRelationship";
 
@@ -1855,18 +2021,23 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getProperties() instanceof GlossaryTermRelationship))
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
+                GlossaryTermRelationship properties = (GlossaryTermRelationship) requestBody.getProperties();
+
                 handler.setupTermRelationship(userId,
-                                               requestBody.getAssetManagerGUID(),
-                                               requestBody.getAssetManagerName(),
-                                               glossaryTermOneGUID,
-                                               relationshipTypeName,
-                                               glossaryTermTwoGUID,
-                                               requestBody.getProperties(),
-                                               methodName);
+                                              requestBody.getAssetManagerGUID(),
+                                              requestBody.getAssetManagerName(),
+                                              glossaryTermOneGUID,
+                                              relationshipTypeName,
+                                              glossaryTermTwoGUID,
+                                              properties,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
+                                              methodName);
             }
             else
             {
@@ -1892,6 +2063,8 @@ public class GlossaryExchangeRESTServices
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the relationship
      *
      * @return  void or
@@ -1899,12 +2072,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateTermRelationship(String                      serverName,
-                                               String                      userId,
-                                               String                      glossaryTermOneGUID,
-                                               String                      relationshipTypeName,
-                                               String                      glossaryTermTwoGUID,
-                                               TermRelationshipRequestBody requestBody)
+    public VoidResponse updateTermRelationship(String                  serverName,
+                                               String                  userId,
+                                               String                  glossaryTermOneGUID,
+                                               String                  relationshipTypeName,
+                                               String                  glossaryTermTwoGUID,
+                                               boolean                 forLineage,
+                                               boolean                 forDuplicateProcessing,
+                                               RelationshipRequestBody requestBody)
     {
         final String methodName = "updateTermRelationship";
 
@@ -1917,15 +2092,20 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getProperties() instanceof GlossaryTermRelationship))
             {
                 GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+                GlossaryTermRelationship properties = (GlossaryTermRelationship) requestBody.getProperties();
 
                 handler.updateTermRelationship(userId,
                                                glossaryTermOneGUID,
                                                relationshipTypeName,
                                                glossaryTermTwoGUID,
-                                               requestBody.getProperties(),
+                                               properties,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
                                                methodName);
             }
             else
@@ -1952,6 +2132,8 @@ public class GlossaryExchangeRESTServices
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return  void or
@@ -1959,12 +2141,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermRelationship(String                             serverName,
-                                              String                             userId,
-                                              String                             glossaryTermOneGUID,
-                                              String                             relationshipTypeName,
-                                              String                             glossaryTermTwoGUID,
-                                              AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearTermRelationship(String                        serverName,
+                                              String                        userId,
+                                              String                        glossaryTermOneGUID,
+                                              String                        relationshipTypeName,
+                                              String                        glossaryTermTwoGUID,
+                                              boolean                       forLineage,
+                                              boolean                       forDuplicateProcessing,
+                                              EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearTermRelationship";
 
@@ -1987,6 +2171,9 @@ public class GlossaryExchangeRESTServices
                                               glossaryTermOneGUID,
                                               relationshipTypeName,
                                               glossaryTermTwoGUID,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
                                               methodName);
             }
             else
@@ -1997,6 +2184,9 @@ public class GlossaryExchangeRESTServices
                                               glossaryTermOneGUID,
                                               relationshipTypeName,
                                               glossaryTermTwoGUID,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              null,
                                               methodName);
             }
         }
@@ -2018,6 +2208,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2025,10 +2217,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsAbstractConcept(String                        serverName,
-                                                 String                        userId,
-                                                 String                        glossaryTermGUID,
-                                                 MetadataCorrelationProperties requestBody)
+    public VoidResponse setTermAsAbstractConcept(String            serverName,
+                                                 String            userId,
+                                                 String            glossaryTermGUID,
+                                                 boolean           forLineage,
+                                                 boolean           forDuplicateProcessing,
+                                                 UpdateRequestBody requestBody)
     {
         final String methodName = "setTermAsAbstractConcept";
 
@@ -2043,7 +2237,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.setTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setTermAsAbstractConcept(userId,
+                                                 requestBody.getMetadataCorrelationProperties(),
+                                                 glossaryTermGUID,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime(),
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2062,6 +2269,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2069,10 +2278,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsAbstractConcept(String                        serverName,
-                                                   String                        userId,
-                                                   String                        glossaryTermGUID,
-                                                   MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsAbstractConcept(String            serverName,
+                                                   String            userId,
+                                                   String            glossaryTermGUID,
+                                                   boolean           forLineage,
+                                                   boolean           forDuplicateProcessing,
+                                                   UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsAbstractConcept";
 
@@ -2087,7 +2298,13 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsAbstractConcept(userId, requestBody, glossaryTermGUID, methodName);
+            handler.clearTermAsAbstractConcept(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryTermGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
         }
         catch (Exception error)
         {
@@ -2106,6 +2323,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2113,10 +2332,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsDataValue(String                        serverName,
-                                           String                        userId,
-                                           String                        glossaryTermGUID,
-                                           MetadataCorrelationProperties requestBody)
+    public VoidResponse setTermAsDataValue(String            serverName,
+                                           String            userId,
+                                           String            glossaryTermGUID,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           UpdateRequestBody requestBody)
     {
         final String methodName = "setTermAsDataValue";
 
@@ -2131,7 +2352,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.setTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setTermAsDataValue(userId,
+                                           requestBody.getMetadataCorrelationProperties(),
+                                           glossaryTermGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody.getEffectiveTime(),
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2150,6 +2384,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2157,10 +2393,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsDataValue(String                        serverName,
-                                             String                        userId,
-                                             String                        glossaryTermGUID,
-                                             MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsDataValue(String            serverName,
+                                             String            userId,
+                                             String            glossaryTermGUID,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsDataValue";
 
@@ -2175,7 +2413,19 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsDataValue(userId,
+                                             requestBody.getMetadataCorrelationProperties(),
+                                             glossaryTermGUID,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2194,6 +2444,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody type of activity and correlators
      *
      * @return  void or
@@ -2204,6 +2456,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse setTermAsActivity(String                                serverName,
                                           String                                userId,
                                           String                                glossaryTermGUID,
+                                          boolean                               forLineage,
+                                          boolean                               forDuplicateProcessing,
                                           ActivityTermClassificationRequestBody requestBody)
     {
         final String methodName = "setTermAsActivity";
@@ -2225,6 +2479,9 @@ public class GlossaryExchangeRESTServices
                                           requestBody.getMetadataCorrelationProperties(),
                                           glossaryTermGUID,
                                           requestBody.getActivityType(),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
                                           methodName);
             }
             else
@@ -2249,6 +2506,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2256,10 +2515,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsActivity(String                        serverName,
-                                            String                        userId,
-                                            String                        glossaryTermGUID,
-                                            MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsActivity(String            serverName,
+                                            String            userId,
+                                            String            glossaryTermGUID,
+                                            boolean           forLineage,
+                                            boolean           forDuplicateProcessing,
+                                            UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsActivity";
 
@@ -2274,7 +2535,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsActivity(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsActivity(userId,
+                                            requestBody.getMetadataCorrelationProperties(),
+                                            glossaryTermGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2293,6 +2567,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody more details of the context
      *
      * @return  void or
@@ -2303,6 +2579,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse setTermAsContext(String                                     serverName,
                                          String                                     userId,
                                          String                                     glossaryTermGUID,
+                                         boolean                                    forLineage,
+                                         boolean                                    forDuplicateProcessing,
                                          ContextDefinitionClassificationRequestBody requestBody)
     {
         final String methodName = "setTermAsContext";
@@ -2324,6 +2602,9 @@ public class GlossaryExchangeRESTServices
                                          requestBody.getMetadataCorrelationProperties(),
                                          glossaryTermGUID,
                                          requestBody.getContextDefinition(),
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         requestBody.getEffectiveTime(),
                                          methodName);
             }
             else
@@ -2348,6 +2629,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2355,10 +2638,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsContext(String                        serverName,
-                                           String                        userId,
-                                           String                        glossaryTermGUID,
-                                           MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsContext(String            serverName,
+                                           String            userId,
+                                           String            glossaryTermGUID,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsContext";
 
@@ -2373,7 +2658,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsContext(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsContext(userId,
+                                           requestBody.getMetadataCorrelationProperties(),
+                                           glossaryTermGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody.getEffectiveTime(),
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2392,6 +2690,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2399,10 +2699,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsSpineObject(String                        serverName,
-                                             String                        userId,
-                                             String                        glossaryTermGUID,
-                                             MetadataCorrelationProperties requestBody)
+    public VoidResponse setTermAsSpineObject(String            serverName,
+                                             String            userId,
+                                             String            glossaryTermGUID,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             UpdateRequestBody requestBody)
     {
         final String methodName = "setTermAsSpineObject";
 
@@ -2417,7 +2719,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.setTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setTermAsSpineObject(userId,
+                                             requestBody.getMetadataCorrelationProperties(),
+                                             glossaryTermGUID,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             requestBody.getEffectiveTime(),
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2436,6 +2751,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2443,10 +2760,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsSpineObject(String                        serverName,
-                                               String                        userId,
-                                               String                        glossaryTermGUID,
-                                               MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsSpineObject(String            serverName,
+                                               String            userId,
+                                               String            glossaryTermGUID,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsSpineObject";
 
@@ -2461,7 +2780,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsSpineObject(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryTermGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2472,8 +2804,7 @@ public class GlossaryExchangeRESTServices
 
         return response;
     }
-
-
+    
 
     /**
      * Classify the glossary term to indicate that it describes a spine attribute.
@@ -2481,6 +2812,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2488,10 +2821,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsSpineAttribute(String                        serverName,
-                                                String                        userId,
-                                                String                        glossaryTermGUID,
-                                                MetadataCorrelationProperties requestBody)
+    public VoidResponse setTermAsSpineAttribute(String            serverName,
+                                                String            userId,
+                                                String            glossaryTermGUID,
+                                                boolean           forLineage,
+                                                boolean           forDuplicateProcessing,
+                                                UpdateRequestBody requestBody)
     {
         final String methodName = "setTermAsSpineAttribute";
 
@@ -2506,7 +2841,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.setTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setTermAsSpineAttribute(userId,
+                                                requestBody.getMetadataCorrelationProperties(),
+                                                glossaryTermGUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2525,6 +2873,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2532,10 +2882,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsSpineAttribute(String                        serverName,
-                                                  String                        userId,
-                                                  String                        glossaryTermGUID,
-                                                  MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsSpineAttribute(String            serverName,
+                                                  String            userId,
+                                                  String            glossaryTermGUID,
+                                                  boolean           forLineage,
+                                                  boolean           forDuplicateProcessing,
+                                                  UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsSpineAttribute";
 
@@ -2550,7 +2902,19 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsSpineAttribute(userId,
+                                                  requestBody.getMetadataCorrelationProperties(),
+                                                  glossaryTermGUID,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2569,6 +2933,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2576,10 +2942,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsObjectIdentifier(String                        serverName,
-                                                  String                        userId,
-                                                  String                        glossaryTermGUID,
-                                                  MetadataCorrelationProperties requestBody)
+    public VoidResponse setTermAsObjectIdentifier(String            serverName,
+                                                  String            userId,
+                                                  String            glossaryTermGUID,
+                                                  boolean           forLineage,
+                                                  boolean           forDuplicateProcessing,
+                                                  UpdateRequestBody requestBody)
     {
         final String methodName = "setTermAsObjectIdentifier";
 
@@ -2594,7 +2962,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.setTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setTermAsObjectIdentifier(userId,
+                                                  requestBody.getMetadataCorrelationProperties(),
+                                                  glossaryTermGUID,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2613,6 +2994,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2620,10 +3003,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsObjectIdentifier(String                        serverName,
-                                                    String                        userId,
-                                                    String                        glossaryTermGUID,
-                                                    MetadataCorrelationProperties requestBody)
+    public VoidResponse clearTermAsObjectIdentifier(String            serverName,
+                                                    String            userId,
+                                                    String            glossaryTermGUID,
+                                                    boolean           forLineage,
+                                                    boolean           forDuplicateProcessing,
+                                                    UpdateRequestBody requestBody)
     {
         final String methodName = "clearTermAsObjectIdentifier";
 
@@ -2638,7 +3023,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.clearTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearTermAsObjectIdentifier(userId,
+                                                    requestBody.getMetadataCorrelationProperties(),
+                                                    glossaryTermGUID,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    requestBody.getEffectiveTime(),
+                                                    methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2657,6 +3055,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -2667,7 +3067,9 @@ public class GlossaryExchangeRESTServices
     public VoidResponse removeGlossaryTerm(String                        serverName,
                                            String                        userId,
                                            String                        glossaryTermGUID,
-                                           MetadataCorrelationProperties requestBody)
+                                           boolean               forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           UpdateRequestBody requestBody)
     {
         final String methodName = "removeGlossaryTerm";
 
@@ -2682,7 +3084,20 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            handler.removeGlossaryTerm(userId, requestBody, glossaryTermGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.removeGlossaryTerm(userId,
+                                           requestBody.getMetadataCorrelationProperties(),
+                                           glossaryTermGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody.getEffectiveTime(),
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2703,6 +3118,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and search string
      *
      * @return list of matching metadata elements or
@@ -2714,6 +3131,8 @@ public class GlossaryExchangeRESTServices
                                                           String                  userId,
                                                           int                     startFrom,
                                                           int                     pageSize,
+                                                          boolean                 forLineage,
+                                                          boolean                 forDuplicateProcessing,
                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findGlossaryTerms";
@@ -2738,6 +3157,9 @@ public class GlossaryExchangeRESTServices
                                                                   requestBody.getSearchStringParameterName(),
                                                                   startFrom,
                                                                   pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
             }
             else
@@ -2764,6 +3186,8 @@ public class GlossaryExchangeRESTServices
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
@@ -2771,12 +3195,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementsResponse getTermsForGlossary(String                             serverName,
-                                                            String                             userId,
-                                                            String                             glossaryGUID,
-                                                            int                                startFrom,
-                                                            int                                pageSize,
-                                                            AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryTermElementsResponse getTermsForGlossary(String                        serverName,
+                                                            String                        userId,
+                                                            String                        glossaryGUID,
+                                                            int                           startFrom,
+                                                            int                           pageSize,
+                                                            boolean                       forLineage,
+                                                            boolean                       forDuplicateProcessing,
+                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getTermsForGlossary";
 
@@ -2799,6 +3225,9 @@ public class GlossaryExchangeRESTServices
                                                                     glossaryGUID,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName));
             }
             else
@@ -2809,6 +3238,9 @@ public class GlossaryExchangeRESTServices
                                                                     glossaryGUID,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null,
                                                                     methodName));
             }
         }
@@ -2832,6 +3264,8 @@ public class GlossaryExchangeRESTServices
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
@@ -2839,12 +3273,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                             serverName,
-                                                                    String                             userId,
-                                                                    String                             glossaryCategoryGUID,
-                                                                    int                                startFrom,
-                                                                    int                                pageSize,
-                                                                    AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                        serverName,
+                                                                    String                        userId,
+                                                                    String                        glossaryCategoryGUID,
+                                                                    int                           startFrom,
+                                                                    int                           pageSize,
+                                                                    boolean                       forLineage,
+                                                                    boolean                       forDuplicateProcessing,
+                                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getTermsForGlossaryCategory";
 
@@ -2867,6 +3303,9 @@ public class GlossaryExchangeRESTServices
                                                                             glossaryCategoryGUID,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
             }
             else
@@ -2877,6 +3316,9 @@ public class GlossaryExchangeRESTServices
                                                                             glossaryCategoryGUID,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            null,
                                                                             methodName));
             }
         }
@@ -2899,6 +3341,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers and name
      *
      * @return list of matching metadata elements or
@@ -2910,6 +3354,8 @@ public class GlossaryExchangeRESTServices
                                                                  String          userId,
                                                                  int             startFrom,
                                                                  int             pageSize,
+                                                                 boolean         forLineage,
+                                                                 boolean         forDuplicateProcessing,
                                                                  NameRequestBody requestBody)
     {
         final String methodName = "getGlossaryTermsByName";
@@ -2934,6 +3380,9 @@ public class GlossaryExchangeRESTServices
                                                                        requestBody.getNameParameterName(),
                                                                        startFrom,
                                                                        pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
                                                                        methodName));
             }
             else
@@ -2958,6 +3407,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
@@ -2965,10 +3416,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementResponse getGlossaryTermByGUID(String                             serverName,
-                                                             String                             userId,
-                                                             String                             guid,
-                                                             AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryTermElementResponse getGlossaryTermByGUID(String                        serverName,
+                                                             String                        userId,
+                                                             String                        guid,
+                                                             boolean                       forLineage,
+                                                             boolean                       forDuplicateProcessing,
+                                                             EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossaryTermByGUID";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2988,6 +3441,9 @@ public class GlossaryExchangeRESTServices
                                                                   requestBody.getAssetManagerGUID(),
                                                                   requestBody.getAssetManagerName(),
                                                                   guid,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getEffectiveTime(),
                                                                   methodName));
             }
             else
@@ -2996,6 +3452,9 @@ public class GlossaryExchangeRESTServices
                                                                   null,
                                                                   null,
                                                                   guid,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  null,
                                                                   methodName));
             }
         }
@@ -3078,6 +3537,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -3088,6 +3549,8 @@ public class GlossaryExchangeRESTServices
     public VoidResponse updateExternalGlossaryLink(String                          serverName,
                                                    String                          userId,
                                                    String                          externalLinkGUID,
+                                                   boolean                         forLineage,
+                                                   boolean                         forDuplicateProcessing,
                                                    ExternalGlossaryLinkRequestBody requestBody)
     {
         final String methodName = "updateExternalGlossaryLink";
@@ -3110,6 +3573,9 @@ public class GlossaryExchangeRESTServices
                                                    requestBody.getAssetManagerName(),
                                                    externalLinkGUID,
                                                    requestBody.getElementProperties(),
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   requestBody.getEffectiveTime(),
                                                    methodName);
             }
             else
@@ -3135,6 +3601,8 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -3142,10 +3610,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeExternalGlossaryLink(String                             serverName,
-                                                   String                             userId,
-                                                   String                             externalLinkGUID,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse removeExternalGlossaryLink(String                        serverName,
+                                                   String                        userId,
+                                                   String                        externalLinkGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "removeExternalGlossaryLink";
 
@@ -3166,6 +3636,9 @@ public class GlossaryExchangeRESTServices
                                                    requestBody.getAssetManagerGUID(),
                                                    requestBody.getAssetManagerName(),
                                                    externalLinkGUID,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   requestBody.getEffectiveTime(),
                                                    methodName);
             }
             else
@@ -3174,6 +3647,9 @@ public class GlossaryExchangeRESTServices
                                                    null,
                                                    null,
                                                    externalLinkGUID,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   null,
                                                    methodName);
             }
         }
@@ -3195,6 +3671,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to attach
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -3202,11 +3680,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse attachExternalLinkToGlossary(String                             serverName,
-                                                     String                             userId,
-                                                     String                             glossaryGUID,
-                                                     String                             externalLinkGUID,
-                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse attachExternalLinkToGlossary(String                        serverName,
+                                                     String                        userId,
+                                                     String                        glossaryGUID,
+                                                     String                        externalLinkGUID,
+                                                     boolean                       forLineage,
+                                                     boolean                       forDuplicateProcessing,
+                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "attachExternalLinkToGlossary";
 
@@ -3228,6 +3708,9 @@ public class GlossaryExchangeRESTServices
                                                    requestBody.getAssetManagerName(),
                                                    glossaryGUID,
                                                    externalLinkGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     requestBody.getEffectiveTime(),
                                                    methodName);
             }
             else
@@ -3237,6 +3720,9 @@ public class GlossaryExchangeRESTServices
                                                      null,
                                                      glossaryGUID,
                                                      externalLinkGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     null,
                                                      methodName);
             }
         }
@@ -3258,6 +3744,8 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -3265,11 +3753,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalLinkFromGlossary(String                             serverName,
-                                                       String                             userId,
-                                                       String                             externalLinkGUID,
-                                                       String                             glossaryGUID,
-                                                       AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse detachExternalLinkFromGlossary(String                        serverName,
+                                                       String                        userId,
+                                                       String                        externalLinkGUID,
+                                                       String                        glossaryGUID,
+                                                       boolean                       forLineage,
+                                                       boolean                       forDuplicateProcessing,
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "detachExternalLinkFromGlossary";
 
@@ -3291,6 +3781,9 @@ public class GlossaryExchangeRESTServices
                                                        requestBody.getAssetManagerName(),
                                                        glossaryGUID,
                                                        externalLinkGUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
                                                        methodName);
             }
             else
@@ -3300,6 +3793,9 @@ public class GlossaryExchangeRESTServices
                                                        null,
                                                        glossaryGUID,
                                                        externalLinkGUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       null,
                                                        methodName);
             }
         }
@@ -3322,17 +3818,23 @@ public class GlossaryExchangeRESTServices
      * @param glossaryGUID unique identifier of the metadata element for the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
      *
      * @return list of attached links to external glossary resources or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ExternalGlossaryLinkElementsResponse getExternalLinksForGlossary(String serverName,
-                                                                            String userId,
-                                                                            String glossaryGUID,
-                                                                            int    startFrom,
-                                                                            int    pageSize)
+    public ExternalGlossaryLinkElementsResponse getExternalLinksForGlossary(String                        serverName,
+                                                                            String                        userId,
+                                                                            String                        glossaryGUID,
+                                                                            int                           startFrom,
+                                                                            int                           pageSize,
+                                                                            boolean                       forLineage,
+                                                                            boolean                       forDuplicateProcessing,
+                                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getExternalLinksForGlossary";
 
@@ -3347,7 +3849,14 @@ public class GlossaryExchangeRESTServices
 
             GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getExternalLinksForGlossary(userId, glossaryGUID, startFrom, pageSize, methodName));
+            response.setElementList(handler.getExternalLinksForGlossary(userId,
+                                                                        glossaryGUID,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime(),
+                                                                        methodName));
         }
         catch (Exception error)
         {
@@ -3368,6 +3877,8 @@ public class GlossaryExchangeRESTServices
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return list of glossaries or
@@ -3375,12 +3886,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryElementsResponse getGlossariesForExternalLink(String                             serverName,
-                                                                 String                             userId,
-                                                                 String                             externalLinkGUID,
-                                                                 int                                startFrom,
-                                                                 int                                pageSize,
-                                                                 AssetManagerIdentifiersRequestBody requestBody)
+    public GlossaryElementsResponse getGlossariesForExternalLink(String                        serverName,
+                                                                 String                        userId,
+                                                                 String                        externalLinkGUID,
+                                                                 int                           startFrom,
+                                                                 int                           pageSize,
+                                                                 boolean                       forLineage,
+                                                                 boolean                       forDuplicateProcessing,
+                                                                 EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossariesForExternalLink";
 
@@ -3403,6 +3916,9 @@ public class GlossaryExchangeRESTServices
                                                                              externalLinkGUID,
                                                                              startFrom,
                                                                              pageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             requestBody.getEffectiveTime(),
                                                                              methodName));
             }
             else
@@ -3413,6 +3929,9 @@ public class GlossaryExchangeRESTServices
                                                                              externalLinkGUID,
                                                                              startFrom,
                                                                              pageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             null,
                                                                              methodName));
             }
         }
@@ -3434,7 +3953,9 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -3446,6 +3967,8 @@ public class GlossaryExchangeRESTServices
                                                    String                                 userId,
                                                    String                                 glossaryCategoryGUID,
                                                    String                                 externalLinkGUID,
+                                                   boolean                                forLineage,
+                                                   boolean                                forDuplicateProcessing,
                                                    ExternalGlossaryElementLinkRequestBody requestBody)
     {
         final String methodName = "attachExternalCategoryLink";
@@ -3469,6 +3992,9 @@ public class GlossaryExchangeRESTServices
                                                    glossaryCategoryGUID,
                                                    externalLinkGUID,
                                                    requestBody.getElementProperties(),
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   null,
                                                    methodName);
             }
             else
@@ -3493,7 +4019,9 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param glossaryCategoryGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -3501,11 +4029,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalCategoryLink(String                             serverName,
-                                                   String                             userId,
-                                                   String                             externalLinkGUID,
-                                                   String                             glossaryCategoryGUID,
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse detachExternalCategoryLink(String                        serverName,
+                                                   String                        userId,
+                                                   String                        externalLinkGUID,
+                                                   String                        glossaryCategoryGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "detachExternalCategoryLink";
 
@@ -3527,6 +4057,9 @@ public class GlossaryExchangeRESTServices
                                                    requestBody.getAssetManagerName(),
                                                    glossaryCategoryGUID,
                                                    externalLinkGUID,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   requestBody.getEffectiveTime(),
                                                    methodName);
             }
             else
@@ -3536,6 +4069,9 @@ public class GlossaryExchangeRESTServices
                                                    null,
                                                    glossaryCategoryGUID,
                                                    externalLinkGUID,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   null,
                                                    methodName);
             }
         }
@@ -3557,7 +4093,9 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the link
      *
      * @return  void or
@@ -3569,6 +4107,8 @@ public class GlossaryExchangeRESTServices
                                                String                                 userId,
                                                String                                 externalLinkGUID,
                                                String                                 glossaryTermGUID,
+                                               boolean                                forLineage,
+                                               boolean                                forDuplicateProcessing,
                                                ExternalGlossaryElementLinkRequestBody requestBody)
     {
         final String methodName = "attachExternalTermLink";
@@ -3592,6 +4132,9 @@ public class GlossaryExchangeRESTServices
                                                glossaryTermGUID,
                                                externalLinkGUID,
                                                requestBody.getElementProperties(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               null,
                                                methodName);
             }
             else
@@ -3616,7 +4159,9 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param glossaryTermGUID unique identifier for the glossary category
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody asset manager identifiers
      *
      * @return  void or
@@ -3624,11 +4169,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalTermLink(String                             serverName,
-                                               String                             userId,
-                                               String                             externalLinkGUID,
-                                               String                             glossaryTermGUID,
-                                               AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse detachExternalTermLink(String                        serverName,
+                                               String                        userId,
+                                               String                        externalLinkGUID,
+                                               String                        glossaryTermGUID,
+                                               boolean                       forLineage,
+                                               boolean                       forDuplicateProcessing,
+                                               EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "detachExternalTermLink";
 
@@ -3650,6 +4197,9 @@ public class GlossaryExchangeRESTServices
                                                requestBody.getAssetManagerName(),
                                                glossaryTermGUID,
                                                externalLinkGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
                                                methodName);
             }
             else
@@ -3659,6 +4209,9 @@ public class GlossaryExchangeRESTServices
                                                null,
                                                glossaryTermGUID,
                                                externalLinkGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               null,
                                                methodName);
             }
         }

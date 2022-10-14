@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * ReferenceValueAssignmentProperties is a java bean used to create a link between a valid value and a referenceable item
- * to enable the valid value to be used as a semi-formal tag/classifier.
+ * to enable the valid value to be used as a semiformal tag/classifier.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,6 +27,8 @@ public class ReferenceValueAssignmentProperties implements Serializable
 
     private int    confidence             = 0;
     private String steward                = null;
+    private String stewardTypeName        = null;
+    private String stewardPropertyName    = null;
     private String notes                  = null;
 
 
@@ -49,6 +51,8 @@ public class ReferenceValueAssignmentProperties implements Serializable
         {
             confidence             = template.getConfidence();
             steward                = template.getSteward();
+            stewardTypeName        = template.getStewardTypeName();
+            stewardPropertyName    = template.getStewardPropertyName();
             notes                  = template.getNotes();
         }
     }
@@ -88,7 +92,7 @@ public class ReferenceValueAssignmentProperties implements Serializable
 
 
     /**
-     * Set up the the id of the steward responsible for the mapping.
+     * Set up the id of the steward responsible for the mapping.
      *
      * @param steward String id
      */
@@ -97,6 +101,49 @@ public class ReferenceValueAssignmentProperties implements Serializable
         this.steward = steward;
     }
 
+
+    /**
+     * Return the type of element that describes the steward.
+     *
+     * @return type name
+     */
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+
+    /**
+     * Set up the type of element that describes the steward.
+     *
+     * @param stewardTypeName type name
+     */
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+
+    /**
+     * Return the name of the property that holds the steward's identifier.
+     *
+     * @return property name
+     */
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+
+    /**
+     * Set up the name of the property that holds the steward's identifier.
+     *
+     * @param stewardPropertyName property name
+     */
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
+    }
 
 
     /**
@@ -130,10 +177,12 @@ public class ReferenceValueAssignmentProperties implements Serializable
     public String toString()
     {
         return "ReferenceValueAssignmentProperties{" +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+                       "confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", stewardTypeName='" + stewardTypeName + '\'' +
+                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                       ", notes='" + notes + '\'' +
+                       '}';
     }
 
 
@@ -156,19 +205,21 @@ public class ReferenceValueAssignmentProperties implements Serializable
         }
         ReferenceValueAssignmentProperties that = (ReferenceValueAssignmentProperties) objectToCompare;
         return confidence == that.confidence &&
-                Objects.equals(steward, that.steward) &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
                 Objects.equals(notes, that.notes);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(confidence, steward, notes);
+        return Objects.hash(confidence, steward, stewardTypeName, stewardPropertyName, notes);
     }
 }

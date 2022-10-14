@@ -30,9 +30,9 @@ public enum OpenMetadataArchiveType implements Serializable
 
     private static final long    serialVersionUID = 1L;
 
-    private int    archiveTypeCode;
-    private String archiveTypeName;
-    private String archiveTypeDescription;
+    private final int    archiveTypeCode;
+    private final String archiveTypeName;
+    private final String archiveTypeDescription;
 
 
     /**

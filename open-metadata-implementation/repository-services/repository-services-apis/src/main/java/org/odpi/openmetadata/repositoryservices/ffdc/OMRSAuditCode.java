@@ -75,7 +75,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "Connecting to open metadata repository cohort {0}",
                         "The local server has started to initialize the communication with the named " +
-                                "open metadata repository cohort.  This will allow it to exchange metadata with all of the other " +
+                                "open metadata repository cohort.  This will allow it to exchange metadata with all the other " +
                                 "members of this cohort.",
                         "No action is required if connecting to this cohort is the expected behavior of this server.  " +
                                 "If this server is not meant to connect to this cohort then it should be shutdown with the permanent " +
@@ -237,6 +237,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                "Verify that the local repository is receiving inbound events - or at least there are no errors reported " +
                                        "related to incoming events"),
 
+    COHORT_STARTUP_ERROR("OMRS-AUDIT-0027",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The local server is unable to initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}",
+            "The local server will now cancel startup, and shutdown.",
+            "Review the exception and resolve the issue it documents. " +
+                    "Then try starting the server again."),
+
     INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The {0} event manager is initializing",
@@ -309,7 +316,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                              OMRSAuditLogRecordSeverity.STARTUP,
                              "An enterprise OMRS connector has been created for the {0}",
                              "This connector is responsible for supporting federated queries to both the local repository (if any)" +
-                                     "and all of the other servers registered with the same open metadata repository cohorts as this server.  " +
+                                     "and all the other servers registered with the same open metadata repository cohorts as this server.  " +
                                      "The enterprise OMRS connector is dynamically configured with details of the members of these cohorts " +
                                      "by the enterprise connector manager.  " +
                                      "At this stage it will be configured with the known members of the cohorts.  As the server operates, " +
@@ -390,7 +397,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                            OMRSAuditLogRecordSeverity.COHORT,
                            "Registering with open metadata repository cohort {0} using metadata collection id {1}",
                            "The local server has sent a registration event to the other members of the cohort.  " +
-                                   "This is to configure this repository into the enterprise OMRS repository connectors of all of the " +
+                                   "This is to configure this repository into the enterprise OMRS repository connectors of all the " +
                                    "other members of the cohort.",
                            "Validate that this server is connecting to the right cohort."),
 
@@ -421,7 +428,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Open Metadata Repository Services (OMRS) has initialized the audit log for the {0} called {1}",
                          "The local server has started up the logging destinations defined in the configuration document.",
-                         "Validate that all of the logging destinations are working."),
+                         "Validate that all the logging destinations are working."),
 
     EVENT_PARSING_ERROR("OMRS-AUDIT-0100",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -971,6 +978,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                               "of the batch in case there are other problems with it.",
                       "Review the instances from the event (passed as additional information on this log message) to determine the source of " +
                               "the error and its resolution."),
+
+    RETRY_FOR_PROXY("OMRS-AUDIT-8008",
+                    OMRSAuditLogRecordSeverity.INFO,
+                    "Retrying retrieve of an entity {0} for user {1} because only a proxy is available - attempt {2}",
+                    "The enterprise connector is retrying the call to retrieve an entity from the cohort because a proxy (or no entity) " +
+                            "has been returned.  Since most requests for entities are made with valid GUID, this suggests one of the repositories " +
+                            "is not current registered and so the hope is that by retrying, the entity is returned on a subsequent attempt.",
+                    "If this message occurs frequently then seek to improve the availability of the cohort members."),
 
     OUTBOUND_TOPIC_EVENT("OMRS-AUDIT-8009",
                     OMRSAuditLogRecordSeverity.EVENT,

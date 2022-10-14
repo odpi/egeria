@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -15,6 +16,23 @@ import java.util.List;
  */
 public interface GovernanceProgramReviewInterface
 {
+    /**
+     * Retrieve the governance definition by the unique identifier assigned by this service when it was created.
+     *
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to retrieve
+     *
+     * @return properties of the governance definition
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not recognized
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    GovernanceDefinitionElement getGovernanceDefinitionByGUID(String userId,
+                                                              String definitionGUID) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
     /**
      * Return the list of governance definitions associated with a particular governance domain.
      *
@@ -40,7 +58,7 @@ public interface GovernanceProgramReviewInterface
 
 
     /**
-     * Return the list of governance definitions associated with a unique docId.  In an ideal world, the should be only one.
+     * Return the list of governance definitions associated with a unique docId.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param typeName option type name to restrict retrieval to a specific type
@@ -79,28 +97,6 @@ public interface GovernanceProgramReviewInterface
                                                                String governanceDefinitionGUID) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException;
-
-
-    /**
-     * Return the elements that are governed by the supplied governance definition.
-     *
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique name of the governance definition
-     * @param startFrom where to start from in the list of definitions
-     * @param pageSize max number of results to return in one call
-     *
-     * @return list of headers for the associated elements
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    List<ElementStub> getElementsGovernedByDefinition(String userId,
-                                                      String governanceDefinitionGUID,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
 
 
     /**
@@ -149,28 +145,11 @@ public interface GovernanceProgramReviewInterface
 
 
     /**
-     * Return detailed information about the requested governance zone.
-     *
-     * @param userId calling user
-     * @param zoneGUID unique identifier of the zone to search for
-     *
-     * @return detailed information about the requested zone
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    GovernanceZoneInAction getGovernanceZoneInAction(String userId,
-                                                     String zoneGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
-
-
-    /**
      * Return the list of assets that are members of a particular zone.
      *
      * @param userId calling user
-     * @param zoneGUID unique identifier of the zone to search for
+     * @param zoneName unique name of the zone to search for
+     * @param subTypeName optional asset subtypeName to limit the results
      * @param startFrom where to start from in the list of assets
      * @param pageSize max number of results to return in one call
      *
@@ -181,7 +160,8 @@ public interface GovernanceProgramReviewInterface
      * @throws PropertyServerException the metadata service has problems
      */
     List<ElementStub> getGovernanceZoneMembers(String userId,
-                                               String zoneGUID,
+                                               String zoneName,
+                                               String subTypeName,
                                                int    startFrom,
                                                int    pageSize) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 /**
  * PurgeRelationshipExecutor provides the executor for the purgeRelationship method.
- * This is a tricky request because the relationship has been deleted so it is
+ * This is a tricky request because the relationship has been deleted, so it is
  * not retrievable until restored.
  *
  * The only possible approach is to step through the repositories hoping that one
@@ -18,10 +18,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class PurgeRelationshipExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 relationshipGUID;
-    private String                 typeDefGUID;
-    private String                 typeDefName;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 relationshipGUID;
+    private final String                 typeDefGUID;
+    private final String                 typeDefName;
+
     private boolean                relationshipDeleted = false;
 
 

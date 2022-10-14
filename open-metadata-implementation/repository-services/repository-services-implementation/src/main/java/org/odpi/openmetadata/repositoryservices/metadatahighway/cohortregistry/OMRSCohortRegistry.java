@@ -76,7 +76,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * The audit log provides a verifiable record of the membership of the open metadata repository cohort and the
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
 
     /**
@@ -122,12 +122,12 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
             {
                 /*
                  * There is a stored local metadata collection id which is going to be used.  There is a consistency check
-                 * to ensure this stored local Id is the same as the configured local metadata collection id.
+                 * to ensure this stored local id is the same as the configured local metadata collection id.
                  *
                  * If it is not the same, the administrator has changed the configured value after the server
                  * registered with the cohort.   The message on the audit log explains that the new value will be
-                 * ignored until the local repository is un-registered with the old metadata collection id and then it
-                 * can be registered with the new metadata collection Id.
+                 * ignored until the local repository is un-registered with the old metadata collection id, and then it
+                 * can be registered with the new metadata collection id.
                  */
 
                 if (!storedLocalMetadataCollectionId.equals(configuredLocalMetadataCollectionId))
@@ -147,7 +147,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                         /*
                          * The configured value is different from the value used to register with this cohort.
                          * This is a situation that could potentially damage the metadata integrity across the cohort.
-                         * Hence the exception.
+                         * Hence, the exception.
                          */
                         throw new OMRSConfigErrorException(OMRSErrorCode.INVALID_LOCAL_METADATA_COLLECTION_ID.getMessageDefinition(cohortName,
                                                                                                                                    localServerName,
@@ -217,7 +217,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         this.outboundRegistryEventProcessor = registryEventProcessor;
 
         /*
-         * Verify that the configured local metadata collection Id matches the one stored in the registry store.
+         * Verify that the configured local metadata collection id matches the one stored in the registry store.
          * This will throw an exception if there are unresolvable differences.
          */
         this.validateLocalMetadataCollectionId(localMetadataCollectionId);
@@ -227,7 +227,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         /*
          * Save the connection consumer.  This component needs details of the current connections it should use
          * to contact various members of the cluster (including the local server). It needs an initial
-         * upload of the members's connections and then ongoing notifications for any changes in the membership.
+         * upload of the member's connections and then ongoing notifications for any changes in the membership.
          */
         this.connectionConsumer = connectionConsumer;
 
@@ -275,7 +275,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
         /*
-         * Fill in the local registration with details from the this server.  Any value from the local repository
+         * Fill in the local registration with details from this server.  Any value from the local repository
          * can change except the localMetadataCollectionId and this value has already been validated.
          */
         localRegistration.setMetadataCollectionId(localMetadataCollectionId);
@@ -287,7 +287,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
         /*
-         * If the local metadata collection Id is null it means there is no local repository.  No registration
+         * If the local metadata collection id is null it means there is no local repository.  No registration
          * is required.   If there is a local repository, a registration request is sent when first connecting
          * and a re-registration request is sent on subsequent restarts.
          */
@@ -360,7 +360,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
 
         /*
-         * Finally request that the other members of the cohort send this server their details in case something has
+         * Finally, request that the other members of the cohort send this server their details in case something has
          * changed.  These are processed asynchronously and update the connection consumer as required.
          */
         this.requestRegistrationRefreshFromCohort(localRegistration);
@@ -496,7 +496,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * Alternatively, it may not have a local repository and so can not trigger the reRegistration events
      * with its own registration events.
      *
-     * @param localRegistration information needed to sent the refresh request
+     * @param localRegistration information needed to send the refresh request
      */
     private void requestRegistrationRefreshFromCohort(MemberRegistration   localRegistration)
     {
@@ -906,7 +906,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
     /**
      * There is more than one member of the open metadata repository cohort that is using the same metadata
-     * collection Id.  This means that their metadata instances can be updated in more than one server and their
+     * collection id.  This means that their metadata instances can be updated in more than one server and there
      * is a potential for data integrity issues.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
@@ -960,7 +960,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId Id for the repository with the bad remote connection.
+     * @param targetMetadataCollectionId id for the repository with the bad remote connection.
      * @param remoteRepositoryConnection the Connection properties for the connector used to call the registering server.
      * @param errorMessage details of the error that occurs when the connection is used.
      */

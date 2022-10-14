@@ -19,7 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-registration')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Engine Host Services Server-side'

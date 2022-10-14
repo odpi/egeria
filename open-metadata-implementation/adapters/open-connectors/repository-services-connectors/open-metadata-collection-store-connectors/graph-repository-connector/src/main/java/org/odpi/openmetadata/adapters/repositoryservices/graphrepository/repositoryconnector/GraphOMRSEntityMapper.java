@@ -136,7 +136,7 @@ public class GraphOMRSEntityMapper {
                 jsonString = objectMapper.writeValueAsString(instanceProperties);
                 log.debug("{} entity has serialized properties {}", methodName, jsonString);
                 vertex.property("instanceProperties", jsonString);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} Caught exception from entity mapper", methodName);
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -198,7 +198,7 @@ public class GraphOMRSEntityMapper {
                 jsonString = objectMapper.writeValueAsString(uniqueProperties);
                 log.debug("{} entity proxy has serialized unique properties {}", methodName, jsonString);
                 vertex.property("instanceProperties", jsonString);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -386,7 +386,7 @@ public class GraphOMRSEntityMapper {
                 log.debug("{} entity maintainedBy serialized to {}", methodName, jsonString);
                 vertex.property(PROPERTY_KEY_ENTITY_MAINTAINED_BY, jsonString);
             }
-            catch (Throwable exc) {
+            catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -420,7 +420,7 @@ public class GraphOMRSEntityMapper {
                 log.debug("{} entity maintainedBy serialized to {}", methodName, jsonString);
                 vertex.property(PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES, jsonString);
             }
-            catch (Throwable exc) {
+            catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -474,7 +474,7 @@ public class GraphOMRSEntityMapper {
                 InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} entity has deserialized properties {}", methodName, instanceProperties);
                 entity.setProperties(instanceProperties);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -554,7 +554,7 @@ public class GraphOMRSEntityMapper {
                     entity.setUniqueProperties(uniqueAttributes);
                 }
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -629,7 +629,7 @@ public class GraphOMRSEntityMapper {
                 List<String> maintainedByList = (List<String>) objectMapper.readValue(maintainedByString, List.class);
                 log.debug("{} entity has deserialized maintainedBy {}", methodName, maintainedByList);
                 entity.setMaintainedBy(maintainedByList);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),
@@ -650,7 +650,7 @@ public class GraphOMRSEntityMapper {
                 Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
                 log.debug("{} entity has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 entity.setMappingProperties(mappingPropertiesMap);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
                                                                                                                    this.getClass().getName(),

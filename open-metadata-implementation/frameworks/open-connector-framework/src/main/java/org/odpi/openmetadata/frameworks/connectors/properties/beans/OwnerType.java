@@ -33,11 +33,11 @@ public enum OwnerType implements Serializable
     public static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6feeee257b56";
     public static final String ENUM_TYPE_NAME  = "AssetOwnerType";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.SchemaExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class SchemaExchangeResource
 {
-    private SchemaExchangeRESTServices restAPI = new SchemaExchangeRESTServices();
+    private final SchemaExchangeRESTServices restAPI = new SchemaExchangeRESTServices();
 
 
     /**
@@ -47,6 +46,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -60,9 +61,13 @@ public class SchemaExchangeResource
     public GUIDResponse createSchemaType(@PathVariable String                serverName,
                                          @PathVariable String                userId,
                                          @RequestParam boolean               assetManagerIsHome,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
                                          @RequestBody  SchemaTypeRequestBody requestBody)
     {
-        return restAPI.createSchemaType(serverName, userId, assetManagerIsHome, requestBody);
+        return restAPI.createSchemaType(serverName, userId, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -100,6 +105,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return void or
@@ -113,9 +120,13 @@ public class SchemaExchangeResource
                                          @PathVariable String                userId,
                                          @PathVariable String                schemaTypeGUID,
                                          @RequestParam boolean               isMergeUpdate,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
                                          @RequestBody  SchemaTypeRequestBody requestBody)
     {
-        return restAPI.updateSchemaType(serverName, userId, schemaTypeGUID, isMergeUpdate, requestBody);
+        return restAPI.updateSchemaType(serverName, userId, schemaTypeGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -128,6 +139,8 @@ public class SchemaExchangeResource
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -137,15 +150,19 @@ public class SchemaExchangeResource
      */
     @PostMapping(path = "/parents/{parentElementGUID}/{parentElementTypeName}/schema-types/{schemaTypeGUID}")
 
-    public VoidResponse setupSchemaTypeParent(@PathVariable String                             serverName,
-                                              @PathVariable String                             userId,
-                                              @PathVariable String                             parentElementGUID,
-                                              @PathVariable String                             parentElementTypeName,
-                                              @PathVariable String                             schemaTypeGUID,
-                                              @RequestParam boolean                            assetManagerIsHome,
-                                              @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupSchemaTypeParent(@PathVariable String                         serverName,
+                                              @PathVariable String                         userId,
+                                              @PathVariable String                         parentElementGUID,
+                                              @PathVariable String                         parentElementTypeName,
+                                              @PathVariable String                         schemaTypeGUID,
+                                              @RequestParam boolean                        assetManagerIsHome,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                        forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                       forDuplicateProcessing,
+                                              @RequestBody  RelationshipRequestBody       requestBody)
     {
-        return restAPI.setupSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -157,6 +174,8 @@ public class SchemaExchangeResource
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -171,9 +190,13 @@ public class SchemaExchangeResource
                                               @PathVariable String                             parentElementGUID,
                                               @PathVariable String                             parentElementTypeName,
                                               @PathVariable String                             schemaTypeGUID,
-                                              @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
+                                              @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, requestBody);
+        return restAPI.clearSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -183,6 +206,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -195,9 +220,13 @@ public class SchemaExchangeResource
     public VoidResponse removeSchemaType(@PathVariable String                        serverName,
                                          @PathVariable String                        userId,
                                          @PathVariable String                        schemaTypeGUID,
-                                         @RequestBody  MetadataCorrelationProperties requestBody)
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
+                                         @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.removeSchemaType(serverName, userId, schemaTypeGUID, requestBody);
+        return restAPI.removeSchemaType(serverName, userId, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -209,6 +238,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties plus external identifiers
      *
      * @return list of matching metadata elements or
@@ -222,9 +253,13 @@ public class SchemaExchangeResource
                                                      @PathVariable String                  userId,
                                                      @RequestParam int                     startFrom,
                                                      @RequestParam int                     pageSize,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
                                                      @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findSchemaType(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findSchemaType(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -235,6 +270,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return metadata element describing the schema type associated with the requested parent element or
@@ -242,15 +279,19 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/parents/{parentElementGUID}/schema-types/retrieve")
+    @PostMapping(path = "/parents/{parentElementTypeName}/{parentElementGUID}/schema-types/retrieve")
 
-    public SchemaTypeElementResponse getSchemaTypeForElement(@PathVariable String                             serverName,
-                                                             @PathVariable String                             userId,
-                                                             @PathVariable String                             parentElementGUID,
-                                                             @PathVariable String                             parentElementTypeName,
-                                                             @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaTypeElementResponse getSchemaTypeForElement(@PathVariable String                        serverName,
+                                                             @PathVariable String                        userId,
+                                                             @PathVariable String                        parentElementGUID,
+                                                             @PathVariable String                        parentElementTypeName,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                             forLineage,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                             forDuplicateProcessing,
+                                                             @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSchemaTypeForElement(serverName, userId, parentElementGUID, parentElementTypeName, requestBody);
+        return restAPI.getSchemaTypeForElement(serverName, userId, parentElementGUID, parentElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -262,6 +303,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for plus identifiers
      *
      * @return list of matching metadata elements or
@@ -275,9 +318,13 @@ public class SchemaExchangeResource
                                                             @PathVariable String          userId,
                                                             @RequestParam int             startFrom,
                                                             @RequestParam int             pageSize,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forLineage,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forDuplicateProcessing,
                                                             @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getSchemaTypeByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getSchemaTypeByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -287,6 +334,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return requested metadata element or
@@ -299,9 +348,13 @@ public class SchemaExchangeResource
     public SchemaTypeElementResponse getSchemaTypeByGUID(@PathVariable String                             serverName,
                                                          @PathVariable String                             userId,
                                                          @PathVariable String                             schemaTypeGUID,
-                                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
+                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSchemaTypeByGUID(serverName, userId, schemaTypeGUID, requestBody);
+        return restAPI.getSchemaTypeByGUID(serverName, userId, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -311,6 +364,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return header for parent element (data asset, process, port) or
@@ -323,9 +378,13 @@ public class SchemaExchangeResource
     public ElementHeaderResponse getSchemaTypeParent(@PathVariable String                             serverName,
                                                      @PathVariable String                             userId,
                                                      @PathVariable String                             schemaTypeGUID,
-                                                     @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
+                                                     @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSchemaTypeParent(serverName, userId, schemaTypeGUID, requestBody);
+        return restAPI.getSchemaTypeParent(serverName, userId, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -340,6 +399,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the schema attribute
      *
      * @return unique identifier of the new metadata element for the schema attribute or
@@ -353,9 +414,13 @@ public class SchemaExchangeResource
                                               @PathVariable String                     userId,
                                               @PathVariable String                     schemaElementGUID,
                                               @RequestParam boolean                    assetManagerIsHome,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
                                               @RequestBody  SchemaAttributeRequestBody requestBody)
     {
-        return restAPI.createSchemaAttribute(serverName, userId, schemaElementGUID, assetManagerIsHome, requestBody);
+        return restAPI.createSchemaAttribute(serverName, userId, schemaElementGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -367,6 +432,8 @@ public class SchemaExchangeResource
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the schema attribute or
@@ -381,9 +448,13 @@ public class SchemaExchangeResource
                                                           @PathVariable String              schemaElementGUID,
                                                           @PathVariable String              templateGUID,
                                                           @RequestParam boolean             assetManagerIsHome,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forLineage,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forDuplicateProcessing,
                                                           @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createSchemaAttributeFromTemplate(serverName, userId, schemaElementGUID, templateGUID, assetManagerIsHome, requestBody);
+        return restAPI.createSchemaAttributeFromTemplate(serverName, userId, schemaElementGUID, templateGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -394,6 +465,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the schema attribute
      *
      * @return void or
@@ -407,9 +480,13 @@ public class SchemaExchangeResource
                                               @PathVariable String                     userId,
                                               @PathVariable String                     schemaAttributeGUID,
                                               @RequestParam boolean                    isMergeUpdate,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
                                               @RequestBody  SchemaAttributeRequestBody requestBody)
     {
-        return restAPI.updateSchemaAttribute(serverName, userId, schemaAttributeGUID, isMergeUpdate, requestBody);
+        return restAPI.updateSchemaAttribute(serverName, userId, schemaAttributeGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -420,6 +497,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param assetManagerIsHome ensure that only the asset manager can update this classification
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -433,9 +512,13 @@ public class SchemaExchangeResource
                                                           @PathVariable String                        userId,
                                                           @PathVariable String                        schemaElementGUID,
                                                           @RequestParam boolean                       assetManagerIsHome,
-                                                          @RequestBody  MetadataCorrelationProperties requestBody)
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forLineage,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                      forDuplicateProcessing,
+                                                          @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.setSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, assetManagerIsHome, requestBody);
+        return restAPI.setSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -445,6 +528,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -457,9 +542,13 @@ public class SchemaExchangeResource
     public VoidResponse clearSchemaElementAsCalculatedValue(@PathVariable String                        serverName,
                                                             @PathVariable String                        userId,
                                                             @PathVariable String                        schemaElementGUID,
-                                                            @RequestBody  MetadataCorrelationProperties requestBody)
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forLineage,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forDuplicateProcessing,
+                                                            @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.clearSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, requestBody);
+        return restAPI.clearSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -470,6 +559,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this classification
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the primary key plus external identifiers
      *
      * @return null or
@@ -483,9 +574,13 @@ public class SchemaExchangeResource
                                                 @PathVariable String                              userId,
                                                 @PathVariable String                              schemaAttributeGUID,
                                                 @RequestParam boolean                             assetManagerIsHome,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
                                                 @RequestBody  PrimaryKeyClassificationRequestBody requestBody)
     {
-        return restAPI.setupColumnAsPrimaryKey(serverName, userId, schemaAttributeGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupColumnAsPrimaryKey(serverName, userId, schemaAttributeGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -495,6 +590,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -507,9 +604,13 @@ public class SchemaExchangeResource
     public VoidResponse clearColumnAsPrimaryKey(@PathVariable String                        serverName,
                                                 @PathVariable String                        userId,
                                                 @PathVariable String                        schemaAttributeGUID,
-                                                @RequestBody  MetadataCorrelationProperties requestBody)
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
+                                                @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.clearColumnAsPrimaryKey(serverName, userId, schemaAttributeGUID, requestBody);
+        return restAPI.clearColumnAsPrimaryKey(serverName, userId, schemaAttributeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -521,6 +622,8 @@ public class SchemaExchangeResource
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the foreign key relationship
      *
      * @return  void or
@@ -528,16 +631,20 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys")
+    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys/{foreignKeyGUID}")
 
     public VoidResponse setupForeignKeyRelationship(@PathVariable String                serverName,
                                                     @PathVariable String                userId,
                                                     @PathVariable String                primaryKeyGUID,
                                                     @PathVariable String                foreignKeyGUID,
                                                     @RequestParam boolean               assetManagerIsHome,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forDuplicateProcessing,
                                                     @RequestBody  ForeignKeyRequestBody requestBody)
     {
-        return restAPI.setupForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -548,6 +655,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the foreign key relationship plus external identifiers
      *
      * @return void or
@@ -555,15 +664,19 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys/update")
+    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys/{foreignKeyGUID}/update")
 
     public VoidResponse updateForeignKeyRelationship(@PathVariable String                serverName,
                                                      @PathVariable String                userId,
                                                      @PathVariable String                primaryKeyGUID,
                                                      @PathVariable String                foreignKeyGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
                                                      @RequestBody  ForeignKeyRequestBody requestBody)
     {
-        return restAPI.updateForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, requestBody);
+        return restAPI.updateForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -574,6 +687,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -581,15 +696,19 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys/remove")
+    @PostMapping(path = "/schema-attributes/{primaryKeyGUID}/relationships/foreign-keys/{foreignKeyGUID}/remove")
 
-    public VoidResponse clearForeignKeyRelationship(@PathVariable String                             serverName,
-                                                    @PathVariable String                             userId,
-                                                    @PathVariable String                             primaryKeyGUID,
-                                                    @PathVariable String                             foreignKeyGUID,
-                                                    @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearForeignKeyRelationship(@PathVariable String                        serverName,
+                                                    @PathVariable String                        userId,
+                                                    @PathVariable String                        primaryKeyGUID,
+                                                    @PathVariable String                        foreignKeyGUID,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                             forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                             forDuplicateProcessing,
+                                                    @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, requestBody);
+        return restAPI.clearForeignKeyRelationship(serverName, userId, primaryKeyGUID, foreignKeyGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -599,6 +718,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -611,9 +732,13 @@ public class SchemaExchangeResource
     public VoidResponse removeSchemaAttribute(@PathVariable String                        serverName,
                                               @PathVariable String                        userId,
                                               @PathVariable String                        schemaAttributeGUID,
-                                              @RequestBody  MetadataCorrelationProperties requestBody)
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
+                                              @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.removeSchemaAttribute(serverName, userId, schemaAttributeGUID, requestBody);
+        return restAPI.removeSchemaAttribute(serverName, userId, schemaAttributeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -625,6 +750,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties plus external identifiers
      *
      * @return list of matching metadata elements or
@@ -638,9 +765,13 @@ public class SchemaExchangeResource
                                                                 @PathVariable String                  userId,
                                                                 @RequestParam int                     startFrom,
                                                                 @RequestParam int                     pageSize,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                      forLineage,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                      forDuplicateProcessing,
                                                                 @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findSchemaAttributes(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findSchemaAttributes(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -652,6 +783,8 @@ public class SchemaExchangeResource
      * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return list of associated metadata elements or
@@ -666,9 +799,13 @@ public class SchemaExchangeResource
                                                                @PathVariable String                             parentSchemaElementGUID,
                                                                @RequestParam int                                startFrom,
                                                                @RequestParam int                                pageSize,
-                                                               @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forDuplicateProcessing,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -680,6 +817,8 @@ public class SchemaExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return list of matching metadata elements or
@@ -693,9 +832,13 @@ public class SchemaExchangeResource
                                                                      @PathVariable String          userId,
                                                                      @RequestParam int             startFrom,
                                                                      @RequestParam int             pageSize,
-                                                                     @PathVariable NameRequestBody requestBody)
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
+                                                                     @RequestBody NameRequestBody requestBody)
     {
-        return restAPI.getSchemaAttributesByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getSchemaAttributesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -705,6 +848,8 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return matching metadata element or
@@ -717,8 +862,12 @@ public class SchemaExchangeResource
     public SchemaAttributeElementResponse getSchemaAttributeByGUID(@PathVariable String                             serverName,
                                                                    @PathVariable String                             userId,
                                                                    @PathVariable String                             schemaAttributeGUID,
-                                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
+                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSchemaAttributeByGUID(serverName, userId, schemaAttributeGUID, requestBody);
+        return restAPI.getSchemaAttributeByGUID(serverName, userId, schemaAttributeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.conve
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLogHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * NoteLogConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a NoteLog bean.
+ * EntityDetail object into a NoteLogHeader bean.
  */
 public class NoteLogConverter<B> extends OCFConverter<B>
 {
@@ -56,9 +56,9 @@ public class NoteLogConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof NoteLog)
+            if (returnBean instanceof NoteLogHeader)
             {
-                NoteLog bean = (NoteLog) returnBean;
+                NoteLogHeader bean = (NoteLogHeader) returnBean;
 
                 /*
                  * Check that the entity is of the correct type.

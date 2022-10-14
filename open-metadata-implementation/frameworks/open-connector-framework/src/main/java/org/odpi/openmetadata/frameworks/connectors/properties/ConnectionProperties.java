@@ -91,48 +91,15 @@ public class ConnectionProperties extends AssetReferenceable
     }
 
 
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset description of the asset that this connection is attached to.
-     * @param connectionBean bean containing the properties
-     */
-    public ConnectionProperties(AssetDescriptor  parentAsset,
-                                Connection       connectionBean)
-    {
-        super(parentAsset, connectionBean);
-
-        if (connectionBean == null)
-        {
-            this.connectionBean = new Connection();
-        }
-        else
-        {
-            this.connectionBean = connectionBean;
-        }
-    }
-
-
-    /**
-     * Copy/clone Constructor to return a copy of a connection object that is not connected to an asset.
-     *
-     * @param templateConnection Connection to copy
-     */
-    public ConnectionProperties(ConnectionProperties templateConnection)
-    {
-        this(null, templateConnection);
-    }
-
 
     /**
      * Copy/clone Constructor to return a copy of a connection object that is connected to an asset.
      *
-     * @param parentAsset description of the asset that this connection is attached to.
      * @param templateConnection template object to copy.
      */
-    public ConnectionProperties(AssetDescriptor  parentAsset, ConnectionProperties templateConnection)
+    public ConnectionProperties(ConnectionProperties templateConnection)
     {
-        super(parentAsset, templateConnection);
+        super(templateConnection);
 
         if (templateConnection == null)
         {
@@ -146,7 +113,7 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return connection bean
      */
@@ -235,7 +202,7 @@ public class ConnectionProperties extends AssetReferenceable
         }
         else
         {
-            return new ConnectorTypeProperties(super.getParentAsset(), connectorType);
+            return new ConnectorTypeProperties(connectorType);
         }
     }
 
@@ -289,7 +256,7 @@ public class ConnectionProperties extends AssetReferenceable
         }
         else
         {
-            return new EndpointProperties(super.getParentAsset(), endpoint);
+            return new EndpointProperties(endpoint);
         }
     }
 

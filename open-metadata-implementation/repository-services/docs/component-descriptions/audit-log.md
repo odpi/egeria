@@ -5,15 +5,15 @@
 
 The audit log provides detailed information relating to the activities
 within an
-[OMAG Server](../../../admin-services/docs/concepts/omag-server.md).
+[OMAG Server](https://egeria-project.org/concepts/omag-server).
 
-It builds on the [Audit Log Framework](../../../frameworks/audit-log-framework)
+It builds on the [Audit Log Framework](https://egeria-project.org/frameworks/alf/overview)
 to support multiple destinations for the audit log records written to the
 audit log by the server's subsystems.
 
 Details of the supported audit log store connectors and
 how to set them up are described in
-[Configuring the Audit Log](../../../admin-services/docs/user/configuring-the-audit-log.md).
+[Configuring the Audit Log](https://egeria-project.org/guides/admin/servers/configuring-the-audit-log).
 
 
 ----

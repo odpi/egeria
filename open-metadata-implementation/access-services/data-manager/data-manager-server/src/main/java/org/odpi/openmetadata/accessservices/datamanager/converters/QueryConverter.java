@@ -72,7 +72,9 @@ public class QueryConverter<B> extends DataManagerOMASConverter<B>
 
                     queryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     queryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    queryProperties.setDisplayName(this.removeName(instanceProperties));
+                    queryProperties.setName(this.removeName(instanceProperties));
+                    queryProperties.setDisplayName(queryProperties.getName());
+                    queryProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     queryProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*
@@ -102,7 +104,7 @@ public class QueryConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

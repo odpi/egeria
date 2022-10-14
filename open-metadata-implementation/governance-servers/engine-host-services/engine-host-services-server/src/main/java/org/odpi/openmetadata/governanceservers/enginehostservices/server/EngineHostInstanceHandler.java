@@ -29,7 +29,7 @@ class EngineHostInstanceHandler extends GovernanceServerServiceInstanceHandler
 
 
     /**
-     * Retrieve all of the definitions for the requested governance engine from the Governance Engine OMAS.
+     * Retrieve all the definitions for the requested governance engine from the Governance Engine OMAS.
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
@@ -87,7 +87,7 @@ class EngineHostInstanceHandler extends GovernanceServerServiceInstanceHandler
 
 
     /**
-     * Return a summary of all of the engine statuses for the engine service.
+     * Return a summary of all the engine statuses for the engine service.
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
@@ -117,7 +117,7 @@ class EngineHostInstanceHandler extends GovernanceServerServiceInstanceHandler
 
 
     /**
-     * Return a summary of all of the engine statuses for the engine host.
+     * Return a summary of all the engine statuses for the engine host.
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request

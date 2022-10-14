@@ -207,11 +207,11 @@ public class TestComment
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -220,7 +220,7 @@ public class TestComment
 
         try
         {
-            validateResultObject((Comment) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Comment) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

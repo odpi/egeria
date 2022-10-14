@@ -1,5 +1,5 @@
 {
-  "graphConfigFile": "GREMLIN_CONFIG_PATH_PLACEHOLDER",
+  "graphConfigFile": "GREMLIN_PROPERTIES_CONFIG_PATH_PLACEHOLDER",
   "processes": [
     "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(transformation_project)=minimal::(dsjob)=flow2"
   ],

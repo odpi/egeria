@@ -13,7 +13,6 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -140,9 +139,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           null,
                                            methodName);
     }
 
@@ -200,6 +198,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -218,6 +217,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance glossary
      * @param suppliedTypeName type of glossary
      * @param extendedProperties  properties for a governance glossary subtype
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -235,6 +235,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                  Map<String, String> additionalProperties,
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
+                                 boolean             isMergeUpdate,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -282,8 +283,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
-                                    new Date(),
+                                    isMergeUpdate,
+                                    null,
                                     methodName);
     }
 
@@ -301,13 +302,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addTaxonomyClassificationToGlossary(String                userId,
-                                                     String                glossaryGUID,
-                                                     String                glossaryGUIDParameterName,
-                                                     String                organizingPrinciple,
-                                                     String                methodName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public void  addTaxonomyClassificationToGlossary(String  userId,
+                                                     String  glossaryGUID,
+                                                     String  glossaryGUIDParameterName,
+                                                     String  organizingPrinciple,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
@@ -342,12 +343,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeTaxonomyClassificationFromGlossary(String userId,
-                                                          String glossaryGUID,
-                                                          String glossaryGUIDParameterName,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public void  removeTaxonomyClassificationFromGlossary(String  userId,
+                                                          String  glossaryGUID,
+                                                          String  glossaryGUIDParameterName,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
@@ -380,13 +381,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addCanonicalVocabClassificationToGlossary(String userId,
-                                                           String glossaryGUID,
-                                                           String glossaryGUIDParameterName,
-                                                           String scope,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void  addCanonicalVocabClassificationToGlossary(String  userId,
+                                                           String  glossaryGUID,
+                                                           String  glossaryGUIDParameterName,
+                                                           String  scope,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
@@ -421,12 +422,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeCanonicalVocabClassificationFromGlossary(String userId,
-                                                                String glossaryGUID,
-                                                                String glossaryGUIDParameterName,
-                                                                String methodName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public void  removeCanonicalVocabClassificationFromGlossary(String  userId,
+                                                                String  glossaryGUID,
+                                                                String  glossaryGUIDParameterName,
+                                                                String  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -445,9 +446,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
 
     /**
      * Remove the metadata element representing a glossary.  This will delete the glossary and all categories and terms because
-     * the Anchors classifications are set up in these elements.
+     * the Anchors classifications are set up in these elements.  The external source values are passed in case they are needed
+     * for the removal of nested terms/categories.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryGUIDParameterName parameter supplying the glossaryGUID
      * @param methodName calling method
@@ -456,16 +460,18 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGlossary(String userId,
-                               String glossaryGUID,
-                               String glossaryGUIDParameterName,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void removeGlossary(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  glossaryGUID,
+                               String  glossaryGUIDParameterName,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     glossaryGUID,
                                     glossaryGUIDParameterName,
                                     OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
@@ -474,7 +480,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     false,
-                                    new Date(),
+                                    null,
                                     methodName);
     }
 
@@ -488,7 +494,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -502,7 +507,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                   String searchStringParameterName,
                                   int    startFrom,
                                   int    pageSize,
-                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -512,10 +516,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                              false,
+                              false,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
-                              effectiveTime,
+                              null,
                               methodName);
     }
 
@@ -529,7 +536,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -538,15 +544,14 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getGlossariesByName(String userId,
-                                         String name,
-                                         String nameParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         Date   effectiveTime,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<B>   getGlossariesByName(String  userId,
+                                         String  name,
+                                         String  nameParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -567,7 +572,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
-                                    effectiveTime,
+                                    null,
                                     methodName);
     }
 
@@ -586,12 +591,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getGlossaryByGUID(String userId,
-                               String guid,
-                               String guidParameterName,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public B getGlossaryByGUID(String  userId,
+                               String  guid,
+                               String  guidParameterName,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
@@ -600,7 +605,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                           false,
                                           false,
                                           supportedZones,
-                                          new Date(),
+                                          null,
                                           methodName);
 
     }

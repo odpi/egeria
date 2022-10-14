@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Data Engine Open Metadata Access Service (OMAS)
 
@@ -9,7 +9,10 @@ The Data Engine OMAS provides APIs and events for data movement/processing engin
 
 It provides the ability to register the data engine itself along with the lineage details of the ETL transformations. 
 Data Engine OMAS APIs offer support for creating the corresponding open metadata types for assets and jobs.
-  
+
+* [Documentation](https://egeria-project.org/services/omas/data-engine/overview)
+
+## Design Information
 
 The module structure for the Data Engine OMAS is as follows:
 
@@ -21,7 +24,7 @@ This includes the Java API, beans and REST API structures.
   * interaction with the [administration services](../../admin-services) for
     registration, configuration, initialization and termination of the access service.
   * interaction with the [repository services](../../repository-services) to work with open metadata from the
-    [cohort](../../repository-services/docs/open-metadata-repository-cohort.md).
+    [cohort](https://egeria-project.org/concepts/cohort-member).
   * support for the access service's API and its related event management.
 * [data-engine-spring](data-engine-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 

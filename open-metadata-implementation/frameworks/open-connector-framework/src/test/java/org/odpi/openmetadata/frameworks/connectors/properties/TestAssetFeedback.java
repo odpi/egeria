@@ -21,10 +21,7 @@ public class TestAssetFeedback
         Asset assetBean = new Asset();
         assetBean.setQualifiedName("TestName");
 
-        AssetSummary parentAsset = new AssetSummary(assetBean);
-
-        return new AssetFeedback(parentAsset,
-                                 new MockAssetInformalTags(parentAsset, 1, 5),
+        return new AssetFeedback(new MockInformalTags(1, 5),
                                  null,
                                  null,
                                  null);
@@ -41,10 +38,7 @@ public class TestAssetFeedback
         Asset assetBean = new Asset();
         assetBean.setQualifiedName("TestName");
 
-        AssetSummary parentAsset = new AssetSummary(assetBean);
-
-        return new AssetFeedback(null,
-                                 new MockAssetInformalTags(parentAsset, 1, 5),
+        return new AssetFeedback(new MockInformalTags( 1, 5),
                                  null,
                                  null,
                                  null);
@@ -61,11 +55,8 @@ public class TestAssetFeedback
         Asset assetBean = new Asset();
         assetBean.setQualifiedName("TestName");
 
-        AssetSummary parentAsset = new AssetSummary(assetBean);
-
-        return new AssetFeedback(parentAsset,
-                                 new MockAssetInformalTags(parentAsset, 1, 5),
-                                 new MockAssetLikes(parentAsset, 5 , 100),
+        return new AssetFeedback(new MockInformalTags( 1, 5),
+                                 new MockLikes( 5 , 100),
                                  null,
                                  null);
     }
@@ -73,10 +64,7 @@ public class TestAssetFeedback
 
     @Test public void testAssetFeedback()
    {
-       AssetSummary parentAsset = new AssetSummary(new Asset());
-
-       AssetFeedback assetFeedback = new AssetFeedback(parentAsset,
-                                                       null,
+       AssetFeedback assetFeedback = new AssetFeedback(null,
                                                        null,
                                                        null,
                                                        null);
@@ -86,18 +74,17 @@ public class TestAssetFeedback
        assertTrue(assetFeedback.getRatings() == null);
        assertTrue(assetFeedback.getComments() == null);
 
-       assetFeedback = new AssetFeedback(parentAsset,
-                                         new MockAssetInformalTags(parentAsset, 0, 0),
-                                         new MockAssetLikes(parentAsset, 0, 0),
-                                         new MockAssetRatings(parentAsset, 0, 0),
-                                         new MockAssetComments(parentAsset, 0, 0));
+       assetFeedback = new AssetFeedback(new MockInformalTags( 0, 0),
+                                         new MockLikes(0, 0),
+                                         new MockRatings(0, 0),
+                                         new MockComments( 0, 0));
 
        assertTrue(assetFeedback.getInformalTags() != null);
        assertTrue(assetFeedback.getLikes() != null);
        assertTrue(assetFeedback.getRatings() != null);
        assertTrue(assetFeedback.getComments() != null);
 
-       AssetFeedback assetFeedbackClone = new AssetFeedback(parentAsset, assetFeedback);
+       AssetFeedback assetFeedbackClone = new AssetFeedback( assetFeedback);
 
        assertTrue(assetFeedbackClone.getInformalTags() != null);
        assertTrue(assetFeedbackClone.getLikes() != null);
@@ -107,7 +94,7 @@ public class TestAssetFeedback
    }
 
     /**
-     * Validate the subclass constructor works all of the way up the inheritance hierarchy.
+     * Validate the subclass constructor works all the way up the inheritance hierarchy.
      */
     @Test public void testSubclassInitialization()
     {

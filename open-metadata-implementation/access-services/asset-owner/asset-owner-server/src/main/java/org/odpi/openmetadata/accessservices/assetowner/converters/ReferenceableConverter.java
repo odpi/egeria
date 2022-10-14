@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -16,8 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from AssetProperties.
+ * ReferenceableConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from ReferenceableProperties.
  */
 public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
 {
@@ -37,7 +36,7 @@ public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -47,7 +46,6 @@ public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    @SuppressWarnings(value = "deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -59,10 +57,10 @@ public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof AssetElement)
+            if (returnBean instanceof ReferenceableElement)
             {
-                AssetElement bean = (AssetElement) returnBean;
-                AssetProperties assetProperties = new AssetProperties();
+                ReferenceableElement    bean                    = (ReferenceableElement)returnBean;
+                ReferenceableProperties referenceableProperties = new ReferenceableProperties();
 
                 if (entity != null)
                 {
@@ -73,45 +71,17 @@ public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetProperties.setDisplayName(this.removeName(instanceProperties));
-                    assetProperties.setDescription(this.removeDescription(instanceProperties));
-
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    referenceableProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    referenceableProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    referenceableProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    referenceableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setOwner(this.getOwner(instanceProperties));
-                    assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    assetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
-                    bean.setAssetProperties(assetProperties);
+                    bean.setReferenceableProperties(referenceableProperties);
                 }
                 else
                 {
@@ -131,7 +101,7 @@ public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

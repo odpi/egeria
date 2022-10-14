@@ -70,7 +70,7 @@ public class ConnectorTypeConverter<B> extends OCFConverter<B>
 
                 connectorType.setQualifiedName(this.removeQualifiedName(instanceProperties));
                 connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                connectorType.setDisplayName(this.removeName(instanceProperties));
+                connectorType.setDisplayName(this.removeDisplayName(instanceProperties));
                 connectorType.setDescription(this.removeDescription(instanceProperties));
                 connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
                 connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));

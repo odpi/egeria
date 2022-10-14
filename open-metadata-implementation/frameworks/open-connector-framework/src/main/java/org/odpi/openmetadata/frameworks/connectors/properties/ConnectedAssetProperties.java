@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * The ConnectedAssetProperties returns metadata about the asset at three levels of detail:
  * <ul>
  *     <li><b>assetSummary</b> used for displaying details of the asset in summary lists or hover text</li>
- *     <li><b>assetDetail</b> used to display all of the information known about the asset with summaries
+ *     <li><b>assetDetail</b> used to display all the information known about the asset with summaries
  *     of the relationships to other metadata entities</li>
  *     <li><b>assetUniverse</b> used to define the broader context for the asset</li>
  * </ul>
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * for the asset's properties.  Metadata repository implementations extend this class to add their
  * implementation of the refresh() method that calls to the metadata repository to populate the metadata properties.
  */
-public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
+public abstract class ConnectedAssetProperties extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -90,7 +91,7 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
 
 
     /**
-     * Returns all of the detail of the asset and information connected to it in organized in the assetUniverse
+     * Returns all the detail of the asset and information connected to it in organized in the assetUniverse
      * structure.
      *
      * @return AssetUniverse universe object

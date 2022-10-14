@@ -8,7 +8,7 @@ REST structures used to configure the open metadata
 and governance services.
 
 It also contains the interface definition of the
-[configuration document store connector](../docs/concepts/configuration-document-store-connector.md).
+[configuration document store connector](https://egeria-project.org/concepts/configuration-document-store-connector).
 
 
 Return to [Admin Services](..).

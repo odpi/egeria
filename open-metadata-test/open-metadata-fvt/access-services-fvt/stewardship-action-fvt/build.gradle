@@ -29,7 +29,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
@@ -46,7 +46,7 @@ java {
 // Local properties to use
 ext
         {
-            distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+            distdir="../../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
         }
 
 
@@ -55,10 +55,11 @@ sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 
 // Initially we launch as an app -- though there may be a better way of running this in the existing jvm
-task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip'], type: com.github.psxpaul.task.ExecFork) {
+task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip','prepareDirs'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
-    workingDir = "${buildDir}"
+    workingDir = layout.buildDirectory.dir('run')
+
     args = [ "-Dserver.port=10455",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
@@ -68,9 +69,9 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
              "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
     // - alternatively we need to ensure the server port is unique per test
-    standardOutput = "${buildDir}/chassis.log"
-    errorOutput = "${buildDir}/chassis-error.log"
-    //stopAfter = verify
+    standardOutput = layout.buildDirectory.file("chassis.log")
+    errorOutput = layout.buildDirectory.file("chassis-error.log")
+    stopAfter = test
     waitForPort = 10455
     timeout = 180
     //waitForOutput = 'has started'
@@ -100,9 +101,21 @@ test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
     dependsOn configServer
-    finalizedBy stopServer
+    
+}
+
+task prepareDirs {
+    mustRunAfter clean
+    doLast {
+        mkdir layout.buildDirectory.dir('run')
+    }
 }
 
 task cleanData(type: Delete) {
-    delete files("${buildDir}/data")
+    delete files("${buildDir}/run/data")
+}
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
 }

@@ -4,11 +4,11 @@
 # Asset Management Samples
 
 The asset management samples illustrate the use of the Java APIs associated with the
-[Asset Owner OMAS](../../../../open-metadata-implementation/access-services/asset-owner) and the
-[Asset Consumer OMAS](../../../../open-metadata-implementation/access-services/asset-consumer).
+[Asset Owner OMAS](https://egeria-project.org/services/omas/asset-owner/overview) and the
+[Asset Consumer OMAS](https://egeria-project.org/services/omas/asset-consumer/overview).
 
 In simple terms, the Asset Owner OMAS sets up descriptions of
-[Assets](../../../../open-metadata-implementation/access-services/docs/concepts/assets) in the
+[Assets](https://egeria-project.org/concepts/asset) in the
 open metadata repositories.  The owner of the asset is defining what the asset is about and how it should
 be governed and used.
 

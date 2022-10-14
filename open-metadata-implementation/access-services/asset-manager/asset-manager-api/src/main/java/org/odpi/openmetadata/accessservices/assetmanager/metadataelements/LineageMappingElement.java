@@ -6,12 +6,14 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * LineageMappingElement contains the properties and header for a lineage mapping relationship retrieved from the metadata repository.
@@ -23,9 +25,10 @@ public class LineageMappingElement implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader lineageMappingHeader = null;
-    private ElementHeader sourceElement        = null;
-    private ElementHeader targetElement        = null;
+    private ElementHeader            lineageMappingHeader     = null;
+    private LineageMappingProperties lineageMappingProperties = null;
+    private ElementHeader            sourceElement            = null;
+    private ElementHeader            targetElement            = null;
 
     /**
      * Default constructor
@@ -71,6 +74,28 @@ public class LineageMappingElement implements Serializable
     public void setLineageMappingHeader(ElementHeader lineageMappingHeader)
     {
         this.lineageMappingHeader = lineageMappingHeader;
+    }
+
+
+    /**
+     * Return the properties associated with the lineage mapping relationship.
+     *
+     * @return properties
+     */
+    public LineageMappingProperties getLineageMappingProperties()
+    {
+        return lineageMappingProperties;
+    }
+
+
+    /**
+     * Set up the properties associated with the relationship.
+     *
+     * @param lineageMappingProperties properties
+     */
+    public void setLineageMappingProperties(LineageMappingProperties lineageMappingProperties)
+    {
+        this.lineageMappingProperties = lineageMappingProperties;
     }
 
 
@@ -129,6 +154,7 @@ public class LineageMappingElement implements Serializable
     {
         return "LineageMappingElement{" +
                        "lineageMappingHeader=" + lineageMappingHeader +
+                       ", lineageMappingProperties=" + lineageMappingProperties +
                        ", sourceElement=" + sourceElement +
                        ", targetElement=" + targetElement +
                        '}';
@@ -155,6 +181,7 @@ public class LineageMappingElement implements Serializable
         LineageMappingElement that = (LineageMappingElement) objectToCompare;
         return Objects.equals(getLineageMappingHeader(), that.getLineageMappingHeader()) &&
                        Objects.equals(getSourceElement(), that.getSourceElement()) &&
+                       Objects.equals(getLineageMappingProperties(), that.getLineageMappingProperties()) &&
                        Objects.equals(getTargetElement(), that.getTargetElement());
     }
 
@@ -167,6 +194,6 @@ public class LineageMappingElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), lineageMappingHeader, sourceElement, targetElement);
+        return Objects.hash(super.hashCode(), lineageMappingHeader, lineageMappingProperties, sourceElement, targetElement);
     }
 }

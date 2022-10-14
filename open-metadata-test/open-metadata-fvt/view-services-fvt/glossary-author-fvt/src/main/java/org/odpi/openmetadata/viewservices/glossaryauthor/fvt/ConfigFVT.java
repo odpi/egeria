@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewGonfigRESTResource;
 //import org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource;
 import static org.odpi.openmetadata.viewservices.glossaryauthor.fvt.FVTConstants.GLOSSARY_AUTHOR_BASE_URL;
@@ -26,6 +28,8 @@ public class ConfigFVT
     private String userId = null;
     private String url = null;
     private static final String BASE_URL = GLOSSARY_AUTHOR_BASE_URL + "configs";
+    private static Logger log = LoggerFactory.getLogger(ConfigFVT.class);
+
 
 
     public static void main(String args[])
@@ -38,14 +42,16 @@ public class ConfigFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public ConfigFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Config FVT");
+        if (log.isDebugEnabled()) {
+            log.debug("Config FVT");
+        }
         this.url =url;
         this.userId = userId;
         this.serverName = serverName;
@@ -63,7 +69,7 @@ public class ConfigFVT
             System.out.println("ConfigFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -77,9 +83,13 @@ public class ConfigFVT
         if (config.getMaxPageSize() != 1000) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected " + 1000 + " as the max page size got " + config.getMaxPageSize());
         } else {
-            System.out.println("Config MaxPageSize is " + config.getMaxPageSize());
+            if (log.isDebugEnabled()) {
+                log.debug("Config MaxPageSize is " + config.getMaxPageSize());
+            }
         }
 
-        System.out.println(config.toString());
+        if (log.isDebugEnabled()) {
+            log.debug(config.toString());
+        }
     }
 }

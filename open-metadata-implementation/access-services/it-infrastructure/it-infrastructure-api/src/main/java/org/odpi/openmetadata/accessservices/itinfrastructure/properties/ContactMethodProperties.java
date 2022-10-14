@@ -25,9 +25,12 @@ public class ContactMethodProperties implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ContactMethodType type = null;
-    private String            service = null;
-    private String            value = null;
+    private String               name = null;
+    private String               contactType = null;
+
+    private ContactMethodType    contactMethodType    = null;
+    private String               contactMethodService = null;
+    private String               contactMethodValue   = null;
 
     private Date                 effectiveFrom = null;
     private Date                 effectiveTo   = null;
@@ -54,9 +57,9 @@ public class ContactMethodProperties implements Serializable
     {
         if (template != null)
         {
-            type = template.getType();
-            service = template.getService();
-            value = template.getValue();
+            contactMethodType = template.getContactMethodType();
+            contactMethodService = template.getContactMethodService();
+            contactMethodValue = template.getContactMethodValue();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
             typeName = template.getTypeName();
@@ -66,24 +69,68 @@ public class ContactMethodProperties implements Serializable
 
 
     /**
+     * Return the name to give this contact method (imagine a list of contact methods).
+     *
+     * @return string
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name to give this contact method (imagine a list of contact methods).
+     *
+     * @param name string
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the type of contact - is it related to work or personal etc.
+     *
+     * @return string type name - often controlled by a valid value set
+     */
+    public String getContactType()
+    {
+        return contactType;
+    }
+
+
+    /**
+     * Set up the type of contact - is it related to work or personal etc.
+     *
+     * @param contactType string type name - often controlled by a valid value set
+     */
+    public void setContactType(String contactType)
+    {
+        this.contactType = contactType;
+    }
+
+
+    /**
      * Return the type of the contact method.
      *
      * @return contact method type enum
      */
-    public ContactMethodType getType()
+    public ContactMethodType getContactMethodType()
     {
-        return type;
+        return contactMethodType;
     }
 
 
     /**
      * Set up the type of the contact method.
      *
-     * @param type contact method type enum
+     * @param contactMethodType contact method type enum
      */
-    public void setType(ContactMethodType type)
+    public void setContactMethodType(ContactMethodType contactMethodType)
     {
-        this.type = type;
+        this.contactMethodType = contactMethodType;
     }
 
 
@@ -92,20 +139,20 @@ public class ContactMethodProperties implements Serializable
      *
      * @return service URL
      */
-    public String getService()
+    public String getContactMethodService()
     {
-        return service;
+        return contactMethodService;
     }
 
 
     /**
      * Set up theURL of the service used to contact the individual.
      *
-     * @param service service URL
+     * @param contactMethodService service URL
      */
-    public void setService(String service)
+    public void setContactMethodService(String contactMethodService)
     {
-        this.service = service;
+        this.contactMethodService = contactMethodService;
     }
 
 
@@ -114,20 +161,20 @@ public class ContactMethodProperties implements Serializable
      *
      * @return value string
      */
-    public String getValue()
+    public String getContactMethodValue()
     {
-        return value;
+        return contactMethodValue;
     }
 
 
     /**
      * Set up the account name or similar value used to direct the message to the individual.
      *
-     * @param value value string
+     * @param contactMethodValue value string
      */
-    public void setValue(String value)
+    public void setContactMethodValue(String contactMethodValue)
     {
-        this.value = value;
+        this.contactMethodValue = contactMethodValue;
     }
 
 
@@ -242,9 +289,9 @@ public class ContactMethodProperties implements Serializable
     public String toString()
     {
         return "ContactMethodProperties{" +
-                       "type=" + type +
-                       ", service='" + service + '\'' +
-                       ", value='" + value + '\'' +
+                       "type=" + contactMethodType +
+                       ", service='" + contactMethodService + '\'' +
+                       ", value='" + contactMethodValue + '\'' +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", typeName='" + typeName + '\'' +
@@ -271,9 +318,9 @@ public class ContactMethodProperties implements Serializable
             return false;
         }
         ContactMethodProperties that = (ContactMethodProperties) objectToCompare;
-        return type == that.type &&
-                       Objects.equals(service, that.service) &&
-                       Objects.equals(value, that.value) &&
+        return contactMethodType == that.contactMethodType &&
+                       Objects.equals(contactMethodService, that.contactMethodService) &&
+                       Objects.equals(contactMethodValue, that.contactMethodValue) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(typeName, that.typeName) &&
@@ -289,6 +336,6 @@ public class ContactMethodProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(type, service, value, effectiveFrom, effectiveTo, typeName, extendedProperties);
+        return Objects.hash(contactMethodType, contactMethodService, contactMethodValue, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

@@ -95,7 +95,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
         if (discoveryServiceCache != null)
         {
-            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, annotationTypes, discoveryServiceCache);
+            return runDiscoveryService(assetGUID, discoveryRequestType, analysisParameters, methodName, annotationTypes, discoveryServiceCache);
         }
 
         return null;
@@ -145,6 +145,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                             runDiscoveryService(assetGUID,
                                                 discoveryRequestType,
                                                 analysisParameters,
+                                                methodName + ": " + assetGUID,
                                                 annotationTypes,
                                                 discoveryServiceCache);
                         }
@@ -206,10 +207,10 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
             {
                 if ((actionTargetElement != null)
                             && (actionTargetElement.getTargetElement() != null)
-                            && (actionTargetElement.getTargetElement().getElementType() != null))
+                            && (actionTargetElement.getTargetElement().getType() != null))
                 {
-                    String       typeName       = actionTargetElement.getTargetElement().getElementType().getElementTypeName();
-                    List<String> superTypeNames = actionTargetElement.getTargetElement().getElementType().getElementSuperTypeNames();
+                    String       typeName       = actionTargetElement.getTargetElement().getType().getTypeName();
+                    List<String> superTypeNames = actionTargetElement.getTargetElement().getType().getSuperTypeNames();
 
                     if ((assetTypeName.equals(typeName)) || ((superTypeNames != null) && (superTypeNames.contains(assetTypeName))))
                     {
@@ -221,6 +222,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
             DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
                                                                                               requestType,
                                                                                               requestParameters,
+                                                                                              null,
                                                                                               null,
                                                                                               governanceActionGUID,
                                                                                               governanceServiceCache);
@@ -253,6 +255,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
     private String runDiscoveryService(String                 assetGUID,
                                        String                 discoveryRequestType,
                                        Map<String, String>    suppliedAnalysisParameters,
+                                       String                 firstAnalysisStep,
                                        List<String>           annotationTypes,
                                        GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -261,6 +264,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
         DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
                                                                                           discoveryRequestType,
                                                                                           suppliedAnalysisParameters,
+                                                                                          firstAnalysisStep,
                                                                                           annotationTypes,
                                                                                           null,
                                                                                           governanceServiceCache);
@@ -279,6 +283,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param assetGUID unique identifier of the asset to analyse
      * @param discoveryRequestType type of discovery
      * @param suppliedAnalysisParameters parameters for the discovery
+     * @param firstAnalysisStepName name of the first analysis step for the discovery service
      * @param annotationTypes types of annotations that can be returned
      * @param governanceActionGUID unique identifier of the associated governance action entity
      * @param governanceServiceCache factory for discovery services
@@ -292,6 +297,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
     private DiscoveryServiceHandler getDiscoveryServiceHandler(String                 assetGUID,
                                                                String                 discoveryRequestType,
                                                                Map<String, String>    suppliedAnalysisParameters,
+                                                               String                 firstAnalysisStepName,
                                                                List<String>           annotationTypes,
                                                                String                 governanceActionGUID,
                                                                GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
@@ -317,6 +323,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                                         DiscoveryRequestStatus.WAITING,
                                                                                                         assetGUID,
                                                                                                         analysisParameters,
+                                                                                                        firstAnalysisStepName,
                                                                                                         reportQualifiedName,
                                                                                                         reportDisplayName,
                                                                                                         reportDescription,

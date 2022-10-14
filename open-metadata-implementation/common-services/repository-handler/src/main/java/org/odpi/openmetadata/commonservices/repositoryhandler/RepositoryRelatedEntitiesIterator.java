@@ -16,7 +16,7 @@ import java.util.Date;
 
 
 /**
- * RepositoryRelatedEntitiesIterator is an iterator class for iteratively retrieving relationships for an starting entity (possibly restricting
+ * RepositoryRelatedEntitiesIterator is an iterator class for iteratively retrieving relationships for a starting entity (possibly restricting
  * the type of relationships returned) and returning the entity at the other end.  It is used where the caller needs to filter the results coming
  * from the repository and may need to make more than one call to the repository in order to accumulate the number of requested results.
  *
@@ -24,11 +24,11 @@ import java.util.Date;
  */
 public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private String             startingEntityGUID;
-    private String             startingEntityTypeName;
-    private String             relationshipTypeGUID;
-    private String             relationshipTypeName;
-    private int                selectionEnd = 0;
+    private final String             startingEntityGUID;
+    private final String             startingEntityTypeName;
+    private final String             relationshipTypeGUID;
+    private final String             relationshipTypeName;
+    private final int                selectionEnd;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
 
@@ -67,28 +67,21 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              Date                    effectiveTime,
                                              String                  methodName) throws InvalidParameterException
     {
-        super(repositoryHandler,
-              invalidParameterHandler,
-              userId,
-              null,
-              null,
-              sequencingPropertyName,
-              forLineage,
-              forDuplicateProcessing,
-              startingFrom,
-              pageSize,
-              effectiveTime,
-              methodName);
-
-        this.startingEntityGUID     = startingEntityGUID;
-        this.startingEntityTypeName = startingEntityTypeName;
-        this.relationshipTypeGUID   = relationshipTypeGUID;
-        this.relationshipTypeName   = relationshipTypeName;
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("RepositoryRelatedEntitiesIterator: startingFrom=" + startingFrom + ", startingEntityGUID=" + startingEntityGUID);
-        }
+        this(repositoryHandler,
+             invalidParameterHandler,
+             userId,
+             startingEntityGUID,
+             startingEntityTypeName,
+             relationshipTypeGUID,
+             relationshipTypeName,
+             sequencingPropertyName,
+             forLineage,
+             forDuplicateProcessing,
+             startingFrom,
+             pageSize,
+             0,
+             effectiveTime,
+             methodName);
     }
 
 
@@ -110,6 +103,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException the bean properties are invalid
      */
     public RepositoryRelatedEntitiesIterator(RepositoryHandler       repositoryHandler,
                                              InvalidParameterHandler invalidParameterHandler,
@@ -127,22 +121,29 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              Date                    effectiveTime,
                                              String                  methodName) throws InvalidParameterException
     {
-        this(repositoryHandler,
-             invalidParameterHandler,
-             userId,
-             startingEntityGUID,
-             startingEntityTypeName,
-             relationshipTypeGUID,
-             relationshipTypeName,
-             sequencingPropertyName,
-             forLineage,
-             forDuplicateProcessing,
-             startingFrom,
-             pageSize,
-             effectiveTime,
-             methodName);
+        super(repositoryHandler,
+              invalidParameterHandler,
+              userId,
+              null,
+              null,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
 
-        this.selectionEnd =  selectionEnd;
+        this.startingEntityGUID     = startingEntityGUID;
+        this.startingEntityTypeName = startingEntityTypeName;
+        this.relationshipTypeGUID   = relationshipTypeGUID;
+        this.relationshipTypeName   = relationshipTypeName;
+        this.selectionEnd           = selectionEnd;
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("RepositoryRelatedEntitiesIterator: startingFrom=" + startingFrom + ", startingEntityGUID=" + startingEntityGUID);
+        }
     }
 
 
@@ -150,11 +151,13 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * Determine if there is more to receive.  It will populate the iterator's cache with more content.
      *
      * @return boolean flag
+     * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
     @Override
-    public boolean  moreToReceive() throws UserNotAuthorizedException,
+    public boolean  moreToReceive() throws InvalidParameterException,
+                                           UserNotAuthorizedException,
                                            PropertyServerException
     {
         if ((entitiesCache == null) || (entitiesCache.isEmpty()))
@@ -167,43 +170,19 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
              */
             while ((entitiesCache != null) && (entitiesCache.isEmpty()))
             {
-                if (selectionEnd == 0)
-                {
-                    entitiesCache = repositoryHandler.getEntitiesForRelationshipType(userId,
-                                                                                     startingEntityGUID,
-                                                                                     startingEntityTypeName,
-                                                                                     relationshipTypeGUID,
-                                                                                     relationshipTypeName,
-                                                                                     null,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
-                                                                                     startingFrom,
-                                                                                     pageSize,
-                                                                                     effectiveTime,
-                                                                                     methodName);
-                }
-                else
-                {
-                    boolean startAtEnd1 = false;
-
-                    if (selectionEnd == 2)
-                    {
-                        startAtEnd1 = true;
-                    }
-
-                    entitiesCache = repositoryHandler.getEntitiesForRelationshipEnd(userId,
-                                                                                    startingEntityGUID,
-                                                                                    startingEntityTypeName,
-                                                                                    startAtEnd1,
-                                                                                    relationshipTypeGUID,
-                                                                                    relationshipTypeName,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing,
-                                                                                    startingFrom,
-                                                                                    pageSize,
-                                                                                    effectiveTime,
-                                                                                    methodName);
-                }
+                entitiesCache = repositoryHandler.getEntitiesForRelationshipType(userId,
+                                                                                 startingEntityGUID,
+                                                                                 startingEntityTypeName,
+                                                                                 relationshipTypeGUID,
+                                                                                 relationshipTypeName,
+                                                                                 null,
+                                                                                 selectionEnd,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 startingFrom,
+                                                                                 pageSize,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
                 if (entitiesCache != null)
                 {
@@ -232,7 +211,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                 }
                             }
 
-                            log.debug("Cached entity " + entity.getGUID() + ",displayName=" + displayName + ",qualifiedName=" + qualifiedName);
+                            log.debug("Cached entity " + entity.getGUID() + ", displayName=" + displayName + ", qualifiedName=" + qualifiedName);
                         }
                     }
                 }

@@ -124,7 +124,7 @@ public enum AccessServiceDescription implements Serializable
                                       "Manage a digital service's lifecycle",
                                       "https://egeria-project.org/services/omas/digital-service/overview/"),
     DISCOVERY_ENGINE_OMAS            (217,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Discovery Engine",
                                       "Discovery Engine OMAS",
                                       "discovery-engine",
@@ -196,13 +196,13 @@ public enum AccessServiceDescription implements Serializable
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                        accessServiceCode;
-    private ComponentDevelopmentStatus accessServiceDevelopmentStatus;
-    private String                     accessServiceName;
-    private String                     accessServiceFullName;
-    private String                     accessServiceURLMarker;
-    private String                     accessServiceDescription;
-    private String                     accessServiceWiki;
+    private final int                        accessServiceCode;
+    private final ComponentDevelopmentStatus accessServiceDevelopmentStatus;
+    private final String                     accessServiceName;
+    private final String                     accessServiceFullName;
+    private final String                     accessServiceURLMarker;
+    private final String                     accessServiceDescription;
+    private final String                     accessServiceWiki;
 
 
     /**
@@ -326,7 +326,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Return the URL for the wiki page describing this access service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getAccessServiceWiki()
     {

@@ -15,15 +15,14 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -48,8 +47,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -90,6 +87,8 @@ class HandlerHelperTest {
     private Converter converter;
     @Mock
     private AssetLineageTypesValidator assetLineageTypesValidator;
+    @Mock
+    private ClockService clockService;
 
     @InjectMocks
     private HandlerHelper handlerHelper;
@@ -106,8 +105,8 @@ class HandlerHelperTest {
         relationships.add(relationship);
 
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName))
-                .thenReturn(relationships);
+                RELATIONSHIP_TYPE_NAME, null, null, 0,
+                true, false, 0, 0, null, methodName)).thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -122,7 +121,8 @@ class HandlerHelperTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         List<Relationship> relationships = new ArrayList<>();
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName)).thenReturn(relationships);
+                RELATIONSHIP_TYPE_NAME, null, null, 0,
+                true, false,  0, 0, null, methodName)).thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -137,7 +137,8 @@ class HandlerHelperTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         Relationship relationship = mock(Relationship.class);
         when(genericHandler.getUniqueAttachmentLink(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, null, null, methodName))
+                RELATIONSHIP_TYPE_NAME, null, null, 0,
+                true, false, null, methodName))
                 .thenReturn(relationship);
 
         Optional<Relationship> response = handlerHelper.getUniqueRelationshipByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
@@ -153,7 +154,8 @@ class HandlerHelperTest {
 
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         when(genericHandler.getUniqueAttachmentLink(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, null, null, methodName)).thenReturn(null);
+                RELATIONSHIP_TYPE_NAME, null, null,
+                0,true, false, null, methodName)).thenReturn(null);
 
         Optional<Relationship> response = handlerHelper.getUniqueRelationshipByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -201,14 +203,15 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         List<EntityDetail> entities = new ArrayList<>();
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null, null, null, null, true, false, 0, 0,
-                "findEntitiesByType")).thenReturn(entities);
+                null, null, null, null, true, false, 0, 500,
+                 null, "addPagedEntities")).thenReturn(entities);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
         assertTrue(response.isPresent());
@@ -221,14 +224,16 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
                 null, null, null, null, true,
-                false, 0, 0, "findEntitiesByType")).thenReturn(null);
+                false, 0, 500, null, "addPagedEntities")).thenReturn(null);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
-        assertTrue(response.isEmpty());
+        assertTrue(response.isPresent());
+        assertTrue(response.get().isEmpty());
     }
 
     @Test
@@ -333,7 +338,8 @@ class HandlerHelperTest {
         when(relationship.getType()).thenReturn(type);
         when(relationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         when(genericHandler.getAttachmentLinks(USER, ENTITY_ONE_GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, "getRelationshipsByType"))
+                RELATIONSHIP_TYPE_NAME, null, null, 0, true,
+                false,0, 0, null, "getRelationshipsByType"))
                 .thenReturn(relationships);
 
         mockLineageEntity(ENTITY_ONE_GUID);
@@ -450,7 +456,7 @@ class HandlerHelperTest {
                                                                                      PropertyServerException {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(genericHandler.getEntityFromRepository(USER, guid, GUID_PARAMETER, ENTITY_TYPE_NAME, null, null,
-                false, false, null, methodName)).thenReturn(entityDetail);
+                true, false, null, methodName)).thenReturn(entityDetail);
         return entityDetail;
     }
 

@@ -111,7 +111,7 @@ public class CSVFileStoreConnectorTest
         {
             assertTrue("The connector is unable to retrieve the requested record because the file is too short.".equals(error.getReportedSystemAction()));
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -135,7 +135,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             assertTrue(false);
         }
@@ -159,7 +159,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             assertTrue(false);
         }
@@ -200,7 +200,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             assertTrue(false);
         }
@@ -224,7 +224,7 @@ public class CSVFileStoreConnectorTest
         {
             assertTrue("BASIC-FILE-CONNECTOR-400-001 The file name is null in the Connection object CSVFileStore.Connection.Test".equals(error.getMessage()));
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -248,7 +248,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             assertTrue(false);
         }
@@ -276,7 +276,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             assertTrue(false);
         }
@@ -304,7 +304,7 @@ public class CSVFileStoreConnectorTest
         {
             assertTrue("BASIC-FILE-CONNECTOR-404-001 The file named BadFileName in the Connection object CSVFileStore.Connection.Test does not exist".equals(error.getMessage()));
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -332,7 +332,7 @@ public class CSVFileStoreConnectorTest
         {
             assertTrue("BASIC-FILE-CONNECTOR-400-002 The file src/test/resources/ given in Connection object CSVFileStore.Connection.Test is a directory".equals(error.getMessage()));
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }
@@ -353,7 +353,7 @@ public class CSVFileStoreConnectorTest
             connector.disconnect();
             assertFalse(connector.isActive());
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             assertTrue(false);
         }

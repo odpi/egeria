@@ -62,7 +62,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * </ul>
      * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatinated with the the guid.
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatenated with the guid.
      *
      * <p>
      * Failure to create the Categories classifications, link to its glossary or its icon, results in the create failing and the category being deleted
@@ -120,9 +120,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                             null,
                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                            null,
-                                                                            null,
                                                                             builder,
+                                                                            null,
                                                                             methodName);
                 if (response.getRelatedHTTPCode() == 200) {
 
@@ -138,11 +137,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                         // set subject area classification if required.
                         if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
                             genericHandler.setClassificationInRepository(userId,
+                                                                         null,
+                                                                         null,
                                                                          createdCategoryGuid,
                                                                          "guid",
                                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         true,
+                                                                         null,
                                                                          null,
                                                                          methodName);
                         }
@@ -293,7 +300,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         List<EntityDetail> foundEntities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                       currentCategoryGuid,
                                                                                       "guid",
-                                                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
                                                                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                                                                       1,      // get only the parent
@@ -577,7 +584,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                                                                          2,      // get only the children
@@ -654,7 +661,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
                                                                                          OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                                                                          2,      // get only the children

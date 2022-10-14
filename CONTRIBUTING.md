@@ -7,7 +7,7 @@ This project welcomes contributors from any organization or background, provided
 willing to follow the simple processes outlined below, as well as adhere to the 
 [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 
-Review the [community guide](./Community-Guide.md) to find out more.
+Review the [community guide](https://egeria-project.org/guides/community/) to find out more.
 
 
 

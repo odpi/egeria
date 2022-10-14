@@ -73,6 +73,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects
@@ -80,18 +82,23 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countAttachedComments(String userId,
-                                     String elementGUID,
-                                     Date   effectiveTime,
-                                     String methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public int countAttachedComments(String  userId,
+                                     String  elementGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -101,14 +108,19 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * Adds a comment and link it to the supplied parent entity.
      *
      * @param userId        String - userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param anchorGUID    head of the comment chain
      * @param parentGUID    String - unique id for a referenceable entity that the comment is to be attached to.
      * @param parentGUIDParameterName name of parameter that supplied the entity's unique identifier.
      * @param commentType   ordinal of comment enum.
      * @param commentText   String - the text of the comment.
      * @param isPublic      should this be visible to all or private to the caller
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName    calling method
      *
      * @return guid of new comment.
@@ -126,6 +138,11 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     int         commentType,
                                     String      commentText,
                                     boolean     isPublic,
+                                    Date        effectiveFrom,
+                                    Date        effectiveTo,
+                                    boolean     forLineage,
+                                    boolean     forDuplicateProcessing,
+                                    Date        effectiveTime,
                                     String      methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -155,14 +172,15 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
             builder.setAnchors(userId, anchorGUID, methodName);
         }
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         String  commentGUID = this.createBeanInRepository(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
                                                           OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                                           OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                          qualifiedName,
-                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                           builder,
+                                                          effectiveTime,
                                                           methodName);
 
         if (commentGUID != null)
@@ -176,12 +194,15 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       commentGUID,
                                       commentGUIDParameter,
                                       OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
                                       methodName);
         }
 
@@ -193,13 +214,18 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * Update an existing comment.
      *
      * @param userId        userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param commentGUID   unique identifier for the comment to change
      * @param commentGUIDParameterName name of parameter for commentGUID
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
      * @param isPublic      indicates whether the feedback should be shared or only be visible to the originating user
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName    calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -214,6 +240,11 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 int         commentType,
                                 String      commentText,
                                 boolean     isPublic,
+                                Date        effectiveFrom,
+                                Date        effectiveTo,
+                                boolean     forLineage,
+                                boolean     forDuplicateProcessing,
+                                Date        effectiveTime,
                                 String      methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -230,6 +261,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                     serviceName,
                                                     serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -237,12 +270,12 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     commentGUIDParameterName,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -251,10 +284,13 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * Removes a comment added to the parent by this user.
      *
      * @param userId       userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param commentGUIDParameterName parameter supplying the
      * @param commentGUID  unique identifier for the comment object.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName    calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -266,6 +302,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                          String     externalSourceName,
                                          String     commentGUID,
                                          String     commentGUIDParameterName,
+                                         boolean    forLineage,
+                                         boolean    forDuplicateProcessing,
+                                         Date       effectiveTime,
                                          String     methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -279,9 +318,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -298,6 +337,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for the particular service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -316,6 +357,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startingFrom,
                                 int          pageSize,
+                                boolean      forLineage,
+                                boolean      forDuplicateProcessing,
                                 Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -333,8 +376,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -353,6 +396,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for the particular service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -369,6 +414,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startingFrom,
                                 int          pageSize,
+                                boolean      forLineage,
+                                boolean      forDuplicateProcessing,
                                 Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -386,8 +433,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -405,6 +452,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of the anchor entity
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -420,6 +469,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 String   elementTypeName,
                                 int      startingFrom,
                                 int      pageSize,
+                                boolean  forLineage,
+                                boolean  forDuplicateProcessing,
                                 Date     effectiveTime,
                                 String   methodName) throws InvalidParameterException,
                                                             PropertyServerException,
@@ -437,8 +488,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,

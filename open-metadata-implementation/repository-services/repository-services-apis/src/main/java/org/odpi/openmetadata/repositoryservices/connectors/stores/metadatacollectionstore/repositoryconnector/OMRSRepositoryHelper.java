@@ -89,7 +89,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      *
      * @param sourceName caller
      * @param typeName name of instance's type
-     * @param allProperties all of the instance's properties
+     * @param allProperties all the instance's properties
      * @return just the unique properties
      */
     InstanceProperties getUniqueProperties(String              sourceName,
@@ -246,7 +246,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return the list of type names for all of the subtypes of an entity type.
+     * Return the list of type names for all the subtypes of an entity type.
      *
      * @param sourceName source of the request (used for logging)
      * @param superTypeName name of the super type - this value is not included in the result.
@@ -257,7 +257,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
+     * Return the names of all the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.
      * @param typeDef TypeDef to query.
@@ -270,7 +270,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return the names of all of the type definitions that define the supplied property name.
+     * Return the names of all the type definitions that define the supplied property name.
      *
      * @param sourceName name of the caller.
      * @param propertyName property name to query.
@@ -743,6 +743,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                           EntityProxy    entity,
                                           Classification newClassification,
                                           String         methodName);
+
+
+    /**
+     * Return the properties from a named classification or null if classification not present or without properties.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param classifications    list of classifications for an entity
+     * @param classificationName classification to retrieve
+     * @param methodName         calling method
+     * @return located properties - or null if none
+     */
+    InstanceProperties getClassificationProperties(String                sourceName,
+                                                   List<Classification>  classifications,
+                                                   String                classificationName,
+                                                   String                methodName);
 
 
     /**

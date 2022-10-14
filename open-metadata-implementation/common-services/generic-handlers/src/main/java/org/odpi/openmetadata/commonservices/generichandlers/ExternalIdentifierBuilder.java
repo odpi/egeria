@@ -56,7 +56,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(identifier + UUID.randomUUID().toString(),
+        super(identifier + UUID.randomUUID(),
               OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
               OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
               repositoryHelper,
@@ -80,14 +80,11 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (identifier != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
-                                                                      identifier,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  identifier,
+                                                                  methodName);
 
         try
         {
@@ -117,7 +114,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
      * @param source the description of the source (typically the integration connector name)
      * @param mappingProperties additional properties to help with the mapping to the external metadata
      * @param methodName calling method
-     * @return these properties packed into an OMRS instance properties object (or null if all of the properties are null)
+     * @return these properties packed into an OMRS instance properties object (or null if all the properties are null)
      */
     InstanceProperties getExternalIdResourceLinkProperties(String              description,
                                                            String              usage,
@@ -125,43 +122,31 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                                                            Map<String, String> mappingProperties,
                                                            String              methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      usage,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  usage,
+                                                                  methodName);
 
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
-                                                                      source,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
 
-        if (mappingProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
-                                                                         mappingProperties,
-                                                                         methodName);
-        }
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
+                                                                     mappingProperties,
+                                                                     methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
@@ -169,6 +154,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                                                                 new Date(),
                                                                 methodName);
 
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -176,7 +162,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
     /**
      * Return the properties that are stored in the ExternalIdScope relationship.  This is between the externalId and
-     * the software server capability that represents the external metadata source.
+     * the software capability that represents the external metadata source.
      *
      * @param description description of the linkage between the external identifier and its owner
      * @param permittedSynchronization direction of synchronization
@@ -187,16 +173,13 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                                                     int    permittedSynchronization,
                                                     String methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         try
         {
@@ -212,6 +195,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
 
         return properties;
     }

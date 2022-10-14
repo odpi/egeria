@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
  
-![InDev](../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Open Metadata User Interface
 
@@ -13,7 +13,7 @@ particularly for a larger organization.
 
 There are 2 User Interfaces :
 
-* The **[Presentation Server](../admin-services/docs/concepts/presentation-server.md)** is a multi-tenant server that serves a user interface - it issues rest calls downstream primarily to view
+* The **[Presentation Server](.https://egeria-project.org/concepts/presentation-server)** is a multi-tenant server that serves a user interface - it issues rest calls downstream primarily to view
   servers. All the code for the Presentation Server has been moved to [Egeria React UI Git repository](https://github.com/odpi/egeria-react-ui)
 
 *  [UI Application](ui-chassis) the user interface platform. The Server side of the user interface is maintained in the [ui-chassis](ui-chassis) module.

@@ -116,7 +116,6 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>org.odpi.egeria:cloud-information-model:*</include>
                 <include>org.odpi.egeria:glossary-canonical-model:*</include>
                 <include>org.odpi.egeria:open-metadata-types-utility:*</include>
             </includes>
@@ -204,7 +203,15 @@
                         <outputDirectory>/</outputDirectory>
                         <includes>
                             <include>content-packs/CloudInformationModel.json</include>
-                            <include>content-packs/DataStoreConnectorTypes.json</include>
+                            <include>content-packs/CocoBusinessSystemsArchive.json</include>
+                            <include>content-packs/CocoClinicalTrialsTemplatesArchive.json</include>
+                            <include>content-packs/CocoComboArchive.json</include>
+                            <include>content-packs/CocoGovernanceEngineDefinitionsArchive.json</include>
+                            <include>content-packs/CocoGovernanceProgramArchive.json</include>
+                            <include>content-packs/CocoOrganizationArchive.json</include>
+                            <include>content-packs/CocoSustainabilityArchive.json</include>
+                            <include>content-packs/CocoTypesArchive.json</include>
+                            <include>content-packs/OpenConnectorsArchive.json</include>
                             <include>content-packs/OpenMetadataTypes.json</include>
                             <include>content-packs/SimpleAPICatalog.json</include>
                             <include>content-packs/SimpleDataCatalog.json</include>

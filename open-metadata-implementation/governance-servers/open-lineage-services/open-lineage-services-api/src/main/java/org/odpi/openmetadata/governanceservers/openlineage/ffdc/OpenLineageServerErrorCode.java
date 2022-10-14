@@ -106,6 +106,11 @@ public enum OpenLineageServerErrorCode {
             "Lineage for the entity could not be found",
             "Please verify that the guid for the entity is correct."),
 
+    ERROR_TYPES_NOT_FOUND(404, "OPEN-LINEAGE-SERVER-404-003",
+            "Entities types from lineage repository could not be found",
+            "Entities types from lineage repository could not be found",
+            "Lineage graph might be empty or the open lineage server might be in an improper state."),
+
     GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001 ",
             "The graph database could not be initialized for open metadata repository {0}.",
             "The system was unable to initialize.",
@@ -188,7 +193,7 @@ public enum OpenLineageServerErrorCode {
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug("ODFErrorCode.getMessage({}): {}", Arrays.toString(params), result);
+        log.debug("OpenLinageServerErrorCode.getFormattedErrorMessage({}): {}", Arrays.toString(params), result);
         return result;
     }
 

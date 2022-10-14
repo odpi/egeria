@@ -128,28 +128,16 @@ public class SecurityTags extends ElementClassificationHeader
     public String toString()
     {
         return "SecurityTags{" +
-                "securityLabels=" + securityLabels +
-                ", securityProperties=" + securityProperties +
-                ", classificationTypeId='" + getClassificationTypeId() + '\'' +
-                ", classificationTypeVersion=" + getClassificationTypeVersion() +
-                ", classificationTypeDescription='" + getClassificationTypeDescription() + '\'' +
-                ", classificationOrigin=" + getClassificationOrigin() +
-                ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
-                ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOrigin=" + getElementOrigin() +
-                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                ", elementLicense='" + getElementLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                ", elementMaintainedBy=" + getElementMaintainedBy() +
-                ", elementCreateTime=" + getElementCreateTime() +
-                ", elementUpdateTime=" + getElementUpdateTime() +
-                ", elementVersion=" + getElementVersion() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", securityLabels=" + securityLabels +
+                       ", securityProperties=" + securityProperties +
+                       '}';
     }
 
 

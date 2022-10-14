@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForeignKeyProperties implements Serializable
+public class ForeignKeyProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -43,12 +43,14 @@ public class ForeignKeyProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor for an foreign key.
+     * Copy/clone constructor for a foreign key.
      *
      * @param template template object to copy.
      */
     public ForeignKeyProperties(ForeignKeyProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             name        = template.getName();
@@ -179,12 +181,15 @@ public class ForeignKeyProperties implements Serializable
     public String toString()
     {
         return "ForeignKeyProperties{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", source='" + source + '\'' +
-                '}';
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", source='" + source + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -205,23 +210,25 @@ public class ForeignKeyProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ForeignKeyProperties that = (ForeignKeyProperties) objectToCompare;
-        return confidence == that.confidence &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(steward, that.steward) &&
-                Objects.equals(source, that.source);
+        return confidence == that.confidence && Objects.equals(name, that.name) && Objects.equals(description,
+                                                                                                  that.description) && Objects.equals(
+                steward, that.steward) && Objects.equals(source, that.source);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, confidence, steward, source);
+        return Objects.hash(super.hashCode(), name, description, confidence, steward, source);
     }
 }

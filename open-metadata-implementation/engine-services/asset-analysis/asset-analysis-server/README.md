@@ -5,7 +5,7 @@
 
 The **asset-analysis-server** module contains the server-side
 implementation of the engine services that hosts one or more
-[open discovery engines](../../../frameworks/open-discovery-framework/docs/discovery-engine.md).
+[open discovery engines](https://egeria-project.org/concepts/open-discovery-engine).
 
 It is shown in figure 1:
 

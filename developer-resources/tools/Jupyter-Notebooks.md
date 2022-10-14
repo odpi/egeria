@@ -7,7 +7,7 @@
 Jupyter notebooks to provide an interactive environment for running snippets of python code, interspersed
 with [Markdown](Markdown.md) documentation.
 
-This is an example of a Jupyter notebook from the [Open Metadata Labs](../../open-metadata-resources/open-metadata-labs).
+This is an example of a Jupyter notebook from the [Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
 ![Jupyter notebook](jupyter-notebook-browser-window.png#pagewidth)
 
@@ -20,8 +20,8 @@ through the **Anaconda Navigator** desktop.  It can be downloaded from the follo
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

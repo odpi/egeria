@@ -59,7 +59,7 @@ public class ProcessProperties extends AssetProperties
 
 
     /**
-     * Set up the the description of the processing performed by this process.
+     * Set up the description of the processing performed by this process.
      *
      * @param formula string description
      */
@@ -103,6 +103,7 @@ public class ProcessProperties extends AssetProperties
                        ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +

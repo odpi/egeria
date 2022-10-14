@@ -30,7 +30,7 @@ dependencies {
     testImplementation 'com.fasterxml.jackson.core:jackson-core'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testRuntimeOnly 'org.janusgraph:janusgraph-inmemory'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
     implementation 'commons-configuration:commons-configuration'
     implementation 'org.apache.commons:commons-configuration2'
@@ -41,4 +41,15 @@ description = 'Open Lineage Janus Connector'
 
 java {
     withJavadocJar()
+}
+
+test {
+    filter {
+        excludeTestsMatching "*.OpenLineageGraphValidationTests"
+    }
+}
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
 }

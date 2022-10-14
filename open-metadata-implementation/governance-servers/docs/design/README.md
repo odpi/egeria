@@ -125,10 +125,10 @@ Furthermore, the server-side code is in the same parent module as the client-sid
 
 We can implement the functionality of our service itself in the remainder of the operational services class
 ([DataEngineProxyOperationalServices](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/admin/DataEngineProxyOperationalServices.java)
-and the threaded [DataEngineProxyChangePoller](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyChangePoller.java)
+and the threaded [DataEngineProxyService](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyService.java)
 it runs in our example).
 
-Note that the implementation of the operational services (in particular within [DataEngineProxyChangePoller](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyChangePoller.java))
+Note that the implementation of the operational services (in particular within [DataEngineProxyService](../../data-engine-proxy-services/data-engine-proxy-services-server/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/processor/DataEngineProxyService.java))
 is entirely defined using the general methods defined in our interface (the [DataEngineConnectorBase](../../data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
 class in our example). As a result, it is not tightly-coupled to any specific underlying technology. However, since we
 obtain a real data engine connector from the connector broker, the functionality will actually execute against the data

@@ -27,7 +27,7 @@ public class MockConnectorCheckedExceptionConnectorProvider extends ConnectorPro
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param connection   connection that should have all of the properties needed by the Connector Provider
+     * @param connection   connection that should have all the properties needed by the Connector Provider
      *                   to create a connector instance.
      * @return Connector   instance of the connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
@@ -36,7 +36,7 @@ public class MockConnectorCheckedExceptionConnectorProvider extends ConnectorPro
     @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        throw new ConnectorCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                             this.getClass().getName(),
                                             "getCachedList");
     }

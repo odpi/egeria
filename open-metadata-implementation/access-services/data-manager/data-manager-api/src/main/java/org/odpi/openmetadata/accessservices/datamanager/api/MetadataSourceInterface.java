@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * MetadataSourceInterface is the interface used to define information about the third party technologies that
  * an integration daemon is extracting metadata from.
  *
- * The these technologies are represented by a software server capability in open metadata.
+ * These technologies are represented by a software server capability in open metadata.
  */
 public interface MetadataSourceInterface
 {

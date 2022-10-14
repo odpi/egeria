@@ -131,7 +131,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     *  Set up the the source (typically connection name) of the database information.
+     *  Set up the source (typically connection name) of the database information.
      *
      * @param databaseImportedFrom source name
      */
@@ -150,10 +150,10 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                       "databaseType='" + databaseType + '\'' +
-                       ", databaseVersion='" + databaseVersion + '\'' +
-                       ", databaseInstance='" + databaseInstance + '\'' +
-                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -161,10 +161,14 @@ public class DatabaseProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       ", databaseType='" + databaseType + '\'' +
+                       ", databaseVersion='" + databaseVersion + '\'' +
+                       ", databaseInstance='" + databaseInstance + '\'' +
+                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -185,24 +189,35 @@ public class DatabaseProperties extends DataStoreProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof DatabaseProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         DatabaseProperties that = (DatabaseProperties) objectToCompare;
-        return Objects.equals(databaseType, that.databaseType) &&
-                Objects.equals(databaseVersion, that.databaseVersion) &&
-                Objects.equals(databaseInstance, that.databaseInstance) &&
-                Objects.equals(databaseImportedFrom, that.databaseImportedFrom);
+
+        if (databaseType != null ? ! databaseType.equals(that.databaseType) : that.databaseType != null)
+        {
+            return false;
+        }
+        if (databaseVersion != null ? ! databaseVersion.equals(that.databaseVersion) : that.databaseVersion != null)
+        {
+            return false;
+        }
+        if (databaseInstance != null ? ! databaseInstance.equals(that.databaseInstance) : that.databaseInstance != null)
+        {
+            return false;
+        }
+        return databaseImportedFrom != null ? databaseImportedFrom.equals(that.databaseImportedFrom) : that.databaseImportedFrom == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

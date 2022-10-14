@@ -102,7 +102,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      * results in a 1000ms (1s) timeout.
      *
      */
-    private Integer           pollCount   = 50;
+    private Integer           pollCount   = 100;
     private Integer           pollPeriod  = 100;   // milliseconds
 
     private List<EntityDetail>            createdEntitiesCTS               = new ArrayList<>();

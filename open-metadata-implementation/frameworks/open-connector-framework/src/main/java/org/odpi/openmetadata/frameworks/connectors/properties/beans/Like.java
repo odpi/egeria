@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Like extends ElementHeader
+public class Like extends ElementBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -63,7 +63,7 @@ public class Like extends ElementHeader
 
 
     /**
-     * Set up he user id of the person who created the like.  Null means the user id is not known.
+     * Set up the user id of the person who created the like.  Null means the user id is not known.
      *
      * @param user String liking user
      */
@@ -104,13 +104,18 @@ public class Like extends ElementHeader
     public String toString()
     {
         return "Like{" +
-                "user='" + user + '\'' +
-                ", isPublic='" + isPublic + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", user='" + user + '\'' +
+                       ", isPublic=" + isPublic +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

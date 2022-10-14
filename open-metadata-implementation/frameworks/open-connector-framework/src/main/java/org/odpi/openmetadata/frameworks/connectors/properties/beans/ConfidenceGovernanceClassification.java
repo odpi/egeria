@@ -23,8 +23,6 @@ public class ConfidenceGovernanceClassification extends GovernanceClassification
 {
     private static final long     serialVersionUID = 1L;
 
-    private ConfidenceLevel confidenceLevel = null;
-
     /**
      * Default constructor
      */
@@ -42,34 +40,8 @@ public class ConfidenceGovernanceClassification extends GovernanceClassification
     public ConfidenceGovernanceClassification(ConfidenceGovernanceClassification template)
     {
         super(template);
-
-        if (template != null)
-        {
-            confidenceLevel = template.getConfidenceLevel();
-        }
     }
 
-
-    /**
-     * Return the level of confidence in the quality of this data.
-     *
-     * @return enum
-     */
-    public ConfidenceLevel getConfidenceLevel()
-    {
-        return confidenceLevel;
-    }
-
-
-    /**
-     * Set up the level of confidence in the quality of this data.
-     *
-     * @param confidenceLevel enum
-     */
-    public void setConfidenceLevel(ConfidenceLevel confidenceLevel)
-    {
-        this.confidenceLevel = confidenceLevel;
-    }
 
     /**
      * Standard toString method.
@@ -80,56 +52,21 @@ public class ConfidenceGovernanceClassification extends GovernanceClassification
     public String toString()
     {
         return "ConfidenceGovernanceClassification{" +
-                "confidenceLevel=" + confidenceLevel +
-                ", status=" + getStatus() +
-                ", confidence=" + getConfidence() +
-                ", steward='" + getSteward() + '\'' +
-                ", source='" + getSource() + '\'' +
-                ", notes='" + getNotes() + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ConfidenceGovernanceClassification that = (ConfidenceGovernanceClassification) objectToCompare;
-        return confidenceLevel == that.confidenceLevel;
-    }
-
-
-    /**
-     * Return code value representing the contents of this object.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), confidenceLevel);
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", governanceStatus=" + getGovernanceStatus() +
+                       ", confidence=" + getConfidence() +
+                       ", steward='" + getSteward() + '\'' +
+                       ", stewardTypeName='" + getStewardTypeName() + '\'' +
+                       ", stewardPropertyName='" + getStewardPropertyName() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", notes='" + getNotes() + '\'' +
+                       ", levelIdentifier=" + getLevelIdentifier() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 }

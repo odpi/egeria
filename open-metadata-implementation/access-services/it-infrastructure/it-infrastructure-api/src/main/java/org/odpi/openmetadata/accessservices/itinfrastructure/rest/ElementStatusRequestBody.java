@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementStatusRequestBody extends AssetProperties
+public class ElementStatusRequestBody extends EffectiveTimeRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -53,17 +53,6 @@ public class ElementStatusRequestBody extends AssetProperties
             externalSourceGUID = template.getExternalSourceGUID();
             externalSourceName = template.getExternalSourceName();
         }
-    }
-
-
-    /**
-     * Copy/clone constructor.
-     *
-     * @param template object to copy
-     */
-    public ElementStatusRequestBody(AssetProperties template)
-    {
-        super(template);
     }
 
 
@@ -144,16 +133,8 @@ public class ElementStatusRequestBody extends AssetProperties
         return "ElementStatusRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", initialStatus=" + elementStatus +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       ", elementStatus=" + elementStatus +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 

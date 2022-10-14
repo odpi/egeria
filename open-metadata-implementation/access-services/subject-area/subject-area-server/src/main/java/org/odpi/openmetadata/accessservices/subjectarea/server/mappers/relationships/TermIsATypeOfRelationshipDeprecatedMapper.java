@@ -44,9 +44,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (isATypeOfDeprecated.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(isATypeOfDeprecated.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

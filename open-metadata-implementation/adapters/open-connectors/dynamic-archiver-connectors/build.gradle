@@ -15,7 +15,7 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 

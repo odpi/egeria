@@ -21,7 +21,7 @@ import java.util.List;
  * produce the same content.
  * <p>
  * Details of the open metadata types are documented on the wiki:
- * <a href="https://egeria.odpi.org/open-metadata-publication/website/open-metadata-types/">The Open Metadata Type System</a>
+ * <a href="https://egeria-project.org/types/">The Open Metadata Type System</a>
  * </p>
  * <p>
  * There are 8 areas, each covering a different topic area of metadata.  The module breaks down the process of creating
@@ -179,7 +179,7 @@ public class OpenMetadataTypesArchive2_10
 
     /**
      * This change means that the campaign classification connects to a referenceable.  It should have connected to a project -but
-     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without braking backward compatibility.
+     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without breaking backward compatibility.
      *
      * @return patched type
      */

@@ -21,7 +21,7 @@ import java.util.List;
  * executor object that is able to issue the appropriate query and handle the response.
  *
  * The federation control class calls the executor repeatedly, passing in the metadata collection
- * until the executor tells it to stop or it runs out of registered repositories.
+ * until the executor tells it to stop, or it runs out of registered repositories.
  *
  * The caller (enterprise connector) then requests the response from the executor.
  */
@@ -66,7 +66,7 @@ public abstract class FederationControlBase implements FederationControl
     /**
      * Verify that a cohort member's metadata collection is not null.
      *
-     * @param cohortConnector
+     * @param cohortConnector connector to remote repository
      * @param cohortMetadataCollection metadata collection
      * @param methodName name of method
      * @return metadata collection id
@@ -82,7 +82,7 @@ public abstract class FederationControlBase implements FederationControl
         if (cohortMetadataCollection == null)
         {
             /*
-             * A problem in the set up of the metadata collection list.  Repository connectors implemented
+             * A problem in the setup of the metadata collection list.  Repository connectors implemented
              * with no metadata collection are tested for in the OMRSEnterpriseConnectorManager so something
              * else has gone wrong.
              */

@@ -35,7 +35,7 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -72,7 +72,8 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
 
                     apiProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     apiProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    apiProperties.setDisplayName(this.removeName(instanceProperties));
+                    apiProperties.setName(this.removeName(instanceProperties));
+                    apiProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     apiProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*
@@ -102,7 +103,7 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

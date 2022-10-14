@@ -36,7 +36,7 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -73,7 +73,9 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
 
                     dataFileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     dataFileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    dataFileProperties.setDisplayName(this.removeName(instanceProperties));
+                    dataFileProperties.setName(this.removeName(instanceProperties));
+                    dataFileProperties.setDisplayName(dataFileProperties.getName());
+                    dataFileProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     dataFileProperties.setDescription(this.removeDescription(instanceProperties));
                     dataFileProperties.setPathName(this.removePathName(instanceProperties));
                     dataFileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
@@ -113,7 +115,7 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

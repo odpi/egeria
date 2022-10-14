@@ -27,11 +27,11 @@ import java.util.Date;
  */
 public class CommunityProfileRESTServices
 {
-    private static CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    private static final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(CommunityProfileRESTServices.class),
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(CommunityProfileRESTServices.class),
                                                                                   instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -134,6 +134,9 @@ public class CommunityProfileRESTServices
                                                                   requestBody.getVendorProperties(),
                                                                   null,
                                                                   null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName));
             }
             else
@@ -296,6 +299,10 @@ public class CommunityProfileRESTServices
                                                         OpenMetadataAPIMapper.USER_PROFILE_MANAGER_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        true,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName);
         }
         catch (Exception error)
@@ -311,7 +318,7 @@ public class CommunityProfileRESTServices
 
     /**
      * Update classification of the metadata source that is providing a user access directory information
-     * such as the groups and access rights of a user Id.
+     * such as the groups and access rights of a user id.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -351,6 +358,10 @@ public class CommunityProfileRESTServices
                                                         OpenMetadataAPIMapper.USER_ACCESS_DIRECTORY_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        true,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName);
         }
         catch (Exception error)
@@ -405,6 +416,10 @@ public class CommunityProfileRESTServices
                                                         OpenMetadataAPIMapper.MASTER_DATA_MANAGER_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        true,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName);
         }
         catch (Exception error)

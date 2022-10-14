@@ -20,8 +20,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class RestoreEntityExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 entityGUID;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 entityGUID;
+
     private EntityDetail           restoredEntity = null;
 
 

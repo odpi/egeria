@@ -70,14 +70,14 @@ public class OMRSOperationalServices
      */
     private static final Logger       log      = LoggerFactory.getLogger(OMRSOperationalServices.class);
 
-    private String                         localServerName;               /* Initialized in constructor */
-    private String                         localServerType;               /* Initialized in constructor */
-    private String                         localMetadataCollectionName;   /* Initialized in constructor */
-    private String                         localOrganizationName;         /* Initialized in constructor */
-    private String                         localServerUserId;             /* Initialized in constructor */
-    private String                         localServerPassword;           /* Initialized in constructor */
-    private String                         localServerURL;                /* Initialized in constructor */
-    private int                            maxPageSize;                   /* Initialized in constructor */
+    private final String                         localServerName;               /* Initialized in constructor */
+    private final String                         localServerType;               /* Initialized in constructor */
+    private       String                         localMetadataCollectionName;   /* Initialized in constructor */
+    private final String                         localOrganizationName;         /* Initialized in constructor */
+    private final String                         localServerUserId;             /* Initialized in constructor */
+    private final String                         localServerPassword;           /* Initialized in constructor */
+    private final String                         localServerURL;                /* Initialized in constructor */
+    private final int                            maxPageSize;                   /* Initialized in constructor */
 
     private String                         localMetadataCollectionId          = null;
 
@@ -313,7 +313,7 @@ public class OMRSOperationalServices
 
         /*
          * Log that the OMRS is starting.  There is another Audit log message logged at the end of this method
-         * to confirm that all of the pieces started successfully.
+         * to confirm that all the pieces started successfully.
          */
         auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZING.getMessageDefinition());
 
@@ -340,9 +340,9 @@ public class OMRSOperationalServices
          * Begin with the enterprise repository services.  They are always needed since the
          * Open Metadata Access Services (OMAS) is dependent on them.  There are 2 modes of operation: local only
          * and enterprise access.  Enterprise access provide an enterprise view of metadata
-         * across all of the open metadata repository cohorts that this server connects to.
+         * across all the open metadata repository cohorts that this server connects to.
          * If EnterpriseAccessConfig is null, the enterprise repository services run in local only mode.
-         * Otherwise the supplied configuration properties enable it to be configured for enterprise access.
+         * Otherwise, the supplied configuration properties enable it to be configured for enterprise access.
          *
          * The connector manager manages the list of connectors to metadata repositories that the enterprise
          * repository services will use.  The OMRS Topic is used to publish events from these repositories to support the
@@ -486,7 +486,7 @@ public class OMRSOperationalServices
         }
 
         /*
-         * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
+         * Set up the OMRS REST Services with the local repository, so it is able to process incoming REST
          * calls.
          */
         OMRSRepositoryRESTServices.setServerRepositories(localServerName,
@@ -582,13 +582,13 @@ public class OMRSOperationalServices
 
         /*
          * Log that the OMRS is starting.  There is another Audit log message logged at the end of this method
-         * to confirm that all of the pieces started successfully.
+         * to confirm that all the pieces started successfully.
          */
         auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZING.getMessageDefinition());
 
 
         /*
-         * Set up the OMRS REST Services with the local repository so it is able to process incoming REST calls.
+         * Set up the OMRS REST Services with the local repository, so it is able to process incoming REST calls.
          */
         OMRSRepositoryRESTServices.setServerRepositories(localServerName,
                                                          auditLog,
@@ -628,7 +628,7 @@ public class OMRSOperationalServices
                 enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
 
                 /*
-                 * This connector is started by admin services when all of the Access Services have been started and have registered their listeners.
+                 * This connector is started by admin services when all the Access Services have been started and have registered their listeners.
                  */
             }
         }
@@ -885,7 +885,7 @@ public class OMRSOperationalServices
                                                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.METADATA_HIGHWAY_MANAGER));
 
         /*
-         * The metadata highway manager is initialize with the details specific to each cohort.
+         * The metadata highway manager is initialized with the details specific to each cohort.
          */
         metadataHighwayManager.initialize(cohortConfigList);
 
@@ -946,7 +946,7 @@ public class OMRSOperationalServices
     {
         /*
          * Log that the OMRS is disconnecting.  There is another Audit log message logged at the end of this method
-         * to confirm that all of the pieces disconnected successfully.
+         * to confirm that all the pieces disconnected successfully.
          */
         final String   actionDescription = "Disconnect Repository Operational Services";
         auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_DISCONNECTING.getMessageDefinition());
@@ -1065,7 +1065,7 @@ public class OMRSOperationalServices
         {
             String methodName = "getAuditLogStore";
 
-            log.debug("Unable to create audit log store connector: " + error.toString());
+            log.debug("Unable to create audit log store connector: " + error);
 
             throw new OMRSConfigErrorException(OMRSErrorCode.NULL_AUDIT_LOG_STORE.getMessageDefinition(localServerName),
                                                this.getClass().getName(),
@@ -1093,15 +1093,13 @@ public class OMRSOperationalServices
             ConnectorBroker    connectorBroker = new ConnectorBroker(auditLog);
             Connector          connector       = connectorBroker.getConnector(topicConnection);
 
-            OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
-
-            return topicConnector;
+            return (OMRSTopicConnector)connector;
         }
         catch (Exception   error)
         {
             String methodName = "getTopicConnector";
 
-            log.debug("Unable to create topic connector: " + error.toString());
+            log.debug("Unable to create topic connector: " + error);
 
             auditLog.logMessage(methodName,
                                 OMRSAuditCode.BAD_TOPIC_CONNECTION.getMessageDefinition(sourceName, error.getClass().getName(), error.getMessage()));
@@ -1130,9 +1128,7 @@ public class OMRSOperationalServices
             ConnectorBroker          connectorBroker = new ConnectorBroker(auditLog);
             Connector                connector       = connectorBroker.getConnector(openMetadataArchiveStoreConnection);
 
-            OpenMetadataArchiveStoreConnector archiveStoreConnector = (OpenMetadataArchiveStoreConnector)connector;
-
-            return archiveStoreConnector;
+            return (OpenMetadataArchiveStoreConnector)connector;
         }
         catch (Exception   error)
         {
@@ -1140,7 +1136,7 @@ public class OMRSOperationalServices
 
             if (log.isDebugEnabled())
             {
-                log.debug("Unable to create open metadata archive connector: " + error.toString());
+                log.debug("Unable to create open metadata archive connector: " + error);
             }
 
             /*
@@ -1158,7 +1154,7 @@ public class OMRSOperationalServices
 
     /**
      * The local repository may need an event mapper to convert its proprietary events to OMRS Events.
-     * An event mapper is implemented as an OMRSRepositoryEventMapper Connector and it is initialized through the
+     * An event mapper is implemented as an OMRSRepositoryEventMapper Connector, and it is initialized through the
      * OCF Connector Broker using an OCF connection.
      *
      * @param localRepositoryEventMapperConnection connection to the local repository's event mapper.
@@ -1184,15 +1180,13 @@ public class OMRSOperationalServices
             ConnectorBroker           connectorBroker = new ConnectorBroker(auditLog);
             Connector                 connector       = connectorBroker.getConnector(localRepositoryEventMapperConnection);
 
-            OMRSRepositoryEventMapperConnector eventMapperConnector = (OMRSRepositoryEventMapperConnector)connector;
-
-            return eventMapperConnector;
+            return (OMRSRepositoryEventMapperConnector)connector;
         }
         catch (Exception   error)
         {
             String methodName = "getLocalRepositoryEventMapper";
 
-            log.debug("Unable to create local repository event mapper connector: " + error.toString());
+            log.debug("Unable to create local repository event mapper connector: " + error);
 
             /*
              * Throw runtime exception to indicate that the local repository's event mapper is not available.

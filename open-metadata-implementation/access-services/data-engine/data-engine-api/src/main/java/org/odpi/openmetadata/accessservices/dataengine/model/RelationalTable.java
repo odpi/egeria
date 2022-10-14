@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -98,4 +99,16 @@ public class RelationalTable extends Referenceable {
      */
     private List<RelationalColumn> columns;
 
+    /**
+     * Determines if the table is incomplete
+     * -- GETTER --
+     * Return if the table is incomplete
+     *
+     * @return if the table is incomplete
+     * -- SETTER --
+     * Sets up if the table is incomplete
+     * @param incomplete if the table is incomplete
+     */
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }

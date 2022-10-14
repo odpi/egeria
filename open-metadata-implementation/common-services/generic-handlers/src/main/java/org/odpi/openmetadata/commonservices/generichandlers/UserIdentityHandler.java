@@ -10,16 +10,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * UserIdentityHandler provides the exchange of metadata about glossaries between the repository and the OMAS.
- * Note user identities are governance metadata and are always defined with LOCAL-COHORT provenance.
- * They also do not have support for effectivity dates.
+ * UserIdentityHandler provides the exchange of metadata about users between the repository and the OMAS.
  *
  * @param <B> class that represents the user identity
  */
@@ -74,17 +74,22 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
 
     /**
      * Create the entity that represents a user identity.  If the profileGUID is supplied, the profile becomes the
-     * anchor of the User Identity and they are linked together.
+     * anchor of the User Identity, and they are linked together.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param profileGUID the unique identifier of the profile GUID that is the anchor of
      * @param profileGUIDParameterName parameter name supplying profileGUID
      * @param qualifiedName unique name for the user identity - used in other configuration
+     * @param elementUserId user account identifier
+     * @param distinguishedName LDAP distinguished name
      * @param additionalProperties additional properties for a user identity
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance user identity subtype
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new user identity object
@@ -98,9 +103,14 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                      String              profileGUID,
                                      String              profileGUIDParameterName,
                                      String              qualifiedName,
+                                     String              elementUserId,
+                                     String              distinguishedName,
                                      Map<String, String> additionalProperties,
                                      String              suppliedTypeName,
                                      Map<String, Object> extendedProperties,
+                                     boolean             forLineage,
+                                     boolean             forDuplicateProcessing,
+                                     Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -124,6 +134,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         UserIdentityBuilder builder = new UserIdentityBuilder(qualifiedName,
+                                                              elementUserId,
+                                                              distinguishedName,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -142,31 +154,31 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
+                                                              effectiveTime,
                                                               methodName);
 
         if ((userIdentityGUID != null) && (profileGUID != null))
         {
             final String userIdentityGUIDParameterName = "userIdentityGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profileGUID,
-                                      profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                      userIdentityGUID,
-                                      userIdentityGUIDParameterName,
-                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               profileGUID,
+                                               profileGUIDParameterName,
+                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               userIdentityGUID,
+                                               userIdentityGUIDParameterName,
+                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return userIdentityGUID;
@@ -177,15 +189,23 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * Update the entity that represents a user identity.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param userIdentityGUID unique identifier of the user identity to update
      * @param userIdentityGUIDParameterName parameter passing the userIdentityGUID
      * @param qualifiedName unique name for the user identity - used in other configuration
+     * @param elementUserId user account identifier
+     * @param distinguishedName LDAP distinguished name
      * @param additionalProperties additional properties for a governance user identity
      * @param typeName type of user identity
      * @param extendedProperties  properties for a governance user identity subtype
-     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -198,10 +218,17 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                    String              userIdentityGUID,
                                    String              userIdentityGUIDParameterName,
                                    String              qualifiedName,
+                                   String              elementUserId,
+                                   String              distinguishedName,
                                    Map<String, String> additionalProperties,
                                    String              typeName,
                                    Map<String, Object> extendedProperties,
                                    boolean             isMergeUpdate,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -219,6 +246,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         UserIdentityBuilder builder = new UserIdentityBuilder(qualifiedName,
+                                                              elementUserId,
+                                                              distinguishedName,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -227,6 +256,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -234,41 +265,44 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     userIdentityGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
-
-
-
 
 
     /**
      * Remove the metadata element representing a user identity.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param userIdentityGUID unique identifier of the metadata element to remove
      * @param userIdentityGUIDParameterName parameter supplying the user identityGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void deleteUserIdentity(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String userIdentityGUID,
-                                   String userIdentityGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void deleteUserIdentity(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  userIdentityGUID,
+                                   String  userIdentityGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -279,58 +313,149 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
-     * Link a user identity to a profile.  This will fail if the user identity is already connected to
-     * a profile.
+     * Link a user identity to a profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param userIdentityGUID  unique identifier of the user identity
      * @param userIdentityGUIDParameterName parameter name supplying userIdentityGUID
      * @param profileGUID unique identifier of the profile
      * @param profileGUIDParameterName parameter name supplying profileGUID
+     * @param roleTypeName what is the type of the role that this identity is used for
+     * @param roleGUID what is the guid of the role that this identity is used for
+     * @param description describe how this identity is used
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void addIdentityToProfile(String userId,
-                                     String externalSourceGUID,
-                                     String externalSourceName,
-                                     String userIdentityGUID,
-                                     String userIdentityGUIDParameterName,
-                                     String profileGUID,
-                                     String profileGUIDParameterName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void addIdentityToProfile(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  userIdentityGUID,
+                                     String  userIdentityGUIDParameterName,
+                                     String  profileGUID,
+                                     String  profileGUIDParameterName,
+                                     String  roleTypeName,
+                                     String  roleGUID,
+                                     String  description,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+
         this.relinkElementToNewElement(userId,
                                        externalSourceGUID,
                                        externalSourceName,
                                        userIdentityGUID,
                                        userIdentityGUIDParameterName,
                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                       true,
+                                       false,
                                        profileGUID,
                                        profileGUIDParameterName,
                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                       false,
-                                       false,
+                                       forLineage,
+                                       forDuplicateProcessing,
                                        supportedZones,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                       null,
+                                       this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                       effectiveTime,
                                        methodName);
+    }
+
+
+
+    /**
+     * Update the properties for the link between a user identity to a profile.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param userIdentityGUID  unique identifier of the user identity
+     * @param userIdentityGUIDParameterName parameter name supplying userIdentityGUID
+     * @param profileGUID unique identifier of the profile
+     * @param profileGUIDParameterName parameter name supplying profileGUID
+     * @param roleTypeName what is the type of the role that this identity is used for
+     * @param roleGUID what is the guid of the role that this identity is used for
+     * @param description describe how this identity is used
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateIdentityProfile(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  userIdentityGUID,
+                                      String  userIdentityGUIDParameterName,
+                                      String  profileGUID,
+                                      String  profileGUIDParameterName,
+                                      String  roleTypeName,
+                                      String  roleGUID,
+                                      String  description,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean isMergeUpdate,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+
+        this.updateElementToElementLink(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        profileGUID,
+                                        profileGUIDParameterName,
+                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        userIdentityGUID,
+                                        userIdentityGUIDParameterName,
+                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                        isMergeUpdate,
+                                        this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                        effectiveTime,
+                                        methodName);
     }
 
 
@@ -338,28 +463,34 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * Unlink a user identity from a profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param userIdentityGUID  unique identifier of the user identity
      * @param userIdentityGUIDParameterName parameter name supplying userIdentityGUID
      * @param profileGUID unique identifier of the profile
      * @param profileGUIDParameterName parameter name supplying profileGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeIdentifyFromProfile(String userId,
-                                          String externalSourceGUID,
-                                          String externalSourceName,
-                                          String userIdentityGUID,
-                                          String userIdentityGUIDParameterName,
-                                          String profileGUID,
-                                          String profileGUIDParameterName,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void removeIdentifyFromProfile(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  userIdentityGUID,
+                                          String  userIdentityGUIDParameterName,
+                                          String  profileGUID,
+                                          String  profileGUIDParameterName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -372,12 +503,12 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                       userIdentityGUIDParameterName,
                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -391,6 +522,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -399,25 +533,39 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getUserIdentitiesByName(String userId,
-                                           String name,
-                                           String nameParameterName,
-                                           int    startFrom,
-                                           int    pageSize,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public List<B> getUserIdentitiesByName(String  userId,
+                                           String  name,
+                                           String  nameParameterName,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return this.getBeansByQualifiedName(userId,
-                                            OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                            OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                            name,
-                                            nameParameterName,
-                                            supportedZones,
-                                            startFrom,
-                                            pageSize,
-                                            null,
-                                            methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
+                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -427,6 +575,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -435,21 +586,24 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getUserIdentityByGUID(String userId,
-                                   String guid,
-                                   String guidParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public B getUserIdentityByGUID(String  userId,
+                                   String  guid,
+                                   String  guidParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
 
     }

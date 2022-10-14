@@ -25,23 +25,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * the type of the property:
  * <ul>
  *     <li>
- *         PrimitivePropertyValue: for primitives such as strings and numbers.  The full list of primitives are
- *         given in PrimitiveDefCategory.
+ *         PrimitiveTypePropertyValue: for primitives such as strings and numbers.  The full list of primitives are
+ *         given in PrimitiveTypeCategory.
  *     </li>
  *     <li>
- *         EnumPropertyValue: for properties with a type consisting of an enumeration of valid values.  Each
+ *         EnumTypePropertyValue: for properties with a type consisting of an enumeration of valid values.  Each
  *     </li>
  *     <li>
- *         StructPropertyValue: for properties that have a type of a complex structure (aka struct).
+ *         StructTypePropertyValue: for properties that have a type of a complex structure (aka struct).
  *         The Struct can be thought of as a list of related properties.
  *     </li>
  *     <li>
- *         MapPropertyValue: for properties that have a type of map.
+ *         MapTypePropertyValue: for properties that have a type of map.
  *         The map holds an unordered list of name-value pairs.  The pairs are of the same type and the name for
  *         the pair is unique within the map.
  *     </li>
  *     <li>
- *         ArrayPropertyValue: for properties that have a type of Array.
+ *         ArrayTypePropertyValue: for properties that have a type of Array.
  *         This is an ordered list of values of the same type.
  *     </li>
  * </ul>
@@ -53,7 +53,7 @@ public class ElementProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private Map<String, PropertyValue> instanceProperties = new HashMap<>();
+    private Map<String, PropertyValue> propertyValueMap = new HashMap<>();
 
 
     /**
@@ -86,7 +86,7 @@ public class ElementProperties implements Serializable
                     String        newPropertyName  = propertyNames.next();
                     PropertyValue newPropertyValue = templateProperties.getPropertyValue(newPropertyName);
 
-                    instanceProperties.put(newPropertyName, newPropertyValue);
+                    propertyValueMap.put(newPropertyName, newPropertyValue);
                 }
             }
         }
@@ -98,19 +98,19 @@ public class ElementProperties implements Serializable
      *
      * @return  instance properties map.
      */
-    public Map<String, PropertyValue> getInstanceProperties()
+    public Map<String, PropertyValue> getPropertyValueMap()
     {
-        if (instanceProperties == null)
+        if (propertyValueMap == null)
         {
             return null;
         }
-        else if (instanceProperties.isEmpty())
+        else if (propertyValueMap.isEmpty())
         {
             return null;
         }
         else
         {
-            return new HashMap<>(instanceProperties);
+            return new HashMap<>(propertyValueMap);
         }
     }
 
@@ -118,17 +118,17 @@ public class ElementProperties implements Serializable
     /**
      * Set up the instance properties map.
      *
-     * @param instanceProperties map of name valued properties
+     * @param propertyValueMap map of name valued properties
      */
-    public void setInstanceProperties(Map<String, PropertyValue> instanceProperties)
+    public void setPropertyValueMap(Map<String, PropertyValue> propertyValueMap)
     {
-        if (instanceProperties == null)
+        if (propertyValueMap == null)
         {
-            this.instanceProperties = new HashMap<>();
+            this.propertyValueMap = new HashMap<>();
         }
         else
         {
-            this.instanceProperties = instanceProperties;
+            this.propertyValueMap = propertyValueMap;
         }
     }
 
@@ -141,7 +141,7 @@ public class ElementProperties implements Serializable
      */
     public Iterator<String> getPropertyNames()
     {
-        return instanceProperties.keySet().iterator();
+        return propertyValueMap.keySet().iterator();
     }
 
 
@@ -154,7 +154,7 @@ public class ElementProperties implements Serializable
      */
     public PropertyValue getPropertyValue(String name)
     {
-        return instanceProperties.get(name);
+        return propertyValueMap.get(name);
     }
 
 
@@ -181,11 +181,11 @@ public class ElementProperties implements Serializable
         }
         else if (newPropertyValue == null)
         {
-            instanceProperties.remove(newPropertyName);
+            propertyValueMap.remove(newPropertyName);
         }
         else
         {
-            instanceProperties.put(newPropertyName, newPropertyValue);
+            propertyValueMap.put(newPropertyName, newPropertyValue);
         }
     }
 
@@ -197,7 +197,7 @@ public class ElementProperties implements Serializable
      */
     public int getPropertyCount()
     {
-        return instanceProperties.size();
+        return propertyValueMap.size();
     }
 
 
@@ -212,7 +212,7 @@ public class ElementProperties implements Serializable
         return "ElementProperties{" +
                 "propertyNames=" + getPropertyNames() +
                 ", propertyCount=" + getPropertyCount() +
-                ", instanceProperties=" + instanceProperties +
+                ", propertyValues=" + propertyValueMap +
                 '}';
     }
 
@@ -235,7 +235,7 @@ public class ElementProperties implements Serializable
             return false;
         }
         ElementProperties that = (ElementProperties) objectToCompare;
-        return Objects.equals(getInstanceProperties(), that.getInstanceProperties());
+        return Objects.equals(getPropertyValueMap(), that.getPropertyValueMap());
     }
 
 
@@ -248,7 +248,7 @@ public class ElementProperties implements Serializable
     public int hashCode()
     {
 
-        return Objects.hash(getInstanceProperties());
+        return Objects.hash(getPropertyValueMap());
     }
 }
 

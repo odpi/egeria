@@ -49,18 +49,23 @@ public class ValidValueDefinition extends ValidValue
     public String toString()
     {
         return "ValidValueDefinition{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usage='" + usage + '\'' +
-                ", scope='" + scope + '\'' +
-                ", preferredValue='" + preferredValue + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties + '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", scope='" + getScope() + '\'' +
+                       ", preferredValue='" + getPreferredValue() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       '}';
     }
 }

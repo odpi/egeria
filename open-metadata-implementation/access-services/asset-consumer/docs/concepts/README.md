@@ -3,14 +3,12 @@
 
 # Asset Consumer OMAS Concepts
 
-* [Assets](../../../docs/concepts/assets)
+* [Assets](https://egeria-project.org/concepts/asset)
 * [Asset Log Messages](asset-log-message.md)
 * [Connected Asset Properties](../../../../frameworks/open-connector-framework/docs/concepts/connected-asset-properties.md)
 * [Connectors](../scenarios/working-with-connectors.md)
 * [Connections](../../../../frameworks/open-connector-framework/docs/concepts/connection.md)
 * [Glossary Terms](../scenarios/looking-up-meanings-of-terms.md)
-* [Feedback on Assets](../../../docs/concepts/feedback)
-* [Tagging Assets](../../../docs/concepts/attachments/tagging.md)
 
 
 

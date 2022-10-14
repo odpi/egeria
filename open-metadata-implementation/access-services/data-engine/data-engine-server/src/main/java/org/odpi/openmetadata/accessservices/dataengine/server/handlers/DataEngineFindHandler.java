@@ -2,18 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -40,29 +38,29 @@ public class DataEngineFindHandler {
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
-    private final RepositoryHandler repositoryHandler;
+    private final OpenMetadataAPIGenericHandler<Referenceable> genericHandler;
+    private final DataEngineCommonHandler dataEngineCommonHandler;
     private final String serviceName;
     private final String serverName;
-    private final DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param genericHandler          generic handler that provides utilities to manipulate entities
      * @param serviceName             service name
      * @param serverName              server name
-     * @param dataEngineCommonHandler provides common Data Engine Omas utilities
      */
     public DataEngineFindHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                 RepositoryHandler repositoryHandler, String serviceName, String serverName,
-                                 DataEngineCommonHandler dataEngineCommonHandler) {
+                                 OpenMetadataAPIGenericHandler<Referenceable> genericHandler,
+                                 DataEngineCommonHandler dataEngineCommonHandler, String serviceName, String serverName) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
+        this.genericHandler = genericHandler;
+        this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.serviceName = serviceName;
         this.serverName = serverName;
-        this.dataEngineCommonHandler = dataEngineCommonHandler;
     }
 
     /**
@@ -72,6 +70,8 @@ public class DataEngineFindHandler {
      * @param findRequestBody  contains search criteria
      * @param methodName       method name
      *
+     * @return a list of guids
+     *
      * @throws InvalidParameterException     if invalid parameters
      * @throws PropertyServerException       if errors in repository
      * @throws UserNotAuthorizedException    if user not authorized
@@ -80,6 +80,8 @@ public class DataEngineFindHandler {
      * @throws PropertyErrorException        if a property does not match
      * @throws TypeErrorException            if type is unknown
      * @throws PagingErrorException          if paging is erroneously defined
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException if user not authorized
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException if invalid parameters
      */
     public GUIDListResponse find(FindRequestBody findRequestBody, String userId, String methodName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
@@ -91,14 +93,13 @@ public class DataEngineFindHandler {
 
         GUIDListResponse searchResponse = new GUIDListResponse();
 
-        String matchRegex = repositoryHelper.getExactMatchRegex(findRequestBody.getIdentifiers().getQualifiedName(), false);
         String typeGuid = getTypeGuid(userId, findRequestBody.getType());
-        InstanceProperties instanceProperties = buildInstanceProperties(userId, matchRegex);
         final String externalSourceName = findRequestBody.getExternalSourceName();
 
-        List<EntityDetail> result = repositoryHandler.getMetadataCollection().findEntitiesByProperty(userId, typeGuid,
-                instanceProperties, MatchCriteria.ANY, 0, Collections.singletonList(InstanceStatus.ACTIVE),
-                null, null, null, SequencingOrder.ANY, 50);
+        List<EntityDetail> result = genericHandler.getEntitiesByValue(userId, findRequestBody.getIdentifiers().getQualifiedName(),
+                QUALIFIED_NAME_PROPERTY_NAME, typeGuid, findRequestBody.getType(), Collections.singletonList(QUALIFIED_NAME_PROPERTY_NAME),
+                true, null, null, false, false,
+                0, invalidParameterHandler.getMaxPagingSize(), dataEngineCommonHandler.getNow(), methodName);
 
         if(!Objects.isNull(result)){
             List<String> guids = result.stream()

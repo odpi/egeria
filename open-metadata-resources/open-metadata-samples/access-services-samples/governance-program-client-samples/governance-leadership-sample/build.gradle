@@ -14,9 +14,9 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Governance leadership sample'

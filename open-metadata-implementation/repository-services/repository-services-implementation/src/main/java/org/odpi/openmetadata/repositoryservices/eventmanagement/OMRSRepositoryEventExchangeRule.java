@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class OMRSRepositoryEventExchangeRule
 {
-    private OpenMetadataExchangeRule           exchangeRule;
-    private List<String>                       selectedTypesToProcess = new ArrayList<>();
+    private final OpenMetadataExchangeRule           exchangeRule;
+    private final List<String>                       selectedTypesToProcess = new ArrayList<>();
 
 
     /**
-     * Constructor provides all of the objects used in the event exchange decision.
+     * Constructor provides all the objects used in the event exchange decision.
      *
      * @param exchangeRule enum detailing the types of events to process.
      * @param selectedTypesToProcess supplementary list to support selective processing of events.

@@ -6,12 +6,13 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class FindRequestBody implements Serializable
     private SearchClassifications matchClassifications       = null;
     private String                sequencingProperty         = null;
     private SequencingOrder       sequencingOrder            = null;
+    private Date                  asOfTime                   = null;
 
 
     /**
@@ -60,6 +62,7 @@ public class FindRequestBody implements Serializable
             searchProperties = template.getSearchProperties();
             limitResultsByStatus = template.getLimitResultsByStatus();
             matchClassifications = template.getMatchClassifications();
+            asOfTime = template.getAsOfTime();
             sequencingProperty = template.getSequencingProperty();
             sequencingOrder = template.getSequencingOrder();
         }
@@ -177,6 +180,28 @@ public class FindRequestBody implements Serializable
 
 
     /**
+     * Return the time used for a historical query - null mean current repository contents.
+     *
+     * @return date/time object
+     */
+    public Date getAsOfTime()
+    {
+        return asOfTime;
+    }
+
+
+    /**
+     * Set up the time used for a historical query - null mean current repository contents.
+     *
+     * @param asOfTime date/time object
+     */
+    public void setAsOfTime(Date asOfTime)
+    {
+        this.asOfTime = asOfTime;
+    }
+
+
+    /**
      * Return the name of the property whose value will be used to sequence the results.
      *
      * @return property name
@@ -236,6 +261,7 @@ public class FindRequestBody implements Serializable
                        ", matchClassifications=" + matchClassifications +
                        ", sequencingProperty='" + sequencingProperty + '\'' +
                        ", sequencingOrder=" + sequencingOrder +
+                       ", asOfTime=" + asOfTime +
                        '}';
     }
 
@@ -258,13 +284,13 @@ public class FindRequestBody implements Serializable
             return false;
         }
         FindRequestBody that = (FindRequestBody) objectToCompare;
-        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
-                       Objects.equals(metadataElementSubtypeName, that.metadataElementSubtypeName) &&
-                       Objects.equals(searchProperties, that.searchProperties) &&
-                       Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
-                       Objects.equals(matchClassifications, that.matchClassifications) &&
-                       Objects.equals(sequencingProperty, that.sequencingProperty) &&
-                       sequencingOrder == that.sequencingOrder;
+        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) && Objects.equals(metadataElementSubtypeName,
+                                                                                                       that.metadataElementSubtypeName) && Objects.equals(
+                searchProperties, that.searchProperties) && Objects.equals(limitResultsByStatus,
+                                                                           that.limitResultsByStatus) && Objects.equals(
+                matchClassifications, that.matchClassifications) && Objects.equals(sequencingProperty,
+                                                                                   that.sequencingProperty) && sequencingOrder == that.sequencingOrder && Objects.equals(
+                asOfTime, that.asOfTime);
     }
 
 
@@ -277,6 +303,6 @@ public class FindRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(metadataElementTypeName, metadataElementSubtypeName, searchProperties, limitResultsByStatus, matchClassifications,
-                            sequencingProperty, sequencingOrder);
+                            asOfTime, sequencingProperty, sequencingOrder);
     }
 }

@@ -30,7 +30,7 @@ public class TestConnectorTypeProperties
      */
     public TestConnectorTypeProperties()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
 
         recognizedAdditionalProperties.add("TestValue");
         recognizedSecuredProperties.add("TestValue");
@@ -129,10 +129,10 @@ public class TestConnectorTypeProperties
      */
     private void validateResultObject(ConnectorTypeProperties  resultObject)
     {
-        assertTrue(resultObject.getType().getElementTypeBean().equals(type));
+        assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getAssetClassifications() == null);
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -156,7 +156,7 @@ public class TestConnectorTypeProperties
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getAssetClassifications() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
@@ -192,26 +192,6 @@ public class TestConnectorTypeProperties
         nullObject = new ConnectorTypeProperties(nullBean);
         validateNullObject(nullObject);
 
-        parentAsset = null;
-        nullBean = null;
-        nullObject = new ConnectorTypeProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new ConnectorType();
-        nullObject = new ConnectorTypeProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new ConnectorType(null);
-        nullObject = new ConnectorTypeProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new ConnectorTypeProperties(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new ConnectorTypeProperties(nullTemplate);
-        validateNullObject(nullObject);
     }
 
 
@@ -260,7 +240,7 @@ public class TestConnectorTypeProperties
      */
     @Test public void testClone()
     {
-        validateResultObject(new ConnectorTypeProperties(null, getTestObject()));
+        validateResultObject(new ConnectorTypeProperties( getTestObject()));
     }
 
 

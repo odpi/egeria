@@ -29,6 +29,8 @@ public class ValidValuesMappingProperties implements Serializable
     private String associationDescription = null;
     private int    confidence             = 0;
     private String steward                = null;
+    private String stewardTypeName        = null;
+    private String stewardPropertyName    = null;
     private String notes                  = null;
 
 
@@ -52,6 +54,8 @@ public class ValidValuesMappingProperties implements Serializable
             associationDescription = template.getAssociationDescription();
             confidence             = template.getConfidence();
             steward                = template.getSteward();
+            stewardTypeName        = template.getStewardTypeName();
+            stewardPropertyName    = template.getStewardPropertyName();
             notes                  = template.getNotes();
         }
     }
@@ -113,7 +117,7 @@ public class ValidValuesMappingProperties implements Serializable
 
 
     /**
-     * Set up the the id of the steward responsible for the mapping.
+     * Set up the id of the steward responsible for the mapping.
      *
      * @param steward String id
      */
@@ -122,6 +126,50 @@ public class ValidValuesMappingProperties implements Serializable
         this.steward = steward;
     }
 
+
+
+    /**
+     * Return the type of element that describes the steward.
+     *
+     * @return type name
+     */
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+
+    /**
+     * Set up the type of element that describes the steward.
+     *
+     * @param stewardTypeName type name
+     */
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+
+    /**
+     * Return the name of the property that holds the steward's identifier.
+     *
+     * @return property name
+     */
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+
+    /**
+     * Set up the name of the property that holds the steward's identifier.
+     *
+     * @param stewardPropertyName property name
+     */
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
+    }
 
 
     /**
@@ -155,11 +203,13 @@ public class ValidValuesMappingProperties implements Serializable
     public String toString()
     {
         return "ValidValuesMappingProperties{" +
-                "associationDescription='" + associationDescription + '\'' +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+                       "associationDescription='" + associationDescription + '\'' +
+                       ", confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", stewardTypeName='" + stewardTypeName + '\'' +
+                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                       ", notes='" + notes + '\'' +
+                       '}';
     }
 
 
@@ -183,19 +233,21 @@ public class ValidValuesMappingProperties implements Serializable
         ValidValuesMappingProperties that = (ValidValuesMappingProperties) objectToCompare;
         return confidence == that.confidence &&
                 Objects.equals(associationDescription, that.associationDescription) &&
-                Objects.equals(steward, that.steward) &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                       Objects.equals(getStewardPropertyName(), that.stewardPropertyName) &&
                 Objects.equals(notes, that.notes);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(associationDescription, confidence, steward, notes);
+        return Objects.hash(associationDescription, confidence, steward, stewardTypeName, stewardPropertyName, notes);
     }
 }

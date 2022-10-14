@@ -507,7 +507,7 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      */
 
     /**
-     * Set up the configuration for all of the open metadata access services (OMASs).  This overrides
+     * Set up the configuration for all the open metadata access services (OMASs).  This overrides
      * the current values.
      *
      * @param accessServicesConfig - list of configuration properties for each access service.

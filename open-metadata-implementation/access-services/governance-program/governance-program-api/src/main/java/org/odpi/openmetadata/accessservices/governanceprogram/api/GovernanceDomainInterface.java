@@ -37,7 +37,6 @@ public interface GovernanceDomainInterface
      *     <li>Software Development - The software development lifecycle (SDLC) governance domain.</li>
      *     <li>Corporate - The corporate governance domain.</li>
      *     <li>Asset Management - The physical asset management governance domain.</li>
-     *     <li>Other - The governance domain is locally defined.</li>
      * </ul>
      *
      * @param userId calling user
@@ -234,8 +233,43 @@ public interface GovernanceDomainInterface
 
 
     /**
+     * Create a parent-child relationship between a governance domain set and a governance domain.
+     *
+     * @param userId calling user
+     * @param governanceDomainSetGUID unique identifier of the governance domain set
+     * @param governanceDomainGUID unique identifier of the governance domain
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addDomainToSet(String userId,
+                        String governanceDomainSetGUID,
+                        String governanceDomainGUID) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
+
+
+    /**
+     * Remove a parent-child relationship between a governance domain set and a governance domain.
+     *
+     * @param userId calling user
+     * @param governanceDomainSetGUID unique identifier of the governance domain set
+     * @param governanceDomainGUID unique identifier of the governance domain
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeDomainFromSet(String userId,
+                             String governanceDomainSetGUID,
+                             String governanceDomainGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
+
+
+    /**
      * Retrieve the list of Governance Domain metadata elements defined for the governance program.
-     * The search string is treated as a regular expression.
      *
      * @param userId calling user
      * @param startFrom paging start point

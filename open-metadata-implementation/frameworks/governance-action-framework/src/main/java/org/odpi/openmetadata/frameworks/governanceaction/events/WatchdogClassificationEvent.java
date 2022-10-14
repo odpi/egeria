@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 
 import java.util.Objects;
 
@@ -31,8 +31,8 @@ public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
 {
     private static final long      serialVersionUID = 1L;
 
-    private ElementClassification changedClassification = null;
-    private ElementClassification previousClassification = null;
+    private AttachedClassification changedClassification  = null;
+    private AttachedClassification previousClassification = null;
 
 
     /**
@@ -61,7 +61,7 @@ public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
      *
      * @return classification
      */
-    public ElementClassification getChangedClassification()
+    public AttachedClassification getChangedClassification()
     {
         return changedClassification;
     }
@@ -72,7 +72,7 @@ public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
      *
      * @param changedClassification classification
      */
-    public void setChangedClassification(ElementClassification changedClassification)
+    public void setChangedClassification(AttachedClassification changedClassification)
     {
         this.changedClassification = changedClassification;
     }
@@ -84,7 +84,7 @@ public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
      *
      * @return classification
      */
-    public ElementClassification getPreviousClassification()
+    public AttachedClassification getPreviousClassification()
     {
         return previousClassification;
     }
@@ -96,7 +96,7 @@ public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
      *
      * @param previousClassification classification
      */
-    public void setPreviousClassification(ElementClassification previousClassification)
+    public void setPreviousClassification(AttachedClassification previousClassification)
     {
         this.previousClassification = previousClassification;
     }

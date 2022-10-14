@@ -21,12 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContextDefinitionClassificationRequestBody implements Serializable
+public class ContextDefinitionClassificationRequestBody extends UpdateRequestBody
 {
     private static final long   serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private GlossaryTermContextDefinition contextDefinition             = null;
+    private GlossaryTermContextDefinition contextDefinition = null;
 
 
     /**
@@ -45,33 +44,12 @@ public class ContextDefinitionClassificationRequestBody implements Serializable
      */
     public ContextDefinitionClassificationRequestBody(ContextDefinitionClassificationRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             contextDefinition = template.getContextDefinition();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -106,8 +84,9 @@ public class ContextDefinitionClassificationRequestBody implements Serializable
     public String toString()
     {
         return "ContextDefinitionClassificationRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", contextDefinition=" + contextDefinition +
+                       "contextDefinition=" + contextDefinition +
+                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -129,20 +108,23 @@ public class ContextDefinitionClassificationRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ContextDefinitionClassificationRequestBody that = (ContextDefinitionClassificationRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getContextDefinition(), that.getContextDefinition());
+        return Objects.equals(contextDefinition, that.contextDefinition);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMetadataCorrelationProperties(), getContextDefinition());
+        return Objects.hash(super.hashCode(), contextDefinition);
     }
 }

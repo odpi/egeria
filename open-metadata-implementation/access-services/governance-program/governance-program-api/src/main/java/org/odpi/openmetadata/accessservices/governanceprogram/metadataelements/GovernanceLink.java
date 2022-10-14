@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -130,7 +131,7 @@ public class GovernanceLink extends ElementStub
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  * GovernanceRolesInterface covers the definition of governance roles and their appointments.
- *
  */
 public interface GovernanceRolesInterface
 {
@@ -55,78 +54,6 @@ public interface GovernanceRolesInterface
                               GovernanceRoleProperties properties) throws UserNotAuthorizedException,
                                                                           InvalidParameterException,
                                                                           PropertyServerException;
-
-
-    /**
-     * Link a governance role to a governance control that defines a governance responsibility that a person fulfils.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkRoleToResponsibility(String userId,
-                                  String governanceRoleGUID,
-                                  String responsibilityGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
-     * Remove the link between a governance role and a governance responsibility.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkRoleFromResponsibility(String userId,
-                                      String governanceRoleGUID,
-                                      String responsibilityGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
-
-
-    /**
-     * Link a governance role to the description of a resource that the role is responsible for.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkRoleToResource(String userId,
-                            String governanceRoleGUID,
-                            String resourceGUID) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
-
-
-    /**
-     * Remove the link between a governance role and a resource.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkRoleFromResource(String userId,
-                                String governanceRoleGUID,
-                                String resourceGUID) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
 
 
     /**
@@ -181,7 +108,7 @@ public interface GovernanceRolesInterface
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param userId calling user
@@ -200,7 +127,7 @@ public interface GovernanceRolesInterface
 
 
     /**
-     * Retrieve all of the governance roles for a particular governance domain.
+     * Retrieve all the governance roles for a particular governance domain.
      *
      * @param userId calling user
      * @param domainIdentifier identifier of domain - 0 means all
@@ -222,7 +149,7 @@ public interface GovernanceRolesInterface
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title identifier of role
@@ -243,7 +170,7 @@ public interface GovernanceRolesInterface
                                                                                   PropertyServerException;
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param userId the name of the calling user.
      * @param domainIdentifier identifier of domain - 0 means all

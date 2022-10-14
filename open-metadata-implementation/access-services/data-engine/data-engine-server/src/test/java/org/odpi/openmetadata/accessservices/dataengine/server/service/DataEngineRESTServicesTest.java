@@ -42,7 +42,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
@@ -809,8 +808,7 @@ class DataEngineRESTServicesTest {
     void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockRelationalDataHandler("upsertDatabase");
 
-        when(dataEngineRelationalDataHandler.upsertDatabase(USER, getDatabase(), false,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEngineRelationalDataHandler.upsertDatabase(USER, getDatabase(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         DatabaseRequestBody requestBody = mockDatabaseRequestBody();
 
@@ -840,25 +838,11 @@ class DataEngineRESTServicesTest {
         when(dataEngineCommonHandler.findEntity(USER, DATABASE_QUALIFIED_NAME, DATABASE_TYPE_NAME))
                 .thenReturn(Optional.of(mockedEntity));
 
-        when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, GUID, getDatabaseSchema(), false,
+        when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, GUID, getDatabaseSchema(),
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         DatabaseSchemaRequestBody requestBody = mockDatabaseSchemaRequestBody();
         requestBody.setDatabaseQualifiedName(DATABASE_QUALIFIED_NAME);
-
-        GUIDResponse response = dataEngineRESTServices.upsertDatabaseSchema(USER, SERVER_NAME, requestBody);
-        assertEquals(SCHEMA_GUID, response.getGUID());
-    }
-
-    @Test
-    void upsertDatabaseSchema_incomplete() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockRelationalDataHandler("upsertDatabaseSchema");
-
-        DatabaseSchemaRequestBody requestBody = mockDatabaseSchemaRequestBody();
-        requestBody.setIncomplete(true);
-
-        when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, null, requestBody.getDatabaseSchema(),
-                true, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         GUIDResponse response = dataEngineRESTServices.upsertDatabaseSchema(USER, SERVER_NAME, requestBody);
         assertEquals(SCHEMA_GUID, response.getGUID());
@@ -883,20 +867,7 @@ class DataEngineRESTServicesTest {
         requestBody.setDatabaseSchemaQualifiedName(QUALIFIED_NAME);
 
         when(dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, requestBody.getRelationalTable(),
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, false)).thenReturn(GUID);
-
-        GUIDResponse response = dataEngineRESTServices.upsertRelationalTable(USER, SERVER_NAME, requestBody);
-        assertEquals(GUID, response.getGUID());
-    }
-
-    @Test
-    void upsertRelationalTable_incomplete() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockRelationalDataHandler("upsertRelationalTable");
-        RelationalTableRequestBody requestBody = mockRelationalTableRequestBody();
-        requestBody.setIncomplete(true);
-
-        when(dataEngineRelationalDataHandler.upsertRelationalTable(USER, null, requestBody.getRelationalTable(),
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, true)).thenReturn(GUID);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         GUIDResponse response = dataEngineRESTServices.upsertRelationalTable(USER, SERVER_NAME, requestBody);
         assertEquals(GUID, response.getGUID());
@@ -925,7 +896,7 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME,
-                DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false, dataFileRequestBody.getDataFile().getSchema(),
+                DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
@@ -939,9 +910,8 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME,
-                CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false,
-                dataFileRequestBody.getDataFile().getSchema(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
+                CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+                getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
     @Test
@@ -1315,7 +1285,7 @@ class DataEngineRESTServicesTest {
 
     @Test
     void deleteTopic_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                     FunctionNotSupportedException {
+                                                FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
         mockTopicHandler("deleteTopic");
 
@@ -1326,12 +1296,12 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.deleteTopic(USER, SERVER_NAME, getDeleteRequestBody());
 
         verify(dataEngineTopicHandler, times(1)).removeTopic(USER,
-                GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,  DeleteSemantic.SOFT);
+                GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
     void deleteTopic_withGuid() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                            FunctionNotSupportedException {
+                                       FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
         mockTopicHandler("deleteTopic");
         DeleteRequestBody deleteRequestBody = getDeleteRequestBody();
@@ -1340,12 +1310,12 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.deleteTopic(USER, SERVER_NAME, deleteRequestBody);
 
         verify(dataEngineTopicHandler, times(1)).removeTopic(USER,
-                GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,  DeleteSemantic.SOFT);
+                GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
     void deleteEventType_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                FunctionNotSupportedException {
+                                                    FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
         mockEventTypeHandler("deleteEventType");
 
@@ -1356,12 +1326,12 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.deleteEventType(USER, SERVER_NAME, getDeleteRequestBody());
 
         verify(dataEngineEventTypeHandler, times(1)).removeEventType(USER,
-                GUID, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,  DeleteSemantic.SOFT);
+                GUID, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
     void deleteEventType_withGuid() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                       FunctionNotSupportedException {
+                                           FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
         mockEventTypeHandler("deleteEventType");
         DeleteRequestBody deleteRequestBody = getDeleteRequestBody();
@@ -1370,7 +1340,7 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.deleteEventType(USER, SERVER_NAME, deleteRequestBody);
 
         verify(dataEngineEventTypeHandler, times(1)).removeEventType(USER,
-                GUID, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,  DeleteSemantic.SOFT);
+                GUID, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     private DeleteRequestBody getDeleteRequestBody() {

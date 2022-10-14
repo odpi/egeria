@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Edge {
 
+    private String id;
     private String from;
     private String to;
     private String label;
@@ -16,10 +17,19 @@ public class Edge {
         this.to = to;
     }
 
-    public Edge(String from, String to, String label) {
+    public Edge(String id, String from, String to, String label) {
+        this.id = id;
         this.from = from;
         this.to = to;
         this.label = label;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFrom() {
@@ -59,18 +69,19 @@ public class Edge {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return Objects.equals(from, edge.from) && Objects.equals(to, edge.to) && Objects.equals(label, edge.label) && Objects.equals(type, edge.type);
+        return Objects.equals(id, edge.id) && Objects.equals(from, edge.from) && Objects.equals(to, edge.to) && Objects.equals(label, edge.label) && Objects.equals(type, edge.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(from, to, label, type);
+        return Objects.hash(id, from, to, label, type);
     }
 
     @Override
     public String toString() {
         return "Edge{" +
-                "from='" + from + '\'' +
+                "id='" + id + '\'' +
+                ", from='" + from + '\'' +
                 ", to='" + to + '\'' +
                 ", label='" + label + '\'' +
                 ", type='" + type + '\'' +

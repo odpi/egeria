@@ -79,11 +79,12 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param qualifiedName unique name for the governance domain - used in other configuration
      * @param displayName short display name for the governance domain
-     * @param description description of the governance governance domain
+     * @param description description of the  governance domain
      * @param domainIdentifier the domain identifier used in the governance domain definitions
      * @param additionalProperties additional properties for a governance domain
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a governance governance domain subtype
+     * @param extendedProperties  properties for a  governance domain subtype
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new governance domain object
@@ -99,6 +100,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveTime,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -138,9 +140,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -153,11 +154,11 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
      * @param governanceDomainGUIDParameterName parameter passing the governance domainGUID
      * @param qualifiedName unique name for the governance domain - used in other configuration
      * @param displayName short display name for the governance domain
-     * @param description description of the governance governance domain
+     * @param description description of the  governance domain
      * @param domainIdentifier the domain identifier used in the governance domain definitions
-     * @param additionalProperties additional properties for a governance governance domain
+     * @param additionalProperties additional properties for a  governance domain
      * @param suppliedTypeName type of governance domain
-     * @param extendedProperties  properties for a governance governance domain subtype
+     * @param extendedProperties  properties for a  governance domain subtype
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -296,7 +297,9 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              false,
+                              false,
+                              new Date(),
                               methodName);
     }
 
@@ -351,6 +354,60 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+    /**
+     * Return the keywords attached to a supplied entity.
+     *
+     * @param userId     calling user
+     * @param startingGUID identifier for the entity that the keyword is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getDomainsInSet(String       userId,
+                                    String       startingGUID,
+                                    String       startingGUIDParameterName,
+                                    int          startingFrom,
+                                    int          pageSize,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
+                                    String       methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
     /**
      * Retrieve the governance domain metadata element with the supplied unique identifier.
      *
@@ -378,8 +435,42 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
                                           false,
                                           false,
-                                          null,
+                                          new Date(),
                                           methodName);
 
+    }
+
+
+
+    /**
+     * Retrieve the governance domain metadata element with the supplied unique domainIdentifier.
+     *
+     * @param userId calling user
+     * @param domainIdentifier identifier used to identify the domain
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getGovernanceDomainByDomainIdentifier(String userId,
+                                                   int    domainIdentifier,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return this.getBeanByUniqueName(userId,
+                                        "GovernanceDomain:" + domainIdentifier,
+                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        false,
+                                        false,
+                                        supportedZones,
+                                        new Date(),
+                                        methodName);
     }
 }

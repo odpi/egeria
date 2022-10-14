@@ -17,7 +17,7 @@ public interface OMRSConnectorManager
      *
      * @param connectorConsumer OMRSConnectorConsumer interested in details of the connectors to
      *                           all repositories registered in the metadata repository cluster.
-     * @return String identifier for the connectorConsumer used for the unregister call.
+     * @return String identifier for the connectorConsumer used for the call to unregister().
      */
     String registerConnectorConsumer(OMRSConnectorConsumer    connectorConsumer);
 

@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 public interface OMRSTopic
 {
     /**
-     * Setup the version of the protocol to use for events.
+     * Set up the version of the protocol to use for events.
      *
      * @param eventProtocolVersion version enum
      */
@@ -23,7 +23,7 @@ public interface OMRSTopic
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param newListener object implementing the OMRSTopicListener interface
@@ -33,7 +33,7 @@ public interface OMRSTopic
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param newListener object implementing the OMRSTopicListener interface
@@ -45,7 +45,7 @@ public interface OMRSTopic
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events
+     * Register a listener object.  This object will be supplied with all the events
      * received on the topic.
      *
      * @param newListener object implementing the OMRSTopicRepositoryEventListener interface

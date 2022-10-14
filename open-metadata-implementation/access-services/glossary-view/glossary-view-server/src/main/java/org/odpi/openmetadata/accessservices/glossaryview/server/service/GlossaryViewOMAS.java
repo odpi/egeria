@@ -123,7 +123,6 @@ public class GlossaryViewOMAS extends OMRSClient {
      * @param serverName instance to call
      * @param entityGUID target entity
      * @param entityTypeName target entity relationship type
-     * @param anchorAtEnd1 which end should the target entity be at
      * @param relationshipTypeName relationship type name
      * @param from offset start for the return values
      * @param size maximum number of results
@@ -133,7 +132,6 @@ public class GlossaryViewOMAS extends OMRSClient {
      */
     protected GlossaryViewEntityDetailResponse getSubEntitiesResponse(String userId, String serverName, String entityGUID,
                                                                       String entityTypeName,
-                                                                      boolean anchorAtEnd1,
                                                                       String relationshipTypeName,
                                                                       Integer from, Integer size, String methodName){
         GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
@@ -141,7 +139,7 @@ public class GlossaryViewOMAS extends OMRSClient {
         try {
             String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName, userId, serverName);
             List<EntityDetail> entities = getSubEntities(userId, serverName, entityGUID, entityTypeName,
-                                                         anchorAtEnd1, relationshipTypeGUID, relationshipTypeName, from, size, methodName);
+                    relationshipTypeGUID, relationshipTypeName, from, size, methodName);
             if (entities == null) {
                 return response;
             }
@@ -176,7 +174,8 @@ public class GlossaryViewOMAS extends OMRSClient {
 
         try {
             String entityTypeGUID = getTypeDefGUID(entityTypeName, userId, serverName);
-            List<EntityDetail> entities = getAllEntityDetails(userId, serverName, entityTypeGUID, from, size, methodName);
+            List<EntityDetail> entities = getAllEntityDetails(userId, serverName, entityTypeName, entityTypeGUID, from,
+                    size, methodName);
             if (entities == null) {
                 return response;
             }

@@ -18,11 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,7 +35,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String DEFAULT_FILENAME_TEMPLATE    = "./data/servers/" +INSERT_FOR_FILENAME_TEMPLATE + "/config/" +INSERT_FOR_FILENAME_TEMPLATE + ".config";
+    private static final String DEFAULT_FILENAME_TEMPLATE    = "./data/servers/" + INSERT_FOR_FILENAME_TEMPLATE + "/config/" + INSERT_FOR_FILENAME_TEMPLATE + ".config";
 
 
     /*
@@ -75,6 +72,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         configStoreName = super.getStoreName(configStoreTemplateName, serverName);
     }
 
+
     /**
      * Get the store template name
      * @return the store template name
@@ -94,7 +92,6 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         }
         return configStoreTemplateName;
     }
-
 
 
     /**
@@ -184,12 +181,17 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      * @return the set of server configurations present in this OMAG Server Config store
      */
     @Override
-    public Set<OMAGServerConfig> retrieveAllServerConfigs() {
+    public Set<OMAGServerConfig> retrieveAllServerConfigs()
+    {
         final String methodName = "retrieveAllServerConfigs";
+
         Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
         String templateString = getStoreTemplateName();
+
         Set<String> fileNames = getFileNames(templateString, methodName);
-        for (String fileName : fileNames) {
+
+        for (String fileName : fileNames)
+        {
             configStoreName = fileName;
             OMAGServerConfig config = retrieveServerConfig();
             omagServerConfigSet.add(config);
@@ -198,16 +200,20 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         return omagServerConfigSet;
     }
 
+
     /**
      * Get filenames from the file system that match the store template.
      * Only supports 1 or 2 inserts in the template and they need to be in different url segments.
      * When a file is matched on the file system, the match for the insert is the serverName.
      *
+     * @param templateString string that defines the shape of the file name
      * @param methodName callers name for diagnostics
-     * @return set of filenames fro the file System that match the template
+     * @return set of filenames from the file System that match the template
      */
-    protected Set<String> getFileNames(String templateString, String methodName) {
-        if (!isTemplateValid(templateString)) {
+    protected Set<String> getFileNames(String templateString, String methodName)
+    {
+        if (!isTemplateValid(templateString))
+        {
             // bad template supplied - error
             throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
                                           this.getClass().getName(),
@@ -218,16 +224,21 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
         int firstIndex = templateString.indexOf(INSERT_FOR_FILENAME_TEMPLATE);
         int secondIndex = -1;
-        if (firstIndex != -1 && templateString.length() > firstIndex + 3) {
+        if (firstIndex != -1 && templateString.length() > firstIndex + 3)
+        {
             String textAfter1stIndex = templateString.substring(firstIndex + 3);
             secondIndex = textAfter1stIndex.indexOf(INSERT_FOR_FILENAME_TEMPLATE);
         }
-        if (log.isDebugEnabled()) {
+
+        if (log.isDebugEnabled())
+        {
             log.debug("templateString " + templateString +",firstIndex="+ firstIndex+",secondIndex="+ secondIndex);
         }
 
-        try {
-            if (firstIndex != -1 && secondIndex == -1) {
+        try
+        {
+            if (firstIndex != -1 && secondIndex == -1)
+            {
                 // only one insert
                 String firstPartOfTemplate = templateString.substring(0, firstIndex);
                 String secondPartOfTemplate = templateString.substring(firstIndex + 3);
@@ -238,7 +249,9 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
                 int lastSlashIndex = firstPartOfTemplate.lastIndexOf('/');
                 //      look for the next slash
                 int nextSlashIndex = -1;
-                if (templateString.length() > lastSlashIndex+1) {
+
+                if (templateString.length() > lastSlashIndex+1)
+                {
                     nextSlashIndex = templateString.substring(lastSlashIndex + 1).indexOf("/");
 
                 }
@@ -246,29 +259,38 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
                 Stream<Path> listOfFolders = Files.list(Paths.get(firstPartOfTemplate.substring(0, lastSlashIndex+1)));
                 String pre = templateString.substring(0, firstIndex);
 
-                if (nextSlashIndex == -1) {
+                if (nextSlashIndex == -1)
+                {
                     // get its contents then pattern match the content before and after the insert in the file name
                     String post = templateString.substring(firstIndex + 3);
                     fileNames = listOfFolders.map(x -> x.toString())
                             .filter(f -> doesStringStartAndEndMatch(f, pre, post)).collect(Collectors.toSet());
-                } else {
+                }
+                else
+                {
                     // amend  next slash index to be from the start of the template string.
                     nextSlashIndex = lastSlashIndex+nextSlashIndex+1;
+
                     // we are looking for folders
                     String restOfFolderName = templateString.substring(firstIndex + 3, nextSlashIndex);
                     Set<String> folderNames = listOfFolders.map(x -> x.toString())
                             .filter(f -> doesStringStartAndEndMatch(f, pre, restOfFolderName)).collect(Collectors.toSet());
+
                     // remove post and add secondPartOfTemplate then we have the matching filenames
-                    for (String folderName : folderNames) {
+                    for (String folderName : folderNames)
+                    {
                         String fileName = folderName.substring(0, folderName.length() - restOfFolderName.length()) + secondPartOfTemplate;
 
                         File f =  new File(fileName);
-                        if (f.exists() && !f.isDirectory()) {
+                        if (f.exists() && !f.isDirectory())
+                        {
                             fileNames.add(fileName);
                         }
                     }
                 }
-            } else {
+            }
+            else
+            {
                 secondIndex = firstIndex + 3 + secondIndex;
                 // 2 inserts - the first must be a folder name. hopefully the file name is not pathological with 2 inserts in the same segment.
                 String firstPartOfTemplate = templateString.substring(0, firstIndex);
@@ -281,15 +303,19 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
                 int lastSlashIndex = firstPartOfTemplate.lastIndexOf('/');
                 //      look for the next slash
                 int nextSlashIndex = -1;
-                if (templateString.length() > lastSlashIndex+1) {
+
+                if (templateString.length() > lastSlashIndex+1)
+                {
                     nextSlashIndex = templateString.substring(lastSlashIndex + 1).indexOf("/");
                     nextSlashIndex = nextSlashIndex + lastSlashIndex + 1;
                 }
+
                 Stream<Path> listOfFolders = Files.list(Paths.get(templateString.substring(0, lastSlashIndex )));
 
                 String pre = templateString.substring(0, firstIndex);
                 String restOfFolderName = "";
-                if (nextSlashIndex > firstIndex) {
+                if (nextSlashIndex > firstIndex)
+                {
                     restOfFolderName = templateString.substring(firstIndex + 3, nextSlashIndex);
                 }
 
@@ -297,7 +323,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
                 int postLength = post.length();
                 Set<String> matchedFolderNames = listOfFolders.map(x -> x.toString())
                         .filter(f -> doesStringStartAndEndMatch(f, pre, post)).collect(Collectors.toSet());
-                // for each folder name we need to amend to bring the folder name up to the the file name.
+                // for each folder name we need to amend to bring the folder name up to  the file name.
                 // find the last / in the whole string and see if it is further in that the folder we have just matched, if so there are
                 // folder(s) we need to add to the folder Names we have matched
 
@@ -305,38 +331,54 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
                 // extract the serverName from the matchedFolderName
                 Set<String> serverNames = new HashSet<>();
 
-                if (lastSlashIndexFromWholeTemplate >= nextSlashIndex) {
-                    for (String matchedFolderName : matchedFolderNames) {
+                if (lastSlashIndexFromWholeTemplate >= nextSlashIndex)
+                {
+                    for (String matchedFolderName : matchedFolderNames)
+                    {
                         String serverName = matchedFolderName.substring(firstIndex , matchedFolderName.length() - postLength);
-                        if (log.isDebugEnabled()) {
+
+                        if (log.isDebugEnabled())
+                        {
                             log.debug("serverName " + serverName);
                         }
                         serverNames.add(serverName);
                     }
                 }
 
-                for (String serverName : serverNames) {
+                for (String serverName : serverNames)
+                {
                     String fileName = firstPartOfTemplate + serverName + secondPartOfTemplate + serverName + thirdPartOfTemplate;
-                    if (log.isDebugEnabled()) {
+
+                    if (log.isDebugEnabled())
+                    {
                         log.debug("getFileNames with 2 inserts testing fileName " + fileName );
                     }
+
                     File f =  new File(fileName);
-                    if (log.isDebugEnabled()) {
+                    if (log.isDebugEnabled())
+                    {
                         log.debug("see if fileName " + fileName + " exists" );
                     }
-                    if (f.exists() && !f.isDirectory()) {
-                        if (log.isDebugEnabled()) {
+
+                    if (f.exists() && !f.isDirectory())
+                    {
+                        if (log.isDebugEnabled())
+                        {
                             log.debug("fileName " + fileName + " exists");
                         }
+
                         fileNames.add(fileName);
                     }
                 }
             }
-        } catch (IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
-                                          this.getClass().getName(),
-                                          methodName, e);
         }
+        catch (IOException error)
+        {
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(error.getClass().getName(), error.getMessage(), configStoreName),
+                                          this.getClass().getName(),
+                                          methodName, error);
+        }
+
         return fileNames;
     }
 

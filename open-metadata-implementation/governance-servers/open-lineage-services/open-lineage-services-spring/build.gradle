@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-server')
     implementation 'io.swagger.core.v3:swagger-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

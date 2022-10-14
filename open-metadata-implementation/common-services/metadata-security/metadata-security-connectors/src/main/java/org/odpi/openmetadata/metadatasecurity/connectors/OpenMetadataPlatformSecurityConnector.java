@@ -71,7 +71,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
 
 
     /**
-     * Set up the the URL Root for the platform where this is running.
+     * Set up the URL Root for the platform where this is running.
      *
      * @param serverURLRoot url root
      */

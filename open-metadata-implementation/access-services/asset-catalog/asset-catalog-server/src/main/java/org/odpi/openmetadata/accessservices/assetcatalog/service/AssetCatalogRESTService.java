@@ -225,6 +225,92 @@ public class AssetCatalogRESTService {
     }
 
     /**
+     * Return a list of assets/glossary terms/schema elements matching the type name without the full context.
+     * If the typeName is null or doesn't exist, the response contains an empty list.
+     * The list includes also subtypes.
+     *
+     * @param serverName       unique identifier for requested server
+     * @param userId           the unique identifier for the user
+     * @param typeName         the assets type name to search for
+     * @return                 list of assets by type name or GUID
+     */
+    public AssetListResponse searchByTypeName(String serverName,
+                                          String userId,
+                                          String typeName) {
+        String methodName = "searchByTypeName";
+        log.debug(CALLING_METHOD, methodName);
+
+        AssetListResponse response = new AssetListResponse();
+
+        try {
+            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
+            response.setElementsList(assetCatalogHandler.searchByTypeName(userId, typeName));
+        } catch (UserNotAuthorizedException
+                | PagingErrorException
+                | TypeErrorException
+                | PropertyErrorException
+                | RepositoryErrorException
+                | InvalidParameterException
+                | FunctionNotSupportedException
+                | EntityNotKnownException e) {
+            exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+
+        log.debug(METHOD_WITH_RESPONSE, methodName, response);
+
+        return response;
+    }
+
+    /**
+     * Return a list of assets/glossary terms/schema elements matching the type GUID without the full context.
+     * If the typeGUID is null or doesn't exist, the response contains an empty list.
+     * The list includes also subtypes.
+     *
+     * @param serverName       unique identifier for requested server
+     * @param userId           the unique identifier for the user
+     * @param typeGUID         the assets type GUID to search for
+     * @return                 list of assets by type name or GUID
+     */
+    public AssetListResponse searchByTypeGUID(String serverName,
+                                              String userId,
+                                              String typeGUID) {
+        String methodName = "searchByTypeGUID";
+        log.debug(CALLING_METHOD, methodName);
+
+        AssetListResponse response = new AssetListResponse();
+
+        try {
+            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
+            response.setElementsList(assetCatalogHandler.searchByTypeGUID(userId, typeGUID));
+        } catch (UserNotAuthorizedException
+                | PagingErrorException
+                | TypeErrorException
+                | PropertyErrorException
+                | RepositoryErrorException
+                | InvalidParameterException
+                | FunctionNotSupportedException
+                | EntityNotKnownException e) {
+            exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+
+        log.debug(METHOD_WITH_RESPONSE, methodName, response);
+
+        return response;
+    }
+
+    /**
      * Return the full context of an asset/glossary term based on its identifier.
      * The response contains the list of the connections assigned to the asset.
      *

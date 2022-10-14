@@ -35,7 +35,7 @@ public class ValidValueMappingConverter<B> extends ValidValueConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -74,6 +74,8 @@ public class ValidValueMappingConverter<B> extends ValidValueConverter<B>
                     bean.setAssociationDescription(this.getAssociationDescription(instanceProperties));
                     bean.setConfidence(this.getConfidence(instanceProperties));
                     bean.setSteward(this.getSteward(instanceProperties));
+                    bean.setStewardTypeName(this.getStewardTypeName(instanceProperties));
+                    bean.setStewardPropertyName(this.getStewardPropertyName(instanceProperties));
                     bean.setNotes(this.getNotes(instanceProperties));
                 }
                 else

@@ -46,7 +46,7 @@ public class Process extends Asset {
      * Return the description of the processing performed by this process.
      * @return string description
      * -- SETTER --
-     * Set up the the description of the processing performed by this process.
+     * Set up the description of the processing performed by this process.
      * @param formula string description
      */
     private String formula;

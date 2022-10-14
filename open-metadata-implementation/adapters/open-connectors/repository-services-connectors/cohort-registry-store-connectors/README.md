@@ -5,11 +5,11 @@
 # Cohort Registry Store Connectors
 
 The cohort registry store connectors are connectors that store the
-[open metadata repository cohort](../../../../repository-services/docs/open-metadata-repository-cohort.md)
-membership details used and maintained by the [cohort registry](../../../../repository-services/docs/component-descriptions/cohort-registry.md).
+[open metadata repository cohort](https://egeria-project.org/concepts/cohort-member)
+membership details used and maintained by the [cohort registry](https://egeria-project.org/concepts/cohort-registry).
 The cohort protocols are peer-to-peer and hence there is a cohort registry
-(with a [cohort registry store](../../../../repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md))
-for each [member of a cohort](../../../../admin-services/docs/concepts/cohort-member.md).
+(with a [cohort registry store](https://egeria-project.org/concepts/cohort-registry-store-connector))
+for each [member of a cohort](https://egeria-project.org/concepts/cohort-member).
 
 Egeria provides a single implementation of a
 cohort registry store connector:

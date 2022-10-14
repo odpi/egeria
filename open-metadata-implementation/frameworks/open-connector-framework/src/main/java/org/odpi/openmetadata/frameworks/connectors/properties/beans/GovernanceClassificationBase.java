@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Objects;
 
@@ -18,16 +20,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceClassificationBase extends ElementHeader
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ConfidenceGovernanceClassification.class, name = "ConfidenceGovernanceClassification"),
+                @JsonSubTypes.Type(value = ConfidentialityGovernanceClassification.class, name = "ConfidentialityGovernanceClassification"),
+                @JsonSubTypes.Type(value = CriticalityGovernanceClassification.class, name = "CriticalityGovernanceClassification"),
+                @JsonSubTypes.Type(value = RetentionGovernanceClassification.class, name = "RetentionGovernanceClassification"),
+        })
+public class GovernanceClassificationBase extends ElementClassificationHeader
 {
     private static final long     serialVersionUID = 1L;
 
-    private GovernanceClassificationStatus status          = null;
-    private int                            confidence      = 0;
-    private String                         steward         = null;
-    private String                         source          = null;
-    private String                         notes           = null;
-    private int                            levelIdentifier = 0;
+    private int    governanceStatus    = 0;
+    private int    confidence          = 0;
+    private String steward             = null;
+    private String stewardTypeName     = null;
+    private String stewardPropertyName = null;
+    private String source              = null;
+    private String notes               = null;
+    private int    levelIdentifier     = 0;
 
 
     /**
@@ -50,11 +64,14 @@ public class GovernanceClassificationBase extends ElementHeader
 
         if (template != null)
         {
-            status     = template.getStatus();
+            governanceStatus = template.getGovernanceStatus();
             confidence = template.getConfidence();
-            steward    = template.getSteward();
-            source     = template.getSource();
-            notes      = template.getNotes();
+            steward = template.getSteward();
+            stewardTypeName = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            source = template.getSource();
+            notes = template.getNotes();
+            levelIdentifier = template.getLevelIdentifier();
         }
     }
 
@@ -62,22 +79,22 @@ public class GovernanceClassificationBase extends ElementHeader
     /**
      * Return the status of this classification.
      *
-     * @return enum
+     * @return status identifier
      */
-    public GovernanceClassificationStatus getStatus()
+    public int getGovernanceStatus()
     {
-        return status;
+        return governanceStatus;
     }
 
 
     /**
      * Set up the status of the classification.
      *
-     * @param status enum
+     * @param governanceStatus enum
      */
-    public void setStatus(GovernanceClassificationStatus status)
+    public void setGovernanceStatus(int governanceStatus)
     {
-        this.status = status;
+        this.governanceStatus = governanceStatus;
     }
 
 
@@ -122,6 +139,50 @@ public class GovernanceClassificationBase extends ElementHeader
     public void setSteward(String steward)
     {
         this.steward = steward;
+    }
+
+
+    /**
+     * Return the type name of the element representing the steward.
+     *
+     * @return string name
+     */
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+
+    /**
+     * Set up the type name of the element representing the steward.
+     *
+     * @param stewardTypeName string name
+     */
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+
+    /**
+     * Return the name of the property identifying the steward.
+     *
+     * @return string name
+     */
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+
+    /**
+     * Set up the name of the property identifying the steward.
+     *
+     * @param stewardPropertyName string name
+     */
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
     }
 
 
@@ -201,18 +262,23 @@ public class GovernanceClassificationBase extends ElementHeader
     public String toString()
     {
         return "GovernanceClassificationBase{" +
-                "status=" + status +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", source='" + source + '\'' +
-                ", notes='" + notes + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", governanceStatus=" + governanceStatus +
+                       ", confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", steward='" + steward + '\'' +
+                       ", stewardTypeName='" + stewardTypeName + '\'' +
+                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                       ", source='" + source + '\'' +
+                       ", notes='" + notes + '\'' +
+                       ", levelIdentifier=" + levelIdentifier +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -239,8 +305,10 @@ public class GovernanceClassificationBase extends ElementHeader
         }
         GovernanceClassificationBase that = (GovernanceClassificationBase) objectToCompare;
         return confidence == that.confidence &&
-                status == that.status &&
-                Objects.equals(steward, that.steward) &&
+                governanceStatus == that.governanceStatus &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
                 Objects.equals(source, that.source) &&
                 Objects.equals(notes, that.notes);
     }
@@ -254,6 +322,6 @@ public class GovernanceClassificationBase extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), status, confidence, steward, source, notes);
+        return Objects.hash(super.hashCode(), governanceStatus, confidence, steward, stewardTypeName, stewardPropertyName, source, notes);
     }
 }

@@ -4,19 +4,18 @@
 # Discovery server
 
 The discovery server is the server environment that hosts one or more
-[discovery engines](discovery-engine.md).
+[discovery engines](https://egeria-project.org/concepts/open-discovery-engine).
 
 In Egeria, the discovery server is implemented by the
 [Asset Analysis](../../../engine-services/asset-analysis) running in the
-[Engine Host](../../../admin-services/docs/concepts/engine-host.md) OMAG Server.
+[Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
 
 
 ## Further information
 
- * The [Discovery Engine OMAS](../../../access-services/discovery-engine)
+ * The [Discovery Engine OMAS](https://egeria-project.org/services/omas/discovery-engine/overview)
    provides the metadata service for the discovery server.  It runs in
-   either a [Metadata Access Point](../../../admin-services/docs/concepts/metadata-access-point.md)
-   or a [Metadata Server](../../../admin-services/docs/concepts/metadata-server.md)
+   a [Metadata Access Server](https://egeria-project.org/concepts/metadata-access-server).
    Many discovery servers can use the same metadata server.
 
 

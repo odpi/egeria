@@ -31,8 +31,9 @@ public class AssetProperties extends ConfigurationItemProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String displayName = null;
-    private String description = null;
+    private String name              = null;
+    private String versionIdentifier = null;
+    private String description       = null;
 
 
     /**
@@ -54,7 +55,8 @@ public class AssetProperties extends ConfigurationItemProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
+            name = template.getName();
+            versionIdentifier = template.getVersionIdentifier();
             description = template.getDescription();
         }
     }
@@ -86,21 +88,44 @@ public class AssetProperties extends ConfigurationItemProperties
      *
      * @return String name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
      * Set up the stored display name property for the asset.
      *
-     * @param displayName String name
+     * @param name String name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
     }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
 
 
     /**
@@ -135,7 +160,8 @@ public class AssetProperties extends ConfigurationItemProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "displayName='" + displayName + '\'' +
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", description='" + description + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -161,29 +187,37 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        AssetProperties asset = (AssetProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getDescription(), asset.getDescription());
+
+        AssetProperties that = (AssetProperties) objectToCompare;
+
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
 
-
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
+        return Objects.hash(super.hashCode(), getName(), getVersionIdentifier(), getDescription());
     }
 }

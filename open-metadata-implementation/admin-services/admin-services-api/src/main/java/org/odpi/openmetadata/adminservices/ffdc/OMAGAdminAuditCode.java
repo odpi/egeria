@@ -56,7 +56,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                           OMRSAuditLogRecordSeverity.STARTUP,
                           "The {0} server has successfully completed start up.  The following services are running: {1}",
                           "The request to start the server returns with a list of the services that were started.",
-                          "Review the start up messages to ensure that all of the correct services have been started and the " +
+                          "Review the start up messages to ensure that all the correct services have been started and the " +
                                    "are operating without errors."),
 
     SERVER_SHUTDOWN_STARTED("OMAG-ADMIN-0005",
@@ -65,14 +65,14 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                            "The request to stop the server has been issued, either through an explicit command, or because the" +
                                     "OMAG Server Platform is shutting down.  The operational admin services will sequentially shutdown " +
                                     "each of the server's running subsystems.",
-                           "Review the shutdown messages to ensure that all of the services are shutting down without errors."),
+                           "Review the shutdown messages to ensure that all the services are shutting down without errors."),
 
     SERVER_SHUTDOWN_SUCCESS("OMAG-ADMIN-0006",
                            OMRSAuditLogRecordSeverity.SHUTDOWN,
                            "The {0} server has completed shutdown",
                            "The request to shutdown the server has completed.  No REST API calls nor events will be " +
                                     "processed by this server until it is restarted.",
-                           "Review the shutdown messages to ensure that all of the subsystems have successfully released the" +
+                           "Review the shutdown messages to ensure that all the subsystems have successfully released the" +
                                     "resources that they were using."),
 
     SERVER_SHUTDOWN_ERROR("OMAG-ADMIN-0007",
@@ -80,7 +80,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                             "The {0} server has detected an {1} exception during server shutdown.  The error message was {2}",
                             "The request to shutdown the server has failed with an exception.  The server is in an " +
                                   "undetermined state.",
-                            "Review the shutdown messages to ensure that all of the subsystems have successfully released the" +
+                            "Review the shutdown messages to ensure that all the subsystems have successfully released the" +
                                     "resources that they were using.  Restart the server whenever its services are needed again."),
 
     STARTING_ACCESS_SERVICES("OMAG-ADMIN-0010",
@@ -107,13 +107,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     ALL_ACCESS_SERVICES_STARTED("OMAG-ADMIN-0012",
             OMRSAuditLogRecordSeverity.STARTUP,
             "{0} out of {1} configured Open Metadata Access Services (OMASs) have started.",
-            "The operational admin services have completed the initialization of all of the access service subsystems " +
+            "The operational admin services have completed the initialization of all the access service subsystems " +
                     "enabled in the metadata server.  They are ready for use.  An access services is configured by adding " +
                     "its configuration to the server's configuration document.  By default a newly configured access " +
                     "service is also ENABLED. A configured access service may be temporarily disabled in the configuration" +
                     "document.  In which case the start up sequence skips it and the number of started access services" +
                     "is less than the number of configured access services.",
-            "Review the start up messages to ensure that all of the correct access services have been started " +
+            "Review the start up messages to ensure that all the correct access services have been started " +
                     "and they are operating without errors."),
 
     STOPPING_ACCESS_SERVICES("OMAG-ADMIN-0013",
@@ -189,13 +189,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     ALL_VIEW_SERVICES_STARTED("OMAG-ADMIN-0022",
             OMRSAuditLogRecordSeverity.STARTUP,
             "{0} out of {1} configured Open Metadata View Services (OMVSs) have started.",
-            "The operational admin services have completed the initialization of all of the view service subsystems " +
+            "The operational admin services have completed the initialization of all the view service subsystems " +
                     "enabled in the view server.  They are ready for use.  An view service is configured by adding " +
                     "its configuration to the server's configuration document.  By default a newly configured view " +
                     "service is also ENABLED. A configured view service may be temporarily disabled in the configuration" +
                     "document.  In which case the start up sequence skips it and the number of started view services" +
                     "is less than the number of configured view services.",
-            "Review the start up messages to ensure that all of the correct view services have been started " +
+            "Review the start up messages to ensure that all the correct view services have been started " +
                     "and they are operating without errors."),
 
     STOPPING_VIEW_SERVICES("OMAG-ADMIN-0023",
@@ -272,13 +272,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     ALL_ENGINE_SERVICES_STARTED("OMAG-ADMIN-0042",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "{0} out of {1} configured Open Metadata Engine Services (OMESs) have started.",
-                              "The operational admin services have completed the initialization of all of the engine service subsystems " +
+                              "The operational admin services have completed the initialization of all the engine service subsystems " +
                                       "enabled in the engine host server.  They are ready for use.  An engine service is configured by adding " +
                                       "its configuration to the server's configuration document.  By default a newly configured engine " +
                                       "service is also ENABLED. A configured engine service may be temporarily disabled in the configuration" +
                                       "document.  In which case the start up sequence skips it and the number of started engine services" +
                                       "is less than the number of configured engine services.",
-                              "Review the start up messages to ensure that all of the correct engine services have been started " +
+                              "Review the start up messages to ensure that all the correct engine services have been started " +
                                       "and they are operating without errors."),
 
     STOPPING_ENGINE_SERVICES("OMAG-ADMIN-0043",

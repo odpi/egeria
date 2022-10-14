@@ -8,8 +8,8 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.Eleme
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureOutTopicEvent;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -20,11 +20,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class DigitalArchitectureOutTopicPublisher
 {
-    private DigitalArchitectureOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                                   outTopicAuditLog;
-    private String                                     outTopicName;
-    private ElementHeaderConverter<ElementHeader>      headerConverter;
-    private OMRSRepositoryHelper                       repositoryHelper;
+    private final DigitalArchitectureOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                                   outTopicAuditLog;
+    private final String                                     outTopicName;
+    private final ElementHeaderConverter<ElementHeader>      headerConverter;
+    private final OMRSRepositoryHelper                       repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

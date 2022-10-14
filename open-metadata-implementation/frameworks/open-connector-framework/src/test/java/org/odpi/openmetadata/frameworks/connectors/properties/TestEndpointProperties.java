@@ -25,7 +25,7 @@ public class TestEndpointProperties
      */
     public TestEndpointProperties()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
     }
 
 
@@ -117,10 +117,10 @@ public class TestEndpointProperties
      */
     private void validateResultObject(EndpointProperties  resultObject)
     {
-        assertTrue(resultObject.getType().getElementTypeBean().equals(type));
+        assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getAssetClassifications() == null);
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -143,7 +143,7 @@ public class TestEndpointProperties
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getAssetClassifications() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
@@ -176,27 +176,6 @@ public class TestEndpointProperties
 
         nullBean = new Endpoint(null);
         nullObject = new EndpointProperties(nullBean);
-        validateNullObject(nullObject);
-
-        parentAsset = null;
-        nullBean = null;
-        nullObject = new EndpointProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new Endpoint();
-        nullObject = new EndpointProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new Endpoint(null);
-        nullObject = new EndpointProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new EndpointProperties(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new EndpointProperties(nullTemplate);
         validateNullObject(nullObject);
     }
 
@@ -233,7 +212,7 @@ public class TestEndpointProperties
      */
     @Test public void testClone()
     {
-        validateResultObject(new EndpointProperties(null, getTestObject()));
+        validateResultObject(new EndpointProperties( getTestObject()));
     }
 
 

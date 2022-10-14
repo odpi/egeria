@@ -16,7 +16,7 @@ The actual tests are run by an **open metadata conformance workbench** within th
 Each workbench focuses on testing a specific type of technology.
 Today there are 2 workbenches:
 * **[Platform Workbench](platform-workbench)** - which tests the REST API of an
-[Open Metadata and Governance (OMAG) Server Platform](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md)
+[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform)
 
 * **[Repository Workbench](repository-workbench)** - which tests both the repository services 
 [REST API](../../open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md)
@@ -34,7 +34,7 @@ The requested workbenches will begin to execute their tests as soon as the OMAG 
 
 For example, to run a metadata repository through the Repository Workbench, first configure a CTS
 server in the OMAG Server Platform by [configuring its general properties like server type, event bus, cohort,
-etc](../../open-metadata-implementation/admin-services/docs/user/README.md).  Before starting the CTS server instance,
+etc](https://egeria-project.org/guides/admin/servers).  Before starting the CTS server instance,
 configure the repository workbench within it by POSTing to:
 
 ```

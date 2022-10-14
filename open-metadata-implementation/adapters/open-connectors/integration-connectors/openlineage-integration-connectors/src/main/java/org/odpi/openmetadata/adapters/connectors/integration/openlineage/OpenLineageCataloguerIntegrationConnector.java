@@ -133,7 +133,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                     {
                         String qualifiedName = "OpenLineageJob:" + job.getName();
 
-                        List<ProcessElement> existingProcesses = myContext.getProcessesByName(qualifiedName, 0, 0);
+                        List<ProcessElement> existingProcesses = myContext.getProcessesByName(qualifiedName, 0, 0, null);
 
                         if ((existingProcesses == null) || (existingProcesses.isEmpty()))
                         {
@@ -153,7 +153,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                             processProperties.setQualifiedName(qualifiedName);
 
                             processGUID = myContext.createProcess(false, ProcessStatus.ACTIVE, processProperties);
-                            myContext.publishProcess(processGUID);
+                            myContext.publishProcess(processGUID, null);
                         }
                         else if (existingProcesses.size() == 1)
                         {
@@ -173,7 +173,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                                         processProperties.setDescription(documentation.getDescription());
 
-                                        myContext.updateProcess(processGUID, true, processProperties);
+                                        myContext.updateProcess(processGUID, true, processProperties, null);
                                     }
                                 }
                             }
@@ -199,7 +199,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                             {
                                 parentProcessName = parentJob.getName();
 
-                                List<ProcessElement> existingProcesses = myContext.getProcessesByName(parentProcessName, 0 , 0);
+                                List<ProcessElement> existingProcesses = myContext.getProcessesByName(parentProcessName, 0 , 0, null);
 
 
                             }

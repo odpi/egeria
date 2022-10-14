@@ -75,11 +75,14 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Creates a new keyword and returns the unique identifier for it.
      *
      * @param userId           userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param keywordName          name of the keyword.
      * @param keywordDescription  (optional) description of the keyword.  Setting a description, particularly in a public keyword
      *                        makes the keyword more valuable to other users and can act as an embryonic glossary term.
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return GUID for new keyword.
@@ -93,6 +96,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 String  externalSourceName,
                                 String  keywordName,
                                 String  keywordDescription,
+                                Date    effectiveFrom,
+                                Date    effectiveTo,
+                                Date    effectiveTime,
                                 String  methodName) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException
@@ -107,14 +113,15 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                           null,
-                                           null,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -123,13 +130,18 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Updates the description of an existing keyword.
      *
      * @param userId          userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param keywordGUID         unique identifier for the keyword
      * @param keywordGUIDParameterName parameter providing keywordGUID
      * @param keywordDescription  description of the keyword.  Setting a description, particularly in a public keyword
      *                        makes the keyword more valuable to other users and can act as an embryonic glossary term.
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param serviceSupportedZones supported zones for calling service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -142,7 +154,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            String       keywordGUID,
                                            String       keywordGUIDParameterName,
                                            String       keywordDescription,
+                                           Date         effectiveFrom,
+                                           Date         effectiveTo,
                                            List<String> serviceSupportedZones,
+                                           boolean      forLineage,
+                                           boolean      forDuplicateProcessing,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -160,42 +177,48 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     keywordGUIDParameterName,
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    properties,
+                                    this.setUpEffectiveDates(properties, effectiveFrom,  effectiveTo),
                                     true,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
      * Removes a keyword from the repository.
-     * A private keyword can be deleted by its creator and all of the references are lost;
+     * A private keyword can be deleted by its creator and all the references are lost;
      * a public keyword can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param keywordGUID   unique id for the keyword.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the keyword properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   deleteKeyword(String userId,
-                                String externalSourceGUID,
-                                String externalSourceName,
-                                String keywordGUID,
-                                String methodName) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+    public void   deleteKeyword(String  userId,
+                                String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  keywordGUID,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
         final String keywordGUIDParameterName = "keywordGUID";
 
-        B  keyword = this.getKeyword(userId, keywordGUID, keywordGUIDParameterName, null, methodName);
+        B keyword = this.getKeyword(userId, keywordGUID, keywordGUIDParameterName, supportedZones, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         if (keyword != null)
         {
@@ -204,8 +227,10 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
-                                                                   false,
-                                                                   null,
+                                                                   2,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
                                                                    methodName) == 0)
             {
                 repositoryHandler.removeEntity(userId,
@@ -217,9 +242,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                                null,
                                                null,
-                                               false,
-                                               false,
-                                               new Date(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
                                                methodName);
             }
             else
@@ -240,24 +265,33 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countKeywords(String userId,
-                             String elementGUID,
-                             String methodName) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException
+    public int countKeywords(String  userId,
+                             String  elementGUID,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
         return this.countAttachments(userId,
                                      elementGUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
-                                     null,
+                                     2,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -272,6 +306,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -287,6 +324,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         List<String> serviceSupportedZones,
                                         int          startingFrom,
                                         int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -302,13 +342,13 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
-                                        false,
-                                        false,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -322,6 +362,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -336,6 +379,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        List<String> serviceSupportedZones,
                                        int          startingFrom,
                                        int          pageSize,
+                                       boolean      forLineage,
+                                       boolean      forDuplicateProcessing,
+                                       Date         effectiveTime,
                                        String       methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -352,12 +398,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -369,6 +415,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param guid unique identifier of the keyword.
      * @param guidParameterName name of the parameter supplying the GUID
      * @param serviceSupportedZones supported zones for calling service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return keyword
@@ -380,6 +429,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         String       guid,
                         String       guidParameterName,
                         List<String> serviceSupportedZones,
+                        boolean      forLineage,
+                        boolean      forDuplicateProcessing,
+                        Date         effectiveTime,
                         String       methodName) throws InvalidParameterException,
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
@@ -388,10 +440,10 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -405,6 +457,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return keyword list
@@ -418,6 +473,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      List<String> serviceSupportedZones,
                                      int          startFrom,
                                      int          pageSize,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
+                                     Date         effectiveTime,
                                      String       methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -435,13 +493,13 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -455,6 +513,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return keyword list
@@ -468,6 +529,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startFrom,
                                 int          pageSize,
+                                boolean      forLineage,
+                                boolean      forDuplicateProcessing,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -479,11 +543,15 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                     null,
                                     false,
+                                    null,
+                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -492,14 +560,19 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Adds a keyword to the requested element.
      *
      * @param userId           userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID       unique id for the element.
      * @param elementGUIDParameterName name of the parameter supplying the elementGUID
      * @param elementType       type of the element.
      * @param keywordGUID          unique id of the keyword.
      * @param keywordGUIDParameterName name of the parameter supplying the keywordOneGUID
      * @param serviceSupportedZones list of zones supported by this service
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName       calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -515,6 +588,11 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       keywordGUID,
                                     String       keywordGUIDParameterName,
                                     List<String> serviceSupportedZones,
+                                    Date         effectiveFrom,
+                                    Date         effectiveTo,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -528,12 +606,15 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   keywordGUID,
                                   keywordGUIDParameterName,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   serviceSupportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -542,14 +623,17 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Removes the link between a keyword and an element.
      *
      * @param userId    userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID unique id for the referenceable to connect to
      * @param elementGUIDParameterName name of the parameter supplying the elementGUID
      * @param elementType type of the element
      * @param keywordGUID   unique id for the keyword
      * @param keywordGUIDParameterName name of parameter supplying keywordGUID
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -565,6 +649,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                          String       keywordGUID,
                                          String       keywordGUIDParameterName,
                                          List<String> serviceSupportedZones,
+                                         boolean      forLineage,
+                                         boolean      forDuplicateProcessing,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -580,12 +667,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       keywordGUIDParameterName,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -594,13 +681,18 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Create a related keyword relationship between search keywords.
      *
      * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param keywordOneGUID       unique id for the first keyword
      * @param keywordOneGUIDParameterName name of the parameter supplying the keywordOneGUID
      * @param keywordTwoGUID          unique id of the second keyword
      * @param keywordTwoGUIDParameterName name of the parameter supplying the keywordTwoGUID
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName       calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -615,6 +707,11 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       keywordTwoGUID,
                                     String       keywordTwoGUIDParameterName,
                                     List<String> serviceSupportedZones,
+                                    Date         effectiveFrom,
+                                    Date         effectiveTo,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -628,12 +725,15 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   keywordTwoGUID,
                                   keywordTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   serviceSupportedZones,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -642,13 +742,16 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Removes a relationship between keywords.
      *
      * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param keywordOneGUID unique id for the first keyword.
      * @param keywordOneGUIDParameterName name of the parameter supplying the keywordOneGUID
      * @param keywordTwoGUID   unique id for the second keyword.
      * @param keywordTwoGUIDParameterName name of parameter supplying keywordTwoGUID
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -663,6 +766,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       String       keywordTwoGUID,
                                       String       keywordTwoGUIDParameterName,
                                       List<String> serviceSupportedZones,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -678,12 +784,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       keywordTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 }

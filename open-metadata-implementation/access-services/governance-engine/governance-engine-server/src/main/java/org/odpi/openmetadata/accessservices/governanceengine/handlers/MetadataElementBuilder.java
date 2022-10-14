@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.handlers;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -20,9 +20,7 @@ import java.util.Map;
  */
 public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private Map<String, Object>  propertyMap = null;
-
-
+    private Map<String, InstancePropertyValue> propertyMap = null;
 
     /**
      * Constructor.
@@ -35,13 +33,13 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    MetadataElementBuilder(Map<String, Object>  propertyMap,
-                           InstanceStatus       initialStatus,
-                           Date                 effectiveFrom,
-                           Date                 effectiveTo,
-                           OMRSRepositoryHelper repositoryHelper,
-                           String               serviceName,
-                           String               serverName)
+    MetadataElementBuilder(Map<String, InstancePropertyValue> propertyMap,
+                           InstanceStatus                     initialStatus,
+                           Date                               effectiveFrom,
+                           Date                               effectiveTo,
+                           OMRSRepositoryHelper               repositoryHelper,
+                           String                             serviceName,
+                           String                             serverName)
     {
         super(OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -66,10 +64,10 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    MetadataElementBuilder(Map<String, Object>  propertyMap,
-                           OMRSRepositoryHelper repositoryHelper,
-                           String               serviceName,
-                           String               serverName)
+    MetadataElementBuilder(Map<String, InstancePropertyValue> propertyMap,
+                           OMRSRepositoryHelper               repositoryHelper,
+                           String                             serviceName,
+                           String                             serverName)
     {
         super(OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -112,6 +110,6 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        return super.updateInstanceProperties(properties, propertyMap, methodName);
+        return super.updateInstanceProperties(properties, propertyMap);
     }
 }

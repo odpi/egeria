@@ -37,7 +37,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -68,19 +67,17 @@ import static org.apache.tinkerpop.gremlin.process.traversal.P.lte;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.neq;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
-
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
-
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_CURRENT_STATUS;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_IS_PROXY;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_CURRENT_STATUS;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_CLASSIFICATION;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_ENTITY;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_RELATIONSHIP;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertiesClassification;
@@ -424,7 +421,7 @@ class GraphOMRSMetadataStore {
 
                 /*
                  *  Error condition
-                 *  Either the locsl repository is being asked to save a reference copy of something it already owns,
+                 *  Either the local repository is being asked to save a reference copy of something it already owns,
                  *  or it already has a proxy or reference copy of an entity from a repository other than the one that
                  *  submitted this reference copy.
                  */
@@ -503,31 +500,29 @@ class GraphOMRSMetadataStore {
      *  1) A request to save a reference copy pertains to either creation of a ref copy or update of a ref copy. It would
      *     be an error if the existing entity has a different metadataCollectionId to the entity to be saved. In this case
      *     an exception is thrown.
-     *  2) There may already be a proxy (e.g. from earlier creation of a relationship). Because we are being passed a
-     *     full entity detail to save as a reference copy, the ref copy replaces the proxy. But the reference copy must
-     *     have the same metadataCollectionId as the proxy, else there has been confusion as to who owns the entity
+     *  2) There may already be an entity, a proxy or a reference copy. Update only its classifications.
      *
      *  In summary
-     *  - if no entity, create the ref copy
-     *  - if existing entity,
-     *     - if its a proxy
-     *           check the metadataCollectionId matches the one passed.
+     *  - if no entity, create the entity as entity proxy
+     *  - if existing entity
+     *     - if it's a proxy
+     *           check the metadataCollectionId matches the one passed (between entities)
      *           if matching metadataCollectionId
-     *               update the existing entity, replacing the proxy with the ref copy; the proxy flag will be cleared.
+     *               update only its classifications
      *           else
      *               error
      *     - else not a proxy
-     *           if matching metadataCollectionId
-     *               update the existing entity
+     *           if matching metadataCollectionId (between entities)
+     *               update only its classifications
      *           else
      *               error
      *
      *  This can be simplified to:
      *  - if no entity
-     *        create the ref copy
+     *        create the entity as entity proxy
      *  - if existing entity,
-     *        if matching metadataCollectionId
-     *             update the existing entity, clearing proxy flag if it was set
+     *        if matching metadataCollectionId (between entities)
+     *             update only its classifications
      *         else
      *             error
      */
@@ -563,7 +558,7 @@ class GraphOMRSMetadataStore {
 
                 /*
                  *  Error condition
-                 *  Either the locsl repository is being asked to save a reference copy of something it already owns,
+                 *  Either the local repository is being asked to save a reference copy of something it already owns,
                  *  or it already has a proxy or reference copy of an entity from a repository other than the one that
                  *  submitted this reference copy.
                  */
@@ -585,35 +580,15 @@ class GraphOMRSMetadataStore {
         else
         {
 
-            // No existing vertex found - create one
+            // No existing vertex found - create one and populate it with the entity proxy data
             log.debug("{} create vertex for entity {}", methodName, entity.getGUID());
             vertex = g.addV("Entity").next();
+            entityMapper.mapEntityProxyToVertex(entity, vertex);
         }
-
-        /*
-         * Whether this just created a new vertex or is reusing an existing vertex (for a reference copy or proxy),
-         * populate the vertex.
-         * The mapping of an entity detail to the vertex will clear the proxy flag, even if previously set.
-         */
-
 
         try
         {
-            entityMapper.mapEntityProxyToVertex(entity, vertex);
-
-            // Create a vertex per classification and link them to the entity vertex
-            List<Classification> classifications = entity.getClassifications();
-            if (classifications != null)
-            {
-                for (Classification classification : classifications)
-                {
-                    log.debug("{} add classification: {} ", methodName, classification.getName());
-                    Vertex classificationVertex = g.addV("Classification").next();
-                    classificationMapper.mapClassificationToVertex(classification, classificationVertex);
-                    vertex.addEdge("Classifier", classificationVertex);
-                }
-            }
-
+            updateEntityClassifications(entity, vertex, g);
         }
         catch (Exception e)
         {
@@ -1437,7 +1412,7 @@ class GraphOMRSMetadataStore {
                 existingClassifierEdgesByName.remove(existingName);
             }
         }
-        // remove from the map - needs to be done outside the previous loop to prevent a ConcurrentModificationExcpetion
+        // remove from the map - needs to be done outside the previous loop to prevent a ConcurrentModificationException
         for (String name : namesToRemoveSet)
         {
             existingClassificationVerticesByName.remove(name);
@@ -4696,7 +4671,7 @@ class GraphOMRSMetadataStore {
                          * This could occur if any of the type defined attributes of the type has had a name clash,
                          * even if it has subsequently been deprecated. The type of the clashing TDA may conflict
                          * with the core property. For example the core property 'version' is a Java 'long', whereas
-                         * the (deprecated) SoftwareServerCapability property 'version' was a Java 'String'. It still
+                         * the (deprecated) SoftwareCapability property 'version' was a Java 'String'. It still
                          * exists in the type definition, so need to avoid it here.
                          * Therefore check that any propertyName is NOT in the keySet of relevantCoreProperties (whether
                          * that property was included in stringMatchProperties or is of another (non-string) type.
@@ -8516,7 +8491,7 @@ class GraphOMRSMetadataStore {
         /*
          * The strategy is to:
          *
-         * a) check the supplied value is an Array and that it contains primitive elements that are all of the same primitive category
+         * a) check the supplied value is an Array and that it contains primitive elements that are all the same primitive category
          *
          * b) determine whether the specified property is a core or type-defined attribute and check that it is a primitive and has
          *    the same primitive category as the elements in the array.
@@ -8527,7 +8502,7 @@ class GraphOMRSMetadataStore {
 
         /*
          * a) Validate the supplied match value is an array property and has elements that are primitive
-         *    and all of the same primitive category. Remember the primitive category.
+         *    and all the same primitive category. Remember the primitive category.
          *
          *    If any condition fails, throw InvalidParameterException naming the property.
          *
@@ -8535,7 +8510,7 @@ class GraphOMRSMetadataStore {
          * compare the named primitive property.
          *
          * Before going much further, validate that the parameter is an array and that it has
-         * only primitive elements and they are all of the same primitive category.
+         * only primitive elements and they are all the same primitive category.
          */
 
         ArrayPropertyValue apv = (ArrayPropertyValue)value;
@@ -8987,7 +8962,7 @@ class GraphOMRSMetadataStore {
         /*
          * The strategy is to:
          *
-         * a) check the supplied value is an Array and that it contains primitive elements that are all of the same primitive category
+         * a) check the supplied value is an Array and that it contains primitive elements that are all the same primitive category
          *
          * b) determine whether the specified property is a core or type-defined attribute and check that it is a primitive and has
          *    the same primitive category as the elements in the array.
@@ -8998,7 +8973,7 @@ class GraphOMRSMetadataStore {
 
         /*
          * a) Validate the supplied match value is an array property and has elements that are primitive
-         *    and all of the same primitive category. Remember the primitive category.
+         *    and all the same primitive category. Remember the primitive category.
          *
          *    If any condition fails, throw InvalidParameterException naming the property.
          *
@@ -9006,7 +8981,7 @@ class GraphOMRSMetadataStore {
          * compare the named primitive property.
          *
          * Before going much further, validate that the parameter is an array and that it has
-         * only primitive elements and they are all of the same primitive category.
+         * only primitive elements and they are all the same primitive category.
          */
 
         ArrayPropertyValue apv = (ArrayPropertyValue)value;

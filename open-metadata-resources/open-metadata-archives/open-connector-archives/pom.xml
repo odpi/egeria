@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-archives</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -47,7 +47,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>catalog-builder</artifactId>
+            <artifactId>content-pack-helpers</artifactId>
         </dependency>
 
         <dependency>
@@ -107,7 +107,7 @@
                                 <!-- Need to create ant property to pass from maven to ant task -->
                                 <!-- generating code here -->
                                 <property name="antDirectory" value="${project.build.directory}"/>
-                                <java classname="org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter"
+                                <java classname="org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter"
                                       dir="${antDirectory}" fork="true">
                                     <classpath>
                                         <path refid="maven.compile.classpath"/>
@@ -135,7 +135,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter</mainClass>
+                                    <mainClass>org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

@@ -51,7 +51,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
                         OpenMetadataTopicConnector eventBusConnector = (OpenMetadataTopicConnector)embeddedConnector;
 
                         /*
-                         * Save the event bus connector so it can be started and disconnected when appropriate.
+                         * Save the event bus connector, so it can be started and disconnected when appropriate.
                          */
                         eventBusConnectors.add(eventBusConnector);
                     }
@@ -157,7 +157,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
         super.disconnect();
 
         /*
-         * Each of the event bus connectors need to be disconnected so they stop receiving inbound events.
+         * Each of the event bus connectors need to be disconnected, so they stop receiving inbound events.
          */
         for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {

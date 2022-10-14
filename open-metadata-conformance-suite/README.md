@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../images/egeria-content-status-released.png#pagewidth)
 
 # Open Metadata Conformance Suite
 
@@ -17,7 +17,7 @@ behavior of an open metadata repository and the OMAG Platform.
 There is a dedicated workbench for each of these test focuses:
 
 * **[Platform Workbench](docs/platform-workbench)** - which tests the REST API of an
-[Open Metadata and Governance (OMAG) Server Platform](../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md)
+[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform)
 
 * **[Repository Workbench](docs/repository-workbench)** - which tests both the repository services 
 [REST API](../open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md)

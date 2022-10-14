@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class IntegrationDaemonRESTServices
 {
-    private static IntegrationDaemonInstanceHandler instanceHandler = new IntegrationDaemonInstanceHandler();
+    private final static IntegrationDaemonInstanceHandler instanceHandler = new IntegrationDaemonInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(IntegrationDaemonRESTServices.class),
+    private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(IntegrationDaemonRESTServices.class),
                                                                       instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -83,6 +83,7 @@ public class IntegrationDaemonRESTServices
     /**
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
+     * @param serverName integration daemon server name
      * @param userId calling user
      * @param serviceURLMarker integration service identifier
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
@@ -135,7 +136,7 @@ public class IntegrationDaemonRESTServices
 
 
     /**
-     * Request that the integration daemon refresh all of the connectors in all of the integration services
+     * Request that the integration daemon refresh all the connectors in all the integration services
      *
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user

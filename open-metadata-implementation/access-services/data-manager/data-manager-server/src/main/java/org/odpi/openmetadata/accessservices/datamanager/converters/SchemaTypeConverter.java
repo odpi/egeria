@@ -96,16 +96,14 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
                 if ((schemaRootHeader != null) && (instanceProperties != null))
                 {
                     /*
-                     * The schema type has many different subtypes.
-                     * This next piece of logic sorts out which type of schema bean to create.
+                     * The schema type has different subtypes.
                      */
                     SchemaTypeElement bean = (SchemaTypeElement)returnBean;
 
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaRootHeader, schemaRootClassifications, methodName));
 
                     /*
-                     * The schema type has many different subtypes.
-                     * This next piece of logic sorts out which type of schema bean to create.
+                     * This next piece of logic sorts out which type of schema properties to create.
                      */
 
                     if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME))

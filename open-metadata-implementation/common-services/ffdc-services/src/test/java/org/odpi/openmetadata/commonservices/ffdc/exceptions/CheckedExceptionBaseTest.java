@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 
 /**
- * Validate that all of the checked exceptions are properly populated and support toString hashCode and equals.
+ * Validate that all the checked exceptions are properly populated and support toString hashCode and equals.
  */
 public class CheckedExceptionBaseTest extends OCFCheckedExceptionBasedTest
 {

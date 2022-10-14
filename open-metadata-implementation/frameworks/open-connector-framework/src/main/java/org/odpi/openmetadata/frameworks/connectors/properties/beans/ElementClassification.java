@@ -117,28 +117,16 @@ public class ElementClassification extends ElementClassificationHeader
     public String toString()
     {
         return "ElementClassification{" +
-                "classificationName='" + classificationName + '\'' +
-                ", classificationProperties=" + classificationProperties +
-                ", classificationTypeId='" + getClassificationTypeId() + '\'' +
-                ", classificationTypeVersion=" + getClassificationTypeVersion() +
-                ", classificationTypeDescription='" + getClassificationTypeDescription() + '\'' +
-                ", classificationOrigin=" + getClassificationOrigin() +
-                ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
-                ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOrigin=" + getElementOrigin() +
-                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                ", elementLicense='" + getElementLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                ", elementMaintainedBy=" + getElementMaintainedBy() +
-                ", elementCreateTime=" + getElementCreateTime() +
-                ", elementUpdateTime=" + getElementUpdateTime() +
-                ", elementVersion=" + getElementVersion() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationName='" + classificationName + '\'' +
+                       ", classificationProperties=" + classificationProperties +
+                       ", classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

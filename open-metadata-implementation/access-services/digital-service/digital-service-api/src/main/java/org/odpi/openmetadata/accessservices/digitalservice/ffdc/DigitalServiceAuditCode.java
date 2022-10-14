@@ -25,28 +25,27 @@ public enum DigitalServiceAuditCode implements AuditLogMessageSet
 {
     SERVICE_INITIALIZING("OMAS-DIGITAL-SERVICE-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
-             "The DigitalService Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the DigitalService OMAS.",
+             "The Digital Service Open Metadata Access Service (OMAS) is initializing a new server instance",
+             "The local server has started up a new instance of the Digital Service OMAS.",
              "No action is needed if this service is required.  This is part of the configured operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-DIGITAL-SERVICE-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
-             "The DigitalService Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+             "The Digital Service Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "Verify that there were no errors reported as the service started."),
 
     SERVICE_SHUTDOWN("OMAS-DIGITAL-SERVICE-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
-             "The DigitalService Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-             "The local administrator has requested shut down of an DigitalService OMAS instance.",
+             "The Digital Service Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+             "The local administrator has requested shut down of an Digital Service OMAS instance.",
              "Verify that all resources have been released."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-SERVICE-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
-             "The DigitalService Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+             "The Digital Service Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-
 
     ;
 
@@ -69,10 +68,10 @@ public enum DigitalServiceAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     DigitalServiceAuditCode(String                     messageId,
-                    OMRSAuditLogRecordSeverity severity,
-                    String                     message,
-                    String                     systemAction,
-                    String                     userAction)
+                            OMRSAuditLogRecordSeverity severity,
+                            String                     message,
+                            String                     systemAction,
+                            String                     userAction)
     {
         messageDefinition = new AuditLogMessageDefinition(messageId,
                                                           severity,

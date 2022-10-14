@@ -178,7 +178,7 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
     {
         if ((capabilityProperties != null) && (capabilityProperties.getTypeName() == null))
         {
-            capabilityProperties.setTypeName("SoftwareServerCapability");
+            capabilityProperties.setTypeName("SoftwareCapability");
         }
 
         return this.createSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, classificationName, capabilityProperties);

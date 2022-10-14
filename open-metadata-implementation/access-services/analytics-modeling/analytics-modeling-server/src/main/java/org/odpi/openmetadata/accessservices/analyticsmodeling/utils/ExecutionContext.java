@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareCapability;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -44,7 +44,7 @@ public class ExecutionContext {
 	private AuditLog auditLog;
 	
 	private SoftwareServerCapabilityHandler softwareServerCapabilityHandler;
-	private SoftwareServerCapability softwareServerCapability;
+	private SoftwareCapability              softwareServerCapability;
 	
 	private Messages messages = new Messages();
 	private List<String> tablesWithoutColumns = new ArrayList<>();
@@ -149,7 +149,7 @@ public class ExecutionContext {
 	}
 
 	
-	public SoftwareServerCapability getServerSoftwareCapability() {
+	public SoftwareCapability getServerSoftwareCapability() {
 		return softwareServerCapability;
 	}
 	

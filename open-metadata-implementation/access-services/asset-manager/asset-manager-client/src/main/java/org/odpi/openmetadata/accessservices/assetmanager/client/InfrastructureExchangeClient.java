@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 
 
 /**
- * DataAssetExchangeClient is the client for managing Data Assets, Schemas and Connections.
+ * InfrastructureExchangeClient is the client for managing Servers and their services and infrastructure.
  */
 public class InfrastructureExchangeClient extends ExchangeClientBase implements InfrastructureExchangeInterface
 {

@@ -126,6 +126,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         AssetProperties assetProperties = super.cloneToAsset(subTypeName);
@@ -264,7 +265,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
                        ", softwareServerVersion='" + softwareServerVersion + '\'' +
                        ", softwareServerSource='" + softwareServerSource + '\'' +
                        ", softwareServerUserId='" + softwareServerUserId + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -307,7 +308,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

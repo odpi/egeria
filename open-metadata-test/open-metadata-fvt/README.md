@@ -13,6 +13,26 @@ needed by their consumers.
 * **[open-types-fvt](open-types-fvt)** - uses code generated ot build a bean layer from the open metadata types
 and then tests the resulting beans.
 
+# NOTE
+
+It is important that unique ports are used for each test, to prevent concurrency issues - this is particularly true of gradle
+
+This is a current list of known port usage
+
+* 10441 Community Profile
+* 10442 Data Engine
+* 10443 Asset Consumer
+* 10444 Asset Manager
+* 10445 Asset Owner
+* 10446 Data Manager
+* 10447 Digital Architecture
+* 10448 Subject Area 
+* 10450 Discovery Engine
+* 10451 Governance Engine
+* 10452 Governance Program
+* 10453 Analytics Modeling 
+* 10455 Stewardship Action
+* 10454 Glossary Author (view services)
 ----
 Return to [open-metadata-test](..)
 

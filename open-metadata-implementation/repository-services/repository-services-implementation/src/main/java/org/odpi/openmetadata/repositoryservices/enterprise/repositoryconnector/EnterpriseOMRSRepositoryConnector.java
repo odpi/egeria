@@ -30,14 +30,14 @@ import java.util.List;
  *     using the OCF ConnectorBroker.  They use its metadata collection to retrieve and send the metadata they need.
  * </p>
  * <p>
- *     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all of the
+ *     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all the
  *     repositories in the connected open metadata repository cohort(s).  It does by registering as an OMRSConnectorConsumer
  *     with the OMRSConnectorManager to be notified when connectors to new open metadata repositories are available.
  * </p>
  */
 public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector implements OMRSConnectorConsumer
 {
-    private OMRSConnectorManager                connectorManager;
+    private final OMRSConnectorManager                connectorManager;
     private String                              connectorConsumerId;
 
     private LocalOMRSRepositoryConnector        localConnector            = null;
@@ -63,7 +63,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Set up the unique Id for this metadata collection.
+     * Set up the unique id for this metadata collection.
      *
      * @param metadataCollectionId String unique Id
      */
@@ -85,7 +85,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     }
 
     /**
-     * Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection
+     * Set the unique id of the metadata collection that is collocated with the Enterprise Metadata Collection
      *
      * @param localMetadataCollectionId String unique Id
      */
@@ -411,7 +411,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     }
 
     /**
-     * Return the federated connector for a metadata collection Id
+     * Return the federated connector for a metadata collection id
      *
      * @param metadataCollectionId unique id for the metadata collection
      * @return federated connector or null
@@ -442,7 +442,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * Returns the list of repository connectors that the EnterpriseOMRSRepositoryConnector is federating queries across.
      *
      * This method is used by this connector's metadata collection object on each request it processes.  This
-     * means it always has the most up to date list of connectors to work with.
+     * means it always has the most up-to-date list of connectors to work with.
      *
      * @param methodName name of method making the request (used for logging)
      * @return OMRSRepositoryConnector List
@@ -615,8 +615,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * The OMRS is about to shutdown.
-     * Call disconnect on all registered remote connectors and stop calling them.
+     * The OMRS is about to shut down.
+     * Call disconnect() on all registered remote connectors and stop calling them.
      * There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager
      */
     @Override

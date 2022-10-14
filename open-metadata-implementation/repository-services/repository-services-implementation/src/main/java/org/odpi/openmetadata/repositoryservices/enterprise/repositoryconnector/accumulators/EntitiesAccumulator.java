@@ -19,7 +19,7 @@ import java.util.Map;
  * EntitiesAccumulator accumulates and validates entities received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest entity details object.
  *
- * This class may be called simultaneously from many different threads so it must be thread-safe.
+ * This class may be called simultaneously from different threads, so it must be thread-safe.
  */
 public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 {
@@ -32,10 +32,10 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Construct a entity accumulator.  Its base class manages the common variables needed to
+     * Construct an entity accumulator.  Its base class manages the common variables needed to
      * control the execution of requests across all members of the cohort(s).
      *
-     * @param localMetadataCollectionId collection Id of local repository - null means no local repository
+     * @param localMetadataCollectionId collection id of local repository - null means no local repository
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
@@ -134,7 +134,7 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Add a list of classifications to the accumulator. These are extracted from the retrieved entities or they are separately
+     * Add a list of classifications to the accumulator. These are extracted from the retrieved entities, or they are separately
      * retrieved from metadata collections that only have an entity proxy with
      * classifications connected to it that are uniquely stored in the metadata collection.
      *
@@ -238,8 +238,8 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Extract the results - this will the a unique list of entities selected from the instances
-     * supplied to this accumulator.  It should be called once all of the executors have completed processing
+     * Extract the results - this will be a unique list of entities selected from the instances
+     * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
      * @param repositoryConnector enterprise connector

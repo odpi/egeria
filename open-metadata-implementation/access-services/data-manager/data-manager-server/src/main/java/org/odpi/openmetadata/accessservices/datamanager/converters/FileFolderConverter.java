@@ -36,7 +36,7 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -73,7 +73,9 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
 
                     fileFolderProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     fileFolderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    fileFolderProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileFolderProperties.setName(this.removeName(instanceProperties));
+                    fileFolderProperties.setDisplayName(fileFolderProperties.getName());
+                    fileFolderProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     fileFolderProperties.setDescription(this.removeDescription(instanceProperties));
                     fileFolderProperties.setPathName(this.removePathName(instanceProperties));
                     fileFolderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
@@ -115,7 +117,7 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

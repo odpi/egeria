@@ -5,12 +5,12 @@
 
 AssetConsumerConnectorFactoryInterface supports the creation of connectors from connections.
 
-[Connectors](../../../../../frameworks/open-connector-framework/docs/concepts/connector.md)
-are client-side objects for interacting with [Assets](../../../../docs/concepts/assets)
+[Connectors](https://egeria-project.org/concepts/connector)
+are client-side objects for interacting with [Assets](https://egeria-project.org/concepts/asset)
 such as databases, APIs and files.
 
 The configuration for a specific connectors is managed as open metadata in
-a [Connection](../../../../../frameworks/open-connector-framework/docs/concepts/connection.md) definition.  
+a [Connection](https://egeria-project.org/concepts/connection) definition.  
 
 The caller to the Asset Consumer OMAS passes either a Connection object, or the name or GUID for the
 connection stored in the open metadata repositories. The Asset Consumer OMAS creates an appropriate

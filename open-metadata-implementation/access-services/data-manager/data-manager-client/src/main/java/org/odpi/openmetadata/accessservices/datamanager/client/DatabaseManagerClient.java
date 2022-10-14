@@ -8,10 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerR
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,22 +20,9 @@ import java.util.List;
 /**
  * DatabaseManagerClient is the client for managing resources from a relational database server.
  */
-public class DatabaseManagerClient implements DatabaseManagerInterface
+public class DatabaseManagerClient extends DataManagerBaseClient implements DatabaseManagerInterface
 {
-    private final String databaseManagerGUIDParameterName = "databaseManagerGUID";
-    private final String databaseManagerNameParameterName = "databaseManagerName";
-    private final String editURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/database-managers/{2}/{3}/databases";
-    private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
-    private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
-
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-    private AuditLog auditLog = null;          /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
-
-    private static NullRequestBody nullRequestBody   = new NullRequestBody();
+    private final String urlTemplatePrefix  = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
 
 
     /**
@@ -54,15 +38,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                  String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -77,14 +53,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public DatabaseManagerClient(String serverName,
                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -107,15 +76,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                  String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -126,27 +87,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DatabaseManagerClient(String                serverName,
                                  String                serverPlatformURLRoot,
                                  DataManagerRESTClient restClient,
-                                 int                   maxPageSize,
-                                 AuditLog              auditLog) throws InvalidParameterException
+                                 int                   maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -166,14 +115,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -206,25 +148,10 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName                  = "createDatabase";
         final String propertiesParameterName     = "databaseProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix;
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix;
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName);
-
-        return restResult.getGUID();
+        return super.createReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -252,30 +179,10 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        final String methodName                  = "createDatabaseFromTemplate";
-        final String templateGUIDParameterName   = "templateGUID";
-        final String propertiesParameterName     = "templateProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName  = "createDatabaseFromTemplate";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/from-template/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/from-template/{4}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  templateProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, templateProperties, urlTemplate, methodName);
     }
 
 
@@ -286,6 +193,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseProperties new properties for this element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -297,6 +205,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                String             databaseManagerGUID,
                                String             databaseManagerName,
                                String             databaseGUID,
+                               boolean            isMergeUpdate,
                                DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -304,25 +213,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                  = "updateDatabase";
         final String elementGUIDParameterName    = "databaseGUID";
         final String propertiesParameterName     = "databaseProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String urlTemplate                 = serverPlatformURLRoot + urlTemplatePrefix + "/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseGUID);
+        super.updateReferenceable(userId,
+                                  databaseManagerGUID,
+                                  databaseManagerName,
+                                  databaseGUID,
+                                  elementGUIDParameterName,
+                                  isMergeUpdate,
+                                  databaseProperties,
+                                  propertiesParameterName,
+                                  urlTemplate,
+                                  methodName);
     }
 
 
@@ -346,18 +248,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName               = "publishDatabase";
         final String elementGUIDParameterName = "databaseGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/publish";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/{4}/publish";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseGUID);
+        super.setReferenceableClassification(userId, null, null, databaseGUID, elementGUIDParameterName, null, urlTemplate, methodName);
     }
 
 
@@ -381,18 +274,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName               = "withdrawDatabase";
         final String elementGUIDParameterName = "databaseGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "databases/{2}/withdraw";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "databases/{4}/withdraw";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseGUID);
+        super.setReferenceableClassification(userId, null, null, databaseGUID, elementGUIDParameterName, null, urlTemplate, methodName);
     }
 
 
@@ -403,7 +287,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -413,34 +296,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public void removeDatabase(String userId,
                                String databaseManagerGUID,
                                String databaseManagerName,
-                               String databaseGUID,
-                               String qualifiedName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+                               String databaseGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String methodName = "removeDatabase";
-        final String databaseManagerGUIDParameterName = "databaseManagerGUID";
-        final String databaseManagerNameParameterName = "databaseManagerName";
         final String elementGUIDParameterName    = "databaseGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseGUID,
-                                        qualifiedName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -474,7 +338,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -523,7 +387,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -567,22 +431,28 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                           PropertyServerException
     {
         final String methodName = "getDatabasesForDatabaseManager";
+        final String databaseManagerGUIDParameterName = "databaseManagerGUID";
+        final String databaseManagerNameParameterName = "databaseManagerName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-database-manager?startFrom={2}&pageSize={3}";
 
-        DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           databaseManagerGUID,
-                                                                           databaseManagerName,
-                                                                           startFrom,
-                                                                           validatedPageSize);
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(databaseManagerGUID);
+        requestBody.setExternalSourceName(databaseManagerName);
+
+        DatabasesResponse restResult = restClient.callDatabasesPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -612,7 +482,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}";
 
         DatabaseResponse restResult = restClient.callDatabaseGetRESTCall(methodName,
                                                                          urlTemplate,
@@ -655,25 +525,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseSchema";
         final String parentElementGUIDParameterName = "databaseGUID";
         final String propertiesParameterName        = "databaseSchemaProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/schemas";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseSchemaProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseGUID, parentElementGUIDParameterName, databaseSchemaProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -704,30 +558,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                  PropertyServerException
     {
         final String methodName                     = "createDatabaseSchemaFromTemplate";
-        final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseGUID";
-        final String propertiesParameterName        = "templateProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/from-template/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  templateProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseGUID,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableFromTemplateWithParent(userId,
+                                                               databaseManagerGUID,
+                                                               databaseManagerName,
+                                                               databaseGUID,
+                                                               parentElementGUIDParameterName,
+                                                               templateGUID,
+                                                               templateProperties,
+                                                               urlTemplate,
+                                                               methodName);
     }
 
 
@@ -738,6 +580,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseSchemaProperties new properties for the metadata element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -749,6 +592,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                      String                   databaseManagerGUID,
                                      String                   databaseManagerName,
                                      String                   databaseSchemaGUID,
+                                     boolean                  isMergeUpdate,
                                      DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
@@ -756,23 +600,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName               = "updateDatabaseSchema";
         final String elementGUIDParameterName = "databaseSchemaGUID";
         final String propertiesParameterName  = "databaseProperties";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseSchemaProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseSchemaGUID);
+        super.updateReferenceable(userId,
+                                  databaseManagerGUID,
+                                  databaseManagerName,
+                                  databaseSchemaGUID,
+                                  elementGUIDParameterName,
+                                  isMergeUpdate,
+                                  databaseSchemaProperties,
+                                  propertiesParameterName,
+                                  urlTemplate,
+                                  methodName);
     }
 
 
@@ -796,18 +635,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName                  = "publishDatabaseSchema";
         final String elementGUIDParameterName    = "databaseSchemaGUID";
+        final String urlTemplate                 = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}/publish";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/publish";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseSchemaGUID);
+        super.setReferenceableClassification(userId, null, null, databaseSchemaGUID, elementGUIDParameterName, null, urlTemplate, methodName);
     }
 
 
@@ -831,18 +661,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName               = "withdrawDatabase";
         final String elementGUIDParameterName = "databaseSchemaGUID";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}/withdraw";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/withdraw";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseSchemaGUID);
+        super.setReferenceableClassification(userId, null, null, databaseSchemaGUID, elementGUIDParameterName, null, urlTemplate, methodName);
     }
 
 
@@ -853,7 +674,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -863,32 +683,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public void removeDatabaseSchema(String userId,
                                      String databaseManagerGUID,
                                      String databaseManagerName,
-                                     String databaseSchemaGUID,
-                                     String qualifiedName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                     String databaseSchemaGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        final String methodName                  = "removeDatabaseSchema";
-        final String elementGUIDParameterName    = "databaseSchemaGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName               = "removeDatabaseSchema";
+        final String elementGUIDParameterName = "databaseSchemaGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseSchemaGUID,
-                                        qualifiedName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -922,7 +725,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -971,7 +774,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}/schemas?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/schemas?startFrom={3}&pageSize={4}";
 
         DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -1015,7 +818,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -1058,7 +861,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}";
 
         DatabaseSchemaResponse restResult = restClient.callDatabaseSchemaGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1096,33 +899,19 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     {
         final String methodName                 = "createDatabaseSchemaType";
         final String qualifiedNameParameterName = "qualifiedName";
+        final String urlTemplate                = serverPlatformURLRoot + urlTemplatePrefix + "/schema-type";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        DatabaseSchemaTypeProperties databaseSchemaTypeProperties = new DatabaseSchemaTypeProperties();
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/schema-type";
+        databaseSchemaTypeProperties.setQualifiedName(qualifiedName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-
-        requestBody.setName(qualifiedName);
-        requestBody.setNameParameterName(qualifiedNameParameterName);
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName);
-
-        return restResult.getGUID();
+        return super.createReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeProperties, qualifiedNameParameterName, urlTemplate, methodName);
     }
 
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param userId calling user
@@ -1145,24 +934,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "attachSchemaTypeToDatabaseAsset";
         final String databaseAssetGUIDParameterName = "databaseAssetGUID";
         final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/schema-type/{3}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseAssetGUID, databaseAssetGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/{4}/schema-type/{5}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseAssetGUID,
-                                        schemaTypeGUID);
+        super.setupRelationship(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseAssetGUIDParameterName, null, schemaTypeGUID, schemaTypeGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -1193,25 +967,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseTable";
         final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String propertiesParameterName        = "databaseTableProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/tables";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/{4}/tables";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseTableProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseAssetGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, parentElementGUIDParameterName, databaseTableProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -1242,30 +1000,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                 PropertyServerException
     {
         final String methodName                     = "createDatabaseTableFromTemplate";
-        final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseAssetGUID";
-        final String propertiesParameterName        = "templateProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/tables/from-template/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/{4}/tables/from-template/{5}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  templateProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseAssetGUID,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableFromTemplateWithParent(userId,
+                                                               databaseManagerGUID,
+                                                               databaseManagerName,
+                                                               databaseAssetGUID,
+                                                               parentElementGUIDParameterName,
+                                                               templateGUID,
+                                                               templateProperties,
+                                                               urlTemplate,
+                                                               methodName);
     }
 
 
@@ -1295,25 +1041,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseTableForSchemaType";
         final String parentElementGUIDParameterName = "databaseSchemaTypeGUID";
         final String propertiesParameterName        = "databaseTableProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/schema-type/tables";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaTypeGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/schema-type/{4}/tables";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseTableProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseSchemaTypeGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, parentElementGUIDParameterName, databaseTableProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -1324,6 +1054,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseTableProperties new properties for the database table
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1335,6 +1066,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                     String                  databaseManagerGUID,
                                     String                  databaseManagerName,
                                     String                  databaseTableGUID,
+                                    boolean                 isMergeUpdate,
                                     DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -1342,23 +1074,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName               = "updateDatabaseTable";
         final String elementGUIDParameterName = "databaseTableGUID";
         final String propertiesParameterName  = "databaseTableProperties";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseTableProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseTableGUID);
+        super.updateReferenceable(userId,
+                                  databaseManagerGUID,
+                                  databaseManagerName,
+                                  databaseTableGUID,
+                                  elementGUIDParameterName,
+                                  isMergeUpdate,
+                                  databaseTableProperties,
+                                  propertiesParameterName,
+                                  urlTemplate,
+                                  methodName);
     }
 
 
@@ -1369,7 +1096,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1379,32 +1105,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public void removeDatabaseTable(String userId,
                                     String databaseManagerGUID,
                                     String databaseManagerName,
-                                    String databaseTableGUID,
-                                    String qualifiedName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                    String databaseTableGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        final String methodName                  = "removeDatabaseTable";
-        final String elementGUIDParameterName    = "databaseTableGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName               = "removeDatabaseTable";
+        final String elementGUIDParameterName = "databaseTableGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/{4}/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseTableGUID,
-                                        qualifiedName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -1438,7 +1147,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -1472,7 +1181,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    @SuppressWarnings(value = "deprecated")
+    @SuppressWarnings(value = "deprecation")
     public List<DatabaseTableElement>    getTablesForDatabaseSchema(String userId,
                                                                     String databaseSchemaGUID,
                                                                     int    startFrom,
@@ -1513,7 +1222,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/assets/{2}/tables?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/tables?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1557,7 +1266,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -1600,7 +1309,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}";
 
         DatabaseTableResponse restResult = restClient.callDatabaseTableGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1639,25 +1348,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseView";
         final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String propertiesParameterName        = "databaseViewProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/{4}/tables/views";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseViewProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseAssetGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, parentElementGUIDParameterName, databaseViewProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -1688,30 +1381,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                PropertyServerException
     {
         final String methodName                     = "createDatabaseViewFromTemplate";
-        final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "databaseAssetGUID";
-        final String propertiesParameterName        = "templateProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/from-template/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/{4}/tables/views/from-template/{5}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  templateProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseAssetGUID,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableFromTemplateWithParent(userId,
+                                                               databaseManagerGUID,
+                                                               databaseManagerName,
+                                                               databaseAssetGUID,
+                                                               parentElementGUIDParameterName,
+                                                               templateGUID,
+                                                               templateProperties,
+                                                               urlTemplate,
+                                                               methodName);
     }
 
 
@@ -1741,25 +1422,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseViewForSchemaType";
         final String parentElementGUIDParameterName = "databaseSchemaTypeGUID";
         final String propertiesParameterName        = "databaseViewProperties";
+        final String urlTemplate                    = serverPlatformURLRoot + urlTemplatePrefix + "/schema-type/tables/views";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseSchemaTypeGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/assets/schema-type/{4}/tables/views";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseViewProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseSchemaTypeGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, parentElementGUIDParameterName, databaseViewProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -1770,6 +1435,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the database view to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseViewProperties properties for the new database view
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1781,6 +1447,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                    String                 databaseManagerGUID,
                                    String                 databaseManagerName,
                                    String                 databaseViewGUID,
+                                   boolean                isMergeUpdate,
                                    DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -1788,23 +1455,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName               = "updateDatabaseView";
         final String elementGUIDParameterName = "databaseViewGUID";
         final String propertiesParameterName  = "databaseViewProperties";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/views/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseViewProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseViewGUID);
+        super.updateReferenceable(userId,
+                                  databaseManagerGUID,
+                                  databaseManagerName,
+                                  databaseViewGUID,
+                                  elementGUIDParameterName,
+                                  isMergeUpdate,
+                                  databaseViewProperties,
+                                  propertiesParameterName,
+                                  urlTemplate,
+                                  methodName);
     }
 
 
@@ -1815,7 +1477,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1825,32 +1486,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public void removeDatabaseView(String userId,
                                    String databaseManagerGUID,
                                    String databaseManagerName,
-                                   String databaseViewGUID,
-                                   String qualifiedName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                   String databaseViewGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        final String methodName                  = "removeDatabaseView";
-        final String elementGUIDParameterName    = "databaseViewGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName               = "removeDatabaseView";
+        final String elementGUIDParameterName = "databaseViewGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/views/{4}/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseViewGUID,
-                                        qualifiedName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -1884,7 +1528,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/views/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -1918,7 +1562,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    @SuppressWarnings(value = "deprecated")
+    @SuppressWarnings(value = "deprecation")
     public List<DatabaseViewElement>    getViewsForDatabaseSchema(String userId,
                                                                   String databaseSchemaGUID,
                                                                   int    startFrom,
@@ -1959,7 +1603,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseAssetGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/assets/{2}/tables/views?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/tables/views?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -2003,7 +1647,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/views/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -2046,7 +1690,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/views/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/{2}";
 
         DatabaseViewResponse restResult = restClient.callDatabaseViewGetRESTCall(methodName,
                                                                                  urlTemplate,
@@ -2094,8 +1738,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String dataTypeParameterName          = "databaseColumnProperties.dataType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
@@ -2104,18 +1746,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
             invalidParameterHandler.validateName(databaseColumnProperties.getDataType(), dataTypeParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/{4}/columns";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns";
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  databaseColumnProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseTableGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, parentElementGUIDParameterName, databaseColumnProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -2145,31 +1778,19 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        final String methodName                     = "createDatabaseColumnFromTemplate";
-        final String templateGUIDParameterName      = "templateGUID";
+        final String methodName  = "createDatabaseColumnFromTemplate";
         final String parentElementGUIDParameterName = "databaseTableGUID";
-        final String propertiesParameterName        = "templateProperties";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/from-template/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/{4}/columns/from-template/{5}";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  templateProperties,
-                                                                  serverName,
-                                                                  userId,
-                                                                  databaseManagerGUID,
-                                                                  databaseManagerName,
-                                                                  databaseTableGUID,
-                                                                  templateGUID);
-
-        return restResult.getGUID();
+        return super.createReferenceableFromTemplateWithParent(userId,
+                                                               databaseManagerGUID,
+                                                               databaseManagerName,
+                                                               databaseTableGUID,
+                                                               parentElementGUIDParameterName,
+                                                               templateGUID,
+                                                               templateProperties,
+                                                               urlTemplate,
+                                                               methodName);
     }
 
 
@@ -2180,6 +1801,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseColumnProperties new properties for the metadata element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2191,6 +1813,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                      String                   databaseManagerGUID,
                                      String                   databaseManagerName,
                                      String                   databaseColumnGUID,
+                                     boolean                  isMergeUpdate,
                                      DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
@@ -2198,25 +1821,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName               = "updateDatabaseColumn";
         final String elementGUIDParameterName = "databaseColumnGUID";
         final String propertiesParameterName  = "databaseColumnProperties";
-        final String qualifiedNameParameterName  = "databaseColumnProperties.qualifiedName";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseColumnProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseColumnProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseColumnGUID);
+        super.updateReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, elementGUIDParameterName, isMergeUpdate, databaseColumnProperties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -2227,7 +1834,6 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2237,32 +1843,15 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     public void removeDatabaseColumn(String userId,
                                      String databaseManagerGUID,
                                      String databaseManagerName,
-                                     String databaseColumnGUID,
-                                     String qualifiedName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                     String databaseColumnGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        final String methodName                  = "removeDatabaseColumn";
-        final String elementGUIDParameterName    = "databaseColumnGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName                = "removeDatabaseColumn";
+        final String elementGUIDParameterName  = "databaseColumnGUID";
+        final String urlTemplate               = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseColumnGUID,
-                                        qualifiedName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -2296,7 +1885,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/columns/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -2344,7 +1933,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/{2}/columns?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}/columns?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -2388,7 +1977,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/columns/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -2431,7 +2020,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/tables/columns/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}";
 
         DatabaseColumnResponse restResult = restClient.callDatabaseColumnGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -2449,7 +2038,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
@@ -2470,26 +2059,11 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        final String methodName                     = "setPrimaryKeyOnColumn";
-        final String parentElementGUIDParameterName = "databaseColumnGUID";
-        final String propertiesParameterName        = "databasePrimaryKeyProperties";
+        final String methodName               = "setPrimaryKeyOnColumn";
+        final String elementGUIDParameterName = "databaseColumnGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}/primary-key";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databasePrimaryKeyProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}/primary-key";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databasePrimaryKeyProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseColumnGUID);
+        setReferenceableClassification(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, elementGUIDParameterName, databasePrimaryKeyProperties, urlTemplate, methodName);
     }
 
 
@@ -2513,24 +2087,11 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        final String methodName                     = "removePrimaryKeyFromColumn";
-        final String parentElementGUIDParameterName = "databaseColumnGUID";
+        final String methodName               = "removePrimaryKeyFromColumn";
+        final String elementGUIDParameterName = "databaseColumnGUID";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}/primary-key/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}/primary-key/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseColumnGUID);
+        super.removeReferenceableClassification(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, elementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -2562,26 +2123,9 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                      = "addForeignKeyRelationship";
         final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
         final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
-        final String propertiesParameterName         = "databaseForeignKeyProperties";
+        final String urlTemplate                     = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}/foreign-key/{3}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(databaseForeignKeyProperties, propertiesParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}/foreign-key/{5}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        databaseForeignKeyProperties,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        foreignKeyColumnGUID,
-                                        primaryKeyColumnGUID);
+        super.setupRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, primaryElementGUIDParameterName, databaseForeignKeyProperties, foreignKeyColumnGUID, foreignElementGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -2610,23 +2154,8 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                      = "removeForeignKeyRelationship";
         final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
         final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
+        final String urlTemplate                     = serverPlatformURLRoot + urlTemplatePrefix + "/tables/columns/{2}/foreign-key/{3}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}/foreign-key/{5}/delete";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        foreignKeyColumnGUID,
-                                        primaryKeyColumnGUID);
+        super.clearRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, primaryElementGUIDParameterName, foreignKeyColumnGUID, foreignElementGUIDParameterName, urlTemplate, methodName);
     }
 }

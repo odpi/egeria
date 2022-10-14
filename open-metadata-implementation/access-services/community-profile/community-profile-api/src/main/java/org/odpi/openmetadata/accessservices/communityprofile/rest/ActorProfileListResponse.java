@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ActorProfileListResponse is the response structure used on the OMAS REST API calls that return a
+ * ActorProfileListResponse is the response structure used on the OMAS REST API calls that return
  * a list of profile elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

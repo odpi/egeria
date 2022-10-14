@@ -929,46 +929,6 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @param defaultZones setting of the default zones for the service
      * @param supportedZones setting of the supported zones for the service
-     * @param originalAsset original values for the asset
-     * @param updatedAsset updated values for the asset
-     *
-     * @return list of zones to set in the asset
-     * @throws InvalidParameterException one of the asset values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
-     */
-    @Deprecated
-    public List<String> verifyAssetZones(List<String>  defaultZones,
-                                         List<String>  supportedZones,
-                                         Asset         originalAsset,
-                                         Asset         updatedAsset) throws InvalidParameterException,
-                                                                            PropertyServerException
-    {
-        if (updatedAsset != null)
-        {
-            if (updatedAsset.getOwner() != null)
-            {
-                return addZoneName(updatedAsset.getZoneMembership(),
-                                   ownerZones.get(updatedAsset.getOwner()));
-            }
-            else
-            {
-                return updatedAsset.getZoneMembership();
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
-     * settings of both default zones and supported zones.  This method is called whenever an asset's
-     * values are changed.
-     *
-     * The default behavior is to keep the updated zones as they are.
-     *
-     * @param defaultZones setting of the default zones for the service
-     * @param supportedZones setting of the supported zones for the service
      * @param publishZones setting of the supported zones for the service
      * @param originalAsset original values for the asset
      * @param updatedAsset updated values for the asset

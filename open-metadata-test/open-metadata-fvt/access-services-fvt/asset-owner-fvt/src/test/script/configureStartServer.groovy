@@ -21,6 +21,7 @@ baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://loca
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
 retries=(properties["retries"] ?: System.properties["retries"]) ?: 50;
 delay=(properties["delay"] ?: System.properties["delay"]) ?: 2;
+File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "content-packs/OpenConnectorsArchive.json")
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
@@ -97,6 +98,23 @@ postRC2 = post2.getResponseCode();
 println(postRC2);
 if(postRC2.equals(200)) {
     println(post2.getInputStream().getText());
+}
+
+
+// --- Adding connector types archive for OMAS startup - any errors here and we exit
+System.out.println("=== Adding the connector types archive for: " + serverMem + " ===")
+addConnectorTypeArchiveToInMemoryServerRequest = (HttpURLConnection) new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/open-metadata-archives/file" ).openConnection()
+addConnectorTypeArchiveToInMemoryServerRequest.setRequestMethod("POST")
+addConnectorTypeArchiveToInMemoryServerRequest.setRequestProperty("Content-Type", "application/json")
+addConnectorTypeArchiveToInMemoryServerRequest.setDoOutput(true)
+try( OutputStreamWriter writerToInMemoryRequest = new OutputStreamWriter( addConnectorTypeArchiveToInMemoryServerRequest.getOutputStream())) {
+    writerToInMemoryRequest.write(connectorTypeArchive.getAbsolutePath())
+}
+println("Absolute path to ConnectorTypes archive for " +  serverMem + ":" + connectorTypeArchive.getAbsolutePath())
+addConnectorTypeArchiveToInMemoryServerResponse = addConnectorTypeArchiveToInMemoryServerRequest.getResponseCode()
+println(addConnectorTypeArchiveToInMemoryServerResponse)
+if(addConnectorTypeArchiveToInMemoryServerResponse.equals(200)) {
+    println(addConnectorTypeArchiveToInMemoryServerRequest.getInputStream().getText())
 }
 
 

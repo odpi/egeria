@@ -31,7 +31,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentHelper.class);
 
-    private OMRSRepositoryContentManager repositoryContentManager;
+    private final OMRSRepositoryContentManager repositoryContentManager;
 
 
     /**
@@ -148,7 +148,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      *
      * @param sourceName caller
      * @param typeName name of instance's type
-     * @param allProperties all of the instance's properties
+     * @param allProperties all the instance's properties
      * @return just the unique properties
      */
     public InstanceProperties getUniqueProperties(String              sourceName,
@@ -393,7 +393,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
-     * retrieving a type that should exist.  For example, retrieving the type of a metadata instance.
+     * retrieving a type that should exist.  For example, retrieving the metadata instance's type.
      *
      * @param sourceName  source of the request (used for logging)
      * @param guidParameterName name of guid parameter
@@ -511,11 +511,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return the list of type names for all of the subtypes of an entity type.
+     * Return the list of type names for all the subtypes of an entity type.
      *
      * @param sourceName source of the request (used for logging)
      * @param superTypeName name of the super type - this value is not included in the result.
-     * @return list of type names (a null means the type is not know or it has no sub types)
+     * @return list of type names (a null means the type is not known, or it has no subtypes)
      */
     @Override
     public List<String>  getSubTypesOf(String sourceName,
@@ -559,7 +559,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
+     * Return the names of all the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.
      * @param typeDef TypeDef to query.
@@ -578,7 +578,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return the names of all of the type definitions that define the supplied property name.
+     * Return the names of all the type definitions that define the supplied property name.
      *
      * @param sourceName name of the caller.
      * @param propertyName property name to query.
@@ -597,7 +597,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Validate that the type of an instance is of the expected/desired type.  The actual instance may be a subtype
+     * Validate that the instance's type is of the expected/desired value.  The actual instance may be a subtype
      * of the expected type of course.
      *
      * @param sourceName source of the request (used for logging)
@@ -619,7 +619,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * Remember the metadata collection name for this metadata collection id. If the metadata collection id
      * is null, it is ignored.
      *
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.
@@ -656,7 +656,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
-     * and classifications to complete the set up of the entity.
+     * and classifications to complete the setup of the entity.
      *
      * @param sourceName           source of the request (used for logging)
      * @param metadataCollectionId unique identifier for the home metadata collection
@@ -680,7 +680,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
-     * and classifications to complete the set up of the entity.
+     * and classifications to complete the setup of the entity.
      *
      * @param sourceName           source of the request (used for logging)
      * @param metadataCollectionId unique identifier for the home metadata collection
@@ -720,7 +720,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to classifications
-     * to complete the set up of the entity.
+     * to complete the setup of the entity.
      *
      * @param sourceName             source of the request (used for logging)
      * @param metadataCollectionId   unique identifier for the home metadata collection
@@ -760,7 +760,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to classifications
-     * to complete the set up of the entity.
+     * to complete the setup of the entity.
      *
      * @param sourceName             source of the request (used for logging)
      * @param metadataCollectionId   unique identifier for the home metadata collection
@@ -842,7 +842,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * and possibility origin information if it is propagated to complete the set up of the classification.
+     * and possibility origin information if it is propagated to complete the setup of the classification.
      *
      * @param sourceName             source of the request (used for logging)
      * @param userName               name of the creator
@@ -869,7 +869,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * and possibility origin information if it is propagated to complete the set up of the classification.
+     * and possibility origin information if it is propagated to complete the setup of the classification.
      *
      * @param sourceName             source of the request (used for logging)
      * @param metadataCollectionId   unique identifier for the home metadata collection
@@ -900,7 +900,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * and possibility origin information if it is propagated to complete the set up of the classification.
+     * and possibility origin information if it is propagated to complete the setup of the classification.
      *
      * @param sourceName              source of the request (used for logging)
      * @param metadataCollectionId    unique identifier for the home metadata collection
@@ -974,7 +974,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the relationship.
+     * to complete the setup of the relationship.
      *
      * @param sourceName           source of the request (used for logging)
      * @param metadataCollectionId unique identifier for the home metadata collection
@@ -997,7 +997,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the relationship.
+     * to complete the setup of the relationship.
      *
      * @param sourceName             source of the request (used for logging)
      * @param metadataCollectionId   unique identifier for the home metadata collection
@@ -1045,7 +1045,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the relationship.
+     * to complete the setup of the relationship.
      *
      * @param sourceName     source of the request (used for logging)
      * @param typeDefSummary details of the new type
@@ -1192,7 +1192,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the classification.
+     * to complete the setup of the classification.
      *
      * @param sourceName     source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
@@ -1202,7 +1202,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param entityTypeName name of the type for the entity that this classification is to be attached to.
      * @param classificationOrigin source of the classification
      * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
-     *                                 the classification originated.  Otherwise it is null
+     *                                 the classification originated.  Otherwise, it is null
      * @param properties     properties for the classification
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
@@ -1233,7 +1233,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the classification.  This method is deprecated because it does not take the provenance information.
+     * to complete the setup of the classification.  This method is deprecated because it does not take the provenance information.
      * The implementation of this method sets the provenance information to "LOCAL_COHORT".
      *
      * @param sourceName     source of the request (used for logging)
@@ -1272,7 +1272,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the classification.
+     * to complete the setup of the classification.
      *
      * @param sourceName      source of the request (used for logging)
      * @param metadataCollectionId    unique identifier for the home metadata collection
@@ -1506,8 +1506,48 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
 
+
     /**
-     * Return the names classification from an existing entity.
+     * Return the properties from a named classification or null if classification not present or without properties.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param classifications    list of classifications for an entity
+     * @param classificationName classification to retrieve
+     * @param methodName         calling method
+     * @return located properties - or null if none
+     */
+    @Override
+    public InstanceProperties getClassificationProperties(String                sourceName,
+                                                          List<Classification>  classifications,
+                                                          String                classificationName,
+                                                          String                methodName)
+    {
+        final String thisMethodName = "getClassificationProperties";
+
+        if (classificationName == null)
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        if (classifications != null)
+        {
+            for (Classification classification : classifications)
+            {
+                if (classificationName.equals(classification.getName()))
+                {
+                    return classification.getProperties();
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the named classification from an existing entity.
      *
      * @param sourceName         source of the request (used for logging)
      * @param entity             entity to update
@@ -1684,7 +1724,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * to complete the setup of the oldClassification.
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update
@@ -1759,7 +1799,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * to complete the setup of the oldClassification.
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update
@@ -2101,7 +2141,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
-     * and classifications to complete the set up of the entity.
+     * and classifications to complete the setup of the entity.
      *
      * @param sourceName                source of the request (used for logging)
      * @param metadataCollectionId      unique identifier for the home metadata collection
@@ -2325,7 +2365,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
             else
             {
-                // Otherwise handover to the instance comparator
+                // Otherwise, handover to the instance comparator
                 fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
             }
         }
@@ -2397,7 +2437,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
             else
             {
-                // Otherwise handover to the instance comparator
+                // Otherwise, handover to the instance comparator
                 fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
             }
         }
@@ -2565,11 +2605,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
          /*
           * If instance1 has the named property, retrieve its value. Same for instance2.
-          * If neither object has the property return 0
-          * If one object has the property sort that higher: +1 if instance1, -1 if instance2
+          * If neither object has the property return 0.
+          * If one object has the property sort that higher: +1 if instance1, -1 if instance2.
           * If both have a value for the property, of different types, return 0.
           * If both have a value for the property, of the same type, compare them...
-          * This is only performed for primitives, anything else is treated as ignored
+          * This is only performed for primitives, anything else is treated as ignored.
           */
          if (instance1Properties != null)
          {
@@ -3272,7 +3312,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * When issuing find requests with paging, it can be that we have all the data, but need to only return
-     * a subset of the data based on the page size. This method is given the from index and a pageSize and calculates
+     * a subset of the data based on the page size. This method is given the fromIndex and a pageSize and calculates
      * the to index.
      * @param fromIndex the index into the data to start from.
      * @param pageSize the page size to use. 0 means no paging.
@@ -3294,8 +3334,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         return toIndex;
     }
-
-
 
 
     /**
@@ -3335,7 +3373,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
     /**
      * Throw a logic error exception if this object does not have a repository content manager.
-     * This would occur if if is being used in an environment where the OMRS has not been properly
+     * This would occur if it is being used in an environment where the OMRS has not been properly
      * initialized.
      *
      * @param methodName name of calling method.

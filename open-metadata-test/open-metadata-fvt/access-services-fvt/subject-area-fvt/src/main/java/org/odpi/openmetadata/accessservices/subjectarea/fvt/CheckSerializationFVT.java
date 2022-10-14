@@ -67,7 +67,7 @@ public class CheckSerializationFVT {
             System.out.println("CheckSerializationFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }

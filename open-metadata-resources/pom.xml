@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +18,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <name>Open Metadata Resources</name>
@@ -32,8 +32,6 @@
     <modules>
         <module>open-metadata-archives</module>
         <module>open-metadata-samples</module>
-        <module>open-metadata-tutorials</module>
-        <module>open-metadata-labs</module>
         <module>open-metadata-deployment</module>
     </modules>
 

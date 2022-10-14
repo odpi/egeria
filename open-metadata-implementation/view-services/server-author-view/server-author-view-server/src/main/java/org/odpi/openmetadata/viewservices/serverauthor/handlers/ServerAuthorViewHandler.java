@@ -936,7 +936,7 @@ public class ServerAuthorViewHandler {
        return OMRSAuditLogRecordSeverity.getSeverityList();
     }
     /**
-     * Clear the audit log destinations associated with the the server being configured
+     * Clear the audit log destinations associated with the server being configured
      *
      * @param serverToBeConfiguredName name of the server to be configured.
      * @throws ServerAuthorViewServiceException a server author exception

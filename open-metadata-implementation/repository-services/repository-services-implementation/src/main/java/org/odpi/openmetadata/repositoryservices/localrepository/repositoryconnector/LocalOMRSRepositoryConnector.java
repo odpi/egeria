@@ -37,15 +37,16 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * The repository content manager is the TypeDefManager for the Local OMRS Metadata Collection,
      * and the incoming TypeDef Event Processor for the Archive Manager and EventListener
      */
-    private OMRSTypeDefManager                  typeDefManager;
-    private OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
+    private final OMRSTypeDefManager                  typeDefManager;
+    private final OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
+    private final OMRSRepositoryEventManager          outboundRepositoryEventManager;
+    private final OMRSRepositoryEventExchangeRule     saveExchangeRule;
+    private final OMRSRepositoryConnector             realLocalConnector;
+    private final OMRSRepositoryEventMapperConnector  realEventMapper;
+
     private LocalOMRSInstanceEventProcessor     incomingInstanceEventProcessor   = null;
     private OMRSInstanceRetrievalEventProcessor instanceRetrievalEventProcessor  = null;
-    private OMRSRepositoryEventManager          outboundRepositoryEventManager;
-    private OMRSRepositoryEventExchangeRule     saveExchangeRule;
-    private OMRSRepositoryConnector             realLocalConnector;
-    private OMRSRepositoryEventMapperConnector  realEventMapper;
-    private boolean                             produceEventsForRealConnector = true;
+    private boolean                             produceEventsForRealConnector    = true;
 
 
     /**
@@ -356,7 +357,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
 
     /**
-     * Set up the unique Id for this metadata collection.
+     * Set up the unique id for this metadata collection.
      *
      * @param metadataCollectionId String unique Id
      */

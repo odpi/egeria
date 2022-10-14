@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
@@ -48,6 +50,8 @@ public class RelationshipsFVT {
     private String url = null;
     private String serverName = null;
     private String userId = null;
+    private static Logger log = LoggerFactory.getLogger(RelationshipsFVT.class);
+
 
     private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
@@ -105,9 +109,9 @@ public class RelationshipsFVT {
         } catch (IOException e1) {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR: " + e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -127,13 +131,15 @@ public class RelationshipsFVT {
             System.out.println("relationshipFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
 
         int term1relationshipcount = 0;
         int term2relationshipcount = 0;
@@ -143,7 +149,9 @@ public class RelationshipsFVT {
         int cat2RelationshipCount = 0;
 
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        }
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
@@ -152,14 +160,18 @@ public class RelationshipsFVT {
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary GUID");
+        }
         Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossaryGuid);
         term2relationshipcount++;
         glossaryRelationshipCount++;
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
         FVTUtils.validateNode(term2);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary GUID");
+        }
         Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossaryGuid);
         FVTUtils.validateNode(term3);
         term3relationshipcount++;
@@ -220,18 +232,26 @@ public class RelationshipsFVT {
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
         checkRelationshipNumberforTerm(term3relationshipcount, term3);
-        System.out.println("get term relationships");
+        if (log.isDebugEnabled()) {
+            log.debug("get term relationships");
+        }
         List<Relationship> term1Relationships = termFVT.getTermRelationships(term1);
 
-        System.out.println("Get paged term relationships");
+        if (log.isDebugEnabled()) {
+            log.debug("Get paged term relationships");
+        }
         int offset = 0;
 
         int numberofrelationships = 0;
         while (offset < term1relationshipcount) {
-            System.out.println("Get paged term relationships offset = " + offset + ",pageSize=3");
+            if (log.isDebugEnabled()) {
+                log.debug("Get paged term relationships offset = " + offset + ",pageSize=3");
+            }
             List<Relationship> term1PagedRelationships = termFVT.getTermRelationships(term1, null, offset, 3, SequencingOrder.GUID, null);
             numberofrelationships = numberofrelationships + term1PagedRelationships.size();
-            System.out.println("numberofrelationships = " + numberofrelationships  + " term1PagedRelationships.size = " + term1PagedRelationships.size());
+            if (log.isDebugEnabled()) {
+                log.debug("numberofrelationships = " + numberofrelationships  + " term1PagedRelationships.size = " + term1PagedRelationships.size());
+            }
             offset += 3;
         }
 
@@ -241,10 +261,6 @@ public class RelationshipsFVT {
 
 
         Project project= projectFVT.createProject(DEFAULT_TEST_PROJECT_NAME );
-/*
-        if (project == null) System.out.println("Project is NULL !!!");
-        if (term1 == null) System.out.println("term1 is NULL !!!");
-*/
 
         projectScopeFVT(project, term1);
         projectFVT.deleteProject(project.getSystemAttributes().getGUID());
@@ -310,7 +326,9 @@ public class RelationshipsFVT {
             FVTUtils.validateRelationship(createdisATypeOf);
             FVTUtils.checkEnds(isATypeOf, createdisATypeOf, "isATypeOf", "create");
 
-            System.out.println("Created isATypeOf Relationship " + createdisATypeOf);
+            if (log.isDebugEnabled()) {
+                log.debug("Created isATypeOf Relationship " + createdisATypeOf);
+            }
             return createdisATypeOf;
         }
 
@@ -322,12 +340,16 @@ public class RelationshipsFVT {
 
             IsATypeOf createdIsATypeOf = createIsATypeOf(term1, term2);
             String guid = createdIsATypeOf.getGuid();
-            System.out.println("Created IsaTypeOf " + createdIsATypeOf);
+            if (log.isDebugEnabled()) {
+                log.debug("Created IsaTypeOf " + createdIsATypeOf);
+            }
 
 
             IsATypeOf gotIsATypeOf = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotIsATypeOf);
-            System.out.println("Got IsaTypeOf " + gotIsATypeOf);
+            if (log.isDebugEnabled()) {
+                log.debug("Got IsaTypeOf " + gotIsATypeOf);
+            }
 
             IsATypeOf updateIsATypeOf = new IsATypeOf();
             updateIsATypeOf.setDescription("ddd2");
@@ -343,7 +365,9 @@ public class RelationshipsFVT {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: IsaTypeOf update steward not as expected");
             }
             FVTUtils.checkEnds(updatedIsATypeOf,createdIsATypeOf,"IsATypeOf","update");
-            System.out.println("Updated IsaTypeOf " + updatedIsATypeOf);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated IsaTypeOf " + updatedIsATypeOf);
+            }
             IsATypeOf replaceIsATypeOf = new IsATypeOf();
             replaceIsATypeOf.setDescription("ddd3");
             IsATypeOf replacedIsATypeOf = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceIsATypeOf,type,relType,true);
@@ -363,16 +387,24 @@ public class RelationshipsFVT {
             if (!replacedIsATypeOf.getEnd2().getNodeGuid().equals(createdIsATypeOf.getEnd2().getNodeGuid())) {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: IsaTypeOf replace end 2 not as expected");
             }
-            System.out.println("Replaced IsaTypeOf " + replacedIsATypeOf);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced IsaTypeOf " + replacedIsATypeOf);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotIsATypeOf);
-            System.out.println("Deleted IsaTypeOf with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted IsaTypeOf with userId=" + guid);
+            }
             gotIsATypeOf = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type, relType);
             FVTUtils.validateRelationship(gotIsATypeOf);
-            System.out.println("Restored IsaTypeOf with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Restored IsaTypeOf with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotIsATypeOf);
-            System.out.println("Deleted IsaTypeOf with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted IsaTypeOf with userId=" + guid);
+            }
 
         }
 
@@ -386,12 +418,16 @@ public class RelationshipsFVT {
 
             IsA createdIsA = createIsaRelationship(term1, term2);
             FVTUtils.validateRelationship(createdIsA);
-            System.out.println("Created Isa " + createdIsA);
+            if (log.isDebugEnabled()) {
+                log.debug("Created Isa " + createdIsA);
+            }
             String guid = createdIsA.getGuid();
 
             IsA gotIsA = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
             FVTUtils.validateRelationship(gotIsA);
-            System.out.println("Got Isa " + gotIsA);
+            if (log.isDebugEnabled()) {
+                log.debug("Got Isa " + gotIsA);
+            }
 
             IsA updateIsA = new IsA();
             updateIsA.setDescription("ddd2");
@@ -414,7 +450,9 @@ public class RelationshipsFVT {
             if (!updatedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: isa update end 2 not as expected");
             }
-            System.out.println("Updated Isa " + updatedIsA);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated Isa " + updatedIsA);
+            }
             IsA replaceIsA = new IsA();
             replaceIsA.setDescription("ddd3");
             IsA replacedIsA = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceIsA,type,relType,true);
@@ -437,16 +475,24 @@ public class RelationshipsFVT {
             if (!replacedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: isa replace end 2 not as expected");
             }
-            System.out.println("Replaced Isa " + replacedIsA);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced Isa " + replacedIsA);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotIsa);
-            System.out.println("Deleted Isa with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted Isa with userId=" + guid);
+            }
             gotIsA = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotIsA);
-            System.out.println("Restored Isa with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Restored Isa with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotIsa);
-            System.out.println("Deleted Isa with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted Isa with userId=" + guid);
+            }
         }
 
 
@@ -477,12 +523,16 @@ public class RelationshipsFVT {
 
             TypedBy createdTermTYPEDBYRelationship = createTermTYPEDBYRelationship(term1, term2);
             FVTUtils.validateRelationship(createdTermTYPEDBYRelationship);
-            System.out.println("Created TypedBy " + createdTermTYPEDBYRelationship);
+            if (log.isDebugEnabled()) {
+                log.debug("Created TypedBy " + createdTermTYPEDBYRelationship);
+            }
             String guid = createdTermTYPEDBYRelationship.getGuid();
 
             TypedBy gotTermTYPEDBYRelationship = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotTermTYPEDBYRelationship);
-            System.out.println("Got TypedBy " + gotTermTYPEDBYRelationship);
+            if (log.isDebugEnabled()) {
+                log.debug("Got TypedBy " + gotTermTYPEDBYRelationship);
+            }
 
             TypedBy updateTermTYPEDBYRelationship = new TypedBy();
             updateTermTYPEDBYRelationship.setDescription("ddd2");
@@ -498,7 +548,9 @@ public class RelationshipsFVT {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: termTYPEDBYRelationship update steward not as expected");
             }
             FVTUtils.checkEnds(updatedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","update");
-            System.out.println("Updated TypedBy " + updatedTermTYPEDBYRelationship);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated TypedBy " + updatedTermTYPEDBYRelationship);
+            }
             TypedBy replaceTermTYPEDBYRelationship = new TypedBy();
             replaceTermTYPEDBYRelationship.setDescription("ddd3");
             TypedBy replacedTermTYPEDBYRelationship = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceTermTYPEDBYRelationship,type,relType, true);
@@ -514,16 +566,24 @@ public class RelationshipsFVT {
             }
 
             FVTUtils.checkEnds(replacedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","replace");
-            System.out.println("Replaced TypedBy " + replacedTermTYPEDBYRelationship);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced TypedBy " + replacedTermTYPEDBYRelationship);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotTermTYPEDBYRelationship);
-            System.out.println("Deleted TypedBy with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted TypedBy with userId=" + guid);
+            }
             gotTermTYPEDBYRelationship = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type, relType);
             FVTUtils.validateRelationship(gotTermTYPEDBYRelationship);
-            System.out.println("Restored TypedBy with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Restored TypedBy with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotTermTYPEDBYRelationship);
-            System.out.println("Deleted TypedBy with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted TypedBy with userId=" + guid);
+            }
         }
 
         private TypedBy createTermTYPEDBYRelationship(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -553,12 +613,16 @@ public class RelationshipsFVT {
 
             ReplacementTerm createdReplacementTerm = createReplacementTerm(term1, term2);
             FVTUtils.validateRelationship(createdReplacementTerm);
-            System.out.println("Created ReplacementTerm " + createdReplacementTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Created ReplacementTerm " + createdReplacementTerm);
+            }
             String guid = createdReplacementTerm.getGuid();
 
             ReplacementTerm gotReplacementTerm = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid, type,relType);
             FVTUtils.validateRelationship(gotReplacementTerm);
-            System.out.println("Got ReplacementTerm " + gotReplacementTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Got ReplacementTerm " + gotReplacementTerm);
+            }
 
             ReplacementTerm updateReplacementTerm = new ReplacementTerm();
             updateReplacementTerm.setDescription("ddd2");
@@ -577,7 +641,9 @@ public class RelationshipsFVT {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: replacementTerm update steward not as expected");
             }
             FVTUtils.checkEnds(updatedReplacementTerm,createdReplacementTerm,"replacementTerm","update");
-            System.out.println("Updated ReplacementTerm " + updatedReplacementTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated ReplacementTerm " + updatedReplacementTerm);
+            }
             ReplacementTerm replaceReplacementTerm = new ReplacementTerm();
             replaceReplacementTerm.setDescription("ddd3");
             ReplacementTerm replacedReplacementTerm = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceReplacementTerm, type,relType,true);
@@ -596,16 +662,24 @@ public class RelationshipsFVT {
             }
 
             FVTUtils.checkEnds(replacedReplacementTerm,createdReplacementTerm,"replacementTerm","replace");
-            System.out.println("Replaced ReplacementTerm " + replacedReplacementTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced ReplacementTerm " + replacedReplacementTerm);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotReplacementTerm);
-            System.out.println("Deleted ReplacementTerm with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted ReplacementTerm with userId=" + guid);
+            }
             gotReplacementTerm = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotReplacementTerm);
-            System.out.println("Restored ReplacementTerm with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Restored ReplacementTerm with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotReplacementTerm);
-            System.out.println("Deleted ReplacementTerm with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted ReplacementTerm with userId=" + guid);
+            }
         }
 
         private ReplacementTerm createReplacementTerm(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -634,12 +708,16 @@ public class RelationshipsFVT {
 
             ValidValue createdValidValue = createValidValue(term1, term2);
             FVTUtils.validateRelationship(createdValidValue);
-            System.out.println("Created ValidValue " + createdValidValue);
+            if (log.isDebugEnabled()) {
+                log.debug("Created ValidValue " + createdValidValue);
+            }
             String guid = createdValidValue.getGuid();
 
             ValidValue gotValidValue = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
             FVTUtils.validateRelationship(gotValidValue);
-            System.out.println("Got ValidValue " + gotValidValue);
+            if (log.isDebugEnabled()) {
+                log.debug("Got ValidValue " + gotValidValue);
+            }
 
             ValidValue updateValidValue = new ValidValue();
             updateValidValue.setDescription("ddd2");
@@ -659,7 +737,9 @@ public class RelationshipsFVT {
 
             FVTUtils.checkEnds(updatedValidValue, createdValidValue, "ValidValue", "update");
 
-            System.out.println("Updated ValidValue " + updateValidValue);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated ValidValue " + updateValidValue);
+            }
             ValidValue replaceValidValue = new ValidValue();
             replaceValidValue.setDescription("ddd3");
             replaceValidValue.setGuid(createdValidValue.getGuid());
@@ -678,16 +758,24 @@ public class RelationshipsFVT {
             }
             FVTUtils.checkEnds(replacedValidValue, createdValidValue, "ValidValue", "replace");
 
-            System.out.println("Replaced ValidValue " + replaceValidValue);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced ValidValue " + replaceValidValue);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotValidValue);
-            System.out.println("Deleted ValidValue with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted ValidValue with userId=" + guid);
+            }
             gotValidValue = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotValidValue);
-            System.out.println("Restored ValidValue with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Restored ValidValue with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotValidValue);
-            System.out.println("Deleted ValidValue with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted ValidValue with userId=" + guid);
+            }
         }
 
         private ValidValue createValidValue(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -718,12 +806,16 @@ public class RelationshipsFVT {
 
             PreferredTerm createdPreferredTerm = createPreferredTerm(term1, term2);
             FVTUtils.validateRelationship(createdPreferredTerm);
-            System.out.println("Created PreferredTerm " + createdPreferredTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Created PreferredTerm " + createdPreferredTerm);
+            }
             String guid = createdPreferredTerm.getGuid();
 
             PreferredTerm gotPreferredTerm = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
             FVTUtils.validateRelationship(gotPreferredTerm);
-            System.out.println("Got PreferredTerm " + gotPreferredTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Got PreferredTerm " + gotPreferredTerm);
+            }
 
             PreferredTerm updatePreferredTerm = new PreferredTerm();
             updatePreferredTerm.setDescription("ddd2");
@@ -742,7 +834,9 @@ public class RelationshipsFVT {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: preferredTerm update steward not as expected");
             }
             FVTUtils.checkEnds(updatedPreferredTerm,createdPreferredTerm,"PreferredTerm","update");
-            System.out.println("Updated PreferredTerm " + updatedPreferredTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Updated PreferredTerm " + updatedPreferredTerm);
+            }
             PreferredTerm replacePreferredTerm = new PreferredTerm();
             replacePreferredTerm.setDescription("ddd3");
             PreferredTerm replacedPreferredTerm = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replacePreferredTerm, type,relType,true);
@@ -760,16 +854,22 @@ public class RelationshipsFVT {
                 throw new GlossaryAuthorFVTCheckedException("ERROR: preferredTerm replace steward not as expected");
             }
             FVTUtils.checkEnds(replacedPreferredTerm,createdPreferredTerm,"PreferredTerm","replace");
-            System.out.println("Replaced PreferredTerm " + createdPreferredTerm);
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced PreferredTerm " + createdPreferredTerm);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotPreferredTerm);
-            System.out.println("Deleted PreferredTerm with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted PreferredTerm with userId=" + guid);
+            }
             gotPreferredTerm = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
             FVTUtils.validateRelationship(gotPreferredTerm);
-            System.out.println("restored PreferredTerm with userId=" + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("restored PreferredTerm with userId=" + guid);
+            }
             glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
             //FVTUtils.validateLine(gotPreferredTerm);
-            System.out.println("Deleted PreferredTerm with userId=" + guid);
+            log.debug("Deleted PreferredTerm with userId=" + guid);
         }
 
     private PreferredTerm createPreferredTerm(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -799,12 +899,16 @@ public class RelationshipsFVT {
 
         UsedInContext createdUsedInContext = createUsedInContext(term1, term2);
         FVTUtils.validateRelationship(createdUsedInContext);
-        System.out.println("Created UsedInContext " + createdUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Created UsedInContext " + createdUsedInContext);
+        }
         String guid = createdUsedInContext.getGuid();
 
         UsedInContext gotUsedInContext = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotUsedInContext);
-        System.out.println("Got UsedInContext " + gotUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Got UsedInContext " + gotUsedInContext);
+        }
 
         UsedInContext updateUsedInContext = new UsedInContext();
         updateUsedInContext.setDescription("ddd2");
@@ -824,7 +928,9 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(updatedUsedInContext,createdUsedInContext,"UsedInContext","update");
-        System.out.println("Updated UsedInContext " + updatedUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated UsedInContext " + updatedUsedInContext);
+        }
         UsedInContext replaceUsedInContext = new UsedInContext();
         replaceUsedInContext.setDescription("ddd3");
         UsedInContext replacedUsedInContext = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceUsedInContext, type,relType,true);
@@ -842,16 +948,24 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: usedInContext replace steward not as expected");
         }
         FVTUtils.checkEnds(replacedUsedInContext,createdUsedInContext,"UsedInContext","replace");
-        System.out.println("Replaced UsedInContext " + replacedUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced UsedInContext " + replacedUsedInContext);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotUsedInContext);
-        System.out.println("Deleted UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted UsedInContext with userId=" + guid);
+        }
         gotUsedInContext = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotUsedInContext);
-        System.out.println("Restored UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored UsedInContext with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotUsedInContext);
-        System.out.println("Deleted UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted UsedInContext with userId=" + guid);
+        }
     }
 
     private UsedInContext createUsedInContext(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -880,12 +994,16 @@ public class RelationshipsFVT {
 
         Translation createdTranslation = createTranslation(term1, term2);
         FVTUtils.validateRelationship(createdTranslation);
-        System.out.println("Created Translation " + createdTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Translation " + createdTranslation);
+        }
         String guid = createdTranslation.getGuid();
 
         Translation gotTranslation = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotTranslation);
-        System.out.println("Got Translation " + gotTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Translation " + gotTranslation);
+        }
 
         Translation updateTranslation = new Translation();
         updateTranslation.setDescription("ddd2");
@@ -905,7 +1023,9 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedTranslation, createdTranslation, "translation", "update");
 
-        System.out.println("Updated Translation " + updatedTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Translation " + updatedTranslation);
+        }
         Translation replaceTranslation = new Translation();
         replaceTranslation.setDescription("ddd3");
         Translation replacedTranslation = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceTranslation,type,relType,true);
@@ -924,16 +1044,24 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(replacedTranslation, updatedTranslation, "translation", "replace");
 
-        System.out.println("Replaced Translation " + replacedTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Translation " + replacedTranslation);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotTranslation);
-        System.out.println("Deleted Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Translation with userId=" + guid);
+        }
         gotTranslation = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotTranslation);
-        System.out.println("Restored Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Translation with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotTranslation);
-        System.out.println("Deleted Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Translation with userId=" + guid);
+        }
     }
 
     private Translation createTranslation(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -963,25 +1091,33 @@ public class RelationshipsFVT {
         HasA createdHasA = createHasA(term1, term3);
 
         Term term1PostCreate = termFVT.getTermByGUID(term1.getSystemAttributes().getGUID());
-        System.out.println(" term1PostCreate.isSpineObject() " + term1PostCreate.isSpineObject());
-        System.out.println(" term1PostCreate GUID " + term1PostCreate.getSystemAttributes().getGUID());
-        System.out.println(" term1  GUID " + term1.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug(" term1PostCreate.isSpineObject() " + term1PostCreate.isSpineObject());
+            log.debug(" term1PostCreate GUID " + term1PostCreate.getSystemAttributes().getGUID());
+            log.debug(" term1  GUID " + term1.getSystemAttributes().getGUID());
+        }
 
         Term term3PostCreate = termFVT.getTermByGUID(term3.getSystemAttributes().getGUID());
-        System.out.println(" term3PostCreate.isSpineAttribute() " + term3PostCreate.isSpineAttribute());
-        System.out.println(" term3PostCreate GUID " + term3PostCreate.getSystemAttributes().getGUID());
-        System.out.println(" term3  GUID " + term3.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug(" term3PostCreate.isSpineAttribute() " + term3PostCreate.isSpineAttribute());
+            log.debug(" term3PostCreate GUID " + term3PostCreate.getSystemAttributes().getGUID());
+            log.debug(" term3  GUID " + term3.getSystemAttributes().getGUID());
+        }
 
         FVTUtils.validateRelationship(createdHasA);
-        System.out.println("Created Hasa " + createdHasA);
-        System.out.println("Hasa End1" + createdHasA.getEnd1().getNodeGuid());
-        System.out.println("Hasa End2" + createdHasA.getEnd2().getNodeGuid());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Hasa " + createdHasA);
+            log.debug("Hasa End1" + createdHasA.getEnd1().getNodeGuid());
+            log.debug("Hasa End2" + createdHasA.getEnd2().getNodeGuid());
+        }
         String guid = createdHasA.getGuid();
 
 
         HasA gotHasATerm = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotHasATerm);
-        System.out.println("Got Hasa " + gotHasATerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Hasa " + gotHasATerm);
+        }
         HasA updateHasATerm = new HasA();
         updateHasATerm.setDescription("ddd2");
         HasA updatedHasATerm = glossaryAuthorViewRelationshipsClient.updateRel(this.userId, guid, updateHasATerm,type,relType,false);
@@ -997,7 +1133,9 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedHasATerm, createdHasA, "has-a", "update");
 
-        System.out.println("Updated HASARelationship " + updatedHasATerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated HASARelationship " + updatedHasATerm);
+        }
         HasA replaceHasA = new HasA();
         replaceHasA.setDescription("ddd3");
         HasA replacedHasA = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceHasA,type,relType,true);
@@ -1013,11 +1151,17 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedHasATerm, replacedHasA, "has-a", "replace");
 
-        System.out.println("Replaced HASARelationship " + replacedHasA);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced HASARelationship " + replacedHasA);
+        }
         term1PostCreate = termFVT.getTermByGUID(term1.getSystemAttributes().getGUID());
-        System.out.println(" term1PostCreate.isSpineObject() " + term1PostCreate.isSpineObject());
+        if (log.isDebugEnabled()) {
+            log.debug(" term1PostCreate.isSpineObject() " + term1PostCreate.isSpineObject());
+        }
         term3PostCreate = termFVT.getTermByGUID(term3.getSystemAttributes().getGUID());
-        System.out.println(" term3PostCreate.isSpineAttribute() " + term3PostCreate.isSpineAttribute());
+        if (log.isDebugEnabled()) {
+            log.debug(" term3PostCreate.isSpineAttribute() " + term3PostCreate.isSpineAttribute());
+        }
 //
 //  check that term1 and term3 have the spine object and attribute flags sets
 
@@ -1028,13 +1172,6 @@ public class RelationshipsFVT {
 
         term3PostCreate = termFVT.getTermByGUID(term3.getSystemAttributes().getGUID());
 
-/*
-        System.out.println("term3PostCreate " + term3PostCreate.toString());
-        System.out.println("term1Attribute " + term1PostCreate.isSpineAttribute());
-
-        System.out.println("term1PostCreate " + term1PostCreate.toString());
-*/
-
         if (!term3PostCreate.isSpineAttribute()) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: expect term 3 to be a Spine Attribute");
         }
@@ -1042,13 +1179,19 @@ public class RelationshipsFVT {
 
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotHASATerm);
-        System.out.println("Deleted Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Hasa with userId=" + guid);
+        }
         gotHasATerm = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotHasATerm);
-        System.out.println("Restored Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Hasa with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotHASATerm);
-        System.out.println("Deleted Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Hasa with userId=" + guid);
+        }
     }
 
     private HasA createHasA(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -1078,12 +1221,16 @@ public class RelationshipsFVT {
 
         RelatedTerm createdRelatedTerm = createRelatedTerm(term1, term3);
         FVTUtils.validateRelationship(createdRelatedTerm);
-        System.out.println("Created RelatedTerm " + createdRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Created RelatedTerm " + createdRelatedTerm);
+        }
         String guid = createdRelatedTerm.getGuid();
 
         RelatedTerm gotRelatedTerm = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotRelatedTerm);
-        System.out.println("Got RelatedTerm " + gotRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Got RelatedTerm " + gotRelatedTerm);
+        }
         RelatedTerm updateRelatedTerm = new RelatedTerm();
         updateRelatedTerm.setDescription("ddd2");
         updateRelatedTerm.setGuid(createdRelatedTerm.getGuid());
@@ -1102,7 +1249,9 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: RelatedTerm update steward not as expected");
         }
         FVTUtils.checkEnds(updatedRelatedTerm,createdRelatedTerm,"RelatedTerm","update");
-        System.out.println("Updated RelatedTerm " + updatedRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated RelatedTerm " + updatedRelatedTerm);
+        }
         RelatedTerm replaceRelatedTerm = new RelatedTerm();
         replaceRelatedTerm.setDescription("ddd3");
         replaceRelatedTerm.setGuid(createdRelatedTerm.getGuid());
@@ -1121,17 +1270,25 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: RelatedTerm replace steward not as expected");
         }
         FVTUtils.checkEnds(replacedRelatedTerm,createdRelatedTerm,"RelatedTerm","replace");
-        System.out.println("Replaced RelatedTerm " + replacedRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced RelatedTerm " + replacedRelatedTerm);
+        }
 
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type, relType);
         //FVTUtils.validateLine(gotRelatedTerm);
-        System.out.println("Deleted RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted RelatedTerm with userId=" + guid);
+        }
         gotRelatedTerm = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotRelatedTerm);
-        System.out.println("Restored RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored RelatedTerm with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type, relType);
         //FVTUtils.validateLine(gotRelatedTerm);
-        System.out.println("Deleted RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted RelatedTerm with userId=" + guid);
+        }
     }
 
     private RelatedTerm createRelatedTerm(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1162,12 +1319,16 @@ public class RelationshipsFVT {
 
         Antonym createdAntonym = createAntonym(term1, term3);
         FVTUtils.validateRelationship(createdAntonym);
-        System.out.println("Created Antonym " + createdAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Antonym " + createdAntonym);
+        }
         String guid = createdAntonym.getGuid();
 
         Antonym gotAntonym = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotAntonym);
-        System.out.println("Got Antonym " + gotAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Antonym " + gotAntonym);
+        }
         Antonym updateAntonym = new Antonym();
         updateAntonym.setDescription("ddd2");
         Antonym updatedAntonym = glossaryAuthorViewRelationshipsClient.updateRel(this.userId, guid, updateAntonym,type,relType, false);
@@ -1185,7 +1346,9 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Antonym update steward not as expected");
         }
         FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","update");
-        System.out.println("Updated Antonym " + updatedAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Antonym " + updatedAntonym);
+        }
         Antonym replaceAntonym = new Antonym();
         replaceAntonym.setDescription("ddd3");
         replaceAntonym.setGuid(createdAntonym.getGuid());
@@ -1204,17 +1367,25 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Antonym replace steward not as expected");
         }
         FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","replace");
-        System.out.println("Replaced Antonym " + replacedAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Antonym " + replacedAntonym);
+        }
 
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotAntonym);
-        System.out.println("Deleted Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Antonym with userId=" + guid);
+        }
         gotAntonym = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotAntonym);
-        System.out.println("Restored Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Antonym with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotAntonym);
-        System.out.println("Deleted Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Antonym with userId=" + guid);
+        }
     }
 
     private Antonym createAntonym(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1242,31 +1413,30 @@ public class RelationshipsFVT {
 
         Synonym createdSynonym = createSynonym(term1, term2);
         FVTUtils.validateRelationship(createdSynonym);
-        System.out.println("Created Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Synonym " + createdSynonym);
+        }
         String guid = createdSynonym.getGuid();
 
-//        Synonym gotSynonym = glossaryAuthorViewRelationshipsClient.getSynonym(this.userId, guid);
         Synonym gotSynonym = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type,SYNONYM);
 
         FVTUtils.validateRelationship(gotSynonym);
-        System.out.println("Got Synonym " + gotSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Synonym " + gotSynonym);
+        }
         //return;
         Synonym updateSynonym = new Synonym();
         updateSynonym.setDescription("ddd2");
 
- /*
-        updateSynonym.setSource("updatedSource");
-        updateSynonym.setExpression("Ex1");
-        updateSynonym.setSteward("Stew1");
 
-        System.out.println(" updateSynonym " + updateSynonym.toString());
-*/
         Synonym updatedSynonym = glossaryAuthorViewRelationshipsClient.updateRel(this.userId, guid, updateSynonym,type,relType,false);
         FVTUtils.validateRelationship(updatedSynonym);
         if (!updatedSynonym.getDescription().equals(updateSynonym.getDescription())) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: synonym update description not as expected");
         }
-        System.out.println(" updatedSynonym " + updatedSynonym.toString());
+        if (log.isDebugEnabled()) {
+            log.debug(" updatedSynonym " + updatedSynonym.toString());
+        }
         if (!updatedSynonym.getSource().equals(createdSynonym.getSource())) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: synonym update source not as expected");
         }
@@ -1279,7 +1449,9 @@ public class RelationshipsFVT {
 
         FVTUtils.checkEnds(updatedSynonym, createdSynonym, "synonym", "update");
 
-        System.out.println("Updated Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Synonym " + createdSynonym);
+        }
         Synonym replaceSynonym = new Synonym();
         replaceSynonym.setDescription("ddd3");
         Synonym replacedSynonym = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceSynonym,type,relType,true);
@@ -1298,19 +1470,26 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedSynonym, replacedSynonym, "synonym", "replace");
 
-        System.out.println("Replaced Synonym " + replacedSynonym
-        );
-        //glossaryAuthorViewRelationshipsClient.deleteSynonym(this.userId, guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Synonym " + replacedSynonym
+            );
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotSynonym);
-        System.out.println("Deleted Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Synonym with userId=" + guid);
+        }
         gotSynonym = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotSynonym);
-        System.out.println("Restored Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Synonym with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid, type,relType);
         //FVTUtils.validateLine(gotSynonym);
 
-        System.out.println("Hard deleted Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Hard deleted Synonym with userId=" + guid);
+        }
     }
 
     public Synonym createSynonym(Term term1, Term term2) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1341,12 +1520,16 @@ public class RelationshipsFVT {
 
         Categorization createdTermCategorizationRelationship = createTermCategorization(term, category);
         FVTUtils.validateRelationship(createdTermCategorizationRelationship);
-        System.out.println("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
         String guid = createdTermCategorizationRelationship.getGuid();
 
         Categorization gotTermCategorizationRelationship = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotTermCategorizationRelationship);
-        System.out.println("Got TermCategorizationRelationship " + gotTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Got TermCategorizationRelationship " + gotTermCategorizationRelationship);
+        }
 
         Categorization updateTermCategorizationRelationship = new Categorization();
         updateTermCategorizationRelationship.setDescription("ddd2");
@@ -1361,7 +1544,9 @@ public class RelationshipsFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: TermCategorization update status not as expected");
         }
 
-        System.out.println("Updated TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
         Categorization replaceTermCategorizationRelationship = new Categorization();
         replaceTermCategorizationRelationship.setDescription("ddd3");
         Categorization replacedTermCategorizationRelationship = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceTermCategorizationRelationship, type,relType,true);
@@ -1374,16 +1559,23 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(replacedTermCategorizationRelationship,createdTermCategorizationRelationship,"TermCategorization","replace");
-        System.out.println("Replaced TermCategorizationRelationship " + replacedTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced TermCategorizationRelationship " + replacedTermCategorizationRelationship);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotTermCategorizationRelationship);
-        System.out.println("Deleted TermCategorizationRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TermCategorizationRelationship with userId=" + guid);
+        }
         gotTermCategorizationRelationship = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotTermCategorizationRelationship);
-        System.out.println("Restored TermCategorizationRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored TermCategorizationRelationship with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
-        //FVTUtils.validateLine(gotTermCategorizationRelationship);
-        System.out.println("Deleted TermCategorization with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TermCategorization with userId=" + guid);
+        }
     }
 
     public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -1397,7 +1589,9 @@ public class RelationshipsFVT {
         Categorization createdTermCategorization = glossaryAuthorViewRelationshipsClient.createRel(this.userId, termCategorization,type, TERM_CATEGORIZATION);
         FVTUtils.validateRelationship(createdTermCategorization);
         FVTUtils.checkEnds(termCategorization, createdTermCategorization, "TermCategorizationRelationship", "create");
-        System.out.println("Created TermCategorizationRelationship " + createdTermCategorization);
+        if (log.isDebugEnabled()) {
+            log.debug("Created TermCategorizationRelationship " + createdTermCategorization);
+        }
 
         return createdTermCategorization;
     }
@@ -1411,16 +1605,17 @@ public class RelationshipsFVT {
 
         ProjectScope createdProjectScope = createProjectScope(project, term);
         FVTUtils.validateRelationship(createdProjectScope);
-//        if (projectFVT.getProjectTerms(project.getSystemAttributes().getGUID()).size() !=1){
-//            throw new SubjectAreaFVTCheckedException("ERROR: Project terms were not as expected");
-//        }
 
-        System.out.println("Created ProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Created ProjectScopeRelationship " + createdProjectScope);
+        }
         String guid = createdProjectScope.getGuid();
 
         ProjectScope gotProjectScopeRelationship = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotProjectScopeRelationship);
-        System.out.println("Got ProjectScopeRelationship " + gotProjectScopeRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Got ProjectScopeRelationship " + gotProjectScopeRelationship);
+        }
 
         ProjectScope updateProjectScope = new ProjectScope();
         updateProjectScope.setDescription("ddd2");
@@ -1433,7 +1628,9 @@ public class RelationshipsFVT {
 
         FVTUtils.checkEnds(updatedProjectScope,createdProjectScope,"ProjectScope","update");
 
-        System.out.println("Updated ProjectScopeRelationship " + updatedProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated ProjectScopeRelationship " + updatedProjectScope);
+        }
         ProjectScope replaceProjectScope = new ProjectScope();
         replaceProjectScope.setDescription("ddd3");
         ProjectScope replacedProjectScope = glossaryAuthorViewRelationshipsClient.replaceRel(this.userId, guid, replaceProjectScope, type,relType,true);
@@ -1443,17 +1640,25 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(replacedProjectScope,createdProjectScope,"ProjectScope","replace");
 
-        System.out.println("Replaced ProjectScopeRelationship " + replacedProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced ProjectScopeRelationship " + replacedProjectScope);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
-        System.out.println("Deleted ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ProjectScopeRelationship with userId=" + guid);
+        }
         gotProjectScopeRelationship = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotProjectScopeRelationship);
-        System.out.println("Restored ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored ProjectScopeRelationship with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
 
-        System.out.println("Hard deleted ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Hard deleted ProjectScopeRelationship with userId=" + guid);
+        }
     }
 
     protected ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -1467,7 +1672,9 @@ public class RelationshipsFVT {
 
         ProjectScope createdProjectScope = glossaryAuthorViewRelationshipsClient.createRel(this.userId, projectScope,type, PROJECT_SCOPE);
         FVTUtils.validateRelationship(createdProjectScope);
-        System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("CreatedProjectScopeRelationship " + createdProjectScope);
+        }
         return createdProjectScope;
     }
 
@@ -1478,23 +1685,35 @@ public class RelationshipsFVT {
         ParameterizedTypeReference<GenericResponse<CategoryHierarchyLink>> type = ParameterizedTypeReference.forType(resolvableType.getType());
 
         CategoryHierarchyLink categoryHierarchyLink = createCategoryHierarchyLink(parent, child);
-        System.out.println("Create CategoryHierarchyLink " + categoryHierarchyLink);
+        if (log.isDebugEnabled()) {
+            log.debug("Create CategoryHierarchyLink " + categoryHierarchyLink);
+        }
         String guid = categoryHierarchyLink.getGuid();
 
         CategoryHierarchyLink gotCategoryHierarchyLink = glossaryAuthorViewRelationshipsClient.getRel(this.userId, guid,type, relType);
         FVTUtils.validateRelationship(gotCategoryHierarchyLink);
-        System.out.println("Got CategoryHierarchyLink " + gotCategoryHierarchyLink);
+        if (log.isDebugEnabled()) {
+            log.debug("Got CategoryHierarchyLink " + gotCategoryHierarchyLink);
+        }
         Category gotChild = glossaryAuthorViewCategory.getByGUID(userId, child.getSystemAttributes().getGUID());
-        System.out.println("Got Category gotChild " + gotChild);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Category gotChild " + gotChild);
+        }
 
         checkParent(parent, gotChild);
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
-        System.out.println("Deleted CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted CategoryHierarchyLink with userId=" + guid);
+        }
         gotCategoryHierarchyLink = glossaryAuthorViewRelationshipsClient.restoreRel(this.userId, guid,type,relType);
         FVTUtils.validateRelationship(gotCategoryHierarchyLink);
-        System.out.println("Restored CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored CategoryHierarchyLink with userId=" + guid);
+        }
         glossaryAuthorViewRelationshipsClient.deleteRel(this.userId, guid,type,relType);
-        System.out.println("Deleted CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted CategoryHierarchyLink with userId=" + guid);
+        }
     }
 
     public CategoryHierarchyLink createCategoryHierarchyLink(Category parent, Category child) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -1510,9 +1729,11 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createdCategoryHierarchyLink);
         FVTUtils.checkEnds(categoryHierarchyLink, createdCategoryHierarchyLink, "CategoryHierarchyLink", "create");
 
-        System.out.println("Created CategoryHierarchyLink " + createdCategoryHierarchyLink);
-        System.out.println("Created CategoryHierarchyLink End1 " + createdCategoryHierarchyLink.getEnd1().getNodeGuid());
-        System.out.println("Created CategoryHierarchyLink End2 " + createdCategoryHierarchyLink.getEnd2().getNodeGuid());
+        if (log.isDebugEnabled()) {
+            log.debug("Created CategoryHierarchyLink " + createdCategoryHierarchyLink);
+            log.debug("Created CategoryHierarchyLink End1 " + createdCategoryHierarchyLink.getEnd1().getNodeGuid());
+            log.debug("Created CategoryHierarchyLink End2 " + createdCategoryHierarchyLink.getEnd2().getNodeGuid());
+        }
 
         return createdCategoryHierarchyLink;
     }

@@ -115,7 +115,7 @@ public class OCFRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a AssetsResponse object.
+     * Issue a GET REST call that returns an AssetsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -141,7 +141,7 @@ public class OCFRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a AssetsResponse object.
+     * Issue a POST REST call that returns an AssetsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param requestBody request body for the REST call - contains most of the parameters

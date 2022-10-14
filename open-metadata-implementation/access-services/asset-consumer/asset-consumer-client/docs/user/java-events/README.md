@@ -3,7 +3,7 @@
 
 # Receiving Asset Consumer OMAS Events using Java
 
-The Asset Consumer OMAS sends out events on its [OutTopic](../../../../../docs/concepts/client-server/out-topic.md)
+The Asset Consumer OMAS sends out events on its [OutTopic](https://egeria-project.org/concepts/out-topic)
 whenever an asset is created or updated.
 
 In the header of each

@@ -4,11 +4,17 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaDefinitionResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaResponse;
@@ -16,12 +22,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SubjectAreaHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +43,12 @@ import java.util.List;
  */
 public class SubjectAreaRESTServices
 {
-    private static GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    private static final GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -55,16 +63,16 @@ public class SubjectAreaRESTServices
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody other properties for a subject area
+     * @param requestBody  properties to store
      *
      * @return unique identifier of the new subjectArea or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public GUIDResponse createSubjectArea(String                serverName,
-                                          String                userId,
-                                          SubjectAreaProperties requestBody)
+    public GUIDResponse createSubjectArea(String                   serverName,
+                                          String                   userId,
+                                          ReferenceableRequestBody requestBody)
     {
         final String methodName = "createSubjectArea";
 
@@ -77,24 +85,35 @@ public class SubjectAreaRESTServices
         {
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof SubjectAreaProperties)
+                {
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-                String subjectAreaGUID = handler.createSubjectArea(userId,
-                                                                   null,
-                                                                   null,
-                                                                   requestBody.getQualifiedName(),
-                                                                   requestBody.getDisplayName(),
-                                                                   requestBody.getDescription(),
-                                                                   requestBody.getUsage(),
-                                                                   requestBody.getScope(),
-                                                                   requestBody.getDomainIdentifier(),
-                                                                   requestBody.getAdditionalProperties(),
-                                                                   requestBody.getTypeName(),
-                                                                   requestBody.getExtendedProperties(),
-                                                                   methodName);
+                    SubjectAreaProperties properties = (SubjectAreaProperties)requestBody.getProperties();
 
-                response.setGUID(subjectAreaGUID);
+                    String subjectAreaGUID = handler.createSubjectArea(userId,
+                                                                       requestBody.getExternalSourceGUID(),
+                                                                       requestBody.getExternalSourceName(),
+                                                                       properties.getQualifiedName(),
+                                                                       properties.getSubjectAreaName(),
+                                                                       properties.getDisplayName(),
+                                                                       properties.getDescription(),
+                                                                       properties.getUsage(),
+                                                                       properties.getScope(),
+                                                                       properties.getDomainIdentifier(),
+                                                                       properties.getAdditionalProperties(),
+                                                                       properties.getTypeName(),
+                                                                       properties.getExtendedProperties(),
+                                                                       new Date(),
+                                                                       methodName);
+
+                    response.setGUID(subjectAreaGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -129,7 +148,7 @@ public class SubjectAreaRESTServices
                                           String                userId,
                                           String                subjectAreaGUID,
                                           boolean               isMergeUpdate,
-                                          SubjectAreaProperties requestBody)
+                                          ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateSubjectArea";
         final String guidParameter = "subjectAreaGUID";
@@ -143,25 +162,35 @@ public class SubjectAreaRESTServices
         {
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof SubjectAreaProperties)
+                {
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-                handler.updateSubjectArea(userId,
-                                          null,
-                                          null,
-                                          subjectAreaGUID,
-                                          guidParameter,
-                                          requestBody.getQualifiedName(),
-                                          requestBody.getDisplayName(),
-                                          requestBody.getDescription(),
-                                          requestBody.getUsage(),
-                                          requestBody.getScope(),
-                                          requestBody.getDomainIdentifier(),
-                                          requestBody.getAdditionalProperties(),
-                                          requestBody.getTypeName(),
-                                          requestBody.getExtendedProperties(),
-                                          isMergeUpdate,
-                                          methodName);
+                    SubjectAreaProperties properties = (SubjectAreaProperties)requestBody.getProperties();
+
+                    handler.updateSubjectArea(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              subjectAreaGUID,
+                                              guidParameter,
+                                              properties.getQualifiedName(),
+                                              properties.getSubjectAreaName(),
+                                              properties.getDisplayName(),
+                                              properties.getDescription(),
+                                              properties.getUsage(),
+                                              properties.getScope(),
+                                              properties.getDomainIdentifier(),
+                                              properties.getAdditionalProperties(),
+                                              properties.getTypeName(),
+                                              properties.getExtendedProperties(),
+                                              isMergeUpdate,
+                                              methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -184,7 +213,7 @@ public class SubjectAreaRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of subjectArea
-     * @param requestBody null request body
+     * @param requestBody external source request body
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known
@@ -192,10 +221,10 @@ public class SubjectAreaRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse deleteSubjectArea(String serverName,
-                                          String          userId,
-                                          String          subjectAreaGUID,
-                                          NullRequestBody requestBody)
+    public VoidResponse deleteSubjectArea(String                    serverName,
+                                          String                    userId,
+                                          String                    subjectAreaGUID,
+                                          ExternalSourceRequestBody requestBody)
     {
         final String methodName = "deleteSubjectArea";
         final String guidParameter = "subjectAreaGUID";
@@ -210,19 +239,38 @@ public class SubjectAreaRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-            handler.deleteBeanInRepository(userId,
-                                           null,
-                                           null,
-                                           subjectAreaGUID,
-                                           guidParameter,
-                                           OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            if (requestBody != null)
+            {
+                handler.deleteBeanInRepository(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               subjectAreaGUID,
+                                               guidParameter,
+                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else
+            {
+                handler.deleteBeanInRepository(userId,
+                                               null,
+                                               null,
+                                               subjectAreaGUID,
+                                               guidParameter,
+                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
         }
         catch (Exception error)
         {
@@ -242,7 +290,7 @@ public class SubjectAreaRESTServices
      * @param userId calling user
      * @param parentSubjectAreaGUID unique identifier of the parent subjectArea
      * @param childSubjectAreaGUID unique identifier of the child subjectArea
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -250,11 +298,11 @@ public class SubjectAreaRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse linkSubjectAreasInHierarchy(String          serverName,
-                                                    String          userId,
-                                                    String          parentSubjectAreaGUID,
-                                                    String          childSubjectAreaGUID,
-                                                    NullRequestBody requestBody)
+    public VoidResponse linkSubjectAreasInHierarchy(String                  serverName,
+                                                    String                  userId,
+                                                    String                  parentSubjectAreaGUID,
+                                                    String                  childSubjectAreaGUID,
+                                                    RelationshipRequestBody requestBody)
     {
         final String methodName = "linkSubjectAreasInHierarchy";
 
@@ -271,21 +319,72 @@ public class SubjectAreaRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-            handler.linkElementToElement(userId,
-                                         null,
-                                         null,
-                                         parentSubjectAreaGUID,
-                                         parentSubjectAreaGUIDParameterName,
-                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                         childSubjectAreaGUID,
-                                         childSubjectAreaGUIDParameterName,
-                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                         false,
-                                         false,
-                                         OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
-                                         OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
-                                         null,
-                                         methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentSubjectAreaGUID,
+                                                 parentSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 childSubjectAreaGUID,
+                                                 childSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                                 null,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentSubjectAreaGUID,
+                                                 parentSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 childSubjectAreaGUID,
+                                                 childSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
+            }
+            else
+            {
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             parentSubjectAreaGUID,
+                                             parentSubjectAreaGUIDParameterName,
+                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             childSubjectAreaGUID,
+                                             childSubjectAreaGUIDParameterName,
+                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
+                                             OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
+                                             OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                             (InstanceProperties) null,
+                                             null,
+                                             null,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -304,7 +403,7 @@ public class SubjectAreaRESTServices
      * @param userId calling user
      * @param parentSubjectAreaGUID unique identifier of the parent subjectArea
      * @param childSubjectAreaGUID unique identifier of the child subjectArea
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -312,11 +411,11 @@ public class SubjectAreaRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse unlinkSubjectAreasInHierarchy(String          serverName,
-                                                      String          userId,
-                                                      String          parentSubjectAreaGUID,
-                                                      String          childSubjectAreaGUID,
-                                                      NullRequestBody requestBody)
+    public VoidResponse unlinkSubjectAreasInHierarchy(String                  serverName,
+                                                      String                  userId,
+                                                      String                  parentSubjectAreaGUID,
+                                                      String                  childSubjectAreaGUID,
+                                                      RelationshipRequestBody requestBody)
     {
         final String methodName = "unlinkSubjectAreasInHierarchy";
 
@@ -333,23 +432,46 @@ public class SubjectAreaRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-            handler.unlinkElementFromElement(userId,
-                                             false,
-                                             null,
-                                             null,
-                                             parentSubjectAreaGUID,
-                                             parentSubjectAreaGUIDParameterName,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                             childSubjectAreaGUID,
-                                             childSubjectAreaGUIDParameterName,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
-                                             null,
-                                             methodName);
+            if (requestBody != null)
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentSubjectAreaGUID,
+                                                 parentSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 childSubjectAreaGUID,
+                                                 childSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
+            else
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentSubjectAreaGUID,
+                                                 parentSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 childSubjectAreaGUID,
+                                                 childSubjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
         }
         catch (Exception error)
         {
@@ -368,7 +490,7 @@ public class SubjectAreaRESTServices
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of the subjectArea
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -376,11 +498,11 @@ public class SubjectAreaRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse linkSubjectAreaToGovernanceDefinition(String          serverName,
-                                                              String          userId,
-                                                              String          subjectAreaGUID,
-                                                              String          definitionGUID,
-                                                              NullRequestBody requestBody)
+    public VoidResponse linkSubjectAreaToGovernanceDefinition(String                  serverName,
+                                                              String                  userId,
+                                                              String                  subjectAreaGUID,
+                                                              String                  definitionGUID,
+                                                              RelationshipRequestBody requestBody)
     {
         final String methodName = "linkSubjectAreaToGovernanceDefinition";
 
@@ -397,21 +519,72 @@ public class SubjectAreaRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-            handler.linkElementToElement(userId,
-                                         null,
-                                         null,
-                                         definitionGUID,
-                                         definitionGUIDParameterName,
-                                         OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                         subjectAreaGUID,
-                                         subjectAreaGUIDParameterName,
-                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                         false,
-                                         false,
-                                         OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                         OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                         null,
-                                         methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 subjectAreaGUID,
+                                                 subjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 subjectAreaGUID,
+                                                 subjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
+            }
+            else
+            {
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             definitionGUID,
+                                             definitionGUIDParameterName,
+                                             OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                             subjectAreaGUID,
+                                             subjectAreaGUIDParameterName,
+                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
+                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                             (InstanceProperties) null,
+                                             null,
+                                             null,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -430,7 +603,7 @@ public class SubjectAreaRESTServices
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of the subjectArea
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -438,11 +611,11 @@ public class SubjectAreaRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse unlinkSubjectAreaFromGovernanceDefinition(String          serverName,
-                                                                  String          userId,
-                                                                  String          subjectAreaGUID,
-                                                                  String          definitionGUID,
-                                                                  NullRequestBody requestBody)
+    public VoidResponse unlinkSubjectAreaFromGovernanceDefinition(String                  serverName,
+                                                                  String                  userId,
+                                                                  String                  subjectAreaGUID,
+                                                                  String                  definitionGUID,
+                                                                  RelationshipRequestBody requestBody)
     {
         final String methodName = "unlinkSubjectAreaToGovernanceDefinition";
 
@@ -459,23 +632,46 @@ public class SubjectAreaRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
 
-            handler.unlinkElementFromElement(userId,
-                                             false,
-                                             null,
-                                             null,
-                                             definitionGUID,
-                                             definitionGUIDParameterName,
-                                             OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                             subjectAreaGUID,
-                                             subjectAreaGUIDParameterName,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
-                                             OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                             null,
-                                             methodName);
+            if (requestBody != null)
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 subjectAreaGUID,
+                                                 subjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
+            else
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 subjectAreaGUID,
+                                                 subjectAreaGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
         }
         catch (Exception error)
         {
@@ -567,6 +763,9 @@ public class SubjectAreaRESTServices
             response.setElement(handler.getSubjectArea(userId,
                                                        qualifiedName,
                                                        qualifiedNameParameterName,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName));
         }
         catch (Exception error)
@@ -615,6 +814,9 @@ public class SubjectAreaRESTServices
                                                                                     domainIdentifier,
                                                                                     startFrom,
                                                                                     pageSize,
+                                                                                    false,
+                                                                                    false,
+                                                                                    new Date(),
                                                                                     methodName);
 
             response.setElementList(subjectAreas);
@@ -673,11 +875,16 @@ public class SubjectAreaRESTServices
                 subjectAreaDefinition.setParentSubjectAreaGUID(subjectAreaHandler.getSubjectAreaParentGUID(userId,
                                                                                                            subjectAreaGUID,
                                                                                                            subjectAreaGUIDParameterName,
+                                                                                                           false,
+                                                                                                           false,
+                                                                                                           new Date(),
                                                                                                            methodName));
 
                 subjectAreaDefinition.setNestedSubjectAreaGUIDs(subjectAreaHandler.getSubjectAreaChildrenGUIDs(userId,
                                                                                                                subjectAreaGUID,
                                                                                                                subjectAreaGUIDParameterName,
+                                                                                                               false,
+                                                                                                               false,
                                                                                                                new Date(),
                                                                                                                methodName));
 
@@ -690,10 +897,205 @@ public class SubjectAreaRESTServices
                                                                                                                                               null,
                                                                                                                                               0,
                                                                                                                                               0,
+                                                                                                                                              false,
+                                                                                                                                              false,
+                                                                                                                                              new Date(),
                                                                                                                                               methodName);
                 List<ElementStub> definitions = elementStubConverter.getNewBeans(ElementStub.class, relationships, true, methodName);
                 subjectAreaDefinition.setAssociatedGovernanceDefinitions(definitions);
+
+                response.setProperties(subjectAreaDefinition);
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add a subject area classification to a referenceable element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param requestBody identifier for a subject area
+     *
+     * @return void or
+     *  InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSubjectAreaMemberClassification(String                    serverName,
+                                                           String                    userId,
+                                                           String                    elementGUID,
+                                                           ClassificationRequestBody requestBody)
+    {
+        final String methodName = "addSubjectAreaMemberClassification";
+        final String elementGUIDParameterName = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SubjectAreaClassificationProperties)
+                {
+                    SubjectAreaClassificationProperties properties = (SubjectAreaClassificationProperties)requestBody.getProperties();
+
+                    handler.addSubjectAreaClassification(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
+                                                         elementGUID,
+                                                         elementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         properties.getSubjectAreaName(),
+                                                         false,
+                                                         false,
+                                                         properties.getEffectiveFrom(),
+                                                         properties.getEffectiveTo(),
+                                                         null,
+                                                         methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove a subject area classification from a referenceable.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param requestBody external source request body
+     *
+     * @return void or
+     *  InvalidParameterException guid or userId is null; guid is not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse deleteSubjectAreaMemberClassification(String                    serverName,
+                                                              String                    userId,
+                                                              String                    elementGUID,
+                                                              ExternalSourceRequestBody requestBody)
+    {
+        final String methodName = "deleteSubjectAreaMemberClassification";
+        final String elementGUIDParameterName = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeSubjectAreaClassification(userId,
+                                                        requestBody.getExternalSourceGUID(),
+                                                        requestBody.getExternalSourceName(),
+                                                        elementGUID,
+                                                        elementGUIDParameterName,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        false,
+                                                        false,
+                                                        null,
+                                                        methodName);
+            }
+            else
+            {
+                handler.removeSubjectAreaClassification(userId,
+                                                        null,
+                                                        null,
+                                                        elementGUID,
+                                                        elementGUIDParameterName,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        false,
+                                                        false,
+                                                        null,
+                                                        methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param subjectAreaName unique identifier for the subject area
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of subject area members or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public ElementStubListResponse getMembersOfSubjectArea(String serverName,
+                                                           String userId,
+                                                           String subjectAreaName,
+                                                           int    startFrom,
+                                                           int    pageSize)
+    {
+        final String methodName = "getMembersOfSubjectArea";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubListResponse response = new ElementStubListResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            response.setElements(handler.getSubjectAreaMembers(userId,
+                                                               subjectAreaName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               null,
+                                                               methodName));
         }
         catch (Exception error)
         {

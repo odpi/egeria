@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
@@ -79,7 +80,7 @@ class DataEngineCollectionHandlerTest {
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, COLLECTION_TYPE_GUID,
-                COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName)).thenReturn(GUID);
+                COLLECTION_TYPE_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -105,7 +106,7 @@ class DataEngineCollectionHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName);
+                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, mockedBuilder, null, methodName);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -145,7 +146,8 @@ class DataEngineCollectionHandlerTest {
         dataEngineCollectionHandler.addCollectionMembershipRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
-                REFERENCEABLE_TO_COLLECTION_TYPE_NAME, COLLECTION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                REFERENCEABLE_TO_COLLECTION_TYPE_NAME, COLLECTION_TYPE_NAME, PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                null);
     }
 
 

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -13,8 +14,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -22,8 +23,7 @@ import java.util.Map;
  */
 public class DataAssetExchangeService extends SchemaExchangeService
 {
-    private DataAssetExchangeClient  dataAssetExchangeClient;
-
+    private final DataAssetExchangeClient  dataAssetExchangeClient;
 
     /**
      * Create a new client to exchange data asset content with open metadata.
@@ -50,8 +50,6 @@ public class DataAssetExchangeService extends SchemaExchangeService
     }
 
 
-
-
     /* ======================================================================================
      * The Asset entity is the top level element to describe an implemented data asset such as a data store or data set.
      */
@@ -60,11 +58,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Create a new metadata element to represent the root of an asset.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
-     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
-     * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param assetExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param assetProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -73,15 +67,11 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDataAsset(boolean             assetManagerIsHome,
-                                  String              assetExternalIdentifier,
-                                  String              assetExternalIdentifierName,
-                                  String              assetExternalIdentifierUsage,
-                                  KeyPattern          assetExternalIdentifierKeyPattern,
-                                  Map<String, String> mappingProperties,
-                                  DataAssetProperties assetProperties) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public String createDataAsset(boolean                      assetManagerIsHome,
+                                  ExternalIdentifierProperties externalIdentifierProperties,
+                                  DataAssetProperties          assetProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "createDataAsset";
 
@@ -91,12 +81,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
                                                            assetManagerGUID,
                                                            assetManagerName,
                                                            assetManagerIsHome,
-                                                           assetExternalIdentifier,
-                                                           assetExternalIdentifierName,
-                                                           assetExternalIdentifierUsage,
-                                                           connectorName,
-                                                           assetExternalIdentifierKeyPattern,
-                                                           mappingProperties,
+                                                           externalIdentifierProperties,
                                                            assetProperties);
         }
         else
@@ -117,12 +102,8 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * The template defines additional classifications and relationships that should be added to the new asset.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this process
-     * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
-     * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param assetExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -131,16 +112,12 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDataAssetFromTemplate(boolean             assetManagerIsHome,
-                                              String              templateGUID,
-                                              String              assetExternalIdentifier,
-                                              String              assetExternalIdentifierName,
-                                              String              assetExternalIdentifierUsage,
-                                              KeyPattern          assetExternalIdentifierKeyPattern,
-                                              Map<String, String> mappingProperties,
-                                              TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public String createDataAssetFromTemplate(boolean                      assetManagerIsHome,
+                                              String                       templateGUID,
+                                              ExternalIdentifierProperties externalIdentifierProperties,
+                                              TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String methodName = "createDataAssetFromTemplate";
 
@@ -151,12 +128,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
                                                                        assetManagerName,
                                                                        assetManagerIsHome,
                                                                        templateGUID,
-                                                                       assetExternalIdentifier,
-                                                                       assetExternalIdentifierName,
-                                                                       assetExternalIdentifierUsage,
-                                                                       connectorName,
-                                                                       assetExternalIdentifierKeyPattern,
-                                                                       mappingProperties,
+                                                                       externalIdentifierProperties,
                                                                        templateProperties);
         }
         else
@@ -176,26 +148,24 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Update the metadata element representing an asset.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param assetProperties new properties for this element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDataAsset(String              userId,
-                                String              assetManagerGUID,
-                                String              assetManagerName,
                                 String              assetGUID,
                                 String              assetExternalIdentifier,
                                 boolean             isMergeUpdate,
-                                DataAssetProperties assetProperties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                DataAssetProperties assetProperties,
+                                Date                effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "updateDataAsset";
 
@@ -207,7 +177,10 @@ public class DataAssetExchangeService extends SchemaExchangeService
                                                     assetGUID,
                                                     assetExternalIdentifier,
                                                     isMergeUpdate,
-                                                    assetProperties);
+                                                    assetProperties,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
         }
         else
         {
@@ -229,21 +202,29 @@ public class DataAssetExchangeService extends SchemaExchangeService
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to publish
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void publishDataAsset(String userId,
-                                 String assetGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                 String assetGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "publishDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+            dataAssetExchangeClient.publishDataAsset(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     assetGUID,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
         }
         else
         {
@@ -265,13 +246,15 @@ public class DataAssetExchangeService extends SchemaExchangeService
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to withdraw
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void withdrawDataAsset(String userId,
-                                  String assetGUID) throws InvalidParameterException,
+                                  String assetGUID,
+                                  Date   effectiveTime) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
@@ -279,7 +262,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.withdrawDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+            dataAssetExchangeClient.withdrawDataAsset(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
         }
         else
         {
@@ -299,28 +288,33 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * elements such as schema and comments.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to remove
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDataAsset(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
                                 String assetGUID,
-                                String assetExternalIdentifier) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                String assetExternalIdentifier,
+                                Date   effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String methodName = "removeDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.removeDataAsset(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    assetGUID,
+                                                    assetExternalIdentifier,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
         }
         else
         {
@@ -339,28 +333,33 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Classify the asset to indicate that it can be used as reference data.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setDataAssetAsReferenceData(String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
                                             String assetGUID,
-                                            String assetExternalIdentifier) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                            String assetExternalIdentifier,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "setDataAssetAsReferenceData";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.setDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.setDataAssetAsReferenceData(userId,
+                                                                assetManagerGUID,
+                                                                assetManagerName,
+                                                                assetGUID,
+                                                                assetExternalIdentifier,
+                                                                effectiveTime,
+                                                                forLineage,
+                                                                forDuplicateProcessing);
         }
         else
         {
@@ -379,28 +378,33 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Remove the reference data designation from the asset.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearDataAssetAsReferenceData(String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
                                               String assetGUID,
-                                              String assetExternalIdentifier) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                              String assetExternalIdentifier,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName = "clearDataAssetAsReferenceData";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.clearDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.clearDataAssetAsReferenceData(userId,
+                                                                  assetManagerGUID,
+                                                                  assetManagerName,
+                                                                  assetGUID,
+                                                                  assetExternalIdentifier,
+                                                                  effectiveTime,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing);
         }
         else
         {
@@ -416,12 +420,262 @@ public class DataAssetExchangeService extends SchemaExchangeService
 
 
     /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param userId calling user
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param relationshipProperties unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupRelatedDataAsset(String                 userId,
+                                        boolean                assetManagerIsHome,
+                                        String                 relationshipTypeName,
+                                        String                 fromAssetGUID,
+                                        String                 toAssetGUID,
+                                        RelationshipProperties relationshipProperties,
+                                        Date                   effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "setupRelatedDataAsset";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            return dataAssetExchangeClient.setupRelatedDataAsset(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 assetManagerIsHome,
+                                                                 relationshipTypeName,
+                                                                 fromAssetGUID,
+                                                                 toAssetGUID,
+                                                                 relationshipProperties,
+                                                                 effectiveTime,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelationshipElement getAssetRelationship(String userId,
+                                                    String relationshipTypeName,
+                                                    String fromAssetGUID,
+                                                    String toAssetGUID,
+                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetRelationship(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            relationshipTypeName,
+                                                            fromAssetGUID,
+                                                            toAssetGUID,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param relationshipProperties description and/or purpose of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void   updateAssetRelationship(String                 userId,
+                                          String                 relationshipTypeName,
+                                          String                 relationshipGUID,
+                                          boolean                isMergeUpdate,
+                                          RelationshipProperties relationshipProperties,
+                                          Date                   effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName = "updateAssetRelationship";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.updateAssetRelationship(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            relationshipTypeName,
+                                                            relationshipGUID,
+                                                            isMergeUpdate,
+                                                            relationshipProperties,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetRelationship(String userId,
+                                       String relationshipTypeName,
+                                       String relationshipGUID,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "clearAssetRelationship";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            dataAssetExchangeClient.clearAssetRelationship(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           relationshipTypeName,
+                                                           relationshipGUID,
+                                                           effectiveTime,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RelationshipElement> getRelatedAssetsAtEnd2(String userId,
+                                                            String relationshipTypeName,
+                                                            String fromAssetGUID,
+                                                            int    startingFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return dataAssetExchangeClient.getRelatedAssetsAtEnd2(userId, assetManagerGUID, assetManagerName, relationshipTypeName, fromAssetGUID, startingFrom, pageSize, effectiveTime, forLineage,
+                                                              forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RelationshipElement> getRelatedAssetsAtEnd1(String userId,
+                                                            String relationshipTypeName,
+                                                            String toAssetGUID,
+                                                            int    startingFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return dataAssetExchangeClient.getRelatedAssetsAtEnd1(userId, assetManagerGUID, assetManagerName, relationshipTypeName, toAssetGUID, startingFrom, pageSize, effectiveTime, forLineage,
+                                                              forDuplicateProcessing);
+    }
+
+
+
+    /**
      * Retrieve the list of asset metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of matching metadata elements
      *
@@ -431,11 +685,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
      */
     public List<DataAssetElement> findDataAssets(String searchString,
                                                  int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                                 int    pageSize,
+                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -446,6 +702,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of matching metadata elements
      *
@@ -455,11 +712,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
      */
     public List<DataAssetElement> getDataAssetsByName(String name,
                                                       int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -468,6 +727,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      *
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of matching metadata elements
      *
@@ -475,12 +735,14 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> getDataAssetsForAssetManager(int startFrom,
-                                                               int pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(int  startFrom,
+                                                               int  pageSize,
+                                                               Date effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage,
+                                                                    forDuplicateProcessing);
     }
 
 
@@ -491,6 +753,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataAssetGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return matching metadata element
      *
@@ -501,10 +764,12 @@ public class DataAssetExchangeService extends SchemaExchangeService
     public DataAssetElement getDataAssetByGUID(String userId,
                                                String assetManagerGUID,
                                                String assetManagerName,
-                                               String dataAssetGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                               String dataAssetGUID,
+                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, dataAssetGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, dataAssetGUID, effectiveTime, forLineage,
+                                                          forDuplicateProcessing);
     }
 }

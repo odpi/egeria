@@ -4,7 +4,7 @@
 # Open Metadata Conformance Suite Client
 
 This module provides the client to retrieve the results of running the open metadata conformance suite
-tests.  These tests run in a specially configured [OMAG Server](../../open-metadata-publication/website/omag-server).
+tests.  These tests run in a specially configured [Conformance Test Server](https://egeria-project.org/concepts/conformance-test-server/).
 The client calls the conformance suite services REST API to retrieve the results.
 
 ----

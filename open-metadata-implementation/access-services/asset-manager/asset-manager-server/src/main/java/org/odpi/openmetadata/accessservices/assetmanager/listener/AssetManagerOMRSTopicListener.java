@@ -28,10 +28,10 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(AssetManagerOMRSTopicListener.class);
 
-    private AssetManagerOutTopicPublisher eventPublisher;
-    private AssetHandler                  assetHandler;
-    private String                        localServerUserId;
-    private List<String>                  supportedZones;
+    private final AssetManagerOutTopicPublisher eventPublisher;
+    private final AssetHandler                  assetHandler;
+    private final String                        localServerUserId;
+    private final List<String>                  supportedZones;
 
 
     /**
@@ -141,7 +141,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -180,7 +180,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -257,7 +257,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -296,7 +296,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -373,7 +373,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -414,7 +414,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -954,6 +954,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship                   relationship details
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public void processRefreshRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -974,8 +975,9 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
+    @SuppressWarnings(value="unchecked")
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,
                                           EntityProxy  entityProxy)

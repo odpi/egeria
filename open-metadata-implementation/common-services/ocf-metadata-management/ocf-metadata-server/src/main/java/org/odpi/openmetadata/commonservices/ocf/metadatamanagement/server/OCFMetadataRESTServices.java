@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class OCFMetadataRESTServices
 {
-    static private OCFMetadataInstanceHandler instanceHandler = new OCFMetadataInstanceHandler();
+    private static final  OCFMetadataInstanceHandler instanceHandler = new OCFMetadataInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OCFMetadataRESTServices.class),
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OCFMetadataRESTServices.class),
                                                                                   instanceHandler.getServiceName());
-    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private   final  RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -193,6 +193,9 @@ public class OCFMetadataRESTServices
                                                                                              serverName,
                                                                                              serviceURLName,
                                                                                              methodName),
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
         }
         catch (Exception error)
@@ -245,6 +248,8 @@ public class OCFMetadataRESTServices
                                                                                                    serverName,
                                                                                                    serviceURLName,
                                                                                                    methodName),
+                                                                 false,
+                                                                 false,
                                                                  new Date(),
                                                                  methodName));
         }
@@ -311,9 +316,9 @@ public class OCFMetadataRESTServices
             LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
                                                                                                                        methodName);
             LikeHandler<Like>                           likeHandler         = instanceHandler.getLikeHandler(userId, serverName, methodName);
-            LocationHandler<Location>                   locationHandler     = instanceHandler.getLocationHandler(userId, serverName, methodName);
-            NoteLogHandler<NoteLog>                     noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-            RatingHandler<Rating>                       ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            LocationHandler<Location>     locationHandler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader> noteLogHandler  = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            RatingHandler<Rating>         ratingHandler   = instanceHandler.getRatingHandler(userId, serverName, methodName);
             RelatedMediaHandler<RelatedMediaReference>  relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
             SearchKeywordHandler<SearchKeyword>         keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
             SchemaTypeHandler<SchemaType>               schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
@@ -334,6 +339,9 @@ public class OCFMetadataRESTServices
                                                                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                  connectionGUID,
                                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                 0,
+                                                                                 false,
+                                                                                 false,
                                                                                  effectiveTime,
                                                                                  methodName);
 
@@ -359,18 +367,18 @@ public class OCFMetadataRESTServices
             {
                 asset.setShortDescription(assetSummary);
                 response.setAsset(asset);
-                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, effectiveTime, methodName));
-                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, effectiveTime, methodName));
-                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, effectiveTime, methodName));
-                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, effectiveTime, methodName));
-                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, effectiveTime, methodName));
-                response.setInformalTagCount(informalTagHandler.countTags(userId, assetGUID, methodName));
-                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, effectiveTime, methodName));
-                response.setLikeCount(likeHandler.countLikes(userId, assetGUID, methodName));
-                response.setKeywordCount(keywordHandler.countKeywords(userId, assetGUID, methodName));
-                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, effectiveTime, methodName));
-                response.setNoteLogsCount(noteLogHandler.countAttachedNoteLogs(userId, assetGUID, methodName));
-                response.setRatingsCount(ratingHandler.countRatings(userId, assetGUID, methodName));
+                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, false, false,effectiveTime, methodName));
+                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setInformalTagCount(informalTagHandler.countTags(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setLikeCount(likeHandler.countLikes(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setKeywordCount(keywordHandler.countKeywords(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setNoteLogsCount(noteLogHandler.countAttachedNoteLogs(userId, assetGUID, false, false, effectiveTime, methodName));
+                response.setRatingsCount(ratingHandler.countRatings(userId, assetGUID, false, false, effectiveTime, methodName));
                 response.setRelatedAssetCount(relatedAssetHandler.getRelatedAssetCount(userId,
                                                                                        assetGUID,
                                                                                        assetGUIDParameterName,
@@ -378,10 +386,12 @@ public class OCFMetadataRESTServices
                                                                                        null,
                                                                                        null,
                                                                                        supportedZones,
+                                                                                       false,
+                                                                                       false,
                                                                                        effectiveTime,
                                                                                        methodName));
-                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID, effectiveTime, methodName));
-                response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName, effectiveTime, methodName));
+                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID,  false, false, effectiveTime, methodName));
+                response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName,  false, false, effectiveTime, methodName));
             }
         }
         catch (Exception error)
@@ -491,6 +501,8 @@ public class OCFMetadataRESTServices
                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                        elementStart,
                                                        maxElements,
+                                                       false,
+                                                       false,
                                                        new Date(),
                                                        methodName));
         }
@@ -556,6 +568,8 @@ public class OCFMetadataRESTServices
                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                   elementStart,
                                                                   maxElements,
+                                                                  false,
+                                                                  false,
                                                                   new Date(),
                                                                   methodName);
             List<CommentResponse> results = new ArrayList<>();
@@ -569,7 +583,7 @@ public class OCFMetadataRESTServices
                         CommentResponse commentResponse = new CommentResponse();
 
                         commentResponse.setComment(comment);
-                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), new Date(), methodName));
+                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), false, false, new Date(), methodName));
 
                         results.add(commentResponse);
                     }
@@ -718,6 +732,8 @@ public class OCFMetadataRESTServices
                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                             elementStart,
                                                             maxElements,
+                                                            false,
+                                                            false,
                                                             new Date(),
                                                             methodName));
         }
@@ -774,6 +790,8 @@ public class OCFMetadataRESTServices
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                       elementStart,
                                                                       maxElements,
+                                                                      false,
+                                                                      false,
                                                                       new Date(),
                                                                       methodName));
         }
@@ -830,6 +848,8 @@ public class OCFMetadataRESTServices
                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                            elementStart,
                                                            maxElements,
+                                                           false,
+                                                           false,
                                                            new Date(),
                                                            methodName));
         }
@@ -886,6 +906,9 @@ public class OCFMetadataRESTServices
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName));
         }
         catch (Exception error)
@@ -941,6 +964,8 @@ public class OCFMetadataRESTServices
                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                  elementStart,
                                                  maxElements,
+                                                 false,
+                                                 false,
                                                  new Date(),
                                                  methodName));
         }
@@ -997,6 +1022,9 @@ public class OCFMetadataRESTServices
                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                               elementStart,
                                               maxElements,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName));
         }
         catch (Exception error)
@@ -1045,15 +1073,17 @@ public class OCFMetadataRESTServices
             LocationHandler<Location> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getLocations(userId,
-                                                  assetGUID,
-                                                  guidParameterName,
-                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                  elementStart,
-                                                  maxElements,
-                                                  new Date(),
-                                                  methodName));
+            response.setList(handler.getAssetLocations(userId,
+                                                       assetGUID,
+                                                       guidParameterName,
+                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                       elementStart,
+                                                       maxElements,
+                                                       false,
+                                                       false,
+                                                       new Date(),
+                                                       methodName));
         }
         catch (Exception error)
         {
@@ -1098,30 +1128,33 @@ public class OCFMetadataRESTServices
 
         try
         {
-            NoteLogHandler<NoteLog> handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader> handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId,
-                                                                          assetGUID,
-                                                                          guidParameterName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                          elementStart,
-                                                                          maxElements,
-                                                                          methodName);
+            List<NoteLogHeader>          noteLogs = handler.getAttachedNoteLogs(userId,
+                                                                                assetGUID,
+                                                                                guidParameterName,
+                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                                elementStart,
+                                                                                maxElements,
+                                                                                false,
+                                                                                false,
+                                                                                new Date(),
+                                                                                methodName);
             List<NoteLogResponse>  results = new ArrayList<>();
 
             if (noteLogs != null)
             {
                 NoteHandler<Note>  noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
-                for (NoteLog noteLog : noteLogs)
+                for (NoteLogHeader noteLog : noteLogs)
                 {
                     if (noteLog != null)
                     {
                         NoteLogResponse noteLogResponse = new NoteLogResponse();
 
                         noteLogResponse.setNoteLog(noteLog);
-                        noteLogResponse.setNoteCount(noteHandler.countAttachedNotes(userId, noteLog.getGUID(), methodName));
+                        noteLogResponse.setNoteCount(noteHandler.countAttachedNotes(userId, noteLog.getGUID(), false, false, new Date(), methodName));
 
                         results.add(noteLogResponse);
                     }
@@ -1192,6 +1225,9 @@ public class OCFMetadataRESTServices
                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                               elementStart,
                                               maxElements,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName));
         }
         catch (Exception error)
@@ -1247,6 +1283,9 @@ public class OCFMetadataRESTServices
                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                 elementStart,
                                                 maxElements,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName));
         }
         catch (Exception error)
@@ -1306,6 +1345,8 @@ public class OCFMetadataRESTServices
                                                       0,
                                                       elementStart,
                                                       maxElements,
+                                                      false,
+                                                      false,
                                                       new Date(),
                                                       methodName));
         }
@@ -1365,6 +1406,8 @@ public class OCFMetadataRESTServices
                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                         elementStart,
                                                         maxElements,
+                                                        false,
+                                                        false,
                                                         new Date(),
                                                         methodName));
             response.setStartingFromElement(elementStart);
@@ -1422,6 +1465,8 @@ public class OCFMetadataRESTServices
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
+                                                     false,
+                                                     false,
                                                      new Date(),
                                                      methodName));
         }
@@ -1480,6 +1525,8 @@ public class OCFMetadataRESTServices
                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                              elementStart,
                                                                              maxElements,
+                                                                             false,
+                                                                             false,
                                                                              new Date(),
                                                                              methodName));
         }

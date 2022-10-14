@@ -76,8 +76,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * Create the API Operation object.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param apiGUID unique identifier of the owning topic
      * @param apiGUIDParameterName parameter supplying apiGUID
      * @param qualifiedName unique name for the API Operation - used in other configuration
@@ -89,9 +89,14 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param usage guidance on how the schema should be used.
      * @param encodingStandard format of the schema
      * @param namespace namespace where the schema is defined.
-     * @param additionalProperties additional properties for a API Operation
+     * @param additionalProperties additional properties for an API Operation
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a API Operation subtype
+     * @param extendedProperties  properties for an API Operation subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new API Operation object
@@ -116,6 +121,11 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                      Map<String, String> additionalProperties,
                                      String              suppliedTypeName,
                                      Map<String, Object> extendedProperties,
+                                     Date                effectiveFrom,
+                                     Date                effectiveTo,
+                                     boolean             forLineage,
+                                     boolean             forDuplicateProcessing,
+                                     Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -144,6 +154,11 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                              apiGUID,
                                                              apiGUIDParameterName,
                                                              qualifiedName,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
                                                              methodName);
 
         SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
@@ -164,15 +179,15 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         builder.setAnchors(userId, apiGUID, methodName);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String apiOperationGUID = this.createBeanInRepository(userId,
                                                               externalSourceGUID,
                                                               externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
+                                                              effectiveTime,
                                                               methodName);
 
         if (apiOperationGUID != null)
@@ -182,22 +197,23 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
              */
             final String apiOperationGUIDParameterName = "apiOperationGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      apiSchemaTypeGUID,
-                                      apiSchemaTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                      apiOperationGUID,
-                                      apiOperationGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               apiSchemaTypeGUID,
+                                               apiSchemaTypeGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                               apiOperationGUID,
+                                               apiOperationGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return apiOperationGUID;
@@ -205,17 +221,22 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a API Operation from a template.
+     * Create an API Operation from a template.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param apiGUID unique identifier of the owning topic
      * @param apiGUIDParameterName parameter supplying apiGUID
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the API Operation - used in other configuration
      * @param displayName short display name for the API Operation
      * @param description description of the API Operation
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -224,18 +245,23 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAPIOperationFromTemplate(String userId,
-                                                 String externalSourceGUID,
-                                                 String externalSourceName,
-                                                 String apiGUID,
-                                                 String apiGUIDParameterName,
-                                                 String templateGUID,
-                                                 String qualifiedName,
-                                                 String displayName,
-                                                 String description,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public String createAPIOperationFromTemplate(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  apiGUID,
+                                                 String  apiGUIDParameterName,
+                                                 String  templateGUID,
+                                                 String  qualifiedName,
+                                                 String  displayName,
+                                                 String  description,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -252,6 +278,11 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                              apiGUID,
                                                              apiGUIDParameterName,
                                                              qualifiedName,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
                                                              methodName);
 
         SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
@@ -271,6 +302,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                               qualifiedName,
                                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
+                                                              supportedZones,
                                                               methodName);
 
         /*
@@ -278,22 +310,23 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
          */
         final String apiOperationGUIDParameterName = "apiOperationGUID";
 
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  apiSchemaTypeGUID,
-                                  apiSchemaTypeGUIDParameterName,
-                                  OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                  apiOperationGUID,
-                                  apiOperationGUIDParameterName,
-                                  OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                  null,
-                                  methodName);
+        this.uncheckedLinkElementToElement(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           apiSchemaTypeGUID,
+                                           apiSchemaTypeGUIDParameterName,
+                                           OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                           apiOperationGUID,
+                                           apiOperationGUIDParameterName,
+                                           OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           supportedZones,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                           null,
+                                           effectiveTime,
+                                           methodName);
 
         return apiOperationGUID;
     }
@@ -303,8 +336,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * Update the API Operation.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param apiOperationGUID unique identifier for the API Operation to update
      * @param apiOperationGUIDParameterName parameter supplying the API Operation
      * @param qualifiedName unique name for the API Operation - used in other configuration
@@ -319,7 +352,12 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for an API Operation
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance API Operation subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -343,7 +381,12 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                      Map<String, String> additionalProperties,
                                      String              suppliedTypeName,
                                      Map<String, Object> extendedProperties,
+                                     Date                effectiveFrom,
+                                     Date                effectiveTo,
                                      boolean             isMergeUpdate,
+                                     boolean             forLineage,
+                                     boolean             forDuplicateProcessing,
+                                     Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -384,6 +427,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -391,40 +436,46 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     apiOperationGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
-     * Remove the metadata element representing a API Operations.
+     * Remove the metadata element representing an API Operations.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param apiOperationGUID unique identifier of the metadata element to remove
      * @param apiOperationGUIDParameterName parameter for apiOperationGUID
      * @param qualifiedName validating property
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeAPIOperation(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String apiOperationGUID,
-                                   String apiOperationGUIDParameterName,
-                                   String qualifiedName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void removeAPIOperation(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  apiOperationGUID,
+                                   String  apiOperationGUIDParameterName,
+                                   String  qualifiedName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -435,9 +486,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -451,6 +502,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -459,14 +513,17 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findAPIOperations(String userId,
-                                     String searchString,
-                                     String searchStringParameterName,
-                                     int    startFrom,
-                                     int    pageSize,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public List<B> findAPIOperations(String  userId,
+                                     String  searchString,
+                                     String  searchStringParameterName,
+                                     int     startFrom,
+                                     int     pageSize,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -476,7 +533,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              forLineage,
+                              forDuplicateProcessing,
+                              effectiveTime,
                               methodName);
     }
 
@@ -490,7 +549,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -499,15 +560,17 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getAPIOperationsByName(String userId,
-                                            String name,
-                                            String nameParameterName,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            Date   effectiveTime,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<B>   getAPIOperationsByName(String  userId,
+                                            String  name,
+                                            String  nameParameterName,
+                                            int     startFrom,
+                                            int     pageSize,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -525,8 +588,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -545,7 +608,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param apiGUIDParameterName parameter name of the apiGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of API Operations element
@@ -554,15 +619,17 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getAPIOperationsForAPI(String userId,
-                                          String apiGUID,
-                                          String apiGUIDParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B> getAPIOperationsForAPI(String  userId,
+                                          String  apiGUID,
+                                          String  apiGUIDParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         /*
          * The API Operations are attached via an event list.
@@ -574,8 +641,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                                                  false,
-                                                                  false,
+                                                                  2,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
                                                                   supportedZones,
                                                                   effectiveTime,
                                                                   methodName);
@@ -594,8 +662,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             2,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             startFrom,
                                             pageSize,
                                             effectiveTime,
@@ -610,10 +678,15 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * Create/retrieve the API schema type for the operation.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param apiGUID topic to retrieve from
      * @param apiGUIDParameterName parameter name or apiGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of event list
@@ -622,15 +695,20 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private String getAPISchemaTypeGUID(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String apiGUID,
-                                        String apiGUIDParameterName,
-                                        String topicQualifiedName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    private String getAPISchemaTypeGUID(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  apiGUID,
+                                        String  apiGUIDParameterName,
+                                        String  topicQualifiedName,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         String apiSchemaTypeGUID;
 
@@ -641,10 +719,11 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                                                  false,
-                                                                  false,
+                                                                  2,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
                                                                   supportedZones,
-                                                                  null,
+                                                                  effectiveTime,
                                                                   methodName);
 
         if (apiSchemaTypeEntity == null)
@@ -681,12 +760,15 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           apiSchemaTypeGUID,
                                           apiSchemaTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          effectiveTime,
                                           methodName);
             }
             else
@@ -709,7 +791,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -718,20 +802,22 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getAPIOperationByGUID(String userId,
-                                   String guid,
-                                   String guidParameterName,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public B getAPIOperationByGUID(String  userId,
+                                   String  guid,
+                                   String  guidParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
 

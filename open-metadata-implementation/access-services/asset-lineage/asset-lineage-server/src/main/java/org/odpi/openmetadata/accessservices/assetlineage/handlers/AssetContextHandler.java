@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -50,7 +51,7 @@ public class AssetContextHandler {
     private final OpenMetadataAPIGenericHandler<GenericStub> genericHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
-
+    private final ClockService clockService;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -58,11 +59,14 @@ public class AssetContextHandler {
      * @param genericHandler    handler for calling the repository services
      * @param handlerHelper     helper handler
      * @param supportedZones    configurable list of zones that Asset Lineage is allowed to retrieve Assets from
+     * @param clockService      clock service
      */
-    public AssetContextHandler(OpenMetadataAPIGenericHandler<GenericStub> genericHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
+    public AssetContextHandler(OpenMetadataAPIGenericHandler<GenericStub> genericHandler, HandlerHelper handlerHelper,
+                               List<String> supportedZones, ClockService clockService) {
         this.genericHandler = genericHandler;
         this.handlerHelper = handlerHelper;
         this.supportedZones = supportedZones;
+        this.clockService = clockService;
     }
 
     /**
@@ -221,7 +225,8 @@ public class AssetContextHandler {
             return false;
         }
 
-        return genericHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
+        return genericHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, true,
+                false, clockService.getNow(), methodName);
     }
 
     /**

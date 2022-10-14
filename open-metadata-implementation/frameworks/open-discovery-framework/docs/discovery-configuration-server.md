@@ -18,7 +18,7 @@ Egeria's discovery configuration server support is implemented by the
 It has a [client](../../../access-services/discovery-engine/discovery-engine-client) called `DiscoveryConfigurationClient` that
 implements the ODF's  `DiscoveryConfigurationServer` interface.
 It also supports event notifications through 
-the [Discovery Engine OMAS's out topic](../../../access-services/discovery-engine/docs/concepts/discovery-engine-omas-out-topic.md).
+the [Discovery Engine OMAS's out topic](https://egeria-project.org/concepts/out-topic).
 
 
 ----

@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-![Technical Preview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png)
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
 
 # Design Model Archives
 
@@ -24,9 +24,9 @@ or at next server restart if the archive is configured in the server's configura
 document.
 
 The same archive can be loaded multiple times in the server because
-the writer records the unique identifiers ([GUIDs](../../../open-metadata-publication/website/basic-concepts/guid.md))
+the writer records the unique identifiers ([GUIDs](https://egeria-project.org/concepts/guid))
 for each element in the archive in a file.  As long as that file is available
-to the writer, it will used the same GUID for each element and the
+to the writer, it will use the same GUID for each element and the
 open metadata repository will only add new content to the repository
 each time the archive is loaded.
 

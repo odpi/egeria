@@ -23,10 +23,10 @@ import java.util.List;
  */
 public class LocationRESTServices
 {
-    private static DigitalArchitectureInstanceHandler   instanceHandler     = new DigitalArchitectureInstanceHandler();
-    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LocationRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final DigitalArchitectureInstanceHandler   instanceHandler     = new DigitalArchitectureInstanceHandler();
+    private static final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LocationRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
     /**
@@ -76,7 +76,10 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createLocation(userId,
+                                                        null,
+                                                        null,
                                                         locationProperties.getQualifiedName(),
+                                                        locationProperties.getIdentifier(),
                                                         locationProperties.getDisplayName(),
                                                         locationProperties.getDescription(),
                                                         locationProperties.getAdditionalProperties(),
@@ -84,6 +87,7 @@ public class LocationRESTServices
                                                         locationProperties.getExtendedProperties(),
                                                         null,
                                                         null,
+                                                        new Date(),
                                                         methodName));
             }
             else
@@ -135,8 +139,11 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createLocationFromTemplate(userId,
+                                                                    null,
+                                                                    null,
                                                                     templateGUID,
                                                                     templateProperties.getQualifiedName(),
+                                                                    templateProperties.getIdentifier(),
                                                                     templateProperties.getDisplayName(),
                                                                     templateProperties.getDescription(),
                                                                     methodName));
@@ -192,9 +199,12 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 handler.updateLocation(userId,
+                                       null,
+                                       null,
                                        locationGUID,
                                        guidParameter,
                                        locationProperties.getQualifiedName(),
+                                       locationProperties.getIdentifier(),
                                        locationProperties.getDisplayName(),
                                        locationProperties.getDescription(),
                                        locationProperties.getAdditionalProperties(),
@@ -203,6 +213,9 @@ public class LocationRESTServices
                                        isMergeUpdate,
                                        null,
                                        null,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
             }
             else
@@ -255,12 +268,19 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 handler.addFixedLocationClassification(userId,
+                                                       null,
+                                                       null,
                                                        locationGUID,
                                                        locationGUIDParameter,
                                                        requestBody.getCoordinates(),
                                                        requestBody.getMapProjection(),
                                                        requestBody.getPostalAddress(),
                                                        requestBody.getTimeZone(),
+                                                       null,
+                                                       null,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName);
             }
             else
@@ -311,8 +331,13 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.removeFixedLocationClassification(userId,
+                                                      null,
+                                                      null,
                                                       locationGUID,
                                                       locationGUIDParameter,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
 
         }
@@ -361,10 +386,17 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 handler.addSecureLocationClassification(userId,
+                                                        null,
+                                                        null,
                                                         locationGUID,
                                                         locationGUIDParameter,
                                                         requestBody.getDescription(),
                                                         requestBody.getLevel(),
+                                                        null,
+                                                        null,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName);
             }
             else
@@ -416,8 +448,13 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.removeSecureLocationClassification(userId,
+                                                       null,
+                                                       null,
                                                        locationGUID,
                                                        locationGUIDParameter,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName);
         }
         catch (Exception error)
@@ -465,9 +502,16 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 handler.addCyberLocationClassification(userId,
+                                                       null,
+                                                       null,
                                                        locationGUID,
                                                        locationGUIDParameter,
                                                        requestBody.getNetworkAddress(),
+                                                       null,
+                                                       null,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName);
             }
             else
@@ -519,8 +563,13 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.removeCyberLocationClassification(userId,
+                                                      null,
+                                                      null,
                                                       locationGUID,
                                                       locationGUIDParameter,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
         }
         catch (Exception error)
@@ -566,7 +615,15 @@ public class LocationRESTServices
 
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            handler.removeLocation(userId, locationGUID, guidParameter, methodName);
+            handler.removeLocation(userId,
+                                   null,
+                                   null,
+                                   locationGUID,
+                                   guidParameter,
+                                   false,
+                                   false,
+                                   new Date(),
+                                   methodName);
         }
         catch (Exception error)
         {
@@ -615,12 +672,17 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.setupNestedLocation(userId,
+                                        null,
+                                        null,
                                         parentLocationGUID,
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
                                         null,
                                         null,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -670,11 +732,15 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.clearNestedLocation(userId,
+                                        null,
+                                        null,
                                         parentLocationGUID,
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
-                                        null,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -724,12 +790,17 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.setupPeerLocations(userId,
+                                       null,
+                                       null,
                                         locationOneGUID,
                                         locationOneGUIDParameter,
                                         locationTwoGUID,
                                         locationTwoGUIDParameter,
                                         null,
                                         null,
+                                       false,
+                                       false,
+                                       new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -779,11 +850,15 @@ public class LocationRESTServices
             LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
             handler.clearPeerLocations(userId,
+                                       null,
+                                       null,
                                        locationOneGUID,
                                        locationOneGUIDParameter,
                                        locationTwoGUID,
                                        locationTwoGUIDParameter,
-                                       null,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
         }
         catch (Exception error)
@@ -842,6 +917,8 @@ public class LocationRESTServices
                                                                     null,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    false,
+                                                                    false,
                                                                     new Date(),
                                                                     methodName);
                 response.setElementList(locations);

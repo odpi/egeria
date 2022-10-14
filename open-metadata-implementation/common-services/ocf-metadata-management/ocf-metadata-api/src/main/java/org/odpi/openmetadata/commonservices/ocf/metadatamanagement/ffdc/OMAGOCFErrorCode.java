@@ -82,7 +82,7 @@ public enum OMAGOCFErrorCode implements ExceptionMessageSet
 
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

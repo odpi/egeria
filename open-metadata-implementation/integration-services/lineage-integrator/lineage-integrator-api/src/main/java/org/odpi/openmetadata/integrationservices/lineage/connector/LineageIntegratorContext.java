@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEven
 import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -16,9 +17,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,18 +30,21 @@ import java.util.List;
  */
 public class LineageIntegratorContext implements OpenLineageListenerManager
 {
-    private OpenLineageListenerManager openLineageListenerManager;
-    private DataAssetExchangeClient    dataAssetExchangeClient;
-    private LineageExchangeClient      lineageExchangeClient;
-    private GovernanceExchangeClient   governanceExchangeClient;
-    private AssetManagerEventClient    eventClient;
-    private String                     userId;
-    private String                     assetManagerGUID;
-    private String                     assetManagerName;
-    private String                     connectorName;
-    private String                     integrationServiceName;
-    private AuditLog                   auditLog;
+    private final OpenLineageListenerManager openLineageListenerManager;
+    private final DataAssetExchangeClient    dataAssetExchangeClient;
+    private final LineageExchangeClient      lineageExchangeClient;
+    private final GovernanceExchangeClient   governanceExchangeClient;
+    private final StewardshipExchangeClient  stewardshipExchangeClient;
+    private final AssetManagerEventClient    eventClient;
+    private final String                     userId;
+    private final String                     assetManagerGUID;
+    private final String                     assetManagerName;
+    private final String                     connectorName;
+    private final String                     integrationServiceName;
+    private final AuditLog                   auditLog;
 
+    private boolean       forLineage             = true;
+    private final boolean forDuplicateProcessing = false;
 
     /**
      * Create a new context for a connector.
@@ -47,6 +53,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param dataAssetExchangeClient client for data asset requests
      * @param lineageExchangeClient client for lineage requests
      * @param governanceExchangeClient client for governance actions and related elements
+     * @param stewardshipExchangeClient client for attaching governance metadata
      * @param eventClient client managing listeners for the OMAS OutTopic
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
@@ -59,6 +66,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                     DataAssetExchangeClient    dataAssetExchangeClient,
                                     LineageExchangeClient      lineageExchangeClient,
                                     GovernanceExchangeClient   governanceExchangeClient,
+                                    StewardshipExchangeClient  stewardshipExchangeClient,
                                     AssetManagerEventClient    eventClient,
                                     String                     userId,
                                     String                     assetManagerGUID,
@@ -71,6 +79,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
         this.dataAssetExchangeClient    = dataAssetExchangeClient;
         this.lineageExchangeClient      = lineageExchangeClient;
         this.governanceExchangeClient   = governanceExchangeClient;
+        this.stewardshipExchangeClient  = stewardshipExchangeClient;
         this.eventClient                = eventClient;
         this.userId                     = userId;
         this.assetManagerGUID           = assetManagerGUID;
@@ -78,6 +87,47 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
         this.connectorName              = connectorName;
         this.integrationServiceName     = integrationServiceName;
         this.auditLog                   = auditLog;
+    }
+
+    /* ========================================================
+     * Returning the integration service name from the configuration
+     */
+
+    /**
+     * Return the qualified name of the integration services that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getIntegrationServiceName()
+    {
+        return integrationServiceName;
+    }
+
+
+    /* ========================================================
+     * Set up the forLineage flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @param forLineage boolean flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
     }
 
 
@@ -145,7 +195,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
     }
 
 
-
     /* ======================================================================================
      * The Asset entity is the top level element to describe an implemented data asset such as a data store or data set.
      */
@@ -171,11 +220,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                        assetManagerGUID,
                                                        assetManagerName,
                                                        assetManagerIsHome,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
                                                        null,
                                                        assetProperties);
     }
@@ -207,11 +251,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                    assetManagerIsHome,
                                                                    templateGUID,
                                                                    null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
                                                                    templateProperties);
     }
 
@@ -222,6 +261,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param assetProperties new properties for this element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -229,9 +269,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void updateDataAsset(String              assetGUID,
                                 boolean             isMergeUpdate,
-                                DataAssetProperties assetProperties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                DataAssetProperties assetProperties,
+                                Date                effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         dataAssetExchangeClient.updateDataAsset(userId,
                                                 assetManagerGUID,
@@ -239,7 +280,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                 assetGUID,
                                                 null,
                                                 isMergeUpdate,
-                                                assetProperties);
+                                                assetProperties,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -249,16 +293,24 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * instance of the Asset Manager OMAS).
      *
      * @param assetGUID unique identifier of the metadata element to publish
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishDataAsset(String assetGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void publishDataAsset(String assetGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+        dataAssetExchangeClient.publishDataAsset(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 assetGUID,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -268,16 +320,24 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
      *
      * @param assetGUID unique identifier of the metadata element to withdraw
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawDataAsset(String assetGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void withdrawDataAsset(String assetGUID,
+                                  Date   effectiveTime) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        dataAssetExchangeClient.withdrawDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+        dataAssetExchangeClient.withdrawDataAsset(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  assetGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -286,16 +346,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * elements such as schema and comments.
      *
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDataAsset(String assetGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void removeDataAsset(String assetGUID,
+                                Date   effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        dataAssetExchangeClient.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.removeDataAsset(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                assetGUID,
+                                                null,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -303,16 +372,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Classify the data asset to indicate that it can be used as reference data.
      *
      * @param assetGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setDataAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void setDataAssetAsReferenceData(String assetGUID,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        dataAssetExchangeClient.setDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.setDataAssetAsReferenceData(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            assetGUID,
+                                                            null,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
     }
 
 
@@ -320,16 +398,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the reference data designation from the asset.
      *
      * @param assetGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void clearDataAssetAsReferenceData(String assetGUID,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        dataAssetExchangeClient.clearDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.clearDataAssetAsReferenceData(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              assetGUID,
+                                                              null,
+                                                              effectiveTime,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
     }
 
 
@@ -340,6 +427,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -349,11 +437,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<DataAssetElement> findDataAssets(String searchString,
                                                  int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                                 int    pageSize,
+                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -364,6 +454,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -373,11 +464,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<DataAssetElement> getDataAssetsByName(String name,
                                                       int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -386,6 +479,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -393,12 +487,14 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataAssetElement> getDataAssetsForAssetManager(int startFrom,
-                                                               int pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(int  startFrom,
+                                                               int  pageSize,
+                                                               Date effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage,
+                                                                    forDuplicateProcessing);
     }
 
 
@@ -406,6 +502,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the asset metadata element with the supplied unique identifier.
      *
      * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -413,11 +510,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataAssetElement getDataAssetByGUID(String openMetadataGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public DataAssetElement getDataAssetByGUID(String openMetadataGUID,
+                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID, effectiveTime, forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
@@ -449,11 +548,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                         assetManagerName,
                                                         assetManagerIsHome,
                                                         null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         schemaTypeProperties);
     }
 
@@ -483,11 +579,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                     assetManagerIsHome,
                                                                     templateGUID,
                                                                     null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
                                                                     templateProperties);
     }
 
@@ -498,6 +589,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaTypeProperties new properties for the metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -505,9 +597,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void updateSchemaType(String               schemaTypeGUID,
                                  boolean              isMergeUpdate,
-                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                 SchemaTypeProperties schemaTypeProperties,
+                                 Date                 effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         dataAssetExchangeClient.updateSchemaType(userId,
                                                  assetManagerGUID,
@@ -515,7 +608,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                  schemaTypeGUID,
                                                  null,
                                                  isMergeUpdate,
-                                                 schemaTypeProperties);
+                                                 schemaTypeProperties,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -526,17 +622,21 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param properties properties for the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaTypeParent(boolean assetManagerIsHome,
-                                      String  schemaTypeGUID,
-                                      String  parentElementGUID,
-                                      String  parentElementTypeName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public void setupSchemaTypeParent(boolean                assetManagerIsHome,
+                                      String                 schemaTypeGUID,
+                                      String                 parentElementGUID,
+                                      String                 parentElementTypeName,
+                                      RelationshipProperties properties,
+                                      Date                   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         dataAssetExchangeClient.setupSchemaTypeParent(userId,
                                                       assetManagerGUID,
@@ -544,7 +644,11 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                       assetManagerIsHome,
                                                       schemaTypeGUID,
                                                       parentElementGUID,
-                                                      parentElementTypeName);
+                                                      parentElementTypeName,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      properties);
     }
 
 
@@ -554,6 +658,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -561,16 +666,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void clearSchemaTypeParent(String schemaTypeGUID,
                                       String parentElementGUID,
-                                      String parentElementTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                      String parentElementTypeName,
+                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         dataAssetExchangeClient.clearSchemaTypeParent(userId,
                                                       assetManagerGUID,
                                                       assetManagerName,
                                                       schemaTypeGUID,
                                                       parentElementGUID,
-                                                      parentElementTypeName);
+                                                      parentElementTypeName,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -578,16 +687,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the metadata element representing a schema type.
      *
      * @param schemaTypeGUID unique identifier of the metadata element to remove
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeSchemaType(String schemaTypeGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void removeSchemaType(String schemaTypeGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        dataAssetExchangeClient.removeSchemaType(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, null);
+        dataAssetExchangeClient.removeSchemaType(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 schemaTypeGUID,
+                                                 null,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -598,6 +716,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -607,11 +726,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<SchemaTypeElement> findSchemaType(String searchString,
                                                   int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                  int    pageSize,
+                                                  Date   effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return dataAssetExchangeClient.findSchemaType(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findSchemaType(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      searchString,
+                                                      startFrom,
+                                                      pageSize,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -620,6 +748,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return metadata element describing the schema type associated with the requested parent element
      *
@@ -628,15 +757,19 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public SchemaTypeElement getSchemaTypeForElement(String parentElementGUID,
-                                                     String parentElementTypeName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                                     String parentElementTypeName,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         return dataAssetExchangeClient.getSchemaTypeForElement(userId,
                                                                assetManagerGUID,
                                                                assetManagerName,
                                                                parentElementGUID,
-                                                               parentElementTypeName);
+                                                               parentElementTypeName,
+                                                               effectiveTime,
+                                                               forLineage,
+                                                               forDuplicateProcessing);
     }
 
 
@@ -647,6 +780,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -656,11 +790,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<SchemaTypeElement>   getSchemaTypeByName(String name,
                                                          int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                         int    pageSize,
+                                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getSchemaTypeByName(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           name,
+                                                           startFrom,
+                                                           pageSize,
+                                                           effectiveTime,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -668,6 +811,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the schema type metadata element with the supplied unique identifier.
      *
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return requested metadata element
      *
@@ -675,11 +819,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID,
+                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+        return dataAssetExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -687,6 +833,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the header of the metadata element connected to a schema type.
      *
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return header for parent element (data asset, process, port)
      *
@@ -694,11 +841,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ElementHeader getSchemaTypeParent(String schemaTypeGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public ElementHeader getSchemaTypeParent(String schemaTypeGUID,
+                                             Date   effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+        return dataAssetExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -712,6 +861,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param schemaAttributeProperties properties for the schema attribute
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the schema attribute
      *
@@ -721,9 +871,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public String createSchemaAttribute(boolean                   assetManagerIsHome,
                                         String                    schemaElementGUID,
-                                        SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                        SchemaAttributeProperties schemaAttributeProperties,
+                                        Date                      effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaAttribute(userId,
                                                              assetManagerGUID,
@@ -731,12 +882,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                              assetManagerIsHome,
                                                              schemaElementGUID,
                                                              null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             schemaAttributeProperties);
+                                                             schemaAttributeProperties,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
     }
 
 
@@ -747,6 +896,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the schema attribute
      *
@@ -757,9 +907,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
     public String createSchemaAttributeFromTemplate(boolean            assetManagerIsHome,
                                                     String             schemaElementGUID,
                                                     String             templateGUID,
-                                                    TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                                    TemplateProperties templateProperties,
+                                                    Date               effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaAttributeFromTemplate(userId,
                                                                          assetManagerGUID,
@@ -768,12 +919,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          schemaElementGUID,
                                                                          templateGUID,
                                                                          null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         templateProperties);
+                                                                         templateProperties,
+                                                                         effectiveTime,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing);
     }
 
 
@@ -783,6 +932,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaAttributeProperties new properties for the schema attribute
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -790,9 +940,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void updateSchemaAttribute(String                    schemaAttributeGUID,
                                       boolean                   isMergeUpdate,
-                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                      SchemaAttributeProperties schemaAttributeProperties,
+                                      Date                      effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         dataAssetExchangeClient.updateSchemaAttribute(userId,
                                                       assetManagerGUID,
@@ -800,7 +951,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                       schemaAttributeGUID,
                                                       null,
                                                       isMergeUpdate,
-                                                      schemaAttributeProperties);
+                                                      schemaAttributeProperties,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -810,16 +964,18 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param formula description of how the value is calculated
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setSchemaElementAsCalculatedValue(boolean                   assetManagerIsHome,
-                                                  String schemaElementGUID,
-                                                  String formula) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void setSchemaElementAsCalculatedValue(boolean assetManagerIsHome,
+                                                  String  schemaElementGUID,
+                                                  String  formula,
+                                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         dataAssetExchangeClient.setSchemaElementAsCalculatedValue(userId,
                                                                   assetManagerGUID,
@@ -827,7 +983,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                   assetManagerIsHome,
                                                                   schemaElementGUID,
                                                                   null,
-                                                                  formula);
+                                                                  formula,
+                                                                  effectiveTime,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing);
     }
 
 
@@ -835,20 +994,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the calculated value designation from the schema element.
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaElementAsCalculatedValue(String schemaElementGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void clearSchemaElementAsCalculatedValue(String schemaElementGUID,
+                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         dataAssetExchangeClient.clearSchemaElementAsCalculatedValue(userId,
                                                                     assetManagerGUID,
                                                                     assetManagerName,
                                                                     schemaElementGUID,
-                                                                    null);
+                                                                    null,
+                                                                    effectiveTime,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing);
     }
 
 
@@ -860,6 +1024,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param primaryKeyName name of the primary key (if different from the column name)
      * @param primaryKeyPattern key pattern used to maintain the primary key
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -869,9 +1034,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                         String     schemaAttributeGUID,
                                         String     schemaAttributeExternalIdentifier,
                                         String     primaryKeyName,
-                                        KeyPattern primaryKeyPattern) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        KeyPattern primaryKeyPattern,
+                                        Date       effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         dataAssetExchangeClient.setupColumnAsPrimaryKey(userId,
                                                         assetManagerGUID,
@@ -880,7 +1046,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                         schemaAttributeGUID,
                                                         schemaAttributeExternalIdentifier,
                                                         primaryKeyName,
-                                                        primaryKeyPattern);
+                                                        primaryKeyPattern,
+                                                        effectiveTime,
+                                                        forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -888,16 +1057,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the primary key designation from the schema attribute.
      *
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearColumnAsPrimaryKey(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void clearColumnAsPrimaryKey(String schemaAttributeGUID,
+                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        dataAssetExchangeClient.clearColumnAsPrimaryKey(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, null);
+        dataAssetExchangeClient.clearColumnAsPrimaryKey(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        schemaAttributeGUID,
+                                                        null,
+                                                        effectiveTime,
+                                                        forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -908,6 +1086,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -916,9 +1095,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
     public void setupForeignKeyRelationship(boolean              assetManagerIsHome,
                                             String               primaryKeyGUID,
                                             String               foreignKeyGUID,
-                                            ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                            ForeignKeyProperties foreignKeyProperties,
+                                            Date                 effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         dataAssetExchangeClient.setupForeignKeyRelationship(userId,
                                                             assetManagerGUID,
@@ -926,7 +1106,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                             assetManagerIsHome,
                                                             primaryKeyGUID,
                                                             foreignKeyGUID,
-                                                            foreignKeyProperties);
+                                                            foreignKeyProperties,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
     }
 
 
@@ -936,6 +1119,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -943,16 +1127,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void updateForeignKeyRelationship(String               primaryKeyGUID,
                                              String               foreignKeyGUID,
-                                             ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                             ForeignKeyProperties foreignKeyProperties,
+                                             Date                 effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         dataAssetExchangeClient.updateForeignKeyRelationship(userId,
                                                              assetManagerGUID,
                                                              assetManagerName,
                                                              primaryKeyGUID,
                                                              foreignKeyGUID,
-                                                             foreignKeyProperties);
+                                                             foreignKeyProperties,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
     }
 
 
@@ -961,17 +1149,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearForeignKeyRelationship(String primaryKeyGUID,
-                                            String foreignKeyGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                            String foreignKeyGUID,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        dataAssetExchangeClient.clearForeignKeyRelationship(userId, assetManagerGUID, assetManagerName, primaryKeyGUID, foreignKeyGUID);
+        dataAssetExchangeClient.clearForeignKeyRelationship(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            primaryKeyGUID,
+                                                            foreignKeyGUID,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
     }
 
 
@@ -979,16 +1176,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the metadata element representing a schema attribute.
      *
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeSchemaAttribute(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void removeSchemaAttribute(String schemaAttributeGUID,
+                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        dataAssetExchangeClient.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, null);
+        dataAssetExchangeClient.removeSchemaAttribute(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      schemaAttributeGUID,
+                                                      null,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -999,6 +1205,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1008,11 +1215,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<SchemaAttributeElement>   findSchemaAttributes(String searchString,
                                                                int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                               int    pageSize,
+                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        return dataAssetExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                            forDuplicateProcessing);
     }
 
 
@@ -1022,6 +1231,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -1031,11 +1241,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<SchemaAttributeElement>    getNestedSchemaAttributes(String parentSchemaElementGUID,
                                                                      int    startFrom,
-                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+                                                                     int    pageSize,
+                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
-        return dataAssetExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize);
+        return dataAssetExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -1046,6 +1258,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1055,11 +1268,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<SchemaAttributeElement>   getSchemaAttributesByName(String name,
                                                                     int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                                    int    pageSize,
+                                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -1067,6 +1282,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the schema attribute metadata element with the supplied unique identifier.
      *
      * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1074,11 +1290,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID,
+                                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID);
+        return dataAssetExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, effectiveTime, forLineage,
+                                                                forDuplicateProcessing);
     }
 
 
@@ -1110,11 +1328,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                    assetManagerName,
                                                    assetManagerIsHome,
                                                    null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
                                                    processStatus,
                                                    processProperties);
     }
@@ -1145,11 +1358,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                assetManagerIsHome,
                                                                templateGUID,
                                                                null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
                                                                templateProperties);
     }
 
@@ -1160,6 +1368,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param processGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param processProperties new properties for the metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1167,9 +1376,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void updateProcess(String            processGUID,
                               boolean           isMergeUpdate,
-                              ProcessProperties processProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                              ProcessProperties processProperties,
+                              Date              effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         lineageExchangeClient.updateProcess(userId,
                                             assetManagerGUID,
@@ -1177,7 +1387,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                             processGUID,
                                             null,
                                             isMergeUpdate,
-                                            processProperties);
+                                            processProperties,
+                                            effectiveTime,
+                                            forLineage,
+                                            forDuplicateProcessing);
     }
 
 
@@ -1186,17 +1399,27 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param processGUID unique identifier of the process to update
      * @param processStatus new status for the process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateProcessStatus(String        processGUID,
-                                    ProcessStatus processStatus) throws InvalidParameterException,
+                                    ProcessStatus processStatus,
+                                    Date          effectiveTime) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        lineageExchangeClient.updateProcessStatus(userId, assetManagerGUID, assetManagerName, processGUID, null, processStatus);
+        lineageExchangeClient.updateProcessStatus(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  processGUID,
+                                                  null,
+                                                  processStatus,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -1209,21 +1432,23 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
-     * @param containmentType describes the ownership of the sub-process
+     * @param containmentProperties describes the ownership of the sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessParent(String                 userId,
-                                   String                 assetManagerGUID,
-                                   String                 assetManagerName,
-                                   boolean                assetManagerIsHome,
-                                   String                 parentProcessGUID,
-                                   String                 childProcessGUID,
-                                   ProcessContainmentType containmentType) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void setupProcessParent(String                       userId,
+                                   String                       assetManagerGUID,
+                                   String                       assetManagerName,
+                                   boolean                      assetManagerIsHome,
+                                   String                       parentProcessGUID,
+                                   String                       childProcessGUID,
+                                   ProcessContainmentProperties containmentProperties,
+                                   Date                         effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         lineageExchangeClient.setupProcessParent(userId,
                                                  assetManagerGUID,
@@ -1231,7 +1456,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                  assetManagerIsHome,
                                                  parentProcessGUID,
                                                  childProcessGUID,
-                                                 containmentType);
+                                                 containmentProperties,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -1240,17 +1468,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearProcessParent(String parentProcessGUID,
-                                   String childProcessGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                   String childProcessGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        lineageExchangeClient.clearProcessParent(userId, assetManagerGUID, assetManagerName, parentProcessGUID, childProcessGUID);
+        lineageExchangeClient.clearProcessParent(userId,
+                                                 assetManagerGUID,
+                                                 assetManagerName,
+                                                 parentProcessGUID,
+                                                 childProcessGUID,
+                                                 effectiveTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -1260,16 +1497,24 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * instance of the Asset Manager OMAS).
      *
      * @param processGUID unique identifier of the metadata element to publish
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishProcess(String processGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void publishProcess(String processGUID,
+                               Date   effectiveTime) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
-        lineageExchangeClient.publishProcess(userId, assetManagerGUID, assetManagerName, processGUID);
+        lineageExchangeClient.publishProcess(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             processGUID,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing);
     }
 
 
@@ -1279,16 +1524,24 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
      *
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawProcess(String processGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void withdrawProcess(String processGUID,
+                                Date   effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        lineageExchangeClient.withdrawProcess(userId, assetManagerGUID, assetManagerName, processGUID);
+        lineageExchangeClient.withdrawProcess(userId,
+                                              assetManagerGUID,
+                                              assetManagerName,
+                                              processGUID,
+                                              effectiveTime,
+                                              forLineage,
+                                              forDuplicateProcessing);
     }
 
 
@@ -1297,17 +1550,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param processGUID unique identifier of the metadata element to remove
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeProcess(String processGUID,
-                              String processExternalIdentifier) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                              String processExternalIdentifier,
+                              Date   effectiveTime) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
-        lineageExchangeClient.removeProcess(userId, assetManagerGUID, assetManagerName, processGUID, processExternalIdentifier);
+        lineageExchangeClient.removeProcess(userId,
+                                            assetManagerGUID,
+                                            assetManagerName,
+                                            processGUID,
+                                            processExternalIdentifier,
+                                            effectiveTime,
+                                            forLineage,
+                                            forDuplicateProcessing);
     }
 
 
@@ -1318,6 +1580,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1327,11 +1590,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<ProcessElement> findProcesses(String searchString,
                                               int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                              int    pageSize,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return lineageExchangeClient.findProcesses(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return lineageExchangeClient.findProcesses(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -1340,6 +1605,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of metadata elements describing the processes associated with the requested asset manager
      *
@@ -1348,11 +1614,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<ProcessElement>   getProcessesForAssetManager(int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                              int    pageSize,
+                                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getProcessesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return lineageExchangeClient.getProcessesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -1363,6 +1631,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1372,11 +1641,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<ProcessElement>   getProcessesByName(String name,
                                                      int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                     int    pageSize,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getProcessesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return lineageExchangeClient.getProcessesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -1384,6 +1655,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return requested metadata element
      *
@@ -1391,11 +1663,18 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElement getProcessByGUID(String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public ProcessElement getProcessByGUID(String processGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        return lineageExchangeClient.getProcessByGUID(userId, assetManagerGUID, assetManagerName, processGUID);
+        return lineageExchangeClient.getProcessByGUID(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      processGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -1403,6 +1682,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the process metadata element with the supplied unique identifier.
      *
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return parent process element
      *
@@ -1410,11 +1690,18 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElement getProcessParent(String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public ProcessElement getProcessParent(String processGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        return lineageExchangeClient.getProcessParent(userId, assetManagerGUID, assetManagerName, processGUID);
+        return lineageExchangeClient.getProcessParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      processGUID,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -1424,6 +1711,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param processGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of process element
      *
@@ -1433,11 +1721,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<ProcessElement> getSubProcesses(String processGUID,
                                                 int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                int    pageSize,
+                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        return lineageExchangeClient.getSubProcesses(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+        return lineageExchangeClient.getSubProcesses(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     processGUID,
+                                                     startFrom,
+                                                     pageSize,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
     }
 
 
@@ -1451,6 +1748,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this port
      * @param processGUID unique identifier of the process where the port is located
      * @param portProperties properties for the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the port
      *
@@ -1460,9 +1758,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public String createPort(boolean             assetManagerIsHome,
                              String              processGUID,
-                             PortProperties      portProperties) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                             PortProperties      portProperties,
+                             Date                effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         return lineageExchangeClient.createPort(userId,
                                                 assetManagerGUID,
@@ -1470,12 +1769,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                 assetManagerIsHome,
                                                 processGUID,
                                                 null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                portProperties);
+                                                portProperties,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -1485,17 +1782,27 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param portGUID unique identifier of the port to update
      * @param portProperties new properties for the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updatePort(String         portGUID,
-                           PortProperties portProperties) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                           PortProperties portProperties,
+                           Date           effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        lineageExchangeClient.updatePort(userId, assetManagerGUID, assetManagerName, portGUID, null, portProperties);
+        lineageExchangeClient.updatePort(userId,
+                                         assetManagerGUID,
+                                         assetManagerName,
+                                         portGUID,
+                                         null,
+                                         portProperties,
+                                         effectiveTime,
+                                         forLineage,
+                                         forDuplicateProcessing);
     }
 
 
@@ -1505,6 +1812,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1512,11 +1820,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void setupProcessPort(boolean assetManagerIsHome,
                                  String  processGUID,
-                                 String  portGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                 String  portGUID,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        lineageExchangeClient.setupProcessPort(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, processGUID, portGUID);
+        lineageExchangeClient.setupProcessPort(userId,
+                                               assetManagerGUID,
+                                               assetManagerName,
+                                               assetManagerIsHome,
+                                               processGUID,
+                                               portGUID,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
@@ -1525,17 +1842,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearProcessPort(String processGUID,
-                                 String portGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+                                 String portGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        lineageExchangeClient.clearProcessPort(userId, assetManagerGUID, assetManagerName, processGUID, portGUID);
+        lineageExchangeClient.clearProcessPort(userId,
+                                               assetManagerGUID,
+                                               assetManagerName,
+                                               processGUID,
+                                               portGUID,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
@@ -1546,6 +1872,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1553,11 +1880,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void setupPortDelegation(boolean assetManagerIsHome,
                                     String  portOneGUID,
-                                    String  portTwoGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                    String  portTwoGUID,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        lineageExchangeClient.setupPortDelegation(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portOneGUID, portTwoGUID);
+        lineageExchangeClient.setupPortDelegation(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  assetManagerIsHome,
+                                                  portOneGUID,
+                                                  portTwoGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -1566,17 +1902,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearPortDelegation(String portOneGUID,
-                                    String portTwoGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                    String portTwoGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        lineageExchangeClient.clearPortDelegation(userId, assetManagerGUID, assetManagerName, portOneGUID, portTwoGUID);
+        lineageExchangeClient.clearPortDelegation(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  portOneGUID,
+                                                  portTwoGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -1586,6 +1931,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1593,11 +1939,20 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public void setupPortSchemaType(boolean assetManagerIsHome,
                                     String  portGUID,
-                                    String  schemaTypeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                    String  schemaTypeGUID,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        lineageExchangeClient.setupPortSchemaType(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, portGUID, schemaTypeGUID);
+        lineageExchangeClient.setupPortSchemaType(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  assetManagerIsHome,
+                                                  portGUID,
+                                                  schemaTypeGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -1606,17 +1961,26 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearPortSchemaType(String portGUID,
-                                    String schemaTypeGUID) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                    String schemaTypeGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        lineageExchangeClient.clearPortSchemaType(userId, assetManagerGUID, assetManagerName, portGUID, schemaTypeGUID);
+        lineageExchangeClient.clearPortSchemaType(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  portGUID,
+                                                  schemaTypeGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
 
@@ -1624,16 +1988,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the metadata element representing a port.
      *
      * @param portGUID unique identifier of the metadata element to remove
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removePort(String portGUID) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
+    public void removePort(String portGUID,
+                           Date   effectiveTime) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
-        lineageExchangeClient.removePort(userId, assetManagerGUID, assetManagerName, portGUID, null);
+        lineageExchangeClient.removePort(userId,
+                                         assetManagerGUID,
+                                         assetManagerName,
+                                         portGUID,
+                                         null,
+                                         effectiveTime,
+                                         forLineage,
+                                         forDuplicateProcessing);
     }
 
 
@@ -1644,6 +2017,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1653,11 +2027,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<PortElement>   findPorts(String searchString,
                                          int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                         int    pageSize,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.findPorts(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return lineageExchangeClient.findPorts(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                               forDuplicateProcessing);
     }
 
 
@@ -1667,6 +2043,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -1676,11 +2053,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<PortElement>    getPortsForProcess(String processGUID,
                                                    int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                   int    pageSize,
+                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        return lineageExchangeClient.getPortsForProcess(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize);
+        return lineageExchangeClient.getPortsForProcess(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -1690,6 +2069,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param portGUID unique identifier of the starting port
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -1699,11 +2079,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<PortElement>  getPortUse(String portGUID,
                                          int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                         int    pageSize,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.getPortUse(userId, assetManagerGUID, assetManagerName, portGUID, startFrom, pageSize);
+        return lineageExchangeClient.getPortUse(userId, assetManagerGUID, assetManagerName, portGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -1711,6 +2093,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the port that this port delegates to.
      *
      * @param portGUID unique identifier of the starting port alias
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1718,11 +2101,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElement getPortDelegation(String portGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public PortElement getPortDelegation(String portGUID,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        return lineageExchangeClient.getPortDelegation(userId, assetManagerGUID, assetManagerName, portGUID);
+        return lineageExchangeClient.getPortDelegation(userId, assetManagerGUID, assetManagerName, portGUID, effectiveTime, forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
@@ -1733,6 +2118,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1742,11 +2128,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public List<PortElement>   getPortsByName(String name,
                                               int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                              int    pageSize,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getPortsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return lineageExchangeClient.getPortsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
@@ -1754,6 +2142,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Retrieve the port metadata element with the supplied unique identifier.
      *
      * @param portGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1761,11 +2150,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public PortElement getPortByGUID(String portGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public PortElement getPortByGUID(String portGUID,
+                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getPortByGUID(userId, assetManagerGUID, assetManagerName, portGUID);
+        return lineageExchangeClient.getPortByGUID(userId, assetManagerGUID, assetManagerName, portGUID, effectiveTime, forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -1775,19 +2166,28 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
 
 
     /**
-     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or asset as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param elementGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setBusinessSignificant(String elementGUID) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void setBusinessSignificant(String elementGUID,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        lineageExchangeClient.setBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, null);
+        lineageExchangeClient.setBusinessSignificant(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     elementGUID,
+                                                     null,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
     }
 
 
@@ -1795,16 +2195,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the "BusinessSignificant" designation from the element.
      *
      * @param elementGUID unique identifier of the metadata element to update
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearBusinessSignificant(String elementGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void clearBusinessSignificant(String elementGUID,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        lineageExchangeClient.clearBusinessSignificant(userId, assetManagerGUID, assetManagerName, elementGUID, null);
+        lineageExchangeClient.clearBusinessSignificant(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       elementGUID,
+                                                       null,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
@@ -1814,9 +2223,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the relationship
      *
@@ -1824,14 +2232,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupDataFlow(boolean assetManagerIsHome,
-                                String  dataSupplierGUID,
-                                String  dataConsumerGUID,
-                                String  qualifiedName,
-                                String  description,
-                                String  formula) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public String setupDataFlow(boolean            assetManagerIsHome,
+                                String             dataSupplierGUID,
+                                String             dataConsumerGUID,
+                                DataFlowProperties properties,
+                                Date               effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         return lineageExchangeClient.setupDataFlow(userId,
                                                    assetManagerGUID,
@@ -1839,9 +2246,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                    assetManagerIsHome,
                                                    dataSupplierGUID,
                                                    dataConsumerGUID,
-                                                   qualifiedName,
-                                                   description,
-                                                   formula);
+                                                   properties,
+                                                   effectiveTime,
+                                                   forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -1853,6 +2261,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1860,13 +2269,15 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFlowElement getDataFlow(String  dataSupplierGUID,
-                                       String  dataConsumerGUID,
-                                       String  qualifiedName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public DataFlowElement getDataFlow(String dataSupplierGUID,
+                                       String dataConsumerGUID,
+                                       String qualifiedName,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getDataFlow(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, dataConsumerGUID, qualifiedName);
+        return lineageExchangeClient.getDataFlow(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, dataConsumerGUID, qualifiedName, effectiveTime, forLineage,
+                                                 forDuplicateProcessing);
     }
 
 
@@ -1874,23 +2285,27 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Update relationship between two elements that shows that data flows from one to the other.
      *
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     *
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateDataFlow(String dataFlowGUID,
-                               String qualifiedName,
-                               String description,
-                               String formula) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException
+    public void updateDataFlow(String             dataFlowGUID,
+                               DataFlowProperties properties,
+                               Date               effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        lineageExchangeClient.updateDataFlow(userId, assetManagerGUID, assetManagerName, dataFlowGUID, qualifiedName, description, formula);
+        lineageExchangeClient.updateDataFlow(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             dataFlowGUID,
+                                             properties,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing);
     }
 
 
@@ -1898,24 +2313,35 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the data flow relationship between two elements.
      *
      * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataFlow(String dataFlowGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void clearDataFlow(String dataFlowGUID,
+                              Date   effectiveTime) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
-        lineageExchangeClient.clearDataFlow(userId, assetManagerGUID, assetManagerName, dataFlowGUID);
+        lineageExchangeClient.clearDataFlow(userId,
+                                            assetManagerGUID,
+                                            assetManagerName,
+                                            dataFlowGUID,
+                                            effectiveTime,
+                                            forLineage,
+                                            forDuplicateProcessing);
     }
 
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1923,18 +2349,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowConsumers(userId, assetManagerGUID, assetManagerName, dataSupplierGUID);
+        return lineageExchangeClient.getDataFlowConsumers(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1942,11 +2375,15 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID) throws InvalidParameterException,
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowSuppliers(userId, assetManagerGUID, assetManagerName, dataConsumerGUID);
+        return lineageExchangeClient.getDataFlowSuppliers(userId, assetManagerGUID, assetManagerName, dataConsumerGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
@@ -1956,9 +2393,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier for the control flow relationship
      *
@@ -1966,14 +2402,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupControlFlow(boolean assetManagerIsHome,
-                                   String  currentStepGUID,
-                                   String  nextStepGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  guard) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public String setupControlFlow(boolean               assetManagerIsHome,
+                                   String                currentStepGUID,
+                                   String                nextStepGUID,
+                                   ControlFlowProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         return lineageExchangeClient.setupControlFlow(userId,
                                                       assetManagerGUID,
@@ -1981,9 +2416,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                       assetManagerIsHome,
                                                       currentStepGUID,
                                                       nextStepGUID,
-                                                      qualifiedName,
-                                                      description,
-                                                      guard);
+                                                      properties,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -1995,6 +2431,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2004,11 +2441,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public ControlFlowElement getControlFlow(String currentStepGUID,
                                              String nextStepGUID,
-                                             String qualifiedName) throws InvalidParameterException,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getControlFlow(userId, assetManagerGUID, assetManagerName, currentStepGUID, nextStepGUID, qualifiedName);
+        return lineageExchangeClient.getControlFlow(userId, assetManagerGUID, assetManagerName, currentStepGUID, nextStepGUID, qualifiedName, effectiveTime, forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
@@ -2016,28 +2455,27 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Update the relationship between two elements that shows that when one completes the next is started.
      *
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateControlFlow(String  controlFlowGUID,
-                                  String  qualifiedName,
-                                  String  description,
-                                  String  guard) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void updateControlFlow(String                controlFlowGUID,
+                                  ControlFlowProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         lineageExchangeClient.updateControlFlow(userId,
                                                 assetManagerGUID,
                                                 assetManagerName,
                                                 controlFlowGUID,
-                                                qualifiedName,
-                                                description,
-                                                guard);
+                                                properties,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -2045,24 +2483,35 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the control flow relationship between two elements.
      *
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearControlFlow(String controlFlowGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearControlFlow(String controlFlowGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        lineageExchangeClient.clearControlFlow(userId, assetManagerGUID, assetManagerName, controlFlowGUID);
+        lineageExchangeClient.clearControlFlow(userId,
+                                               assetManagerGUID,
+                                               assetManagerName,
+                                               controlFlowGUID,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2070,18 +2519,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                             forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2089,11 +2545,15 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowPreviousSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID);
+        return lineageExchangeClient.getControlFlowPreviousSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                                 forDuplicateProcessing);
     }
 
 
@@ -2103,9 +2563,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -2113,14 +2572,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupProcessCall(boolean assetManagerIsHome,
-                                   String  callerGUID,
-                                   String  calledGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  formula) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public String setupProcessCall(boolean               assetManagerIsHome,
+                                   String                callerGUID,
+                                   String                calledGUID,
+                                   ProcessCallProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         return lineageExchangeClient.setupProcessCall(userId,
                                                       assetManagerGUID,
@@ -2128,9 +2586,10 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                       assetManagerIsHome,
                                                       callerGUID,
                                                       calledGUID,
-                                                      qualifiedName,
-                                                      description,
-                                                      formula);
+                                                      properties,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -2142,6 +2601,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2151,11 +2611,13 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      */
     public ProcessCallElement getProcessCall(String callerGUID,
                                              String calledGUID,
-                                             String qualifiedName) throws InvalidParameterException,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getProcessCall(userId, assetManagerGUID, assetManagerName, callerGUID, calledGUID, qualifiedName);
+        return lineageExchangeClient.getProcessCall(userId, assetManagerGUID, assetManagerName, callerGUID, calledGUID, qualifiedName, effectiveTime, forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
@@ -2163,28 +2625,27 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Update the relationship between two elements that shows a request-response call between them.
      *
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProcessCall(String processCallGUID,
-                                    String qualifiedName,
-                                    String description,
-                                    String formula) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void updateProcessCall(String                processCallGUID,
+                                  ProcessCallProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         lineageExchangeClient.updateProcessCall(userId,
                                                 assetManagerGUID,
                                                 assetManagerName,
                                                 processCallGUID,
-                                                qualifiedName,
-                                                description,
-                                                formula);
+                                                properties,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -2192,23 +2653,34 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Remove the process call relationship.
      *
      * @param processCallGUID unique identifier of the process call relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessCall(String processCallGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearProcessCall(String processCallGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        lineageExchangeClient.clearProcessCall(userId, assetManagerGUID, assetManagerName, processCallGUID);
+        lineageExchangeClient.clearProcessCall(userId,
+                                               assetManagerGUID,
+                                               assetManagerName,
+                                               processCallGUID,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2216,18 +2688,25 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessCallElement> getProcessCalled(String callerGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<ProcessCallElement> getProcessCalled(String callerGUID,
+                                                     int    startFrom,
+                                                     int    pageSize,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return lineageExchangeClient.getProcessCalled(userId, assetManagerGUID, assetManagerName, callerGUID);
+        return lineageExchangeClient.getProcessCalled(userId, assetManagerGUID, assetManagerName, callerGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2235,57 +2714,267 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessCallElement> getProcessCallers(String calledGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<ProcessCallElement> getProcessCallers(String calledGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getProcessCallers(userId, assetManagerGUID, assetManagerName, calledGUID);
+        return lineageExchangeClient.getProcessCallers(userId, assetManagerGUID, assetManagerName, calledGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupLineageMapping(String  sourceElementGUID,
-                                    String  destinationElementGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupLineageMapping(String                   sourceElementGUID,
+                                    String                   destinationElementGUID,
+                                    LineageMappingProperties properties,
+                                    Date                     effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         lineageExchangeClient.setupLineageMapping(userId,
                                                   assetManagerGUID,
                                                   assetManagerName,
                                                   sourceElementGUID,
-                                                  destinationElementGUID);
+                                                  destinationElementGUID,
+                                                  properties,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
+    }
+
+
+    /**
+     * Update the lineage mapping relationship between two elements.
+     *
+     * @param lineageMappingGUID unique identifier of the lineage mapping relationship
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateLineageMapping(String                   lineageMappingGUID,
+                                     LineageMappingProperties properties,
+                                     Date                     effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+         lineageExchangeClient.updateLineageMapping(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    lineageMappingGUID,
+                                                    properties,
+                                                    effectiveTime,
+                                                    forLineage,
+                                                    forDuplicateProcessing);
     }
 
 
     /**
      * Remove the lineage mapping between two elements.
      *
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
+     * @param lineageMappingGUID unique identifier of the source
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearLineageMapping(String sourceElementGUID,
-                                    String destinationElementGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void clearLineageMapping(String lineageMappingGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        lineageExchangeClient.clearLineageMapping(userId, assetManagerGUID, assetManagerName, sourceElementGUID, destinationElementGUID);
+        lineageExchangeClient.clearLineageMapping(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  lineageMappingGUID,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
     }
 
+
+    /**
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
+     *
+     * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getDestinationLineageMappings(String sourceElementGUID,
+                                                                     int    startFrom,
+                                                                     int    pageSize,
+                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return lineageExchangeClient.getDestinationLineageMappings(userId, assetManagerGUID, assetManagerName, sourceElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                                   forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
+     *
+     * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+      *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getSourceLineageMappings(String destinationElementGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return lineageExchangeClient.getSourceLineageMappings(userId, assetManagerGUID, assetManagerName, destinationElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                              forDuplicateProcessing);
+    }
+
+
+
+    /**
+     * Classify the element with the Memento classification to indicate that it has been logically deleted for by lineage requests.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addMementoClassification(String elementGUID,
+                                         String elementExternalIdentifier,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        stewardshipExchangeClient.addMementoClassification(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           elementGUID,
+                                                           elementExternalIdentifier,
+                                                           effectiveTime,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the memento designation from the element.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearMementoClassification(String elementGUID,
+                                           String elementExternalIdentifier,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        stewardshipExchangeClient.clearMementoClassification(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             elementGUID,
+                                                             elementExternalIdentifier,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
+    }
+
+
+    /**
+     * Classify the element with the Incomplete classification to indicate that it has more details to come.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addIncompleteClassification(String elementGUID,
+                                            String elementExternalIdentifier,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        stewardshipExchangeClient.addIncompleteClassification(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              elementGUID,
+                                                              elementExternalIdentifier,
+                                                              effectiveTime,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the Incomplete designation from the element.
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearIncompleteClassification(String elementGUID,
+                                              String elementExternalIdentifier,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        stewardshipExchangeClient.clearIncompleteClassification(userId,
+                                                                assetManagerGUID,
+                                                                assetManagerName,
+                                                                elementGUID,
+                                                                elementExternalIdentifier,
+                                                                effectiveTime,
+                                                                forLineage,
+                                                                forDuplicateProcessing);
+    }
 
 
     /**

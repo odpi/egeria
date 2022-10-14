@@ -352,7 +352,6 @@ public class OpenLineageGraphValidationTests {
         GraphTraversal<Vertex, Vertex> tableTraversal = g.V().has(VERTEX_QUALIFIED_NAME, tableQualifiedName)
                 .or(__.has(PROPERTY_KEY_LABEL, DATA_FILE),
                         __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE));
-        System.out.println("chiar testez, nu ma caca pe mibne");
         assertTrue(tableTraversal.hasNext(), "Table not found by qualifiedName " + tableQualifiedName);
         Vertex tableAsVertex = tableTraversal.next();
 

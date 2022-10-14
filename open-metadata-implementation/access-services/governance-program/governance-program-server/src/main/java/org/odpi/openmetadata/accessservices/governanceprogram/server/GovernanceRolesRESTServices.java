@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
@@ -11,11 +10,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -29,12 +28,12 @@ import java.util.Map;
  */
 public class GovernanceRolesRESTServices
 {
-    static private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    static private final GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -55,9 +54,9 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GUIDResponse createGovernanceRole(String                   serverName,
-                                             String                   userId,
-                                             GovernanceRoleProperties requestBody)
+    public GUIDResponse createGovernanceRole(String                    serverName,
+                                             String                    userId,
+                                             GovernanceRoleRequestBody requestBody)
 
     {
         final String methodName = "createGovernanceRole";
@@ -71,43 +70,56 @@ public class GovernanceRolesRESTServices
         {
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME;
-
-                if (requestBody.getTypeName() != null)
+                if (requestBody.getProperties() != null)
                 {
-                    typeName = requestBody.getTypeName();
-                }
+                    GovernanceRoleProperties properties = requestBody.getProperties();
 
-                Map<String, Object> extendedProperties = requestBody.getExtendedProperties();
+                    String typeName = OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME;
 
-                if (requestBody.getDomainIdentifier() != 0)
-                {
-                    if (extendedProperties == null)
+                    if (properties.getTypeName() != null)
                     {
-                        extendedProperties = new HashMap<>();
+                        typeName = properties.getTypeName();
                     }
 
-                    extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, requestBody.getDomainIdentifier());
+                    Map<String, Object> extendedProperties = properties.getExtendedProperties();
+
+                    if (properties.getDomainIdentifier() != 0)
+                    {
+                        if (extendedProperties == null)
+                        {
+                            extendedProperties = new HashMap<>();
+                        }
+
+                        extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
+                    }
+
+                    PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                    response.setGUID(handler.createPersonRole(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              properties.getQualifiedName(),
+                                                              properties.getRoleId(),
+                                                              properties.getTitle(),
+                                                              properties.getDescription(),
+                                                              properties.getScope(),
+                                                              properties.getHeadCount(),
+                                                              properties.getHeadCountLimitSet(),
+                                                              properties.getDomainIdentifier(),
+                                                              properties.getAdditionalProperties(),
+                                                              typeName,
+                                                              extendedProperties,
+                                                              properties.getEffectiveFrom(),
+                                                              properties.getEffectiveTo(),
+                                                              new Date(),
+                                                              methodName));
                 }
-
-                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.createPersonRole(userId,
-                                                          null,
-                                                          null,
-                                                          requestBody.getRoleId(),
-                                                          requestBody.getTitle(),
-                                                          requestBody.getDescription(),
-                                                          requestBody.getScope(),
-                                                          requestBody.getHeadCount(),
-                                                          requestBody.getHeadCountLimitSet(),
-                                                          requestBody.getAdditionalProperties(),
-                                                          typeName,
-                                                          extendedProperties,
-                                                          null,
-                                                          null,
-                                                          methodName));
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceRoleProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -134,16 +146,16 @@ public class GovernanceRolesRESTServices
      * @param requestBody  properties of the governance role
      * @return void response or
      * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
-     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
+     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match
      *                           the existing values associated with the governanceRoleGUID or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse updateGovernanceRole(String                   serverName,
-                                             String                   userId,
-                                             String                   governanceRoleGUID,
-                                             boolean                  isMergeUpdate,
-                                             GovernanceRoleProperties requestBody)
+    public VoidResponse updateGovernanceRole(String                    serverName,
+                                             String                    userId,
+                                             String                    governanceRoleGUID,
+                                             boolean                   isMergeUpdate,
+                                             GovernanceRoleRequestBody requestBody)
     {
         final String methodName = "updateGovernanceRole";
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -160,41 +172,56 @@ public class GovernanceRolesRESTServices
         {
             if (requestBody != null)
             {
-                Map<String, Object> extendedProperties = requestBody.getExtendedProperties();
-
-                if (requestBody.getDomainIdentifier() != 0)
+                if (requestBody.getProperties() != null)
                 {
-                    if (extendedProperties == null)
+                    GovernanceRoleProperties properties = requestBody.getProperties();
+
+                    Map<String, Object> extendedProperties = properties.getExtendedProperties();
+
+                    if (properties.getDomainIdentifier() != 0)
                     {
-                        extendedProperties = new HashMap<>();
+                        if (extendedProperties == null)
+                        {
+                            extendedProperties = new HashMap<>();
+                        }
+
+                        extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
                     }
 
-                    extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, requestBody.getDomainIdentifier());
+                    PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                    handler.updatePersonRole(userId,
+                                             null,
+                                             null,
+                                             governanceRoleGUID,
+                                             governanceRoleGUIDParameterName,
+                                             properties.getQualifiedName(),
+                                             roleIdParameterName,
+                                             properties.getRoleId(),
+                                             properties.getTitle(),
+                                             titleParameterName,
+                                             properties.getDescription(),
+                                             properties.getScope(),
+                                             properties.getHeadCount(),
+                                             properties.getHeadCountLimitSet(),
+                                             properties.getDomainIdentifier(),
+                                             properties.getAdditionalProperties(),
+                                             properties.getTypeName(),
+                                             extendedProperties,
+                                             isMergeUpdate,
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
                 }
-
-                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updatePersonRole(userId,
-                                         null,
-                                         null,
-                                         governanceRoleGUID,
-                                         governanceRoleGUIDParameterName,
-                                         requestBody.getRoleId(),
-                                         roleIdParameterName,
-                                         requestBody.getTitle(),
-                                         titleParameterName,
-                                         requestBody.getDescription(),
-                                         requestBody.getScope(),
-                                         requestBody.getHeadCount(),
-                                         requestBody.getHeadCountLimitSet(),
-                                         requestBody.getAdditionalProperties(),
-                                         requestBody.getTypeName(),
-                                         extendedProperties,
-                                         isMergeUpdate,
-                                         null,
-                                         null,
-                                         methodName);
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceRoleProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -218,18 +245,18 @@ public class GovernanceRolesRESTServices
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param responsibilityGUID unique identifier of the governance responsibility control
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse linkRoleToResponsibility(String          serverName,
-                                                 String          userId,
-                                                 String          governanceRoleGUID,
-                                                 String          responsibilityGUID,
-                                                 NullRequestBody requestBody)
+    public VoidResponse linkRoleToResponsibility(String                  serverName,
+                                                 String                  userId,
+                                                 String                  governanceRoleGUID,
+                                                 String                  responsibilityGUID,
+                                                 RelationshipRequestBody requestBody)
     {
         final String   methodName = "linkRoleToResponsibility";
         final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -248,21 +275,49 @@ public class GovernanceRolesRESTServices
                 PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.linkElementToElement(userId,
-                                             null,
-                                             null,
-                                             governanceRoleGUID,
-                                             governanceRoleGUIDParameterName,
-                                             OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                             responsibilityGUID,
-                                             responsibilityGUIDParameterName,
-                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
-                                             null,
-                                             methodName);
+
+                if (requestBody.getProperties() != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 responsibilityGUID,
+                                                 responsibilityGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 null,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 responsibilityGUID,
+                                                 responsibilityGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
             }
             else
             {
@@ -286,18 +341,18 @@ public class GovernanceRolesRESTServices
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param responsibilityGUID unique identifier of the governance responsibility control
-     * @param requestBody  null request body
+     * @param requestBody  external source request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse unlinkRoleFromResponsibility(String          serverName,
-                                                     String          userId,
-                                                     String          governanceRoleGUID,
-                                                     String          responsibilityGUID,
-                                                     NullRequestBody requestBody)
+    public VoidResponse unlinkRoleFromResponsibility(String                  serverName,
+                                                     String                  userId,
+                                                     String                  governanceRoleGUID,
+                                                     String                  responsibilityGUID,
+                                                     RelationshipRequestBody requestBody)
     {
         final String   methodName = "unlinkRoleToResponsibility";
         final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -318,8 +373,8 @@ public class GovernanceRolesRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.unlinkElementFromElement(userId,
                                                  false,
-                                                 null,
-                                                 null,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
@@ -331,7 +386,7 @@ public class GovernanceRolesRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
-                                                 null,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -356,18 +411,18 @@ public class GovernanceRolesRESTServices
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param resourceGUID unique identifier of the resource description
-     * @param requestBody  null request body
+     * @param requestBody  relationship request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse linkRoleToResource(String          serverName,
-                                           String          userId,
-                                           String          governanceRoleGUID,
-                                           String          resourceGUID,
-                                           NullRequestBody requestBody)
+    public VoidResponse linkRoleToResource(String                  serverName,
+                                           String                  userId,
+                                           String                  governanceRoleGUID,
+                                           String                  resourceGUID,
+                                           RelationshipRequestBody requestBody)
     {
         final String   methodName = "linkRoleToResource";
         final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -386,21 +441,49 @@ public class GovernanceRolesRESTServices
                 PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.linkElementToElement(userId,
-                                             null,
-                                             null,
-                                             resourceGUID,
-                                             resourceGUIDParameterName,
-                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                             governanceRoleGUID,
-                                             governanceRoleGUIDParameterName,
-                                             OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                             OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
-                                             null,
-                                             methodName);
+
+                if (requestBody.getProperties() != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 resourceGUID,
+                                                 resourceGUIDParameterName,
+                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 null,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 resourceGUID,
+                                                 resourceGUIDParameterName,
+                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
             }
             else
             {
@@ -424,18 +507,18 @@ public class GovernanceRolesRESTServices
      * @param userId calling user
      * @param governanceRoleGUID unique identifier of the governance role
      * @param resourceGUID unique identifier of the resource description
-     * @param requestBody  null request body
+     * @param requestBody  external source request body
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse unlinkRoleFromResource(String          serverName,
-                                               String          userId,
-                                               String          governanceRoleGUID,
-                                               String          resourceGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse unlinkRoleFromResource(String                  serverName,
+                                               String                  userId,
+                                               String                  governanceRoleGUID,
+                                               String                  resourceGUID,
+                                               RelationshipRequestBody requestBody)
     {
         final String   methodName = "unlinkRoleToResource";
         final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -456,8 +539,8 @@ public class GovernanceRolesRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.unlinkElementFromElement(userId,
                                                  false,
-                                                 null,
-                                                 null,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
                                                  resourceGUID,
                                                  resourceGUIDParameterName,
                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -469,7 +552,7 @@ public class GovernanceRolesRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
-                                                 null,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -493,7 +576,7 @@ public class GovernanceRolesRESTServices
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceRoleGUID unique identifier (guid) of the governance role.
-     * @param requestBody  null request body
+     * @param requestBody  external source request body
      * @return void response or
      * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
      * InvalidParameterException the appointmentId or governance domain is either null or invalid or
@@ -501,10 +584,10 @@ public class GovernanceRolesRESTServices
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse   deleteGovernanceRole(String          serverName,
-                                               String          userId,
-                                               String          governanceRoleGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse   deleteGovernanceRole(String                    serverName,
+                                               String                    userId,
+                                               String                    governanceRoleGUID,
+                                               ExternalSourceRequestBody requestBody)
     {
         final String methodName = "deleteGovernanceRole";
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -519,11 +602,30 @@ public class GovernanceRolesRESTServices
             PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.removePersonRole(userId,
-                                     governanceRoleGUID,
-                                     governanceRoleGUIDParameterName,
-                                     methodName);
-
+            if (requestBody != null)
+            {
+                handler.removePersonRole(userId,
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         governanceRoleGUID,
+                                         governanceRoleGUIDParameterName,
+                                         false,
+                                         false,
+                                         new Date(),
+                                         methodName);
+            }
+            else
+            {
+                handler.removePersonRole(userId,
+                                         null,
+                                         null,
+                                         governanceRoleGUID,
+                                         governanceRoleGUIDParameterName,
+                                         false,
+                                         false,
+                                         new Date(),
+                                         methodName);
+            }
         }
         catch (Exception error)
         {
@@ -628,7 +730,7 @@ public class GovernanceRolesRESTServices
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param serverName name of server instance to call
@@ -661,7 +763,9 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUIDParameterName,
                                                               0,
                                                               0,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -675,7 +779,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Return all of the defined governance roles.
+     * Return all the defined governance roles.
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
@@ -709,7 +813,9 @@ public class GovernanceRolesRESTServices
                                                                    domainIdentifier,
                                                                    startFrom,
                                                                    pageSize,
-                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
                                                                    methodName));
 
         }
@@ -724,7 +830,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param serverName name of server instance to call
      * @param userId calling user
@@ -760,7 +866,9 @@ public class GovernanceRolesRESTServices
                                                                 titleParameterName,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -774,7 +882,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
@@ -864,6 +972,9 @@ public class GovernanceRolesRESTServices
                                                                      true,
                                                                      requestBody.getEffectiveDate(),
                                                                      null,
+                                                                     false,
+                                                                     false,
+                                                                     null,
                                                                      methodName);
 
                 response.setGUID(appointmentGUID);
@@ -930,6 +1041,7 @@ public class GovernanceRolesRESTServices
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
                                               requestBody.getEffectiveDate(),
+                                              null,
                                               methodName);
             }
             else

@@ -6,15 +6,15 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 
 /**
- * ExternalReferenceElement stores information about an link to an external resource that is relevant to this element.
+ * ExternalReferenceElement stores information about a link to an external resource that is relevant to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

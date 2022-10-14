@@ -21,12 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CalculatedValueClassificationRequestBody implements Serializable
+public class CalculatedValueClassificationRequestBody extends UpdateRequestBody
 {
     private static final long   serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private String                        formula                       = null;
+    private String formula = null;
 
 
     /**
@@ -45,33 +44,12 @@ public class CalculatedValueClassificationRequestBody implements Serializable
      */
     public CalculatedValueClassificationRequestBody(CalculatedValueClassificationRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             formula = template.getFormula();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -106,8 +84,9 @@ public class CalculatedValueClassificationRequestBody implements Serializable
     public String toString()
     {
         return "CalculatedValueClassificationRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", scope='" + formula + '\'' +
+                       "formula='" + formula + '\'' +
+                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -129,20 +108,23 @@ public class CalculatedValueClassificationRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         CalculatedValueClassificationRequestBody that = (CalculatedValueClassificationRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getFormula(), that.getFormula());
+        return Objects.equals(formula, that.formula);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMetadataCorrelationProperties(), getFormula());
+        return Objects.hash(super.hashCode(), formula);
     }
 }

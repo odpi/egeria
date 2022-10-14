@@ -239,11 +239,11 @@ public class TestConnectorType
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -252,7 +252,7 @@ public class TestConnectorType
 
         try
         {
-            validateResultObject((ConnectorType) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((ConnectorType) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

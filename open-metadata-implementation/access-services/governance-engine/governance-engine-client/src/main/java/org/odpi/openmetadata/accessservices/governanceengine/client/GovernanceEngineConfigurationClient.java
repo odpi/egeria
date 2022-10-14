@@ -156,7 +156,7 @@ public class GovernanceEngineConfigurationClient
         final String methodName = "createGovernanceEngine";
         final String engineTypeParameterName = "governanceEngineType";
         final String nameParameterName = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/new/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/new/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceEngineType, engineTypeParameterName, methodName);
@@ -168,7 +168,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setDescription(description);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -196,13 +196,13 @@ public class GovernanceEngineConfigurationClient
     {
         final String   methodName = "getGovernanceEngineByGUID";
         final String   guidParameterName = "guid";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
         GovernanceEngineElementResponse restResult = restClient.callGovernanceEngineGetRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 serverName,
                                                                                                 userId,
                                                                                                 guid);
@@ -229,13 +229,13 @@ public class GovernanceEngineConfigurationClient
     {
         final String   methodName = "getGovernanceEngineByName";
         final String   nameParameterName = "name";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/by-name/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/by-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         GovernanceEngineElementResponse restResult = restClient.callGovernanceEngineGetRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 serverName,
                                                                                                 userId,
                                                                                                 name);
@@ -265,14 +265,14 @@ public class GovernanceEngineConfigurationClient
     {
         final String methodName = "getAllGovernanceEngines";
         final String engineTypeParameterName = "governanceEngineType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}?startingFrom={3}&maximumResults={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceEngineType, engineTypeParameterName, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         GovernanceEngineElementsResponse restResult = restClient.callGovernanceEnginesGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   governanceEngineType,
@@ -321,7 +321,7 @@ public class GovernanceEngineConfigurationClient
         final String   methodName = "updateGovernanceEngine";
         final String   guidParameterName = "guid";
         final String   nameParameterName = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/update";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
@@ -339,7 +339,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -368,7 +368,7 @@ public class GovernanceEngineConfigurationClient
         final String   methodName = "deleteGovernanceEngine";
         final String   guidParameterName = "guid";
         final String   nameParameterName = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
@@ -378,7 +378,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setQualifiedName(qualifiedName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -416,7 +416,7 @@ public class GovernanceEngineConfigurationClient
         final String serviceTypeParameterName = "governanceServiceType";
         final String nameParameterName = "qualifiedName";
         final String connectionParameterName = "connection";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/new/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/new/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceServiceType, serviceTypeParameterName, methodName);
@@ -430,7 +430,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setConnection(connection);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -459,13 +459,13 @@ public class GovernanceEngineConfigurationClient
     {
         final String   methodName = "getGovernanceServiceByGUID";
         final String   guidParameterName = "guid";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
         GovernanceServiceElementResponse restResult = restClient.callGovernanceServiceGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   guid);
@@ -493,13 +493,13 @@ public class GovernanceEngineConfigurationClient
     {
         final String   methodName = "getGovernanceServiceByName";
         final String   nameParameterName = "name";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/by-name/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/by-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         GovernanceServiceElementResponse restResult = restClient.callGovernanceServiceGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   name);
@@ -528,13 +528,13 @@ public class GovernanceEngineConfigurationClient
                                                                                                    PropertyServerException
     {
         final String methodName = "getAllGovernanceServices";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services?startingFrom={2}&maximumResults={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services?startingFrom={2}&maximumResults={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         GovernanceServiceElementsResponse restResult = restClient.callGovernanceServicesGetRESTCall(methodName,
-                                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                                    urlTemplate,
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     Integer.toString(startingFrom),
@@ -563,13 +563,13 @@ public class GovernanceEngineConfigurationClient
     {
         final String methodName = "getGovernanceServiceRegistrations";
         final String guidParameter = "governanceServiceGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/registrations";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/registrations";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceServiceGUID, guidParameter, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          governanceServiceGUID);
@@ -611,7 +611,7 @@ public class GovernanceEngineConfigurationClient
         final String   guidParameterName = "guid";
         final String   nameParameterName = "qualifiedName";
         final String   connectionParameterName = "connection";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/update";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
@@ -627,7 +627,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -657,7 +657,7 @@ public class GovernanceEngineConfigurationClient
         final String methodName = "deleteGovernanceService";
         final String guidParameterName = "guid";
         final String nameParameterName = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
@@ -667,7 +667,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setQualifiedName(qualifiedName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -682,7 +682,7 @@ public class GovernanceEngineConfigurationClient
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
      * @param governanceRequestType governance request type that this governance service is able to process.
-     * @param requestParameters list of parameters that are passed the the governance service (via
+     * @param requestParameters list of parameters that are passed to the governance service (via
      *                                  the governance context).  These values can be overridden on the actual governance request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -701,7 +701,7 @@ public class GovernanceEngineConfigurationClient
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
         final String governanceServiceGUIDParameter = "governanceServiceGUID";
         final String governanceRequestTypesParameter = "governanceRequestType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
@@ -714,7 +714,7 @@ public class GovernanceEngineConfigurationClient
         requestBody.setRequestParameters(requestParameters);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -748,18 +748,18 @@ public class GovernanceEngineConfigurationClient
         final String methodName = "getRegisteredGovernanceService";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
         final String governanceServiceGUIDParameter = "governanceServiceGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(governanceServiceGUID, governanceServiceGUIDParameter, methodName);
 
         RegisteredGovernanceServiceResponse restResult = restClient.callRegisteredGovernanceServiceGetRESTCall(methodName,
-                                                                                                             serverPlatformURLRoot + urlTemplate,
-                                                                                                             serverName,
-                                                                                                             userId,
-                                                                                                             governanceEngineGUID,
-                                                                                                             governanceServiceGUID);
+                                                                                                               urlTemplate,
+                                                                                                               serverName,
+                                                                                                               userId,
+                                                                                                               governanceEngineGUID,
+                                                                                                               governanceServiceGUID);
 
         return restResult.getRegisteredGovernanceService();
     }
@@ -788,14 +788,14 @@ public class GovernanceEngineConfigurationClient
     {
         final String methodName = "getRegisteredGovernanceServices";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services?startingFrom={3}&maximumResults={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          governanceEngineGUID,
@@ -826,14 +826,14 @@ public class GovernanceEngineConfigurationClient
         final String methodName = "unregisterGovernanceServiceFromEngine";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
         final String governanceServiceGUIDParameter = "governanceServiceGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-services/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(governanceServiceGUID, governanceServiceGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,

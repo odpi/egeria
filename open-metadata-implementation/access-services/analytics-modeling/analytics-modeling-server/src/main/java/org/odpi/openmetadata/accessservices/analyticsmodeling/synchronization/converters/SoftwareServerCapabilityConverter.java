@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.c
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareCapability;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -16,7 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * CollectionConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Collection bean.
  */
-public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericConverter<SoftwareServerCapability>
+public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericConverter<SoftwareCapability>
 {
     /**
      * Constructor
@@ -34,7 +34,7 @@ public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericCon
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity.
      *
      * @param beanClass name of the class to create
@@ -44,15 +44,15 @@ public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericCon
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    public SoftwareServerCapability getNewBean(Class<SoftwareServerCapability>     beanClass,
-                        EntityDetail entity,
-                        String       methodName) throws PropertyServerException
+    public SoftwareCapability getNewBean(Class<SoftwareCapability>     beanClass,
+                                         EntityDetail entity,
+                                         String       methodName) throws PropertyServerException
     {
         if (entity == null) {
             handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
         }
         
-        SoftwareServerCapability bean = new SoftwareServerCapability();
+        SoftwareCapability bean               = new SoftwareCapability();
 		InstanceProperties instanceProperties = entity.getProperties();
 		if (instanceProperties != null) {
 			bean.setSource(this.removeSource(instanceProperties));
@@ -66,7 +66,7 @@ public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericCon
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -77,10 +77,10 @@ public class SoftwareServerCapabilityConverter extends OpenMetadataAPIGenericCon
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    public SoftwareServerCapability getNewBean(Class<SoftwareServerCapability>     beanClass,
-                        EntityDetail entity,
-                        Relationship relationship,
-                        String       methodName) throws PropertyServerException
+    public SoftwareCapability getNewBean(Class<SoftwareCapability>     beanClass,
+                                         EntityDetail entity,
+                                         Relationship relationship,
+                                         String       methodName) throws PropertyServerException
     {
         return getNewBean(beanClass, entity, methodName);
     }

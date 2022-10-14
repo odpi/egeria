@@ -396,7 +396,7 @@ public interface FilesAndFoldersInterface
 
     /**
      * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null
@@ -419,7 +419,7 @@ public interface FilesAndFoldersInterface
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null
@@ -602,7 +602,31 @@ public interface FilesAndFoldersInterface
 
 
     /**
-     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     * Find data file by a full or partial path name. The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * pathName property.
+     *
+     * @param userId calling user
+     * @param pathName path name
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
+     *
+     * @return list of matching file properties
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<DataFileElement> getFilesByPathName(String userId,
+                                             String pathName,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * qualifiedName, name and pathName property.
      *
      * @param userId calling user
      * @param pathName path name

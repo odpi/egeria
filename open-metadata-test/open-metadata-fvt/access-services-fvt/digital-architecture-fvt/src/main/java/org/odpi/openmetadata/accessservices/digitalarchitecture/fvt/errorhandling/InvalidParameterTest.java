@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.errorhandling;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ValidValuesManager;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -99,7 +99,7 @@ public class InvalidParameterTest
         try
         {
             DigitalArchitectureRESTClient restClient = new DigitalArchitectureRESTClient(serverName, serverPlatformRootURL);
-            ValidValuesManager            client     = new ValidValuesManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            ReferenceDataManager          client     = new ReferenceDataManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             testCreateValidValuesSet(userId, client);
         }
@@ -122,7 +122,7 @@ public class InvalidParameterTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void testCreateValidValuesSet(String             userId,
-                                          ValidValuesManager client) throws FVTUnexpectedCondition
+                                          ReferenceDataManager client) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateValidValuesSet";
 
@@ -144,7 +144,7 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testCreateValidValuesSetNoUserId(ValidValuesManager client) throws FVTUnexpectedCondition
+    private void testCreateValidValuesSetNoUserId(ReferenceDataManager client) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateValidValuesSetNoUserId";
 
@@ -171,7 +171,7 @@ public class InvalidParameterTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testCreateValidValuesSetNoProperties(ValidValuesManager client,
+    private void testCreateValidValuesSetNoProperties(ReferenceDataManager client,
                                                       String               userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateFileSystemNoProperties";

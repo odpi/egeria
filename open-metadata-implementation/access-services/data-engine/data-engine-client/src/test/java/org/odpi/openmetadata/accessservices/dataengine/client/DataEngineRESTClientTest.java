@@ -66,7 +66,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDatabase"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDatabase(USER_ID, database, false);
+        dataEngineRESTClient.upsertDatabase(USER_ID, database);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -77,7 +77,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDatabaseSchema"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDatabaseSchema(USER_ID, databaseSchema, null, false);
+        dataEngineRESTClient.upsertDatabaseSchema(USER_ID, databaseSchema, null);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -88,8 +88,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertRelationalTable"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName",
-                false);
+        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName");
         assertEquals(GUID, response.getGUID());
     }
 
@@ -100,7 +99,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDataFile"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile, false);
+        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile);
         assertEquals(GUID, response.getGUID());
     }
 

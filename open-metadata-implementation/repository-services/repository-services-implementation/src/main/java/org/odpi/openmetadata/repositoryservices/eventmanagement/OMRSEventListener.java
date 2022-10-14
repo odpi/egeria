@@ -24,17 +24,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicLi
  */
 public class OMRSEventListener implements OMRSTopicListener
 {
-    private String                     cohortName;
-    private String                     localMetadataCollectionId;
+    private final String                     cohortName;
+    private final String                     localMetadataCollectionId;
+
     private OpenMetadataEventsSecurity securityVerifier;
 
     /*
      * There is an event processor for each category of event.  The OMRSEventListener passes appropriate events to these
      * objects depending on the settings of its configuration.
      */
-    private OMRSRegistryEventProcessor          registryEventProcessor;
-    private OMRSTypeDefEventProcessorInterface  typeDefEventProcessor;
-    private OMRSInstanceEventProcessorInterface instanceEventProcessor;
+    private final OMRSRegistryEventProcessor          registryEventProcessor;
+    private final OMRSTypeDefEventProcessorInterface  typeDefEventProcessor;
+    private final OMRSInstanceEventProcessorInterface instanceEventProcessor;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSEventListener.class);
 
@@ -190,13 +191,13 @@ public class OMRSEventListener implements OMRSTopicListener
                         /*
                          * New type of registry event that this server does not understand ignore it
                          */
-                        log.debug("Unknown registry event: " + registryEvent.toString());
+                        log.debug("Unknown registry event: " + registryEvent);
                         break;
                 }
             }
             else
             {
-                log.debug("Ignored registry event: " + registryEvent.toString());
+                log.debug("Ignored registry event: " + registryEvent);
             }
         }
     }

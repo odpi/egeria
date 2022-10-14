@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
@@ -22,7 +24,7 @@ public class EffectiveDatesFVT
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT=null;
-
+    private static Logger log = LoggerFactory.getLogger(EffectiveDatesFVT.class);
 
     public static void main(String args[])
     {
@@ -34,14 +36,16 @@ public class EffectiveDatesFVT
         {
             System.out.println("Error getting user input");
         } catch (GlossaryAuthorFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public EffectiveDatesFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT= new TermFVT(url,serverName,userId);
     }
@@ -63,7 +67,7 @@ public class EffectiveDatesFVT
             System.out.println("EffectiveDatesFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
@@ -75,19 +79,19 @@ public class EffectiveDatesFVT
         {
             glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with to in the past failed");
+            log.error("Expected creation of a Glossary with to in the past failed");
         }
         try
         {
             glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with from in the past failed");
+            log.error("Expected creation of a Glossary with from in the past failed");
         }
         try
         {
            glossaryFVT.createInvalidEffectiveDateGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with invalid Effectivity dates failed");
+            log.error("Expected creation of a Glossary with invalid Effectivity dates failed");
         }
         Glossary futureGloss = glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
         FVTUtils.validateNode(futureGloss);

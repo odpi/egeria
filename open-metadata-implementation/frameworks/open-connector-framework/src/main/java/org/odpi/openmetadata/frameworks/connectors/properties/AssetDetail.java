@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import java.util.Objects;
 
 /**
- * AssetDetail extends AssetSummary to provide all of the properties related to this asset.  It includes:
+ * AssetDetail extends AssetSummary to provide all the properties related to this asset.  It includes:
  * <ul>
  *     <li>AssetProperties - properties unique to the particular type of asset including any vendor-specific facets.</li>
  *     <li>ExternalIdentifiers - list of identifiers for this asset that are used in other systems.</li>
@@ -24,13 +24,13 @@ public class AssetDetail extends AssetSummary
 {
     private static final long     serialVersionUID = 1L;
 
-    protected AssetExternalIdentifiers    externalIdentifiers    = null;
-    protected AssetRelatedMediaReferences relatedMediaReferences = null;
-    protected AssetNoteLogs               noteLogs               = null;
-    protected AssetExternalReferences     externalReferences     = null;
-    protected AssetConnections            connections            = null;
-    protected AssetLicenses               licenses               = null;
-    protected AssetCertifications         certifications         = null;
+    protected ExternalIdentifiers    externalIdentifiers    = null;
+    protected RelatedMediaReferences relatedMediaReferences = null;
+    protected NoteLogs               noteLogs               = null;
+    protected ExternalReferences     externalReferences     = null;
+    protected Connections            connections            = null;
+    protected Licenses               licenses               = null;
+    protected Certifications         certifications         = null;
 
 
     /**
@@ -54,14 +54,14 @@ public class AssetDetail extends AssetSummary
      * @param licenses Iterator of licenses for this asset
      * @param certifications Iterator of certifications for this asset
      */
-    public AssetDetail(Asset                       assetBean,
-                       AssetExternalIdentifiers    externalIdentifiers,
-                       AssetRelatedMediaReferences relatedMediaReferences,
-                       AssetNoteLogs               noteLogs,
-                       AssetExternalReferences     externalReferences,
-                       AssetConnections            connections,
-                       AssetLicenses               licenses,
-                       AssetCertifications         certifications)
+    public AssetDetail(Asset                  assetBean,
+                       ExternalIdentifiers    externalIdentifiers,
+                       RelatedMediaReferences relatedMediaReferences,
+                       NoteLogs               noteLogs,
+                       ExternalReferences     externalReferences,
+                       Connections            connections,
+                       Licenses               licenses,
+                       Certifications         certifications)
     {
         super(assetBean);
 
@@ -87,47 +87,44 @@ public class AssetDetail extends AssetSummary
          */
         super(templateAssetDetail);
 
-        /*
-         * Copy details from template, ensuring the parentAsset is this object, not the template's.
-         */
         if (templateAssetDetail != null)
         {
-            AssetExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
-            AssetRelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
-            AssetNoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
-            AssetExternalReferences     templateExternalReferences     = templateAssetDetail.getExternalReferences();
-            AssetConnections            templateConnections            = templateAssetDetail.getConnections();
-            AssetLicenses               templateLicenses               = templateAssetDetail.getLicenses();
-            AssetCertifications      templateCertifications         = templateAssetDetail.getCertifications();
+            ExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
+            RelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
+            NoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
+            ExternalReferences     templateExternalReferences     = templateAssetDetail.getExternalReferences();
+            Connections            templateConnections            = templateAssetDetail.getConnections();
+            Licenses               templateLicenses               = templateAssetDetail.getLicenses();
+            Certifications         templateCertifications         = templateAssetDetail.getCertifications();
 
 
             if (templateExternalIdentifiers != null)
             {
-                externalIdentifiers = templateExternalIdentifiers.cloneIterator(this);
+                externalIdentifiers = templateExternalIdentifiers.cloneIterator();
             }
             if (templateRelatedMediaReferences != null)
             {
-                relatedMediaReferences = templateRelatedMediaReferences.cloneIterator(this);
+                relatedMediaReferences = templateRelatedMediaReferences.cloneIterator();
             }
             if (templateNoteLogs != null)
             {
-                noteLogs = templateNoteLogs.cloneIterator(this);
+                noteLogs = templateNoteLogs.cloneIterator();
             }
             if (templateExternalReferences != null)
             {
-                externalReferences = templateExternalReferences.cloneIterator(this);
+                externalReferences = templateExternalReferences.cloneIterator();
             }
             if (templateConnections != null)
             {
-                connections = templateConnections.cloneIterator(this);
+                connections = templateConnections.cloneIterator();
             }
             if (templateLicenses != null)
             {
-                licenses = templateLicenses.cloneIterator(this);
+                licenses = templateLicenses.cloneIterator();
             }
             if (templateCertifications != null)
             {
-                certifications = templateCertifications.cloneIterator(this);
+                certifications = templateCertifications.cloneIterator();
             }
         }
     }
@@ -138,7 +135,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return ExternalIdentifiers  list
      */
-    public AssetExternalIdentifiers getExternalIdentifiers()
+    public ExternalIdentifiers getExternalIdentifiers()
     {
         if (externalIdentifiers == null)
         {
@@ -146,7 +143,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return externalIdentifiers.cloneIterator(this);
+            return externalIdentifiers.cloneIterator();
         }
     }
 
@@ -156,7 +153,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return RelatedMediaReferences  list
      */
-    public AssetRelatedMediaReferences getRelatedMediaReferences()
+    public RelatedMediaReferences getRelatedMediaReferences()
     {
         if (relatedMediaReferences == null)
         {
@@ -164,7 +161,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return relatedMediaReferences.cloneIterator(this);
+            return relatedMediaReferences.cloneIterator();
         }
     }
 
@@ -174,7 +171,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return Notelogs iterator
      */
-    public AssetNoteLogs getNoteLogs()
+    public NoteLogs getNoteLogs()
     {
         if (noteLogs == null)
         {
@@ -182,7 +179,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return noteLogs.cloneIterator(this);
+            return noteLogs.cloneIterator();
         }
     }
 
@@ -192,7 +189,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return ExternalReferences iterator
      */
-    public AssetExternalReferences getExternalReferences()
+    public ExternalReferences getExternalReferences()
     {
         if (externalReferences == null)
         {
@@ -200,17 +197,17 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return externalReferences.cloneIterator(this);
+            return externalReferences.cloneIterator();
         }
     }
 
 
     /**
-     * Return an  list of the connections defined for this asset.
+     * Return a list of the connections defined for this asset.
      *
      * @return Connections  list
      */
-    public AssetConnections getConnections()
+    public Connections getConnections()
     {
         if (connections == null)
         {
@@ -218,7 +215,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return connections.cloneIterator(this);
+            return connections.cloneIterator();
         }
     }
 
@@ -228,7 +225,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return Licenses
      */
-    public AssetLicenses getLicenses()
+    public Licenses getLicenses()
     {
         if (licenses == null)
         {
@@ -236,7 +233,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return licenses.cloneIterator(this);
+            return licenses.cloneIterator();
         }
     }
 
@@ -246,7 +243,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return Certifications list of certifications
      */
-    public AssetCertifications getCertifications()
+    public Certifications getCertifications()
     {
         if (certifications == null)
         {
@@ -254,7 +251,7 @@ public class AssetDetail extends AssetSummary
         }
         else
         {
-            return certifications.cloneIterator(this);
+            return certifications.cloneIterator();
         }
     }
 
@@ -268,15 +265,44 @@ public class AssetDetail extends AssetSummary
     public String toString()
     {
         return "AssetDetail{" +
-                "assetBean=" + assetBean +
-                ", externalIdentifiers=" + externalIdentifiers +
-                ", relatedMediaReferences=" + relatedMediaReferences +
-                ", noteLogs=" + noteLogs +
-                ", externalReferences=" + externalReferences +
-                ", connections=" + connections +
-                ", licenses=" + licenses +
-                ", certifications=" + certifications +
-                '}';
+                       "externalIdentifiers=" + externalIdentifiers +
+                       ", relatedMediaReferences=" + relatedMediaReferences +
+                       ", noteLogs=" + noteLogs +
+                       ", externalReferences=" + externalReferences +
+                       ", connections=" + connections +
+                       ", licenses=" + licenses +
+                       ", certifications=" + certifications +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", shortDescription='" + getShortDescription() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
+                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
+                       ", ownerType=" + getOwnerType() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", assetOrigin=" + getAssetOrigin() +
+                       ", referenceData=" + isReferenceData() +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

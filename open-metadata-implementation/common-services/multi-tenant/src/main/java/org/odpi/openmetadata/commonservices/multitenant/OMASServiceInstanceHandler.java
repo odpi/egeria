@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -15,7 +16,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OMASServiceInstanceHandler retrieves information from the instance map for the
@@ -24,7 +27,9 @@ import java.util.List;
  */
 public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHandler
 {
-    private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
+
+    private Map<String, String> accessServiceLookupTable = null;
 
 
     /**
@@ -170,38 +175,36 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Return the service's official name
+     * Return the service's official name.
      *
      * @param callingServiceURLName url fragment that indicates the service name
      * @return String name
      */
     public String  getServiceName(String callingServiceURLName)
     {
-        final String assetOwnerURLName      = "asset-owner";
-        final String assetConsumerURLName   = "asset-consumer";
-        final String discoveryEngineURLName = "discovery-engine";
 
-        String callingServiceName;
+        if (accessServiceLookupTable == null)
+        {
+            accessServiceLookupTable = new HashMap<>();
 
-        if (assetOwnerURLName.equals(callingServiceURLName))
-        {
-            callingServiceName = AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName();
+            List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+
+            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            {
+                accessServiceLookupTable.put(registration.getAccessServiceURLMarker(), registration.getAccessServiceFullName());
+            }
         }
-        else if (assetConsumerURLName.equals(callingServiceURLName))
+
+        if (accessServiceLookupTable.get(callingServiceURLName) != null)
         {
-            callingServiceName = AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName();
-        }
-        else if (discoveryEngineURLName.equals(callingServiceURLName))
-        {
-            callingServiceName = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName();
+            return accessServiceLookupTable.get(callingServiceURLName);
         }
         else
         {
-            callingServiceName = callingServiceURLName;
+            return callingServiceURLName;
         }
-
-        return callingServiceName;
     }
+
 
     /**
      * Get the instance for a specific service.
@@ -227,7 +230,6 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
                                                                            this.getServiceName(callingServiceURLName),
                                                                            serviceOperationName);
     }
-
 
 
     /**
@@ -298,7 +300,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Get the publish for a specific service.  This is used in services that are shared by different
+     * Get the publishZones for a specific service.  This is used in services that are shared by different
      * access services.
      *
      * @param userId calling user
@@ -385,7 +387,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Retrieve the publish zones set up for this service instance.
+     * Retrieve the publishZones set up for this service instance.
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request

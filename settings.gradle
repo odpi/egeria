@@ -5,13 +5,23 @@
 
 // This HAS to be the first block of the file
 pluginManagement {
+    repositories {
+        // releases
+        mavenCentral()
+        // snapshots
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        // Once you start using pluginManagement, you should explicitly add this, unless
+        // you NEVER want to use this repository
+        gradlePluginPortal()
+    }
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.6.6'
+        id 'org.springframework.boot' version '2.7.4'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
-        id 'com.github.psxpaul.execfork' version '0.1.15'
+        id 'com.github.psxpaul.execfork' version '0.2.0'
+        id 'de.jjohannes.java-ecosystem-capabilities' version '0.5'
 
 
         // For reference we use these, but they are internal so no version spec needed
@@ -58,10 +68,6 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
 include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
-// todo - convert to integration connectors and governance action connectors
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector')
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors')
@@ -88,12 +94,18 @@ include(':open-metadata-implementation:common-services:metadata-security:metadat
 include(':open-metadata-implementation:common-services:metadata-security')
 include(':open-metadata-implementation:common-services:multi-tenant')
 include(':open-metadata-implementation:common-services:repository-handler')
+include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
+include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-client')
+include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server')
+include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-spring')
+include(':open-metadata-implementation:common-services:gaf-metadata-management')
 include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
 include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
 include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
 include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-server')
 include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-spring')
 include(':open-metadata-implementation:common-services:ocf-metadata-management')
+include(':open-metadata-implementation:common-services')
 include(':open-metadata-implementation:common-services')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-api')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
@@ -183,6 +195,7 @@ include(':open-metadata-implementation:access-services:digital-architecture:digi
 include(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-spring')
 include(':open-metadata-implementation:access-services:digital-architecture')
 include(':open-metadata-implementation:access-services:digital-service:digital-service-api')
+include(':open-metadata-implementation:access-services:digital-service:digital-service-client')
 include(':open-metadata-implementation:access-services:digital-service:digital-service-server')
 include(':open-metadata-implementation:access-services:digital-service:digital-service-spring')
 include(':open-metadata-implementation:access-services:digital-service')
@@ -297,6 +310,7 @@ include(':open-metadata-implementation:governance-servers:open-lineage-services:
 include(':open-metadata-implementation:governance-servers:open-lineage-services')
 //Todo: convert to integration connector
 include(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server')
+include(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-spring')
 include(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-connector')
 include(':open-metadata-implementation:governance-servers:data-engine-proxy-services')
 include(':open-metadata-implementation:governance-servers')
@@ -390,14 +404,11 @@ include(':open-metadata-distribution:open-metadata-packages:open-metadata-adapte
 include(':open-metadata-distribution:open-metadata-packages')
 include(':open-metadata-distribution:open-metadata-assemblies')
 include(':open-metadata-distribution')
-include(':open-metadata-publication:website')
-include(':open-metadata-publication')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
-include(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives')
 include(':open-metadata-resources:open-metadata-archives:open-connector-archives')
-include(':open-metadata-resources:open-metadata-archives:catalog-builder')
+include(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
 include(':open-metadata-resources:open-metadata-archives:open-metadata-types')
 include(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
 include(':open-metadata-resources:open-metadata-archives')
@@ -419,8 +430,6 @@ include(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-c
 include(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
 include(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 include(':open-metadata-resources:open-metadata-samples')
-include(':open-metadata-resources:open-metadata-tutorials')
-include(':open-metadata-resources:open-metadata-labs')
 include(':open-metadata-resources:open-metadata-deployment')
 include(':open-metadata-resources')
 include(':open-metadata-test:open-metadata-ut')
@@ -478,10 +487,6 @@ project(':open-metadata-implementation:adapters:open-connectors:integration-conn
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/elasticsearch-integration-connector')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors')
-// todo convert to integration connectors and governance action connectors
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors')
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors/security-officer-tag-connector')
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors')
@@ -508,6 +513,11 @@ project(':open-metadata-implementation:common-services:metadata-security').proje
 project(':open-metadata-implementation:common-services:multi-tenant').projectDir = file('open-metadata-implementation/common-services/multi-tenant')
 project(':open-metadata-implementation:common-services:repository-handler').projectDir = file('open-metadata-implementation/common-services/repository-handler')
 project(':open-metadata-implementation:common-services:generic-handlers').projectDir = file('open-metadata-implementation/common-services/generic-handlers')
+project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-api')
+project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-client').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-client')
+project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-server')
+project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-spring').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-spring')
+project(':open-metadata-implementation:common-services:gaf-metadata-management').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management')
 project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-api')
 project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-client')
 project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-handlers')
@@ -590,6 +600,7 @@ project(':open-metadata-implementation:access-services:digital-architecture:digi
 project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-spring').projectDir = file('open-metadata-implementation/access-services/digital-architecture/digital-architecture-spring')
 project(':open-metadata-implementation:access-services:digital-architecture').projectDir = file('open-metadata-implementation/access-services/digital-architecture')
 project(':open-metadata-implementation:access-services:digital-service:digital-service-api').projectDir = file('open-metadata-implementation/access-services/digital-service/digital-service-api')
+project(':open-metadata-implementation:access-services:digital-service:digital-service-client').projectDir = file('open-metadata-implementation/access-services/digital-service/digital-service-client')
 project(':open-metadata-implementation:access-services:digital-service:digital-service-server').projectDir = file('open-metadata-implementation/access-services/digital-service/digital-service-server')
 project(':open-metadata-implementation:access-services:digital-service:digital-service-spring').projectDir = file('open-metadata-implementation/access-services/digital-service/digital-service-spring')
 project(':open-metadata-implementation:access-services:digital-service').projectDir = file('open-metadata-implementation/access-services/digital-service')
@@ -780,6 +791,7 @@ project(':open-metadata-implementation:governance-servers:open-lineage-services:
 project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring').projectDir = file('open-metadata-implementation/governance-servers/open-lineage-services/open-lineage-services-spring')
 project(':open-metadata-implementation:governance-servers:open-lineage-services').projectDir = file('open-metadata-implementation/governance-servers/open-lineage-services')
 // todo convert to governance action connector
+project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-spring').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-services-spring')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-services-server')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-connector').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector')
 project(':open-metadata-implementation:governance-servers:data-engine-proxy-services').projectDir = file('open-metadata-implementation/governance-servers/data-engine-proxy-services')
@@ -810,13 +822,11 @@ project(':open-metadata-distribution:open-metadata-packages:open-metadata-caller
 project(':open-metadata-distribution:open-metadata-packages:open-metadata-adapter-package').projectDir = file('open-metadata-distribution/open-metadata-packages/open-metadata-adapter-package')
 project(':open-metadata-distribution:open-metadata-packages').projectDir = file('open-metadata-distribution/open-metadata-packages')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')
-project(':open-metadata-publication:website').projectDir = file('open-metadata-publication/website')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/design-model-archive-base')
-project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/cloud-information-model')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/glossary-canonical-model')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives')
 project(':open-metadata-resources:open-metadata-archives:open-connector-archives').projectDir = file('open-metadata-resources/open-metadata-archives/open-connector-archives')
-project(':open-metadata-resources:open-metadata-archives:catalog-builder').projectDir = file('open-metadata-resources/open-metadata-archives/catalog-builder')
+project(':open-metadata-resources:open-metadata-archives:content-pack-helpers').projectDir = file('open-metadata-resources/open-metadata-archives/content-pack-helpers')
 project(':open-metadata-resources:open-metadata-archives:open-metadata-types').projectDir = file('open-metadata-resources/open-metadata-archives/open-metadata-types')
 project(':open-metadata-resources:open-metadata-archives').projectDir = file('open-metadata-resources/open-metadata-archives')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-avro-sample')
@@ -837,8 +847,6 @@ project(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-c
 project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').projectDir = file('open-metadata-resources/open-metadata-samples/open-metadata-security-samples')
 project(':open-metadata-resources:open-metadata-samples:governance-services-sample').projectDir = file('open-metadata-resources/open-metadata-samples/governance-services-sample')
 project(':open-metadata-resources:open-metadata-samples').projectDir = file('open-metadata-resources/open-metadata-samples')
-project(':open-metadata-resources:open-metadata-tutorials').projectDir = file('open-metadata-resources/open-metadata-tutorials')
-project(':open-metadata-resources:open-metadata-labs').projectDir = file('open-metadata-resources/open-metadata-labs')
 project(':open-metadata-resources:open-metadata-deployment').projectDir = file('open-metadata-resources/open-metadata-deployment')
 project(':open-metadata-test:open-metadata-ut').projectDir = file('open-metadata-test/open-metadata-ut')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:analytics-modeling-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/analytics-modeling-fvt')

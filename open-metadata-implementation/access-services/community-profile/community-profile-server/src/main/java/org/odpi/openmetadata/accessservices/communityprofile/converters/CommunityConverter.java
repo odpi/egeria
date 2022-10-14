@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * CommunityConverter generates an CommunityProperties bean from an CommunityProperties entity.
+ * CommunityConverter generates an CommunityElement bean from an CommunityProperties entity.
  */
 public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
 {
@@ -109,8 +109,6 @@ public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
     }
 
 
-
-
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
@@ -122,13 +120,20 @@ public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
-    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return this.getNewBean(beanClass, entity, methodName);
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof CommunityElement)
+        {
+            CommunityElement bean = (CommunityElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

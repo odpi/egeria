@@ -31,7 +31,7 @@ public abstract class MessageDefinition
     private String[] params;
 
     /**
-     * Constructor to save all of the fixed values of a message.  This is typically populated
+     * Constructor to save all the fixed values of a message.  This is typically populated
      * from an Enum message set.
      *
      * @param messageId unique id of the message type.

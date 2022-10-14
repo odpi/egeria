@@ -1,10 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 
 # Search Integrator Open Metadata Integration Service (OMIS)
+
+The Search Integrator OMIS manages the maintenance of search indexes.
+
+* [Documentation](https://egeria-project.org/services/omis/search-integrator/overview)
 
 ----
 

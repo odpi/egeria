@@ -126,7 +126,7 @@ public class Relationship extends InstanceHeader
 
 
     /**
-     * Return a copy of all of the properties for this relationship.  Null means no properties exist.
+     * Return a copy of all the properties for this relationship.  Null means no properties exist.
      *
      * @return InstanceProperties
      */

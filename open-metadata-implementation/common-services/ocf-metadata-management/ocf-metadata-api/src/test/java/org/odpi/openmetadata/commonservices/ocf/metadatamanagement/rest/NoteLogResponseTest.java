@@ -4,7 +4,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLogHeader;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import static org.testng.Assert.assertTrue;
  */
 public class NoteLogResponseTest
 {
-    private NoteLog             noteLog              = new NoteLog();
-    private List<Note>          notes                = new ArrayList<>();
+    private NoteLogHeader noteLog = new NoteLogHeader();
+    private List<Note>    notes   = new ArrayList<>();
     private Map<String, Object> additionalProperties = new HashMap<>();
 
 

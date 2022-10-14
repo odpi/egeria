@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
 /**
  * MockAssetElement provides the
@@ -15,37 +15,22 @@ public class MockAssetElement extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param elementHeaderBean bean with all the properties
+     * @param elementBaseBean bean with all the properties
      */
-    public MockAssetElement(ElementHeader elementHeaderBean)
+    public MockAssetElement(ElementBase elementBaseBean)
     {
-        super(elementHeaderBean);
-    }
-
-
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset       descriptor for parent asset
-     * @param elementHeaderBean bean containing properties
-     */
-    protected MockAssetElement(AssetDescriptor parentAsset,
-                               ElementHeader   elementHeaderBean)
-    {
-        super(parentAsset, elementHeaderBean);
+        super(elementBaseBean);
     }
 
 
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset        descriptor for parent asset
      * @param assetElementHeader element to copy
      */
-    protected MockAssetElement(AssetDescriptor  parentAsset,
-                               MockAssetElement assetElementHeader)
+    protected MockAssetElement(MockAssetElement assetElementHeader)
     {
-        super(parentAsset, assetElementHeader);
+        super(assetElementHeader);
 
     }
 }

@@ -6,12 +6,12 @@ import org.odpi.openmetadata.accessservices.communityprofile.converters.Communit
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -34,13 +34,13 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicListener.class);
 
-    private CommunityProfileOutTopicPublisher          publisher;
-    private OMRSRepositoryHelper                       repositoryHelper;
-    private int                                        karmaPointIncrement;
-    private int                                        karmaPointPlateauThreshold;
-    private String                                     serverUserId;
-    private CommunityProfileOMASConverter<ElementStub> converter;
-    private CommunityProfileServicesInstance           instance;
+    private final CommunityProfileOutTopicPublisher          publisher;
+    private final OMRSRepositoryHelper                       repositoryHelper;
+    private final int                                        karmaPointIncrement;
+    private final int                                        karmaPointPlateauThreshold;
+    private final String                                     serverUserId;
+    private final CommunityProfileOMASConverter<ElementStub> converter;
+    private final CommunityProfileServicesInstance           instance;
 
 
     /**
@@ -58,7 +58,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param instance handlers for this server instance
      */
     public CommunityProfileOMRSTopicListener(int                               karmaPointIncrement,
-                                             int karmaPointPlateauThreshold,
+                                             int                               karmaPointPlateauThreshold,
                                              CommunityProfileOutTopicPublisher publisher,
                                              String                            serverUserId,
                                              AuditLog                          auditLog,
@@ -107,6 +107,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                                           contributingUserId,
                                                                                                                           userParameterName,
                                                                                                                           OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                                                                          false,
+                                                                                                                          false,
                                                                                                                           new Date(),
                                                                                                                           methodName);
 
@@ -136,6 +138,10 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                                                        null,
                                                                                        null,
                                                                                        null,
+                                                                                       true,
+                                                                                       false,
+                                                                                       false,
+                                                                                       new Date(),
                                                                                        methodName);
 
                         if (karmaPointPlateauThreshold != 0)
@@ -508,7 +514,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -548,7 +554,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -588,7 +594,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -628,7 +634,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -668,7 +674,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -710,7 +716,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -743,7 +749,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -872,7 +878,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1032,7 +1038,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1151,7 +1157,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *

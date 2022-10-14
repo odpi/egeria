@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * The generic handlers provide sevices to translate OMAS requests
+ * The generic handlers provide services to translate OMAS requests
  * built around that service's private beans into calls to the repository
  * services (through the repository handler).
  * The aim is to reduce the coding needed in the specific handlers used by the Open Metadata Access Services (OMASs) and

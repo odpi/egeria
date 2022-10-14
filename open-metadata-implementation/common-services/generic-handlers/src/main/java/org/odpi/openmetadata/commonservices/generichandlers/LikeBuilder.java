@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -12,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class LikeBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private boolean    isPublic;
+    private final boolean    isPublic;
 
     /**
      * Constructor.

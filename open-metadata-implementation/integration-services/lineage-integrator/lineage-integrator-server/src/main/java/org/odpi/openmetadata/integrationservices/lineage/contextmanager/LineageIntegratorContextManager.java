@@ -39,6 +39,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     private DataAssetExchangeClient    dataAssetExchangeClient;
     private LineageExchangeClient      lineageExchangeClient;
     private GovernanceExchangeClient   governanceExchangeClient;
+    private StewardshipExchangeClient  stewardshipExchangeClient;
 
     private ObjectMapper                   objectMapper             = new ObjectMapper();
     private List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
@@ -126,6 +127,12 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                 restClient,
                                                                 maxPageSize,
                                                                 auditLog);
+
+        stewardshipExchangeClient = new StewardshipExchangeClient(partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  restClient,
+                                                                  maxPageSize,
+                                                                  auditLog);
     }
 
 
@@ -232,6 +239,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                              dataAssetExchangeClient,
                                                                              lineageExchangeClient,
                                                                              governanceExchangeClient,
+                                                                             stewardshipExchangeClient,
                                                                              eventClient,
                                                                              localServerUserId,
                                                                              metadataSourceGUID,

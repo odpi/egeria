@@ -103,7 +103,7 @@ public class ExceptionAccumulatorBase
 
 
     /**
-     * Throw a FunctionNotSupportedException if it was returned by all of the calls to the cohort connectors.
+     * Throw a FunctionNotSupportedException if it was returned by all the calls to the cohort connectors.
      *
      * @throws FunctionNotSupportedException the requested function is not supported in any of the federated repositories
      */

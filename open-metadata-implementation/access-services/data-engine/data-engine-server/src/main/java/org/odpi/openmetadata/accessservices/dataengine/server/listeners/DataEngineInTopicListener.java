@@ -21,7 +21,7 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(DataEngineInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final AuditLog auditLog;
-    private DataEngineEventProcessor dataEngineEventProcessor;
+    private final DataEngineEventProcessor dataEngineEventProcessor;
 
     /**
      * The constructor is given the connection to the out topic for Data Engine OMAS along with classes for

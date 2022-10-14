@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.DataAssetExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DataAssetExchangeResource
 {
-    private DataAssetExchangeRESTServices restAPI = new DataAssetExchangeRESTServices();
+    private final DataAssetExchangeRESTServices restAPI = new DataAssetExchangeRESTServices();
 
 
     /**
@@ -96,6 +95,8 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for this element
      *
      * @return void or
@@ -109,9 +110,13 @@ public class DataAssetExchangeResource
                                         @PathVariable String           userId,
                                         @PathVariable String           assetGUID,
                                         @RequestParam boolean          isMergeUpdate,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                boolean                      forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                boolean                      forDuplicateProcessing,
                                         @RequestBody DataAssetRequestBody requestBody)
     {
-        return restAPI.updateDataAsset(serverName, userId, assetGUID, isMergeUpdate, requestBody);
+        return restAPI.updateDataAsset(serverName, userId, assetGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -123,6 +128,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to publish
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -135,10 +142,14 @@ public class DataAssetExchangeResource
     public VoidResponse publishDataAsset(@PathVariable String                             serverName,
                                          @PathVariable String                             userId,
                                          @PathVariable String                             assetGUID,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
                                          @RequestBody(required=false)
-                                                       AssetManagerIdentifiersRequestBody requestBody)
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.publishDataAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.publishDataAsset(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -150,6 +161,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to withdraw
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -162,10 +175,14 @@ public class DataAssetExchangeResource
     public VoidResponse withdrawDataAsset(@PathVariable String                             serverName,
                                           @PathVariable String                             userId,
                                           @PathVariable String                             assetGUID,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
                                           @RequestBody(required=false)
-                                                        AssetManagerIdentifiersRequestBody requestBody)
+                                                        EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.withdrawDataAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.withdrawDataAsset(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -176,6 +193,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -188,10 +207,14 @@ public class DataAssetExchangeResource
     public VoidResponse removeDataAsset(@PathVariable String                        serverName,
                                         @PathVariable String                        userId,
                                         @PathVariable String                        assetGUID,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                boolean                      forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                boolean                      forDuplicateProcessing,
                                         @RequestBody(required = false)
-                                                      MetadataCorrelationProperties requestBody)
+                                                      UpdateRequestBody requestBody)
     {
-        return restAPI.removeDataAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.removeDataAsset(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -201,6 +224,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -213,10 +238,14 @@ public class DataAssetExchangeResource
     public VoidResponse setDataAssetAsReferenceData(@PathVariable String                        serverName,
                                                     @PathVariable String                        userId,
                                                     @PathVariable String                        assetGUID,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forDuplicateProcessing,
                                                     @RequestBody(required = false)
-                                                                  MetadataCorrelationProperties requestBody)
+                                                                  UpdateRequestBody requestBody)
     {
-        return restAPI.setDataAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
+        return restAPI.setDataAssetAsReferenceData(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -226,6 +255,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -238,10 +269,225 @@ public class DataAssetExchangeResource
     public VoidResponse clearDataAssetAsReferenceData(@PathVariable String                        serverName,
                                                       @PathVariable String                        userId,
                                                       @PathVariable String                        assetGUID,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                      forLineage,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                      forDuplicateProcessing,
                                                       @RequestBody(required = false)
-                                                                    MetadataCorrelationProperties requestBody)
+                                                                    UpdateRequestBody requestBody)
     {
-        return restAPI.clearDataAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
+        return restAPI.clearDataAssetAsReferenceData(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/to-asset/{toAssetGUID}")
+
+    public GUIDResponse setupRelatedDataAsset(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @RequestParam boolean                 assetManagerIsHome,
+                                              @PathVariable String                  relationshipTypeName,
+                                              @PathVariable String                  fromAssetGUID,
+                                              @PathVariable String                  toAssetGUID,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                      forDuplicateProcessing,
+                                              @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupRelatedDataAsset(serverName, userId, assetManagerIsHome, relationshipTypeName, fromAssetGUID, toAssetGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier and properties of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/to-asset/{toAssetGUID}/retrieve")
+
+    public RelationshipElementResponse getAssetRelationship(@PathVariable String                        serverName,
+                                                            @PathVariable String                        userId,
+                                                            @PathVariable String                        relationshipTypeName,
+                                                            @PathVariable String                        fromAssetGUID,
+                                                            @PathVariable String                        toAssetGUID,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forLineage,
+                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                      forDuplicateProcessing,
+                                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getAssetRelationship(serverName, userId, relationshipTypeName, fromAssetGUID, toAssetGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody description and/or purpose of the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/{relationshipGUID}/update")
+
+    public VoidResponse updateAssetRelationship(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @PathVariable String                  relationshipTypeName,
+                                                @PathVariable String                  relationshipGUID,
+                                                @RequestParam boolean                 isMergeUpdate,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
+                                                @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.updateAssetRelationship(serverName, userId, relationshipTypeName, relationshipGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody external source ids
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/{relationshipGUID}/remove")
+
+    public VoidResponse clearAssetRelationship(@PathVariable String                             serverName,
+                                               @PathVariable String                             userId,
+                                               @PathVariable String                             relationshipTypeName,
+                                               @PathVariable String                             relationshipGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
+                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearAssetRelationship(serverName, userId, relationshipTypeName, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/retrieve/end2")
+
+    public RelationshipElementsResponse getRelatedAssetsAtEnd2(@PathVariable String                        serverName,
+                                                               @PathVariable String                        userId,
+                                                               @PathVariable String                        relationshipTypeName,
+                                                               @PathVariable String                        fromAssetGUID,
+                                                               @RequestParam int                           startingFrom,
+                                                               @RequestParam int                           pageSize,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forDuplicateProcessing,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getRelatedAssetsAtEnd2(serverName, userId, relationshipTypeName, fromAssetGUID, startingFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/data-assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
+
+    public RelationshipElementsResponse getRelatedAssetsAtEnd1(@PathVariable String                        serverName,
+                                                               @PathVariable String                        userId,
+                                                               @PathVariable String                        relationshipTypeName,
+                                                               @PathVariable String                        toAssetGUID,
+                                                               @RequestParam int                           startingFrom,
+                                                               @RequestParam int                           pageSize,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forDuplicateProcessing,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getRelatedAssetsAtEnd1(serverName, userId, relationshipTypeName, toAssetGUID, startingFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -253,6 +499,8 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -266,9 +514,13 @@ public class DataAssetExchangeResource
                                                     @PathVariable String                  userId,
                                                     @RequestParam int                     startFrom,
                                                     @RequestParam int                     pageSize,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forDuplicateProcessing,
                                                     @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findDataAssets(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findDataAssets(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -279,6 +531,8 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -292,9 +546,13 @@ public class DataAssetExchangeResource
                                                     @PathVariable String                             userId,
                                                     @RequestParam int                                startFrom,
                                                     @RequestParam int                                pageSize,
-                                                    @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                            boolean                      forDuplicateProcessing,
+                                                    @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.scanDataAssets(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.scanDataAssets(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -306,6 +564,8 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -319,9 +579,13 @@ public class DataAssetExchangeResource
                                                          @PathVariable String          userId,
                                                          @RequestParam int             startFrom,
                                                          @RequestParam int             pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
                                                          @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getDataAssetsByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getDataAssetsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -332,6 +596,8 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameters and correlation properties
      *
      * @return list of matching metadata elements or
@@ -345,9 +611,13 @@ public class DataAssetExchangeResource
                                                                   @PathVariable String                             userId,
                                                                   @RequestParam int                                startFrom,
                                                                   @RequestParam int                                pageSize,
-                                                                  @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                          boolean                      forLineage,
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                          boolean                      forDuplicateProcessing,
+                                                                  @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getDataAssetsForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getDataAssetsForAssetManager(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -357,6 +627,8 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return matching metadata element or
@@ -369,9 +641,13 @@ public class DataAssetExchangeResource
     public DataAssetElementResponse getDataAssetByGUID(@PathVariable String                             serverName,
                                                        @PathVariable String                             userId,
                                                        @PathVariable String                             assetGUID,
-                                                       @RequestBody(required = false)
-                                                                     AssetManagerIdentifiersRequestBody requestBody)
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forDuplicateProcessing,
+                                                       @RequestBody  (required = false)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getDataAssetByGUID(serverName, userId, assetGUID, requestBody);
+        return restAPI.getDataAssetByGUID(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

@@ -14,6 +14,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -24,51 +25,46 @@ import java.util.List;
  */
 public class DataManagerServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
 
-    private ElementStubConverter<ElementStub>                    elementStubConverter;
-    private OpenMetadataAPIGenericHandler<ElementStub>           genericHandler;
-    private SoftwareCapabilityHandler<SoftwareCapabilityElement> dataManagerIntegratorHandler;
-    private RelationalDataHandler<DatabaseElement,
-                                  DatabaseSchemaElement,
-                                  DatabaseTableElement,
-                                  DatabaseViewElement,
-                                  DatabaseColumnElement,
-                                  SchemaTypeElement>             relationalDataHandler;
-    private FilesAndFoldersHandler<FileSystemElement,
-                                   FileFolderElement,
-                                   DataFileElement>              filesAndFoldersHandler;
+    private final ElementStubConverter<ElementStub>                    elementStubConverter;
+    private final OpenMetadataAPIGenericHandler<ElementStub>           genericHandler;
+    private final SoftwareCapabilityHandler<SoftwareCapabilityElement> dataManagerIntegratorHandler;
+    private final RelationalDataHandler<DatabaseElement,
+                                        DatabaseSchemaElement,
+                                        DatabaseTableElement,
+                                        DatabaseViewElement,
+                                        DatabaseColumnElement,
+                                        SchemaTypeElement>             relationalDataHandler;
+    private final FilesAndFoldersHandler<FileSystemElement,
+                                         FileFolderElement,
+                                         DataFileElement>              filesAndFoldersHandler;
 
-    private AssetHandler<TopicElement>                                       topicHandler;
-    private EventTypeHandler<EventTypeElement>                               eventTypeHandler;
+    private final AssetHandler<TopicElement>                                       topicHandler;
+    private final EventTypeHandler<EventTypeElement>                               eventTypeHandler;
 
-    private AssetHandler<APIElement>                                         apiHandler;
-    private APIOperationHandler<APIOperationElement>                         apiOperationHandler;
-    private APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
+    private final AssetHandler<APIElement>                                         apiHandler;
+    private final APIOperationHandler<APIOperationElement>                         apiOperationHandler;
+    private final APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
 
-    private AssetHandler<FormElement>                                        formHandler;
-    private AssetHandler<ReportElement>                                      reportHandler;
-    private AssetHandler<QueryElement>                                       queryHandler;
-    private DisplayDataContainerHandler<DataContainerElement,
-                                        SchemaTypeElement>                   dataContainerHandler;
+    private final AssetHandler<FormElement>                                        formHandler;
+    private final AssetHandler<ReportElement>                                      reportHandler;
+    private final AssetHandler<QueryElement>                                       queryHandler;
+    private final DisplayDataContainerHandler<DataContainerElement,
+                                              SchemaTypeElement>                   dataContainerHandler;
 
 
-    private SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
-    private SchemaAttributeHandler<SchemaAttributeElement,
-                                   SchemaTypeElement>                        schemaAttributeHandler;
+    private final SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
+    private final SchemaAttributeHandler<SchemaAttributeElement,
+                                         SchemaTypeElement>                        schemaAttributeHandler;
 
-    private ConnectionHandler<ConnectionElement>       connectionHandler;
-    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
-    private EndpointHandler<EndpointElement>           endpointHandler;
+    private final ConnectionHandler<ConnectionElement>       connectionHandler;
+    private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private final EndpointHandler<EndpointElement>           endpointHandler;
 
-    private ValidValuesHandler<ValidValueSetElement,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean,
-                               OpenMetadataAPIDummyBean>                     validValuesHandler;
+    private final ValidValuesHandler<ValidValueSetElement> validValuesSetHandler;
+    private final ReferenceableHandler<RelatedElement>     relatedElementHandler;
+    private final ValidValuesHandler<ValidValueElement>    validValuesHandler;
 
 
     /**
@@ -391,22 +387,22 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                      publishZones,
                                                      auditLog);
 
-        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueSetElement.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
-                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                           OpenMetadataAPIDummyBean.class,
+        this.validValuesSetHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
+                                                              ValidValueSetElement.class,
+                                                              serviceName,
+                                                              serverName,
+                                                              invalidParameterHandler,
+                                                              repositoryHandler,
+                                                              repositoryHelper,
+                                                              localServerUserId,
+                                                              securityVerifier,
+                                                              supportedZones,
+                                                              defaultZones,
+                                                              publishZones,
+                                                              auditLog);
+
+        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                           ValidValueElement.class,
                                                            serviceName,
                                                            serverName,
                                                            invalidParameterHandler,
@@ -418,6 +414,20 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                            defaultZones,
                                                            publishZones,
                                                            auditLog);
+
+        this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
+                                                                RelatedElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
     }
 
 
@@ -723,24 +733,50 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for managing valid values - used by schema.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ValidValuesHandler<ValidValueSetElement> getValidValuesSetHandler() throws PropertyServerException
+    {
+        final String methodName = "getValidValuesSetHandler";
+
+        validateActiveRepository(methodName);
+
+        return validValuesSetHandler;
+    }
+
+
+    /**
      * Return the handler for managing valid values.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ValidValuesHandler<ValidValueSetElement,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean> getValidValuesHandler() throws PropertyServerException
+    ValidValuesHandler<ValidValueElement> getValidValuesHandler() throws PropertyServerException
     {
         final String methodName = "getValidValuesHandler";
 
         validateActiveRepository(methodName);
 
         return validValuesHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing valid values.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedElementHandler;
     }
 }

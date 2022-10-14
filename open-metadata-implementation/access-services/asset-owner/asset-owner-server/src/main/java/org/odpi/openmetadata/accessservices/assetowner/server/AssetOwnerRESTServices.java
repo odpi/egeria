@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +35,12 @@ import java.util.List;
  */
 public class AssetOwnerRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
-    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetOwnerRESTServices.class),
-                                                                                         instanceHandler.getServiceName());
+    private static final AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
+    private static final RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetOwnerRESTServices.class),
+                                                                                               instanceHandler.getServiceName());
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Default constructor
@@ -191,7 +193,8 @@ public class AssetOwnerRESTServices
                                                                  null,
                                                                  null,
                                                                  requestBody.getQualifiedName(),
-                                                                 requestBody.getDisplayName(),
+                                                                 requestBody.getName(),
+                                                                 requestBody.getVersionIdentifier(),
                                                                  requestBody.getDescription(),
                                                                  requestBody.getZoneMembership(),
                                                                  requestBody.getOwner(),
@@ -203,6 +206,10 @@ public class AssetOwnerRESTServices
                                                                  assetTypeGUID,
                                                                  assetTypeName,
                                                                  requestBody.getExtendedProperties(),
+                                                                 null,
+                                                                 null,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 new Date(),
                                                                  methodName));
             }
             else
@@ -264,8 +271,13 @@ public class AssetOwnerRESTServices
                                                                  requestBody.getQualifiedName(),
                                                                  qualifiedNameParameterName,
                                                                  requestBody.getDisplayName(),
+                                                                 requestBody.getVersionIdentifier(),
                                                                  requestBody.getDescription(),
+                                                                 requestBody.getPathName(),
                                                                  requestBody.getNetworkAddress(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName));
             }
             else
@@ -518,6 +530,11 @@ public class AssetOwnerRESTServices
                                                       null,
                                                       null,
                                                       schemaTypeBuilder,
+                                                      null,
+                                                      null,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
 
         if (schemaTypeGUID != null)
@@ -535,7 +552,10 @@ public class AssetOwnerRESTServices
                                          false,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                         (InstanceProperties) null,
                                          null,
+                                         null,
+                                         new Date(),
                                          methodName);
         }
 
@@ -544,7 +564,7 @@ public class AssetOwnerRESTServices
 
 
     /**
-     * Recursively navigate through the schema type loading up the a new schema type builder to pass to the
+     * Recursively navigate through the schema type loading up a new schema type builder to pass to the
      * schemaTypeHandler.
      *
      * @param schemaType supplied schema type
@@ -680,7 +700,7 @@ public class AssetOwnerRESTServices
     /**
      * Create a schema attribute and attach it to the supplied parent schema type.  This method has 3 parts to it.
      * First to create the schema attribute.  Then to link the schema attribute to its parent schema so that the attribute
-     * count value is visible as soon as possible.  Finally to determine the style of type for the attribute - is it directly linked or
+     * count value is visible as soon as possible.  Finally, to determine the style of type for the attribute - is it directly linked or
      * is it indirectly linked through a schema link entity - and create these elements.
      *
      * @param userId calling user
@@ -784,6 +804,11 @@ public class AssetOwnerRESTServices
                                                                           schemaAttribute.getQualifiedName(),
                                                                           qualifiedNameParameterName,
                                                                           schemaAttributeBuilder,
+                                                                          null,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName);
             }
             else
@@ -843,6 +868,11 @@ public class AssetOwnerRESTServices
                                             assetGUIDParameterName,
                                             schemaTypeGUID,
                                             schemaTypeGUIDParameterName,
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
         }
         catch (Exception error)
@@ -856,7 +886,7 @@ public class AssetOwnerRESTServices
 
 
     /**
-     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     * Unlinks the schema from the asset but does not delete it.  This means it can be reattached to a different asset.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
@@ -893,6 +923,9 @@ public class AssetOwnerRESTServices
                                                                null,
                                                                assetGUID,
                                                                assetGUIDParameterName,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
         }
         catch (Exception error)
@@ -943,6 +976,9 @@ public class AssetOwnerRESTServices
                                                null,
                                                assetGUID,
                                                assetGUIDParameterName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
         }
         catch (Exception error)
@@ -1186,6 +1222,9 @@ public class AssetOwnerRESTServices
                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                      connection,
                                                      assetSummary,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName);
                 }
                 else
@@ -1259,6 +1298,11 @@ public class AssetOwnerRESTServices
                                            assetGUIDParameterName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -1316,6 +1360,11 @@ public class AssetOwnerRESTServices
                                            assetElementGUIDParameterName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
 
         }
@@ -1372,7 +1421,9 @@ public class AssetOwnerRESTServices
                                              assetGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
-                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
 
         }
@@ -1431,7 +1482,9 @@ public class AssetOwnerRESTServices
                                              assetElementGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
-                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
 
         }
@@ -1490,6 +1543,10 @@ public class AssetOwnerRESTServices
                                        requestBody.getOtherOriginValues(),
                                        null,
                                        null,
+                                       true,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
             }
             else
@@ -1540,7 +1597,13 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.removeAssetOrigin(userId, assetGUID, assetGUIDParameterName, methodName);
+                handler.removeAssetOrigin(userId,
+                                          assetGUID,
+                                          assetGUIDParameterName,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);
             }
             else
             {
@@ -1589,7 +1652,13 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, assetGUID, assetGUIDParameterName, methodName);
+            handler.publishAsset(userId,
+                                 assetGUID,
+                                 assetGUIDParameterName,
+                                 false,
+                                 false,
+                                 new Date(),
+                                 methodName);
         }
         catch (Exception error)
         {
@@ -1633,7 +1702,13 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, methodName);
+            handler.withdrawAsset(userId,
+                                  assetGUID,
+                                  assetGUIDParameterName,
+                                  false,
+                                  false,
+                                  new Date(),
+                                  methodName);
         }
         catch (Exception error)
         {
@@ -1681,6 +1756,10 @@ public class AssetOwnerRESTServices
                                      assetGUID,
                                      assetGUIDParameterName,
                                      assetZones,
+                                     true,
+                                     false,
+                                     false,
+                                     new Date(),
                                      methodName);
         }
         catch (Exception error)
@@ -1748,6 +1827,9 @@ public class AssetOwnerRESTServices
                                  requestBody.getOwnerId(),
                                  ownerTypeName,
                                  requestBody.getOwnerPropertyName(),
+                                 false,
+                                 false,
+                                 new Date(),
                                  methodName);
             }
             else
@@ -1805,6 +1887,9 @@ public class AssetOwnerRESTServices
                                         assetTypeName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
             }
             else
@@ -1865,6 +1950,9 @@ public class AssetOwnerRESTServices
                                         assetElementTypeName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
             }
             else
@@ -1919,6 +2007,9 @@ public class AssetOwnerRESTServices
                                        assetGUID,
                                        assetGUIDParameterName,
                                        assetTypeName,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
         }
         catch (Exception error)
@@ -1970,6 +2061,9 @@ public class AssetOwnerRESTServices
                                        assetElementGUID,
                                        assetElementGUIDParameterName,
                                        assetElementTypeName,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
         }
         catch (Exception error)
@@ -2023,6 +2117,9 @@ public class AssetOwnerRESTServices
                                                   requestBody.getName(),
                                                   requestBody.getDescription(),
                                                   requestBody.getAdditionalProperties(),
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
             }
             else
@@ -2034,6 +2131,9 @@ public class AssetOwnerRESTServices
                                                   null,
                                                   null,
                                                   null,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
             }
         }
@@ -2084,6 +2184,9 @@ public class AssetOwnerRESTServices
                                                  assetGUID,
                                                  assetGUIDParameterName,
                                                  assetTypeName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
 
         }
@@ -2144,7 +2247,9 @@ public class AssetOwnerRESTServices
                                                        nameParameterName,
                                                        startFrom,
                                                        pageSize,
-                                                       null,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -2197,7 +2302,9 @@ public class AssetOwnerRESTServices
                                                   searchStringParameter,
                                                   startFrom,
                                                   pageSize,
-                                                  null,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -2245,7 +2352,7 @@ public class AssetOwnerRESTServices
                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                             false,
                                                             false,
-                                                            null,
+                                                            new Date(),
                                                             methodName));
         }
         catch (Exception error)
@@ -2265,7 +2372,7 @@ public class AssetOwnerRESTServices
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maxPageSize maximum number of elements to return an this call
+     * @param maxPageSize maximum number of elements to return on this call
      *
      * @return list of discovery analysis reports or
      * InvalidParameterException full path or userId is null or
@@ -2294,6 +2401,9 @@ public class AssetOwnerRESTServices
                                                                                      assetGUID,
                                                                                      startingFrom,
                                                                                      maxPageSize,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date(),
                                                                                      methodName));
         }
         catch (Exception error)
@@ -2439,11 +2549,11 @@ public class AssetOwnerRESTServices
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
      *
-     * Given the depth of the delete performed by this call, it should be used with care.
+     * Given the depth of the delete request performed by this call, it should be used with care.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetGUID unique identifier of the asset to attach the connection to
      * @param requestBody dummy request body to satisfy POST protocol.
      *
      * @return void or
@@ -2551,6 +2661,7 @@ public class AssetOwnerRESTServices
                                                  null,
                                                  null,
                                                  null,
+                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                  methodName);
         }
         catch (Exception error)
@@ -2604,7 +2715,7 @@ public class AssetOwnerRESTServices
                                                    element1GUIDParameter,
                                                    element2GUID,
                                                    element2GUIDParameter,
-                                                   null,
+                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                    methodName);
         }
         catch (Exception error)

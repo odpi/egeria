@@ -104,7 +104,7 @@ public class ClientConstructorTest
 
         DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 
 
@@ -128,7 +128,7 @@ public class ClientConstructorTest
 
         DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 
 

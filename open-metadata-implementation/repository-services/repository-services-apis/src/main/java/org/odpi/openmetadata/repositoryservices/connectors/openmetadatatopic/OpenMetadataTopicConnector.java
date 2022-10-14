@@ -47,10 +47,10 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
     private volatile boolean keepRunning = false;
 
-    private List<OpenMetadataTopicListener> topicListeners     = new ArrayList<>();
-    private String                          listenerThreadName = defaultThreadName;
-    private String                          topicName          = defaultTopicName;
-    private int                             sleepTime          = 100;
+    private final List<OpenMetadataTopicListener> topicListeners     = new ArrayList<>();
+    private String                                listenerThreadName = defaultThreadName;
+    private String                                topicName          = defaultTopicName;
+    private int                                   sleepTime          = 100;
 
     protected AuditLog auditLog = null;
 
@@ -218,7 +218,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
 
     /**
-     * Register a listener object.  This object will be supplied with all of the events received on the topic.
+     * Register a listener object.  This object will be supplied with all the events received on the topic.
      *
      * @param topicListener object implementing the OMRSTopicListener interface
      * @return topic name

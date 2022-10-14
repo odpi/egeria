@@ -1,11 +1,13 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Repository Governance Open Metadata Engine Service (OMES)
 
-The Repository Governance Open Metadata Engine services provide support for archive engines that run archive services.  These services dynamically maintain open metadata archives
+The Repository Governance Open Metadata Engine services provide support for repository governance engines that run, for examples archive services that dynamically maintain open metadata archives.
+
+* [Documentation](https://egeria-project.org/services/omes/repository-governance/overview)
 
 ----
 * Return to [engine services](..).

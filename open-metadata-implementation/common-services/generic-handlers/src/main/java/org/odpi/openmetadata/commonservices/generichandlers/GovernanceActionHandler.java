@@ -136,6 +136,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
                                                                                                       false,
+                                                                                                      false,
                                                                                                       effectiveTime,
                                                                                                       methodName);
 
@@ -220,6 +221,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_GUID,
                                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_NAME,
                                                                                                               false,
+                                                                                                              false,
                                                                                                               effectiveTime,
                                                                                                               methodName);
 
@@ -301,7 +303,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> mandatoryGuards = this.getMandatoryGuards(userId, governanceActionTypeGUID, effectiveTime);
 
         return initiateGovernanceAction(userId,
-                                        governanceActionTypeName + ":" + UUID.randomUUID().toString(),
+                                        governanceActionTypeName + ":" + UUID.randomUUID(),
                                         domainIdentifier,
                                         displayName,
                                         description,
@@ -478,9 +480,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                                                  qualifiedName,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                   builder,
+                                                                  null,
                                                                   methodName);
 
         if (governanceActionGUID != null)
@@ -489,7 +490,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             final String governanceActionTypeGUIDParameterName = "governanceActionTypeGUID";
 
             /*
-             * Show the relationship to an governance action type if this governance action originated from a governance action process.
+             * Show the relationship to a governance action type if this governance action originated from a governance action process.
              */
             InstanceProperties originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                    null,
@@ -521,6 +522,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
                                           originatorProperties,
+                                          null,
+                                          null,
+                                          null,
                                           methodName);
             }
 
@@ -556,6 +560,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_GUID,
                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME,
                                                   originatorProperties,
+                                                  null,
+                                                  null,
+                                                  null,
                                                   methodName);
                     }
                 }
@@ -641,6 +648,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                                   OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
                                                   properties,
+                                                  null,
+                                                  null,
+                                                  null,
                                                   methodName);
 
                         auditLog.logMessage(methodName, GenericHandlersAuditCode.ADD_ACTION_TARGETS.getMessageDefinition(actionTargetName,
@@ -752,7 +762,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                            null,
                                                                                            null,
-                                                                                           true,
+                                                                                           0,
+                                                                                           false,
+                                                                                           false,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -786,8 +798,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               true,
-                                                                               true,
+                                                                               false,
+                                                                               false,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
@@ -805,8 +817,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               true,
-                                                                               true,
+                                                                               false,
+                                                                               false,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
@@ -887,10 +899,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         case 13:
                             governanceActionStatus = GovernanceActionStatus.FAILED;
-                            break;
-
-                        case 99:
-                            governanceActionStatus = GovernanceActionStatus.OTHER;
                             break;
                     }
                 }
@@ -1042,7 +1050,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 break;
 
             case OpenMetadataAPIMapper.INVALID_GA_STATUS_ORDINAL:
-                governanceActionStatusName = "iNVALID";
+                governanceActionStatusName = "INVALID";
                 break;
 
             case OpenMetadataAPIMapper.IGNORED_GA_STATUS_ORDINAL:
@@ -1190,8 +1198,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished along with status of the work.
-     * If this is part of a governance action process and it defines that there is a follow-on governance action then this is
+     * Declare that all the processing for the governance action service is finished along with status of the work.
+     * If this is part of a governance action process, and it defines that there is a follow-on governance action then this is
      * set up at this time.
      *
      * @param userId caller's userId
@@ -1366,7 +1374,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Mark all of the action targets as complete if they are not set up with a status already.
+     * Mark all the action targets as complete if they are not set up with a status already.
      *
      * @param userId calling user
      * @param governanceActionGUID completed governance action
@@ -1374,13 +1382,15 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @return list of existing governance actions
      *
+     * @throws InvalidParameterException problem with guid
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
     private List<NewActionTarget> markActionTargetsAsComplete(String userId,
                                                               String governanceActionGUID,
                                                               Date   effectiveTime,
-                                                              int    status) throws UserNotAuthorizedException,
+                                                              int    status) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
         final String methodName = "markActionTargetsAsComplete";
@@ -1392,6 +1402,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                                 OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                                                                                 OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
+                                                                                                2,
+                                                                                                false,
                                                                                                 false,
                                                                                                 0, 0,
                                                                                                 effectiveTime,
@@ -1459,7 +1471,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * A governance action has completed - are there any follow on actions to run?  This would occur if the governance action is
+     * A governance action has completed - are there any follow-on actions to run?  This would occur if the governance action is
      * part of a GovernanceActionProcess.  In this case it would be linked to a GovernanceActionType which is part of an execution template
      * for the GovernanceActionProcess.  The GovernanceActionType is, in turn, potentially linked to one or more GovernanceActionTypes
      * that identify follow governance actions.
@@ -1492,7 +1504,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         /*
          * Locate the governance action type that initiated this action (if any).
-         * There is only follow on activity if this relationship exists.
+         * There is only follow-on activity if this relationship exists.
          */
         Relationship governanceActionTypeUseRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                          previousGovernanceActionGUID,
@@ -1500,6 +1512,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                          false,
                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
+                                                                                                         false,
                                                                                                          false,
                                                                                                          effectiveTime,
                                                                                                          methodName);
@@ -1527,6 +1540,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                           OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                                                           OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                                          2,
+                                                                                          false,
                                                                                           false,
                                                                                           0, 0,
                                                                                           effectiveTime,
@@ -1534,7 +1549,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (nextActionTypes != null)
             {
                 /*
-                 * There are potential follow on actions.  Need to loop though each one to evaluate if the output guards
+                 * There are potential follow-on actions.  Need to loop though each one to evaluate if the output guards
                  * permit it to execute.
                  */
                 for (Relationship nextActionType : nextActionTypes)
@@ -1545,7 +1560,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     if ((nextActionType != null) && (! governanceActionTypeGUID.equals(nextActionType.getEntityOneProxy().getGUID())))
                     {
                         /*
-                         * The guard property in the relationship must match one of the output guards or it must be null
+                         * The guard property in the relationship must match one of the output guards, or it must be null
                          * to allow the governance action to proceed.
                          */
                         String guard = repositoryHelper.getStringProperty(serviceName,
@@ -1688,12 +1703,14 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @return list of mandatory guards (or null)
      *
+     * @throws InvalidParameterException problem with GUID
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
     private List<String> getMandatoryGuards(String userId,
                                             String governanceActionTypeGUID,
-                                            Date   effectiveTime) throws UserNotAuthorizedException,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
                                                                          PropertyServerException
     {
         final String methodName = "getMandatoryGuards";
@@ -1703,6 +1720,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                             OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                                                             OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                                            2,
+                                                                                            false,
                                                                                             false,
                                                                                             0, 0,
                                                                                             effectiveTime,
@@ -1750,7 +1769,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * The GovernanceActionTypeUse relationships will list all of the governance actions that
+     * The GovernanceActionTypeUse relationships will list all the governance actions that
      * have been triggered for this GovernanceActionType.  If a governance action for this governance action type has already been
      * triggered in this governance action process then the linked governance action will have a matching anchor classification.
      *
@@ -1795,6 +1814,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
+                                                                                                   2,
+                                                                                                   false,
                                                                                                    false,
                                                                                                    0, 0,
                                                                                                    effectiveTime,

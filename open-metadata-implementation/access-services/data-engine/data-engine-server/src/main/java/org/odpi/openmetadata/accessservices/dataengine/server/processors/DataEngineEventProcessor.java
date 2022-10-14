@@ -54,7 +54,7 @@ public class DataEngineEventProcessor {
     private final AuditLog auditLog;
     private final String serverName;
 
-    private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
+    private final DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
 
     /**
      * The constructor is given the connection to the out topic for Data Engine OMAS
@@ -318,7 +318,7 @@ public class DataEngineEventProcessor {
             DatabaseEvent databaseEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseEvent.class);
 
             dataEngineRESTServices.upsertDatabase(databaseEvent.getUserId(), serverName, databaseEvent.getDatabase(),
-                    databaseEvent.getIncomplete(), databaseEvent.getExternalSourceName());
+                    databaseEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -336,8 +336,8 @@ public class DataEngineEventProcessor {
             DatabaseSchemaEvent databaseSchemaEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseSchemaEvent.class);
 
             dataEngineRESTServices.upsertDatabaseSchema(databaseSchemaEvent.getUserId(), serverName,
-                    databaseSchemaEvent.getDatabaseQualifiedName(), databaseSchemaEvent.getIncomplete(),
-                    databaseSchemaEvent.getDatabaseSchema(), databaseSchemaEvent.getExternalSourceName());
+                    databaseSchemaEvent.getDatabaseQualifiedName(), databaseSchemaEvent.getDatabaseSchema(),
+                    databaseSchemaEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -357,7 +357,7 @@ public class DataEngineEventProcessor {
 
             dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName,
                     relationalTableEvent.getDatabaseSchemaQualifiedName(), relationalTableEvent.getRelationalTable(),
-                    relationalTableEvent.getExternalSourceName(), relationalTableEvent.getIncomplete());
+                    relationalTableEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -375,7 +375,7 @@ public class DataEngineEventProcessor {
             DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
 
             dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
-                    dataFileEvent.getIncomplete(), dataFileEvent.getExternalSourceName());
+                    dataFileEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }

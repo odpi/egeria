@@ -71,7 +71,7 @@ public class ReferenceableMapper
 
     public static final String REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID               = "4f798c0c-6769-4a2d-b489-d2714d89e0a4";
     public static final String REFERENCEABLE_TO_NOTE_LOG_TYPE_NAME               = "AttachedNoteLog";
-    /* End1 = Referenceable; End 2 = NoteLog */
+    /* End1 = Referenceable; End 2 = NoteLogHeader */
 
     public static final String REFERENCEABLE_TO_RATING_TYPE_GUID                 = "0aaad9e9-9cc5-4ad8-bc2e-c1099bab6344";
     public static final String REFERENCEABLE_TO_RATING_TYPE_NAME                 = "AttachedRating";

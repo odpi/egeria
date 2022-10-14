@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.converters.Communit
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
@@ -17,7 +16,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentReq
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
@@ -39,6 +38,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,13 +56,13 @@ import java.util.List;
  */
 public class OrganizationRESTServices
 {
-    static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    static private final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OrganizationRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OrganizationRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
-    private RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -74,7 +74,7 @@ public class OrganizationRESTServices
 
 
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param serverName called server
      * @param userId calling user
@@ -117,6 +117,7 @@ public class OrganizationRESTServices
                                                                 requestBody.getProperties().getExtendedProperties(),
                                                                 requestBody.getProperties().getEffectiveFrom(),
                                                                 requestBody.getProperties().getEffectiveTo(),
+                                                                new Date(),
                                                                 methodName);
 
                 if (requestBody.getContributionRecord() != null)
@@ -132,6 +133,10 @@ public class OrganizationRESTServices
                                                          null,
                                                          null,
                                                          null,
+                                                         true,
+                                                         false,
+                                                         false,
+                                                         new Date(),
                                                          methodName);
                 }
 
@@ -202,6 +207,9 @@ public class OrganizationRESTServices
                                            isMergeUpdate,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
 
                 if (requestBody.getContributionRecord() != null)
@@ -217,6 +225,10 @@ public class OrganizationRESTServices
                                                          null,
                                                          null,
                                                          null,
+                                                         true,
+                                                         false,
+                                                         false,
+                                                         new Date(),
                                                          methodName);
                 }
             }
@@ -253,7 +265,7 @@ public class OrganizationRESTServices
     public VoidResponse deleteActorProfile(String                    serverName,
                                            String                    userId,
                                            String                    actorProfileGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName        = "deleteActorProfile";
         final String guidParameterName = "actorProfileGUID";
@@ -275,6 +287,9 @@ public class OrganizationRESTServices
                                            requestBody.getExternalSourceName(),
                                            actorProfileGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -327,11 +342,11 @@ public class OrganizationRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                int contactType = 0;
+                int contactMethodTypeOrdinal = 0;
 
-                if (requestBody.getProperties().getType() != null)
+                if (requestBody.getProperties().getContactMethodType() != null)
                 {
-                    contactType = requestBody.getProperties().getType().getOpenTypeOrdinal();
+                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOpenTypeOrdinal();
                 }
 
                 handler.createContactMethod(userId,
@@ -339,9 +354,16 @@ public class OrganizationRESTServices
                                             requestBody.getExternalSourceName(),
                                             actorProfileGUID,
                                             guidParameterName,
-                                            contactType,
-                                            requestBody.getProperties().getService(),
-                                            requestBody.getProperties().getValue(),
+                                            requestBody.getProperties().getName(),
+                                            requestBody.getProperties().getContactType(),
+                                            contactMethodTypeOrdinal,
+                                            requestBody.getProperties().getContactMethodService(),
+                                            requestBody.getProperties().getContactMethodValue(),
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -376,7 +398,7 @@ public class OrganizationRESTServices
     public VoidResponse deleteContactMethod(String                    serverName,
                                             String                    userId,
                                             String                    contactMethodGUID,
-                                            MetadataSourceRequestBody requestBody)
+                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "deleteContactMethod";
         final String guidParameterName           = "contactMethodGUID";
@@ -485,6 +507,9 @@ public class OrganizationRESTServices
                                           delegationEscalationAuthority,
                                           requestBody.getEffectiveFrom(),
                                           requestBody.getEffectiveTo(),
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
             }
             else
@@ -521,7 +546,7 @@ public class OrganizationRESTServices
                                                String                    userId,
                                                String                    superTeamProfileGUID,
                                                String                    subTeamProfileGUID,
-                                               MetadataSourceRequestBody requestBody)
+                                               ExternalSourceRequestBody requestBody)
     {
         final String methodName               = "unlinkTeamsInHierarchy";
         final String profileGUIDParameterName = "superTeamProfileGUID";
@@ -546,7 +571,9 @@ public class OrganizationRESTServices
                                             profileGUIDParameterName,
                                             subTeamProfileGUID,
                                             subTeamGUIDParameterName,
-                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -598,7 +625,9 @@ public class OrganizationRESTServices
                                                               actorProfileGUID,
                                                               guidParameterName,
                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -645,7 +674,9 @@ public class OrganizationRESTServices
                                                                actorProfileUserId,
                                                                nameParameterName,
                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
         }
         catch (Exception error)
@@ -659,7 +690,7 @@ public class OrganizationRESTServices
 
 
     /**
-     * Return information about a named actor profile.
+     * Return information about a named actor profiles.
      *
      * @param serverName called server
      * @param userId calling user
@@ -673,11 +704,11 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getActorProfileByName(String          serverName,
-                                                          String          userId,
-                                                          int             startFrom,
-                                                          int             pageSize,
-                                                          NameRequestBody requestBody)
+    public ActorProfileListResponse getActorProfilesByName(String          serverName,
+                                                           String          userId,
+                                                           int             startFrom,
+                                                           int             pageSize,
+                                                           NameRequestBody requestBody)
     {
         final String methodName         = "getActorProfileByName";
         final String nameParameterName  = "name";
@@ -699,8 +730,116 @@ public class OrganizationRESTServices
                                                                 OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return all actor profiles.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    public ActorProfileListResponse getActorProfiles(String          serverName,
+                                                     String          userId,
+                                                     int             startFrom,
+                                                     int             pageSize)
+    {
+        final String methodName         = "getActorProfiles";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ActorProfileListResponse response = new ActorProfileListResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            ActorProfileHandler<ActorProfileElement> handler = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setElements(handler.getActorProfiles(userId,
+                                                          OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                          startFrom,
+                                                          pageSize,
+                                                          false,
+                                                          false,
+                                                          new Date(),
+                                                          methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about a named actor profiles.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param locationGUID unique identifier for the location
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    public ActorProfileListResponse getActorProfilesByLocation(String          serverName,
+                                                               String          userId,
+                                                               String          locationGUID,
+                                                               int             startFrom,
+                                                               int             pageSize)
+    {
+        final String methodName         = "getActorProfilesByLocation";
+        final String guidParameterName  = "locationGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ActorProfileListResponse response = new ActorProfileListResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            ActorProfileHandler<ActorProfileElement> handler = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setElements(handler.getActorProfilesByLocation(userId,
+                                                                    locationGUID,
+                                                                    guidParameterName,
+                                                                    OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
+                                                                    methodName));
         }
         catch (Exception error)
         {
@@ -727,13 +866,13 @@ public class OrganizationRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public ActorProfileListResponse findActorProfile(String                  serverName,
-                                                     String                  userId,
-                                                     int                     startFrom,
-                                                     int                     pageSize,
-                                                     SearchStringRequestBody requestBody)
+    public ActorProfileListResponse findActorProfiles(String                  serverName,
+                                                      String                  userId,
+                                                      int                     startFrom,
+                                                      int                     pageSize,
+                                                      SearchStringRequestBody requestBody)
     {
-        final String methodName                 = "findActorProfile";
+        final String methodName                 = "findActorProfiles";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -753,7 +892,9 @@ public class OrganizationRESTServices
                                                            OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
         }
         catch (Exception error)
@@ -783,7 +924,7 @@ public class OrganizationRESTServices
                                          String                userId,
                                          PersonRoleRequestBody requestBody)
     {
-        final String methodName                  = "createPersonRole";
+        final String methodName = "createPersonRole";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -801,17 +942,20 @@ public class OrganizationRESTServices
                 String profileGUID = handler.createPersonRole(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
+                                                              requestBody.getProperties().getQualifiedName(),
                                                               requestBody.getProperties().getRoleId(),
                                                               requestBody.getProperties().getTitle(),
                                                               requestBody.getProperties().getDescription(),
                                                               requestBody.getProperties().getScope(),
                                                               requestBody.getProperties().getHeadCount(),
                                                               requestBody.getProperties().getHeadCountLimitSet(),
+                                                              requestBody.getProperties().getDomainIdentifier(),
                                                               requestBody.getProperties().getAdditionalProperties(),
                                                               requestBody.getProperties().getTypeName(),
                                                               requestBody.getProperties().getExtendedProperties(),
                                                               requestBody.getProperties().getEffectiveFrom(),
                                                               requestBody.getProperties().getEffectiveTo(),
+                                                              new Date(),
                                                               methodName);
                 response.setGUID(profileGUID);
             }
@@ -870,25 +1014,30 @@ public class OrganizationRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                 handler.updatePersonRole(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           personRoleGUID,
-                                           guidParameterName,
-                                           requestBody.getProperties().getRoleId(),
-                                           qualifiedNameParameterName,
-                                           requestBody.getProperties().getTitle(),
-                                           nameParameterName,
-                                           requestBody.getProperties().getDescription(),
-                                           requestBody.getProperties().getScope(),
-                                           requestBody.getProperties().getHeadCount(),
-                                           requestBody.getProperties().getHeadCountLimitSet(),
-                                           requestBody.getProperties().getAdditionalProperties(),
-                                           requestBody.getProperties().getTypeName(),
-                                           requestBody.getProperties().getExtendedProperties(),
-                                           isMergeUpdate,
-                                           null,
-                                           null,
-                                           methodName);
+                                         requestBody.getExternalSourceGUID(),
+                                         requestBody.getExternalSourceName(),
+                                         personRoleGUID,
+                                         guidParameterName,
+                                         requestBody.getProperties().getQualifiedName(),
+                                         qualifiedNameParameterName,
+                                         requestBody.getProperties().getRoleId(),
+                                         requestBody.getProperties().getTitle(),
+                                         nameParameterName,
+                                         requestBody.getProperties().getDescription(),
+                                         requestBody.getProperties().getScope(),
+                                         requestBody.getProperties().getHeadCount(),
+                                         requestBody.getProperties().getHeadCountLimitSet(),
+                                         requestBody.getProperties().getDomainIdentifier(),
+                                         requestBody.getProperties().getAdditionalProperties(),
+                                         requestBody.getProperties().getTypeName(),
+                                         requestBody.getProperties().getExtendedProperties(),
+                                         isMergeUpdate,
+                                         null,
+                                         null,
+                                         false,
+                                         false,
+                                         new Date(),
+                                         methodName);
             }
             else
             {
@@ -922,7 +1071,7 @@ public class OrganizationRESTServices
     public VoidResponse deletePersonRole(String                    serverName,
                                          String                    userId,
                                          String                    personRoleGUID,
-                                         MetadataSourceRequestBody requestBody)
+                                         ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "deletePersonRole";
         final String guidParameterName           = "personRoleGUID";
@@ -1028,6 +1177,9 @@ public class OrganizationRESTServices
                                                                  requestBody.getProperties().getIsPublic(),
                                                                  requestBody.getProperties().getEffectiveFrom(),
                                                                  requestBody.getProperties().getEffectiveTo(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
                 response.setGUID(profileGUID);
             }
@@ -1096,8 +1248,9 @@ public class OrganizationRESTServices
                                                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                              1,
                                                                                              false,
-                                                                                             0,
-                                                                                             0,
+                                                                                             false,
+                                                                                             startFrom,
+                                                                                             pageSize,
                                                                                              requestBody.getEffectiveTime(),
                                                                                              methodName);
                 if (appointmentRelationships != null)
@@ -1231,7 +1384,9 @@ public class OrganizationRESTServices
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
                                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                                              null,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
 
             appointee.setProfile(profile);
@@ -1294,6 +1449,7 @@ public class OrganizationRESTServices
                                           requestBody.getProperties().getEffectiveFrom(),
                                           requestBody.getProperties().getEffectiveTo(),
                                           isMergeUpdate,
+                                          false, false, new Date(),
                                           methodName);
             }
             else
@@ -1328,7 +1484,7 @@ public class OrganizationRESTServices
     public VoidResponse unlinkPersonRoleFromProfile(String                    serverName,
                                                     String                    userId,
                                                     String                    appointmentGUID,
-                                                    MetadataSourceRequestBody requestBody)
+                                                    ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "unlinkPersonRoleFromProfile";
         final String appointmentGUIDParameterName    = "appointmentGUID";
@@ -1347,16 +1503,17 @@ public class OrganizationRESTServices
             if (requestBody != null)
             {
                 handler.relievePersonFromRole(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          null,
-                                          null,
-                                          null,
-                                          null,
-                                          appointmentGUID,
-                                          appointmentGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              null,
+                                              null,
+                                              null,
+                                              null,
+                                              appointmentGUID,
+                                              appointmentGUIDParameterName,
+                                              new Date(),
+                                              new Date(),
+                                              methodName);
             }
             else
             {
@@ -1369,6 +1526,7 @@ public class OrganizationRESTServices
                                               null,
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
+                                              new Date(),
                                               new Date(),
                                               methodName);
             }
@@ -1433,6 +1591,9 @@ public class OrganizationRESTServices
                                           requestBody.getPosition(),
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
                 }
                 else
@@ -1447,6 +1608,9 @@ public class OrganizationRESTServices
                                           requestBody.getPosition(),
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
                 }
             }
@@ -1506,26 +1670,30 @@ public class OrganizationRESTServices
                 if (requestBody.getIsLeadershipRole())
                 {
                     handler.removeTeamLeader(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          teamRoleGUID,
-                                          teamRoleGUIDParameterName,
-                                          teamProfileGUID,
-                                          teamProfileGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             teamRoleGUID,
+                                             teamRoleGUIDParameterName,
+                                             teamProfileGUID,
+                                             teamProfileGUIDParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
                 }
                 else
                 {
                     handler.removeTeamMember(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          teamRoleGUID,
-                                          teamRoleGUIDParameterName,
-                                          teamProfileGUID,
-                                          teamProfileGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             teamRoleGUID,
+                                             teamRoleGUIDParameterName,
+                                             teamProfileGUID,
+                                             teamProfileGUIDParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
                 }
             }
             else
@@ -1576,7 +1744,13 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getPersonRoleByGUID(userId, personRoleGUID, guidParameterName, null, methodName));
+            response.setElement(handler.getPersonRoleByGUID(userId,
+                                                            personRoleGUID,
+                                                            guidParameterName,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1597,7 +1771,7 @@ public class OrganizationRESTServices
      * @param pageSize   maximum number of elements to return.
      * @param requestBody unique name for the actor profile
      *
-     * @return list of matching actor profiles (hopefully only one)
+     * @return list of matching person roles (hopefully only one)
      *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
@@ -1622,7 +1796,125 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(handler.getPersonRolesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.getPersonRolesByName(userId,
+                                                              requestBody.getName(),
+                                                              nameParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about a person role connected to the named team via the TeamLeadership relationship.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching person roles
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    public PersonRoleListResponse getLeadershipRolesForTeam(String          serverName,
+                                                            String          userId,
+                                                            String          teamGUID,
+                                                            int             startFrom,
+                                                            int             pageSize)
+    {
+        final String methodName         = "getLeadershipRolesForTeam";
+        final String guidParameterName  = "teamGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        PersonRoleListResponse response = new PersonRoleListResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElements(handler.getTeamLeaderRoles(userId,
+                                                            teamGUID,
+                                                            guidParameterName,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about a person role connected to the named team via the TeamMembership relationship.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching person roles
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    public PersonRoleListResponse getMembershipRolesForTeam(String          serverName,
+                                                            String          userId,
+                                                            String          teamGUID,
+                                                            int             startFrom,
+                                                            int             pageSize)
+    {
+        final String methodName         = "getMembershipRolesForTeam";
+        final String guidParameterName  = "teamGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        PersonRoleListResponse response = new PersonRoleListResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElements(handler.getTeamMemberRoles(userId,
+                                                            teamGUID,
+                                                            guidParameterName,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1649,13 +1941,13 @@ public class OrganizationRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonRoleListResponse findPersonRole(String                  serverName,
-                                                 String                  userId,
-                                                 int                     startFrom,
-                                                 int                     pageSize,
-                                                 SearchStringRequestBody requestBody)
+    public PersonRoleListResponse findPersonRoles(String                  serverName,
+                                                  String                  userId,
+                                                  int                     startFrom,
+                                                  int                     pageSize,
+                                                  SearchStringRequestBody requestBody)
     {
-        final String methodName                 = "findPersonRole";
+        final String methodName                 = "findPersonRoles";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1668,7 +1960,14 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(handler.findPersonRoles(userId, requestBody.getSearchString(), searchStringParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.findPersonRoles(userId,
+                                                         requestBody.getSearchString(),
+                                                         searchStringParameterName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(), methodName));
         }
         catch (Exception error)
         {

@@ -20,8 +20,8 @@ import java.util.Map;
  */
 public class RegisteredDiscoveryServiceConverter
 {
-    private OMRSRepositoryHelper       repositoryHelper;
-    private String                     serviceName;
+    private final OMRSRepositoryHelper       repositoryHelper;
+    private final String                     serviceName;
 
     /**
      * Constructor captures the repository content needed to create the endpoint object.

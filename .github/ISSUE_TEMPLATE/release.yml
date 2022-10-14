@@ -70,10 +70,9 @@ body:
         Additional components
         - ReactUI
           - [ ] Create final github release
-        - PostGres Connector
-          - [ ] Create branch
-          - [ ] Update version in master
-          - [ ] Update version in new branch of connector, and of prereq egeria artifacts
-          - [ ] Run release action, check sonatype & release
-          - [ ] Create github release
+        - Egeria Dev Projects
+          - [ ] Update project & dependency versions to new release
+
+        Get Ready for next release
+        - [ ] Open Release Issue for next release
 ---

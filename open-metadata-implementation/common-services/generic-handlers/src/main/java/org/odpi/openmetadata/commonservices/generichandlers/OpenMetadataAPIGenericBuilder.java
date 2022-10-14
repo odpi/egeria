@@ -168,8 +168,8 @@ public class OpenMetadataAPIGenericBuilder
      * Set up the list of classifications from a template entity.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateClassifications list of classifications from the template
      * @param methodName calling method
      * @throws InvalidParameterException the type of one of the classifications is not supported
@@ -387,7 +387,7 @@ public class OpenMetadataAPIGenericBuilder
      * @param attachmentTypeName type name of the attached entity
      * @param relationshipTypeName relationship used to attach the entity
      * @param userId userId making the change
-     * @param actionDescription human readable description of the change
+     * @param actionDescription human-readable description of the change
      * @param methodName calling method
      * @return properties for classification
      * @throws InvalidParameterException problem with the enum types
@@ -630,6 +630,52 @@ public class OpenMetadataAPIGenericBuilder
     }
 
 
+
+    /**
+     * Add the supplied properties to the supplied instance properties object.
+     *
+     * @param properties current accumulated properties
+     * @param propertyMap map of property names to values
+     * @return repository services properties
+     * @throws InvalidParameterException problem mapping properties
+     */
+    protected InstanceProperties updateInstanceProperties(InstanceProperties                 properties,
+                                                          Map<String, InstancePropertyValue> propertyMap) throws InvalidParameterException
+    {
+        if (propertyMap != null)
+        {
+            try
+            {
+                if (properties == null)
+                {
+                    return getInstanceProperties(propertyMap, null, null);
+                }
+
+                Map<String, InstancePropertyValue> existingProperties = properties.getInstanceProperties();
+
+                if (existingProperties == null)
+                {
+                    properties.setInstanceProperties(propertyMap);
+                }
+                else
+                {
+                    existingProperties.putAll(propertyMap);
+
+                    properties.setInstanceProperties(existingProperties);
+                }
+            }
+            catch (OCFCheckedExceptionBase error)
+            {
+                final String propertyName = "properties";
+
+                throw new InvalidParameterException(error, propertyName);
+            }
+        }
+
+        return properties;
+    }
+
+
     /**
      * Set the supplied effectivity dates into the instance properties.
      *
@@ -638,11 +684,11 @@ public class OpenMetadataAPIGenericBuilder
      * @param effectiveTo date to remove the element from the governance program (null = until deleted)
      * @return augmented instance properties
      */
-    private InstanceProperties setEffectivityDates(InstanceProperties properties,
-                                                   Date               effectiveFrom,
-                                                   Date               effectiveTo)
+    InstanceProperties setEffectivityDates(InstanceProperties properties,
+                                           Date effectiveFrom,
+                                           Date effectiveTo)
     {
-        if ((effectiveFrom != null) && (effectiveTo != null))
+        if ((effectiveFrom != null) || (effectiveTo != null))
         {
             if (properties == null)
             {
@@ -665,7 +711,7 @@ public class OpenMetadataAPIGenericBuilder
      */
     protected InstanceProperties setEffectivityDates(InstanceProperties properties)
     {
-        if ((effectiveFrom != null) && (effectiveTo != null))
+        if ((effectiveFrom != null) || (effectiveTo != null))
         {
             if (properties == null)
             {

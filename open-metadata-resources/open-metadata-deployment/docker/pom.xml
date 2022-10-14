@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-deployment</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -103,7 +103,6 @@
             <modules>
                 <module>configure</module>
                 <module>egeria</module>
-                <module>jupyter</module>
             </modules>
         </profile>
     </profiles>

@@ -79,19 +79,21 @@ public class CriticalityGovernanceClassification extends GovernanceClassificatio
     public String toString()
     {
         return "CriticalityGovernanceClassification{" +
-                "criticalityLevel=" + criticalityLevel +
-                ", status=" + getStatus() +
-                ", confidence=" + getConfidence() +
-                ", steward='" + getSteward() + '\'' +
-                ", source='" + getSource() + '\'' +
-                ", notes='" + getNotes() + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "criticalityLevel=" + criticalityLevel +
+                       ", classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", governanceStatus=" + getGovernanceStatus() +
+                       ", confidence=" + getConfidence() +
+                       ", steward='" + getSteward() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", notes='" + getNotes() + '\'' +
+                       ", levelIdentifier=" + getLevelIdentifier() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

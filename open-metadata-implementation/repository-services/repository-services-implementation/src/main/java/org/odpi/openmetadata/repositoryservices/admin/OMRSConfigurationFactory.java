@@ -27,7 +27,7 @@ public class OMRSConfigurationFactory
 
     private static final String defaultCohortName = "defaultCohort";
 
-    private ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+    private final ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
 
     /**

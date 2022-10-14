@@ -4,10 +4,10 @@
 # Discovery Service
 
 A discovery service is a component that performs analysis of specific
-[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets) on request.
+[Asset](https://egeria-project.org/concepts/asset) on request.
 
-It is implemented as a specialized [Open Connector Framework (OCF)](../../open-connector-framework)
-connector.  The interface and base class are provided by the [Open Discovery Framework (ODF)](README.md).
+It is implemented as a specialized [Open Connector Framework (OCF)](https://egeria-project.org/frameworks/ocf/overview)
+connector.  The interface and base class are provided by the [Open Discovery Framework (ODF)](https://egeria-project.org/frameworks/odf/overview).
 
 A discovery service is initialized with a connector to the Asset it is to analyze and details of
 the results of other discovery services that have run before it if it is part of a

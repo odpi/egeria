@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class MyProfileResource
 {
-    private MyProfileRESTServices restAPI = new MyProfileRESTServices();
+    private final MyProfileRESTServices restAPI = new MyProfileRESTServices();
 
     /**
      * Default constructor

@@ -61,7 +61,7 @@ public class CategoryService extends GlossaryViewOMAS {
      */
     public GlossaryViewEntityDetailResponse getSubcategories(String userId, String serverName, String categoryGUID,
                                                              Integer from, Integer size){
-        return getSubEntitiesResponse(userId, serverName, categoryGUID, CATEGORY_TYPE_NAME, true,
+        return getSubEntitiesResponse(userId, serverName, categoryGUID, CATEGORY_TYPE_NAME,
                 CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, from, size,"getSubcategories");
     }
 

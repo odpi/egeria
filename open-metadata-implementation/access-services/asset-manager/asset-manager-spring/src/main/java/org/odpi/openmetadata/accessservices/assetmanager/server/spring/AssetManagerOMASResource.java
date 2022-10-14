@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class AssetManagerOMASResource
 {
-    private AssetManagerRESTServices restAPI = new AssetManagerRESTServices();
+    private final AssetManagerRESTServices restAPI = new AssetManagerRESTServices();
 
 
     /**
@@ -85,7 +86,7 @@ public class AssetManagerOMASResource
 
     /**
      * Retrieve the unique identifier of the external asset manager from its qualified name.
-     * Typically the qualified name comes from the integration connector configuration.
+     * Typically, the qualified name comes from the integration connector configuration.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -166,6 +167,8 @@ public class AssetManagerOMASResource
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -179,9 +182,13 @@ public class AssetManagerOMASResource
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        openMetadataElementGUID,
                                                  @PathVariable String                        openMetadataElementTypeName,
-                                                 @RequestBody  MetadataCorrelationProperties requestBody)
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
+                                                 @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.removeExternalIdentifier(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
+        return restAPI.removeExternalIdentifier(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -193,6 +200,8 @@ public class AssetManagerOMASResource
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier and its scope
      *
      * @return void or
@@ -206,20 +215,26 @@ public class AssetManagerOMASResource
                                                @PathVariable String                        userId,
                                                @PathVariable String                        openMetadataElementGUID,
                                                @PathVariable String                        openMetadataElementTypeName,
-                                               @RequestBody  MetadataCorrelationProperties requestBody)
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
+                                               @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.confirmSynchronization(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
+        return restAPI.confirmSynchronization(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
      * Retrieve the unique identifier of the external asset manager from its qualified name.
-     * Typically the qualified name comes from the integration connector configuration.
+     * Typically, the qualified name comes from the integration connector configuration.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier
      *
      * @return list of linked elements, null if null or
@@ -233,8 +248,12 @@ public class AssetManagerOMASResource
                                                                    @PathVariable String                        userId,
                                                                    @RequestParam int                           startFrom,
                                                                    @RequestParam int                           pageSize,
-                                                                   @RequestBody  MetadataCorrelationProperties requestBody)
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
+                                                                   @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.getElementsForExternalIdentifier(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getElementsForExternalIdentifier(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 }

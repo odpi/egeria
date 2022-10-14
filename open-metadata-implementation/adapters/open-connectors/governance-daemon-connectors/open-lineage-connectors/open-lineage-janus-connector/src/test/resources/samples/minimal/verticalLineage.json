@@ -1,5 +1,5 @@
 {
-  "graphConfigFile": "GREMLIN_CONFIG_PATH_PLACEHOLDER",
+  "graphConfigFile": "GREMLIN_PROPERTIES_CONFIG_PATH_PLACEHOLDER",
   "processes": [
   ],
   "inTables": [

@@ -70,6 +70,7 @@ public class HostProperties extends ITInfrastructureProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         return super.cloneToAsset(subTypeName);
@@ -85,7 +86,7 @@ public class HostProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "HostProperties{" +
-                       "displayName='" + getDisplayName() + '\'' +
+                       "displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -91,7 +90,7 @@ public class UpdateRequestBody implements Serializable
     /**
      * Set up whether this request is updating an element as part of a deduplication exercise.
      *
-     * @param forDuplicateProcessing flage
+     * @param forDuplicateProcessing flag
      */
     public void setForDuplicateProcessing(boolean forDuplicateProcessing)
     {
