@@ -65,6 +65,7 @@ allprojects {
 
     ext {
         antlrVersion = '3.5.3'
+        antlr4Version = '4.9.3'
         ST4Version = '4.3.4'
         avroVersion = '1.11.1'
         classgraphVersion = '4.8.149'
@@ -89,6 +90,7 @@ allprojects {
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.3'
+        jacksonDatabindVersion = '2.13.4.1'
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
         jakartapersistenceVersion = '3.1.0'
@@ -151,7 +153,7 @@ allprojects {
             implementation("ch.qos.logback:logback-classic:${logbackVersion}")
             implementation("ch.qos.logback:logback-core:${logbackVersion}")
             implementation("com.datastax.oss:java-driver-core:${ossVersion}")
-            implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+            implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
             implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
@@ -272,6 +274,7 @@ allprojects {
             runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
             implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
             runtimeOnly("org.antlr:antlr-runtime:${antlrVersion}")
+            runtimeOnly("org.antlr:antlr4:${antlr4Version}")
             runtimeOnly("org.antlr:ST4:${ST4Version}")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
