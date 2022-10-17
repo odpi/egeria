@@ -3145,13 +3145,6 @@
 
             <dependency>
                 <groupId>org.antlr</groupId>
-                <artifactId>antlr4</artifactId>
-                <version>${antlr4.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.antlr</groupId>
                 <artifactId>ST4</artifactId>
                 <version>${ST4.version}</version>
                 <scope>runtime</scope>
