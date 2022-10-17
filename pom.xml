@@ -3418,6 +3418,23 @@
                 <version>${reactivestreams.version}</version>
             </dependency>
 
+
+            <!-- Temporary enforcing newer versions for transient runtime dependencies -->
+            <!-- antlr4 version to mitigate potential CVE-2018-18928 brought by transitive dependency com.ibm.icu:icu4j -->
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4</artifactId>
+                <version>4.9.3</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- chronicle-wire version to mitigate potential CWE-190 brought as transitive by janusgraph-cql and cassandra-all  -->
+            <dependency>
+                <groupId>net.openhft</groupId>
+                <artifactId>chronicle-wire</artifactId>
+                <version>2.21ea8</version>
+                <scope>runtime</scope>
+            </dependency>
+            
         </dependencies>
 
     </dependencyManagement>

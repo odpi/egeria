@@ -297,6 +297,10 @@ allprojects {
             testImplementation("org.slf4j:slf4j-simple:${slf4jVersion}")
             testImplementation("org.testng:testng:${testngVersion}")
             testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
+
+            // Temporary enforcing newer versions for transient runtime dependencies
+            runtimeOnly("org.antlr:antlr4:4.9.3")
+            runtimeOnly("net.openhft:chronicle-wire:2.21ea8")
         }
     }
 
