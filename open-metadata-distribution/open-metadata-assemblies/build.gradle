@@ -3,6 +3,7 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+
 plugins {
     id 'distribution'
 }
