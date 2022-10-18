@@ -3419,12 +3419,31 @@
             </dependency>
 
 
-            <!-- Temporary enforcing newer versions for transient runtime dependencies -->
-            <!-- antlr4 version to mitigate potential CVE-2018-18928 brought by transitive dependency com.ibm.icu:icu4j -->
+            <!-- In this section we are enforcing versions for transitive runtime dependencies until regular upgrade path is available via the parent library -->
+
+            <!-- com.ibm.icu:icu4j:jar:61.1 < org.antlr:antlr4:jar:4.9.1 < org.apache.tinkerpop:gremlin-core:jar:3.5.2  -->
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4</artifactId>
                 <version>4.9.3</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- net.openhft:chronicle-wire:jar:2.20 < org.apache.cassandra:cassandra-all:jar:4.0.6 < org.janusgraph:janusgraph-cql:jar:0.6.1  -->
+            <!-- https://mvnrepository.com/artifact/net.openhft/chronicle-bom/2.21ea47 -->
+            <dependency>
+                <groupId>net.openhft</groupId>
+                <artifactId>chronicle-bom</artifactId>
+                <version>2.21ea47</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- jcommander:1.30 < org.apache.cassandra:cassandra-all:jar:4.0.6 -->
+            <dependency>
+                <groupId>com.beust</groupId>
+                <artifactId>jcommander</artifactId>
+                <version>1.78</version>
                 <scope>runtime</scope>
             </dependency>
 

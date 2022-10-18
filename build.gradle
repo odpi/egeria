@@ -299,8 +299,9 @@ allprojects {
             testImplementation("org.testng:testng:${testngVersion}")
             testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
 
-            // Temporary enforcing newer versions for transient runtime dependencies
+            //  Enforcing versions for transient runtime dependencies to mitigate vulnerable versions
             runtimeOnly("org.antlr:antlr4:4.9.3")
+            runtimeOnly("com.beust:jcommander:1.78")
         }
     }
 
