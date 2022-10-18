@@ -410,6 +410,9 @@ org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore
 org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties
 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore
 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties
+org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances
+org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search
+org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs
 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector
 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper
 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities
