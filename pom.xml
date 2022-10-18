@@ -3427,14 +3427,7 @@
                 <version>4.9.3</version>
                 <scope>runtime</scope>
             </dependency>
-            <!-- chronicle-wire version to mitigate potential CWE-190 brought as transitive by janusgraph-cql and cassandra-all  -->
-            <dependency>
-                <groupId>net.openhft</groupId>
-                <artifactId>chronicle-wire</artifactId>
-                <version>2.21ea8</version>
-                <scope>runtime</scope>
-            </dependency>
-            
+
         </dependencies>
 
     </dependencyManagement>
