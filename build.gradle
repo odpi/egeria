@@ -407,6 +407,51 @@ allprojects {
 
 } // end of allProjects
 
+// Whilst all modules have their own javadoc, we only build
+// an aggregate for the client and API modules plus the REST calls
+javadoc {
+    include("**/api/*.java")
+    include("**/client/*.java")
+    include("**/clients/*.java")
+    include("**/properties/*.java")
+    include("**/metadataelements/*.java")
+    include("**/metadataelement/*.java")
+    include("**/events/*.java")
+    include("**/rest/*.java")
+    include("**/exceptions/*.java")
+    include("**/beans/*.java")
+    include("**/ffdc/*.java")
+    include("**/configuration/*.java")
+    include("**/configuration/registration/*.java")
+    include("**/store/*.java")
+    include("**/connectors/*.java")
+    include("**/adminservices/*.java")
+    include("**/connector/*.java")
+    include("**/frameworks/*.java")
+    include("**/context/*.java")
+    include("**/contextmanager/*.java")
+    include("**/graph/*.java")
+    include("**/model/*.java")
+    include("**/auditlog/*.java")
+    include("**/omrstopic/*.java")
+    include("**/openmetadatatopic/*.java")
+    include("**/archivestore/*.java")
+    include("**/auditlogstore/*.java")
+    include("**/cohortregistrystore/*.java")
+    include("**/repositoryconnector/*.java")
+    include("**/repositoryeventmapper/*.java")
+    include("**/metadatacollectionstore/*.java")
+    include("**/metadatacollectionstore/properties/instances/*.java")
+    include("**/metadatacollectionstore/properties/typedefs/*.java")
+    include("**/metadatacollectionstore/properties/search/*.java")
+    include("**/metadatacollectionstore/utilities/*.java")
+    include("**/archiveutilities/*.java")
+    include("**/metadatasecurity/*.java")
+    include("**/spring/*.java")
+    include("**/frameworks/**/*.java")
+}
+
+
 /*
  * Configuration for sub projects only
  */
