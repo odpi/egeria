@@ -222,6 +222,13 @@ sourceSets {
 // Only complete when unzip is done
 build.dependsOn unzip
 
+// We don't want a published artifact from this module, as it's creating the final assembly
+// So disable all publish tasks inherited from the top level
+publish.onlyIf { false }
+generatePomFileForConnectorPublication.onlyIf { false }
+publishConnectorPublicationToMavenLocal.onlyIf { false }
+publishToMavenLocal.onlyIf { false }
+
 
 
 

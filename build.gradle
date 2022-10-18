@@ -301,8 +301,21 @@ allprojects {
     }
 
     java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
         withSourcesJar()
         withJavadocJar()
+    }
+
+    // More Java language settings
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
+        options.incremental = true
+        options.fork = true
+        options.failOnError = true
+        options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
     }
 
     jacoco {
@@ -314,19 +327,80 @@ allprojects {
         useJUnitPlatform()
     }
     dependencies {
-        testImplementation("junit:junit")
-        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-        testImplementation 'org.junit.jupiter:junit-jupiter-api'
-        testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-    }
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from(components.java)
+        //testImplementation("junit:junit")
+        //testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+        //testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        //testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+        test {
+            useJUnitPlatform {
+                includeEngines 'junit-jupiter'
             }
         }
     }
+
+    if (System.getenv("CI")) {
+        apply plugin: 'signing'
+    }
+
+    // We only have a single artifact for now - this additional metadata is
+    // required for publishing to maven central. Only doing signing in 'CI'
+    publishing {
+        publications {
+            connector(MavenPublication) {
+                from components.java
+                pom {
+                    url = 'http://egeria.odpi.org'
+                    licenses {
+                        // Code
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                        // Docs
+                        license {
+                            name = 'Creative Commons Attribution 4.0 International (CC BY 4.0)'
+                            url = 'https://creativecommons.org/licenses/by/4.0'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'planetf1'
+                            name = 'Nigel Jones'
+                            email = 'nigel.l.jones+git@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/odpi/egeria.git'
+                        developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
+                        url = 'http://github.com/odpi/egeria'
+                    }
+                }
+                // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
+                pom.withXml {
+                    asNode().appendNode('name', "${project.name}")
+                    asNode().appendNode('description', "${project.description}")
+                }
+            }
+        }
+        // Release versions get pushed to staging area on maven central, snapshots to snapshot repo
+        // Secrets for credentials
+        if (System.getenv("CI")) {
+            repositories {
+                maven {
+                    name = 'OSSRH'
+                    def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+                    def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+                    url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                    // User token (under profile) on oss.sonatype.org
+                    credentials {
+                        username = System.getenv("OSSRH_USERNAME")
+                        password = System.getenv("OSSRH_TOKEN")
+                    }
+                }
+            }
+        }
+    }
+
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -335,7 +409,32 @@ allprojects {
         options.compilerArgs << "-Xlint:all"
     }
 
+    // For later java versions this is recommended - keep conditional in case we want to build on 8
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
 
+
+    //need to decide who owns the testing infrastructure
+    //random junit versions picked below.
+    test {
+        useJUnitPlatform()
+        dependencies {
+            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+            testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+        }
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+
+        reports {
+            html.required = true
+        }
+
+    }
 
     // Tasks to help in finding dependency chains
     task printAllDependencies(type: DependencyReportTask) {}
@@ -385,6 +484,29 @@ allprojects {
         include ( "**/spring/*.java" )
         include ( "**/frameworks/**/*.java" )
     }
+
+    // ensures we pick up the very latest snapshots when built
+    configurations.all {
+        // check for updates every build
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
+    // To publish to ossrh we need to sign the artifacts - only in CI
+    if (System.getenv("CI")) {
+        signing {
+            // This is the publication to sign
+            sign publishing.publications.connector
+            // gpg --export-secret-keys myemal@gmail.com | base64
+            def signingKey = System.getenv("OSSRH_GPG_PRIVATE_KEY")
+            // Passphrase for key
+            def signingPassword = System.getenv("OSSRH_GPG_PASSPHRASE")
+            // public key id (last 8 characters only) - note keys also need uploading to all the main registries
+            def signingKeyId = System.getenv("OSSRH_GPG_KEYID")
+            // We use these values from secrets rather than gradle.properties
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        }
+    }
+
 }
 
 /*
