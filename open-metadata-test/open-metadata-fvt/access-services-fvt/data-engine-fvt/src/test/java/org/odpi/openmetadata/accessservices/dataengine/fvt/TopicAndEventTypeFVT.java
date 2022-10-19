@@ -22,7 +22,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,7 +39,7 @@ public class TopicAndEventTypeFVT extends DataEngineFVT {
                    org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
                    PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, InterruptedException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Topic topic = topicAndEventTypeSetupService.upsertTopic(userId, dataEngineClient, topicAndEventTypeSetupService.getTopicWithEventType());
 
         // assert Topic
@@ -67,7 +66,7 @@ public class TopicAndEventTypeFVT extends DataEngineFVT {
                    org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
                    PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, InterruptedException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Topic topic = topicAndEventTypeSetupService.upsertTopic(userId, dataEngineClient, topicAndEventTypeSetupService.getDeleteTopic());
 
         // assert Topic
@@ -88,7 +87,7 @@ public class TopicAndEventTypeFVT extends DataEngineFVT {
                    org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
                    PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, InterruptedException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Topic topic = topicAndEventTypeSetupService.upsertTopic(userId, dataEngineClient, null);
         EventType eventType = topicAndEventTypeSetupService.upsertEventType(userId, dataEngineClient, null, topic.getQualifiedName());
 
@@ -111,7 +110,7 @@ public class TopicAndEventTypeFVT extends DataEngineFVT {
                    org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
                    PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, InterruptedException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Topic topic = topicAndEventTypeSetupService.upsertTopic(userId, dataEngineClient, null);
         EventType eventType = topicAndEventTypeSetupService.upsertEventType(userId, dataEngineClient,
                 topicAndEventTypeSetupService.getDeleteEventType(), topic.getQualifiedName());

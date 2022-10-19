@@ -20,7 +20,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,9 +119,9 @@ public class RepositoryService {
      * Find an entity by using the search criteria given as parameter in a call to the LocalRepositoryServicesClient
      *
      * @param typeGuid guid of expected type
-     * @param searchCriteria the property value used to search and identify the software server capability
+     * @param searchCriteria the property value used to search and identify the engine
      *
-     * @return a list of EntityDetails that contain the found software server capability
+     * @return a list of EntityDetails that contain the found engine
      */
     public List<EntityDetail> findEntityByPropertyValue(String typeGuid, String searchCriteria) throws UserNotAuthorizedException,
             FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
