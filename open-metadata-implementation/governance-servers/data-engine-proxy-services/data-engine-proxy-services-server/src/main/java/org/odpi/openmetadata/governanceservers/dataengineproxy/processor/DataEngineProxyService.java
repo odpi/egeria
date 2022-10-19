@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
@@ -11,7 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -27,6 +28,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -35,11 +37,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class DataEngineProxyService implements Runnable {
 
-    private OMRSAuditLog auditLog;
-    private DataEngineProxyConfig dataEngineProxyConfig;
-    private DataEngineClient dataEngineOMASClient;
-    private DataEngineConnectorBase connector;
-    private String userId;
+    private final OMRSAuditLog auditLog;
+    private final DataEngineProxyConfig dataEngineProxyConfig;
+    private final DataEngineClient dataEngineOMASClient;
+    private final DataEngineConnectorBase connector;
+    private final String userId;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
@@ -50,7 +52,7 @@ public class DataEngineProxyService implements Runnable {
 
         // Retrieve the base information from the connector
         if (connector != null) {
-            SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
+            Engine dataEngineDetails = connector.getDataEngineDetails();
             dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
             dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
             if (connector.requiresPolling()) {
@@ -98,25 +100,14 @@ public class DataEngineProxyService implements Runnable {
         running.set(true);
         while (running.get()) {
             try {
-
-                // Start with the last change synchronization date and time
-                Date changesLastSynced = connector.getChangesLastSynced();
-
-                // Then look for the oldest change available in the Data Engine since that time
-                Date oldestSinceSync = connector.getOldestChangeSince(changesLastSynced);
                 Date changesCutoff = new Date();
-                if (oldestSinceSync == null) {
-                    // If there were no changes since the last sync time, default to the last sync time
-                    oldestSinceSync = changesLastSynced;
-                } else {
-                    // If there are any changes since that last sync time, calculate a batch window from that oldest
-                    // change to the maximum amount of time to include in a batch
+                Date oldestSinceSync = getProcessingState();
+                if(oldestSinceSync != null) {
                     long window = oldestSinceSync.getTime() + (dataEngineProxyConfig.getBatchWindowInSeconds() * 1000L);
                     long now = changesCutoff.getTime();
                     // We will look for changes up to that batch window size or the current moment, whichever is sooner
                     changesCutoff = new Date(Math.min(window, now));
                 }
-
                 ensureSourceNameIsSet();
 
                 this.auditLog.logMessage(methodName,
@@ -133,7 +124,7 @@ public class DataEngineProxyService implements Runnable {
                 upsertLineageMappings(oldestSinceSync, changesCutoff);
 
                 // Update the timestamp at which changes were last synced
-                connector.setChangesLastSynced(changesCutoff);
+                upsertProcessingState(changesCutoff);
 
                 // Sleep for the poll interval before continuing with the next poll
                 sleep();
@@ -162,6 +153,8 @@ public class DataEngineProxyService implements Runnable {
             upsertProcessHierarchies(now, now);
             upsertLineageMappings(now, now);
 
+            upsertProcessingState(now);
+
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
             this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
         }
@@ -171,6 +164,23 @@ public class DataEngineProxyService implements Runnable {
         /*
          * TODO
          * */
+    }
+
+    private void upsertProcessingState(Date changesCutoff) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException, ConnectorCheckedException {
+        String processingStateKey = connector.getProcessingStateSyncKey();
+        Map<String, Long> properties = Collections.singletonMap(processingStateKey, changesCutoff.getTime());
+        dataEngineOMASClient.upsertProcessingState(userId, properties);
+    }
+
+    private Date getProcessingState() throws PropertyServerException {
+        String processingStateKey = connector.getProcessingStateSyncKey();
+
+        Map<String, Long> processingState = dataEngineOMASClient.getProcessingState(userId);
+        if(MapUtils.isNotEmpty(processingState)) {
+            Long lastSync = processingState.get(processingStateKey);
+            return new Date(lastSync);
+        }
+        return null;
     }
 
     /**

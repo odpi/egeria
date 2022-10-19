@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessingStateEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent;
@@ -29,9 +30,10 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -40,6 +42,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
+import java.util.Map;
 
 
 /***
@@ -103,13 +106,13 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
+    public String createExternalDataEngine(String userId, Engine engine) throws InvalidParameterException,
                                                                                                                     ConnectorCheckedException {
         DataEngineRegistrationEvent event = new DataEngineRegistrationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setDataEngineEventType(DataEngineEventType.DATA_ENGINE_REGISTRATION_EVENT);
-        event.setSoftwareServerCapability(softwareServerCapability);
+        event.setEngine(engine);
 
         topicConnector.sendEvent(event);
 
@@ -505,6 +508,27 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setDataEngineEventType(DataEngineEventType.DELETE_EVENT_TYPE_EVENT);
 
         topicConnector.sendEvent(event);
+    }
+
+    @Override
+    public void upsertProcessingState(String userId, Map<String, Long> properties) throws InvalidParameterException, ConnectorCheckedException {
+
+        ProcessingState processingState = new ProcessingState(properties);
+
+        ProcessingStateEvent event = new ProcessingStateEvent();
+
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setDataEngineEventType(DataEngineEventType.PROCESSING_STATE_TYPE_EVENT);
+        event.setProcessingState(processingState);
+
+        topicConnector.sendEvent(event);
+    }
+
+    @Override
+    public Map<String, Long> getProcessingState(String userId) {
+        //async interaction
+        return null;
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

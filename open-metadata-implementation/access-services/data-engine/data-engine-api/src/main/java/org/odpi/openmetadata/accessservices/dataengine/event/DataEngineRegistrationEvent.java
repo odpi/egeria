@@ -9,13 +9,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The Data engine registration event for registering external source as software server capability.
+ * The Data engine registration event for registering external source as engine.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,14 +27,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataEngineRegistrationEvent extends DataEngineEventHeader {
 
     /**
-     * Software server capability
+     * Engine
      * -- GETTER --
-     * Gets the software server capability
-     * @return the software server capability
+     * Gets the engine
+     * @return the engine
      * -- SETTER --
-     * Sets the software server capability
-     * @param softwareServerCapability the software server capability
+     * Sets the engine
+     * @param engine the engine
      */
-    private SoftwareServerCapability softwareServerCapability;
+    private Engine engine;
 
 }

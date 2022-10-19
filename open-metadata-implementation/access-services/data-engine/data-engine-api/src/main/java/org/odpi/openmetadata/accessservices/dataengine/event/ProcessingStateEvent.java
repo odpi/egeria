@@ -1,16 +1,15 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataengine.rest;
+package org.odpi.openmetadata.accessservices.dataengine.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,19 +20,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public class DataEngineRegistrationRequestBody extends DataEngineOMASAPIRequestBody {
+@ToString(callSuper = true)
+public class ProcessingStateEvent extends DataEngineEventHeader {
 
     /**
-     * Engine
+     * The processing state.
+     *
      * -- GETTER --
-     * Gets the engine
-     * @return the engine
+     * Return the processing state
+     *
+     * @return processing state
      * -- SETTER --
-     * Sets the engine
-     * @param engine the engine
+     * Set up the processing state
+     * @param processingState processing state
      */
-    @JsonProperty("dataEngine")
-    private Engine engine;
-
+    private ProcessingState processingState;
 }

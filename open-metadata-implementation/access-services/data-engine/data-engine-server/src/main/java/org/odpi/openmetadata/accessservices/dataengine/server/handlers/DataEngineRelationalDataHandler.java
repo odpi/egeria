@@ -64,7 +64,7 @@ public class DataEngineRelationalDataHandler {
      * @param relationalDataHandler                  provides utilities for manipulating the repository services assets
      * @param databaseSchemaAssetHandler             provides utilities for manipulating database schema assets
      * @param dataEngineCommonHandler                provides utilities for manipulating entities
-     * @param registrationHandler                    creates software server capability entities
+     * @param registrationHandler                    creates engine entities
      * @param dataEngineConnectionAndEndpointHandler provides utilities specific for manipulating Connections and Endpoints
      **/
     public DataEngineRelationalDataHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,

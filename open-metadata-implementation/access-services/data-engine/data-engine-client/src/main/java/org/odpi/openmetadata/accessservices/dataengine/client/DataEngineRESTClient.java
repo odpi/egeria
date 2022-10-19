@@ -12,9 +12,10 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
@@ -29,12 +30,14 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -43,6 +46,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Data Engine Open Metadata Access Service (OMAS) provides an interface for data engine tools to create
@@ -67,6 +72,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String FIND_URL_TEMPLATE = DATA_ENGINE_PATH + "find";
     private static final String TOPIC_URL_TEMPLATE = DATA_ENGINE_PATH + "topics";
     private static final String EVENT_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "event-types";
+    private static final String PROCESSING_STATE_URL_TEMPLATE = DATA_ENGINE_PATH + "processing-state";
 
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
@@ -180,7 +186,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
+    public String createExternalDataEngine(String userId, Engine engine) throws
                                                                                                              InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException {
@@ -188,7 +194,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         invalidParameterHandler.validateUserId(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME);
 
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
-        requestBody.setSoftwareServerCapability(softwareServerCapability);
+        requestBody.setEngine(engine);
 
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
@@ -557,6 +563,31 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, EVENT_TYPE_DELETE_METHOD_NAME, EVENT_TYPE_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public void upsertProcessingState(String userId, Map<String, Long> properties) throws PropertyServerException,
+            InvalidParameterException, UserNotAuthorizedException {
+        String methodName = "upsertProcessingState";
+
+        ProcessingState processingState = new ProcessingState(properties);
+
+        ProcessingStateRequestBody requestBody = new ProcessingStateRequestBody(processingState);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        callVoidPostRESTCall(userId, methodName, PROCESSING_STATE_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public Map<String, Long> getProcessingState(String userId) throws PropertyServerException {
+        String methodName = "getProcessingState";
+
+        PropertiesResponse restResult =  this.callGetRESTCall(methodName, PropertiesResponse.class,
+                serverPlatformRootURL + PROCESSING_STATE_URL_TEMPLATE, serverName, userId, externalSourceName);
+
+        return restResult.getProperties().entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> (Long) e.getValue()));
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
