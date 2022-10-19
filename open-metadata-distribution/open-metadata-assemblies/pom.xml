@@ -104,6 +104,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>omrs-caching-repository-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>kafka-open-metadata-topic-connector</artifactId>
         </dependency>
         <dependency>
