@@ -208,6 +208,7 @@
         <swagger.version>2.2.3</swagger.version>
         <micrometer-registry-prometheus.version>1.9.4</micrometer-registry-prometheus.version>
         <classgraph.version>4.8.149</classgraph.version>
+        <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
         <groovy.version>3.0.13</groovy.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
@@ -3231,7 +3232,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
+                <version>${jcl-over-slf4j.version}</version>
             </dependency>
 
             <dependency>
