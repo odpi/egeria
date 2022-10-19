@@ -13,7 +13,7 @@ In essence, this is to carry out the following:
 1. Setup connectivity to a [Data Engine OMAS](../../../access-services/data-engine). (See below section [Configuring interface type for Data Engine OMAS](#configuring-interface-type-for-data-engine-omas))
 1. Setup connectivity to a data engine, through the configured data engine connection of
     a [Data Engine Proxy Connector](../data-engine-proxy-connector).
-1. Ensure a `SoftwareServerCapability` exists to represent this data engine via the Data Engine OMAS.
+1. Ensure an `Engine` exists to represent this data engine via the Data Engine OMAS.
 1. Poll the data engine every defined interval (60 seconds by default) for any changes:
     1. First send any changed `SchemaType`s via the Data Engine OMAS.
     1. Then send any changed `PortImplementation`s via the Data Engine OMAS.
