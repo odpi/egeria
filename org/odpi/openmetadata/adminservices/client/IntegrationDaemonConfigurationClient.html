@@ -330,7 +330,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <pre>public&nbsp;IntegrationDaemonConfigurationClient&#8203;(java.lang.String&nbsp;adminUserId,
                                             java.lang.String&nbsp;serverName,
                                             java.lang.String&nbsp;serverPlatformRootURL)
-                                     throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                     throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -338,7 +338,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -354,7 +354,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
                                             java.lang.String&nbsp;serverPlatformRootURL,
                                             java.lang.String&nbsp;connectionUserId,
                                             java.lang.String&nbsp;connectionPassword)
-                                     throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                     throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client that passes a connection userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is passed as the admin userId.</div>
 <dl>
@@ -365,7 +365,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <dd><code>connectionUserId</code> - caller's system userId embedded in all HTTP requests</dd>
 <dd><code>connectionPassword</code> - caller's system password embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -387,17 +387,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>getRegisteredIntegrationServices</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;&nbsp;getRegisteredIntegrationServices()
-                                                                       throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                              org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                              org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                                                       throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                                                              <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                                                              <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Return the list of integration services for this server.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of integration service descriptions</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -408,17 +408,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>getConfiguredIntegrationServices</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;&nbsp;getConfiguredIntegrationServices()
-                                                                       throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                              org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                              org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                                                       throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                                                              <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                                                              <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Return the list of integration services for this server.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of integration service descriptions</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -429,17 +429,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>getIntegrationServicesConfiguration</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;getIntegrationServicesConfiguration()
-                                                                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                                                             throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                                                                    <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                                                                    <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Return the configuration for the integration services in this server.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of integration service configuration</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -450,9 +450,9 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>getIntegrationServiceConfiguration</h4>
 <pre class="methodSignature">public&nbsp;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;getIntegrationServiceConfiguration&#8203;(java.lang.String&nbsp;serviceURLMarker)
-                                                            throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                                            throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                                                   <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                                                   <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Return the configuration for the named integration service for this server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -460,9 +460,9 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>response containing the integration services configuration</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -477,9 +477,9 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
                                         java.lang.String&nbsp;serviceURLMarker,
                                         java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;integrationServiceOptions,
                                         java.util.List&lt;<a href="../configuration/properties/IntegrationConnectorConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationConnectorConfig</a>&gt;&nbsp;integrationConnectorConfigs)
-                                 throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                 throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                        <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                        <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Enable a single integration service.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -489,9 +489,9 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <dd><code>integrationServiceOptions</code> - property name/value pairs used to configure the integration service</dd>
 <dd><code>integrationConnectorConfigs</code> - Connection properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -502,17 +502,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>disableIntegrationService</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;disableIntegrationService&#8203;(java.lang.String&nbsp;serviceURLMarker)
-                               throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                      org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                      org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                               throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                      <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                      <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Disable a single integration service.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serviceURLMarker</code> - string indicating which integration service it is configuring</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -523,17 +523,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>configureIntegrationService</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;configureIntegrationService&#8203;(<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;serviceConfig)
-                                 throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                 throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                        <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                        <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Add configuration for a single integration service to the server's config document.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serviceConfig</code> - all values to configure an integration service</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -544,18 +544,18 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>setIntegrationServicesConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setIntegrationServicesConfig&#8203;(java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;integrationServicesConfig)
-                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                  throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                         <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                         <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Set up the configuration for all the open metadata integration services (OMISs).  This overrides
  the current values.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>integrationServicesConfig</code> - list of configuration properties for each integration service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -566,15 +566,15 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>clearAllIntegrationServices</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearAllIntegrationServices()
-                                 throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                        org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                 throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                        <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                        <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Disable the integration services.  This removes all configuration for the integration daemon.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -585,17 +585,17 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <li class="blockList">
 <h4>clearIntegrationService</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearIntegrationService&#8203;(java.lang.String&nbsp;serviceURLMarker)
-                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                             throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                    <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                    <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Disable the integration services.  This removes all configuration for the integration daemon.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serviceURLMarker</code> - integration service name used in URL</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>

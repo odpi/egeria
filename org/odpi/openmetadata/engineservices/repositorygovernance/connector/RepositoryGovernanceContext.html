@@ -129,6 +129,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../handlers/RepositoryGovernanceServiceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.handlers">RepositoryGovernanceServiceContext</a></code></dd>
+</dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">RepositoryGovernanceContext</span>
 extends java.lang.Object</pre>
@@ -719,7 +723,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getMetadataCollectionId</h4>
 <pre class="methodSignature">public abstract&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
-                                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                                  throws <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Returns the identifier of the metadata repository.  This is the identifier used to register the
  metadata repository with the metadata repository cohort.  It is also the identifier used to
  identify the home repository of a metadata instance.</div>
@@ -727,7 +731,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String metadata collection id.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
 </dl>
 </li>
 </ul>
@@ -738,9 +742,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>registerListener</h4>
 <pre class="methodSignature">public abstract&nbsp;void&nbsp;registerListener&#8203;(<a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicRepositoryEventListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicRepositoryEventListener</a>&nbsp;listener)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
+                               throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                      <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a>,
+                                      <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata repositories.</div>
@@ -748,9 +752,9 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>listener</code> - listener object to receive events</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one or more of the type names are unrecognized</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - user is not authorized to register a listener</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - the metadata server is not available or in error</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one or more of the type names are unrecognized</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - user is not authorized to register a listener</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - the metadata server is not available or in error</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - the connection to the event topic is in error</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector to the event topic is in error</dd>
 </dl>
@@ -778,9 +782,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getAllTypes</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a>&nbsp;getAllTypes()
-                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                    throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                           <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                           <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the list of different types of metadata organized into two groups.  The first are the
  attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
  type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
@@ -789,9 +793,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDefGallery List of different categories of type definitions.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the userId is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the userId is null</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -802,9 +806,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>findTypesByName</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a>&nbsp;findTypesByName&#8203;(java.lang.String&nbsp;name)
-                                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                        throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                               <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                               <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns a list of type definitions that have the specified name.  Type names should be unique.  This
  method allows wildcard character to be included in the name.  These are * (asterisk) for an
  arbitrary string of characters and ampersand for an arbitrary character.</div>
@@ -814,9 +818,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDefGallery list.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the name of the TypeDef is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the name of the TypeDef is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -827,9 +831,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>findTypeDefsByCategory</h4>
 <pre class="methodSignature">public abstract&nbsp;java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;findTypeDefsByCategory&#8203;(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefCategory.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefCategory</a>&nbsp;category)
-                                                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                        throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -837,9 +841,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDefs list.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the TypeDefCategory is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the TypeDefCategory is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -850,9 +854,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>findAttributeTypeDefsByCategory</h4>
 <pre class="methodSignature">public abstract&nbsp;java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;&nbsp;findAttributeTypeDefsByCategory&#8203;(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDefCategory.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDefCategory</a>&nbsp;category)
-                                                                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                          throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                                 <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                                 <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns all the AttributeTypeDefs for a specific category.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -860,9 +864,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDefs list.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the TypeDefCategory is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the TypeDefCategory is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -873,9 +877,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>findTypeDefsByProperty</h4>
 <pre class="methodSignature">public abstract&nbsp;java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;findTypeDefsByProperty&#8203;(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefProperties</a>&nbsp;matchCriteria)
-                                                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                        throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the TypeDefs that have the properties matching the supplied match criteria.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -883,9 +887,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDefs list.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the matchCriteria is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the matchCriteria is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -898,9 +902,9 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public abstract&nbsp;java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;findTypesByExternalID&#8203;(java.lang.String&nbsp;standard,
                                                               java.lang.String&nbsp;organization,
                                                               java.lang.String&nbsp;identifier)
-                                                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                       throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                              <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                              <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -911,9 +915,9 @@ extends java.lang.Object</pre>
 <dd>TypeDefs list each entry in the list contains a typedef.  This is is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - all attributes of the external id are null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -924,9 +928,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>searchForTypeDefs</h4>
 <pre class="methodSignature">public abstract&nbsp;java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;searchForTypeDefs&#8203;(java.lang.String&nbsp;searchCriteria)
-                                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                   throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the TypeDefs that match the search criteria.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -935,9 +939,9 @@ extends java.lang.Object</pre>
 <dd>TypeDefs list each entry in the list contains a typedef.  This is is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the searchCriteria is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the searchCriteria is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -948,10 +952,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getTypeDefByGUID</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;getTypeDefByGUID&#8203;(java.lang.String&nbsp;guid)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                  throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the TypeDef identified by the GUID.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -959,11 +963,11 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - The requested TypeDef is not known in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - The requested TypeDef is not known in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -974,10 +978,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getAttributeTypeDefByGUID</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;getAttributeTypeDefByGUID&#8203;(java.lang.String&nbsp;guid)
-                                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                    throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the AttributeTypeDef identified by the GUID.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -985,11 +989,11 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - The requested TypeDef is not known in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - The requested TypeDef is not known in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1000,10 +1004,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getTypeDefByName</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;getTypeDefByName&#8203;(java.lang.String&nbsp;name)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException,
-                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                  throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a>,
+                                         <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the TypeDef identified by the unique name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1011,11 +1015,11 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the name is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the name is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - the requested TypeDef is not found in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - the requested TypeDef is not found in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1026,10 +1030,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getAttributeTypeDefByName</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;getAttributeTypeDefByName&#8203;(java.lang.String&nbsp;name)
-                                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException,
-                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                    throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a>,
+                                                           <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the AttributeTypeDef identified by the unique name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1037,11 +1041,11 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the name is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the name is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - the requested TypeDef is not found in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - the requested TypeDef is not found in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1052,9 +1056,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isEntityKnown</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;isEntityKnown&#8203;(java.lang.String&nbsp;guid)
-                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                    throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                           <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                           <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the entity if the entity is stored in the metadata collection, otherwise null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1062,10 +1066,10 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the entity details if the entity is found in the metadata collection; otherwise return null</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1076,10 +1080,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getEntitySummary</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;getEntitySummary&#8203;(java.lang.String&nbsp;guid)
-                                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException,
-                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                        throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                               <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                               <a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
+                                               <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the header and classifications for a specific entity.  The returned entity summary may be from
  a full entity object or an entity proxy.</div>
 <dl>
@@ -1088,11 +1092,11 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntitySummary structure</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the requested entity instance is not known in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1103,11 +1107,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getEntityDetail</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;getEntityDetail&#8203;(java.lang.String&nbsp;guid)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                      throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the header, classifications and properties of a specific entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1115,12 +1119,12 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetail structure.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the requested entity instance is not known in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException</code> - the requested entity instance is only a proxy in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1132,12 +1136,12 @@ extends java.lang.Object</pre>
 <h4>getEntityDetail</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;getEntityDetail&#8203;(java.lang.String&nbsp;guid,
                                              java.util.Date&nbsp;asOfTime)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                      throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a historical version of an entity includes the header, classifications and properties of the entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1146,14 +1150,14 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetail structure.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid or date is null, or the asOfTime property is for a future time</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid or date is null, or the asOfTime property is for a future time</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                        the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the requested entity instance is not known in the metadata collection
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection
                                        at the time requested.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException</code> - the requested entity instance is only a proxy in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support the asOfTime parameter.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support the asOfTime parameter.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1169,12 +1173,12 @@ extends java.lang.Object</pre>
                                                                     int&nbsp;startFromElement,
                                                                     int&nbsp;pageSize,
                                                                     <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/HistorySequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">HistorySequencingOrder</a>&nbsp;sequencingOrder)
-                                                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                             throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
  versions of an entity, set both the 'fromTime' and 'toTime' to null.</div>
 <dl>
@@ -1190,14 +1194,14 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd><code>List&lt;EntityDetail&gt;</code> of each historical version of the entity detail within the bounds, and in the order requested.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid or date is null or fromTime is after the toTime</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid or date is null or fromTime is after the toTime</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                  the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the requested entity instance is not known in the metadata collection
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection
                                    at the time requested.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException</code> - the requested entity instance is only a proxy in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support history.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support history.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1215,14 +1219,14 @@ extends java.lang.Object</pre>
                                                                        java.lang.String&nbsp;sequencingProperty,
                                                                        <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                        int&nbsp;pageSize)
-                                                                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                       <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return the relationships for a specific entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1244,16 +1248,16 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Relationships list.  Null means no relationships associated with the entity.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - a parameter is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                                        metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                        the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the requested entity instance is not known in the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the sequencing property is not valid for the attached classifications.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support the asOfTime parameter.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the sequencing property is not valid for the attached classifications.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support the asOfTime parameter.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1273,13 +1277,13 @@ extends java.lang.Object</pre>
                                                           java.lang.String&nbsp;sequencingProperty,
                                                           <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                           int&nbsp;pageSize)
-                                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                   throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                          <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of entities that match the supplied criteria.  The results can be returned over many pages.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1304,16 +1308,16 @@ extends java.lang.Object</pre>
 <dd>a list of entities matching the supplied criteria; null means no matching entities in the metadata
  collection.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - a parameter is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                               metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the properties specified are not valid for any of the requested types of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the properties specified are not valid for any of the requested types of
                                   entity.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this optional method.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this optional method.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1333,13 +1337,13 @@ extends java.lang.Object</pre>
                                                                     java.lang.String&nbsp;sequencingProperty,
                                                                     <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                     int&nbsp;pageSize)
-                                                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                             throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of entities that match the supplied properties according to the match criteria.  The results
  can be returned over many pages.</div>
 <dl>
@@ -1365,16 +1369,16 @@ extends java.lang.Object</pre>
 <dd>a list of entities matching the supplied criteria; null means no matching entities in the metadata
  collection.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - a parameter is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                               metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the properties specified are not valid for any of the requested types of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the properties specified are not valid for any of the requested types of
                                   entity.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1394,14 +1398,14 @@ extends java.lang.Object</pre>
                                                                           java.lang.String&nbsp;sequencingProperty,
                                                                           <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                           int&nbsp;pageSize)
-                                                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                   throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                          <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of entities that have the requested type of classifications attached.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1428,17 +1432,17 @@ extends java.lang.Object</pre>
 <dd>a list of entities matching the supplied criteria; null means no matching entities in the metadata
  collection.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - a parameter is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                               metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the classification request is not known to the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the properties specified are not valid for the requested type of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification request is not known to the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the properties specified are not valid for the requested type of
                                   classification.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1457,13 +1461,13 @@ extends java.lang.Object</pre>
                                                                          java.lang.String&nbsp;sequencingProperty,
                                                                          <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                          int&nbsp;pageSize)
-                                                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                  throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of entities whose string based property values match the search criteria.  The
  search criteria may include regex style wild cards.</div>
 <dl>
@@ -1490,15 +1494,15 @@ extends java.lang.Object</pre>
 <dd>a list of entities matching the supplied criteria null means no matching entities in the metadata
  collection.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - a parameter is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the sequencing property specified is not valid for any of the requested types of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the sequencing property specified is not valid for any of the requested types of
                                   entity.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1509,9 +1513,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isRelationshipKnown</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;isRelationshipKnown&#8203;(java.lang.String&nbsp;guid)
-                                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                          throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                 <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                 <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns a boolean indicating if the relationship is stored in the metadata collection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1519,10 +1523,10 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>relationship details if the relationship is found in the metadata collection; otherwise return null.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1533,10 +1537,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getRelationship</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;getRelationship&#8203;(java.lang.String&nbsp;guid)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                      throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a requested relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1544,12 +1548,12 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a relationship structure.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid is null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</code> - the metadata collection does not have a relationship with
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the metadata collection does not have a relationship with
                                          the requested GUID stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1561,11 +1565,11 @@ extends java.lang.Object</pre>
 <h4>getRelationship</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;getRelationship&#8203;(java.lang.String&nbsp;guid,
                                              java.util.Date&nbsp;asOfTime)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                      throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                             <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a historical version of a relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1574,13 +1578,13 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Relationship structure.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid or date is null or the asOfTime property is for a future time.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid or date is null or the asOfTime property is for a future time.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                  the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</code> - the requested entity instance is not known in the metadata collection
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the requested entity instance is not known in the metadata collection
                                    at the time requested.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support the asOfTime parameter.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support the asOfTime parameter.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1596,11 +1600,11 @@ extends java.lang.Object</pre>
                                                                     int&nbsp;startFromElement,
                                                                     int&nbsp;pageSize,
                                                                     <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/HistorySequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">HistorySequencingOrder</a>&nbsp;sequencingOrder)
-                                                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                             throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                    <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
  historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.</div>
 <dl>
@@ -1616,13 +1620,13 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd><code>List&lt;Relationship&gt;</code> of each historical version of the relationship within the bounds, and in the order requested.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the guid or date is null or fromTime is after the toTime</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid or date is null or fromTime is after the toTime</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                  the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</code> - the requested relationship instance is not known in the metadata collection
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the requested relationship instance is not known in the metadata collection
                                        at the time requested.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support history.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support history.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1641,13 +1645,13 @@ extends java.lang.Object</pre>
                                                                java.lang.String&nbsp;sequencingProperty,
                                                                <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                int&nbsp;pageSize)
-                                                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                        throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                               <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of relationships that match the requested conditions.  The results can be received as a series of
  pages.</div>
 <dl>
@@ -1673,16 +1677,16 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of relationships.  Null means no matching relationships.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the parameters is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                               metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the properties specified are not valid for any of the requested types of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the properties specified are not valid for any of the requested types of
                                   relationships.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1701,13 +1705,13 @@ extends java.lang.Object</pre>
                                                                          java.lang.String&nbsp;sequencingProperty,
                                                                          <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                          int&nbsp;pageSize)
-                                                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                  throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                         <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of relationships that match the requested properties by the matching criteria.   The results
  can be received as a series of pages.</div>
 <dl>
@@ -1733,16 +1737,16 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of relationships.  Null means no matching relationships.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the parameters is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the
                               metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the properties specified are not valid for any of the requested types of
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the properties specified are not valid for any of the requested types of
                                   relationships.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1760,13 +1764,13 @@ extends java.lang.Object</pre>
                                                                               java.lang.String&nbsp;sequencingProperty,
                                                                               <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                                               int&nbsp;pageSize)
-                                                                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
-                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                                                       throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
+                                                                              <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of relationships whose string based property values match the search criteria.  The
  search criteria may include regex style wild cards.</div>
 <dl>
@@ -1791,14 +1795,14 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of relationships.  Null means no matching relationships.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is invalid or null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type guid passed on the request is not known by the metadata collection.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the parameters is invalid or null.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type guid passed on the request is not known by the metadata collection.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - there is a problem with one of the other parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support one of the provided parameters.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - there is a problem with one of the other parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support one of the provided parameters.</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -1812,8 +1816,8 @@ extends java.lang.Object</pre>
                                             java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
                                             java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
                                             java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)
-                                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                     throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                            <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 <dl>
@@ -1823,8 +1827,8 @@ extends java.lang.Object</pre>
 <dd><code>newRequestParameters</code> - additional request parameters.  These override/augment any request parameters defined for the next invoked service</dd>
 <dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the completion status is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the governance action service is not authorized to update the governance
+<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the completion status is null</dd>
+<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance
                                      action service completion status</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
 </dl>

@@ -125,6 +125,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>All Superinterfaces:</dt>
 <dd><code><a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities">OMRSRepositoryPropertiesHelper</a></code></dd>
 </dl>
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="../../../../localrepository/repositorycontentmanager/OMRSRepositoryContentHelper.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentHelper</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">OMRSRepositoryHelper</span>
 extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities">OMRSRepositoryPropertiesHelper</a></pre>
@@ -1195,7 +1199,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                    java.lang.String&nbsp;parameterName,
                    java.lang.String&nbsp;typeDefGUID,
                    java.lang.String&nbsp;methodName)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+            throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return the TypeDef identified by the guid supplied by the caller.  This call is used when
  retrieving a type that only the guid is known.</div>
 <dl>
@@ -1207,7 +1211,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown or invalid type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown or invalid type</dd>
 </dl>
 </li>
 </ul>
@@ -1220,7 +1224,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <pre class="methodSignature"><a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;getAttributeTypeDef&#8203;(java.lang.String&nbsp;sourceName,
                                      java.lang.String&nbsp;attributeTypeDefGUID,
                                      java.lang.String&nbsp;methodName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                              throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return the AttributeTypeDef identified by the guid and name supplied by the caller.  This call is used when
  retrieving a type that only the guid is known.</div>
 <dl>
@@ -1231,7 +1235,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown or invalid type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown or invalid type</dd>
 </dl>
 </li>
 </ul>
@@ -1247,7 +1251,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                    java.lang.String&nbsp;typeDefGUID,
                    java.lang.String&nbsp;typeDefName,
                    java.lang.String&nbsp;methodName)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+            throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
  retrieving a type that should exist.  For example, retrieving the type of a metadata instance.</div>
 <dl>
@@ -1261,7 +1265,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown or invalid type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown or invalid type</dd>
 </dl>
 </li>
 </ul>
@@ -1275,7 +1279,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                      java.lang.String&nbsp;attributeTypeDefGUID,
                                      java.lang.String&nbsp;attributeTypeDefName,
                                      java.lang.String&nbsp;methodName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                              throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return the AttributeTypeDef identified by the guid and name supplied by the caller.  This call is used when
  retrieving a type that should exist.  For example, retrieving the type definition of a metadata instance's
  property.</div>
@@ -1288,7 +1292,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TypeDef object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown or invalid type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown or invalid type</dd>
 </dl>
 </li>
 </ul>
@@ -1305,7 +1309,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                              java.lang.String&nbsp;enumTypeName,
                                              int&nbsp;ordinal,
                                              java.lang.String&nbsp;methodName)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                      throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Add the supplied property to an instance properties object.  If the instance property object
  supplied is null, a new instance properties object is created.</div>
 <dl>
@@ -1320,7 +1324,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>instance properties object.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the enum type is not recognized</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the enum type is not recognized</dd>
 </dl>
 </li>
 </ul>
@@ -1412,8 +1416,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <pre class="methodSignature"><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;applyPatch&#8203;(java.lang.String&nbsp;sourceName,
                    <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;originalTypeDef,
                    <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                   org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</pre>
+            throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                   <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></pre>
 <div class="block">Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
  the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
  the type or version that either represents.</div>
@@ -1425,8 +1429,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated TypeDef</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the original typeDef or typeDefPatch is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</code> - the patch is either badly formatted, or does not apply to the supplied TypeDef</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
+<dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the patch is either badly formatted, or does not apply to the supplied TypeDef</dd>
 </dl>
 </li>
 </ul>
@@ -1475,7 +1479,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                java.lang.String&nbsp;userName,
                                java.lang.String&nbsp;typeName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                        throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Return an entity with the header and type information filled out.  The caller only needs to add properties
  and classifications to complete the set up of the entity.</div>
@@ -1489,7 +1493,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out entity needs classifications and properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized.</dd>
 </dl>
 </li>
 </ul>
@@ -1505,7 +1509,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                java.lang.String&nbsp;userName,
                                java.lang.String&nbsp;typeName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                        throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return an entity with the header and type information filled out.  The caller only needs to add properties
  and classifications to complete the set up of the entity.</div>
 <dl>
@@ -1519,7 +1523,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out entity needs classifications and properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized.</dd>
 </dl>
 </li>
 </ul>
@@ -1535,7 +1539,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                        <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                        java.lang.String&nbsp;userName,
                                        java.lang.String&nbsp;typeName)
-                                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Return an entity with the header and type information filled out.  The caller only needs to classifications
  to complete the set up of the entity.</div>
@@ -1549,7 +1553,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out entity needs classifications</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized.</dd>
 </dl>
 </li>
 </ul>
@@ -1565,7 +1569,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                        <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                        java.lang.String&nbsp;userName,
                                        java.lang.String&nbsp;typeName)
-                                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return an entity with the header and type information filled out.  The caller only needs to classifications
  to complete the set up of the entity.</div>
 <dl>
@@ -1579,7 +1583,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out entity needs classifications</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized.</dd>
 </dl>
 </li>
 </ul>
@@ -1593,7 +1597,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                          java.lang.String&nbsp;userName,
                                          java.lang.String&nbsp;classificationTypeName,
                                          java.lang.String&nbsp;entityTypeName)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                  throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  and possibility origin information if it is propagated to complete the set up of the classification.</div>
 <dl>
@@ -1605,7 +1609,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1621,7 +1625,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                          java.lang.String&nbsp;userName,
                                          java.lang.String&nbsp;classificationTypeName,
                                          java.lang.String&nbsp;entityTypeName)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                  throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  and possibility origin information if it is propagated to complete the set up of the classification.</div>
 <dl>
@@ -1635,7 +1639,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1652,7 +1656,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                          java.lang.String&nbsp;userName,
                                          java.lang.String&nbsp;classificationTypeName,
                                          java.lang.String&nbsp;entityTypeName)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                                  throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  and possibility origin information if it is propagated to complete the set up of the classification.</div>
 <dl>
@@ -1667,7 +1671,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1682,7 +1686,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                      <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                      java.lang.String&nbsp;userName,
                                      java.lang.String&nbsp;typeName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                              throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a relationship with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the relationship.</div>
 <dl>
@@ -1695,7 +1699,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out relationship needs properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a relationship type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a relationship type.</dd>
 </dl>
 </li>
 </ul>
@@ -1711,7 +1715,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                      <a href="../properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;provenanceType,
                                      java.lang.String&nbsp;userName,
                                      java.lang.String&nbsp;typeName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                              throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a relationship with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the relationship.</div>
 <dl>
@@ -1725,7 +1729,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out relationship needs properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a relationship type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a relationship type.</dd>
 </dl>
 </li>
 </ul>
@@ -1737,7 +1741,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <h4>getNewInstanceType</h4>
 <pre class="methodSignature"><a href="../properties/instances/InstanceType.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceType</a>&nbsp;getNewInstanceType&#8203;(java.lang.String&nbsp;sourceName,
                                 <a href="../properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a relationship with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the relationship.</div>
 <dl>
@@ -1747,7 +1751,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>instance type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a relationship type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a relationship type.</dd>
 </dl>
 </li>
 </ul>
@@ -1764,7 +1768,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                           java.lang.String&nbsp;typeName,
                           <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                           java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;classifications)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                   throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a filled out entity.  It just needs to add the classifications.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1778,7 +1782,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>an entity that is filled out</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as an entity type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as an entity type</dd>
 </dl>
 </li>
 </ul>
@@ -1796,7 +1800,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                           java.lang.String&nbsp;typeName,
                           <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                           java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;classifications)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                   throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a filled out entity.  It just needs to add the classifications.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1811,7 +1815,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>an entity that is filled out</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as an entity type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as an entity type</dd>
 </dl>
 </li>
 </ul>
@@ -1827,7 +1831,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                 java.lang.String&nbsp;userName,
                                 java.lang.String&nbsp;typeName,
                                 <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a filled out relationship which just needs the entity proxies added.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1840,7 +1844,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a relationship that is filled out</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a relationship type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a relationship type</dd>
 </dl>
 </li>
 </ul>
@@ -1857,7 +1861,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                 java.lang.String&nbsp;userName,
                                 java.lang.String&nbsp;typeName,
                                 <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a filled out relationship which just needs the entity proxies added.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1871,7 +1875,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a relationship that is filled out</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a relationship type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a relationship type</dd>
 </dl>
 </li>
 </ul>
@@ -1890,7 +1894,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                     <a href="../properties/instances/ClassificationOrigin.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">ClassificationOrigin</a>&nbsp;classificationOrigin,
                                     java.lang.String&nbsp;classificationOriginGUID,
                                     <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)
-                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                             throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the classification.</div>
 <dl>
@@ -1907,7 +1911,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1927,7 +1931,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                     <a href="../properties/instances/ClassificationOrigin.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">ClassificationOrigin</a>&nbsp;classificationOrigin,
                                     java.lang.String&nbsp;classificationOriginGUID,
                                     <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)
-                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                             throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the classification.</div>
 <dl>
@@ -1945,7 +1949,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1963,7 +1967,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                     <a href="../properties/instances/ClassificationOrigin.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">ClassificationOrigin</a>&nbsp;classificationOrigin,
                                     java.lang.String&nbsp;classificationOriginGUID,
                                     <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)
-                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                             throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Return a classification with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the classification.  This method is deprecated because it does not take the provenance information.
@@ -1980,7 +1984,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>partially filled out classification needs properties and possibly origin information</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as a classification type.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as a classification type.</dd>
 </dl>
 </li>
 </ul>
@@ -1994,7 +1998,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                     <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
                                     java.lang.String&nbsp;classificationName,
                                     java.lang.String&nbsp;methodName)
-                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</pre>
+                             throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
 <div class="block">Throws an exception if an entity is classified with the supplied classification name.
  It is typically used when adding new classifications to entities.</div>
 <dl>
@@ -2004,7 +2008,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dd><code>classificationName</code> - classification to retrieve</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the classification is not attached to the entity</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is not attached to the entity</dd>
 </dl>
 </li>
 </ul>
@@ -2106,7 +2110,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                            <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
                                            java.lang.String&nbsp;classificationName,
                                            java.lang.String&nbsp;methodName)
-                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</pre>
+                                    throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
 <div class="block">Return the named classification from an existing entity and throws an exception if it is not.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2117,7 +2121,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>located classification</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the classification is not attached to the entity</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is not attached to the entity</dd>
 </dl>
 </li>
 </ul>
@@ -2201,7 +2205,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                             <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
                                             java.lang.String&nbsp;oldClassificationName,
                                             java.lang.String&nbsp;methodName)
-                                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</pre>
+                                     throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
 <div class="block">Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the oldClassification.</div>
 <dl>
@@ -2213,7 +2217,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated entity</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the entity was not classified with this classification</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the entity was not classified with this classification</dd>
 </dl>
 </li>
 </ul>
@@ -2227,7 +2231,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                            <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityProxy,
                                            java.lang.String&nbsp;oldClassificationName,
                                            java.lang.String&nbsp;methodName)
-                                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</pre>
+                                    throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
 <div class="block">Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
  to complete the set up of the oldClassification.</div>
 <dl>
@@ -2239,7 +2243,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated entity</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the entity was not classified with this classification</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the entity was not classified with this classification</dd>
 </dl>
 </li>
 </ul>
@@ -2331,7 +2335,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <h4>getNewEntityProxy</h4>
 <pre class="methodSignature"><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;getNewEntityProxy&#8203;(java.lang.String&nbsp;sourceName,
                               <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Generate an entity proxy from an entity and its TypeDef.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2340,7 +2344,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>new entity proxy</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted entity</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted entity</dd>
 </dl>
 </li>
 </ul>
@@ -2357,7 +2361,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                               java.lang.String&nbsp;typeName,
                               <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                               java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;classifications)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Return a filled out entity proxy.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2371,7 +2375,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>an entity proxy that is filled out</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type name is not recognized as an entity type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type name is not recognized as an entity type</dd>
 </dl>
 </li>
 </ul>
@@ -2402,8 +2406,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <li class="blockList">
 <h4>getTypeName</h4>
 <pre class="methodSignature">java.lang.String&nbsp;getTypeName&#8203;(<a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instance)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                      throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                             <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Returns the type name from an instance (entity, relationship or classification).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2411,8 +2415,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String type name</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - unable to locate type</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid property value</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - unable to locate type</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid property value</dd>
 </dl>
 </li>
 </ul>
@@ -2459,8 +2463,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                                  java.lang.String&nbsp;sequencingProperty,
                                                  <a href="../properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                  int&nbsp;pageSize)
-                                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</pre>
+                                          throws <a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                 <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></pre>
 <div class="block">Use the paging and sequencing parameters to format the results for a repository call that returns a list of
  entity instances.</div>
 <dl>
@@ -2476,9 +2480,9 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>results array as requested</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the sequencing property specified is not valid for any of the requested types of
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the sequencing property specified is not valid for any of the requested types of
                                   entity.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
 </dl>
 </li>
 </ul>
@@ -2493,8 +2497,8 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                                                        java.lang.String&nbsp;sequencingProperty,
                                                        <a href="../properties/SequencingOrder.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
                                                        int&nbsp;pageSize)
-                                                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException,
-                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</pre>
+                                                throws <a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
+                                                       <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></pre>
 <div class="block">Use the paging and sequencing parameters to format the results for a repository call that returns a list of
  relationship instances.</div>
 <dl>
@@ -2510,9 +2514,9 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>results array as requested</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the sequencing property specified is not valid for any of the requested types of
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the sequencing property specified is not valid for any of the requested types of
                                   relationship.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - the paging/sequencing parameters are set up incorrectly.</dd>
+<dd><code><a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - the paging/sequencing parameters are set up incorrectly.</dd>
 </dl>
 </li>
 </ul>

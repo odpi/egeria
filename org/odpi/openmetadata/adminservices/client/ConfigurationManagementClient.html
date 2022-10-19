@@ -248,14 +248,14 @@ extends java.lang.Object</pre>
 <h4>ConfigurationManagementClient</h4>
 <pre>public&nbsp;ConfigurationManagementClient&#8203;(java.lang.String&nbsp;adminUserId,
                                      java.lang.String&nbsp;serverPlatformRootURL)
-                              throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                              throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>adminUserId</code> - administrator's (end user's) userId to associate with calls.</dd>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -270,7 +270,7 @@ extends java.lang.Object</pre>
                                      java.lang.String&nbsp;serverPlatformRootURL,
                                      java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;password)
-                              throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                              throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -280,7 +280,7 @@ extends java.lang.Object</pre>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -302,17 +302,17 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getAllServerConfigurations</h4>
 <pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&gt;&nbsp;getAllServerConfigurations()
-                                                           throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                  org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                                                  org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                                           throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                                                  <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                                                  <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Return all the OMAG Server configurations that are stored on this platform.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the OMAG Server configurations that are stored on this platform</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -323,17 +323,17 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>setOMAGServerConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setOMAGServerConfig&#8203;(<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;serverConfig)
-                         throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                         throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Set up the configuration properties for an OMAG Server in a single command.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverConfig</code> - configuration for the server</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid serverName or destinationPlatform parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid serverName or destinationPlatform parameter.</dd>
 </dl>
 </li>
 </ul>
@@ -345,18 +345,18 @@ extends java.lang.Object</pre>
 <h4>deployOMAGServerConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deployOMAGServerConfig&#8203;(java.lang.String&nbsp;serverName,
                                    java.lang.String&nbsp;destinationPlatformURLRoot)
-                            throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                            throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                   <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                   <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Push the configuration for the server to another OMAG Server Platform.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - local server name</dd>
 <dd><code>destinationPlatformURLRoot</code> - location of the platform where the config is to be deployed to</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid serverName or destinationPlatform parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid serverName or destinationPlatform parameter.</dd>
 </dl>
 </li>
 </ul>
@@ -367,9 +367,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getOMAGServerConfig</h4>
 <pre class="methodSignature">public&nbsp;<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;getOMAGServerConfig&#8203;(java.lang.String&nbsp;serverName)
-                                     throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                     throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                            <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                            <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Return the complete set of configuration properties in use by the server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -377,9 +377,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>OMAGServerConfig properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid serverName parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid serverName parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>

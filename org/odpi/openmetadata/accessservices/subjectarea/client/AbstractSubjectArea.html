@@ -133,6 +133,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;</code>, <code><a href="../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;T&gt;</code></dd>
 </dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="nodes/AbstractSubjectAreaNode.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes">AbstractSubjectAreaNode</a></code>, <code><a href="relationships/AbstractSubjectAreaRelationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.relationships">AbstractSubjectAreaRelationship</a></code></dd>
+</dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">AbstractSubjectArea&lt;T&gt;</span>
 extends java.lang.Object
@@ -245,7 +249,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)</code></th>
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)</code></th>
 <td class="colLast">
 <div class="block">Request to find Glossary Artifacts of the type T.</div>
 </td>
@@ -253,7 +257,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
     boolean&nbsp;exactValue,
     boolean&nbsp;ignoreCase)</code></th>
 <td class="colLast">
@@ -263,7 +267,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean,java.lang.Integer)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
     boolean&nbsp;exactValue,
     boolean&nbsp;ignoreCase,
     java.lang.Integer&nbsp;maximumPageSizeOnRestCall)</code></th>
@@ -484,7 +488,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)
+                              <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)
                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
@@ -512,7 +516,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                              <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                               boolean&nbsp;exactValue,
                               boolean&nbsp;ignoreCase)
                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -544,7 +548,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                              <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                               boolean&nbsp;exactValue,
                               boolean&nbsp;ignoreCase,
                               java.lang.Integer&nbsp;maximumPageSizeOnRestCall)

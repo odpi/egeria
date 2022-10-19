@@ -130,6 +130,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>All Superinterfaces:</dt>
 <dd><code><a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;E&gt;</code></dd>
 </dl>
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="nodes/AbstractSubjectAreaNode.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes">AbstractSubjectAreaNode</a></code>, <code><a href="nodes/categories/SubjectAreaCategoryClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories">SubjectAreaCategoryClient</a></code>, <code><a href="nodes/glossaries/SubjectAreaGlossaryClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries">SubjectAreaGlossaryClient</a></code>, <code><a href="nodes/projects/SubjectAreaProjectClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects">SubjectAreaProjectClient</a></code>, <code><a href="nodes/terms/SubjectAreaTermClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms">SubjectAreaTermClient</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">SubjectAreaNodeClient&lt;E extends <a href="../properties/objects/graph/Node.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Node</a>&gt;</span>
 extends <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;E&gt;</pre>
@@ -182,7 +186,7 @@ extends <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetada
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/objects/graph/Relationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Relationship</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelationships(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest)">getRelationships</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid,
-                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)</code></th>
+                <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)</code></th>
 <td class="colLast">
 <div class="block">Request to search relationships for current node.</div>
 </td>
@@ -191,7 +195,7 @@ extends <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetada
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/objects/graph/Relationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Relationship</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelationships(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,java.lang.Integer)">getRelationships</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid,
-                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                 java.lang.Integer&nbsp;maximumPageSizeOnRestCall)</code></th>
 <td class="colLast">
 <div class="block">Request to search relationships for current node.</div>
@@ -229,7 +233,7 @@ extends <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetada
 <h4>getRelationships</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="../properties/objects/graph/Relationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Relationship</a>&gt;&nbsp;getRelationships&#8203;(java.lang.String&nbsp;userId,
                                               java.lang.String&nbsp;guid,
-                                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)
+                                              <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)
                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
@@ -256,7 +260,7 @@ extends <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetada
 <h4>getRelationships</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="../properties/objects/graph/Relationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Relationship</a>&gt;&nbsp;getRelationships&#8203;(java.lang.String&nbsp;userId,
                                               java.lang.String&nbsp;guid,
-                                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                                              <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                                               java.lang.Integer&nbsp;maximumPageSizeOnRestCall)
                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,

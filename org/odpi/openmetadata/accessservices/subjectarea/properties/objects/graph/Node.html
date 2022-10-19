@@ -131,12 +131,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>java.io.Serializable</code>, <code>org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject</code></dd>
+<dd><code>java.io.Serializable</code>, <code><a href="../OmasObject.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.properties.objects">OmasObject</a></code></dd>
+</dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../category/Category.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category">Category</a></code>, <code><a href="../glossary/Glossary.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary">Glossary</a></code>, <code><a href="../governednode/GovernedNode.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode">GovernedNode</a></code>, <code><a href="../project/Project.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project">Project</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">Node</span>
 extends java.lang.Object
-implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject</pre>
+implements java.io.Serializable, <a href="../OmasObject.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.properties.objects">OmasObject</a></pre>
 <div class="block">A Node is an entity in the subject area omas that has a type <code> NodeType</code>, name, qualified name and description.
  A node may be in one or more projects.
  <p>
@@ -167,7 +171,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt;</code></td>
+<td class="colFirst"><code>protected java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#classifications">classifications</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -230,7 +234,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClassifications()">getClassifications</a></span>()</code></th>
 <td class="colLast">
 <div class="block">List of associated classifications</div>
@@ -265,7 +269,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.Set&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary&gt;</code></td>
+<td class="colFirst"><code>java.util.Set&lt;<a href="../nodesummary/IconSummary.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary">IconSummary</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIcons()">getIcons</a></span>()</code></th>
 <td class="colLast">
 <div class="block">icon summary</div>
@@ -293,7 +297,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </td>
 </tr>
 <tr id="i11" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes</code></td>
+<td class="colFirst"><code><a href="../common/SystemAttributes.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">SystemAttributes</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSystemAttributes()">getSystemAttributes</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -318,7 +322,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#processClassification(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification)">processClassification</a></span>&#8203;(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&nbsp;classification)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#processClassification(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification)">processClassification</a></span>&#8203;(<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&nbsp;classification)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i16" class="altColor">
@@ -330,7 +334,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClassifications(java.util.List)">setClassifications</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt;&nbsp;classifications)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClassifications(java.util.List)">setClassifications</a></span>&#8203;(java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt;&nbsp;classifications)</code></th>
 <td class="colLast">
 <div class="block">If governance action classifications (Retention, Confidence, Confidentiality or Criticality) are supplied then remove them
  from the classifications and add to the appropriate named field.</div>
@@ -360,7 +364,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIcons(java.util.Set)">setIcons</a></span>&#8203;(java.util.Set&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary&gt;&nbsp;icons)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIcons(java.util.Set)">setIcons</a></span>&#8203;(java.util.Set&lt;<a href="../nodesummary/IconSummary.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary">IconSummary</a>&gt;&nbsp;icons)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i23" class="rowColor">
@@ -387,7 +391,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 </tr>
 <tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSystemAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes)">setSystemAttributes</a></span>&#8203;(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes&nbsp;systemAttributes)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSystemAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes)">setSystemAttributes</a></span>&#8203;(<a href="../common/SystemAttributes.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">SystemAttributes</a>&nbsp;systemAttributes)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i28" class="altColor">
@@ -444,7 +448,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockListLast">
 <li class="blockList">
 <h4>classifications</h4>
-<pre>protected&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt; classifications</pre>
+<pre>protected&nbsp;java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt; classifications</pre>
 </li>
 </ul>
 </li>
@@ -574,7 +578,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>getSystemAttributes</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes&nbsp;getSystemAttributes()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../common/SystemAttributes.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">SystemAttributes</a>&nbsp;getSystemAttributes()</pre>
 </li>
 </ul>
 <a id="setSystemAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes)">
@@ -583,7 +587,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>setSystemAttributes</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setSystemAttributes&#8203;(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes&nbsp;systemAttributes)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setSystemAttributes&#8203;(<a href="../common/SystemAttributes.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">SystemAttributes</a>&nbsp;systemAttributes)</pre>
 </li>
 </ul>
 <a id="getDescription()">
@@ -643,7 +647,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>getClassifications</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt;&nbsp;getClassifications()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt;&nbsp;getClassifications()</pre>
 <div class="block">List of associated classifications</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -657,7 +661,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>setClassifications</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setClassifications&#8203;(java.util.List&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&gt;&nbsp;classifications)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setClassifications&#8203;(java.util.List&lt;<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&gt;&nbsp;classifications)</pre>
 <div class="block">If governance action classifications (Retention, Confidence, Confidentiality or Criticality) are supplied then remove them
  from the classifications and add to the appropriate named field. e.g. Retention will be set in the retention field.</div>
 <dl>
@@ -672,7 +676,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>getIcons</h4>
-<pre class="methodSignature">public&nbsp;java.util.Set&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary&gt;&nbsp;getIcons()</pre>
+<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../nodesummary/IconSummary.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary">IconSummary</a>&gt;&nbsp;getIcons()</pre>
 <div class="block">icon summary</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -686,7 +690,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>setIcons</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setIcons&#8203;(java.util.Set&lt;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary&gt;&nbsp;icons)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIcons&#8203;(java.util.Set&lt;<a href="../nodesummary/IconSummary.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary">IconSummary</a>&gt;&nbsp;icons)</pre>
 </li>
 </ul>
 <a id="getEffectiveFromTime()">
@@ -789,7 +793,7 @@ implements java.io.Serializable, org.odpi.openmetadata.accessservices.subjectare
 <ul class="blockList">
 <li class="blockList">
 <h4>processClassification</h4>
-<pre class="methodSignature">protected&nbsp;void&nbsp;processClassification&#8203;(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification&nbsp;classification)</pre>
+<pre class="methodSignature">protected&nbsp;void&nbsp;processClassification&#8203;(<a href="../../classifications/Classification.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.classifications">Classification</a>&nbsp;classification)</pre>
 </li>
 </ul>
 <a id="setAdditionalProperties(java.util.Map)">

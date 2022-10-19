@@ -288,7 +288,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <h4>EnterpriseRepositoryServicesClient</h4>
 <pre>public&nbsp;EnterpriseRepositoryServicesClient&#8203;(java.lang.String&nbsp;serverName,
                                           java.lang.String&nbsp;restURLRoot)
-                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -296,7 +296,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
                     serverURLroot + "/servers/" + serverName.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -310,7 +310,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
                                           java.lang.String&nbsp;restURLRoot,
                                           java.lang.String&nbsp;userId,
                                           java.lang.String&nbsp;password)
-                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -321,7 +321,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -335,7 +335,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
                                           java.lang.String&nbsp;restURLRoot,
                                           int&nbsp;maxPageSize,
                                           java.lang.String&nbsp;callerId)
-                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -345,7 +345,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>callerId</code> - unique identifier of the caller</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -361,7 +361,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
                                           java.lang.String&nbsp;password,
                                           int&nbsp;maxPageSize,
                                           java.lang.String&nbsp;callerId)
-                                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -374,7 +374,7 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>callerId</code> - unique identifier of the caller</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -396,11 +396,11 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <h4>registerListener</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;registerListener&#8203;(java.lang.String&nbsp;userId,
                              <a href="../connectors/omrstopic/OMRSTopicRepositoryEventListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicRepositoryEventListener</a>&nbsp;listener)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                      throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                              <a href="../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
                              <a href="../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                             <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                             <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Register a listener object that will be passed each of the events published by
  the Asset Manager OMAS.</div>
 <dl>
@@ -408,12 +408,12 @@ extends <a href="MetadataCollectionServicesClient.html" title="class in org.odpi
 <dd><code>userId</code> - calling user</dd>
 <dd><code>listener</code> - listener object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>

@@ -297,7 +297,7 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <pre>public&nbsp;RepositoryProxyConfigurationClient&#8203;(java.lang.String&nbsp;adminUserId,
                                           java.lang.String&nbsp;serverName,
                                           java.lang.String&nbsp;serverPlatformRootURL)
-                                   throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -305,7 +305,7 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -321,7 +321,7 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
                                           java.lang.String&nbsp;serverPlatformRootURL,
                                           java.lang.String&nbsp;connectionUserId,
                                           java.lang.String&nbsp;connectionPassword)
-                                   throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                   throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client that passes a connection userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is passed as the admin userId.</div>
 <dl>
@@ -332,7 +332,7 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <dd><code>connectionUserId</code> - caller's system userId embedded in all HTTP requests</dd>
 <dd><code>connectionPassword</code> - caller's system password embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -354,18 +354,18 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <li class="blockList">
 <h4>setRepositoryProxyConnection</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryProxyConnection&#8203;(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)
-                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                  throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                         <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                         <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the third party metadata server repository connector that maps
  the OMRS RepositoryConnector API to the third party metadata server API.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>connection</code> - connection to the OMRS repository connector.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -377,9 +377,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <h4>setRepositoryProxyConnection</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryProxyConnection&#8203;(java.lang.String&nbsp;connectorProvider,
                                          java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                  throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                         <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                         <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the third party metadata server repository connector that maps
  the OMRS RepositoryConnector API to the third party repository API.</div>
 <dl>
@@ -387,9 +387,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <dd><code>connectorProvider</code> - connector provider class name to the OMRS repository connector.</dd>
 <dd><code>additionalProperties</code> - additional parameters to pass to the repository connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -400,9 +400,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <li class="blockList">
 <h4>setEventMapperConnection</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setEventMapperConnection&#8203;(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)
-                              throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                     org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                     org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                              throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                     <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                     <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the third party repository's event mapper.  The default value is null which
  means no event mapper.  An event mapper is needed if the third party repository has additional APIs that can change
  the metadata in its repository without going through the open metadata and governance services.
@@ -411,9 +411,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>connection</code> - connection to the OMRS repository event mapper.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -426,9 +426,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <pre class="methodSignature">public&nbsp;void&nbsp;setEventMapperConnection&#8203;(java.lang.String&nbsp;connectorProvider,
                                      java.lang.String&nbsp;eventSource,
                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                              throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                     org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                     org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                              throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                     <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                     <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the local repository's event mapper if needed.  The default value is null which
  means no event mapper.  An event mapper is needed if the third party repository has additional APIs that can change
  the metadata in its repository without going through the open metadata and governance services.
@@ -439,9 +439,9 @@ extends <a href="CohortMemberConfigurationClient.html" title="class in org.odpi.
 <dd><code>eventSource</code> - topic name or URL to the native event source.</dd>
 <dd><code>additionalProperties</code> - additional properties for the event mapper connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>

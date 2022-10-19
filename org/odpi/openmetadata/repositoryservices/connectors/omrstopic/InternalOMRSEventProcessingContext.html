@@ -186,9 +186,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addAsyncProcessingResult(org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture)">addAsyncProcessingResult</a></span>&#8203;(org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture&nbsp;future)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addAsyncProcessingResult(org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture)">addAsyncProcessingResult</a></span>&#8203;(<a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future">OMRSFuture</a>&nbsp;future)</code></th>
 <td class="colLast">
-<div class="block">Registers an <code>OMRSFuture</code> associated with asynchronous message processing.</div>
+<div class="block">Registers an <a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future"><code>OMRSFuture</code></a> associated with asynchronous message processing.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -216,7 +216,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture</code></td>
+<td class="colFirst"><code><a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future">OMRSFuture</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOverallAsyncProcessingResult()">getOverallAsyncProcessingResult</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets the overall asynchronous processing result from all consumers.</div>
@@ -293,8 +293,8 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addAsyncProcessingResult</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addAsyncProcessingResult&#8203;(org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture&nbsp;future)</pre>
-<div class="block">Registers an <code>OMRSFuture</code> associated with asynchronous message processing.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;addAsyncProcessingResult&#8203;(<a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future">OMRSFuture</a>&nbsp;future)</pre>
+<div class="block">Registers an <a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future"><code>OMRSFuture</code></a> associated with asynchronous message processing.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>future</code> - registered object</dd>
@@ -307,11 +307,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getOverallAsyncProcessingResult</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture&nbsp;getOverallAsyncProcessingResult()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../events/future/OMRSFuture.html" title="interface in org.odpi.openmetadata.repositoryservices.events.future">OMRSFuture</a>&nbsp;getOverallAsyncProcessingResult()</pre>
 <div class="block">Gets the overall asynchronous processing result from all consumers.
  
  This method is guaranteed to return a non-null result.  If there is no
- asynchronous processing happening, an instance of <code>CompletedFuture</code> will
+ asynchronous processing happening, an instance of <a href="../../events/future/CompletedFuture.html" title="class in org.odpi.openmetadata.repositoryservices.events.future"><code>CompletedFuture</code></a> will
  be returned, indicating that asynchronous processing has finished</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>

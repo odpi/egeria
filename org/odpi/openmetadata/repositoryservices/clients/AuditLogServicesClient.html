@@ -297,7 +297,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <h4>AuditLogServicesClient</h4>
 <pre>public&nbsp;AuditLogServicesClient&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;restURLRoot)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                       throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -305,7 +305,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
                     serverURLroot + "/servers/" + serverName.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -319,7 +319,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
                               java.lang.String&nbsp;restURLRoot,
                               java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;password)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                       throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -330,7 +330,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -384,9 +384,9 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <li class="blockList">
 <h4>getAuditLogReport</h4>
 <pre class="methodSignature">public&nbsp;<a href="../auditlog/OMRSAuditLogReport.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogReport</a>&nbsp;getAuditLogReport&#8203;(java.lang.String&nbsp;userId)
-                                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                                     throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                            <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                            <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the audit log for the server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -394,9 +394,9 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>OMRSAuditLogReport report containing audit log</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the supplied parameters caused a problem</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the remote server.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the user is not authorized to perform the operation requested</dd>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the supplied parameters caused a problem</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the remote server.</dd>
+<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not authorized to perform the operation requested</dd>
 </dl>
 </li>
 </ul>

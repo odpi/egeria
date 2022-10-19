@@ -177,7 +177,7 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse</code></td>
+<td class="colFirst"><code><a href="../../responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String,java.lang.String,java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid)</code></th>
@@ -186,7 +186,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse</code></td>
+<td class="colFirst"><code><a href="../../responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">getNodes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId,
         java.lang.String&nbsp;type,
@@ -197,14 +197,14 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse</code></td>
+<td class="colFirst"><code><a href="../../responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSearchResults(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">getSearchResults</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
-                org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</code></th>
+                <a href="../../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse</code></td>
+<td class="colFirst"><code><a href="../../responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes(java.lang.String,java.lang.String)">getTypes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -212,7 +212,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse</code></td>
+<td class="colFirst"><code><a href="../../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters)">lineage</a></span>&#8203;(java.lang.String&nbsp;serverName,
        java.lang.String&nbsp;userId,
        java.lang.String&nbsp;guid,
@@ -272,14 +272,14 @@ extends java.lang.Object</pre>
 <h4>lineage</h4>
 <pre class="methodSignature">@PostMapping(path="/lineage/entities/{guid}",
              produces="application/json")
-public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse&nbsp;lineage&#8203;(@PathVariable("serverName")
-                                                                                             java.lang.String&nbsp;serverName,
-                                                                                             @PathVariable("userId")
-                                                                                             java.lang.String&nbsp;userId,
-                                                                                             @PathVariable("guid")
-                                                                                             java.lang.String&nbsp;guid,
-                                                                                             @RequestBody
-                                                                                             <a href="../../model/LineageQueryParameters.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageQueryParameters</a>&nbsp;params)</pre>
+public&nbsp;<a href="../../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a>&nbsp;lineage&#8203;(@PathVariable("serverName")
+                               java.lang.String&nbsp;serverName,
+                               @PathVariable("userId")
+                               java.lang.String&nbsp;userId,
+                               @PathVariable("guid")
+                               java.lang.String&nbsp;guid,
+                               @RequestBody
+                               <a href="../../model/LineageQueryParameters.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageQueryParameters</a>&nbsp;params)</pre>
 <div class="block">Returns the graph that the user will initially see when querying lineage. In the future, this method will be
  extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
  the condensed path by querying a different method.</div>
@@ -301,12 +301,12 @@ public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.Lineag
 <h4>getEntityDetails</h4>
 <pre class="methodSignature">@GetMapping(path="/lineage/entities/{guid}/details",
             produces="application/json")
-public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse&nbsp;getEntityDetails&#8203;(@PathVariable("serverName")
-                                                                                                            java.lang.String&nbsp;serverName,
-                                                                                                            @PathVariable("userId")
-                                                                                                            java.lang.String&nbsp;userId,
-                                                                                                            @PathVariable("guid")
-                                                                                                            java.lang.String&nbsp;guid)</pre>
+public&nbsp;<a href="../../responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a>&nbsp;getEntityDetails&#8203;(@PathVariable("serverName")
+                                              java.lang.String&nbsp;serverName,
+                                              @PathVariable("userId")
+                                              java.lang.String&nbsp;userId,
+                                              @PathVariable("guid")
+                                              java.lang.String&nbsp;guid)</pre>
 <div class="block">Gets entity details.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -326,10 +326,10 @@ public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.Lineag
 <h4>getTypes</h4>
 <pre class="methodSignature">@GetMapping(path="/lineage/types",
             produces="application/json")
-public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse&nbsp;getTypes&#8203;(@PathVariable("serverName")
-                                                                                                   java.lang.String&nbsp;serverName,
-                                                                                                   @PathVariable("userId")
-                                                                                                   java.lang.String&nbsp;userId)</pre>
+public&nbsp;<a href="../../responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a>&nbsp;getTypes&#8203;(@PathVariable("serverName")
+                                     java.lang.String&nbsp;serverName,
+                                     @PathVariable("userId")
+                                     java.lang.String&nbsp;userId)</pre>
 <div class="block">Gets available entities types from lineage repository.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -348,16 +348,16 @@ public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.Lineag
 <h4>getNodes</h4>
 <pre class="methodSignature">@GetMapping(path="/lineage/nodes",
             produces="application/json")
-public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse&nbsp;getNodes&#8203;(@PathVariable("serverName")
-                                                                                                       java.lang.String&nbsp;serverName,
-                                                                                                       @PathVariable("userId")
-                                                                                                       java.lang.String&nbsp;userId,
-                                                                                                       @RequestParam("type")
-                                                                                                       java.lang.String&nbsp;type,
-                                                                                                       @RequestParam("name")
-                                                                                                       java.lang.String&nbsp;searchValue,
-                                                                                                       @RequestParam("limit")
-                                                                                                       int&nbsp;limit)</pre>
+public&nbsp;<a href="../../responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a>&nbsp;getNodes&#8203;(@PathVariable("serverName")
+                                         java.lang.String&nbsp;serverName,
+                                         @PathVariable("userId")
+                                         java.lang.String&nbsp;userId,
+                                         @RequestParam("type")
+                                         java.lang.String&nbsp;type,
+                                         @RequestParam("name")
+                                         java.lang.String&nbsp;searchValue,
+                                         @RequestParam("limit")
+                                         int&nbsp;limit)</pre>
 <div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -379,12 +379,12 @@ public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.Lineag
 <h4>getSearchResults</h4>
 <pre class="methodSignature">@PostMapping(path="lineage/search",
              produces="application/json")
-public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse&nbsp;getSearchResults&#8203;(@PathVariable("serverName")
-                                                                                                            java.lang.String&nbsp;serverName,
-                                                                                                            @PathVariable("userId")
-                                                                                                            java.lang.String&nbsp;userId,
-                                                                                                            @RequestBody
-                                                                                                            org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</pre>
+public&nbsp;<a href="../../responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a>&nbsp;getSearchResults&#8203;(@PathVariable("serverName")
+                                              java.lang.String&nbsp;serverName,
+                                              @PathVariable("userId")
+                                              java.lang.String&nbsp;userId,
+                                              @RequestBody
+                                              <a href="../../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</pre>
 </li>
 </ul>
 </li>

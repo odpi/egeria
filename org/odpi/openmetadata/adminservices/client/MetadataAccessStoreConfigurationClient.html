@@ -313,7 +313,7 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <pre>public&nbsp;MetadataAccessStoreConfigurationClient&#8203;(java.lang.String&nbsp;adminUserId,
                                               java.lang.String&nbsp;serverName,
                                               java.lang.String&nbsp;serverPlatformRootURL)
-                                       throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                       throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -321,7 +321,7 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -337,7 +337,7 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
                                               java.lang.String&nbsp;serverPlatformRootURL,
                                               java.lang.String&nbsp;connectionUserId,
                                               java.lang.String&nbsp;connectionPassword)
-                                       throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                       throws <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Create a new client that passes a connection userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is passed as the admin userId.</div>
 <dl>
@@ -348,7 +348,7 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <dd><code>connectionUserId</code> - caller's system userId embedded in all HTTP requests</dd>
 <dd><code>connectionPassword</code> - caller's system password embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </li>
@@ -370,16 +370,16 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <li class="blockList">
 <h4>setInMemLocalRepository</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setInMemLocalRepository()
-                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                             throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                    <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                    <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Set up an in memory local repository.  This repository uses hashmaps to store content.  It is useful
  for demos, testing and POCs.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -390,9 +390,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <li class="blockList">
 <h4>setGraphLocalRepository</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setGraphLocalRepository&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;storageProperties)
-                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                             throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                    <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                    <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Set up a graph store as the local repository.  This graph store uses JanusGraph.  It is scalable with
  different back ends and can be run in a HA context with multiple versions of the same server deployed
  to the same repository.</div>
@@ -400,9 +400,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>storageProperties</code> - properties used to configure the back end storage for the graph</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -413,17 +413,17 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <li class="blockList">
 <h4>setReadOnlyLocalRepository</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setReadOnlyLocalRepository()
-                                throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                       org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException,
-                                       org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</pre>
+                                throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                       <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a>,
+                                       <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></pre>
 <div class="block">Set up an read only local repository.  This repository manages metadata in memory but does not
  support the ability to store new metadata.  This means it can safely be used to host read only content
  from an open metadata archive within a production cohort.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -434,9 +434,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <li class="blockList">
 <h4>setPluginRepositoryConnection</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setPluginRepositoryConnection&#8203;(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)
-                                   throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                   throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                          <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                          <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the local repository connector that maps
  the OMRS RepositoryConnector API to the third party persistence API.
  The persistence layer is only called through the open metadata APIs.</div>
@@ -444,9 +444,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>connection</code> - connection to the OMRS repository connector.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -458,9 +458,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <h4>setPluginRepositoryConnection</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setPluginRepositoryConnection&#8203;(java.lang.String&nbsp;connectorProvider,
                                           java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                                   throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                   throws <a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+                                          <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                          <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Provide the connection to the local repository connector that maps
  the OMRS RepositoryConnector API to the third party persistence API.
  The persistence layer is only called through the open metadata APIs.</div>
@@ -469,9 +469,9 @@ extends <a href="MetadataAccessServerConfigurationClient.html" title="class in o
 <dd><code>connectorProvider</code> - connector provider class name to the OMRS repository connector.</dd>
 <dd><code>additionalProperties</code> - additional parameters to pass to the repository connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
+<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>

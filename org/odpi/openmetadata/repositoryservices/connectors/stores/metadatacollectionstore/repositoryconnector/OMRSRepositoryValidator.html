@@ -121,6 +121,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="../../../../localrepository/repositorycontentmanager/OMRSRepositoryContentValidator.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentValidator</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">OMRSRepositoryValidator</span></pre>
 <div class="block">OMRSRepositoryValidator provides methods to validate TypeDefs and Instances returned from
@@ -1169,7 +1173,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateEnterpriseTypeDefs&#8203;(java.lang.String&nbsp;sourceName,
                                 java.util.List&lt;<a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;typeDefs,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
  all known typedefs.
 
@@ -1181,7 +1185,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDefs</code> - list of TypeDefs.</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - a conflicting or invalid TypeDef has been returned</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a conflicting or invalid TypeDef has been returned</dd>
 </dl>
 </li>
 </ul>
@@ -1194,7 +1198,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateEnterpriseAttributeTypeDefs&#8203;(java.lang.String&nbsp;sourceName,
                                          java.util.List&lt;<a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;&nbsp;attributeTypeDefs,
                                          java.lang.String&nbsp;methodName)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                  throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
  all known typedefs.
 
@@ -1206,7 +1210,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>attributeTypeDefs</code> - list of AttributeTypeDefs.</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - a conflicting or invalid AttributeTypeDef has been returned</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a conflicting or invalid AttributeTypeDef has been returned</dd>
 </dl>
 </li>
 </ul>
@@ -1595,7 +1599,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateUserId&#8203;(java.lang.String&nbsp;sourceName,
                     java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;methodName)
-             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+             throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the supplied user Id is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1603,7 +1607,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - userId passed on call to this metadata collection.</dd>
 <dd><code>methodName</code> - name of method requesting the validation.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the userId is invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the userId is invalid</dd>
 </dl>
 </li>
 </ul>
@@ -1619,7 +1623,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                         java.lang.String&nbsp;guid,
                         java.lang.String&nbsp;name,
                         java.lang.String&nbsp;methodName)
-                 throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                 throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a TypeDef's identifiers are not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1630,7 +1634,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>name</code> - name of TypeDef.</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -1646,7 +1650,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                java.lang.String&nbsp;guid,
                                java.lang.String&nbsp;name,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                        throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a TypeDef's identifiers are not null and return the type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1659,7 +1663,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>retrieved type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -1675,7 +1679,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                  java.lang.String&nbsp;guid,
                                  java.lang.String&nbsp;name,
                                  java.lang.String&nbsp;methodName)
-                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                          throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that an AttributeTypeDef's identifiers are not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1686,7 +1690,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>name</code> - name of TypeDef.</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid, or name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid, or name provided</dd>
 </dl>
 </li>
 </ul>
@@ -1702,7 +1706,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                  java.lang.String&nbsp;guid,
                                                  java.lang.String&nbsp;name,
                                                  java.lang.String&nbsp;methodName)
-                                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                          throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that an AttributeTypeDef's identifiers are not null and are recognized
  and return the type.</div>
 <dl>
@@ -1716,7 +1720,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>retrieved type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid, or name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid, or name provided</dd>
 </dl>
 </li>
 </ul>
@@ -1730,8 +1734,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;guidParameterName,
                       java.lang.String&nbsp;guid,
                       java.lang.String&nbsp;methodName)
-               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                      org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                      <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that type's identifier is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1740,8 +1744,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - guid is not for a recognized type</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - guid is not for a recognized type</dd>
 </dl>
 </li>
 </ul>
@@ -1755,7 +1759,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;guidParameterName,
                               java.lang.String&nbsp;guid,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that type's identifier is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1764,7 +1768,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown type guid</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown type guid</dd>
 </dl>
 </li>
 </ul>
@@ -1780,7 +1784,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                java.lang.String&nbsp;subtypeParameterName,
                                java.util.List&lt;java.lang.String&gt;&nbsp;subtypeGuids,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                        throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that the types and subtypes (if specified) fit each other.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1791,7 +1795,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>subtypeGuids</code> - list of unique identifiers for the subtypes passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - unknown type guid, or subtype guids that are not subtypes of the provided guid</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - unknown type guid, or subtype guids that are not subtypes of the provided guid</dd>
 </dl>
 </li>
 </ul>
@@ -1804,9 +1808,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature"><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;validateTypeDefPatch&#8203;(java.lang.String&nbsp;sourceName,
                              <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;patch,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</pre>
+                      throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                             <a href="../../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a>,
+                             <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></pre>
 <div class="block">Verify that a TypeDefPatch is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1816,9 +1820,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>current value of the type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the patch is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - the type is not known</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</code> - the patch is invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the patch is null</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - the type is not known</dd>
+<dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the patch is invalid</dd>
 </dl>
 </li>
 </ul>
@@ -1832,7 +1836,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;guidParameterName,
                               java.lang.String&nbsp;guid,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that if a type's identifier is passed then it is valid.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1841,7 +1845,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - invalid type provided</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - invalid type provided</dd>
 </dl>
 </li>
 </ul>
@@ -1855,7 +1859,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;nameParameterName,
                       java.lang.String&nbsp;name,
                       java.lang.String&nbsp;methodName)
-               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that type's name is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1864,7 +1868,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>name</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no name provided</dd>
 </dl>
 </li>
 </ul>
@@ -1878,7 +1882,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;nameParameterName,
                              <a href="../properties/typedefs/TypeDefCategory.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefCategory</a>&nbsp;category,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                      throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a TypeDef's category is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1887,7 +1891,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>category</code> - category of TypeDef</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no name provided</dd>
 </dl>
 </li>
 </ul>
@@ -1901,7 +1905,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                       java.lang.String&nbsp;nameParameterName,
                                       <a href="../properties/typedefs/AttributeTypeDefCategory.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDefCategory</a>&nbsp;category,
                                       java.lang.String&nbsp;methodName)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a AttributeTypeDef's category is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1910,7 +1914,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>category</code> - category of TypeDef</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no name provided</dd>
 </dl>
 </li>
 </ul>
@@ -1924,8 +1928,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                      java.lang.String&nbsp;parameterName,
                      <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                      java.lang.String&nbsp;methodName)
-              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                     org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</pre>
+              throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                     <a href="../../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></pre>
 <div class="block">Validate the content of a new TypeDef is valid.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1934,8 +1938,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no typeDef provided</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</code> - invalid typeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no typeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></code> - invalid typeDef provided</dd>
 </dl>
 </li>
 </ul>
@@ -1950,8 +1954,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                         <a href="../properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary,
                         <a href="../properties/typedefs/TypeDefCategory.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefCategory</a>&nbsp;category,
                         java.lang.String&nbsp;methodName)
-                 throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                        org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                 throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                        <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the supplied type is a valid active type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1961,8 +1965,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>category</code> - the expected category of the type</dd>
 <dd><code>methodName</code> - the name of the method that supplied the type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the type is null or contains invalid values</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the type is not active</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the type is null or contains invalid values</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the type is not active</dd>
 </dl>
 </li>
 </ul>
@@ -1976,7 +1980,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                           java.lang.String&nbsp;parameterName,
                           <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                           java.lang.String&nbsp;methodName)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</pre>
+                   throws <a href="../../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></pre>
 <div class="block">Validate the content of a new TypeDef is known.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1985,7 +1989,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException</code> - no recognized typeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - no recognized typeDef provided</dd>
 </dl>
 </li>
 </ul>
@@ -1999,8 +2003,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             java.lang.String&nbsp;parameterName,
                             <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                             java.lang.String&nbsp;methodName)
-                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException,
-                            org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</pre>
+                     throws <a href="../../../../ffdc/exception/TypeDefKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefKnownException</a>,
+                            <a href="../../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></pre>
 <div class="block">Validate the content of a new TypeDef is known.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2009,8 +2013,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException</code> - the TypeDef is already defined</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</code> - the TypeDef is already defined but differently</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefKnownException</a></code> - the TypeDef is already defined</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></code> - the TypeDef is already defined but differently</dd>
 </dl>
 </li>
 </ul>
@@ -2024,8 +2028,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                      java.lang.String&nbsp;parameterName,
                                      <a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef,
                                      java.lang.String&nbsp;methodName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException,
-                                     org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</pre>
+                              throws <a href="../../../../ffdc/exception/TypeDefKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefKnownException</a>,
+                                     <a href="../../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></pre>
 <div class="block">Validate the content of a new TypeDef is known.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2034,8 +2038,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>attributeTypeDef</code> - unique identifier for an attribute type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException</code> - the TypeDef is already defined</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</code> - the TypeDef is already defined but differently</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefKnownException</a></code> - the TypeDef is already defined</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></code> - the TypeDef is already defined but differently</dd>
 </dl>
 </li>
 </ul>
@@ -2049,8 +2053,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                 java.lang.String&nbsp;parameterName,
                                 <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                                org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                                <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate the content of a TypeDef associated with a metadata instance.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2059,8 +2063,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - no typeDef provided</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - the TypeDef from the repository is in error.</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - no typeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - the TypeDef from the repository is in error.</dd>
 </dl>
 </li>
 </ul>
@@ -2075,8 +2079,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                    java.lang.String&nbsp;typeDefName,
                                    <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                   org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                            throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                   <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate that the supplied TypeDef GUID and name matches the type associated with a metadata instance.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2086,8 +2090,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance retrieved from the store with the supplied instance guid</dd>
 <dd><code>methodName</code> - method making this call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - incompatibility detected between the TypeDef and the instance's type</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - the instance from the repository is in error.</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - incompatibility detected between the TypeDef and the instance's type</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - the instance from the repository is in error.</dd>
 </dl>
 </li>
 </ul>
@@ -2101,8 +2105,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;parameterName,
                               <a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                              org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</pre>
+                       throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                              <a href="../../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></pre>
 <div class="block">Validate the content of a new AttributeTypeDef.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2111,8 +2115,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>attributeTypeDef</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no attributeTypeDef provided</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</code> - bad attributeTypeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no attributeTypeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></code> - bad attributeTypeDef provided</dd>
 </dl>
 </li>
 </ul>
@@ -2126,7 +2130,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             java.lang.String&nbsp;parameterName,
                             <a href="../properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a>&nbsp;gallery,
                             java.lang.String&nbsp;methodName)
-                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                     throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that type's name is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2135,7 +2139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>gallery</code> - typeDef gallery</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no name provided</dd>
 </dl>
 </li>
 </ul>
@@ -2150,7 +2154,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                         java.lang.String&nbsp;organization,
                         java.lang.String&nbsp;identifier,
                         java.lang.String&nbsp;methodName)
-                 throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                 throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the type's name is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2160,7 +2164,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>identifier</code> - identifier of the element in the standard null means any.</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no name provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no name provided</dd>
 </dl>
 </li>
 </ul>
@@ -2174,7 +2178,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                   java.lang.String&nbsp;guidParameterName,
                   java.lang.String&nbsp;guid,
                   java.lang.String&nbsp;methodName)
-           throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+           throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that an entity's identifier is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2183,7 +2187,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2197,7 +2201,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;guidParameterName,
                               java.lang.String&nbsp;guid,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                       throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a home metadata collection identifier is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2206,7 +2210,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier for a type or an instance passed on the request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2219,7 +2223,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateHomeMetadataGUID&#8203;(java.lang.String&nbsp;sourceName,
                               <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate that a home metadata collection identifier in an instance is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2227,7 +2231,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to test.</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2240,7 +2244,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateHomeMetadataGUID&#8203;(java.lang.String&nbsp;sourceName,
                               <a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&nbsp;classification,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                       throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate that a home metadata collection identifier in an classification is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2248,7 +2252,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>classification</code> - classification to test.</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2262,7 +2266,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;parameterName,
                       java.util.Date&nbsp;asOfTime,
                       java.lang.String&nbsp;methodName)
-               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the asOfTime parameter is not for the future.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2271,7 +2275,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>asOfTime</code> - unique name for a classification type</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - asOfTime is for the future</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - asOfTime is for the future</dd>
 </dl>
 </li>
 </ul>
@@ -2285,7 +2289,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;parameterName,
                              java.util.Date&nbsp;asOfTime,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                      throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the asOfTime parameter is not null or for the future.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2294,7 +2298,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>asOfTime</code> - unique name for a classification type</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - asOfTime is for the future</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - asOfTime is for the future</dd>
 </dl>
 </li>
 </ul>
@@ -2309,7 +2313,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                        java.util.Date&nbsp;fromTime,
                        java.util.Date&nbsp;toTime,
                        java.lang.String&nbsp;methodName)
-                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the time parameters are not inverted ('from' later than 'to').</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2319,7 +2323,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>toTime</code> - the latest point in time from which to retrieve historical versions of the instance (exclusive)</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - 'fromTime' is later than 'toTime'</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - 'fromTime' is later than 'toTime'</dd>
 </dl>
 </li>
 </ul>
@@ -2333,7 +2337,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;parameterName,
                       int&nbsp;pageSize,
                       java.lang.String&nbsp;methodName)
-               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</pre>
+               throws <a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></pre>
 <div class="block">Validate that a page size parameter is not negative.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2342,7 +2346,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>pageSize</code> - number of elements to return on a request</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException</code> - pageSize is negative</dd>
+<dd><code><a href="../../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - pageSize is negative</dd>
 </dl>
 </li>
 </ul>
@@ -2356,7 +2360,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                    java.lang.String&nbsp;parameterName,
                                    java.lang.String&nbsp;classificationName,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                            throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a classification name is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2367,7 +2371,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>type definition for the classification</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - classification name is null or invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - classification name is null or invalid</dd>
 </dl>
 </li>
 </ul>
@@ -2382,7 +2386,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                       java.lang.String&nbsp;propertiesParameterName,
                                       <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;classificationProperties,
                                       java.lang.String&nbsp;methodName)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</pre>
+                               throws <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></pre>
 <div class="block">Validate that a classification is valid for the entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2392,7 +2396,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>classificationProperties</code> - properties to test</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - classification name is null</dd>
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - classification name is null</dd>
 </dl>
 </li>
 </ul>
@@ -2407,8 +2411,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             java.lang.String&nbsp;classificationName,
                             java.lang.String&nbsp;entityTypeName,
                             java.lang.String&nbsp;methodName)
-                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                            org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</pre>
+                     throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                            <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
 <div class="block">Validate that a classification is valid for the entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2418,8 +2422,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>entityTypeName</code> - name of entity type</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - classification name is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the classification is invalid for this entity</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - classification name is null</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is invalid for this entity</dd>
 </dl>
 </li>
 </ul>
@@ -2434,10 +2438,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                 java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;classifications,
                                 java.lang.String&nbsp;entityTypeName,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException,
-                                org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                                org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                         throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a>,
+                                <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                                <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that a classification is valid for the entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2447,10 +2451,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>entityTypeName</code> - name of entity type</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - classification name is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the classification is invalid for this entity</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - the classification's properties are invalid for its type</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - the classification's type is invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - classification name is null</dd>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is invalid for this entity</dd>
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - the classification's properties are invalid for its type</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - the classification's type is invalid</dd>
 </dl>
 </li>
 </ul>
@@ -2464,7 +2468,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                            java.lang.String&nbsp;parameterName,
                            <a href="../properties/typedefs/TypeDefProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefProperties</a>&nbsp;matchCriteria,
                            java.lang.String&nbsp;methodName)
-                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                    throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a TypeDef match criteria set of properties is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2473,7 +2477,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>matchCriteria</code> - match criteria properties</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2489,7 +2493,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                            <a href="../properties/MatchCriteria.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">MatchCriteria</a>&nbsp;matchCriteria,
                            <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
                            java.lang.String&nbsp;methodName)
-                    throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                    throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a metadata instance match criteria and set of properties are either both null or
  both not null.</div>
 <dl>
@@ -2501,7 +2505,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>matchProperties</code> - match properties</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2515,7 +2519,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             java.lang.String&nbsp;parameterName,
                             java.lang.String&nbsp;searchCriteria,
                             java.lang.String&nbsp;methodName)
-                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                     throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that a search criteria  is not null.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2524,7 +2528,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>searchCriteria</code> - match criteria properties</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - no guid provided</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - no guid provided</dd>
 </dl>
 </li>
 </ul>
@@ -2538,7 +2542,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;parameterName,
                               <a href="../properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                       throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate the property-based search conditions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2547,7 +2551,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>matchProperties</code> - property-based conditions</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - property-based conditions are invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - property-based conditions are invalid</dd>
 </dl>
 </li>
 </ul>
@@ -2561,7 +2565,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                    java.lang.String&nbsp;parameterName,
                                    <a href="../properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;matchClassifications,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                            throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate the classification-based search conditions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2570,7 +2574,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>matchClassifications</code> - classification-based conditions</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - classification-based conditions are invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - classification-based conditions are invalid</dd>
 </dl>
 </li>
 </ul>
@@ -2585,7 +2589,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                                <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</pre>
+                        throws <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></pre>
 <div class="block">Validate that the properties for a metadata instance match its TypeDef.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2595,7 +2599,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>properties</code> - proposed properties for instance.</dd>
 <dd><code>methodName</code> - method receiving the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - invalid property</dd>
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - invalid property</dd>
 </dl>
 </li>
 </ul>
@@ -2610,8 +2614,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                <a href="../properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary,
                                <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
-                               org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</pre>
+                        throws <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a>,
+                               <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></pre>
 <div class="block">Validate that the properties for a metadata instance match its TypeDef</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2621,8 +2625,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>properties</code> - proposed properties</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - no typeDef provided</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - invalid property</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - no typeDef provided</dd>
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - invalid property</dd>
 </dl>
 </li>
 </ul>
@@ -2637,7 +2641,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                   <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                                   <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                                   java.lang.String&nbsp;methodName)
-                           throws org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</pre>
+                           throws <a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></pre>
 <div class="block">Validate that the properties for a metadata instance match its TypeDef</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2647,7 +2651,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>properties</code> - proposed properties</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - invalid property</dd>
+<dd><code><a href="../../../../ffdc/exception/PropertyErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PropertyErrorException</a></code> - invalid property</dd>
 </dl>
 </li>
 </ul>
@@ -2706,8 +2710,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;guid,
                              <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</pre>
+                      throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                             <a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></pre>
 <div class="block">Verify that an entity has been successfully retrieved from the repository and has valid contents.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2716,8 +2720,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>entity</code> - the retrieved entity (or null)</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - No entity found</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted instance</dd>
+<dd><code><a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - No entity found</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted instance</dd>
 </dl>
 </li>
 </ul>
@@ -2731,8 +2735,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;guid,
                              <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</pre>
+                      throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                             <a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></pre>
 <div class="block">Verify that an entity has been successfully retrieved from the repository and has valid contents.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2741,8 +2745,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>entity</code> - the retrieved entity (or null)</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - No entity found</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted instance</dd>
+<dd><code><a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - No entity found</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted instance</dd>
 </dl>
 </li>
 </ul>
@@ -2756,8 +2760,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                    java.lang.String&nbsp;guid,
                                    <a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                   org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</pre>
+                            throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                   <a href="../../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></pre>
 <div class="block">Verify that a relationship has been successfully retrieved from the repository and has valid contents.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2766,8 +2770,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>relationship</code> - the retrieved relationship (or null)</dd>
 <dd><code>methodName</code> - method receiving the call</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</code> - No relationship found</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted instance</dd>
+<dd><code><a href="../../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - No relationship found</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted instance</dd>
 </dl>
 </li>
 </ul>
@@ -2779,14 +2783,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>validateInstanceType</h4>
 <pre class="methodSignature">void&nbsp;validateInstanceType&#8203;(java.lang.String&nbsp;sourceName,
                           <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                   throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Verify that the instance retrieved from the repository has a valid instance type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>sourceName</code> - source of the request (used for logging)</dd>
 <dd><code>instance</code> - the retrieved instance</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted instance</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted instance</dd>
 </dl>
 </li>
 </ul>
@@ -2802,9 +2806,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                           java.lang.String&nbsp;typeNameParameterName,
                           java.lang.String&nbsp;expectedTypeGUID,
                           java.lang.String&nbsp;expectedTypeName)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                          org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException,
-                          org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                   throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                          <a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a>,
+                          <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that the instance retrieved from the repository has a valid instance type that matches the
  expected type.</div>
 <dl>
@@ -2816,9 +2820,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>expectedTypeGUID</code> - expected GUID of InstanceType</dd>
 <dd><code>expectedTypeName</code> - expected name of InstanceType</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - logic error in the repository corrupted instance</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException</code> - problem with type</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid parameter</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - logic error in the repository corrupted instance</dd>
+<dd><code><a href="../../../../ffdc/exception/TypeErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeErrorException</a></code> - problem with type</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid parameter</dd>
 </dl>
 </li>
 </ul>
@@ -2852,7 +2856,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             <a href="../properties/instances/InstanceStatus.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus,
                             <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                             java.lang.String&nbsp;methodName)
-                     throws org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException</pre>
+                     throws <a href="../../../../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a></pre>
 <div class="block">Validates an instance status where null is permissible.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2862,7 +2866,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - type of the instance</dd>
 <dd><code>methodName</code> - method called</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException</code> - the initial status is invalid for this type</dd>
+<dd><code><a href="../../../../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a></code> - the initial status is invalid for this type</dd>
 </dl>
 </li>
 </ul>
@@ -2877,8 +2881,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                        <a href="../properties/instances/InstanceStatus.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus,
                        <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                        java.lang.String&nbsp;methodName)
-                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException,
-                       org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                throws <a href="../../../../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a>,
+                       <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validates an instance status where null is not allowed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2888,8 +2892,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - type of the instance</dd>
 <dd><code>methodName</code> - method called</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException</code> - the initial status is invalid for this type</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid parameter</dd>
+<dd><code><a href="../../../../ffdc/exception/StatusNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">StatusNotSupportedException</a></code> - the initial status is invalid for this type</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid parameter</dd>
 </dl>
 </li>
 </ul>
@@ -2902,7 +2906,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateInstanceStatusForDelete&#8203;(java.lang.String&nbsp;sourceName,
                                      <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                      java.lang.String&nbsp;methodName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                              throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that an instance is not already deleted since the repository is processing a delete request
  and it does not want to look stupid.</div>
 <dl>
@@ -2911,7 +2915,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance about to be deleted</dd>
 <dd><code>methodName</code> - name of method called</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the instance is already deleted</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the instance is already deleted</dd>
 </dl>
 </li>
 </ul>
@@ -2924,7 +2928,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateEntityIsNotDeleted&#8203;(java.lang.String&nbsp;sourceName,
                                 <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</pre>
+                         throws <a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></pre>
 <div class="block">Verify the status of an entity to check it has not been deleted.  This method is used
  when retrieving metadata instances from a store that supports soft delete.</div>
 <dl>
@@ -2933,7 +2937,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the entity is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the entity is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -2946,7 +2950,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateEntityIsDeleted&#8203;(java.lang.String&nbsp;sourceName,
                              <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                              java.lang.String&nbsp;methodName)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException</pre>
+                      throws <a href="../../../../ffdc/exception/EntityNotDeletedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotDeletedException</a></pre>
 <div class="block">Verify the status of an entity to check it has been deleted.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2954,7 +2958,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException</code> - the entity is not in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/EntityNotDeletedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotDeletedException</a></code> - the entity is not in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -2968,7 +2972,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                 java.lang.String&nbsp;metadataCollectionId,
                                 <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                         throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that an entity instance can be updated by the metadataCollection. This method is used
  when the metadataCollection is called to update the status properties or classification of an
  entity instance.</div>
@@ -2979,7 +2983,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the entity is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -2993,7 +2997,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                 java.lang.String&nbsp;metadataCollectionId,
                                 <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                         throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that an entity instance can be rehomed by the metadataCollection. This method is used
  when the metadataCollection is called to rehome an entity instance.</div>
 <dl>
@@ -3003,7 +3007,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the entity is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -3016,7 +3020,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateRelationshipIsNotDeleted&#8203;(java.lang.String&nbsp;sourceName,
                                       <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                       java.lang.String&nbsp;methodName)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</pre>
+                               throws <a href="../../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></pre>
 <div class="block">Verify the status of a relationship to check it has not been deleted.  This method is used
  when retrieving metadata instances from a store that supports soft delete.</div>
 <dl>
@@ -3025,7 +3029,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to test</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException</code> - the relationship is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the relationship is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -3038,7 +3042,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;validateRelationshipIsDeleted&#8203;(java.lang.String&nbsp;sourceName,
                                    <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException</pre>
+                            throws <a href="../../../../ffdc/exception/RelationshipNotDeletedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotDeletedException</a></pre>
 <div class="block">Verify the status of a relationship to check it has been deleted.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3046,7 +3050,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to test</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException</code> - the relationship is not in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/RelationshipNotDeletedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotDeletedException</a></code> - the relationship is not in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -3060,7 +3064,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                       java.lang.String&nbsp;metadataCollectionId,
                                       <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                       java.lang.String&nbsp;methodName)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that a relationship instance can be updated by the metadataCollection. This method is used
  when the metadataCollection is called to update the status or properties of a relationship instance.</div>
 <dl>
@@ -3070,7 +3074,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the entity is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -3084,7 +3088,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                       java.lang.String&nbsp;metadataCollectionId,
                                       <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                       java.lang.String&nbsp;methodName)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Verify that a relationship instance can be rehomed by the metadataCollection. This method is used
  when the metadataCollection is called to rehome a relationship instance.</div>
 <dl>
@@ -3094,7 +3098,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - instance to validate</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is in deleted status</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the entity is in deleted status</dd>
 </dl>
 </li>
 </ul>
@@ -3109,7 +3113,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityTwoProxy,
                               <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
                               java.lang.String&nbsp;methodName)
-                       throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                       throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validate that the types of the two ends of a relationship match the relationship's TypeDef.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3119,7 +3123,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>typeDef</code> - typeDef for the relationship</dd>
 <dd><code>methodName</code> - name of the method making the request</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - types do not align</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - types do not align</dd>
 </dl>
 </li>
 </ul>
@@ -3151,7 +3155,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>countMatchingPropertyValues</h4>
 <pre class="methodSignature">int&nbsp;countMatchingPropertyValues&#8203;(<a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
                                 <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                         throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Count the number of matching property values that an instance has.  They may come from an entity,
  classification or relationship.</div>
 <dl>
@@ -3161,7 +3165,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>integer count of the matching properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid search criteria</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid search criteria</dd>
 </dl>
 </li>
 </ul>
@@ -3174,7 +3178,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">int&nbsp;countMatchingHeaderPropertyValues&#8203;(<a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
                                       <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
                                       <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Count the number of matching property values that an instance has.  They may come from an entity,
  or relationship.</div>
 <dl>
@@ -3185,7 +3189,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>integer count of the matching properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid search criteria</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid search criteria</dd>
 </dl>
 </li>
 </ul>
@@ -3199,7 +3203,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                              <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
                                              <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties,
                                              <a href="../properties/MatchCriteria.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">MatchCriteria</a>&nbsp;matchCriteria)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                      throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Determine if the instance properties match the match criteria.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3210,7 +3214,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean flag indicating whether the two sets of properties match</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid search criteria</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid search criteria</dd>
 </dl>
 </li>
 </ul>
@@ -3239,7 +3243,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">boolean&nbsp;verifyMatchingInstancePropertyValues&#8203;(<a href="../properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
                                              <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
                                              <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties)
-                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                                      throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Determine if the instance properties match the property-based conditions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3249,7 +3253,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean flag indicating whether the two sets of properties match</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid search criteria</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid search criteria</dd>
 </dl>
 </li>
 </ul>
@@ -3261,7 +3265,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>verifyMatchingClassifications</h4>
 <pre class="methodSignature">boolean&nbsp;verifyMatchingClassifications&#8203;(<a href="../properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;matchClassifications,
                                       <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                               throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Determine if the instance properties match the classification-based conditions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3270,7 +3274,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean flag indicating whether the classifications match</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - invalid search criteria</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - invalid search criteria</dd>
 </dl>
 </li>
 </ul>
@@ -3285,8 +3289,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                      java.lang.String&nbsp;instanceParameterName,
                                      <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
                                      java.lang.String&nbsp;methodName)
-                              throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                     org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                              throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                     <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validates that an instance has the correct header for it to be a reference copy.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3296,8 +3300,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>instance</code> - the instance to test</dd>
 <dd><code>methodName</code> - the name of the method that supplied the instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - problem with repository</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the instance is null or linked to local metadata repository</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem with repository</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the instance is null or linked to local metadata repository</dd>
 </dl>
 </li>
 </ul>
@@ -3312,7 +3316,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                          java.lang.String&nbsp;proxyParameterName,
                          <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityProxy,
                          java.lang.String&nbsp;methodName)
-                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</pre>
+                  throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></pre>
 <div class="block">Validates an entity proxy.  It must be a reference copy (ie owned by a different repository).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3322,7 +3326,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>entityProxy</code> - proxy to add</dd>
 <dd><code>methodName</code> - name of the method that adds the proxy</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity proxy is null or for an entity homed in this repository</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the entity proxy is null or for an entity homed in this repository</dd>
 </dl>
 </li>
 </ul>
@@ -3336,7 +3340,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                     <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                                                     java.lang.String&nbsp;searchCriteria,
                                                     java.lang.String&nbsp;methodName)
-                                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                             throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Search for property values matching the search criteria (a regular expression)</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3347,7 +3351,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean indicating whether the search criteria is located in any of the string parameter values.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - the properties are not properly set up in the instance</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - the properties are not properly set up in the instance</dd>
 </dl>
 </li>
 </ul>
@@ -3361,7 +3365,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                    <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
                                                    java.lang.String&nbsp;searchPropertyValue,
                                                    java.lang.String&nbsp;methodName)
-                                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                            throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Search for property values matching the supplied property value</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3372,7 +3376,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean indicating whether the search criteria is located in any of the string parameter values.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - the properties are not properly set up in the instance</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - the properties are not properly set up in the instance</dd>
 </dl>
 </li>
 </ul>
@@ -3477,7 +3481,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                    java.lang.String&nbsp;typeName,
                                    java.lang.String&nbsp;serviceName,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                            throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate that either zero or one entities were returned from a find request.  This is typically when searching
  for entities of a specific type using one of its unique properties.</div>
 <dl>
@@ -3487,7 +3491,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>serviceName</code> - service that requested the entities.</dd>
 <dd><code>methodName</code> - calling method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - results are not as expected</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - results are not as expected</dd>
 </dl>
 </li>
 </ul>
@@ -3501,7 +3505,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                          java.lang.String&nbsp;typeName,
                                          java.lang.String&nbsp;serviceName,
                                          java.lang.String&nbsp;methodName)
-                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                  throws <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Validate that either zero or one relationships were returned from a find request.  This is typically when searching
  for relationships of a specific type where the cardinality is set to AT_MOST_ONE in the RelationshipEndCardinality.</div>
 <dl>
@@ -3511,7 +3515,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>serviceName</code> - service that requested the relationships.</dd>
 <dd><code>methodName</code> - calling method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - results are not as expected</dd>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - results are not as expected</dd>
 </dl>
 </li>
 </ul>

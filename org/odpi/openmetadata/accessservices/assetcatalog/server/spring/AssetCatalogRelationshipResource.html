@@ -178,7 +178,7 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse</code></td>
+<td class="colFirst"><code><a href="../../model/rest/responses/RelationshipResponse.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses">RelationshipResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelationshipBetweenEntities(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getRelationshipBetweenEntities</a></span>&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;entity1GUID,
@@ -239,16 +239,16 @@ extends java.lang.Object</pre>
 <h4>getRelationshipBetweenEntities</h4>
 <pre class="methodSignature">@GetMapping(path="/relationship-between-entities/{entity1GUID}/{entity2GUID}",
             produces="application/json")
-public&nbsp;org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse&nbsp;getRelationshipBetweenEntities&#8203;(@PathVariable("serverName")
-                                                                                                                                  java.lang.String&nbsp;serverName,
-                                                                                                                                  @PathVariable("userId")
-                                                                                                                                  java.lang.String&nbsp;userId,
-                                                                                                                                  @PathVariable("entity1GUID")
-                                                                                                                                  java.lang.String&nbsp;entity1GUID,
-                                                                                                                                  @PathVariable("entity2GUID")
-                                                                                                                                  java.lang.String&nbsp;entity2GUID,
-                                                                                                                                  @RequestParam(name="relationshipType",required=false)
-                                                                                                                                  java.lang.String&nbsp;relationshipType)</pre>
+public&nbsp;<a href="../../model/rest/responses/RelationshipResponse.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses">RelationshipResponse</a>&nbsp;getRelationshipBetweenEntities&#8203;(@PathVariable("serverName")
+                                                           java.lang.String&nbsp;serverName,
+                                                           @PathVariable("userId")
+                                                           java.lang.String&nbsp;userId,
+                                                           @PathVariable("entity1GUID")
+                                                           java.lang.String&nbsp;entity1GUID,
+                                                           @PathVariable("entity2GUID")
+                                                           java.lang.String&nbsp;entity2GUID,
+                                                           @RequestParam(name="relationshipType",required=false)
+                                                           java.lang.String&nbsp;relationshipType)</pre>
 <div class="block">Fetch relationship between entities details based on its unique identifier of the ends</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

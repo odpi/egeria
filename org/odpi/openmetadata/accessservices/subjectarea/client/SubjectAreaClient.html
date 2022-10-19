@@ -135,7 +135,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="AbstractSubjectArea.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client">AbstractSubjectArea</a></code></dd>
+<dd><code><a href="AbstractSubjectArea.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client">AbstractSubjectArea</a></code>, <code><a href="nodes/AbstractSubjectAreaNode.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes">AbstractSubjectAreaNode</a></code>, <code><a href="relationships/AbstractSubjectAreaRelationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.relationships">AbstractSubjectAreaRelationship</a></code>, <code><a href="nodes/categories/SubjectAreaCategoryClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories">SubjectAreaCategoryClient</a></code>, <code><a href="nodes/glossaries/SubjectAreaGlossaryClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries">SubjectAreaGlossaryClient</a></code>, <code><a href="nodes/projects/SubjectAreaProjectClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects">SubjectAreaProjectClient</a></code>, <code><a href="nodes/terms/SubjectAreaTermClient.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms">SubjectAreaTermClient</a></code></dd>
 </dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">SubjectAreaClient&lt;T&gt;</span></pre>
@@ -160,7 +160,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>static org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest</code></td>
+<td class="colFirst"><code>static <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#EMPTY_FIND_REQUEST">EMPTY_FIND_REQUEST</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -201,7 +201,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)</code></th>
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)</code></th>
 <td class="colLast">
 <div class="block">Request to find Glossary Artifacts of the type T.</div>
 </td>
@@ -209,7 +209,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
     boolean&nbsp;exactValue,
     boolean&nbsp;ignoreCase)</code></th>
 <td class="colLast">
@@ -219,7 +219,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean,java.lang.Integer)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+    <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
     boolean&nbsp;exactValue,
     boolean&nbsp;ignoreCase,
     java.lang.Integer&nbsp;maximumPageSizeOnRestCall)</code></th>
@@ -309,7 +309,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>EMPTY_FIND_REQUEST</h4>
-<pre>static final&nbsp;org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest EMPTY_FIND_REQUEST</pre>
+<pre>static final&nbsp;<a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a> EMPTY_FIND_REQUEST</pre>
 </li>
 </ul>
 </li>
@@ -431,7 +431,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                       org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)
+                       <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest)
                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
@@ -456,7 +456,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                       org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                       <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                        boolean&nbsp;exactValue,
                        boolean&nbsp;ignoreCase)
                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -485,7 +485,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="SubjectAreaClient.html" title="type parameter in SubjectAreaClient">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                       org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
+                       <a href="../properties/objects/common/FindRequest.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common">FindRequest</a>&nbsp;findRequest,
                        boolean&nbsp;exactValue,
                        boolean&nbsp;ignoreCase,
                        java.lang.Integer&nbsp;maximumPageSizeOnRestCall)

@@ -379,12 +379,12 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <h4>verifyTypeDef</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;verifyTypeDef&#8203;(java.lang.String&nbsp;userId,
                              <a href="properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException,
-                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                      throws <a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                             <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                             <a href="../../../ffdc/exception/TypeDefNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotSupportedException</a>,
+                             <a href="../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a>,
+                             <a href="../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a>,
+                             <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Verify that a definition of a TypeDef is either new or matches the definition already stored.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -395,13 +395,13 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean true means the TypeDef matches the local definition; false means the TypeDef is not known.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the TypeDef is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the TypeDef is null.</dd>
+<dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException</code> - the repository is not able to support this TypeDef.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</code> - the new TypeDef conflicts with an existing TypeDef.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</code> - the new TypeDef has invalid contents.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the userId is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../ffdc/exception/TypeDefNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotSupportedException</a></code> - the repository is not able to support this TypeDef.</dd>
+<dd><code><a href="../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></code> - the new TypeDef conflicts with an existing TypeDef.</dd>
+<dd><code><a href="../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></code> - the new TypeDef has invalid contents.</dd>
+<dd><code><a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -413,12 +413,12 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <h4>verifyAttributeTypeDef</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;verifyAttributeTypeDef&#8203;(java.lang.String&nbsp;userId,
                                       <a href="properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)
-                               throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException,
-                                      org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
+                               throws <a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                      <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                      <a href="../../../ffdc/exception/TypeDefNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotSupportedException</a>,
+                                      <a href="../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a>,
+                                      <a href="../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a>,
+                                      <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -429,13 +429,13 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean where true means the TypeDef matches the local definition where false means the TypeDef is not known.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the TypeDef is null.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the TypeDef is null.</dd>
+<dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException</code> - the repository is not able to support this TypeDef.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException</code> - the new TypeDef conflicts with an existing TypeDef.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException</code> - the new TypeDef has invalid contents.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the userId is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../ffdc/exception/TypeDefNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotSupportedException</a></code> - the repository is not able to support this TypeDef.</dd>
+<dd><code><a href="../../../ffdc/exception/TypeDefConflictException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefConflictException</a></code> - the new TypeDef conflicts with an existing TypeDef.</dd>
+<dd><code><a href="../../../ffdc/exception/InvalidTypeDefException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidTypeDefException</a></code> - the new TypeDef has invalid contents.</dd>
+<dd><code><a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </li>
 </ul>
@@ -447,7 +447,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <h4>addTypeDef</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addTypeDef&#8203;(java.lang.String&nbsp;userId,
                        <a href="properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;newTypeDef)
-                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Create a definition of a new TypeDef.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -456,7 +456,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>newTypeDef</code> - TypeDef structure describing the new TypeDef.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -468,7 +468,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <h4>addAttributeTypeDef</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addAttributeTypeDef&#8203;(java.lang.String&nbsp;userId,
                                 <a href="properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;newAttributeTypeDef)
-                         throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                         throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Create a definition of a new AttributeTypeDef.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -477,7 +477,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>newAttributeTypeDef</code> - TypeDef structure describing the new TypeDef.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -489,7 +489,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <h4>updateTypeDef</h4>
 <pre class="methodSignature">public&nbsp;<a href="properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;updateTypeDef&#8203;(java.lang.String&nbsp;userId,
                              <a href="properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch)
-                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                      throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
  are safe to make to the TypeDef.</div>
 <dl>
@@ -501,7 +501,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated TypeDef</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -514,7 +514,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteTypeDef&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;obsoleteTypeDefGUID,
                           java.lang.String&nbsp;obsoleteTypeDefName)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                   throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
  instances of this TypeDef have been purged from the metadata collection.</div>
 <dl>
@@ -525,7 +525,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dd><code>obsoleteTypeDefGUID</code> - String unique identifier for the TypeDef.</dd>
 <dd><code>obsoleteTypeDefName</code> - String unique name for the TypeDef.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -538,7 +538,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteAttributeTypeDef&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;obsoleteTypeDefGUID,
                                    java.lang.String&nbsp;obsoleteTypeDefName)
-                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                            throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
  instances or any instances of this AttributeTypeDef have been purged from the metadata collection.</div>
 <dl>
@@ -549,7 +549,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dd><code>obsoleteTypeDefGUID</code> - String unique identifier for the AttributeTypeDef.</dd>
 <dd><code>obsoleteTypeDefName</code> - String unique name for the AttributeTypeDef.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -564,7 +564,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
                                  java.lang.String&nbsp;originalTypeDefName,
                                  java.lang.String&nbsp;newTypeDefGUID,
                                  java.lang.String&nbsp;newTypeDefName)
-                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                          throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Change the guid or name of an existing TypeDef to a new value.  This is used if two different
  TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
  the open metadata protocol has provision for this.</div>
@@ -580,7 +580,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>typeDef new values for this TypeDef, including the new guid/name.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>
@@ -595,7 +595,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
                                                    java.lang.String&nbsp;originalAttributeTypeDefName,
                                                    java.lang.String&nbsp;newAttributeTypeDefGUID,
                                                    java.lang.String&nbsp;newAttributeTypeDefName)
-                                            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+                                            throws <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Change the guid or name of an existing TypeDef to a new value.  This is used if two different
  TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
  the open metadata protocol has provision for this.</div>
@@ -611,7 +611,7 @@ extends <a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openm
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>attributeTypeDef new values for this AttributeTypeDef, including the new guid/name.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support this call.</dd>
+<dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
 </dl>
 </li>
 </ul>

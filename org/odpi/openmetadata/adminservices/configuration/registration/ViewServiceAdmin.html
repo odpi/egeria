@@ -129,6 +129,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../../../viewservices/dino/admin/DinoViewAdmin.html" title="class in org.odpi.openmetadata.viewservices.dino.admin">DinoViewAdmin</a></code>, <code><a href="../../../viewservices/glossaryauthor/admin/GlossaryAuthorViewAdmin.html" title="class in org.odpi.openmetadata.viewservices.glossaryauthor.admin">GlossaryAuthorViewAdmin</a></code>, <code><a href="../../../viewservices/rex/admin/RexViewAdmin.html" title="class in org.odpi.openmetadata.viewservices.rex.admin">RexViewAdmin</a></code>, <code><a href="../../../viewservices/serverauthor/admin/ServerAuthorViewAdmin.html" title="class in org.odpi.openmetadata.viewservices.serverauthor.admin">ServerAuthorViewAdmin</a></code>, <code><a href="../../../viewservices/tex/admin/TexViewAdmin.html" title="class in org.odpi.openmetadata.viewservices.tex.admin">TexViewAdmin</a></code></dd>
+</dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">ViewServiceAdmin</span>
 extends java.lang.Object</pre>
@@ -358,7 +362,7 @@ extends java.lang.Object</pre>
                                 <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                                 java.lang.String&nbsp;serverUserName,
                                 int&nbsp;maxPageSize)
-                         throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                         throws <a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Initialize the view service.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -368,7 +372,7 @@ extends java.lang.Object</pre>
 <dd><code>serverUserName</code> - user id to use on OMRS calls where there is no end user.</dd>
 <dd><code>maxPageSize</code> - maximum page size. 0 means unlimited</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - invalid parameters in the configuration properties.</dd>
+<dd><code><a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - invalid parameters in the configuration properties.</dd>
 </dl>
 </li>
 </ul>
@@ -421,7 +425,7 @@ extends java.lang.Object</pre>
                                    java.lang.String&nbsp;propertyValue,
                                    <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                                    java.lang.String&nbsp;methodName)
-                            throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                            throws <a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Log that the configuration is not valid</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -431,7 +435,7 @@ extends java.lang.Object</pre>
 <dd><code>auditLog</code> - log to write message to</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - exception documenting the error</dd>
+<dd><code><a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - exception documenting the error</dd>
 </dl>
 </li>
 </ul>
@@ -447,7 +451,7 @@ extends java.lang.Object</pre>
                                       <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                                       java.lang.String&nbsp;methodName,
                                       java.lang.Throwable&nbsp;error)
-                               throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                               throws <a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Log that a property value is incorrect.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -458,7 +462,7 @@ extends java.lang.Object</pre>
 <dd><code>methodName</code> - calling method</dd>
 <dd><code>error</code> - resulting exception</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - exception documenting the error</dd>
+<dd><code><a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - exception documenting the error</dd>
 </dl>
 </li>
 </ul>
@@ -471,7 +475,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">protected&nbsp;void&nbsp;throwUnexpectedInitializationException&#8203;(java.lang.String&nbsp;actionDescription,
                                                       java.lang.String&nbsp;fullViewServiceName,
                                                       java.lang.Throwable&nbsp;error)
-                                               throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+                                               throws <a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></pre>
 <div class="block">Log that an unexpected exception was received during start up.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -479,7 +483,7 @@ extends java.lang.Object</pre>
 <dd><code>fullViewServiceName</code> - name of the view service</dd>
 <dd><code>error</code> - exception that was caught</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - wrapped exception</dd>
+<dd><code><a href="../../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - wrapped exception</dd>
 </dl>
 </li>
 </ul>

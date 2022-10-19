@@ -146,12 +146,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code>, <code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code>, <code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">LocalOMRSRepositoryConnector</span>
 extends <a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>
-implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</pre>
+implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></pre>
 <div class="block">LocalOMRSRepositoryConnector provides access the local metadata repository plus manages outbound
  repository events.
 
@@ -224,9 +224,9 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryMode,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule)">LocalOMRSRepositoryConnector</a></span>&#8203;(<a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;realLocalConnector,
                             <a href="../../../adminservices/configuration/properties/LocalRepositoryMode.html" title="enum in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a>&nbsp;localRepositoryMode,
                             <a href="../../connectors/stores/metadatacollectionstore/repositoryeventmapper/OMRSRepositoryEventMapperConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper">OMRSRepositoryEventMapperConnector</a>&nbsp;realEventMapper,
-                            org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager&nbsp;outboundRepositoryEventManager,
-                            org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager&nbsp;repositoryContentManager,
-                            org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule&nbsp;saveExchangeRule)</code></th>
+                            <a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a>&nbsp;outboundRepositoryEventManager,
+                            <a href="../repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
+                            <a href="../../eventmanagement/OMRSRepositoryEventExchangeRule.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventExchangeRule</a>&nbsp;saveExchangeRule)</code></th>
 <td class="colLast">
 <div class="block">Constructor used by the LocalOMRSConnectorProvider.</div>
 </td>
@@ -325,7 +325,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 </td>
 </tr>
 <tr id="i10" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager</code></td>
+<td class="colFirst"><code><a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOutboundRepositoryEventManager()">getOutboundRepositoryEventManager</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the event manager that the local repository uses to distribute events from the local repository.</div>
@@ -368,21 +368,21 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryHelper(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper)">setRepositoryHelper</a></span>&#8203;(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper&nbsp;repositoryHelper)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryHelper(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper)">setRepositoryHelper</a></span>&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentHelper.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentHelper</a>&nbsp;repositoryHelper)</code></th>
 <td class="colLast">
 <div class="block">Set up a repository helper object for the repository connector to use.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryValidator(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator)">setRepositoryValidator</a></span>&#8203;(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator&nbsp;repositoryValidator)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryValidator(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator)">setRepositoryValidator</a></span>&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentValidator.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentValidator</a>&nbsp;repositoryValidator)</code></th>
 <td class="colLast">
 <div class="block">Set up a repository validator for the repository connector to use.</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)">setSecurityVerifier</a></span>&#8203;(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier&nbsp;securityVerifier)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)">setSecurityVerifier</a></span>&#8203;(<a href="../../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></th>
 <td class="colLast">
 <div class="block">Set up a new security verifier (the cohort manager runs with a default verifier until this
  method is called).</div>
@@ -450,8 +450,8 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</h3>
-<code>getMetadataCollectionName</code></li>
+<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.repositoryservices.localrepository.<a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></h3>
+<code><a href="../OMRSLocalRepository.html#getMetadataCollectionName()">getMetadataCollectionName</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager">
@@ -485,9 +485,9 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <pre>protected&nbsp;LocalOMRSRepositoryConnector&#8203;(<a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;realLocalConnector,
                                        <a href="../../../adminservices/configuration/properties/LocalRepositoryMode.html" title="enum in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a>&nbsp;localRepositoryMode,
                                        <a href="../../connectors/stores/metadatacollectionstore/repositoryeventmapper/OMRSRepositoryEventMapperConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper">OMRSRepositoryEventMapperConnector</a>&nbsp;realEventMapper,
-                                       org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager&nbsp;outboundRepositoryEventManager,
-                                       org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager&nbsp;repositoryContentManager,
-                                       org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule&nbsp;saveExchangeRule)</pre>
+                                       <a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a>&nbsp;outboundRepositoryEventManager,
+                                       <a href="../repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
+                                       <a href="../../eventmanagement/OMRSRepositoryEventExchangeRule.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventExchangeRule</a>&nbsp;saveExchangeRule)</pre>
 <div class="block">Constructor used by the LocalOMRSConnectorProvider.  It provides the information necessary to run the
  local repository.</div>
 <dl>
@@ -517,7 +517,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <ul class="blockList">
 <li class="blockList">
 <h4>setSecurityVerifier</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setSecurityVerifier&#8203;(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier&nbsp;securityVerifier)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setSecurityVerifier&#8203;(<a href="../../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</pre>
 <div class="block">Set up a new security verifier (the cohort manager runs with a default verifier until this
  method is called).
 
@@ -570,7 +570,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <ul class="blockList">
 <li class="blockList">
 <h4>setRepositoryHelper</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryHelper&#8203;(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper&nbsp;repositoryHelper)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryHelper&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentHelper.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentHelper</a>&nbsp;repositoryHelper)</pre>
 <div class="block">Set up a repository helper object for the repository connector to use.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -584,7 +584,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <ul class="blockList">
 <li class="blockList">
 <h4>setRepositoryValidator</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryValidator&#8203;(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator&nbsp;repositoryValidator)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRepositoryValidator&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentValidator.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentValidator</a>&nbsp;repositoryValidator)</pre>
 <div class="block">Set up a repository validator for the repository connector to use.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -740,7 +740,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <li class="blockList">
 <h4>getMetadataCollection</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a>&nbsp;getMetadataCollection()
-                                             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</pre>
+                                             throws <a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
 <div class="block">Returns the metadata collection object that provides an OMRS abstraction of the metadata within
  a metadata repository.</div>
 <dl>
@@ -751,7 +751,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>OMRSMetadataInstanceStore metadata information retrieved from the metadata repository.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - no metadata collection</dd>
+<dd><code><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - no metadata collection</dd>
 </dl>
 </li>
 </ul>
@@ -765,7 +765,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <div class="block">Returns the unique identifier (guid) of the local repository's metadata collection.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMetadataCollectionId</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getMetadataCollectionId()">getMetadataCollectionId</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html#getMetadataCollectionId()">getMetadataCollectionId</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -786,7 +786,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
  an OMRS repository connector to call this server in order to access the local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getLocalRepositoryRemoteConnection</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getLocalRepositoryRemoteConnection()">getLocalRepositoryRemoteConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connection object</dd>
 </dl>
@@ -798,11 +798,11 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <ul class="blockList">
 <li class="blockList">
 <h4>getOutboundRepositoryEventManager</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager&nbsp;getOutboundRepositoryEventManager()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a>&nbsp;getOutboundRepositoryEventManager()</pre>
 <div class="block">Return the event manager that the local repository uses to distribute events from the local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getOutboundRepositoryEventManager</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getOutboundRepositoryEventManager()">getOutboundRepositoryEventManager</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>outbound repository event manager</dd>
 </dl>
@@ -819,7 +819,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
  from the cohorts that this server is a member of.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getIncomingTypeDefEventProcessor</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getIncomingTypeDefEventProcessor()">getIncomingTypeDefEventProcessor</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>OMRSTypeDefEventProcessor for the local repository.</dd>
 </dl>
@@ -836,7 +836,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
  from the cohorts that this server is a member of.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getIncomingInstanceEventProcessor</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getIncomingInstanceEventProcessor()">getIncomingInstanceEventProcessor</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>OMRSInstanceEventProcessor for the local repository.</dd>
 </dl>
@@ -867,7 +867,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <div class="block">Return the local server name used for outbound events.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getLocalServerName</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getLocalServerName()">getLocalServerName</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>
 </dl>
@@ -883,7 +883,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <div class="block">Return the local server type used for outbound events.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getLocalServerType</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getLocalServerType()">getLocalServerType</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>
 </dl>
@@ -899,7 +899,7 @@ implements org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRep
 <div class="block">Return the name of the organization that owns this local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getOrganizationName</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository</code></dd>
+<dd><code><a href="../OMRSLocalRepository.html#getOrganizationName()">getOrganizationName</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html#getOrganizationName()">getOrganizationName</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>

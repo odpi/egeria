@@ -146,12 +146,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code>, <code>org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code>, <code><a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">EnterpriseOMRSRepositoryConnector</span>
 extends <a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>
-implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</pre>
+implements <a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></pre>
 <div class="block">EnterpriseOMRSRepositoryConnector supports federating calls to multiple metadata repositories.  As a result,
  its OMRSMetadataInstanceStore (EnterpriseOMRSMetadataCollection) returns metadata from all repositories in the
  connected open metadata repository cohort(s).
@@ -468,7 +468,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <div class="block">Save the connector to the local repository.  This is passed from the OMRSConnectorManager.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>setLocalConnector</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</code></dd>
+<dd><code><a href="../connectormanager/OMRSConnectorConsumer.html#setLocalConnector(java.lang.String,org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector)">setLocalConnector</a></code>&nbsp;in interface&nbsp;<code><a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>metadataCollectionId</code> - Unique identifier for the metadata collection.</dd>
 <dd><code>localConnector</code> - OMRSRepositoryConnector object for the local repository.</dd>
@@ -486,7 +486,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <div class="block">Pass the connector to one of the remote repositories in the metadata repository cohort.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addRemoteConnector</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</code></dd>
+<dd><code><a href="../connectormanager/OMRSConnectorConsumer.html#addRemoteConnector(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector)">addRemoteConnector</a></code>&nbsp;in interface&nbsp;<code><a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>metadataCollectionId</code> - Unique identifier for the metadata collection.</dd>
 <dd><code>remoteConnector</code> - OMRSRepositoryConnector object providing access to the remote repository.</dd>
@@ -503,7 +503,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <div class="block">Pass the metadata collection id for a repository that has just left the metadata repository cohort.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>removeRemoteConnector</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</code></dd>
+<dd><code><a href="../connectormanager/OMRSConnectorConsumer.html#removeRemoteConnector(java.lang.String)">removeRemoteConnector</a></code>&nbsp;in interface&nbsp;<code><a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>metadataCollectionId</code> - identifier of the metadata collection that is no longer available.</dd>
 </dl>
@@ -521,7 +521,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
  There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>disconnectAllConnectors</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer</code></dd>
+<dd><code><a href="../connectormanager/OMRSConnectorConsumer.html#disconnectAllConnectors()">disconnectAllConnectors</a></code>&nbsp;in interface&nbsp;<code><a href="../connectormanager/OMRSConnectorConsumer.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorConsumer</a></code></dd>
 </dl>
 </li>
 </ul>

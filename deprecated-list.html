@@ -95,12 +95,62 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h1 title="Deprecated API" class="title">Deprecated API</h1>
 <h2 title="Contents">Contents</h2>
 <ul>
+<li><a href="#package">Packages</a></li>
+<li><a href="#interface">Interfaces</a></li>
 <li><a href="#class">Classes</a></li>
 <li><a href="#method">Methods</a></li>
 <li><a href="#constructor">Constructors</a></li>
 </ul>
 </div>
-<div class="contentContainer"><a id="class">
+<div class="contentContainer"><a id="package">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary">
+<caption><span>Packages</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Package</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/rex/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex</a></th>
+<td class="colLast">
+<div class="deprecationComment"><a href="org/odpi/openmetadata/userinterface/uichassis/springboot/service/view/package-summary.html"><code>org.odpi.openmetadata.userinterface.uichassis.springboot.service.view</code></a></div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/tex/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.api.tex</a></th>
+<td class="colLast">
+<div class="deprecationComment"><a href="org/odpi/openmetadata/userinterface/uichassis/springboot/service/view/package-summary.html"><code>org.odpi.openmetadata.userinterface.uichassis.springboot.service.view</code></a></div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a id="interface">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary">
+<caption><span>Interfaces</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Interface</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/connectors/auditable/AuditableConnector.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.auditable">org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector</a></th>
+<td class="colLast"></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a id="class">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -123,6 +173,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/properties/SoftwareServerCapabilityProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties</a></th>
 <td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/properties/relationships/IsATypeOfDeprecated.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.relationships">org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfDeprecated it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper</a></th>
+<td class="colLast">
+<div class="deprecationComment">use IsATypeOfRelationship not TermISATypeOFRelationship</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SchemaImplementationQuery.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaImplementationQuery</a></th>
@@ -185,80 +247,140 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colLast"></td>
 </tr>
 <tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/assetowner/server/AssetOwnerRESTServices.html#addSchemaTypeToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.rest.SchemaTypeRequestBody)">org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices.addSchemaTypeToAsset&#8203;(String, String, String, SchemaTypeRequestBody)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/assetowner/server/spring/AssetOwnerResource.html#addCombinedSchemaToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.rest.CombinedSchemaRequestBody)">org.odpi.openmetadata.accessservices.assetowner.server.spring.AssetOwnerResource.addCombinedSchemaToAsset&#8203;(String, String, String, CombinedSchemaRequestBody)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/assetowner/server/spring/AssetOwnerResource.html#addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.rest.SchemaAttributeRequestBody)">org.odpi.openmetadata.accessservices.assetowner.server.spring.AssetOwnerResource.addSchemaAttribute&#8203;(String, String, String, String, SchemaAttributeRequestBody)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/assetowner/server/spring/AssetOwnerResource.html#addSchemaTypeToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.rest.SchemaTypeRequestBody)">org.odpi.openmetadata.accessservices.assetowner.server.spring.AssetOwnerResource.addSchemaTypeToAsset&#8203;(String, String, String, SchemaTypeRequestBody)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/datamanager/api/DatabaseManagerInterface.html#getTablesForDatabaseSchema(java.lang.String,java.lang.String,int,int)">org.odpi.openmetadata.accessservices.datamanager.api.DatabaseManagerInterface.getTablesForDatabaseSchema&#8203;(String, String, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/datamanager/api/DatabaseManagerInterface.html#getViewsForDatabaseSchema(java.lang.String,java.lang.String,int,int)">org.odpi.openmetadata.accessservices.datamanager.api.DatabaseManagerInterface.getViewsForDatabaseSchema&#8203;(String, String, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#createSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.createSoftwareServerCapability&#8203;(String, String, String, boolean, String, SoftwareServerCapabilityProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#createSoftwareServerCapabilityFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.createSoftwareServerCapabilityFromTemplate&#8203;(String, String, String, boolean, String, TemplateProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#findSoftwareServerCapabilities(java.lang.String,java.lang.String,java.util.Date,int,int)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.findSoftwareServerCapabilities&#8203;(String, String, Date, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#getSoftwareServerCapabilitiesByName(java.lang.String,java.lang.String,java.util.Date,int,int)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.getSoftwareServerCapabilitiesByName&#8203;(String, String, Date, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#getSoftwareServerCapabilityByGUID(java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.getSoftwareServerCapabilityByGUID&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#removeSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.removeSoftwareServerCapability&#8203;(String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/api/SoftwareServerCapabilityManagerInterface.html#updateSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface.updateSoftwareServerCapability&#8203;(String, String, String, String, boolean, SoftwareServerCapabilityProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#createSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.createSoftwareServerCapability&#8203;(String, String, String, boolean, String, SoftwareServerCapabilityProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#createSoftwareServerCapabilityFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.createSoftwareServerCapabilityFromTemplate&#8203;(String, String, String, boolean, String, TemplateProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#findSoftwareServerCapabilities(java.lang.String,java.lang.String,java.util.Date,int,int)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.findSoftwareServerCapabilities&#8203;(String, String, Date, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#getSoftwareServerCapabilitiesByName(java.lang.String,java.lang.String,java.util.Date,int,int)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.getSoftwareServerCapabilitiesByName&#8203;(String, String, Date, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#getSoftwareServerCapabilityByGUID(java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.getSoftwareServerCapabilityByGUID&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#removeSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.removeSoftwareServerCapability&#8203;(String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/itinfrastructure/client/CapabilityManagerClient.html#updateSoftwareServerCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties)">org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient.updateSoftwareServerCapability&#8203;(String, String, String, String, boolean, SoftwareServerCapabilityProperties)</a></th>
 <td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/client/relationships/SubjectAreaRelationshipClients.html#isaTypeOfDeprecated()">org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients.isaTypeOfDeprecated()</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfDeprecated it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html#getRelationshipInstance()">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper.getRelationshipInstance()</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html#getTypeName()">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper.getTypeName()</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html#mapEnumToRelationship(org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue)">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper.mapEnumToRelationship&#8203;(IsATypeOfDeprecated, String, EnumPropertyValue)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html#mapPrimitiveToRelationship(org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,java.lang.String,java.lang.Object)">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper.mapPrimitiveToRelationship&#8203;(IsATypeOfDeprecated, String, Object)</a></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/mappers/relationships/TermIsATypeOfRelationshipDeprecatedMapper.html#mapRelationshipToInstanceProperties(org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermIsATypeOfRelationshipDeprecatedMapper.mapRelationshipToInstanceProperties&#8203;(IsATypeOfDeprecated, InstanceProperties)</a></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/services/SubjectAreaRelationshipRESTServices.html#createIsATypeOfDeprecated(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated)">org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices.createIsATypeOfDeprecated&#8203;(String, String, IsATypeOfDeprecated)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/services/SubjectAreaRelationshipRESTServices.html#deleteIsATypeOfDeprecatedRelationship(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices.deleteIsATypeOfDeprecatedRelationship&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/services/SubjectAreaRelationshipRESTServices.html#getIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices.getIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/services/SubjectAreaRelationshipRESTServices.html#restoreIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices.restoreIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/services/SubjectAreaRelationshipRESTServices.html#updateIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,boolean)">org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRelationshipRESTServices.updateIsATypeOfDeprecated&#8203;(String, String, String, IsATypeOfDeprecated, boolean)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/accessservices/subjectarea/server/spring/SubjectAreaRelationshipRESTResource.html#createTermIsATypeOfRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated)">org.odpi.openmetadata.accessservices.subjectarea.server.spring.SubjectAreaRelationshipRESTResource.createTermIsATypeOfRelationship&#8203;(String, String, IsATypeOfDeprecated)</a></th>
@@ -329,91 +451,123 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colLast"></td>
 </tr>
 <tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/generichandlers/AssetHandler.html#updateAssetOwner(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,java.util.Date,java.lang.String)">org.odpi.openmetadata.commonservices.generichandlers.AssetHandler.updateAssetOwner&#8203;(String, String, String, String, int, boolean, boolean, Date, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/generichandlers/RelationalDataHandler.html#createDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,boolean,boolean,java.lang.String,int,int,int,int,boolean,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.util.Map,java.util.Map,java.lang.String)">org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler.createDatabaseColumn&#8203;(String, String, String, String, String, String, String, String, String, String, String, String, String, boolean, int, int, int, boolean, boolean, String, int, int, int, int, boolean, String, List&lt;String&gt;, Map&lt;String, String&gt;, String, Map&lt;String, Object&gt;, Map&lt;String, String&gt;, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/generichandlers/RelationalDataHandler.html#createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.List,java.util.Map,java.lang.String,java.util.Map,java.util.Map,java.lang.String)">org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler.createDatabaseTable&#8203;(String, String, String, String, String, String, String, boolean, List&lt;String&gt;, Map&lt;String, String&gt;, String, Map&lt;String, Object&gt;, Map&lt;String, String&gt;, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/builders/SchemaTypeBuilder.html#setMaximumElements(int)">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SchemaTypeBuilder.setMaximumElements&#8203;(int)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/repositoryhandler/RepositoryHandler.html#getEntitiesForRelationshipType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.lang.String)">org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler.getEntitiesForRelationshipType&#8203;(String, String, String, String, String, int, int, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/repositoryhandler/RepositoryHandler.html#getRelationshipBetweenEntities(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler.getRelationshipBetweenEntities&#8203;(String, String, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/repositoryhandler/RepositoryHandler.html#getUniqueRelationshipByType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler.getUniqueRelationshipByType&#8203;(String, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html#getErrorMessage()">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase.getErrorMessage()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#getErrorMessageId()">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode.getErrorMessageId()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#getFormattedErrorMessage(java.lang.String...)">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode.getFormattedErrorMessage&#8203;(String...)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#getHTTPErrorCode()">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode.getHTTPErrorCode()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#getSystemAction()">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode.getSystemAction()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#getUserAction()">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode.getUserAction()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SchemaAttribute.html#getAttributeName()">org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute.getAttributeName()</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SchemaAttribute.html#setAttributeName(java.lang.String)">org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute.setAttributeName&#8203;(String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#getTablesForDatabaseSchema(java.lang.String,int,int)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.getTablesForDatabaseSchema&#8203;(String, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#getViewsForDatabaseSchema(java.lang.String,int,int)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.getViewsForDatabaseSchema&#8203;(String, int, int)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#removeDatabase(java.lang.String,java.lang.String)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.removeDatabase&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#removeDatabaseColumn(java.lang.String,java.lang.String)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.removeDatabaseColumn&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#removeDatabaseSchema(java.lang.String,java.lang.String)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.removeDatabaseSchema&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#removeDatabaseTable(java.lang.String,java.lang.String)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.removeDatabaseTable&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#removeDatabaseView(java.lang.String,java.lang.String)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.removeDatabaseView&#8203;(String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#updateDatabase(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabase&#8203;(String, DatabaseProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#updateDatabaseColumn(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabaseColumn&#8203;(String, DatabaseColumnProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#updateDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabaseSchema&#8203;(String, DatabaseSchemaProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#updateDatabaseTable(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabaseTable&#8203;(String, DatabaseTableProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/integrationservices/database/connector/DatabaseIntegratorContext.html#updateDatabaseView(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabaseView&#8203;(String, DatabaseViewProperties)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/platformservices/server/spring/ServerPlatformOriginResource.html#getOldServerOrigin(java.lang.String)">org.odpi.openmetadata.platformservices.server.spring.ServerPlatformOriginResource.getOldServerOrigin&#8203;(String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/clients/MetadataCollectionServicesClient.html#getMetadataCollectionId()">org.odpi.openmetadata.repositoryservices.clients.MetadataCollectionServicesClient.getMetadataCollectionId()</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/connectors/auditable/AuditableConnector.html#setAuditLog(org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog)">org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector.setAuditLog&#8203;(OMRSAuditLog)</a></th>
 <td class="colLast"></td>
 </tr>
 <tr class="rowColor">
@@ -519,12 +673,99 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colLast"></td>
 </tr>
 <tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/OMRSRuntimeException.html#getErrorMessage()">org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException.getErrorMessage()</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/localrepository/repositorycontentmanager/OMRSRepositoryContentHelper.html#getNewClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper.getNewClassification&#8203;(String, String, String, String, ClassificationOrigin, String, InstanceProperties)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/localrepository/repositorycontentmanager/OMRSRepositoryContentHelper.html#getSkeletonEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper.getSkeletonEntity&#8203;(String, String, InstanceProvenanceType, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/localrepository/repositorycontentmanager/OMRSRepositoryContentHelper.html#getSkeletonEntitySummary(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper.getSkeletonEntitySummary&#8203;(String, String, InstanceProvenanceType, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/properties/CohortDescription.html#getTopicConnection()">org.odpi.openmetadata.repositoryservices.properties.CohortDescription.getTopicConnection()</a></th>
 <td class="colLast"></td>
 </tr>
 <tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/properties/CohortDescription.html#setTopicConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">org.odpi.openmetadata.repositoryservices.properties.CohortDescription.setTopicConnection&#8203;(Connection)</a></th>
 <td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/rest/server/OMRSRepositoryRESTServices.html#getMetadataCollectionId(java.lang.String)">org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices.getMetadataCollectionId&#8203;(String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/handlers/RelationshipHandler.html#restoreIsaTypeOfDeprecated(java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.handlers.RelationshipHandler.restoreIsaTypeOfDeprecated&#8203;(String, String)</a></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/server/GlossaryAuthorViewRelationshipRESTResource.html#createTermIsATypeOfDeprecated(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated)">org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource.createTermIsATypeOfDeprecated&#8203;(String, String, IsATypeOfDeprecated)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/server/GlossaryAuthorViewRelationshipRESTResource.html#deleteTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource.deleteTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/server/GlossaryAuthorViewRelationshipRESTResource.html#getTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource.getTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/server/GlossaryAuthorViewRelationshipRESTResource.html#restoreTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource.restoreTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+ <p>
+ Restore allows the deleted Is a Type Of Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/server/GlossaryAuthorViewRelationshipRESTResource.html#updateIsARelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,java.lang.Boolean)">org.odpi.openmetadata.viewservices.glossaryauthor.server.GlossaryAuthorViewRelationshipRESTResource.updateIsARelationship&#8203;(String, String, String, IsATypeOfDeprecated, Boolean)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/services/GlossaryAuthorViewRelationshipRESTServices.html#createTermIsATypeOfDeprecated(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated)">org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices.createTermIsATypeOfDeprecated&#8203;(String, String, IsATypeOfDeprecated)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/services/GlossaryAuthorViewRelationshipRESTServices.html#deleteTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices.deleteTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/services/GlossaryAuthorViewRelationshipRESTServices.html#getTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices.getTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/services/GlossaryAuthorViewRelationshipRESTServices.html#restoreTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices.restoreTermIsATypeOfDeprecated&#8203;(String, String, String)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+ Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/viewservices/glossaryauthor/services/GlossaryAuthorViewRelationshipRESTServices.html#updateTermIsATypeOfDeprecated(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated,boolean)">org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewRelationshipRESTServices.updateTermIsATypeOfDeprecated&#8203;(String, String, String, IsATypeOfDeprecated, boolean)</a></th>
+<td class="colLast">
+<div class="deprecationComment">IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -551,6 +792,22 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colLast"></td>
 </tr>
 <tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/adapters/connectors/datastore/basicfile/ffdc/exception/FileException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException&#8203;(int, String, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/adminservices/ffdc/exception/OMAGConfigurationErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/adminservices/ffdc/exception/OMAGInvalidParameterException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/adminservices/ffdc/exception/OMAGNotAuthorizedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/ffdc/exceptions/InvalidParameterException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException&#8203;(int, String, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
@@ -563,35 +820,159 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colLast"></td>
 </tr>
 <tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/builders/ReferenceableBuilder.html#%3Cinit%3E(java.lang.String,java.util.Map,java.util.Map,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder&#8203;(String, Map&lt;String, String&gt;, Map&lt;String, Object&gt;, OMRSRepositoryHelper, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/ffdc/exceptions/NoConnectedAssetException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.exceptions.NoConnectedAssetException&#8203;(int, String, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/ConnectionCheckedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException&#8203;(int, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/ConnectorCheckedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException&#8203;(int, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/InvalidParameterException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException&#8203;(int, String, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase&#8203;(int, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFRuntimeException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException&#8203;(int, String, String, String, String, String, Map&lt;String, Object&gt;)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/UserNotAuthorizedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException&#8203;(int, String, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#%3Cinit%3E(java.lang.String)">org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection&#8203;(String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/ClassificationErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/EntityConflictException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/EntityNotDeletedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/EntityNotKnownException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/EntityProxyOnlyException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/FunctionNotSupportedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/HomeEntityException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/HomeRelationshipException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeRelationshipException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/InvalidEntityException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/InvalidParameterException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/InvalidRelationshipException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/InvalidTypeDefException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/OMRSCheckedExceptionBase.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/OMRSConfigErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/OMRSConnectorErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConnectorErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/OMRSLogicErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/PagingErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/PatchErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/PropertyErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/RelationshipConflictException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipConflictException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/RelationshipNotDeletedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/RelationshipNotKnownException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/RepositoryErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/StatusNotSupportedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeDefConflictException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeDefInUseException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefInUseException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeDefKnownException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeDefNotKnownException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="altColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeDefNotSupportedException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException&#8203;(int, String, String, String, String, String)</a></th>
+<td class="colLast"></td>
+</tr>
+<tr class="rowColor">
+<th class="colDeprecatedItemName" scope="row"><a href="org/odpi/openmetadata/repositoryservices/ffdc/exception/TypeErrorException.html#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException&#8203;(int, String, String, String, String, String)</a></th>
 <td class="colLast"></td>
 </tr>
 </tbody>

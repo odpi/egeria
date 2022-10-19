@@ -135,7 +135,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../../archiveutilities/OMRSArchiveHelper.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveHelper</a></code></dd>
+<dd><code><a href="../../../../archiveutilities/OMRSArchiveHelper.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveHelper</a></code>, <code><a href="../../../../localrepository/repositorycontentmanager/OMRSRepositoryContentHelper.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentHelper</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">OMRSRepositoryPropertiesUtilities</span>
@@ -1889,8 +1889,8 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <pre class="methodSignature">public&nbsp;void&nbsp;validateTypeDefPatch&#8203;(java.lang.String&nbsp;sourceName,
                                  <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch,
                                  java.lang.String&nbsp;methodName)
-                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</pre>
+                          throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                 <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></pre>
 <div class="block">Verify that a TypeDefPatch is not null and is for a recognized type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1898,8 +1898,8 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <dd><code>typeDefPatch</code> - typeDefPatch to test</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the original typeDef or typeDefPatch is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</code> - the typeDefPatch is invalid</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
+<dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the typeDefPatch is invalid</dd>
 </dl>
 </li>
 </ul>
@@ -1913,8 +1913,8 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
                           <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;originalTypeDef,
                           <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch,
                           java.lang.String&nbsp;methodName)
-                   throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</pre>
+                   throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                          <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></pre>
 <div class="block">Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
  the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
  the type or version that either represents.</div>
@@ -1927,8 +1927,8 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated TypeDef</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the original typeDef or typeDefPatch is null</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException</code> - the patch is either badly formatted, or does not apply to the supplied TypeDef</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
+<dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the patch is either badly formatted, or does not apply to the supplied TypeDef</dd>
 </dl>
 </li>
 </ul>

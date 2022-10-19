@@ -131,12 +131,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">LineageGraphQueryService</span>
 extends java.lang.Object
-implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</pre>
+implements <a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></pre>
 </li>
 </ul>
 </div>
@@ -188,26 +188,38 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse</code></td>
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
+<td class="colLast">
+<div class="block">Gets entity details.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse</code></td>
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">getNodes</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</code></th>
+<td class="colLast">
+<div class="block">Gets nodes names of certain type with display name containing a certain value - case insensitive</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse</code></td>
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes()">getTypes</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Gets available entities types from lineage repository.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse</code></td>
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
        java.lang.String&nbsp;guid,
        boolean&nbsp;includeProcesses)</code></th>
+<td class="colLast">
+<div class="block">Retrieve lineage starting from the entity identified by the guid</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</code></th>
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</code></th>
 <td class="colLast">
 <div class="block">Search the database for entities matching the search request</div>
 </td>
@@ -283,12 +295,18 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <ul class="blockList">
 <li class="blockList">
 <h4>lineage</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse&nbsp;lineage&#8203;(<a href="../../../../../governanceservers/openlineage/model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
-                                                                                             java.lang.String&nbsp;guid,
-                                                                                             boolean&nbsp;includeProcesses)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a>&nbsp;lineage&#8203;(<a href="../../../../../governanceservers/openlineage/model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
+                               java.lang.String&nbsp;guid,
+                               boolean&nbsp;includeProcesses)</pre>
+<div class="block">Retrieve lineage starting from the entity identified by the guid</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>lineage</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#lineage(org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>scope</code> - the type of lineage to retrieve</dd>
+<dd><code>guid</code> - the guid of the entity from which to start</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the lineage vertices and edges that compose the graph</dd>
 </dl>
 </li>
 </ul>
@@ -374,10 +392,15 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <ul class="blockList">
 <li class="blockList">
 <h4>getEntityDetails</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;guid)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a>&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;guid)</pre>
+<div class="block">Gets entity details.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getEntityDetails</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#getEntityDetails(java.lang.String)">getEntityDetails</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>guid</code> - the guid</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the entity details</dd>
 </dl>
 </li>
 </ul>
@@ -387,10 +410,13 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <ul class="blockList">
 <li class="blockList">
 <h4>getTypes</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse&nbsp;getTypes()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a>&nbsp;getTypes()</pre>
+<div class="block">Gets available entities types from lineage repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getTypes</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#getTypes()">getTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the available entities types</dd>
 </dl>
 </li>
 </ul>
@@ -400,10 +426,16 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <ul class="blockList">
 <li class="blockList">
 <h4>getNodes</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse&nbsp;getNodes&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a>&nbsp;getNodes&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</pre>
+<div class="block">Gets nodes names of certain type with display name containing a certain value - case insensitive</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getNodes</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">getNodes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>searchCriteria</code> - contains the type of the node names to search for, a search string being part
+                      of the display name of the nodes, the maximum number of node names to retrieve</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the node names that match criteria</dd>
 </dl>
 </li>
 </ul>
@@ -413,11 +445,11 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <ul class="blockListLast">
 <li class="blockList">
 <h4>search</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse&nbsp;search&#8203;(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a>&nbsp;search&#8203;(<a href="../../../../../governanceservers/openlineage/requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</pre>
 <div class="block">Search the database for entities matching the search request</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>search</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>lineageSearchRequest</code> - the criteria for the search</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
