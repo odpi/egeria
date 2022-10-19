@@ -45,6 +45,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -585,6 +586,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         PropertiesResponse restResult =  this.callGetRESTCall(methodName, PropertiesResponse.class,
                 serverPlatformRootURL + PROCESSING_STATE_URL_TEMPLATE, serverName, userId, externalSourceName);
 
+        if(restResult.getProperties().isEmpty()) {
+            return Collections.emptyMap();
+        }
         return restResult.getProperties().entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> (Long) e.getValue()));
