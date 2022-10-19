@@ -32,7 +32,6 @@ The fact that it is read only means that no new content can be mastered in it.
 
 * **[omrs-caching-repository-connector](omrs-caching-repository-connector)** -
   provides an embedded local repository.  It is useful for repository proxies, where there is an event mapper getting 3rd party technology, which it writes to this repository.
-  The fact that it is read only means that no new content can be mastered in it.
 
 Finally, there is  the **[omrs-rest-repository-connector](omrs-rest-repository-connector)**
 which uses the OMRS REST API to call an open metadata-compliant repository.
