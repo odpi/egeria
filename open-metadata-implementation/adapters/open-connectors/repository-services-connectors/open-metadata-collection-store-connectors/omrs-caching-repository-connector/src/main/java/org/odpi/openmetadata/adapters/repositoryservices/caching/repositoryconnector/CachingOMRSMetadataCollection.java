@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.caching.repositoryconnector;
+
 import org.odpi.openmetadata.adapters.repositoryservices.caching.auditlog.CachingOMRSErrorCode;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -36,7 +37,7 @@ import java.util.*;
  * methods means that not new find implementations need to be written. Prior to thissample - this was where a lot of the development effort
  * went when creating repository proxies.
  * <p>
- * The FileOMRSRepositoryEventMapper, can be used with this repository to form a repository proxy. The event mapper holds all the polling logic
+ * The CachingOMRSRepositoryEventMapper, can be used with this repository to form a repository proxy. The event mapper holds all the polling logic
  * and 3rd party specific logic.
  */
 public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectionBase {
@@ -49,13 +50,13 @@ public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollec
     /**
      * The caching OMRS metadata collection is initialised with an embedded connector, which all supported OMRS calls are delegated to.
      *
-     * @param parentConnector      connector that this metadata collection supports.
-     *                             The connector has the information to call the metadata repository.
-     * @param repositoryName       name of this repository.
-     * @param repositoryHelper     helper that provides methods to repository connectors and repository event mappers
-     *                             to build valid type definitions (TypeDefs), entities and relationships.
-     * @param repositoryValidator  validator class for checking open metadata repository objects and parameters
-     * @param metadataCollectionId unique identifier for the repository
+     * @param parentConnector              connector that this metadata collection supports.
+     *                                     The connector has the information to call the metadata repository.
+     * @param repositoryName               name of this repository.
+     * @param repositoryHelper             helper that provides methods to repository connectors and repository event mappers
+     *                                     to build valid type definitions (TypeDefs), entities and relationships.
+     * @param repositoryValidator          validator class for checking open metadata repository objects and parameters
+     * @param metadataCollectionId         unique identifier for the repository
      * @param configuredEmbeddedConnectors the configured embedded connectors
      * @throws RepositoryErrorException repository error exception
      */
@@ -66,27 +67,27 @@ public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollec
                                          OMRSRepositoryValidator repositoryValidator,
                                          String metadataCollectionId,
                                          List<Connector> configuredEmbeddedConnectors
-                                        ) throws RepositoryErrorException {
+    ) throws RepositoryErrorException {
         super(parentConnector,
-              repositoryName,
-              repositoryHelper,
-              repositoryValidator,
-              metadataCollectionId);
+                repositoryName,
+                repositoryHelper,
+                repositoryValidator,
+                metadataCollectionId);
         String methodName = "CachingOMRSMetadataCollection()";
         // check that we have one embedded OMRS connector, error if not
 
-       if (configuredEmbeddedConnectors == null || configuredEmbeddedConnectors.isEmpty()) {
-           raiseRepositoryErrorException(CachingOMRSErrorCode.EMBEDDED_CONNECTOR_NOT_SUPPLIED, methodName, null, repositoryName);
-       } else if (configuredEmbeddedConnectors.size() > 1) {
-           raiseRepositoryErrorException(CachingOMRSErrorCode.MULTIPLE_EMBEDDED_CONNECTORS_SUPPLIED, methodName, null, repositoryName);
-       } else {
-           Connector connector = configuredEmbeddedConnectors.get(0);
-           if (connector instanceof  OMRSRepositoryConnector) {
-               validEmbeddedOMRSConnector = (OMRSRepositoryConnector) connector;
-           } else {
-               raiseRepositoryErrorException(CachingOMRSErrorCode.EMBEDDED_CONNECTOR_WRONG_TYPE, methodName, null, repositoryName);
-           }
-       }
+        if (configuredEmbeddedConnectors == null || configuredEmbeddedConnectors.isEmpty()) {
+            raiseRepositoryErrorException(CachingOMRSErrorCode.EMBEDDED_CONNECTOR_NOT_SUPPLIED, methodName, null, repositoryName);
+        } else if (configuredEmbeddedConnectors.size() > 1) {
+            raiseRepositoryErrorException(CachingOMRSErrorCode.MULTIPLE_EMBEDDED_CONNECTORS_SUPPLIED, methodName, null, repositoryName);
+        } else {
+            Connector connector = configuredEmbeddedConnectors.get(0);
+            if (connector instanceof OMRSRepositoryConnector) {
+                validEmbeddedOMRSConnector = (OMRSRepositoryConnector) connector;
+            } else {
+                raiseRepositoryErrorException(CachingOMRSErrorCode.EMBEDDED_CONNECTOR_WRONG_TYPE, methodName, null, repositoryName);
+            }
+        }
 
         this.metadataCollectionId = metadataCollectionId;
         // initialise the embedded connector and stores its collection
@@ -98,6 +99,7 @@ public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollec
 
         this.embeddedMetadataCollection = validEmbeddedOMRSConnector.getMetadataCollection();
     }
+
     public OMRSRepositoryConnector getEmbeddedOMRSConnector() {
         return validEmbeddedOMRSConnector;
     }
@@ -106,22 +108,22 @@ public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollec
     /**
      * Throws a RepositoryErrorException based on the provided parameters.
      *
-     * @param errorCode the error code for the exception
+     * @param errorCode  the error code for the exception
      * @param methodName the method name throwing the exception
-     * @param cause the underlying cause of the exception (if any, otherwise null)
-     * @param params any additional parameters for formatting the error message
+     * @param cause      the underlying cause of the exception (if any, otherwise null)
+     * @param params     any additional parameters for formatting the error message
      * @throws RepositoryErrorException error contacting the repository
      */
-    private void raiseRepositoryErrorException(CachingOMRSErrorCode errorCode, String methodName, Exception cause, String ...params) throws RepositoryErrorException {
+    private void raiseRepositoryErrorException(CachingOMRSErrorCode errorCode, String methodName, Exception cause, String... params) throws RepositoryErrorException {
         if (cause == null) {
             throw new RepositoryErrorException(errorCode.getMessageDefinition(params),
-                                                this.getClass().getName(),
-                                                methodName);
+                    this.getClass().getName(),
+                    methodName);
         } else {
             throw new RepositoryErrorException(errorCode.getMessageDefinition(params),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                cause);
+                    this.getClass().getName(),
+                    methodName,
+                    cause);
         }
     }
 
@@ -156,16 +158,16 @@ public class CachingOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollec
     @Override
     public List<EntityDetail> findEntities(String userId, String entityTypeGUID, List<String> entitySubtypeGUIDs, SearchProperties matchProperties, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, SearchClassifications matchClassifications, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException {
         return embeddedMetadataCollection.findEntities(userId,
-                                                       entityTypeGUID,
-                                                       entitySubtypeGUIDs,
-                                                       matchProperties,
-                                                       fromEntityElement,
-                                                       limitResultsByStatus,
-                                                       matchClassifications,
-                                                       asOfTime,
-                                                       sequencingProperty,
-                                                       sequencingOrder,
-                                                       pageSize);
+                entityTypeGUID,
+                entitySubtypeGUIDs,
+                matchProperties,
+                fromEntityElement,
+                limitResultsByStatus,
+                matchClassifications,
+                asOfTime,
+                sequencingProperty,
+                sequencingOrder,
+                pageSize);
     }
 
     @Override

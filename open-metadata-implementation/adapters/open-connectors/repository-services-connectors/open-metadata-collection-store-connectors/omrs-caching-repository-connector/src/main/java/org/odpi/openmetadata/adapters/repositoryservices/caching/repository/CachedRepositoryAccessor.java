@@ -18,20 +18,23 @@ import java.util.List;
 public class CachedRepositoryAccessor {
 
     private String className = this.getClass().getName();
-    private String userId =null;
+    private String userId = null;
     private String serverName;
     private OMRSMetadataCollection metadataCollection = null;
-    public CachedRepositoryAccessor() {}
-    public CachedRepositoryAccessor(String userId, String serverName,OMRSMetadataCollection metadataCollection) {
+
+    public CachedRepositoryAccessor() {
+    }
+
+    public CachedRepositoryAccessor(String userId, String serverName, OMRSMetadataCollection metadataCollection) {
         this.userId = userId;
         this.serverName = serverName;
         this.metadataCollection = metadataCollection;
     }
 
     /**
-     * 
      * Return the relationships for a specific entity.
-     * @param  entityGUID – String unique identifier for the entity.
+     *
+     * @param entityGUID           – String unique identifier for the entity.
      * @param relationshipTypeGUID – String GUID of the type of relationship required (null for all).
      * @return list of relationships associated with the entity
      * @throws ConnectorCheckedException Connector Exception
@@ -65,6 +68,7 @@ public class CachedRepositoryAccessor {
 
     /**
      * Return the header, classifications and properties of a specific entity. This requires the full entity object to be available.
+     *
      * @param guid String unique identifier for the entity.
      * @return EntityDetail structure.
      * @throws ConnectorCheckedException connector exception
@@ -91,15 +95,15 @@ public class CachedRepositoryAccessor {
     }
 
     /**
-      * Return the current version of a requested relationship.
-      * 
-      * @param guid String unique identifier for the relationship.
-      * @return  relationship structure.
-      * @throws ConnectorCheckedException connector Excpetion
-      */
+     * Return the current version of a requested relationship.
+     *
+     * @param guid String unique identifier for the relationship.
+     * @return relationship structure.
+     * @throws ConnectorCheckedException connector Excpetion
+     */
     public Relationship getRelationshipFromStore(String guid) throws ConnectorCheckedException {
         String methodName = " getRelationshipFromStore";
-        Relationship relationship =null;
+        Relationship relationship = null;
         try {
             relationship = metadataCollection.getRelationship(userId, guid);
         } catch (InvalidParameterException e) {
@@ -108,7 +112,7 @@ public class CachedRepositoryAccessor {
             raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (UserNotAuthorizedException e) {
             raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
-        } catch (RelationshipNotKnownException e ) {
+        } catch (RelationshipNotKnownException e) {
             raiseConnectorCheckedException(CachingOMRSErrorCode.RELATIONSHIP_NOT_KNOWN, methodName, e, serverName, methodName, guid);
         }
         return relationship;
@@ -118,10 +122,11 @@ public class CachedRepositoryAccessor {
 
     /**
      * Save the relationship as a reference copy. The id of the home metadata collection is already set up in the relationship.
+     *
      * @param relationship – relationship to save.
      * @throws ConnectorCheckedException connector Exception
      */
-   public void saveRelationshipReferenceCopyToStore(Relationship relationship) throws ConnectorCheckedException {
+    public void saveRelationshipReferenceCopyToStore(Relationship relationship) throws ConnectorCheckedException {
         String methodName = "storeRelationshipReferenceCopy";
         try {
             // TODO more specific messages
@@ -168,8 +173,8 @@ public class CachedRepositoryAccessor {
 
     /**
      * Save the entity as a reference copy. The id of the home metadata collection is already set up in the entity.
+     *
      * @param entityToAdd entity to save
-
      * @throws ConnectorCheckedException connector exception
      */
     public void saveEntityReferenceCopyToStore(EntityDetail entityToAdd) throws ConnectorCheckedException {
@@ -203,6 +208,7 @@ public class CachedRepositoryAccessor {
             raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e);
         }
     }
+
     /**
      * Throws a ConnectorCheckedException based on the provided parameters.
      *
@@ -212,7 +218,7 @@ public class CachedRepositoryAccessor {
      * @param params     any additional parameters for formatting the error message
      * @throws ConnectorCheckedException always
      */
-    public void raiseConnectorCheckedException( CachingOMRSErrorCode errorCode, String methodName, Exception cause, String... params) throws ConnectorCheckedException {
+    public void raiseConnectorCheckedException(CachingOMRSErrorCode errorCode, String methodName, Exception cause, String... params) throws ConnectorCheckedException {
         if (cause == null) {
             throw new ConnectorCheckedException(errorCode.getMessageDefinition(params),
                     className,

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The CachingOMRSAuditCode is used to define the message content for the OMRS Audit Log.
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -25,19 +25,17 @@ public enum CachingOMRSAuditCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.INFO,
             "The caching repository proxy is starting a new server instance",
             "The local server has started up a new instance of the caching repository proxy.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "No action is required. This is part of the normal operation of the service."),
     REPOSITORY_SERVICE_STARTED("OMRS-CACHING-REPOSITORY-0002",
             OMRSAuditLogRecordSeverity.INFO,
             "The caching repository proxy has started a new instance for server {0}",
             "The local server has completed startup of a new instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "No action is required. This is part of the normal operation of the service."),
     REPOSITORY_SERVICE_SHUTDOWN("OMRS-CACHING-REPOSITORY-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The caching repository proxy has shutdown its instance for server {0}",
             "The local server has requested shut down of a caching repository proxy instance.",
-            "No action is required.  This is part of the normal operation of the service."),
-    
-
+            "No action is required. This is part of the normal operation of the service."),
     ;
 
 
@@ -62,8 +60,8 @@ public enum CachingOMRSAuditCode implements AuditLogMessageSet {
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-   CachingOMRSAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
-                        String systemAction, String userAction) {
+    CachingOMRSAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
+                         String systemAction, String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
@@ -87,7 +85,7 @@ public enum CachingOMRSAuditCode implements AuditLogMessageSet {
      * {@inheritDoc}
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params) {
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
         AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
                 severity,
                 logMessage,

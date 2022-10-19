@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * This sample caching repository connector runs in a repository proxy. It expects to be configured with an embedded repository connector
  * where content is cached.
- *
  */
 public class CachingOMRSRepositoryProxyConnector extends OMRSRepositoryConnector
         implements VirtualConnectorExtension {
@@ -50,7 +49,7 @@ public class CachingOMRSRepositoryProxyConnector extends OMRSRepositoryConnector
                 }
             }
             // start the embedded collection
-            CachingOMRSMetadataCollection cachingCollection = (CachingOMRSMetadataCollection)metadataCollection;
+            CachingOMRSMetadataCollection cachingCollection = (CachingOMRSMetadataCollection) metadataCollection;
             cachingCollection.getEmbeddedOMRSConnector().start();
         }
 
@@ -83,13 +82,12 @@ public class CachingOMRSRepositoryProxyConnector extends OMRSRepositoryConnector
 
     private void initializeMetadataCollection() throws RepositoryErrorException {
 
-            metadataCollection = new CachingOMRSMetadataCollection(this,
-                                                                   serverName,
-                                                                   repositoryHelper,
-                                                                   repositoryValidator,
-                                                                   metadataCollectionId,
-                                                                   embeddedConnectors);
-
+        metadataCollection = new CachingOMRSMetadataCollection(this,
+                serverName,
+                repositoryHelper,
+                repositoryValidator,
+                metadataCollectionId,
+                embeddedConnectors);
 
 
     }
@@ -97,28 +95,28 @@ public class CachingOMRSRepositoryProxyConnector extends OMRSRepositoryConnector
     @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors) {
 
-       this.embeddedConnectors = embeddedConnectors;
+        this.embeddedConnectors = embeddedConnectors;
     }
 
     /**
      * Throws a ConnectorCheckedException based on the provided parameters.
      *
-     * @param errorCode the error code for the exception
+     * @param errorCode  the error code for the exception
      * @param methodName the method name throwing the exception
-     * @param cause the underlying cause of the exception (if any, otherwise null)
-     * @param params any additional parameters for formatting the error message
+     * @param cause      the underlying cause of the exception (if any, otherwise null)
+     * @param params     any additional parameters for formatting the error message
      * @throws ConnectorCheckedException always
      */
-    private void raiseConnectorCheckedException(CachingOMRSErrorCode errorCode, String methodName, Exception cause, String ...params) throws ConnectorCheckedException {
+    private void raiseConnectorCheckedException(CachingOMRSErrorCode errorCode, String methodName, Exception cause, String... params) throws ConnectorCheckedException {
         if (cause == null) {
             throw new ConnectorCheckedException(errorCode.getMessageDefinition(params),
-                                                this.getClass().getName(),
-                                                methodName);
+                    this.getClass().getName(),
+                    methodName);
         } else {
             throw new ConnectorCheckedException(errorCode.getMessageDefinition(params),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                cause);
+                    this.getClass().getName(),
+                    methodName,
+                    cause);
         }
     }
 }
