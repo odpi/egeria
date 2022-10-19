@@ -1820,6 +1820,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>omrs-caching-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>engine-host-services-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

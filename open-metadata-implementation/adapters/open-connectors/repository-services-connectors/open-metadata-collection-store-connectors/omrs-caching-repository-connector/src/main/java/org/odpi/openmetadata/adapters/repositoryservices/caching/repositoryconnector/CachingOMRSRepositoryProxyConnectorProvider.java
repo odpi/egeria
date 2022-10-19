@@ -19,7 +19,9 @@ public class CachingOMRSRepositoryProxyConnectorProvider extends OMRSRepositoryC
 
     static final String CONNECTOR_TYPE_GUID = "41a30f1e-4dad-461b-a21c-eacabb4016cc";
     static final String CONNECTOR_TYPE_NAME = "OMRS Caching Repository Connector";
-    static final String CONNECTOR_TYPE_DESC = " The OMRS caching Repository Connector provides a simple repository implementation that caches metadata in an embedded repository connector.";
+
+    private static final String CONNECTOR_QUALIFIED_NAME = "Egeria:OMRSRepositoryConnector:Cached";
+    static final String CONNECTOR_TYPE_DESC = "The OMRS Caching Repository Connector provides a simple repository implementation that caches metadata in an embedded repository connector.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -33,7 +35,7 @@ public class CachingOMRSRepositoryProxyConnectorProvider extends OMRSRepositoryC
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(CONNECTOR_TYPE_GUID);
-        connectorType.setQualifiedName(CONNECTOR_TYPE_NAME);
+        connectorType.setQualifiedName(CONNECTOR_QUALIFIED_NAME);
         connectorType.setDisplayName(CONNECTOR_TYPE_NAME);
         connectorType.setDescription(CONNECTOR_TYPE_DESC);
         connectorType.setConnectorProviderClassName(this.getClass().getName());

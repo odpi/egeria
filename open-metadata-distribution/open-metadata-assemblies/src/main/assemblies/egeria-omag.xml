@@ -73,6 +73,7 @@
                 <include>org.odpi.egeria:openlineage-integration-connectors:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:inmemory-repository-connector:*</include>
+                <include>org.odpi.egeria:omrs-caching-repository-connector:*</include>
                 <include>org.odpi.egeria:kafka-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:omrs-rest-repository-connector:*</include>
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
