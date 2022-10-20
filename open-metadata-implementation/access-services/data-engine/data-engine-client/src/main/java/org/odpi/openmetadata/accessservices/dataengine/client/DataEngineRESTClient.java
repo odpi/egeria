@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
@@ -586,7 +587,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         PropertiesResponse restResult =  this.callGetRESTCall(methodName, PropertiesResponse.class,
                 serverPlatformRootURL + PROCESSING_STATE_URL_TEMPLATE, serverName, userId, externalSourceName);
 
-        if(restResult.getProperties().isEmpty()) {
+        if(MapUtils.isEmpty(restResult.getProperties())) {
             return Collections.emptyMap();
         }
         return restResult.getProperties().entrySet()
