@@ -7,7 +7,7 @@
 
 Egeria maintainers are the group of people that drive the content of Egeria.
 They take responsibility for [specific components](CODEOWNERS) and help to guide
-new pull requests into master.
+new pull requests into main.
 
 The current Egeria maintainers are:
 

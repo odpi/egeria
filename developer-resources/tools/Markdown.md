@@ -16,7 +16,7 @@ Markdown files in the git repositories have a file type of `.md`.  Each director
 of the directory.  This is the default page displayed for the directory.  For example,
 click on this link to display the tools directory where this file lives on GitHub.
 
-* [https://github.com/odpi/egeria/tree/master/developer-resources/tools](https://github.com/odpi/egeria/tree/master/developer-resources/tools)
+* [https://github.com/odpi/egeria/tree/main/developer-resources/tools](https://github.com/odpi/egeria/tree/main/developer-resources/tools)
 
 Scroll to the bottom of the page to see the contents of the README.md displayed.
 
