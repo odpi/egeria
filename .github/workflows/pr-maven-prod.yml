@@ -4,7 +4,7 @@ name: "Maven"
 
 on:
   pull_request:
-    branches: [master, feature-*, egeria-release-*]
+    branches: [main, feature-*, egeria-release-*]
 
 permissions:
   contents: read
