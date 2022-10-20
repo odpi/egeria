@@ -3419,9 +3419,10 @@
             </dependency>
 
 
-            <!-- In this section we are enforcing versions for transitive runtime dependencies until regular upgrade path is available via the parent library -->
+            <!-- Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans. -->
+            <!-- TODO: Remove dependency block below in case the new parent library is updated and pulls good version. -->
 
-            <!-- com.ibm.icu:icu4j:jar:61.1 < org.antlr:antlr4:jar:4.9.1 < org.apache.tinkerpop:gremlin-core:jar:3.5.2  -->
+            <!-- [CVE-2018-18928] CWE-190 com.ibm.icu:icu4j:jar:61.1 via org.antlr:antlr4:jar:4.9.1 << org.apache.tinkerpop:gremlin-core:jar:3.5.2  -->
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4</artifactId>
@@ -3429,8 +3430,7 @@
                 <scope>runtime</scope>
             </dependency>
 
-            <!-- net.openhft:chronicle-wire:jar:2.20 < org.apache.cassandra:cassandra-all:jar:4.0.6 < org.janusgraph:janusgraph-cql:jar:0.6.1  -->
-            <!-- https://mvnrepository.com/artifact/net.openhft/chronicle-bom/2.21ea47 -->
+            <!-- [sonatype-2021-0234] CWE-190 net.openhft:chronicle-wire:jar:2.20 via org.apache.cassandra:cassandra-all:jar:4.0.6 << org.janusgraph:janusgraph-cql:jar:0.6.1  -->
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>chronicle-bom</artifactId>
@@ -3439,7 +3439,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- jcommander:1.30 < org.apache.cassandra:cassandra-all:jar:4.0.6 -->
+            <!-- [sonatype-2019-0992] CWE-494 jcommander:1.30 via org.apache.cassandra:cassandra-all:jar:4.0.6 -->
             <dependency>
                 <groupId>com.beust</groupId>
                 <artifactId>jcommander</artifactId>
