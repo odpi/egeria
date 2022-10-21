@@ -16,7 +16,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>http://github.com/odpi/egeria/tree/main</url>
     </scm>
 
     <artifactId>governance-zone-create-sample</artifactId>

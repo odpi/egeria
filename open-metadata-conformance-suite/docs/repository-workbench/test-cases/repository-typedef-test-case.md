@@ -72,7 +72,7 @@ is valid and consistent with other calls.
   Each type definition describes the list of valid status that an instance can
   be set to during its lifetime.  OMRS defines a list of possible statuses to
   choose from in the 
-  **[InstanceStatus](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.java)** enum.
+  **[InstanceStatus](https://github.com/odpi/egeria/blob/main/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.java)** enum.
   
 * **repository-typedef-`type name`-11** - classification can be added to at least one entity.
 

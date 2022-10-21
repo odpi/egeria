@@ -18,7 +18,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>https://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/main</url>
     </scm>
 
     <name>Project Management OMAS API</name>

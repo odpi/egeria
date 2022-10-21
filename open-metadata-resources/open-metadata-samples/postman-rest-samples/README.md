@@ -24,14 +24,14 @@ in general.
 
 ### Egeria Core
 
-- [In-memory repository configuration and startup](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-InMemoryRepository.postman_collection.json)
+- [In-memory repository configuration and startup](https://raw.githubusercontent.com/odpi/egeria/main/open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-InMemoryRepository.postman_collection.json)
 
 ### [Egeria IBM Information Server Connectors](https://github.com/odpi/egeria-connector-ibm-information-server)
 
 #### Egeria IBM Information Governance Catalog Connector
 
-1. [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/master/samples/Egeria-IBM-IGC-config.postman_collection.json)
-1. [Sample read operations](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/master/samples/Egeria-IBM-IGC-read.postman_collection.json)
+1. [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/main/samples/Egeria-IBM-IGC-config.postman_collection.json)
+1. [Sample read operations](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/main/samples/Egeria-IBM-IGC-read.postman_collection.json)
 1. Sample write operations
 
 To use the sample read operations, you will first need to load the
@@ -40,7 +40,7 @@ samples to your IBM Information Governance Catalog environment.
 
 #### Egeria IBM DataStage Connector
 
-- [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/master/samples/Egeria-IBM-DataStage-config.postman_collection.json)
+- [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-ibm-information-server/main/samples/Egeria-IBM-DataStage-config.postman_collection.json)
 
 The connector should automatically pickup and process any jobs already in your environment; however,
 you can also load the
@@ -49,8 +49,8 @@ samples if you have an empty environment.
 
 ### [Egeria Apache Atlas Connector](https://github.com/odpi/egeria-connector-apache-atlas)
 
-1. [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-apache-atlas/master/samples/Egeria-Apache-Atlas-config.postman_collection.json)
-1. [Sample read operations](https://raw.githubusercontent.com/odpi/egeria-connector-apache-atlas/master/samples/Egeria-Apache-Atlas-read.postman_collection.json)
+1. [Connector configuration and startup](https://raw.githubusercontent.com/odpi/egeria-connector-apache-atlas/main/samples/Egeria-Apache-Atlas-config.postman_collection.json)
+1. [Sample read operations](https://raw.githubusercontent.com/odpi/egeria-connector-apache-atlas/main/samples/Egeria-Apache-Atlas-read.postman_collection.json)
 1. Sample write operations
 
 To use the sample read operations, you will first need to load the
@@ -70,7 +70,7 @@ A superset of all of the potential variables that we use in our samples (along w
 
 You can either download the linked file and import it into Postman, or always import the latest version by importing
 from the following link from within Postman:
-[https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-samples/postman-rest-samples/Egeria.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-resources/open-metadata-samples/postman-rest-samples/Egeria.postman_environment.json)
+[https://raw.githubusercontent.com/odpi/egeria/main/open-metadata-resources/open-metadata-samples/postman-rest-samples/Egeria.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/main/open-metadata-resources/open-metadata-samples/postman-rest-samples/Egeria.postman_environment.json)
 
 You will most likely want to override some of these values (such as `baseURL` or `kafkaep`) depending on your
 own environment's configuration; or you may even want to make several copies of this with different settings in each
