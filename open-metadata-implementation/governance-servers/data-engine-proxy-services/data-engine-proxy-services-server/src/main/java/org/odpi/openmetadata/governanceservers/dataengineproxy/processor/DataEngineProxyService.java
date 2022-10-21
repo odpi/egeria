@@ -100,14 +100,24 @@ public class DataEngineProxyService implements Runnable {
         running.set(true);
         while (running.get()) {
             try {
+                // Start with the last change synchronization date and time
+                Date changesLastSynced = connector.getChangesLastSynced();
+
+                // Then look for the oldest change available in the Data Engine since that time
+                Date oldestSinceSync = connector.getOldestChangeSince(changesLastSynced);
                 Date changesCutoff = new Date();
-                Date oldestSinceSync = getProcessingState();
-                if(oldestSinceSync != null) {
+                if (oldestSinceSync == null) {
+                    // If there were no changes since the last sync time, default to the last sync time
+                    oldestSinceSync = changesLastSynced;
+                } else {
+                    // If there are any changes since that last sync time, calculate a batch window from that oldest
+                    // change to the maximum amount of time to include in a batch
                     long window = oldestSinceSync.getTime() + (dataEngineProxyConfig.getBatchWindowInSeconds() * 1000L);
                     long now = changesCutoff.getTime();
                     // We will look for changes up to that batch window size or the current moment, whichever is sooner
                     changesCutoff = new Date(Math.min(window, now));
                 }
+
                 ensureSourceNameIsSet();
 
                 this.auditLog.logMessage(methodName,
@@ -124,7 +134,7 @@ public class DataEngineProxyService implements Runnable {
                 upsertLineageMappings(oldestSinceSync, changesCutoff);
 
                 // Update the timestamp at which changes were last synced
-                upsertProcessingState(changesCutoff);
+                connector.setChangesLastSynced(changesCutoff);
 
                 // Sleep for the poll interval before continuing with the next poll
                 sleep();
