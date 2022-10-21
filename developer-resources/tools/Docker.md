@@ -5,7 +5,7 @@
 
 Container images are published  It also provides the basis for a [Kubernetes](Kubernetes.md) deployment
  - For each release
- - For merge builds on master
+ - For merge builds on main
 to
  - https://quay.io/odpi/egeria
  - https://docker.io/odpi/egeria
