@@ -9,10 +9,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -24,9 +25,10 @@ import java.util.Date;
  */
 
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
     private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -187,9 +189,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                                                                              SequencingOrder sequencingOrder,
                                                                              String sequencingProperty) {
         String methodName = "getGlossaryRelationships";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -207,9 +207,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -238,9 +236,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      */
     public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -252,9 +248,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -285,9 +279,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      */
     public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid) {
         final String methodName = "deleteGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -299,9 +291,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -324,9 +314,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      */
     public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(String serverName, String userId, String guid) {
         final String methodName = "restoreGlossary";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -338,9 +326,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -379,9 +365,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                                                              String sequencingOrder,
                                                              String sequencingProperty) {
         final String methodName = "getGlossaryTerms";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -394,9 +378,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -434,9 +416,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                                                                       Boolean onlyTop,
                                                                       Integer startingFrom, Integer pageSize, String sequencingOrder, String sequencingProperty) {
         final String methodName = "getCategories";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -449,9 +429,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }
