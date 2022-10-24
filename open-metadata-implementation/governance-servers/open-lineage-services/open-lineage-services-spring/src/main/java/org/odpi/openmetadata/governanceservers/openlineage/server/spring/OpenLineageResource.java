@@ -6,6 +6,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
@@ -110,5 +111,22 @@ public class OpenLineageResource {
                                                   @PathVariable("userId") String userId,
                                                   @RequestBody LineageSearchRequest lineageSearchRequest) {
         return restAPI.search(serverName, userId, lineageSearchRequest);
+    }
+
+    /**
+     * Returns a subraph representing the hierarchy of a certain node, based on the request
+     *
+     * @param userId                  calling user.
+     * @param serverName              name of the server instance to connect to.
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType
+     *                                of the display name of the nodes, the maximum number of node names to retrieve
+     *
+     * @return A subgraph containing all relevant paths, in graphSON format.
+     */
+    @PostMapping(path = "elements/hierarchy", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LineageResponse getElementHierarchy(@PathVariable("serverName") String serverName,
+                                                  @PathVariable("userId") String userId,
+                                                  @RequestBody ElementHierarchyRequest elementHierarchyRequest) {
+        return restAPI.getElementHierarchy(serverName, userId, elementHierarchyRequest);
     }
 }
