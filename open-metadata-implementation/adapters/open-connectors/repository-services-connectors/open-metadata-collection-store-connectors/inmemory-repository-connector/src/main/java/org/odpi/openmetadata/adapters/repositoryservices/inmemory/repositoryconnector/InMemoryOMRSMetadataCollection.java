@@ -4023,6 +4023,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                             metadataCollectionId,
                                                             instanceParameterName,
                                                             entity,
+                                                            auditLog,
                                                             methodName);
 
         repositoryStore.saveReferenceEntityToStore(entity);
