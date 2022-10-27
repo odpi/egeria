@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adminservices.OMAGServerAdminSecurityServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigOpenMetadataPlatformSecurityResource
 {
-    private static OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();
+    private final OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();
 
 
     /**
