@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class FileSystemOnboardingResource
 {
-    private FileSystemRESTServices restAPI = new FileSystemRESTServices();
+    private final FileSystemRESTServices restAPI = new FileSystemRESTServices();
 
 
     /**
