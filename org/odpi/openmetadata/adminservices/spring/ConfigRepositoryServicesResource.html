@@ -370,7 +370,7 @@ extends java.lang.Object</pre>
                                 java.lang.String&nbsp;cohortName,
                                 java.lang.String&nbsp;topicName)</code></th>
 <td class="colLast">
-<div class="block">Override the current name for the instances topic for the cohort.</div>
+<div class="block">Override the current name for the "instances" topic for the cohort.</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
@@ -390,7 +390,7 @@ extends java.lang.Object</pre>
                             java.lang.String&nbsp;cohortName,
                             java.lang.String&nbsp;topicName)</code></th>
 <td class="colLast">
-<div class="block">Override the current name for the types topic for the cohort.</div>
+<div class="block">Override the current name for the "types" topic for the cohort.</div>
 </td>
 </tr>
 <tr id="i24" class="altColor">
@@ -1222,7 +1222,7 @@ public&nbsp;<a href="../../commonservices/ffdc/rest/VoidResponse.html" title="cl
  A cohort is a group of open metadata
  repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
  Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
- information and events related to changes in their supported metadata types and instances.
+ information and events related to the changes in their supported metadata types and instances.
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1260,7 +1260,7 @@ public&nbsp;<a href="../../commonservices/ffdc/rest/VoidResponse.html" title="cl
  A cohort is a group of open metadata
  repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
  Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
- information and events related to changes in their supported metadata types and instances.
+ information and events related to the changes in their supported metadata types and instances.
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1293,7 +1293,7 @@ public&nbsp;<a href="../rest/CohortConfigResponse.html" title="class in org.odpi
 <div class="block">Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
  repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
  Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
- information and events related to changes in their supported metadata types and instances.
+ information and events related to the changes in their supported metadata types and instances.
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1441,7 +1441,7 @@ public&nbsp;<a href="../../commonservices/ffdc/rest/VoidResponse.html" title="cl
                                                  java.lang.String&nbsp;cohortName,
                                                  @RequestBody
                                                  java.lang.String&nbsp;topicName)</pre>
-<div class="block">Override the current name for the types topic for the cohort.  This call can only be made once the cohort
+<div class="block">Override the current name for the "types" topic for the cohort.  This call can only be made once the cohort
  is set up with enableCohortRegistration().</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1472,7 +1472,7 @@ public&nbsp;<a href="../../commonservices/ffdc/rest/VoidResponse.html" title="cl
                                                      java.lang.String&nbsp;cohortName,
                                                      @RequestBody
                                                      java.lang.String&nbsp;topicName)</pre>
-<div class="block">Override the current name for the instances topic for the cohort.  This call can only be made once the cohort
+<div class="block">Override the current name for the "instances" topic for the cohort.  This call can only be made once the cohort
  is set up with enableCohortRegistration().</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

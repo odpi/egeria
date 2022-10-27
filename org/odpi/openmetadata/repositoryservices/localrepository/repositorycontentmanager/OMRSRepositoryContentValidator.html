@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10,"i92":10,"i93":10,"i94":10,"i95":10,"i96":10,"i97":10,"i98":10,"i99":10,"i100":10,"i101":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10,"i92":10,"i93":10,"i94":10,"i95":10,"i96":10,"i97":10,"i98":10,"i99":10,"i100":10,"i101":10,"i102":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -769,6 +769,18 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 </tr>
 <tr id="i59" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateReferenceInstanceHeader(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">validateReferenceInstanceHeader</a></span>&#8203;(java.lang.String&nbsp;sourceName,
+                               java.lang.String&nbsp;localMetadataCollectionId,
+                               java.lang.String&nbsp;instanceParameterName,
+                               <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
+                               <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                               java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Validates that an instance has the correct header for it to be a reference copy.</div>
+</td>
+</tr>
+<tr id="i60" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipCanBeRehomed(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipCanBeRehomed</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 java.lang.String&nbsp;metadataCollectionId,
                                 <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -777,7 +789,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that a relationship instance can be rehomed by the metadataCollection.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipCanBeUpdated(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipCanBeUpdated</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 java.lang.String&nbsp;metadataCollectionId,
@@ -787,7 +799,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that a relationship instance can be updated by the metadataCollection.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipEnds(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateRelationshipEnds</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityOneProxy,
@@ -798,7 +810,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that the types of the two ends of a relationship match the relationship's TypeDef.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipFromStore(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)">validateRelationshipFromStore</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;guid,
@@ -808,7 +820,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that a relationship has been successfully retrieved from the repository and has valid contents.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i64" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipIsDeleted(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipIsDeleted</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -817,7 +829,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify the status of a relationship to check it has been deleted.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i65" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipIsNotDeleted(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipIsNotDeleted</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -826,7 +838,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify the status of a relationship to check it has been deleted.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i66" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchClassifications(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.lang.String)">validateSearchClassifications</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;parameterName,
@@ -836,7 +848,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the classification-based search conditions.</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchCriteria(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateSearchCriteria</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -846,7 +858,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that a search criteria  is not null.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.lang.String)">validateSearchProperties</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         java.lang.String&nbsp;parameterName,
@@ -856,7 +868,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the property-based search conditions.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                java.lang.String&nbsp;parameterName,
@@ -866,7 +878,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the content of a new TypeDef is valid.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory,java.lang.String)">validateTypeDefCategory</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;nameParameterName,
@@ -876,7 +888,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that a TypeDef's category is not null.</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefForInstance(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateTypeDefForInstance</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                           java.lang.String&nbsp;parameterName,
@@ -886,7 +898,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the content of a TypeDef associated with a metadata instance.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefGallery(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery,java.lang.String)">validateTypeDefGallery</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -896,7 +908,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that type's name is not null.</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefIds(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeDefIds</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;guidParameterName,
@@ -908,7 +920,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that a TypeDef's identifiers are not null.</div>
 </td>
 </tr>
-<tr id="i73" class="rowColor">
+<tr id="i74" class="altColor">
 <td class="colFirst"><code><a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefPatch(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch,java.lang.String)">validateTypeDefPatch</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                     <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;patch,
@@ -917,7 +929,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that a TypeDefPatch is not null and is for a recognized type.</div>
 </td>
 </tr>
-<tr id="i74" class="altColor">
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeForInstanceDelete(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateTypeForInstanceDelete</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;typeDefGUID,
@@ -928,7 +940,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that the supplied TypeDef GUID and name matches the type associated with a metadata instance.</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeGUID</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                 java.lang.String&nbsp;guidParameterName,
@@ -938,7 +950,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that type's identifier is not null.</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeName</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                 java.lang.String&nbsp;nameParameterName,
@@ -948,7 +960,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that type's name is not null.</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUnknownAttributeTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef,java.lang.String)">validateUnknownAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                java.lang.String&nbsp;parameterName,
@@ -958,7 +970,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the content of a new TypeDef is known.</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUnknownTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateUnknownTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -968,7 +980,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate the content of a new TypeDef is known.</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUserId(java.lang.String,java.lang.String,java.lang.String)">validateUserId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;userId,
@@ -977,7 +989,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that the supplied user id is not null.</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef)">validAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                      <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</code></th>
@@ -985,7 +997,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the supplied AttributeTypeDef is valid or not.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDefId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory)">validAttributeTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;attributeTypeDefGUID,
@@ -996,7 +1008,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDefId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory)">validAttributeTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;attributeTypeDefGUID,
@@ -1006,7 +1018,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the AttributeTypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</code></th>
@@ -1014,7 +1026,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entity)</code></th>
@@ -1022,7 +1034,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -1030,7 +1042,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i86" class="altColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validInstanceId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory,java.lang.String)">validInstanceId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                java.lang.String&nbsp;typeDefGUID,
@@ -1041,7 +1053,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that the identifiers for an instance are correct.</div>
 </td>
 </tr>
-<tr id="i87" class="rowColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validRelationship(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">validRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  <a href="../../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</code></th>
@@ -1049,7 +1061,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Test that the supplied relationship is valid.</div>
 </td>
 </tr>
-<tr id="i88" class="altColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)">validTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
             <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</code></th>
@@ -1057,7 +1069,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the supplied TypeDef is valid or not.</div>
 </td>
 </tr>
-<tr id="i89" class="rowColor">
+<tr id="i90" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory)">validTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;typeDefGUID,
@@ -1068,7 +1080,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i90" class="altColor">
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory)">validTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;typeDefGUID,
@@ -1078,7 +1090,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i91" class="rowColor">
+<tr id="i92" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefSummary(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)">validTypeDefSummary</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                    <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary)</code></th>
@@ -1086,7 +1098,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the supplied TypeDefSummary is valid or not.</div>
 </td>
 </tr>
-<tr id="i92" class="altColor">
+<tr id="i93" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeId(java.lang.String,java.lang.String,java.lang.String)">validTypeId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            java.lang.String&nbsp;typeGUID,
@@ -1095,7 +1107,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i93" class="rowColor">
+<tr id="i94" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyEntityIsClassified(java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">verifyEntityIsClassified</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;requiredClassifications,
                         <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -1104,7 +1116,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  classifications.</div>
 </td>
 </tr>
-<tr id="i94" class="altColor">
+<tr id="i95" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceHasRightStatus(java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceHasRightStatus</a></span>&#8203;(java.util.List&lt;<a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;validStatuses,
                             <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance)</code></th>
@@ -1112,7 +1124,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify that the supplied instance is in one of the supplied statuses.</div>
 </td>
 </tr>
-<tr id="i95" class="rowColor">
+<tr id="i96" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstancePropertiesMatchPropertyValue(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String)">verifyInstancePropertiesMatchPropertyValue</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                           <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -1122,7 +1134,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Search for property values matching the supplied property value</div>
 </td>
 </tr>
-<tr id="i96" class="altColor">
+<tr id="i97" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstancePropertiesMatchSearchCriteria(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String)">verifyInstancePropertiesMatchSearchCriteria</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                            <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -1132,7 +1144,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Search for property values matching the search criteria (a regular expression)</div>
 </td>
 </tr>
-<tr id="i97" class="rowColor">
+<tr id="i98" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceType(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceType</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;instanceTypeGUID,
@@ -1143,7 +1155,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  the list of subtype guids.</div>
 </td>
 </tr>
-<tr id="i98" class="altColor">
+<tr id="i99" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceType(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceType</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;instanceTypeGUID,
@@ -1152,7 +1164,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Verify whether the instance passed to this method is of the type indicated by the type guid.</div>
 </td>
 </tr>
-<tr id="i99" class="rowColor">
+<tr id="i100" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingClassifications(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">verifyMatchingClassifications</a></span>&#8203;(<a href="../../connectors/stores/metadatacollectionstore/properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;matchClassifications,
                              <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -1160,7 +1172,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Determine if the instance properties match the classification-based conditions.</div>
 </td>
 </tr>
-<tr id="i100" class="altColor">
+<tr id="i101" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingInstancePropertyValues(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria)">verifyMatchingInstancePropertyValues</a></span>&#8203;(<a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
                                     <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
@@ -1170,7 +1182,7 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Determine if the instance properties match the match criteria.</div>
 </td>
 </tr>
-<tr id="i101" class="rowColor">
+<tr id="i102" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingInstancePropertyValues(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">verifyMatchingInstancePropertyValues</a></span>&#8203;(<a href="../../connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
                                     <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
@@ -3617,6 +3629,37 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <dd><code>localMetadataCollectionId</code> - the unique identifier for the local repository' metadata collection.</dd>
 <dd><code>instanceParameterName</code> - the name of the parameter that provided the instance.</dd>
 <dd><code>instance</code> - the instance to test</dd>
+<dd><code>methodName</code> - the name of the method that supplied the instance.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem with repository</dd>
+<dd><code><a href="../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the instance is null or linked to local metadata repository</dd>
+</dl>
+</li>
+</ul>
+<a id="validateReferenceInstanceHeader(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>validateReferenceInstanceHeader</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;validateReferenceInstanceHeader&#8203;(java.lang.String&nbsp;sourceName,
+                                            java.lang.String&nbsp;localMetadataCollectionId,
+                                            java.lang.String&nbsp;instanceParameterName,
+                                            <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
+                                            <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                                            java.lang.String&nbsp;methodName)
+                                     throws <a href="../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                            <a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
+<div class="block">Validates that an instance has the correct header for it to be a reference copy.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html#validateReferenceInstanceHeader(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">validateReferenceInstanceHeader</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryValidator</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>sourceName</code> - source of the request (used for logging)</dd>
+<dd><code>localMetadataCollectionId</code> - the unique identifier for the local repository' metadata collection.</dd>
+<dd><code>instanceParameterName</code> - the name of the parameter that provided the instance.</dd>
+<dd><code>instance</code> - the instance to test</dd>
+<dd><code>auditLog</code> - optional logging destination</dd>
 <dd><code>methodName</code> - the name of the method that supplied the instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem with repository</dd>

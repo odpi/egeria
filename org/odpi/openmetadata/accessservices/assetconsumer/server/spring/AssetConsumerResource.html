@@ -239,7 +239,7 @@ extends java.lang.Object</pre>
              java.lang.String&nbsp;tagGUID,
              <a href="../../rest/FeedbackRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">FeedbackRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Adds a tag (either private of public) to an asset.</div>
+<div class="block">Adds an informal tag (either private of public) to an asset.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
@@ -250,7 +250,7 @@ extends java.lang.Object</pre>
                java.lang.String&nbsp;tagGUID,
                <a href="../../rest/FeedbackRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">FeedbackRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...</div>
+<div class="block">Adds an informal tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -269,7 +269,7 @@ extends java.lang.Object</pre>
          java.lang.String&nbsp;tagGUID,
          <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Removes a tag from the repository.</div>
+<div class="block">Removes an informal tag from the repository.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
@@ -280,8 +280,7 @@ extends java.lang.Object</pre>
           int&nbsp;pageSize,
           java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
-<div class="block">Return a list of assets with the requested search string in their name, qualified name
- or description.</div>
+<div class="block">Return a list of assets with the requested search string in their name, qualified name or description.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
@@ -314,7 +313,7 @@ extends java.lang.Object</pre>
         int&nbsp;pageSize,
         java.lang.String&nbsp;tagName)</code></th>
 <td class="colLast">
-<div class="block">Return the list of tags containing the supplied string in either the name or description.</div>
+<div class="block">Return the list of informal tags containing the supplied string in either the name or description.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
@@ -334,8 +333,7 @@ extends java.lang.Object</pre>
                   int&nbsp;startFrom,
                   int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
- fields in the schema.</div>
+<div class="block">Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via fields in the schema.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
@@ -346,7 +344,7 @@ extends java.lang.Object</pre>
                int&nbsp;pageSize,
                java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
-<div class="block">Return a list of assets with the requested name.</div>
+<div class="block">Return a list of assets with the requested name either qualifiedName or name property.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
@@ -357,8 +355,7 @@ extends java.lang.Object</pre>
               int&nbsp;startFrom,
               int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
- of its schema elements.</div>
+<div class="block">Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one of its schema elements.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
@@ -389,7 +386,7 @@ extends java.lang.Object</pre>
                int&nbsp;pageSize,
                java.lang.String&nbsp;tagName)</code></th>
 <td class="colLast">
-<div class="block">Return the list of the calling user's private tags exactly matching the supplied name.</div>
+<div class="block">Return the list of the calling user's private informal tags exactly matching the supplied name.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -407,7 +404,7 @@ extends java.lang.Object</pre>
       java.lang.String&nbsp;userId,
       java.lang.String&nbsp;tagGUID)</code></th>
 <td class="colLast">
-<div class="block">Return the Informal Tag for the supplied unique identifier (assetGUID).</div>
+<div class="block">Return the informal tag for the supplied unique identifier (tagGUID).</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
@@ -439,7 +436,7 @@ extends java.lang.Object</pre>
                    java.lang.String&nbsp;assetGUID,
                    <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Removes a "LikeProperties" added to the asset by this user.</div>
+<div class="block">Removes a "Like" added to the asset by this user.</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
@@ -449,7 +446,7 @@ extends java.lang.Object</pre>
                      java.lang.String&nbsp;assetGUID,
                      <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Removes of a star rating that was added to the asset by this user.</div>
+<div class="block">Removes of a star rating/review that was added to the asset by this user.</div>
 </td>
 </tr>
 <tr id="i26" class="altColor">
@@ -471,7 +468,7 @@ extends java.lang.Object</pre>
                     java.lang.String&nbsp;tagGUID,
                     <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Removes a tag from an element attached to an asset - such as schema element, glossary term, ...</div>
+<div class="block">Removes a tag from an element attached to an asset - such as schema element, connection, ...</div>
 </td>
 </tr>
 <tr id="i28" class="altColor">
@@ -744,7 +741,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                   java.lang.String&nbsp;tagGUID,
                                   @RequestBody
                                   <a href="../../rest/FeedbackRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">FeedbackRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Adds a tag (either private of public) to an asset.</div>
+<div class="block">Adds an informal tag (either private of public) to an asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -777,7 +774,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                     java.lang.String&nbsp;tagGUID,
                                     @RequestBody
                                     <a href="../../rest/FeedbackRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">FeedbackRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...</div>
+<div class="block">Adds an informal tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -833,9 +830,11 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                               java.lang.String&nbsp;userId,
                               @PathVariable
                               java.lang.String&nbsp;tagGUID,
-                              @RequestBody
+                              @RequestBody(required=false)
                               <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Removes a tag from the repository.  all the relationships to referenceables are lost.</div>
+<div class="block">Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.
+ A private tag can be deleted by its creator and all the references are lost;
+ a public tag can be deleted by anyone, but only if it is not attached to any referenceable.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -896,8 +895,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                    int&nbsp;pageSize,
                                    @RequestBody
                                    java.lang.String&nbsp;searchString)</pre>
-<div class="block">Return a list of assets with the requested search string in their name, qualified name
- or description.</div>
+<div class="block">Return a list of assets with the requested search string in their name, qualified name or description.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -930,8 +928,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                            int&nbsp;startFrom,
                                            @RequestParam
                                            int&nbsp;pageSize)</pre>
-<div class="block">Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
- fields in the schema.</div>
+<div class="block">Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via fields in the schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -964,7 +961,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                         int&nbsp;pageSize,
                                         @RequestBody
                                         java.lang.String&nbsp;name)</pre>
-<div class="block">Return a list of assets with the requested name.</div>
+<div class="block">Return a list of assets with the requested name either qualifiedName or name property.  There are no wildcards supported in this request.  The name must match exactly.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -997,8 +994,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                        int&nbsp;startFrom,
                                        @RequestParam
                                        int&nbsp;pageSize)</pre>
-<div class="block">Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
- of its schema elements.</div>
+<div class="block">Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one of its schema elements.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -1064,7 +1060,7 @@ public&nbsp;<a href="../../rest/GlossaryTermListResponse.html" title="class in o
                                              int&nbsp;pageSize,
                                              @RequestBody
                                              java.lang.String&nbsp;name)</pre>
-<div class="block">Return the full definition (meaning) of the terms matching the supplied name.</div>
+<div class="block">Return the full definition (meaning) of the terms matching the supplied name.  The search string is a regular expression (regEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1120,7 +1116,7 @@ public&nbsp;<a href="../../rest/TagResponse.html" title="class in org.odpi.openm
                           java.lang.String&nbsp;userId,
                           @PathVariable
                           java.lang.String&nbsp;tagGUID)</pre>
-<div class="block">Return the Informal Tag for the supplied unique identifier (assetGUID).</div>
+<div class="block">Return the informal tag for the supplied unique identifier (tagGUID).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1184,7 +1180,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                                     int&nbsp;pageSize,
                                     @RequestBody
                                     java.lang.String&nbsp;tagName)</pre>
-<div class="block">Return the list of the calling user's private tags exactly matching the supplied name.</div>
+<div class="block">Return the list of the calling user's private informal tags exactly matching the supplied name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1217,7 +1213,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                              int&nbsp;pageSize,
                              @RequestBody
                              java.lang.String&nbsp;tagName)</pre>
-<div class="block">Return the list of tags containing the supplied string in either the name or description.</div>
+<div class="block">Return the list of informal tags containing the supplied string in either the name or description. The search string is a regular expression (RegEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1250,7 +1246,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                                int&nbsp;pageSize,
                                @RequestBody
                                java.lang.String&nbsp;tagName)</pre>
-<div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.</div>
+<div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1283,7 +1279,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                            java.lang.String&nbsp;commentGUID,
                                            @RequestBody(required=false)
                                            <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Removes a comment added to the asset by this user.</div>
+<div class="block">Removes a comment added to the asset by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
@@ -1314,7 +1310,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                         java.lang.String&nbsp;assetGUID,
                                         @RequestBody(required=false)
                                         <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Removes a "LikeProperties" added to the asset by this user.</div>
+<div class="block">Removes a "Like" added to the asset by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1344,7 +1340,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                           java.lang.String&nbsp;assetGUID,
                                           @RequestBody(required=false)
                                           <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Removes of a star rating that was added to the asset by this user.</div>
+<div class="block">Removes of a star rating/review that was added to the asset by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
@@ -1409,7 +1405,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                          java.lang.String&nbsp;tagGUID,
                                          @RequestBody(required=false)
                                          <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.</div>
+<div class="block">Removes a tag from an element attached to an asset - such as schema element, connection, ... that was added by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>

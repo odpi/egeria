@@ -537,7 +537,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                             java.lang.String&nbsp;metadataCollectionId,
                             <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;processedEntity)</code></th>
 <td class="colLast">
-<div class="block">Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 </td>
 </tr>
@@ -547,7 +547,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                              java.lang.String&nbsp;metadataCollectionId,
                              <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;processedEntity)</code></th>
 <td class="colLast">
-<div class="block">Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 </td>
 </tr>
@@ -557,7 +557,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                             java.lang.String&nbsp;metadataCollectionId,
                             <a href="../../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;processedRelationship)</code></th>
 <td class="colLast">
-<div class="block">Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass a relationship that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 </td>
 </tr>
@@ -999,7 +999,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                                       java.lang.String&nbsp;originatorServerType,
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</pre>
-<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -1168,7 +1168,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;originalTypeDefSummary,
                                       <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</pre>
-<div class="block">An existing entity has had its type changed.  Typically this action is taken to move an entity's
+<div class="block">An existing entity has had its type changed.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -1398,7 +1398,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                                             java.lang.String&nbsp;originatorServerType,
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             <a href="../../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</pre>
-<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1564,7 +1564,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;originalTypeDefSummary,
                                             <a href="../../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</pre>
-<div class="block">An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+<div class="block">An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -1812,7 +1812,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
 <pre class="methodSignature">public&nbsp;void&nbsp;processRetrievedEntitySummary&#8203;(java.lang.String&nbsp;sourceName,
                                           java.lang.String&nbsp;metadataCollectionId,
                                           <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;processedEntity)</pre>
-<div class="block">Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1833,7 +1833,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
 <pre class="methodSignature">public&nbsp;void&nbsp;processRetrievedEntityDetail&#8203;(java.lang.String&nbsp;sourceName,
                                          java.lang.String&nbsp;metadataCollectionId,
                                          <a href="../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;processedEntity)</pre>
-<div class="block">Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1854,7 +1854,7 @@ implements <a href="OMRSInstanceRetrievalEventProcessor.html" title="interface i
 <pre class="methodSignature">public&nbsp;void&nbsp;processRetrievedRelationship&#8203;(java.lang.String&nbsp;sourceName,
                                          java.lang.String&nbsp;metadataCollectionId,
                                          <a href="../../connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;processedRelationship)</pre>
-<div class="block">Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+<div class="block">Pass a relationship that has been retrieved from a remote open metadata repository, so it can be validated and
  (if the rules permit) cached in the local repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

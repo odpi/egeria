@@ -42823,6 +42823,54 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client</h2>
 <ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAPIOperations">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/client/ConnectedAPIOperations.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAPIOperations</a> extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/APIOperations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">APIOperations</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>maxCacheSize</h4>
+<pre>int maxCacheSize</pre>
+</li>
+<li class="blockList">
+<h4>omasServerURL</h4>
+<pre>java.lang.String omasServerURL</pre>
+</li>
+<li class="blockList">
+<h4>restClient</h4>
+<pre><a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">OCFRESTClient</a> restClient</pre>
+</li>
+<li class="blockList">
+<h4>restExceptionHandler</h4>
+<pre><a href="org/odpi/openmetadata/commonservices/ffdc/RESTExceptionHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">RESTExceptionHandler</a> restExceptionHandler</pre>
+</li>
+<li class="blockList">
+<h4>schemaGUID</h4>
+<pre>java.lang.String schemaGUID</pre>
+</li>
+<li class="blockList">
+<h4>serverName</h4>
+<pre>java.lang.String serverName</pre>
+</li>
+<li class="blockList">
+<h4>serviceName</h4>
+<pre>java.lang.String serviceName</pre>
+</li>
+<li class="blockListLast">
+<h4>userId</h4>
+<pre>java.lang.String userId</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetLineage">
 <!--   -->
 </a>
@@ -43745,6 +43793,58 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest</h2>
 <ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.APIOperationResponse">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/rest/APIOperationResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.APIOperationResponse</a> extends <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/rest/OCFOMASAPIResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">OCFOMASAPIResponse</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>apiOperation</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/APIOperation.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">APIOperation</a> apiOperation</pre>
+</li>
+<li class="blockList">
+<h4>headerAttributeCount</h4>
+<pre>int headerAttributeCount</pre>
+</li>
+<li class="blockList">
+<h4>requestAttributeCount</h4>
+<pre>int requestAttributeCount</pre>
+</li>
+<li class="blockListLast">
+<h4>responseAttributeCount</h4>
+<pre>int responseAttributeCount</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.APIOperationsResponse">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/rest/APIOperationsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.APIOperationsResponse</a> extends <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/rest/PagedResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">PagedResponse</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>responseObjects</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/rest/APIOperationResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">APIOperationResponse</a>&gt; responseObjects</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse">
 <!--   -->
 </a>
@@ -46105,9 +46205,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>noteLogs</h4>
 <pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/NoteLogs.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">NoteLogs</a> noteLogs</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>relatedMediaReferences</h4>
 <pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/RelatedMediaReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedMediaReferences</a> relatedMediaReferences</pre>
+</li>
+<li class="blockListLast">
+<h4>schema</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaType</a> schema</pre>
 </li>
 </ul>
 </li>
@@ -46280,13 +46384,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>meanings</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt; meanings</pre>
 </li>
-<li class="blockList">
+<li class="blockListLast">
 <h4>relatedAssets</h4>
 <pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a> relatedAssets</pre>
-</li>
-<li class="blockListLast">
-<h4>schema</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaType</a> schema</pre>
 </li>
 </ul>
 </li>
@@ -46403,6 +46503,54 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>connectorTypeBean</h4>
 <pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a> connectorTypeBean</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPIOperation">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/frameworks/connectors/properties/DeployedAPIOperation.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPIOperation</a> extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/APIOperation.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">APIOperation</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>headerAttributes</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/SchemaAttributes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">SchemaAttributes</a> headerAttributes</pre>
+</li>
+<li class="blockList">
+<h4>requestAttributes</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/SchemaAttributes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">SchemaAttributes</a> requestAttributes</pre>
+</li>
+<li class="blockListLast">
+<h4>responseAttributes</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/SchemaAttributes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">SchemaAttributes</a> responseAttributes</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPISchemaType">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/frameworks/connectors/properties/DeployedAPISchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPISchemaType</a> extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/APISchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">APISchemaType</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>apiOperations</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/APIOperations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">APIOperations</a> apiOperations</pre>
 </li>
 </ul>
 </li>
@@ -47654,40 +47802,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>confidenceGovernanceClassification</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a> confidenceGovernanceClassification</pre>
-</li>
-<li class="blockList">
-<h4>confidentialityGovernanceClassification</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a> confidentialityGovernanceClassification</pre>
-</li>
-<li class="blockList">
-<h4>criticalityGovernanceClassification</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a> criticalityGovernanceClassification</pre>
-</li>
-<li class="blockList">
-<h4>latestChange</h4>
-<pre>java.lang.String latestChange</pre>
-</li>
-<li class="blockList">
-<h4>latestChangeDetails</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a> latestChangeDetails</pre>
-</li>
-<li class="blockList">
 <h4>meanings</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt; meanings</pre>
 </li>
-<li class="blockList">
-<h4>retentionGovernanceClassification</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a> retentionGovernanceClassification</pre>
-</li>
-<li class="blockList">
+<li class="blockListLast">
 <h4>searchKeywords</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt; searchKeywords</pre>
-</li>
-<li class="blockListLast">
-<h4>securityTags</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a> securityTags</pre>
 </li>
 </ul>
 </li>
@@ -47732,7 +47852,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange</a> extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange</a> extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -48362,10 +48482,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h3>Serialized Fields</h3>
 <ul class="blockList">
-<li class="blockList">
-<h4>anchorGUID</h4>
-<pre>java.lang.String anchorGUID</pre>
-</li>
 <li class="blockList">
 <h4>description</h4>
 <pre>java.lang.String description</pre>

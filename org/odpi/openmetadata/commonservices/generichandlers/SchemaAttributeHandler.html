@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -377,6 +377,23 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttachedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">getAttachedSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;parentElementGUID,
+                           java.lang.String&nbsp;parentElementGUIDParameterName,
+                           java.lang.String&nbsp;schemaAttributeTypeName,
+                           java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
+                           int&nbsp;startFrom,
+                           int&nbsp;pageSize,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing,
+                           java.util.Date&nbsp;effectiveTime,
+                           java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Returns a list of schema attributes that are linked to a parent schema element.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">getNestedSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;schemaAttributeGUID,
                          java.lang.String&nbsp;schemaAttributeGUIDParameterName,
@@ -390,7 +407,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of schema attributes that are linked to a schema attribute via the NestedSchemaAttribute relationship.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">getNestedSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;schemaAttributeGUID,
@@ -407,7 +424,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of schema attributes that are linked to a schema attribute via the NestedSchemaAttribute relationship.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">getSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;schemaAttributeGUID,
@@ -423,7 +440,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Retrieve a specific schema attribute by GUID.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;typeGUID,
@@ -441,7 +458,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of specifically typed schema attributes with matching names - either display names or qualified names</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;typeGUID,
@@ -460,7 +477,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of specifically typed schema attributes with matching names - either display names or qualified names</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesForComplexSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">getSchemaAttributesForComplexSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
                                        java.lang.String&nbsp;schemaTypeGUID,
@@ -477,7 +494,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of schema attributes that are linked to a ComplexSchemaType via the AttributeForSchema relationship.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesForComplexSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">getSchemaAttributesForComplexSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
                                        java.lang.String&nbsp;schemaTypeGUID,
@@ -496,7 +513,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Returns a list of schema attributes that are linked to a ComplexSchemaType via the AttributeForSchema relationship.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaTypes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">removeSchemaTypes</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;externalSourceGUID,
@@ -511,7 +528,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Remove any links to schema types</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupQueryTargetRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">setupQueryTargetRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;externalSourceGUID,
@@ -533,7 +550,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Create a new query relationship for a derived schema element.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateQueryTargetRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateQueryTargetRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;externalSourceGUID,
@@ -556,7 +573,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Update the query properties for a query relationship for a derived schema element.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -574,7 +591,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Update a schema attribute</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,boolean,boolean,java.lang.String,int,int,int,int,boolean,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -619,7 +636,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Update the properties in a schema attribute.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -636,7 +653,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Update a schema attribute</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -1113,6 +1130,51 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <dd><code>parentElementGUID</code> - String   unique id for parent schema element.</dd>
 <dd><code>parentElementGUIDParameterName</code> - String name of the parameter supplying the guid.</dd>
 <dd><code>schemaAttributeTypeName</code> - subtype of schema attribute or null</dd>
+<dd><code>startFrom</code> - int      starting position for first returned element.</dd>
+<dd><code>pageSize</code> - int      maximum number of elements to return on the call.</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a schema attributes response</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - - the GUID is not recognized or the paging values are invalid or</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - - there is a problem retrieving the asset properties from the property server or</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
+<a id="getAttachedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAttachedSchemaAttributes</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="SchemaAttributeHandler.html" title="type parameter in SchemaAttributeHandler">SCHEMA_ATTRIBUTE</a>&gt;&nbsp;getAttachedSchemaAttributes&#8203;(java.lang.String&nbsp;userId,
+                                                                    java.lang.String&nbsp;parentElementGUID,
+                                                                    java.lang.String&nbsp;parentElementGUIDParameterName,
+                                                                    java.lang.String&nbsp;schemaAttributeTypeName,
+                                                                    java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
+                                                                    int&nbsp;startFrom,
+                                                                    int&nbsp;pageSize,
+                                                                    boolean&nbsp;forLineage,
+                                                                    boolean&nbsp;forDuplicateProcessing,
+                                                                    java.util.Date&nbsp;effectiveTime,
+                                                                    java.lang.String&nbsp;methodName)
+                                                             throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                    <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                                    <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
+ schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
+ retrieval is needed.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - String   userId of user making request.</dd>
+<dd><code>parentElementGUID</code> - String   unique id for parent schema element.</dd>
+<dd><code>parentElementGUIDParameterName</code> - String name of the parameter supplying the guid.</dd>
+<dd><code>schemaAttributeTypeName</code> - subtype of schema attribute or null</dd>
+<dd><code>serviceSupportedZones</code> - list of zone names for calling service</dd>
 <dd><code>startFrom</code> - int      starting position for first returned element.</dd>
 <dd><code>pageSize</code> - int      maximum number of elements to return on the call.</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -180,6 +180,18 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../rest/APIOperationsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">APIOperationsResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIOperations(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getAPIOperations</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                java.lang.String&nbsp;serviceURLName,
+                java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;parentSchemaTypeGUID,
+                int&nbsp;elementStart,
+                int&nbsp;maxElements)</code></th>
+<td class="colLast">
+<div class="block">Returns a list of schema attributes for a schema type.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/CommentsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">CommentsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetCommentReplies(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getAssetCommentReplies</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;serviceURLName,
@@ -192,7 +204,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of comments for the asset.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../rest/CommentsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">CommentsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetComments(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getAssetComments</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;serviceURLName,
@@ -204,7 +216,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of comments for the asset.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetForConnectionGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getAssetForConnectionGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;serviceURLName,
@@ -214,7 +226,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the unique identifier for the asset connected to the connection identified by the supplied guid.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../rest/AssetResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">AssetResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetSummary(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getAssetSummary</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;serviceURLName,
@@ -224,7 +236,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the basic information about the asset.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/CertificationsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">CertificationsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertifications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getCertifications</a></span>&#8203;(java.lang.String&nbsp;serverName,
                  java.lang.String&nbsp;serviceURLName,
@@ -236,7 +248,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of certifications for the asset.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../rest/AssetResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">AssetResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectedAssetSummary(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectedAssetSummary</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;serviceURLName,
@@ -247,7 +259,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the basic information about the asset.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ConnectionResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serviceURLName,
@@ -257,7 +269,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the connection object corresponding to the supplied connection GUID.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ConnectionResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectionByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serviceURLName,
@@ -267,7 +279,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the connection object corresponding to the supplied connection GUID.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ConnectionResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionForAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectionForAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serviceURLName,
@@ -277,7 +289,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the connection corresponding to the supplied asset GUID.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../rest/ConnectionsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ConnectionsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnections(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getConnections</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;serviceURLName,
@@ -289,7 +301,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of connections for the asset.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/ExternalIdentifiersResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ExternalIdentifiersResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalIdentifiers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getExternalIdentifiers</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;serviceURLName,
@@ -301,7 +313,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of external identifiers for the asset.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../rest/ExternalReferencesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">ExternalReferencesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getExternalReferences</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serviceURLName,
@@ -313,7 +325,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of external references for the asset.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">InformalTagsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInformalTags(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getInformalTags</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;serviceURLName,
@@ -325,7 +337,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of informal tags for the asset.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../rest/LocationsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">LocationsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownLocations(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getKnownLocations</a></span>&#8203;(java.lang.String&nbsp;serverName,
                  java.lang.String&nbsp;serviceURLName,
@@ -337,7 +349,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of known locations for the asset.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/LicensesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">LicensesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenses(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getLicenses</a></span>&#8203;(java.lang.String&nbsp;serverName,
            java.lang.String&nbsp;serviceURLName,
@@ -349,7 +361,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of licenses for the asset.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../rest/LikesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">LikesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLikes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getLikes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;serviceURLName,
@@ -361,7 +373,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of likes for the asset.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/MoreInformationResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">MoreInformationResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getMoreInformation</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serviceURLName,
@@ -373,7 +385,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of related Referenceables that provide more information for this asset, schema, ...</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">NoteLogsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNoteLogs(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getNoteLogs</a></span>&#8203;(java.lang.String&nbsp;serverName,
            java.lang.String&nbsp;serviceURLName,
@@ -385,7 +397,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of note logs for the asset.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/NotesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">NotesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNotes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getNotes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;serviceURLName,
@@ -397,7 +409,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of notes for the asset.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../rest/RatingsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">RatingsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRatings(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getRatings</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;serviceURLName,
@@ -409,7 +421,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of ratings for the asset.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/RelatedAssetsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">RelatedAssetsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedAssets(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getRelatedAssets</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;serviceURLName,
@@ -421,7 +433,7 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of related assets for the asset.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../rest/RelatedMediaReferencesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">RelatedMediaReferencesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedMediaReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getRelatedMediaReferences</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;serviceURLName,
@@ -433,12 +445,12 @@ extends java.lang.Object</pre>
 <div class="block">Returns the list of related media references for the asset.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/SchemaAttributesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">SchemaAttributesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serviceURLName,
                    java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;schemaTypeGUID,
+                   java.lang.String&nbsp;parentSchemaGUID,
                    int&nbsp;elementStart,
                    int&nbsp;maxElements)</code></th>
 <td class="colLast">
@@ -1279,10 +1291,10 @@ public&nbsp;<a href="../../rest/RelatedMediaReferencesResponse.html" title="clas
 <a id="getSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getSchemaAttributes</h4>
-<pre class="methodSignature">@GetMapping(path="/assets/schemas/{schemaTypeGUID}/schema-attributes")
+<pre class="methodSignature">@GetMapping(path="/assets/schemas/{parentSchemaGUID}/schema-attributes")
 public&nbsp;<a href="../../rest/SchemaAttributesResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">SchemaAttributesResponse</a>&nbsp;getSchemaAttributes&#8203;(@PathVariable
                                                     java.lang.String&nbsp;serverName,
                                                     @PathVariable
@@ -1290,7 +1302,7 @@ public&nbsp;<a href="../../rest/SchemaAttributesResponse.html" title="class in o
                                                     @PathVariable
                                                     java.lang.String&nbsp;userId,
                                                     @PathVariable
-                                                    java.lang.String&nbsp;schemaTypeGUID,
+                                                    java.lang.String&nbsp;parentSchemaGUID,
                                                     @RequestParam
                                                     int&nbsp;elementStart,
                                                     @RequestParam
@@ -1301,7 +1313,44 @@ public&nbsp;<a href="../../rest/SchemaAttributesResponse.html" title="class in o
 <dd><code>serverName</code> - String   name of server instance to call.</dd>
 <dd><code>serviceURLName</code> - String   name of the service that created the connector that issued this request.</dd>
 <dd><code>userId</code> - String   userId of user making request.</dd>
-<dd><code>schemaTypeGUID</code> - String   unique id for containing schema type.</dd>
+<dd><code>parentSchemaGUID</code> - String   unique id for containing schema type.</dd>
+<dd><code>elementStart</code> - int      starting position for fist returned element.</dd>
+<dd><code>maxElements</code> - int      maximum number of elements to return on the call.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a schema attributes response or
+ InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+ UnrecognizedGUIDException - the GUID is null or invalid or
+ PropertyServerException - there is a problem retrieving the asset properties from the property server or
+ UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
+<a id="getAPIOperations(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getAPIOperations</h4>
+<pre class="methodSignature">@GetMapping(path="/assets/schemas/apis/{parentSchemaTypeGUID}/api-operations")
+public&nbsp;<a href="../../rest/APIOperationsResponse.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest">APIOperationsResponse</a>&nbsp;getAPIOperations&#8203;(@PathVariable
+                                              java.lang.String&nbsp;serverName,
+                                              @PathVariable
+                                              java.lang.String&nbsp;serviceURLName,
+                                              @PathVariable
+                                              java.lang.String&nbsp;userId,
+                                              @PathVariable
+                                              java.lang.String&nbsp;parentSchemaTypeGUID,
+                                              @RequestParam
+                                              int&nbsp;elementStart,
+                                              @RequestParam
+                                              int&nbsp;maxElements)</pre>
+<div class="block">Returns a list of schema attributes for a schema type.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - String   name of server instance to call.</dd>
+<dd><code>serviceURLName</code> - String   name of the service that created the connector that issued this request.</dd>
+<dd><code>userId</code> - String   userId of user making request.</dd>
+<dd><code>parentSchemaTypeGUID</code> - String   unique id for containing schema element.</dd>
 <dd><code>elementStart</code> - int      starting position for fist returned element.</dd>
 <dd><code>maxElements</code> - int      maximum number of elements to return on the call.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>

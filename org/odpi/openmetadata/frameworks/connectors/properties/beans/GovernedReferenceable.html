@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -192,48 +192,13 @@ extends <a href="Referenceable.html" title="class in org.odpi.openmetadata.frame
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#confidenceGovernanceClassification">confidenceGovernanceClassification</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected <a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#confidentialityGovernanceClassification">confidentialityGovernanceClassification</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#criticalityGovernanceClassification">criticalityGovernanceClassification</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#latestChange">latestChange</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#latestChangeDetails">latestChangeDetails</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>protected java.util.List&lt;<a href="Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#meanings">meanings</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retentionGovernanceClassification">retentionGovernanceClassification</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>protected java.util.List&lt;<a href="SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#searchKeywords">searchKeywords</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#securityTags">securityTags</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -312,139 +277,41 @@ extends <a href="Referenceable.html" title="class in org.odpi.openmetadata.frame
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConfidenceGovernanceClassification()">getConfidenceGovernanceClassification</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the classification that defines how confident a user should be in the quality of the contents of this referenceable are.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConfidentialityGovernanceClassification()">getConfidentialityGovernanceClassification</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the classification that defines how confidential the contents of this referenceable are.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCriticalityGovernanceClassification()">getCriticalityGovernanceClassification</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the classification that defines how critical this referenceable is to the business.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLatestChange()">getLatestChange</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return a short description of the last change to the asset.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLatestChangeDetails()">getLatestChangeDetails</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return full details of the latest change to the asset universe.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeanings()">getMeanings</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the assigned meanings for this metadata entity.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code><a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRetentionGovernanceClassification()">getRetentionGovernanceClassification</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the classification that defines when this referenceable will be archived and then permanently deleted.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSearchKeywords()">getSearchKeywords</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a list of keywords that will help an asset consumer to locate this asset.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSecurityTags()">getSecurityTags</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the information used by security engines to secure access to the asset's content.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setConfidenceGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidenceGovernanceClassification)">setConfidenceGovernanceClassification</a></span>&#8203;(<a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a>&nbsp;confidenceGovernanceClassification)</code></th>
-<td class="colLast">
-<div class="block">Set up the classification that defines how confident a user should be in the quality of the contents of this referenceable are.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setConfidentialityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidentialityGovernanceClassification)">setConfidentialityGovernanceClassification</a></span>&#8203;(<a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a>&nbsp;confidentialityGovernanceClassification)</code></th>
-<td class="colLast">
-<div class="block">Set up the classification that defines how confidential the contents of this referenceable are.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCriticalityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.CriticalityGovernanceClassification)">setCriticalityGovernanceClassification</a></span>&#8203;(<a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a>&nbsp;criticalityGovernanceClassification)</code></th>
-<td class="colLast">
-<div class="block">Set up the classification that defines how critical this referenceable is to the business.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLatestChange(java.lang.String)">setLatestChange</a></span>&#8203;(java.lang.String&nbsp;latestChange)</code></th>
-<td class="colLast">
-<div class="block">Set up a short description of the last change to the asset.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLatestChangeDetails(org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange)">setLatestChangeDetails</a></span>&#8203;(<a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a>&nbsp;latestChangeDetails)</code></th>
-<td class="colLast">
-<div class="block">Set up full details of the latest change to the asset universe.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMeanings(java.util.List)">setMeanings</a></span>&#8203;(java.util.List&lt;<a href="Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt;&nbsp;meanings)</code></th>
 <td class="colLast">
 <div class="block">Set up the assigned meanings for this metadata entity.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRetentionGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.RetentionGovernanceClassification)">setRetentionGovernanceClassification</a></span>&#8203;(<a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a>&nbsp;retentionGovernanceClassification)</code></th>
-<td class="colLast">
-<div class="block">Set up the classification that defines when this referenceable will be archived and then permanently deleted.</div>
-</td>
-</tr>
-<tr id="i18" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSearchKeywords(java.util.List)">setSearchKeywords</a></span>&#8203;(java.util.List&lt;<a href="SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt;&nbsp;searchKeywords)</code></th>
 <td class="colLast">
 <div class="block">Set up a list of keywords that will help an asset consumer to locate this asset.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSecurityTags(org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags)">setSecurityTags</a></span>&#8203;(<a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a>&nbsp;securityTags)</code></th>
-<td class="colLast">
-<div class="block">Set up the information used by security engines to secure access to the asset's content.</div>
-</td>
-</tr>
-<tr id="i20" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -519,76 +386,13 @@ extends <a href="Referenceable.html" title="class in org.odpi.openmetadata.frame
 <pre>protected&nbsp;java.util.List&lt;<a href="Meaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Meaning</a>&gt; meanings</pre>
 </li>
 </ul>
-<a id="securityTags">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>securityTags</h4>
-<pre>protected&nbsp;<a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a> securityTags</pre>
-</li>
-</ul>
 <a id="searchKeywords">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>searchKeywords</h4>
-<pre>protected&nbsp;java.util.List&lt;<a href="SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt; searchKeywords</pre>
-</li>
-</ul>
-<a id="latestChange">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>latestChange</h4>
-<pre>protected&nbsp;java.lang.String latestChange</pre>
-</li>
-</ul>
-<a id="latestChangeDetails">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>latestChangeDetails</h4>
-<pre>protected&nbsp;<a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a> latestChangeDetails</pre>
-</li>
-</ul>
-<a id="confidentialityGovernanceClassification">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>confidentialityGovernanceClassification</h4>
-<pre>protected&nbsp;<a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a> confidentialityGovernanceClassification</pre>
-</li>
-</ul>
-<a id="confidenceGovernanceClassification">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>confidenceGovernanceClassification</h4>
-<pre>protected&nbsp;<a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a> confidenceGovernanceClassification</pre>
-</li>
-</ul>
-<a id="criticalityGovernanceClassification">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>criticalityGovernanceClassification</h4>
-<pre>protected&nbsp;<a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a> criticalityGovernanceClassification</pre>
-</li>
-</ul>
-<a id="retentionGovernanceClassification">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>retentionGovernanceClassification</h4>
-<pre>protected&nbsp;<a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a> retentionGovernanceClassification</pre>
+<h4>searchKeywords</h4>
+<pre>protected&nbsp;java.util.List&lt;<a href="SearchKeyword.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SearchKeyword</a>&gt; searchKeywords</pre>
 </li>
 </ul>
 </li>
@@ -663,34 +467,6 @@ extends <a href="Referenceable.html" title="class in org.odpi.openmetadata.frame
 </dl>
 </li>
 </ul>
-<a id="getSecurityTags()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getSecurityTags</h4>
-<pre class="methodSignature">public&nbsp;<a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a>&nbsp;getSecurityTags()</pre>
-<div class="block">Return the information used by security engines to secure access to the asset's content.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>security labels and properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setSecurityTags(org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setSecurityTags</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setSecurityTags&#8203;(<a href="SecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SecurityTags</a>&nbsp;securityTags)</pre>
-<div class="block">Set up the information used by security engines to secure access to the asset's content.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>securityTags</code> - security labels and properties</dd>
-</dl>
-</li>
-</ul>
 <a id="getSearchKeywords()">
 <!--   -->
 </a>
@@ -716,175 +492,6 @@ extends <a href="Referenceable.html" title="class in org.odpi.openmetadata.frame
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>searchKeywords</code> - list of strings</dd>
-</dl>
-</li>
-</ul>
-<a id="getLatestChange()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getLatestChange</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getLatestChange()</pre>
-<div class="block">Return a short description of the last change to the asset.  If it is null it means
- the agent that last updated the asset did not provide a description.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string description</dd>
-</dl>
-</li>
-</ul>
-<a id="setLatestChange(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setLatestChange</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setLatestChange&#8203;(java.lang.String&nbsp;latestChange)</pre>
-<div class="block">Set up a short description of the last change to the asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>latestChange</code> - string description</dd>
-</dl>
-</li>
-</ul>
-<a id="getLatestChangeDetails()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getLatestChangeDetails</h4>
-<pre class="methodSignature">public&nbsp;<a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a>&nbsp;getLatestChangeDetails()</pre>
-<div class="block">Return full details of the latest change to the asset universe.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>latest change properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setLatestChangeDetails(org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setLatestChangeDetails</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setLatestChangeDetails&#8203;(<a href="LatestChange.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChange</a>&nbsp;latestChangeDetails)</pre>
-<div class="block">Set up full details of the latest change to the asset universe.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>latestChangeDetails</code> - latest change properties</dd>
-</dl>
-</li>
-</ul>
-<a id="getConfidentialityGovernanceClassification()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getConfidentialityGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;<a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a>&nbsp;getConfidentialityGovernanceClassification()</pre>
-<div class="block">Return the classification that defines how confidential the contents of this referenceable are.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>confidentiality classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setConfidentialityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidentialityGovernanceClassification)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setConfidentialityGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setConfidentialityGovernanceClassification&#8203;(<a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidentialityGovernanceClassification</a>&nbsp;confidentialityGovernanceClassification)</pre>
-<div class="block">Set up the classification that defines how confidential the contents of this referenceable are.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>confidentialityGovernanceClassification</code> - confidentiality classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="getConfidenceGovernanceClassification()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getConfidenceGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;<a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a>&nbsp;getConfidenceGovernanceClassification()</pre>
-<div class="block">Return the classification that defines how confident a user should be in the quality of the contents of this referenceable are.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>confidence classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setConfidenceGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidenceGovernanceClassification)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setConfidenceGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setConfidenceGovernanceClassification&#8203;(<a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceGovernanceClassification</a>&nbsp;confidenceGovernanceClassification)</pre>
-<div class="block">Set up the classification that defines how confident a user should be in the quality of the contents of this referenceable are.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>confidenceGovernanceClassification</code> - confidence classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="getCriticalityGovernanceClassification()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getCriticalityGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;<a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a>&nbsp;getCriticalityGovernanceClassification()</pre>
-<div class="block">Return the classification that defines how critical this referenceable is to the business.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>criticality classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setCriticalityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.CriticalityGovernanceClassification)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setCriticalityGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setCriticalityGovernanceClassification&#8203;(<a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityGovernanceClassification</a>&nbsp;criticalityGovernanceClassification)</pre>
-<div class="block">Set up the classification that defines how critical this referenceable is to the business.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>criticalityGovernanceClassification</code> - criticality classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="getRetentionGovernanceClassification()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getRetentionGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;<a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a>&nbsp;getRetentionGovernanceClassification()</pre>
-<div class="block">Return the classification that defines when this referenceable will be archived and then permanently deleted.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>retention classification properties</dd>
-</dl>
-</li>
-</ul>
-<a id="setRetentionGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.RetentionGovernanceClassification)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setRetentionGovernanceClassification</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setRetentionGovernanceClassification&#8203;(<a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionGovernanceClassification</a>&nbsp;retentionGovernanceClassification)</pre>
-<div class="block">Set up the classification that defines when this referenceable will be archived and then permanently deleted.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>retentionGovernanceClassification</code> - retention classification properties</dd>
 </dl>
 </li>
 </ul>

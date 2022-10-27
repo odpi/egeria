@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
+var data = {"i0":6,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -207,30 +207,25 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#anchorGUID">anchorGUID</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#description">description</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#displayName">displayName</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#expression">expression</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>protected boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isCalculatedValue">isCalculatedValue</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isDeprecated">isDeprecated</a></span></code></th>
 <td class="colLast">&nbsp;</td>
@@ -241,7 +236,7 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="GovernedReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">GovernedReferenceable</a></h3>
-<code><a href="GovernedReferenceable.html#confidenceGovernanceClassification">confidenceGovernanceClassification</a>, <a href="GovernedReferenceable.html#confidentialityGovernanceClassification">confidentialityGovernanceClassification</a>, <a href="GovernedReferenceable.html#criticalityGovernanceClassification">criticalityGovernanceClassification</a>, <a href="GovernedReferenceable.html#latestChange">latestChange</a>, <a href="GovernedReferenceable.html#latestChangeDetails">latestChangeDetails</a>, <a href="GovernedReferenceable.html#meanings">meanings</a>, <a href="GovernedReferenceable.html#retentionGovernanceClassification">retentionGovernanceClassification</a>, <a href="GovernedReferenceable.html#searchKeywords">searchKeywords</a>, <a href="GovernedReferenceable.html#securityTags">securityTags</a></code></li>
+<code><a href="GovernedReferenceable.html#meanings">meanings</a>, <a href="GovernedReferenceable.html#searchKeywords">searchKeywords</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
@@ -326,96 +321,82 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAnchorGUID()">getAnchorGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier of the asset that this schema is ultimately connected to.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the stored description property for the schema element.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the simple name of the schema element.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExpression()">getExpression</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the expression used to calculate the value for the schema attribute.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIsDeprecated()">getIsDeprecated</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Is the schema element deprecated?</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a number that represents the contents of this object.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isCalculatedValue()">isCalculatedValue</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a boolean to indicate if the value for this attribute is stored or calculated.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAnchorGUID(java.lang.String)">setAnchorGUID</a></span>&#8203;(java.lang.String&nbsp;anchorGUID)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique identifier of the asset that this schema is ultimately connected to.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCalculatedValue(boolean)">setCalculatedValue</a></span>&#8203;(boolean&nbsp;calculatedValue)</code></th>
 <td class="colLast">
 <div class="block">Set up a boolean to indicate if the value for this attribute is stored or calculated.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored description property for the schema element.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
 <div class="block">Set up the simple name of the schema element.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExpression(java.lang.String)">setExpression</a></span>&#8203;(java.lang.String&nbsp;expression)</code></th>
 <td class="colLast">
 <div class="block">Set up the expression used to calculate the value for the schema attribute.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIsDeprecated(boolean)">setIsDeprecated</a></span>&#8203;(boolean&nbsp;deprecated)</code></th>
 <td class="colLast">
 <div class="block">Set whether the schema element deprecated or not.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -428,7 +409,7 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="GovernedReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">GovernedReferenceable</a></h3>
-<code><a href="GovernedReferenceable.html#getConfidenceGovernanceClassification()">getConfidenceGovernanceClassification</a>, <a href="GovernedReferenceable.html#getConfidentialityGovernanceClassification()">getConfidentialityGovernanceClassification</a>, <a href="GovernedReferenceable.html#getCriticalityGovernanceClassification()">getCriticalityGovernanceClassification</a>, <a href="GovernedReferenceable.html#getLatestChange()">getLatestChange</a>, <a href="GovernedReferenceable.html#getLatestChangeDetails()">getLatestChangeDetails</a>, <a href="GovernedReferenceable.html#getMeanings()">getMeanings</a>, <a href="GovernedReferenceable.html#getRetentionGovernanceClassification()">getRetentionGovernanceClassification</a>, <a href="GovernedReferenceable.html#getSearchKeywords()">getSearchKeywords</a>, <a href="GovernedReferenceable.html#getSecurityTags()">getSecurityTags</a>, <a href="GovernedReferenceable.html#setConfidenceGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidenceGovernanceClassification)">setConfidenceGovernanceClassification</a>, <a href="GovernedReferenceable.html#setConfidentialityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfidentialityGovernanceClassification)">setConfidentialityGovernanceClassification</a>, <a href="GovernedReferenceable.html#setCriticalityGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.CriticalityGovernanceClassification)">setCriticalityGovernanceClassification</a>, <a href="GovernedReferenceable.html#setLatestChange(java.lang.String)">setLatestChange</a>, <a href="GovernedReferenceable.html#setLatestChangeDetails(org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange)">setLatestChangeDetails</a>, <a href="GovernedReferenceable.html#setMeanings(java.util.List)">setMeanings</a>, <a href="GovernedReferenceable.html#setRetentionGovernanceClassification(org.odpi.openmetadata.frameworks.connectors.properties.beans.RetentionGovernanceClassification)">setRetentionGovernanceClassification</a>, <a href="GovernedReferenceable.html#setSearchKeywords(java.util.List)">setSearchKeywords</a>, <a href="GovernedReferenceable.html#setSecurityTags(org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags)">setSecurityTags</a></code></li>
+<code><a href="GovernedReferenceable.html#getMeanings()">getMeanings</a>, <a href="GovernedReferenceable.html#getSearchKeywords()">getSearchKeywords</a>, <a href="GovernedReferenceable.html#setMeanings(java.util.List)">setMeanings</a>, <a href="GovernedReferenceable.html#setSearchKeywords(java.util.List)">setSearchKeywords</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
@@ -513,15 +494,6 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 <li class="blockList">
 <h4>description</h4>
 <pre>protected&nbsp;java.lang.String description</pre>
-</li>
-</ul>
-<a id="anchorGUID">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>anchorGUID</h4>
-<pre>protected&nbsp;java.lang.String anchorGUID</pre>
 </li>
 </ul>
 <a id="isCalculatedValue">
@@ -667,34 +639,6 @@ extends <a href="GovernedReferenceable.html" title="class in org.odpi.openmetada
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>description</code> - string description</dd>
-</dl>
-</li>
-</ul>
-<a id="getAnchorGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAnchorGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAnchorGUID()</pre>
-<div class="block">Return the unique identifier of the asset that this schema is ultimately connected to.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="setAnchorGUID(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setAnchorGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAnchorGUID&#8203;(java.lang.String&nbsp;anchorGUID)</pre>
-<div class="block">Set up the unique identifier of the asset that this schema is ultimately connected to.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>anchorGUID</code> - string guid</dd>
 </dl>
 </li>
 </ul>

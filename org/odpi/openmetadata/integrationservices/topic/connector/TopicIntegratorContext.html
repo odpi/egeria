@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10,"i92":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -545,20 +545,27 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i44" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventBrokerGUID()">getEventBrokerGUID</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier of the event broker's entity that corresponds to the eventBrokerName.</div>
+</td>
+</tr>
+<tr id="i45" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventBrokerName()">getEventBrokerName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the qualified name of the event broker that is supplied in the configuration
  document.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypeByGUID(java.lang.String)">getEventTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the event type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesByName(java.lang.String,int,int)">getEventTypesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    int&nbsp;startFrom,
@@ -567,7 +574,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of event type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesForEventSet(java.lang.String,int,int)">getEventTypesForEventSet</a></span>&#8203;(java.lang.String&nbsp;eventSetGUID,
                         int&nbsp;startFrom,
@@ -576,7 +583,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of event types associated with a topic.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesForTopic(java.lang.String,int,int)">getEventTypesForTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
                      int&nbsp;startFrom,
@@ -585,7 +592,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of event types associated with a topic.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyTopics(int,int)">getMyTopics</a></span>&#8203;(int&nbsp;startFrom,
            int&nbsp;pageSize)</code></th>
@@ -593,7 +600,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of topics created by this caller.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedAttributes(java.lang.String,int,int)">getNestedAttributes</a></span>&#8203;(java.lang.String&nbsp;parentSchemaElementGUID,
                    int&nbsp;startFrom,
@@ -602,7 +609,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReferenceValues(java.lang.String,int,int)">getReferenceValues</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
                   int&nbsp;startFrom,
@@ -611,14 +618,14 @@ extends java.lang.Object</pre>
 <div class="block">Return information about the valid values linked as reference value tags to an element.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,int,int)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                          java.lang.String&nbsp;typeName,
@@ -628,14 +635,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i55" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,int,int)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    java.lang.String&nbsp;typeName,
@@ -645,7 +652,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i56" class="altColor">
+<tr id="i57" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;parentElementGUID,
                        java.lang.String&nbsp;parentElementTypeName)</code></th>
@@ -653,14 +660,14 @@ extends java.lang.Object</pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
-<tr id="i57" class="rowColor">
+<tr id="i58" class="altColor">
 <td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetsForValidValue(java.lang.String,int,int)">getSetsForValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
                     int&nbsp;startFrom,
@@ -669,14 +676,14 @@ extends java.lang.Object</pre>
 <div class="block">Page through the list of valid value sets that a valid value definition/set belongs to.</div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i60" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopicByGUID(java.lang.String)">getTopicByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the topic metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopicsByName(java.lang.String,int,int)">getTopicsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                int&nbsp;startFrom,
@@ -685,14 +692,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of topic metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByGUID(java.lang.String)">getValidValueByGUID</a></span>&#8203;(java.lang.String&nbsp;validValueGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesByName(java.lang.String,int,int)">getValidValuesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                     int&nbsp;startFrom,
@@ -701,7 +708,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i64" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueSetElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetByName(java.lang.String,int,int)">getValidValueSetByName</a></span>&#8203;(java.lang.String&nbsp;name,
                       int&nbsp;startFrom,
@@ -710,7 +717,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i65" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetMembers(java.lang.String,int,int)">getValidValueSetMembers</a></span>&#8203;(java.lang.String&nbsp;validValueSetGUID,
                        int&nbsp;startFrom,
@@ -719,42 +726,42 @@ extends java.lang.Object</pre>
 <div class="block">Page through the members of a valid value set.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i66" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesForConsumer(java.lang.String)">getValidValuesForConsumer</a></span>&#8203;(java.lang.String&nbsp;elementGUID)</code></th>
 <td class="colLast">
 <div class="block">Return information about the valid value set linked to an element as its set of valid values.</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishTopic(java.lang.String)">publishTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the topic asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/datamanager/api/DataManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DataManagerEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener object that will be passed each of the events published by the Data Manager OMAS.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnection(java.lang.String)">removeConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a connection.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEndpoint(java.lang.String)">removeEndpoint</a></span>&#8203;(java.lang.String&nbsp;endpointGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a endpoint.</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEventType(java.lang.String,java.lang.String)">removeEventType</a></span>&#8203;(java.lang.String&nbsp;eventTypeGUID,
                java.lang.String&nbsp;qualifiedName)</code></th>
@@ -762,21 +769,21 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing an event type.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i73" class="rowColor">
+<tr id="i74" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeTopic(java.lang.String,java.lang.String)">removeTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
            java.lang.String&nbsp;qualifiedName)</code></th>
@@ -784,21 +791,21 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a topic.</div>
 </td>
 </tr>
-<tr id="i74" class="altColor">
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeValidValue(java.lang.String)">removeValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a valid value.</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEventBrokerIsHome(boolean)">setEventBrokerIsHome</a></span>&#8203;(boolean&nbsp;eventBrokerIsHome)</code></th>
 <td class="colLast">
 <div class="block">Set up the flag that controls the ownership of metadata created for this Event Broker.</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String)">setupAssetConnection</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                     java.lang.String&nbsp;assetSummary,
@@ -807,7 +814,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between an asset and its connection.</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupConnectorType(java.lang.String,java.lang.String)">setupConnectorType</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                   java.lang.String&nbsp;connectorTypeGUID)</code></th>
@@ -815,7 +822,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a connection and a connector type.</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEmbeddedConnection(java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)">setupEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                        int&nbsp;position,
@@ -826,7 +833,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a virtual connection and an embedded connection.</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEndpoint(java.lang.String,java.lang.String)">setupEndpoint</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
              java.lang.String&nbsp;endpointGUID)</code></th>
@@ -834,7 +841,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a connection and an endpoint.</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupReferenceValueTag(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties,java.lang.String)">setupReferenceValueTag</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
                       <a href="../../../accessservices/datamanager/properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties,
@@ -844,7 +851,7 @@ extends java.lang.Object</pre>
  the valid value is a semiformal tag/classification.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String)">setupSchemaType</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                java.lang.String&nbsp;schemaAttributeGUID,
@@ -853,7 +860,7 @@ extends java.lang.Object</pre>
 <div class="block">Connect a schema type to a schema attribute.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupValidValueMember(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties,java.lang.String)">setupValidValueMember</a></span>&#8203;(java.lang.String&nbsp;validValueSetGUID,
                      <a href="../../../accessservices/datamanager/properties/ValidValueMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueMembershipProperties</a>&nbsp;properties,
@@ -862,7 +869,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a membership relationship between a validValue and a validValueSet that it belongs to.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupValidValues(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties,java.lang.String)">setupValidValues</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
                 <a href="../../../accessservices/datamanager/properties/ValidValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueAssignmentProperties</a>&nbsp;properties,
@@ -872,7 +879,7 @@ extends java.lang.Object</pre>
  the valid value defines the values that can be stored in the data item that the element represents.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnection(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties)">updateConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -881,7 +888,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a connection.</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(boolean,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)">updateEndpoint</a></span>&#8203;(boolean&nbsp;isMergeUpdate,
               java.lang.String&nbsp;endpointGUID,
@@ -890,7 +897,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing an endpoint.</div>
 </td>
 </tr>
-<tr id="i86" class="altColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEventType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties)">updateEventType</a></span>&#8203;(java.lang.String&nbsp;eventTypeGUID,
                boolean&nbsp;isMergeUpdate,
@@ -899,7 +906,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing an event type.</div>
 </td>
 </tr>
-<tr id="i87" class="rowColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID,
                      boolean&nbsp;isMergeUpdate,
@@ -908,7 +915,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i88" class="altColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -917,7 +924,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i89" class="rowColor">
+<tr id="i90" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTopic(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties)">updateTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
            boolean&nbsp;isMergeUpdate,
@@ -926,7 +933,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a topic.</div>
 </td>
 </tr>
-<tr id="i90" class="altColor">
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateValidValue(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)">updateValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -935,7 +942,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a valid value.</div>
 </td>
 </tr>
-<tr id="i91" class="rowColor">
+<tr id="i92" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawTopic(java.lang.String)">withdrawTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID)</code></th>
 <td class="colLast">
@@ -1011,6 +1018,20 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getEventBrokerName()</pre>
 <div class="block">Return the qualified name of the event broker that is supplied in the configuration
  document.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
+<a id="getEventBrokerGUID()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getEventBrokerGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getEventBrokerGUID()</pre>
+<div class="block">Return the unique identifier of the event broker's entity that corresponds to the eventBrokerName.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>string name</dd>

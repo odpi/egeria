@@ -397,7 +397,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
             <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
             <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></th>
 <td class="colLast">
-<div class="block">Change the type of an existing entity.</div>
+<div class="block">Change the type for an existing entity.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
@@ -407,7 +407,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                   <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
                   <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></th>
 <td class="colLast">
-<div class="block">Change the type of an existing relationship.</div>
+<div class="block">Change the type for an existing relationship.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -604,7 +604,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Save a new entity that is sourced from an external technology.  The external
  technology is identified by a GUID and a name.  These can be recorded in a
- Software Server Capability (guid and qualifiedName respectively.
+ Software Server Capability (guid and qualifiedName respectively).
  The new entity is assigned a new GUID and put
  in the requested state.  The new entity is returned.</div>
 <dl>
@@ -732,10 +732,10 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                  java.lang.String&nbsp;typeDefName,
                                  java.lang.String&nbsp;obsoleteEntityGUID)
                           throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
-<div class="block">Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+<div class="block">Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
  on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
  reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
- To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+ To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
  The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
  this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.</div>
 <dl>
@@ -965,7 +965,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                      throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Save a new relationship that is sourced from an external technology.  The external
  technology is identified by a GUID and a name.  These can be recorded in a
- Software Server Capability (guid and qualifiedName respectively.
+ Software Server Capability (guid and qualifiedName respectively).
  The new relationship is assigned a new GUID and put
  in the requested state.  The new relationship is returned.</div>
 <dl>
@@ -1072,7 +1072,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                        java.lang.String&nbsp;obsoleteRelationshipGUID)
                                 throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
- DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+ DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
  metadata collection, use purgeRelationship().</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -1180,7 +1180,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
                                  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)
                           throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
-<div class="block">Change the type of an existing entity.  Typically this action is taken to move an entity's
+<div class="block">Change the type for an existing entity.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type and the properties adjusted.</div>
 <dl>
@@ -1275,7 +1275,7 @@ extends <a href="../../inmemory/repositoryconnector/InMemoryOMRSMetadataCollecti
                                        <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
                                        <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)
                                 throws <a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
-<div class="block">Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+<div class="block">Change the type for an existing relationship.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>

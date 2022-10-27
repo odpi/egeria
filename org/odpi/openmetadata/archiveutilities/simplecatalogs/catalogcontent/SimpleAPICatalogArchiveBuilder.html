@@ -153,7 +153,8 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String)">SimpleAPICatalogArchiveBuilder</a></span>&#8203;(java.lang.String&nbsp;archiveRootName)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String)">SimpleAPICatalogArchiveBuilder</a></span>&#8203;(java.lang.String&nbsp;archiveName,
+                              java.lang.String&nbsp;archiveRootName)</code></th>
 <td class="colLast">
 <div class="block">Constructor pushes all archive header values to the superclass</div>
 </td>
@@ -180,7 +181,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOpenMetadataArchive()">getOpenMetadataArchive</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the open metadata type archive containing all of the elements extracted from the connector
+<div class="block">Returns the open metadata type archive containing all the elements extracted from the connector
  providers of the featured open connectors.</div>
 </td>
 </tr>
@@ -208,17 +209,19 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>SimpleAPICatalogArchiveBuilder</h4>
-<pre>public&nbsp;SimpleAPICatalogArchiveBuilder&#8203;(java.lang.String&nbsp;archiveRootName)</pre>
+<pre>public&nbsp;SimpleAPICatalogArchiveBuilder&#8203;(java.lang.String&nbsp;archiveName,
+                                      java.lang.String&nbsp;archiveRootName)</pre>
 <div class="block">Constructor pushes all archive header values to the superclass</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>archiveRootName</code> - common name for the guid map</dd>
+<dd><code>archiveName</code> - name of the open metadata archive metadata collection.</dd>
+<dd><code>archiveRootName</code> - non-spaced root name of the open metadata GUID map.</dd>
 </dl>
 </li>
 </ul>
@@ -239,7 +242,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getOpenMetadataArchive</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;getOpenMetadataArchive()</pre>
-<div class="block">Returns the open metadata type archive containing all of the elements extracted from the connector
+<div class="block">Returns the open metadata type archive containing all the elements extracted from the connector
  providers of the featured open connectors.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>

@@ -755,8 +755,9 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
                           java.lang.String&nbsp;archiveGUID,
+                          java.lang.String&nbsp;archiveName,
                           java.lang.String&nbsp;archiveRootName,
                           java.lang.String&nbsp;originatorName,
                           java.util.Date&nbsp;creationDate,
@@ -767,13 +768,43 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
                           java.lang.String&nbsp;archiveGUID,
+                          java.lang.String&nbsp;archiveName,
                           java.lang.String&nbsp;archiveRootName,
                           java.lang.String&nbsp;originatorName,
                           java.util.Date&nbsp;creationDate,
                           long&nbsp;versionNumber,
                           java.lang.String&nbsp;versionName,
+                          <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType,
+                          java.lang.String&nbsp;license)</code></th>
+<td class="colLast">
+<div class="block">Typical constructor passes parameters used to build the open metadata archive's property header.</div>
+</td>
+</tr>
+<tr class="altColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                          java.lang.String&nbsp;archiveGUID,
+                          java.lang.String&nbsp;archiveName,
+                          java.lang.String&nbsp;originatorName,
+                          java.util.Date&nbsp;creationDate,
+                          long&nbsp;versionNumber,
+                          java.lang.String&nbsp;versionName,
+                          java.lang.String&nbsp;guidMapFileName)</code></th>
+<td class="colLast">
+<div class="block">Constructor passes parameters used to build the open metadata archive's property header.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                          java.lang.String&nbsp;archiveGUID,
+                          java.lang.String&nbsp;archiveName,
+                          java.lang.String&nbsp;originatorName,
+                          java.util.Date&nbsp;creationDate,
+                          long&nbsp;versionNumber,
+                          java.lang.String&nbsp;versionName,
+                          <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType,
+                          java.lang.String&nbsp;license,
                           java.lang.String&nbsp;guidMapFileName)</code></th>
 <td class="colLast">
 <div class="block">Constructor passes parameters used to build the open metadata archive's property header.</div>
@@ -3553,7 +3584,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -3561,6 +3592,7 @@ extends java.lang.Object</pre>
 <h4>SimpleCatalogArchiveHelper</h4>
 <pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
                                   java.lang.String&nbsp;archiveGUID,
+                                  java.lang.String&nbsp;archiveName,
                                   java.lang.String&nbsp;archiveRootName,
                                   java.lang.String&nbsp;originatorName,
                                   java.util.Date&nbsp;creationDate,
@@ -3571,7 +3603,8 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>archiveBuilder</code> - builder where content is cached</dd>
 <dd><code>archiveGUID</code> - unique identifier for this open metadata archive.</dd>
-<dd><code>archiveRootName</code> - non-spaced root name of the open metadata archive elements.</dd>
+<dd><code>archiveName</code> - name of the open metadata archive metadata collection.</dd>
+<dd><code>archiveRootName</code> - non-spaced root name of the open metadata GUID map.</dd>
 <dd><code>originatorName</code> - name of the originator (person or organization) of the archive.</dd>
 <dd><code>creationDate</code> - data that this archive was created.</dd>
 <dd><code>versionNumber</code> - version number of the archive.</dd>
@@ -3579,15 +3612,47 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>SimpleCatalogArchiveHelper</h4>
 <pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
                                   java.lang.String&nbsp;archiveGUID,
+                                  java.lang.String&nbsp;archiveName,
                                   java.lang.String&nbsp;archiveRootName,
+                                  java.lang.String&nbsp;originatorName,
+                                  java.util.Date&nbsp;creationDate,
+                                  long&nbsp;versionNumber,
+                                  java.lang.String&nbsp;versionName,
+                                  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType,
+                                  java.lang.String&nbsp;license)</pre>
+<div class="block">Typical constructor passes parameters used to build the open metadata archive's property header.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>archiveBuilder</code> - builder where content is cached</dd>
+<dd><code>archiveGUID</code> - unique identifier for this open metadata archive.</dd>
+<dd><code>archiveName</code> - name of the open metadata archive metadata collection.</dd>
+<dd><code>archiveRootName</code> - non-spaced root name of the open metadata GUID map.</dd>
+<dd><code>originatorName</code> - name of the originator (person or organization) of the archive.</dd>
+<dd><code>creationDate</code> - data that this archive was created.</dd>
+<dd><code>versionNumber</code> - version number of the archive.</dd>
+<dd><code>versionName</code> - version name for the archive.</dd>
+<dd><code>instanceProvenanceType</code> - type of archive.</dd>
+<dd><code>license</code> - license for the archive contents.</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SimpleCatalogArchiveHelper</h4>
+<pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                                  java.lang.String&nbsp;archiveGUID,
+                                  java.lang.String&nbsp;archiveName,
                                   java.lang.String&nbsp;originatorName,
                                   java.util.Date&nbsp;creationDate,
                                   long&nbsp;versionNumber,
@@ -3599,11 +3664,44 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>archiveBuilder</code> - builder where content is cached</dd>
 <dd><code>archiveGUID</code> - unique identifier for this open metadata archive.</dd>
-<dd><code>archiveRootName</code> - non-spaced root name of the open metadata archive elements.</dd>
+<dd><code>archiveName</code> - name of the open metadata archive metadata collection.</dd>
 <dd><code>originatorName</code> - name of the originator (person or organization) of the archive.</dd>
 <dd><code>creationDate</code> - data that this archive was created.</dd>
 <dd><code>versionNumber</code> - version number of the archive.</dd>
 <dd><code>versionName</code> - version name for the archive.</dd>
+<dd><code>guidMapFileName</code> - name of the guid map file.</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>SimpleCatalogArchiveHelper</h4>
+<pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                                  java.lang.String&nbsp;archiveGUID,
+                                  java.lang.String&nbsp;archiveName,
+                                  java.lang.String&nbsp;originatorName,
+                                  java.util.Date&nbsp;creationDate,
+                                  long&nbsp;versionNumber,
+                                  java.lang.String&nbsp;versionName,
+                                  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType,
+                                  java.lang.String&nbsp;license,
+                                  java.lang.String&nbsp;guidMapFileName)</pre>
+<div class="block">Constructor passes parameters used to build the open metadata archive's property header.
+ This version is used for multiple dependant archives, and they need to share the guid map.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>archiveBuilder</code> - builder where content is cached</dd>
+<dd><code>archiveGUID</code> - unique identifier for this open metadata archive.</dd>
+<dd><code>archiveName</code> - name of the open metadata archive metadata collection.</dd>
+<dd><code>originatorName</code> - name of the originator (person or organization) of the archive.</dd>
+<dd><code>creationDate</code> - data that this archive was created.</dd>
+<dd><code>versionNumber</code> - version number of the archive.</dd>
+<dd><code>versionName</code> - version name for the archive.</dd>
+<dd><code>instanceProvenanceType</code> - type of archive.</dd>
+<dd><code>license</code> - license for the archive contents.</dd>
 <dd><code>guidMapFileName</code> - name of the guid map file.</dd>
 </dl>
 </li>

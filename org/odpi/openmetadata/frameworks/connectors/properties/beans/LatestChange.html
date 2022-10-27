@@ -128,15 +128,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</a></li>
-<li>
-<ul class="inheritance">
-<li><a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</a></li>
+<li><a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassificationHeader</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -155,7 +150,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">LatestChange</span>
-extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></pre>
+extends <a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a></pre>
 <div class="block">LatestChange is a bean that describes the latest change to an asset universe.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -174,13 +169,6 @@ extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.framewo
 <!--   -->
 </a>
 <h3>Field Summary</h3>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
-<code><a href="ElementBase.html#extendedProperties">extendedProperties</a>, <a href="ElementBase.html#url">url</a></code></li>
-</ul>
 <ul class="blockList">
 <li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
 <!--   -->
@@ -355,18 +343,11 @@ extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.framewo
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassificationHeader">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
-<code><a href="ElementBase.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ElementBase.html#getURL()">getURL</a>, <a href="ElementBase.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ElementBase.html#setURL(java.lang.String)">setURL</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></h3>
-<code><a href="ElementHeader.html#getClassifications()">getClassifications</a>, <a href="ElementHeader.html#getGUID()">getGUID</a>, <a href="ElementHeader.html#setClassifications(java.util.List)">setClassifications</a>, <a href="ElementHeader.html#setGUID(java.lang.String)">setGUID</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a></h3>
+<code><a href="ElementClassificationHeader.html#getClassificationOrigin()">getClassificationOrigin</a>, <a href="ElementClassificationHeader.html#getClassificationOriginGUID()">getClassificationOriginGUID</a>, <a href="ElementClassificationHeader.html#setClassificationOrigin(org.odpi.openmetadata.frameworks.connectors.properties.beans.ClassificationOrigin)">setClassificationOrigin</a>, <a href="ElementClassificationHeader.html#setClassificationOriginGUID(java.lang.String)">setClassificationOriginGUID</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader">
@@ -645,7 +626,7 @@ extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Standard toString method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></code></dd>
+<dd><code><a href="ElementClassificationHeader.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -661,7 +642,7 @@ extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></code></dd>
+<dd><code><a href="ElementClassificationHeader.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -679,7 +660,7 @@ extends <a href="ElementBase.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Return code value representing the contents of this object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></code></dd>
+<dd><code><a href="ElementClassificationHeader.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ElementClassificationHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassificationHeader</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 </dl>

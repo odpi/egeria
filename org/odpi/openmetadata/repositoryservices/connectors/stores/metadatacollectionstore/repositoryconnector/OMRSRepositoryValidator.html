@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":6,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":6,"i55":6,"i56":6,"i57":6,"i58":6,"i59":6,"i60":6,"i61":6,"i62":6,"i63":6,"i64":6,"i65":6,"i66":6,"i67":6,"i68":6,"i69":6,"i70":6,"i71":6,"i72":6,"i73":6,"i74":6,"i75":6,"i76":6,"i77":6,"i78":6,"i79":6,"i80":6,"i81":6,"i82":6,"i83":6,"i84":6,"i85":6,"i86":6,"i87":6,"i88":6,"i89":6,"i90":6,"i91":6,"i92":6,"i93":6,"i94":6,"i95":6,"i96":6,"i97":6,"i98":6,"i99":6,"i100":6,"i101":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":6,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":6,"i55":6,"i56":6,"i57":6,"i58":6,"i59":6,"i60":6,"i61":6,"i62":6,"i63":6,"i64":6,"i65":6,"i66":6,"i67":6,"i68":6,"i69":6,"i70":6,"i71":6,"i72":6,"i73":6,"i74":6,"i75":6,"i76":6,"i77":6,"i78":6,"i79":6,"i80":6,"i81":6,"i82":6,"i83":6,"i84":6,"i85":6,"i86":6,"i87":6,"i88":6,"i89":6,"i90":6,"i91":6,"i92":6,"i93":6,"i94":6,"i95":6,"i96":6,"i97":6,"i98":6,"i99":6,"i100":6,"i101":6,"i102":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -737,6 +737,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i59" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateReferenceInstanceHeader(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">validateReferenceInstanceHeader</a></span>&#8203;(java.lang.String&nbsp;sourceName,
+                               java.lang.String&nbsp;localMetadataCollectionId,
+                               java.lang.String&nbsp;instanceParameterName,
+                               <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
+                               <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                               java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Validates that an instance has the correct header for it to be a reference copy.</div>
+</td>
+</tr>
+<tr id="i60" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipCanBeRehomed(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipCanBeRehomed</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 java.lang.String&nbsp;metadataCollectionId,
                                 <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -745,7 +757,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that a relationship instance can be rehomed by the metadataCollection.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipCanBeUpdated(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipCanBeUpdated</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 java.lang.String&nbsp;metadataCollectionId,
@@ -755,7 +767,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that a relationship instance can be updated by the metadataCollection.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipEnds(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateRelationshipEnds</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityOneProxy,
@@ -766,7 +778,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that the types of the two ends of a relationship match the relationship's TypeDef.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipFromStore(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)">validateRelationshipFromStore</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;guid,
@@ -776,7 +788,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that a relationship has been successfully retrieved from the repository and has valid contents.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i64" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipIsDeleted(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipIsDeleted</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -785,7 +797,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify the status of a relationship to check it has been deleted.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i65" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRelationshipIsNotDeleted(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateRelationshipIsNotDeleted</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -794,7 +806,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify the status of a relationship to check it has not been deleted.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i66" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchClassifications(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.lang.String)">validateSearchClassifications</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;parameterName,
@@ -804,7 +816,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the classification-based search conditions.</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchCriteria(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateSearchCriteria</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -814,7 +826,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that a search criteria  is not null.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateSearchProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.lang.String)">validateSearchProperties</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         java.lang.String&nbsp;parameterName,
@@ -824,7 +836,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the property-based search conditions.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                java.lang.String&nbsp;parameterName,
@@ -834,7 +846,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the content of a new TypeDef is valid.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory,java.lang.String)">validateTypeDefCategory</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;nameParameterName,
@@ -844,7 +856,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that a TypeDef's category is not null.</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefForInstance(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateTypeDefForInstance</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                           java.lang.String&nbsp;parameterName,
@@ -854,7 +866,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the content of a TypeDef associated with a metadata instance.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefGallery(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery,java.lang.String)">validateTypeDefGallery</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -864,7 +876,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that type's name is not null.</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefIds(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeDefIds</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;guidParameterName,
@@ -876,7 +888,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that a TypeDef's identifiers are not null.</div>
 </td>
 </tr>
-<tr id="i73" class="rowColor">
+<tr id="i74" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeDefPatch(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch,java.lang.String)">validateTypeDefPatch</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                     <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;patch,
@@ -885,7 +897,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that a TypeDefPatch is not null.</div>
 </td>
 </tr>
-<tr id="i74" class="altColor">
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeForInstanceDelete(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)">validateTypeForInstanceDelete</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                              java.lang.String&nbsp;typeDefGUID,
@@ -896,7 +908,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that the supplied TypeDef GUID and name matches the type associated with a metadata instance.</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeGUID</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                 java.lang.String&nbsp;guidParameterName,
@@ -906,7 +918,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that type's identifier is not null.</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateTypeName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateTypeName</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                 java.lang.String&nbsp;nameParameterName,
@@ -916,7 +928,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that type's name is not null.</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUnknownAttributeTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef,java.lang.String)">validateUnknownAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                java.lang.String&nbsp;parameterName,
@@ -926,7 +938,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the content of a new TypeDef is known.</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUnknownTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">validateUnknownTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                       java.lang.String&nbsp;parameterName,
@@ -936,7 +948,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate the content of a new TypeDef is known.</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUserId(java.lang.String,java.lang.String,java.lang.String)">validateUserId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;userId,
@@ -945,7 +957,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Validate that the supplied user Id is not null.</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef)">validAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                      <a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</code></th>
@@ -953,7 +965,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the supplied AttributeTypeDef is valid or not.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDefId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory)">validAttributeTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;attributeTypeDefGUID,
@@ -964,7 +976,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validAttributeTypeDefId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory)">validAttributeTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;attributeTypeDefGUID,
@@ -974,7 +986,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the AttributeTypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</code></th>
@@ -982,7 +994,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entity)</code></th>
@@ -990,7 +1002,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">validEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -998,7 +1010,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Test that the supplied entity is valid.</div>
 </td>
 </tr>
-<tr id="i86" class="altColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validInstanceId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory,java.lang.String)">validInstanceId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                java.lang.String&nbsp;typeDefGUID,
@@ -1009,7 +1021,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that the identifiers for an instance are correct.</div>
 </td>
 </tr>
-<tr id="i87" class="rowColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validRelationship(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">validRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  <a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</code></th>
@@ -1017,7 +1029,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Test that the supplied relationship is valid.</div>
 </td>
 </tr>
-<tr id="i88" class="altColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)">validTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
             <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</code></th>
@@ -1025,7 +1037,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the supplied TypeDef is valid or not.</div>
 </td>
 </tr>
-<tr id="i89" class="rowColor">
+<tr id="i90" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory)">validTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;typeDefGUID,
@@ -1036,7 +1048,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i90" class="altColor">
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefId(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory)">validTypeDefId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
               java.lang.String&nbsp;typeDefGUID,
@@ -1046,7 +1058,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i91" class="rowColor">
+<tr id="i92" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeDefSummary(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)">validTypeDefSummary</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                    <a href="../properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary)</code></th>
@@ -1054,7 +1066,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the supplied TypeDefSummary is valid or not.</div>
 </td>
 </tr>
-<tr id="i92" class="altColor">
+<tr id="i93" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validTypeId(java.lang.String,java.lang.String,java.lang.String)">validTypeId</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            java.lang.String&nbsp;typeGUID,
@@ -1063,7 +1075,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return boolean indicating whether the TypeDef identifiers are from a single known type or not.</div>
 </td>
 </tr>
-<tr id="i93" class="rowColor">
+<tr id="i94" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyEntityIsClassified(java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">verifyEntityIsClassified</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;requiredClassifications,
                         <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -1072,7 +1084,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  classifications.</div>
 </td>
 </tr>
-<tr id="i94" class="altColor">
+<tr id="i95" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceHasRightStatus(java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceHasRightStatus</a></span>&#8203;(java.util.List&lt;<a href="../properties/instances/InstanceStatus.html" title="enum in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;validStatuses,
                             <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance)</code></th>
@@ -1080,7 +1092,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify that the supplied instance is in one of the supplied statuses.</div>
 </td>
 </tr>
-<tr id="i95" class="rowColor">
+<tr id="i96" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstancePropertiesMatchPropertyValue(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String)">verifyInstancePropertiesMatchPropertyValue</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                           <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -1090,7 +1102,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Search for property values matching the supplied property value</div>
 </td>
 </tr>
-<tr id="i96" class="altColor">
+<tr id="i97" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstancePropertiesMatchSearchCriteria(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String)">verifyInstancePropertiesMatchSearchCriteria</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                            <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -1100,7 +1112,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Search for property values matching the search criteria (a regular expression)</div>
 </td>
 </tr>
-<tr id="i97" class="rowColor">
+<tr id="i98" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceType(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceType</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;instanceTypeGUID,
@@ -1111,7 +1123,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  the list of subtype guids.</div>
 </td>
 </tr>
-<tr id="i98" class="altColor">
+<tr id="i99" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyInstanceType(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">verifyInstanceType</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;instanceTypeGUID,
@@ -1120,7 +1132,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Verify whether the instance passed to this method is of the type indicated by the type guid.</div>
 </td>
 </tr>
-<tr id="i99" class="rowColor">
+<tr id="i100" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingClassifications(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">verifyMatchingClassifications</a></span>&#8203;(<a href="../properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;matchClassifications,
                              <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity)</code></th>
@@ -1128,7 +1140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Determine if the instance properties match the classification-based conditions.</div>
 </td>
 </tr>
-<tr id="i100" class="altColor">
+<tr id="i101" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingInstancePropertyValues(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria)">verifyMatchingInstancePropertyValues</a></span>&#8203;(<a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
                                     <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
@@ -1138,7 +1150,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Determine if the instance properties match the match criteria.</div>
 </td>
 </tr>
-<tr id="i101" class="rowColor">
+<tr id="i102" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyMatchingInstancePropertyValues(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">verifyMatchingInstancePropertyValues</a></span>&#8203;(<a href="../properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
                                     <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader,
@@ -3298,6 +3310,35 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>localMetadataCollectionId</code> - the unique identifier for the local repository' metadata collection.</dd>
 <dd><code>instanceParameterName</code> - the name of the parameter that provided the instance.</dd>
 <dd><code>instance</code> - the instance to test</dd>
+<dd><code>methodName</code> - the name of the method that supplied the instance.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem with repository</dd>
+<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the instance is null or linked to local metadata repository</dd>
+</dl>
+</li>
+</ul>
+<a id="validateReferenceInstanceHeader(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>validateReferenceInstanceHeader</h4>
+<pre class="methodSignature">void&nbsp;validateReferenceInstanceHeader&#8203;(java.lang.String&nbsp;sourceName,
+                                     java.lang.String&nbsp;localMetadataCollectionId,
+                                     java.lang.String&nbsp;instanceParameterName,
+                                     <a href="../properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
+                                     <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                                     java.lang.String&nbsp;methodName)
+                              throws <a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                     <a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></pre>
+<div class="block">Validates that an instance has the correct header for it to be a reference copy.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>sourceName</code> - source of the request (used for logging)</dd>
+<dd><code>localMetadataCollectionId</code> - the unique identifier for the local repository' metadata collection.</dd>
+<dd><code>instanceParameterName</code> - the name of the parameter that provided the instance.</dd>
+<dd><code>instance</code> - the instance to test</dd>
+<dd><code>auditLog</code> - optional logging destination</dd>
 <dd><code>methodName</code> - the name of the method that supplied the instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem with repository</dd>

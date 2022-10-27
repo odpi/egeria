@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":38,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":38,"i55":6,"i56":38,"i57":6,"i58":6,"i59":6,"i60":6,"i61":6,"i62":6,"i63":6,"i64":6,"i65":6,"i66":6,"i67":6,"i68":6,"i69":6,"i70":6,"i71":6,"i72":6,"i73":6,"i74":6,"i75":6,"i76":6,"i77":6,"i78":6,"i79":6,"i80":6,"i81":6,"i82":6,"i83":6,"i84":6,"i85":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":38,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":6,"i37":38,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":6,"i55":38,"i56":6,"i57":38,"i58":6,"i59":6,"i60":6,"i61":6,"i62":6,"i63":6,"i64":6,"i65":6,"i66":6,"i67":6,"i68":6,"i69":6,"i70":6,"i71":6,"i72":6,"i73":6,"i74":6,"i75":6,"i76":6,"i77":6,"i78":6,"i79":6,"i80":6,"i81":6,"i82":6,"i83":6,"i84":6,"i85":6,"i86":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -216,10 +216,23 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
                               java.lang.String&nbsp;classificationName,
                               java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
-<div class="block">Throws an exception if an entity is classified with the supplied classification name.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#checkEntityNotClassifiedEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">checkEntityNotClassifiedEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
+                              <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
+                              java.lang.String&nbsp;classificationName,
+                              <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;classificationProperties,
+                              <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                              java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Throws an exception if an entity is classified with the supplied classification name and the requested
+ properties are different from the existing properties.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteClassificationFromEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String)">deleteClassificationFromEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                               <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
@@ -229,7 +242,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a oldClassification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteClassificationFromEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,java.lang.String,java.lang.String)">deleteClassificationFromEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                               <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityProxy,
@@ -239,7 +252,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a oldClassification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatEntityResults(java.util.List,int,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">formatEntityResults</a></span>&#8203;(java.util.List&lt;<a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;&nbsp;fullResults,
                    int&nbsp;fromElement,
@@ -251,7 +264,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  entity instances.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatRelationshipResults(java.util.List,int,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">formatRelationshipResults</a></span>&#8203;(java.util.List&lt;<a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;&nbsp;fullResults,
                          int&nbsp;fromElement,
@@ -263,28 +276,28 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  relationship instances.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveAttributeTypeDefs()">getActiveAttributeTypeDefs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of attributeTypeDefs active in the local repository.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveTypeDefGallery()">getActiveTypeDefGallery</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of typeDefs and attributeTypeDefs active in the local repository.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveTypeDefs()">getActiveTypeDefs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of typeDefs active in the local repository.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/typedefs/TypeDefAttribute.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefAttribute</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllPropertiesForTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef,java.lang.String)">getAllPropertiesForTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                           <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
@@ -293,7 +306,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the names of all the properties in the supplied TypeDef and all of its super-types.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.Set&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllTypeDefsForProperty(java.lang.String,java.lang.String,java.lang.String)">getAllTypeDefsForProperty</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                          java.lang.String&nbsp;propertyName,
@@ -302,7 +315,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the names of all the type definitions that define the supplied property name.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttributeTypeDef(java.lang.String,java.lang.String,java.lang.String)">getAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                    java.lang.String&nbsp;attributeTypeDefGUID,
@@ -311,7 +324,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the AttributeTypeDef identified by the guid and name supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttributeTypeDef(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                    java.lang.String&nbsp;attributeTypeDefGUID,
@@ -321,7 +334,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the AttributeTypeDef identified by the guid and name supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAttributeTypeDefByName(java.lang.String,java.lang.String)">getAttributeTypeDefByName</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                          java.lang.String&nbsp;attributeTypeDefName)</code></th>
@@ -329,7 +342,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the AttributeTypeDef identified by the name supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClassificationFromEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,java.lang.String,java.lang.String)">getClassificationFromEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                            <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
@@ -339,7 +352,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the named classification from an existing entity and throws an exception if it is not.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClassificationProperties(java.lang.String,java.util.List,java.lang.String,java.lang.String)">getClassificationProperties</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                            java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;classifications,
@@ -349,7 +362,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the properties from a named classification or null if classification not present or without properties.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContainsRegex(java.lang.String)">getContainsRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -357,7 +370,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with a "contains" semantic.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContainsRegex(java.lang.String,boolean)">getContainsRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                 boolean&nbsp;insensitive)</code></th>
@@ -366,21 +379,21 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with a "contains" semantic.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEnd1EntityGUID(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">getEnd1EntityGUID</a></span>&#8203;(<a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an entity linked to end 1 of the relationship.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEnd2EntityGUID(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">getEnd2EntityGUID</a></span>&#8203;(<a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an entity linked to end 2 of the relationship.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndsWithRegex(java.lang.String)">getEndsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -388,7 +401,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with an "endswith" semantic.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndsWithRegex(java.lang.String,boolean)">getEndsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                 boolean&nbsp;insensitive)</code></th>
@@ -397,7 +410,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with an "endswith" semantic.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetailDifferences.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetailDifferences</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetailDifferences(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,boolean)">getEntityDetailDifferences</a></span>&#8203;(<a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;left,
                           <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;right,
@@ -406,7 +419,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Calculate the differences between the two provided EntityDetail objects.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxyDifferences.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxyDifferences</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityProxyDifferences(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,boolean)">getEntityProxyDifferences</a></span>&#8203;(<a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;left,
                          <a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;right,
@@ -415,7 +428,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Calculate the differences between the two provided EntityProxy objects.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntitySummaryDifferences.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummaryDifferences</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntitySummaryDifferences(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,boolean)">getEntitySummaryDifferences</a></span>&#8203;(<a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;left,
                            <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;right,
@@ -424,7 +437,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Calculate the differences between the two provided EntitySummary objects.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExactMatchRegex(java.lang.String)">getExactMatchRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -432,7 +445,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  without being interpreted as a regular expression (i.e.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExactMatchRegex(java.lang.String,boolean)">getExactMatchRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                   boolean&nbsp;insensitive)</code></th>
@@ -441,7 +454,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  without being interpreted as a regular expression (i.e.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHomeClassificationsFromEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String)">getHomeClassificationsFromEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                                 <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
@@ -451,35 +464,35 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the classifications from the requested metadata collection.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownAttributeTypeDefs()">getKnownAttributeTypeDefs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of attributeTypeDefs active in the connected cohorts.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownTypeDefGallery()">getKnownTypeDefGallery</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of types active in the connected cohorts.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownTypeDefs()">getKnownTypeDefs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of typeDefs active in the connected cohorts.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataCollectionName(java.lang.String)">getMetadataCollectionName</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId)</code></th>
 <td class="colLast">
 <div class="block">Return the metadata collection name (or null) for a metadata collection id.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getNewClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                     java.lang.String&nbsp;userName,
@@ -492,7 +505,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewClassification(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getNewClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                     java.lang.String&nbsp;metadataCollectionId,
@@ -508,7 +521,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a classification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getNewClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                     java.lang.String&nbsp;metadataCollectionId,
@@ -523,7 +536,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a classification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewEntity(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.List)">getNewEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
             java.lang.String&nbsp;metadataCollectionId,
@@ -537,7 +550,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a filled out entity.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.List)">getNewEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
             java.lang.String&nbsp;metadataCollectionId,
@@ -550,7 +563,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a filled out entity.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewEntityProxy(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.List)">getNewEntityProxy</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  java.lang.String&nbsp;metadataCollectionId,
@@ -563,7 +576,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a filled out entity proxy.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewEntityProxy(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">getNewEntityProxy</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  <a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</code></th>
@@ -571,7 +584,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Generate an entity proxy from an entity and its TypeDef.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/InstanceType.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewInstanceType(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)">getNewInstanceType</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   <a href="../properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;typeDefSummary)</code></th>
@@ -579,7 +592,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a relationship with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getNewRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;metadataCollectionId,
@@ -592,7 +605,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a filled out relationship which just needs the entity proxies added.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNewRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getNewRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                   java.lang.String&nbsp;metadataCollectionId,
@@ -604,7 +617,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a filled out relationship which just needs the entity proxies added.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOtherEnd(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">getOtherEnd</a></span>&#8203;(java.lang.String&nbsp;sourceName,
            java.lang.String&nbsp;anchorEntityGUID,
@@ -613,7 +626,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the entity proxy for the related entity.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOtherEndName(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">getOtherEndName</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                java.lang.String&nbsp;anchorEntityGUID,
@@ -622,7 +635,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the attribute name for the related entity.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/RelationshipDifferences.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">RelationshipDifferences</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelationshipDifferences(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,boolean)">getRelationshipDifferences</a></span>&#8203;(<a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;left,
                           <a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;right,
@@ -631,14 +644,14 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Calculate the differences between the two provided Relationship objects.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code><a href="../properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSearchClassificationsFromList(java.util.List)">getSearchClassificationsFromList</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;classificationNames)</code></th>
 <td class="colLast">
 <div class="block">Convert the provided list of classification names into an equivalent SearchClassifications object.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSkeletonClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                          java.lang.String&nbsp;userName,
@@ -648,7 +661,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a classification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonClassification(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,java.lang.String)">getSkeletonClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                          java.lang.String&nbsp;metadataCollectionId,
@@ -661,7 +674,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a classification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String,java.lang.String)">getSkeletonClassification</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                          java.lang.String&nbsp;metadataCollectionId,
@@ -673,7 +686,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a classification with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonEntity(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  java.lang.String&nbsp;metadataCollectionId,
@@ -685,7 +698,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return an entity with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                  java.lang.String&nbsp;metadataCollectionId,
@@ -696,7 +709,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i55" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonEntitySummary(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonEntitySummary</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         java.lang.String&nbsp;metadataCollectionId,
@@ -708,7 +721,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return an entity with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i56" class="altColor">
+<tr id="i57" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonEntitySummary(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonEntitySummary</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                         java.lang.String&nbsp;metadataCollectionId,
@@ -719,7 +732,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i57" class="rowColor">
+<tr id="i58" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;metadataCollectionId,
@@ -731,7 +744,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a relationship with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSkeletonRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType,java.lang.String,java.lang.String)">getSkeletonRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        java.lang.String&nbsp;metadataCollectionId,
@@ -742,7 +755,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return a relationship with the header and type information filled out.</div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i60" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStartsWithRegex(java.lang.String)">getStartsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -750,7 +763,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with a "startswith" semantic.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStartsWithRegex(java.lang.String,boolean)">getStartsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                   boolean&nbsp;insensitive)</code></th>
@@ -759,7 +772,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  to search for the string with a "startswith" semantic.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubTypesOf(java.lang.String,java.lang.String)">getSubTypesOf</a></span>&#8203;(java.lang.String&nbsp;sourceName,
              java.lang.String&nbsp;superTypeName)</code></th>
@@ -767,7 +780,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the list of type names for all the subtypes of an entity type.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeDef(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
           java.lang.String&nbsp;parameterName,
@@ -777,7 +790,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the TypeDef identified by the guid supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i64" class="altColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeDef(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTypeDef</a></span>&#8203;(java.lang.String&nbsp;sourceName,
           java.lang.String&nbsp;guidParameterName,
@@ -789,7 +802,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the TypeDef identified by the guid and name supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i65" class="rowColor">
 <td class="colFirst"><code><a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeDefByName(java.lang.String,java.lang.String)">getTypeDefByName</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                 java.lang.String&nbsp;typeDefName)</code></th>
@@ -797,14 +810,14 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return the TypeDef identified by the name supplied by the caller.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i66" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeName(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)">getTypeName</a></span>&#8203;(<a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instance)</code></th>
 <td class="colLast">
 <div class="block">Returns the type name from an instance (entity, relationship or classification).</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUniqueProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">getUniqueProperties</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                    java.lang.String&nbsp;typeName,
@@ -813,14 +826,14 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return an instance properties that only contains the properties that uniquely identify the entity.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUnqualifiedLiteralString(java.lang.String)">getUnqualifiedLiteralString</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
 <div class="block">Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#incrementVersion(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)">incrementVersion</a></span>&#8203;(java.lang.String&nbsp;userId,
                 <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;originalInstance,
@@ -829,7 +842,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Changes the control information to reflect an update in an instance.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#incrementVersion(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">incrementVersion</a></span>&#8203;(java.lang.String&nbsp;userId,
                 <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;originalInstance,
@@ -838,7 +851,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Changes the control information to reflect an update in an instance.</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#incrementVersion(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">incrementVersion</a></span>&#8203;(java.lang.String&nbsp;userId,
                 <a href="../properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;originalInstance,
@@ -847,7 +860,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Changes the control information to reflect an update in an instance.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isCaseInsensitiveRegex(java.lang.String)">isCaseInsensitiveRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -855,7 +868,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  case-sensitive regular expression (false).</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isContainsRegex(java.lang.String)">isContainsRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -863,7 +876,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i73" class="rowColor">
+<tr id="i74" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isContainsRegex(java.lang.String,boolean)">isContainsRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                boolean&nbsp;insensitive)</code></th>
@@ -872,7 +885,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i74" class="altColor">
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEndsWithRegex(java.lang.String)">isEndsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -880,7 +893,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEndsWithRegex(java.lang.String,boolean)">isEndsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                boolean&nbsp;insensitive)</code></th>
@@ -889,7 +902,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isExactMatchRegex(java.lang.String)">isExactMatchRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -897,7 +910,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  (false).</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isExactMatchRegex(java.lang.String,boolean)">isExactMatchRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                  boolean&nbsp;insensitive)</code></th>
@@ -906,7 +919,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  (false).</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isStartsWithRegex(java.lang.String)">isStartsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString)</code></th>
 <td class="colLast">
@@ -914,7 +927,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isStartsWithRegex(java.lang.String,boolean)">isStartsWithRegex</a></span>&#8203;(java.lang.String&nbsp;searchString,
                  boolean&nbsp;insensitive)</code></th>
@@ -923,7 +936,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
  other regular expression (false).</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTypeOf(java.lang.String,java.lang.String,java.lang.String)">isTypeOf</a></span>&#8203;(java.lang.String&nbsp;sourceName,
         java.lang.String&nbsp;actualTypeName,
@@ -932,7 +945,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Validate that the type of an instance is of the expected/desired type.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#mergeInstanceProperties(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">mergeInstanceProperties</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                        <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;existingProperties,
@@ -941,7 +954,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Merge two sets of instance properties.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerMetadataCollection(java.lang.String,java.lang.String)">registerMetadataCollection</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId,
                           java.lang.String&nbsp;metadataCollectionName)</code></th>
@@ -949,7 +962,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Remember the metadata collection name for this metadata collection Id.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#relatedEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">relatedEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
              java.lang.String&nbsp;entityGUID,
@@ -958,7 +971,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Return boolean true if entity is linked by this relationship.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationInEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification,java.lang.String)">updateClassificationInEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                             java.lang.String&nbsp;userName,
@@ -969,7 +982,7 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <div class="block">Replace an existing classification with a new one</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code><a href="../properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationInEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification,java.lang.String)">updateClassificationInEntity</a></span>&#8203;(java.lang.String&nbsp;sourceName,
                             java.lang.String&nbsp;userName,
@@ -1994,11 +2007,13 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <ul class="blockList">
 <li class="blockList">
 <h4>checkEntityNotClassifiedEntity</h4>
-<pre class="methodSignature">void&nbsp;checkEntityNotClassifiedEntity&#8203;(java.lang.String&nbsp;sourceName,
+<pre class="methodSignature">@Deprecated
+void&nbsp;checkEntityNotClassifiedEntity&#8203;(java.lang.String&nbsp;sourceName,
                                     <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
                                     java.lang.String&nbsp;classificationName,
                                     java.lang.String&nbsp;methodName)
                              throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Throws an exception if an entity is classified with the supplied classification name.
  It is typically used when adding new classifications to entities.</div>
 <dl>
@@ -2007,6 +2022,38 @@ extends <a href="../utilities/OMRSRepositoryPropertiesHelper.html" title="interf
 <dd><code>entity</code> - entity to update</dd>
 <dd><code>classificationName</code> - classification to retrieve</dd>
 <dd><code>methodName</code> - calling method</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is not attached to the entity</dd>
+</dl>
+</li>
+</ul>
+<a id="checkEntityNotClassifiedEntity(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>checkEntityNotClassifiedEntity</h4>
+<pre class="methodSignature"><a href="../properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&nbsp;checkEntityNotClassifiedEntity&#8203;(java.lang.String&nbsp;sourceName,
+                                              <a href="../properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entity,
+                                              java.lang.String&nbsp;classificationName,
+                                              <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;classificationProperties,
+                                              <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+                                              java.lang.String&nbsp;methodName)
+                                       throws <a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></pre>
+<div class="block">Throws an exception if an entity is classified with the supplied classification name and the requested
+ properties are different from the existing properties.
+ It is typically used when adding new classifications to entities and there is a possibility of a race condition
+ with multiple threads attempting to add the same classification.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>sourceName</code> - source of the request (used for logging)</dd>
+<dd><code>entity</code> - entity to update</dd>
+<dd><code>classificationName</code> - classification to retrieve</dd>
+<dd><code>classificationProperties</code> - list of properties to set in the classification</dd>
+<dd><code>auditLog</code> - optional logging destination</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>duplicate classification</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../ffdc/exception/ClassificationErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">ClassificationErrorException</a></code> - the classification is not attached to the entity</dd>
 </dl>
