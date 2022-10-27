@@ -67,7 +67,37 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
             }
         }
 
-        return DataItemSortOrder.UNKNOWN;
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the KeyPattern property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return KeyPattern enum
+     */
+    KeyPattern removeKeyPattern(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeKeyPattern";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (KeyPattern keyPattern : KeyPattern.values())
+            {
+                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                {
+                    return keyPattern;
+                }
+            }
+        }
+
+        return null;
     }
 
 
