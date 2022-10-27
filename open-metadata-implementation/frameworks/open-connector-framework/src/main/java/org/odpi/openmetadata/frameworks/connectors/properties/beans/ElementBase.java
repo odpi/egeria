@@ -35,8 +35,8 @@ public class ElementBase extends ElementHeader
     /*
      * Common header for first class elements from a metadata repository
      */
-    protected String      url  = null;
-    protected Map<String, Object>         extendedProperties = null;
+    protected String              url  = null;
+    protected Map<String, Object> extendedProperties = null;
 
     /**
      * Default constructor used by subclasses

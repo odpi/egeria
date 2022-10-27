@@ -70,7 +70,8 @@ public class TestAssetDetail
                                externalReferences,
                                connections,
                                licenses,
-                               certifications);
+                               certifications,
+                               null);
     }
 
 
@@ -101,7 +102,8 @@ public class TestAssetDetail
                                externalReferences,
                                connections,
                                licenses,
-                               certifications);
+                               certifications,
+                               null);
     }
 
 
@@ -133,7 +135,8 @@ public class TestAssetDetail
                                externalReferences,
                                connections,
                                licenses,
-                               certifications);
+                               certifications,
+                               null);
     }
 
 
@@ -157,7 +160,8 @@ public class TestAssetDetail
                                                  externalReferences,
                                                  connections,
                                                  licenses,
-                                                 certifications);
+                                                 certifications,
+                                                 null);
 
         assertTrue(testObject.getExternalIdentifiers() == null);
         assertTrue(testObject.getRelatedMediaReferences() == null);
@@ -189,7 +193,8 @@ public class TestAssetDetail
                                                  externalReferences,
                                                  connections,
                                                  licenses,
-                                                 certifications);
+                                                 certifications,
+                                                 null);
 
         assertTrue(testObject.getExternalIdentifiers() != null);
         assertTrue(testObject.getRelatedMediaReferences() != null);
@@ -221,7 +226,8 @@ public class TestAssetDetail
                                                    externalReferences,
                                                    connections,
                                                    licenses,
-                                                   certifications);
+                                                   certifications,
+                                                   null);
 
         AssetDetail testObject = new AssetDetail(testTemplate);
 

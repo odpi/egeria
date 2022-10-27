@@ -55,7 +55,7 @@ public class Referenceable extends ElementBase
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves the values from the supplied template
      *
      * @param template element to copy
      */
