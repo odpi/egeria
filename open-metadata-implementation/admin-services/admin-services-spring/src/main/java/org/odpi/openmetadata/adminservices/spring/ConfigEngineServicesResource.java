@@ -32,7 +32,7 @@ import java.util.List;
 
 public class ConfigEngineServicesResource
 {
-    private OMAGServerAdminForEngineServices adminAPI = new OMAGServerAdminForEngineServices();
+    private final OMAGServerAdminForEngineServices adminAPI = new OMAGServerAdminForEngineServices();
 
 
     /**

@@ -15,15 +15,19 @@ import java.util.List;
 
 
 /**
- * SimpleCatalogsArchiveWriter creates four physical open metadata archive files for each of the somple catalogs.
+ * SimpleCatalogsArchiveWriter creates four physical open metadata archive files for each of the sample catalogs.
  */
 public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
 {
     private static final String openMetadataArchiveRootName           = "SimpleCatalog";
     private static final String eventOpenMetadataArchiveFileName      = "SimpleEventCatalog.json";
+    private static final String eventOpenMetadataArchiveName          = "SimpleEventCatalog";
     private static final String apiOpenMetadataArchiveFileName        = "SimpleAPICatalog.json";
+    private static final String apiOpenMetadataArchiveName            = "SimpleAPICatalog";
     private static final String dataOpenMetadataArchiveFileName       = "SimpleDataCatalog.json";
+    private static final String dataOpenMetadataArchiveName           = "SimpleDataCatalog";
     private static final String governanceOpenMetadataArchiveFileName = "SimpleGovernanceCatalog.json";
+    private static final String governanceOpenMetadataArchiveName     = "SimpleGovernanceCatalog";
 
     /**
      * Default constructor
@@ -48,40 +52,40 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
              */
             dependentArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
 
-            SimpleEventCatalogArchiveBuilder eventArchiveBuilder = new SimpleEventCatalogArchiveBuilder(openMetadataArchiveRootName);
+            SimpleEventCatalogArchiveBuilder eventArchiveBuilder = new SimpleEventCatalogArchiveBuilder(eventOpenMetadataArchiveName, openMetadataArchiveRootName);
 
             newArchive = eventArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(eventOpenMetadataArchiveFileName, newArchive);
 
-            SimpleAPICatalogArchiveBuilder apiArchiveBuilder = new SimpleAPICatalogArchiveBuilder(openMetadataArchiveRootName);
+            SimpleAPICatalogArchiveBuilder apiArchiveBuilder = new SimpleAPICatalogArchiveBuilder(apiOpenMetadataArchiveName, openMetadataArchiveRootName);
 
             newArchive = apiArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(apiOpenMetadataArchiveFileName, newArchive);
 
-            SimpleDataCatalogArchiveBuilder dataArchiveBuilder = new SimpleDataCatalogArchiveBuilder(openMetadataArchiveRootName);
+            SimpleDataCatalogArchiveBuilder dataArchiveBuilder = new SimpleDataCatalogArchiveBuilder(dataOpenMetadataArchiveName, openMetadataArchiveRootName);
 
             newArchive = dataArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(dataOpenMetadataArchiveFileName, newArchive);
 
-            SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(openMetadataArchiveRootName, dependentArchives);
+            SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(governanceOpenMetadataArchiveName, openMetadataArchiveRootName, dependentArchives);
 
             super.writeOpenMetadataArchive(governanceOpenMetadataArchiveFileName, governanceArchiveBuilder.getOpenMetadataArchive());
         }
         catch (Exception  error)
         {
-            System.out.println("error is " + error.toString());
+            System.out.println("error is " + error);
         }
     }
 
 
     /**
-     * Main program to initiate the archive writer for the simpe catalogs.
+     * Main program to initiate the archive writer for the simple catalogs.
      *
      * @param args ignored
      */
@@ -95,7 +99,7 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
         }
         catch (Exception error)
         {
-            System.err.println("Exception: " + error.toString());
+            System.err.println("Exception: " + error);
             System.exit(-1);
         }
     }

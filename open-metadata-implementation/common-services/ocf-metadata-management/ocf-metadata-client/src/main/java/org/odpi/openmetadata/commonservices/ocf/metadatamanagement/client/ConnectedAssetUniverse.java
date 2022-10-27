@@ -534,13 +534,13 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param bean schema type bean that has the properties for the schema type.
      * @param restClient client to call REST API
 
-     * @return subtype of AssetSchemaType
+     * @return subtype of SchemaType
      */
-    private SchemaType getSchemaType(String     serviceName,
-                                     String     remoteServerName,
-                                     String     omasServerURL,
-                                     String     userId,
-                                     SchemaType bean,
+    private SchemaType getSchemaType(String        serviceName,
+                                     String        remoteServerName,
+                                     String        omasServerURL,
+                                     String        userId,
+                                     SchemaType    bean,
                                      OCFRESTClient restClient)
     {
         if (bean == null)
@@ -556,6 +556,16 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                  userId,
                                                  MAX_CACHE_SIZE,
                                                  restClient);
+        }
+        else if (bean instanceof APISchemaType)
+        {
+            return new ConnectedDeployedAPISchemaType((APISchemaType) bean,
+                                                      serviceName,
+                                                      remoteServerName,
+                                                      omasServerURL,
+                                                      userId,
+                                                      MAX_CACHE_SIZE,
+                                                      restClient);
         }
         else
         {

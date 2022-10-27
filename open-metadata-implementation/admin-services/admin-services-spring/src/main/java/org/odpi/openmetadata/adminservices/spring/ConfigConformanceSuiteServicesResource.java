@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigConformanceSuiteServicesResource
 {
-    private OMAGConformanceSuiteConfigServices adminAPI = new OMAGConformanceSuiteConfigServices();
+    private final OMAGConformanceSuiteConfigServices adminAPI = new OMAGConformanceSuiteConfigServices();
 
     /**
      * Request that the conformance suite services are activated in this server to test the

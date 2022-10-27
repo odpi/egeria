@@ -2006,7 +2006,24 @@ public class OMAGServerAdminServices
              */
             localRepositoryConfig.setMetadataCollectionId(metadataCollectionId);
 
-            this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            configAuditTrail.add(new Date() + " " + userId + " updated metadata collection id to " + metadataCollectionId +" for the local repository.");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
+
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
 
             return response;
 
@@ -3454,11 +3471,11 @@ public class OMAGServerAdminServices
 
             if (localRepositoryConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " setting up a null local repository.");
+                configAuditTrail.add(new Date() + " " + userId + " setting up a null local repository.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for the local repository.");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for the local repository.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -3477,7 +3494,7 @@ public class OMAGServerAdminServices
 
                     if (existingMetadataCollectionId != null)
                     {
-                        configAuditTrail.add(new Date().toString() + " " + userId + " preserving local metadata collection id " + existingMetadataCollectionId + ".");
+                        configAuditTrail.add(new Date() + " " + userId + " preserving local metadata collection id " + existingMetadataCollectionId + ".");
                         localRepositoryConfig.setMetadataCollectionId(existingMetadataCollectionId);
                     }
                 }

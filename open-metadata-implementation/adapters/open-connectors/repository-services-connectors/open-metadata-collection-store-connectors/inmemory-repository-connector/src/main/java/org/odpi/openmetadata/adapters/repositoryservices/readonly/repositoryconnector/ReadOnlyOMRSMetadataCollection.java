@@ -19,7 +19,7 @@ import java.util.*;
 public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollection
 {
     /**
-     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection id.
      *
      * @param parentConnector connector that this metadata collection supports.  The connector has the information
      *                        to call the metadata repository.
@@ -35,7 +35,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                    String                          metadataCollectionId)
     {
         /*
-         * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
+         * The metadata collection id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
     }
@@ -76,7 +76,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -191,10 +191,10 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
      * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
@@ -396,7 +396,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -494,7 +494,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -594,7 +594,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change the type for an existing entity.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -680,7 +680,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change the type for an existing relationship.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -768,7 +768,8 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                                     UserNotAuthorizedException
     {
         if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
-                                         (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+                                 (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
+                                        entity.getMetadataCollectionId().equals(metadataCollectionId)))
         {
             super.saveEntityReferenceCopy(userId, entity);
         }
@@ -799,8 +800,9 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                                                       TypeErrorException,
                                                                                       PropertyErrorException
     {
-        if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
-                                 (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        if ((classification != null) && ((classification.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                         (classification.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
+                                          classification.getMetadataCollectionId().equals(metadataCollectionId)))
         {
             super.saveClassificationReferenceCopy(userId, entity, classification);
         }
@@ -831,8 +833,9 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                                                       TypeErrorException,
                                                                                       PropertyErrorException
     {
-        if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
-                                 (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        if ((classification != null) && ((classification.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                         (classification.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
+                                          classification.getMetadataCollectionId().equals(metadataCollectionId)))
         {
             super.saveClassificationReferenceCopy(userId, entity, classification);
         }
@@ -874,7 +877,8 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                                                 UserNotAuthorizedException
     {
         if ((relationship != null) && ((relationship.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
-                                       (relationship.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+                                       (relationship.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
+                                        relationship.getMetadataCollectionId().equals(metadataCollectionId)))
         {
             super.saveRelationshipReferenceCopy(userId, relationship);
         }

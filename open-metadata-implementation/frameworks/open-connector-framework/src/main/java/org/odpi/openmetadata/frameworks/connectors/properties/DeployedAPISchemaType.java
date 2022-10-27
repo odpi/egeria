@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.APISchemaType;
 
 import java.util.Objects;
 
@@ -11,17 +11,17 @@ import java.util.Objects;
  * An asset's schema provides information about how the asset structures the data it supports.
  * The NestedSchemaType object describes a nested structure of schema attributes and types.
  */
-public  class NestedSchemaType extends ComplexSchemaType
+public  class DeployedAPISchemaType extends APISchemaType
 {
     private static final long     serialVersionUID = 1L;
 
-    protected SchemaAttributes  schemaAttributes = null;
+    protected APIOperations apiOperations = null;
 
 
     /**
      * Constructor used by the subclasses
      */
-    protected NestedSchemaType()
+    protected DeployedAPISchemaType()
     {
         super();
     }
@@ -33,7 +33,7 @@ public  class NestedSchemaType extends ComplexSchemaType
      *
      * @param schemaBean bean containing the schema properties
      */
-    public NestedSchemaType(ComplexSchemaType schemaBean)
+    public DeployedAPISchemaType(APISchemaType schemaBean)
     {
         super(schemaBean);
     }
@@ -44,13 +44,13 @@ public  class NestedSchemaType extends ComplexSchemaType
      *
      * @param template template object to copy.
      */
-    public NestedSchemaType(NestedSchemaType template)
+    public DeployedAPISchemaType(DeployedAPISchemaType template)
     {
         super(template);
 
         if (template != null)
         {
-            this.schemaAttributes = template.getSchemaAttributes();
+            this.apiOperations = template.getAPIOperations();
         }
     }
 
@@ -60,14 +60,14 @@ public  class NestedSchemaType extends ComplexSchemaType
      *
      * @return SchemaAttributes
      */
-    public SchemaAttributes getSchemaAttributes()
+    public APIOperations getAPIOperations()
     {
-        if (schemaAttributes == null)
+        if (apiOperations == null)
         {
             return null;
         }
 
-        return schemaAttributes;
+        return apiOperations;
     }
 
 
@@ -79,8 +79,8 @@ public  class NestedSchemaType extends ComplexSchemaType
     @Override
     public String toString()
     {
-        return "NestedSchemaType{" +
-                "schemaAttributes=" + schemaAttributes +
+        return "DeployedAPISchemaType{" +
+                "schemaAttributes=" + apiOperations +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
@@ -123,8 +123,8 @@ public  class NestedSchemaType extends ComplexSchemaType
         {
             return false;
         }
-        NestedSchemaType that = (NestedSchemaType) objectToCompare;
-        return Objects.equals(schemaAttributes, that.schemaAttributes);
+        DeployedAPISchemaType that = (DeployedAPISchemaType) objectToCompare;
+        return Objects.equals(apiOperations, that.apiOperations);
     }
 
 
@@ -136,6 +136,6 @@ public  class NestedSchemaType extends ComplexSchemaType
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), schemaAttributes);
+        return Objects.hash(super.hashCode(), apiOperations);
     }
 }

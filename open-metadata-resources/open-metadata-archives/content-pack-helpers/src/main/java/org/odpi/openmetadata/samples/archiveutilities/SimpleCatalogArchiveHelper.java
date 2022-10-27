@@ -526,7 +526,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -534,6 +535,7 @@ public class SimpleCatalogArchiveHelper
      */
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
+                                      String                     archiveName,
                                       String                     archiveRootName,
                                       String                     originatorName,
                                       Date                       creationDate,
@@ -542,7 +544,7 @@ public class SimpleCatalogArchiveHelper
     {
         this(archiveBuilder,
              archiveGUID,
-             archiveRootName,
+             archiveName,
              originatorName,
              creationDate,
              versionNumber,
@@ -551,6 +553,43 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+    /**
+     * Typical constructor passes parameters used to build the open metadata archive's property header.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveName,
+                                      String                     archiveRootName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      InstanceProvenanceType     instanceProvenanceType,
+                                      String                     license)
+    {
+        this(archiveBuilder,
+             archiveGUID,
+             archiveName,
+             originatorName,
+             creationDate,
+             versionNumber,
+             versionName,
+             instanceProvenanceType,
+             license,
+             archiveRootName + guidMapFileNamePostFix);
+    }
+
 
     /**
      * Constructor passes parameters used to build the open metadata archive's property header.
@@ -558,7 +597,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveName name of the open metadata archive metadata collection.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -567,25 +606,58 @@ public class SimpleCatalogArchiveHelper
      */
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
-                                      String                     archiveRootName,
+                                      String                     archiveName,
                                       String                     originatorName,
                                       Date                       creationDate,
                                       long                       versionNumber,
                                       String                     versionName,
                                       String                     guidMapFileName)
     {
+        this(archiveBuilder, archiveGUID, archiveName, originatorName, creationDate, versionNumber, versionName, InstanceProvenanceType.CONTENT_PACK, null, guidMapFileName);
+    }
+
+
+    /**
+     * Constructor passes parameters used to build the open metadata archive's property header.
+     * This version is used for multiple dependant archives, and they need to share the guid map.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     * @param guidMapFileName name of the guid map file.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      InstanceProvenanceType     instanceProvenanceType,
+                                      String                     license,
+                                      String                     guidMapFileName)
+    {
         this.archiveBuilder = archiveBuilder;
 
         this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
                                                    archiveGUID,
+                                                   archiveName,
                                                    originatorName,
                                                    creationDate,
                                                    versionNumber,
-                                                   versionName);
+                                                   versionName,
+                                                   instanceProvenanceType,
+                                                   license);
 
         this.idToGUIDMap = new OMRSArchiveGUIDMap(guidMapFileName);
 
-        this.archiveRootName = archiveRootName;
+        this.archiveRootName = archiveName;
         this.originatorName = originatorName;
         this.versionName = versionName;
 

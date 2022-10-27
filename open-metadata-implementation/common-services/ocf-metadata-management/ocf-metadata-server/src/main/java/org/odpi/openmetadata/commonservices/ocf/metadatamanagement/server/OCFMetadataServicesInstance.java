@@ -42,6 +42,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
     private final RelatedMediaHandler<RelatedMediaReference>            relatedMediaHandler;
     private final SchemaAttributeHandler<SchemaAttribute, SchemaType>   schemaAttributeHandler;
     private final SchemaTypeHandler<SchemaType>                         schemaTypeHandler;
+    private final APIOperationHandler<APIOperation>                     apiOperationHandler;
 
 
     /**
@@ -382,6 +383,20 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                              defaultZones,
                                                              publishZones,
                                                              auditLog);
+
+            this.apiOperationHandler = new APIOperationHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 APIOperation.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
         }
         else
         {
@@ -743,5 +758,21 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return schemaAttributeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing API Operation objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    APIOperationHandler<APIOperation> getAPIOperationHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIOperationHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiOperationHandler;
     }
 }

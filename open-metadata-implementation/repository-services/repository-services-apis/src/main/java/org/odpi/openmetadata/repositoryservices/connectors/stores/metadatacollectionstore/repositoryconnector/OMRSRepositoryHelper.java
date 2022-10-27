@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
@@ -694,10 +695,35 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param methodName          calling method
      * @throws ClassificationErrorException  the classification is not attached to the entity
      */
+    @Deprecated
     void checkEntityNotClassifiedEntity(String        sourceName,
                                         EntitySummary entity,
                                         String        classificationName,
                                         String        methodName) throws ClassificationErrorException;
+
+
+
+    /**
+     * Throws an exception if an entity is classified with the supplied classification name and the requested
+     * properties are different from the existing properties.
+     * It is typically used when adding new classifications to entities and there is a possibility of a race condition
+     * with multiple threads attempting to add the same classification.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param entity              entity to update
+     * @param classificationName  classification to retrieve
+     * @param classificationProperties list of properties to set in the classification
+     * @param auditLog            optional logging destination
+     * @param methodName          calling method
+     * @return duplicate classification
+     * @throws ClassificationErrorException  the classification is not attached to the entity
+     */
+    Classification checkEntityNotClassifiedEntity(String             sourceName,
+                                                  EntitySummary      entity,
+                                                  String             classificationName,
+                                                  InstanceProperties classificationProperties,
+                                                  AuditLog           auditLog,
+                                                  String             methodName) throws ClassificationErrorException;
 
 
     /**
