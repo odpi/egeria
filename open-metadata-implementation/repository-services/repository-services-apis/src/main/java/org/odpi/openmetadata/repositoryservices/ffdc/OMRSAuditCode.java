@@ -244,6 +244,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
             "Review the exception and resolve the issue it documents. " +
                     "Then try starting the server again."),
 
+    LOCAL_REFERENCE_INSTANCE("OMRS-AUDIT-0028",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "A reference instance has been passed to repository {0} during the {1} in the {2} parameter which has the local repository metadata collection id {3} as its home",
+                             "The system saves the instance since it assumes it comes from a back up.",
+                             "Validate that the reference instance comes from a back-up.  If it does then all is well.  If it does not, look for errors in the audit log and validate that the message passing " +
+                                     "protocol levels are compatible. If nothing is clearly wrong with the set up, " +
+                                     "raise a Github issue or ask for help on the dev mailing list."),
+
     INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The {0} event manager is initializing",
@@ -311,6 +319,12 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          "The connector to the {0} topic failed with a {1} exception and the following error message: {2}",
                          "The server fails to start since it is not able to operate without an audit log.",
                          "Correct the configuration to ensure that the cohort's topic connection is valid."),
+
+    IGNORING_DUPLICATE_CLASSIFICATION("OMRS-AUDIT-0039",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "Ignoring duplicate request to classify entity {0} with classification {1} in the {2} repository",
+                             "The server has detected that multiple services are attempting to add the same classification with the same properties to the entity.  It is ignoring the duplicate request",
+                             "This is a common race condition.  It is seen often with the Anchors classification that is added automatically when Egeria detects an entity does not have this classification."),
 
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                              OMRSAuditLogRecordSeverity.STARTUP,

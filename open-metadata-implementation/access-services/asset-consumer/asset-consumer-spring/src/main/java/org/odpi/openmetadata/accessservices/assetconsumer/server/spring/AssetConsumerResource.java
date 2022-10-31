@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class AssetConsumerResource
 {
-    private AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();
+    private final AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();
 
     /**
      * Default constructor
@@ -50,6 +51,11 @@ public class AssetConsumerResource
      * PropertyServerException problem retrieving the discovery engine definition.
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
+
+    @Operation(summary="getOutTopicConnection",
+               description="Return the connection object for connecting to the Asset Consumer's OMAS's out topic.",
+               externalDocs=@ExternalDocumentation(description="Out Topics",
+                                                   url="https://egeria-project.org/concepts/out-topic/"))
 
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
                                                     @PathVariable String userId,
@@ -75,6 +81,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
+
+    @Operation(summary="addCommentReply",
+               description="Adds a reply to a comment.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public GUIDResponse addCommentReply(@PathVariable String            serverName,
                                         @PathVariable String            userId,
@@ -102,6 +113,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments")
 
+    @Operation(summary="addCommentToAsset",
+               description="Creates a comment and attaches it to an asset.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public GUIDResponse addCommentToAsset(@PathVariable String            serverName,
                                           @PathVariable String            userId,
                                           @PathVariable String            assetGUID,
@@ -126,6 +142,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/likes")
+
+    @Operation(summary="addLikeToAsset",
+               description="Creates a <i>like</i> object and attaches it to an asset.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse addLikeToAsset(@PathVariable String              serverName,
                                        @PathVariable String              userId,
@@ -156,6 +177,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/log-records")
 
+    @Operation(summary="addLogMessageToAsset",
+               description="Creates an audit log record for the asset.  This log record is stored in the local server's Audit Log.",
+               externalDocs=@ExternalDocumentation(description="Asset Log Record",
+                                                   url="https://egeria-project.org/concepts/asset-log-message/"))
+
     public VoidResponse addLogMessageToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
                                              @PathVariable String                assetGUID,
@@ -180,6 +206,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings")
 
+    @Operation(summary="addRatingToAsset",
+               description="Adds a star rating and optional review text to the asset.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse addRatingToAsset(@PathVariable String           serverName,
                                          @PathVariable String           userId,
                                          @PathVariable String           assetGUID,
@@ -190,7 +221,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Adds a tag (either private of public) to an asset.
+     * Adds an informal tag (either private of public) to an asset.
      *
      * @param serverName       name of the server instances for this request.
      * @param userId           userId of user making request.
@@ -205,6 +236,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/tags/{tagGUID}")
 
+    @Operation(summary="addTagToAsset",
+               description="Adds an informal tag (either private of public) to an asset.",
+               externalDocs=@ExternalDocumentation(description="Asset Classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
     public VoidResponse addTagToAsset(@PathVariable String              serverName,
                                       @PathVariable String              userId,
                                       @PathVariable String              assetGUID,
@@ -216,11 +252,11 @@ public class AssetConsumerResource
 
 
     /**
-     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     * Adds an informal tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
      *
      * @param serverName       name of the server instances for this request.
      * @param userId           userId of user making request.
-     * @param elementGUID        unique id for the element.
+     * @param elementGUID      unique id for the element.
      * @param tagGUID          unique id of the tag.
      * @param requestBody      null request body needed for correct protocol exchange.
      *
@@ -230,6 +266,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/elements/{elementGUID}/tags/{tagGUID}")
+
+    @Operation(summary="addTagToElement",
+               description="Adds an informal tag (either private of public) to an element attached to an asset - such as schema element, connection, ...",
+               externalDocs=@ExternalDocumentation(description="Asset Classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public VoidResponse addTagToElement(@PathVariable String              serverName,
                                         @PathVariable String              userId,
@@ -255,6 +296,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags")
 
+    @Operation(summary="createTag",
+               description="Creates a new informal tag and returns the unique identifier for it.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
     public GUIDResponse createTag(@PathVariable String                serverName,
                                   @PathVariable String                userId,
                                   @RequestBody  InformalTagProperties requestBody)
@@ -264,7 +310,9 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes a tag from the repository.  all the relationships to referenceables are lost.
+     * Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.
+     * A private tag can be deleted by its creator and all the references are lost;
+     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param serverName   name of the server instances for this request
      * @param userId       String - userId of user making request.
@@ -278,10 +326,15 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/{tagGUID}/delete")
 
-    public VoidResponse   deleteTag(@PathVariable String          serverName,
-                                    @PathVariable String          userId,
-                                    @PathVariable String          tagGUID,
-                                    @RequestBody  NullRequestBody requestBody)
+    @Operation(summary="deleteTag",
+               description="Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.  A private tag can be deleted by its creator and all the references are lost; a public tag can be deleted by anyone, but only if it is not attached to any referenceable.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public VoidResponse   deleteTag(@PathVariable                   String          serverName,
+                                    @PathVariable                   String          userId,
+                                    @PathVariable                   String          tagGUID,
+                                    @RequestBody(required = false)  NullRequestBody requestBody)
     {
         return restAPI.deleteTag(serverName, userId, tagGUID, requestBody);
     }
@@ -303,6 +356,11 @@ public class AssetConsumerResource
      */
     @GetMapping(path = "/assets/by-connection-name/{connectionName}")
 
+    @Operation(summary="getAssetForConnectionName",
+               description="Returns the unique identifier for the asset connected to the connection identified by the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Asset Connections",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-connections"))
+
     public GUIDResponse getAssetForConnectionName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
                                                   @PathVariable String   connectionName)
@@ -312,8 +370,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return a list of assets with the requested search string in their name, qualified name
-     * or description.
+     * Return a list of assets with the requested search string in their name, qualified name or description.
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
@@ -328,6 +385,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/by-search-string")
 
+    @Operation(summary="findAssets",
+               description="Return a list of assets with the requested search string in their name, qualified name or description.  The search string is a regular expression (regEx).",
+               externalDocs=@ExternalDocumentation(description="Assets",
+                                                   url="https://egeria-project.org/concepts/asset/"))
+
     public GUIDListResponse findAssets(@PathVariable String   serverName,
                                        @PathVariable String   userId,
                                        @RequestParam int      startFrom,
@@ -339,8 +401,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
-     * fields in the schema.
+     * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via fields in the schema.
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
@@ -355,6 +416,11 @@ public class AssetConsumerResource
      */
     @GetMapping(path = "/assets/by-meaning/{termGUID}")
 
+    @Operation(summary="getAssetsByMeaning",
+               description="Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via fields in the schema.",
+               externalDocs=@ExternalDocumentation(description="Asset classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
     public GUIDListResponse getAssetsByMeaning(@PathVariable String serverName,
                                                @PathVariable String userId,
                                                @PathVariable String termGUID,
@@ -366,7 +432,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return a list of assets with the requested name.
+     * Return a list of assets with the requested name either qualifiedName or name property.  There are no wildcards supported in this request.  The name must match exactly.
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
@@ -381,6 +447,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/by-name")
 
+    @Operation(summary="getAssetsByName",
+               description="Return a list of assets with the requested name either qualifiedName or name property.  There are no wildcards supported in this request.  The name must match exactly.",
+               externalDocs=@ExternalDocumentation(description="Assets",
+                                                   url="https://egeria-project.org/concepts/asset/"))
+
     public GUIDListResponse getAssetsByName(@PathVariable String   serverName,
                                             @PathVariable String   userId,
                                             @RequestParam int      startFrom,
@@ -392,8 +463,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
-     * of its schema elements.
+     * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one of its schema elements.
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
@@ -407,6 +477,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "/assets/by-tag/{tagGUID}")
+
+    @Operation(summary="getAssetsByTag",
+               description="Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one of its schema elements.",
+               externalDocs=@ExternalDocumentation(description="Asset classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public GUIDListResponse getAssetsByTag(@PathVariable String serverName,
                                            @PathVariable String userId,
@@ -434,6 +509,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/meanings/by-name")
 
+    @Operation(summary="getMeaningByName",
+               description="Return the full definition (meaning) of the terms exactly matching the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Glossaries",
+                                                   url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
+
     public GlossaryTermListResponse getMeaningByName(@PathVariable String   serverName,
                                                      @PathVariable String   userId,
                                                      @RequestParam int      startFrom,
@@ -445,7 +525,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the full definition (meaning) of the terms matching the supplied name.
+     * Return the full definition (meaning) of the terms matching the supplied name.  The search string is a regular expression (regEx).
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
@@ -458,6 +538,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/meanings/by-search-string")
+
+    @Operation(summary="findMeanings",
+               description="Return the full definition (meaning) of the terms matching the supplied name.  The search string is a regular expression (regEx).",
+               externalDocs=@ExternalDocumentation(description="Glossaries",
+                                                   url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
     public GlossaryTermListResponse findMeanings(@PathVariable String   serverName,
                                                  @PathVariable String   userId,
@@ -483,6 +568,11 @@ public class AssetConsumerResource
      */
     @GetMapping(path = "/meanings/{termGUID}")
 
+    @Operation(summary="getMeaning",
+               description="Return the full definition (meaning) of a term using the unique identifier of the glossary term.",
+               externalDocs=@ExternalDocumentation(description="Glossaries",
+                                                   url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
+
     public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
                                            @PathVariable String   userId,
                                            @PathVariable String   termGUID)
@@ -492,7 +582,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the Informal Tag for the supplied unique identifier (assetGUID).
+     * Return the informal tag for the supplied unique identifier (tagGUID).
      *
      * @param serverName name of the server instances for this request.
      * @param userId userId of the user making the request.
@@ -504,6 +594,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "/tags/{tagGUID}")
+
+    @Operation(summary="getTag",
+               description="Return the informal tag for the supplied unique identifier (tagGUID).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
 
     public TagResponse getTag(@PathVariable String   serverName,
                               @PathVariable String   userId,
@@ -528,6 +623,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/by-name")
 
+    @Operation(summary="getTagsByName",
+               description="Return the tags exactly matching the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
     public TagsResponse getTagsByName(@PathVariable String  serverName,
                                       @PathVariable String  userId,
                                       @RequestParam int     startFrom,
@@ -539,7 +639,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the list of the calling user's private tags exactly matching the supplied name.
+     * Return the list of the calling user's private informal tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
@@ -553,6 +653,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/private/by-name")
 
+    @Operation(summary="getMyTagsByName",
+               description="Return the list of the calling user's private informal tags exactly matching the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
     public TagsResponse getMyTagsByName(@PathVariable String  serverName,
                                         @PathVariable String  userId,
                                         @RequestParam int     startFrom,
@@ -564,7 +669,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the list of tags containing the supplied string in either the name or description.
+     * Return the list of informal tags containing the supplied string in either the name or description. The search string is a regular expression (RegEx).
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
@@ -578,6 +683,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/by-search-string")
 
+    @Operation(summary="findTags",
+               description="Return the list of informal tags containing the supplied string in either the name or description. The search string is a regular expression (RegEx).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
     public TagsResponse findTags(@PathVariable String  serverName,
                                  @PathVariable String  userId,
                                  @RequestParam int     startFrom,
@@ -589,7 +699,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
@@ -603,6 +713,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/private/by-search-string")
 
+    @Operation(summary="findMyTags",
+               description="Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
     public TagsResponse findMyTags(@PathVariable String  serverName,
                                    @PathVariable String  userId,
                                    @RequestParam int     startFrom,
@@ -614,7 +729,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes a comment added to the asset by this user.
+     * Removes a comment added to the asset by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.
      *
      * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
@@ -629,6 +744,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
 
+    @Operation(summary="removeCommentFromAsset",
+               description="Removes a comment added to the asset by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse removeCommentFromAsset(@PathVariable                  String          serverName,
                                                @PathVariable                  String          userId,
                                                @PathVariable                  String          assetGUID,
@@ -640,7 +760,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes a "LikeProperties" added to the asset by this user.
+     * Removes a "Like" added to the asset by this user.
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
@@ -654,6 +774,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/likes/delete")
 
+    @Operation(summary="removeLikeFromAsset",
+               description="Removes a <i>Like</i> added to the asset by this user.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse   removeLikeFromAsset(@PathVariable                  String          serverName,
                                               @PathVariable                  String          userId,
                                               @PathVariable                  String          assetGUID,
@@ -664,7 +789,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes of a star rating that was added to the asset by this user.
+     * Removes of a star rating/review that was added to the asset by this user.
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
@@ -677,6 +802,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings/delete")
+
+    @Operation(summary="removeRatingFromAsset",
+               description="Removes of a star rating/review that was added to the asset by this user.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse   removeRatingFromAsset(@PathVariable                  String          serverName,
                                                 @PathVariable                  String          userId,
@@ -703,6 +833,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/tags/{tagGUID}/delete")
 
+    @Operation(summary="removeTagFromAsset",
+               description="Removes a link between a tag and an asset that was added by this user.",
+               externalDocs=@ExternalDocumentation(description="Asset classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
     public VoidResponse   removeTagFromAsset(@PathVariable                  String          serverName,
                                              @PathVariable                  String          userId,
                                              @PathVariable                  String          assetGUID,
@@ -714,7 +849,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     * Removes a tag from an element attached to an asset - such as schema element, connection, ... that was added by this user.
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
@@ -728,6 +863,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/elements/{elementGUID}/tags/{tagGUID}/delete")
+
+    @Operation(summary="removeTagFromElement",
+               description="Removes a tag from an element attached to an asset - such as schema element, connection, ... that was added by this user.",
+               externalDocs=@ExternalDocumentation(description="Asset classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public VoidResponse   removeTagFromElement(@PathVariable                  String          serverName,
                                                @PathVariable                  String          userId,
@@ -755,6 +895,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "assets/{assetGUID}/comments/{commentGUID}/update")
 
+    @Operation(summary="updateComment",
+               description="Update an existing comment.",
+               externalDocs=@ExternalDocumentation(description="Asset Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse   updateComment(@PathVariable String            serverName,
                                         @PathVariable String            userId,
                                         @PathVariable String            assetGUID,
@@ -779,6 +924,11 @@ public class AssetConsumerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/update")
+
+    @Operation(summary="updateTagDescription",
+               description="Updates the description of an existing tag (either private or public).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
 
     public VoidResponse   updateTagDescription(@PathVariable String                serverName,
                                                @PathVariable String                userId,

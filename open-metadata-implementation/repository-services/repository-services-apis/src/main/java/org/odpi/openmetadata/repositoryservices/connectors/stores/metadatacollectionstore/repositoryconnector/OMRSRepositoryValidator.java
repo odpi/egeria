@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
@@ -1441,6 +1442,27 @@ public interface OMRSRepositoryValidator
                                          String         localMetadataCollectionId,
                                          String         instanceParameterName,
                                          InstanceHeader instance,
+                                         String         methodName) throws InvalidParameterException,
+                                                                           RepositoryErrorException;
+
+
+    /**
+     * Validates that an instance has the correct header for it to be a reference copy.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param localMetadataCollectionId   the unique identifier for the local repository' metadata collection.
+     * @param instanceParameterName  the name of the parameter that provided the instance.
+     * @param instance  the instance to test
+     * @param auditLog optional logging destination
+     * @param methodName  the name of the method that supplied the instance.
+     * @throws RepositoryErrorException  problem with repository
+     * @throws InvalidParameterException  the instance is null or linked to local metadata repository
+     */
+    void validateReferenceInstanceHeader(String         sourceName,
+                                         String         localMetadataCollectionId,
+                                         String         instanceParameterName,
+                                         InstanceHeader instance,
+                                         AuditLog       auditLog,
                                          String         methodName) throws InvalidParameterException,
                                                                            RepositoryErrorException;
 

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DataManagerOMASResource
 {
-    private DataManagerRESTServices restAPI = new DataManagerRESTServices();
+    private final DataManagerRESTServices restAPI = new DataManagerRESTServices();
 
 
     /**

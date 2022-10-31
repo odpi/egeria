@@ -839,7 +839,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
      * schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
      * retrieval is needed.
-      *
+     *
      * @param userId         String   userId of user making request.
      * @param parentElementGUID String   unique id for parent schema element.
      * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
@@ -869,6 +869,56 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
+        return getAttachedSchemaAttributes(userId,
+                                           parentElementGUID,
+                                           parentElementGUIDParameterName,
+                                           schemaAttributeTypeName,
+                                           supportedZones,
+                                           startFrom,
+                                           pageSize,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
+     * schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
+     * retrieval is needed.
+      *
+     * @param userId         String   userId of user making request.
+     * @param parentElementGUID String   unique id for parent schema element.
+     * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName subtype of schema attribute or null
+     * @param serviceSupportedZones list of zone names for calling service
+     * @param startFrom   int      starting position for first returned element.
+     * @param pageSize    int      maximum number of elements to return on the call.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName     calling method
+     *
+     * @return a schema attributes response
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<SCHEMA_ATTRIBUTE> getAttachedSchemaAttributes(String       userId,
+                                                              String       parentElementGUID,
+                                                              String       parentElementGUIDParameterName,
+                                                              String       schemaAttributeTypeName,
+                                                              List<String> serviceSupportedZones,
+                                                              int          startFrom,
+                                                              int          pageSize,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing,
+                                                              Date    effectiveTime,
+                                                              String  methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
         EntityDetail parentEntity = this.getEntityFromRepository(userId,
                                                                  parentElementGUID,
                                                                  parentElementGUIDParameterName,
@@ -877,7 +927,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
-                                                                 supportedZones,
+                                                                 serviceSupportedZones,
                                                                  effectiveTime,
                                                                  methodName);
 
@@ -889,7 +939,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                       parentElementGUID,
                                                       parentElementGUIDParameterName,
                                                       schemaAttributeTypeName,
-                                                      supportedZones,
+                                                      serviceSupportedZones,
                                                       startFrom,
                                                       pageSize,
                                                       forLineage,
@@ -905,7 +955,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                     schemaAttributeTypeName,
                                                                     null,
                                                                     null,
-                                                                    supportedZones,
+                                                                    serviceSupportedZones,
                                                                     startFrom,
                                                                     pageSize,
                                                                     forLineage,

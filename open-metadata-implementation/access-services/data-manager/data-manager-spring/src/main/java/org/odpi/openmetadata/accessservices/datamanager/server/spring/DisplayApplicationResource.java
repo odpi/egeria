@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DisplayApplicationResource
 {
-    private DisplayApplicationRESTServices restAPI = new DisplayApplicationRESTServices();
+    private final DisplayApplicationRESTServices restAPI = new DisplayApplicationRESTServices();
 
     /**
      * Default constructor

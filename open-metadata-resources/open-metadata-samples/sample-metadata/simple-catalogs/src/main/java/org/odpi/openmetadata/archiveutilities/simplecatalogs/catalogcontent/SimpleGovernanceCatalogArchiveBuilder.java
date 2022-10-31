@@ -4,13 +4,12 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
-import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class SimpleGovernanceCatalogArchiveBuilder
     private static final String                  archiveName        = "SimpleGovernanceCatalog";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Sample metadata showing governance definitions and linking relationships.";
-    private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
+    private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";
     private static final Date                    creationDate       = new Date(1632046251579L);
 
@@ -61,10 +60,12 @@ public class SimpleGovernanceCatalogArchiveBuilder
     /**
      * Constructor pushes all archive header values to the superclass
      *
-     * @param archiveRootName common name for the guid map
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param dependentArchives previously created archives that are needed for reference.
      */
-    public SimpleGovernanceCatalogArchiveBuilder(String                    archiveRootName,
+    public SimpleGovernanceCatalogArchiveBuilder(String                    archiveName,
+                                                 String                    archiveRootName,
                                                  List<OpenMetadataArchive> dependentArchives)
     {
         this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
@@ -78,11 +79,14 @@ public class SimpleGovernanceCatalogArchiveBuilder
 
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
+                                                            archiveName,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,
                                                             versionNumber,
-                                                            versionName);
+                                                            versionName,
+                                                            InstanceProvenanceType.LOCAL_COHORT,
+                                                            null);
     }
 
 

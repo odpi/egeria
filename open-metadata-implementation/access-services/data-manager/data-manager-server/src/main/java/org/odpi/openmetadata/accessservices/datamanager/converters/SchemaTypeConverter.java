@@ -64,7 +64,6 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
     @Override
     public B getNewSchemaTypeBean(Class<B>             beanClass,
                                   InstanceHeader       schemaRootHeader,
@@ -239,7 +238,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -267,7 +266,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -291,7 +290,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -321,7 +320,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -345,7 +344,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -369,7 +368,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -393,7 +392,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -408,6 +407,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
     private void updateBasicSchemaTypeProperties(SchemaTypeProperties bean,
                                                  InstanceProperties   instanceProperties)
     {
+        bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
         bean.setDisplayName(this.removeDisplayName(instanceProperties));
         bean.setDescription(this.removeDescription(instanceProperties));
         bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));

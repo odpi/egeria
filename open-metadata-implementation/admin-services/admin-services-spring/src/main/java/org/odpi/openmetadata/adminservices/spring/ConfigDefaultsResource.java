@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class ConfigDefaultsResource
 {
-    private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+    private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
     /**
      * Set up the default root URL for this server that is used to construct full URL paths to calls for

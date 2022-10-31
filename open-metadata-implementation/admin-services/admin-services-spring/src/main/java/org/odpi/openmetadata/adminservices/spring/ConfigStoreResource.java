@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigStoreResource
 {
-    private static OMAGServerAdminStoreServices  adminStoreAPI = new OMAGServerAdminStoreServices();
+    private final OMAGServerAdminStoreServices  adminStoreAPI = new OMAGServerAdminStoreServices();
 
 
     /**

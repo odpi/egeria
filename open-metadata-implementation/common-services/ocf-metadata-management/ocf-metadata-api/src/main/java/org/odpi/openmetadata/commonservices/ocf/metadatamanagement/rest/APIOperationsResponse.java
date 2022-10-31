@@ -1,40 +1,39 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * CommentResponse is the response structure used on the OMAS REST API calls that returns a
- * Comment object as a response.  It returns details of the comment and the count of the replies within it.
+ * APIOperationsResponse is the response structure used on the OMAS REST API calls that return a
+ * list of SchemaType objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentResponse extends OCFOMASAPIResponse
+public class APIOperationsResponse extends PagedResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private Comment comment    = null;
-    private int     replyCount = 0;
+    private List<APIOperationResponse> responseObjects = null;
 
 
     /**
      * Default constructor
      */
-    public CommentResponse()
+    public APIOperationsResponse()
     {
+        super();
     }
 
 
@@ -43,57 +42,47 @@ public class CommentResponse extends OCFOMASAPIResponse
      *
      * @param template object to copy
      */
-    public CommentResponse(CommentResponse template)
+    public APIOperationsResponse(APIOperationsResponse template)
     {
+        super(template);
+
         if (template != null)
         {
-            this.comment = template.getComment();
-            this.replyCount = template.getReplyCount();
+            this.responseObjects = template.getList();
         }
     }
 
 
     /**
-     * Return the comment properties.
+     * Return the responseObjects result.
      *
-     * @return note log bean
+     * @return list of response objects
      */
-    public Comment getComment()
+    public List<APIOperationResponse> getList()
     {
-        return comment;
+        if (responseObjects == null)
+        {
+            return null;
+        }
+        else if (responseObjects.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(responseObjects);
+        }
     }
 
 
     /**
-     * Set up the comment properties.
+     * Set up the responseObjects result.
      *
-     * @param comment bean
+     * @param responseObjects list of response objects
      */
-    public void setComment(Comment comment)
+    public void setList(List<APIOperationResponse> responseObjects)
     {
-        this.comment = comment;
-    }
-
-
-    /**
-     * Return the count of the replies to the comment.
-     *
-     * @return int
-     */
-    public int getReplyCount()
-    {
-        return replyCount;
-    }
-
-
-    /**
-     * Set up the count of the replies to the comment.
-     *
-     * @param replyCount int
-     */
-    public void setReplyCount(int replyCount)
-    {
-        this.replyCount = replyCount;
+        this.responseObjects = responseObjects;
     }
 
 
@@ -105,9 +94,9 @@ public class CommentResponse extends OCFOMASAPIResponse
     @Override
     public String toString()
     {
-        return "CommentResponse{" +
-                "comment=" + comment +
-                ", replyCount=" + replyCount +
+        return "APIOperationsResponse{" +
+                "list=" + getList() +
+                ", startingFromElement=" + getStartingFromElement() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -135,13 +124,16 @@ public class CommentResponse extends OCFOMASAPIResponse
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (!(objectToCompare instanceof APIOperationsResponse))
         {
             return false;
         }
-        CommentResponse that = (CommentResponse) objectToCompare;
-        return getReplyCount() == that.getReplyCount() &&
-                Objects.equals(getComment(), that.getComment());
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        APIOperationsResponse that = (APIOperationsResponse) objectToCompare;
+        return Objects.equals(responseObjects, that.responseObjects);
     }
 
 
@@ -153,6 +145,6 @@ public class CommentResponse extends OCFOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComment(), getReplyCount());
+        return Objects.hash(responseObjects);
     }
 }

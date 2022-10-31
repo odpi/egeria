@@ -205,12 +205,6 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The reference instance comes from another server.  Look for errors in the audit log and validate that the message passing " +
                                     "protocol levels are compatible. If nothing is obviously wrong with the set up, " +
                                     "raise a Github issue or ask for help on the dev mailing list."),
-    LOCAL_REFERENCE_INSTANCE(400, "OMRS-REPOSITORY-400-042",
-            "A reference instance has been passed to repository {0} during the {1} in the {2} parameter which has the local repository as its home",
-            "The system is unable to perform the request because the instance should come from another repository.",
-            "The reference instance comes from another server.  Look for errors in the audit log and validate that the message passing " +
-                                    "protocol levels are compatible. If nothing is clearly wrong with the set up, " +
-                                    "raise a Github issue or ask for help on the dev mailing list."),
     NULL_ENTITY_PROXY(400, "OMRS-REPOSITORY-400-043",
             "A null entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation",
             "The system is unable to perform the request because the entity proxy is needed.",
@@ -964,7 +958,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -976,7 +970,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
