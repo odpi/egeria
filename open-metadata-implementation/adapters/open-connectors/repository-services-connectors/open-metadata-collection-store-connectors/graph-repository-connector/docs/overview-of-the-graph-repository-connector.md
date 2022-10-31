@@ -472,7 +472,7 @@ main you won’t, and you will need to perform a property-based search, such as:
 g.V().has('veReferenceablexqualifiedName','csv-asset-discovery-service-GovernanceServiceProvider')
 
 However, at the time of writing I cannot do that because the JanusGraph 0.5.2 assembly I am using has an older version of Lucene than 
-that used in the Egeria 3.13-SNAPSHOT build, so I am unable to use the index. I would need to build a JanusGraph assembly with a later 
+that used in the Egeria 2.6-SNAPSHOT build, so I am unable to use the index. I would need to build a JanusGraph assembly with a later 
 version of Lucene, so the above cuts a massive corner, for the sake of illustration, so that you can see what an entity looks like when 
 stored as a vertex in the graph database.
 
