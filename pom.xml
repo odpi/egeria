@@ -155,7 +155,7 @@
         <mockito.version>4.8.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
-        <jackson.databind.version>2.13.4</jackson.databind.version>
+        <jackson.databind.version>2.13.4.1</jackson.databind.version>
         <jackson.version>2.13.4</jackson.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.1</kafka.version>
@@ -3416,6 +3416,35 @@
                 <groupId>org.reactivestreams</groupId>
                 <artifactId>reactive-streams</artifactId>
                 <version>${reactivestreams.version}</version>
+            </dependency>
+
+
+            <!-- Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans. -->
+            <!-- TODO: Remove dependency block below in case the new parent library is updated and pulls good version. -->
+
+            <!-- [CVE-2018-18928] CWE-190 com.ibm.icu:icu4j:jar:61.1 via org.antlr:antlr4:jar:4.9.1 << org.apache.tinkerpop:gremlin-core:jar:3.5.2  -->
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4</artifactId>
+                <version>4.9.3</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- [sonatype-2021-0234] CWE-190 net.openhft:chronicle-wire:jar:2.20 via org.apache.cassandra:cassandra-all:jar:4.0.6 << org.janusgraph:janusgraph-cql:jar:0.6.1  -->
+            <dependency>
+                <groupId>net.openhft</groupId>
+                <artifactId>chronicle-bom</artifactId>
+                <version>2.21ea47</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- [sonatype-2019-0992] CWE-494 jcommander:1.30 via org.apache.cassandra:cassandra-all:jar:4.0.6 -->
+            <dependency>
+                <groupId>com.beust</groupId>
+                <artifactId>jcommander</artifactId>
+                <version>1.78</version>
+                <scope>runtime</scope>
             </dependency>
 
         </dependencies>
