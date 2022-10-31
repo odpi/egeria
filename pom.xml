@@ -196,7 +196,7 @@
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <spotbugs-annotations.version>4.7.2</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.3</spotbugs-annotations.version>
         <oss.version>4.15.0</oss.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.12.1</joda.version>
