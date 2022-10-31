@@ -9,7 +9,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.13-SNAPSHOT</version>
+        <version>3.14-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Distribution Files</name>
