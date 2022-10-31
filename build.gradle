@@ -26,7 +26,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.13-SNAPSHOT'
+    version = '3.13'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
