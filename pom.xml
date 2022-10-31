@@ -206,7 +206,7 @@
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>2.2.4</swagger.version>
-        <micrometer-registry-prometheus.version>1.9.4</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.9.5</micrometer-registry-prometheus.version>
         <classgraph.version>4.8.149</classgraph.version>
         <groovy.version>3.0.13</groovy.version>
         <reflections.version>0.10.2</reflections.version>
