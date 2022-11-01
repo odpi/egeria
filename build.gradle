@@ -126,7 +126,7 @@ allprojects {
         tomcatVersion = '9.0.67'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
-        gsonVersion = '2.9.1'
+        gsonVersion = '2.10'
         protobufVersion = '3.21.7'
         jnrVersion = '3.1.15'
         cassandraVersion = '4.0.6'
