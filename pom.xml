@@ -230,7 +230,7 @@
         <maven-reports-plugin.version>3.4.1</maven-reports-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-        <maven-shade.version>3.4.0</maven-shade.version>
+        <maven-shade.version>3.4.1</maven-shade.version>
         <maven-install.version>3.0.1</maven-install.version>
         <maven-pmd.version>3.19.0</maven-pmd.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
