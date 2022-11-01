@@ -100,7 +100,7 @@ allprojects {
         luceneVersion = '8.11.1'
         openlineageVersion = '0.14.1'
         ossVersion = '4.15.0'
-        mockitoVersion = '4.8.0'
+        mockitoVersion = '4.8.1'
         nettyVersion = '4.1.82.Final'
         plexusVersion = '3.5.0'
         prometheusVersion = '1.9.4'
