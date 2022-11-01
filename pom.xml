@@ -185,7 +185,7 @@
         <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <avro.version>1.11.1</avro.version>
-        <plexus.version>3.4.2</plexus.version>
+        <plexus.version>3.5.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
