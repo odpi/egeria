@@ -292,7 +292,7 @@ allprojects {
 
             // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
             //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
-            runtimeOnly("org.antlr:antlr4:4.9.3")
+            runtimeOnly("org.antlr:antlr4:4.11.1")
             runtimeOnly("com.beust:jcommander:1.78")
         }
         implementation platform('net.openhft:chronicle-bom:2.21ea47')
