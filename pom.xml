@@ -260,7 +260,7 @@
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <openlineage.version>0.14.1</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
-        <cassandra.version>4.0.6</cassandra.version>
+        <cassandra.version>4.0.7</cassandra.version>
         <ant.version>1.10.12</ant.version>
         <gson.version>2.9.1</gson.version>
         <jnr.version>3.1.15</jnr.version>
