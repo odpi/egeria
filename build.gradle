@@ -87,7 +87,7 @@ allprojects {
         javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.11.2'
+        jodatimeVersion = '2.12.1'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.1'
