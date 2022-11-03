@@ -66,7 +66,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.10.0'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.4.2'
+        elasticsearchVersion = '8.4.3'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -87,7 +87,7 @@ allprojects {
         javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.11.2'
+        jodatimeVersion = '2.12.1'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.1'
@@ -96,14 +96,14 @@ allprojects {
         kafkaVersion = '3.3.1'
         lang3Version = '3.12.0'
         logbackVersion = '1.2.11'
-        lettuceVersion = '6.2.0.RELEASE'
+        lettuceVersion = '6.2.1.RELEASE'
         luceneVersion = '8.11.1'
-        openlineageVersion = '0.14.1'
+        openlineageVersion = '0.15.1'
         ossVersion = '4.15.0'
-        mockitoVersion = '4.8.0'
-        nettyVersion = '4.1.82.Final'
-        plexusVersion = '3.4.2'
-        prometheusVersion = '1.9.4'
+        mockitoVersion = '4.8.1'
+        plexusVersion = '3.5.0'
+        prometheusVersion = '1.9.5'
+        nettyVersion = '4.1.84.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -112,24 +112,24 @@ allprojects {
         snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
         snappyVersion = '1.1.8.4'
-        spotbugsVersion = '4.7.2'
-        springdocVersion = '1.6.11'
-        springbootVersion = '2.7.4'
-        springdataVersion = '2.7.3'
+        springbootVersion = '2.7.5'
+        springdocVersion = '1.6.12'
+        spotbugsVersion = '4.7.3'
+        springdataVersion = '2.7.5'
         springldapVersion = '2.4.1'
-        swaggerVersion = '2.2.3'
-        springsecurityVersion = '5.7.3'
+        springsecurityVersion = '5.7.5'
+        swaggerVersion = '2.2.4'
         testngVersion = '7.6.1'
         thriftVersion = '0.17.0'
         springwebVersion = '5.3.23'
         tinkVersion = '1.7.0'
-        tomcatVersion = '9.0.67'
+        tomcatVersion = '9.0.68'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
-        gsonVersion = '2.9.1'
-        protobufVersion = '3.21.7'
+        gsonVersion = '2.10'
+        protobufVersion = '3.21.9'
         jnrVersion = '3.1.15'
-        cassandraVersion = '4.0.6'
+        cassandraVersion = '4.0.7'
         osgiVersion = '8.0.0'
         log4jVersion = '2.19.0'
         jacksonjdk8Version = '2.13.4'
@@ -292,10 +292,10 @@ allprojects {
 
             // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
             //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
-            runtimeOnly("org.antlr:antlr4:4.9.3")
-            runtimeOnly("com.beust:jcommander:1.78")
+            runtimeOnly("com.beust:jcommander:1.82")
+            runtimeOnly("org.antlr:antlr4:4.11.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.21ea47')
+        implementation platform('net.openhft:chronicle-bom:2.24ea6')
     }
 
     /*

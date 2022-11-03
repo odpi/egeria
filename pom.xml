@@ -152,24 +152,24 @@
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
-        <mockito.version>4.8.0</mockito.version>
+        <mockito.version>4.8.1</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
-        <jackson.databind.version>2.13.4.1</jackson.databind.version>
+        <jackson.databind.version>2.13.4.2</jackson.databind.version>
         <jackson.version>2.13.4</jackson.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.1</kafka.version>
-        <tomcat.version>9.0.67</tomcat.version>
-        <netty.version>4.1.82.Final</netty.version>
+        <tomcat.version>9.0.68</tomcat.version>
+        <netty.version>4.1.84.Final</netty.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.2</janus.version>
-        <spring-boot.version>2.7.4</spring-boot.version>
+        <spring-boot.version>2.7.5</spring-boot.version>
         <janus.version>0.6.1</janus.version>
         <gremlin.version>3.5.2</gremlin.version>
-        <spring-data.version>2.7.3</spring-data.version>
-        <springdoc.version>1.6.11</springdoc.version>
+        <springdoc.version>1.6.12</springdoc.version>
+        <spring-data.version>2.7.5</spring-data.version>
         <spring.version>5.3.23</spring.version>
-        <spring-security.version>5.7.3</spring-security.version>
+        <spring-security.version>5.7.5</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-cli.version>1.5.0</commons-cli.version>
@@ -185,7 +185,7 @@
         <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <avro.version>1.11.1</avro.version>
-        <plexus.version>3.4.2</plexus.version>
+        <plexus.version>3.5.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
@@ -196,17 +196,17 @@
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <spotbugs-annotations.version>4.7.2</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.3</spotbugs-annotations.version>
         <oss.version>4.15.0</oss.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.11.2</joda.version>
+        <joda.version>2.12.1</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.3</antlr.version>
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.33</snakeyaml.version>
-        <swagger.version>2.2.3</swagger.version>
-        <micrometer-registry-prometheus.version>1.9.4</micrometer-registry-prometheus.version>
+        <swagger.version>2.2.4</swagger.version>
+        <micrometer-registry-prometheus.version>1.9.5</micrometer-registry-prometheus.version>
         <classgraph.version>4.8.149</classgraph.version>
         <groovy.version>3.0.13</groovy.version>
         <reflections.version>0.10.2</reflections.version>
@@ -217,12 +217,12 @@
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-configuration2.version>2.8.0</commons-configuration2.version>
-        <lettuce.version>6.2.0.RELEASE</lettuce.version>
+        <lettuce.version>6.2.1.RELEASE</lettuce.version>
         <lombok.version>1.18.24</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.17.0</thrift.version>
-        <elasticsearch.version>8.4.2</elasticsearch.version>
+        <elasticsearch.version>8.4.3</elasticsearch.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -230,11 +230,11 @@
         <maven-reports-plugin.version>3.4.1</maven-reports-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-        <maven-shade.version>3.4.0</maven-shade.version>
+        <maven-shade.version>3.4.1</maven-shade.version>
         <maven-install.version>3.0.1</maven-install.version>
         <maven-pmd.version>3.19.0</maven-pmd.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <owasp.version>7.2.1</owasp.version>
+        <owasp.version>7.3.0</owasp.version>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <maven-download.version>1.6.8</maven-download.version>
         <spotbugs-maven.version>4.7.2.0</spotbugs-maven.version>
@@ -258,13 +258,13 @@
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.14.1</openlineage.version>
+        <openlineage.version>0.15.1</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
-        <cassandra.version>4.0.6</cassandra.version>
+        <cassandra.version>4.0.7</cassandra.version>
         <ant.version>1.10.12</ant.version>
-        <gson.version>2.9.1</gson.version>
+        <gson.version>2.10</gson.version>
         <jnr.version>3.1.15</jnr.version>
-        <protobuf.version>3.21.7</protobuf.version>
+        <protobuf.version>3.21.9</protobuf.version>
         <osgi.version>8.0.0</osgi.version>
         <jacksonjdk8.version>2.13.4</jacksonjdk8.version>
         <log4j.version>2.19.0</log4j.version>
@@ -3426,7 +3426,7 @@
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4</artifactId>
-                <version>4.9.3</version>
+                <version>4.11.1</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -3434,7 +3434,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>chronicle-bom</artifactId>
-                <version>2.21ea47</version>
+                <version>2.24ea6</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -3443,7 +3443,7 @@
             <dependency>
                 <groupId>com.beust</groupId>
                 <artifactId>jcommander</artifactId>
-                <version>1.78</version>
+                <version>1.82</version>
                 <scope>runtime</scope>
             </dependency>
 
