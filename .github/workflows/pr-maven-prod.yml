@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Cache Maven packages
-        uses: actions/cache@v3.0.9
+        uses: actions/cache@v3.0.11
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-java11-${{ hashFiles('**/pom.xml') }}
