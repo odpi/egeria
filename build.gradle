@@ -295,7 +295,7 @@ allprojects {
             runtimeOnly("com.beust:jcommander:1.82")
             runtimeOnly("org.antlr:antlr4:4.11.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea6')
+        implementation platform('net.openhft:chronicle-bom:2.24ea7')
     }
 
     /*
