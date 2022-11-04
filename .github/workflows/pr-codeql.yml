@@ -9,13 +9,8 @@
 name: "CodeQL Analysis"
 
 on:
-  push:
-    branches: [main, feature-*, egeria-release-*]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [main, feature-*, egeria-release-*]
-  schedule:
-    - cron: '0 20 * * 0'
+  workflow_dispatch:
+
 
 jobs:
   analyze:
