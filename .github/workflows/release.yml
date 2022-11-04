@@ -9,7 +9,7 @@ on:
   # No checks for branch or repo - assuming release creation is manual, controlled
   #release:
     #types:
-      - #created
+      #- created
   # Also allow for manual invocation for testing
   workflow_dispatch:
 
