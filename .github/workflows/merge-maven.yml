@@ -6,8 +6,8 @@ name: "Merge main)"
 # - does not run on modification (may be just text)
 
 on:
-  push:
-    branches: [main,egeria-release-*,feature-*]
+  workflow_dispatch:
+
 
 permissions:
   contents: read
