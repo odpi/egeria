@@ -6,7 +6,7 @@
 #
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
-name: "CodeQL Analysis"
+name: "CodeQL Analysis v4"
 
 on:
   push:
@@ -21,7 +21,7 @@ on:
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
-    name: CodeQL Build
+    name: CodeQL Build v4
     runs-on: ubuntu-latest
     permissions:
        actions: read
