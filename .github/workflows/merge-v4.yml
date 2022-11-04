@@ -33,10 +33,16 @@ jobs:
       # Build first - lombok & other pre-processing may be needed. safer...
       - name: build
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
-        run: './gradlew -x test -x javadoc'
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+          arguments: -x test -x javadoc
       - name: javadoc
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
-        run: './gradlew aggregateJavadoc'
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+          arguments: aggregateJavadoc
       - name: publish
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
         uses: JamesIves/github-pages-deploy-action@v4.4.1
