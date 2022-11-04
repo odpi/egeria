@@ -65,6 +65,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      */
     public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -76,6 +77,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -95,6 +97,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      */
     public SubjectAreaOMASAPIResponse<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -106,6 +109,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -143,6 +147,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                                                              String sequencingProperty) {
 
         final String methodName = "findGlossary";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -155,7 +160,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -208,7 +213,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
-
         return response;
     }
 
