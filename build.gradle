@@ -66,7 +66,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.10.0'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.4.3'
+        elasticsearchVersion = '8.5.0'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -118,7 +118,7 @@ allprojects {
         springdataVersion = '2.7.5'
         springldapVersion = '2.4.1'
         springsecurityVersion = '5.7.5'
-        swaggerVersion = '2.2.4'
+        swaggerVersion = '2.2.6'
         testngVersion = '7.6.1'
         thriftVersion = '0.17.0'
         springwebVersion = '5.3.23'
@@ -295,7 +295,7 @@ allprojects {
             runtimeOnly("com.beust:jcommander:1.82")
             runtimeOnly("org.antlr:antlr4:4.11.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea6')
+        implementation platform('net.openhft:chronicle-bom:2.24ea7')
     }
 
     /*
