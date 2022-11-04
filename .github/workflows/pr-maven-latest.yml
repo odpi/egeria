@@ -3,8 +3,8 @@
 name: "Maven - latest release"
 
 on:
-  pull_request:
-    branches: [main, feature-*, egeria-release-*]
+  workflow_dispatch:
+
 
 permissions:
   contents: read
