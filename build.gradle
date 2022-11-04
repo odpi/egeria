@@ -26,7 +26,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.16-SNAPSHOT'
+    version = '4.0-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
@@ -318,7 +318,7 @@ allprojects {
         withJavadocJar()
     }
     tasks.withType(JavaCompile) {
-        options.release = 11
+        options.release = 17
         options.encoding = 'UTF-8'
         options.incremental = true
         options.failOnError = true
