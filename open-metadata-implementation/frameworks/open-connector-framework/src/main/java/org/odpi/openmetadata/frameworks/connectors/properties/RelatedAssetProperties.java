@@ -136,14 +136,7 @@ public abstract class RelatedAssetProperties extends RelatedAsset
                        ", GUID='" + getGUID() + '\'' +
                        ", classifications=" + getClassifications() +
                        ", meanings=" + getMeanings() +
-                       ", securityTags=" + getSecurityTags() +
                        ", searchKeywords=" + getSearchKeywords() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", latestChangeDetails=" + getLatestChangeDetails() +
-                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                        ", headerVersion=" + getHeaderVersion() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class EventBrokerResource
 {
-    private EventBrokerRESTServices restAPI = new EventBrokerRESTServices();
+    private final EventBrokerRESTServices restAPI = new EventBrokerRESTServices();
 
     /**
      * Default constructor

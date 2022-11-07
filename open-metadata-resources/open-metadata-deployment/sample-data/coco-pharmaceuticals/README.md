@@ -71,7 +71,7 @@ When using a pre-built IBM InfoSphere Information Server container, the playbook
 its startup, to avoid any need for SSH or other utilities to provide remote access to the container itself. The sample
 playbooks and artifacts are all placed under
 `/samples/egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals`, pulled directly
-from the `master` branch of the Egeria GitHub repository.
+from the `main` branch of the Egeria GitHub repository.
 
 For installing against your own pre-existing IBM InfoSphere Information Server environment, simply use the provided
 playbooks within these directories from your own locally-cloned repository.

@@ -669,10 +669,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public ElementHeader getMetadataElementHeader(Class<B> beanClass,
-                                                  InstanceHeader header,
+    public ElementHeader getMetadataElementHeader(Class<B>             beanClass,
+                                                  InstanceHeader       header,
                                                   List<Classification> entityClassifications,
-                                                  String methodName) throws PropertyServerException
+                                                  String               methodName) throws PropertyServerException
     {
         if (header != null)
         {
@@ -785,9 +785,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public ElementStub getElementStub(Class<B> beanClass,
+    public ElementStub getElementStub(Class<B>    beanClass,
                                       EntityProxy entityProxy,
-                                      String methodName) throws PropertyServerException
+                                      String      methodName) throws PropertyServerException
     {
         if (entityProxy != null)
         {
@@ -874,8 +874,8 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         else
         {
             this.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.RELATIONSHIP_DEF,
-                                                methodName);
+                                               TypeDefCategory.RELATIONSHIP_DEF,
+                                               methodName);
         }
 
         return null;
@@ -918,6 +918,21 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                 if (entityClassification != null)
                 {
                     ElementClassification beanClassification = new ElementClassification();
+
+                    beanClassification.setStatus(this.getElementStatus(entityClassification.getStatus()));
+                    beanClassification.setType(this.getElementType(entityClassification));
+
+                    ElementOrigin elementOrigin = new ElementOrigin();
+
+                    elementOrigin.setSourceServer(serverName);
+                    elementOrigin.setOriginCategory(this.getElementOriginCategory(entityClassification.getInstanceProvenanceType()));
+                    elementOrigin.setHomeMetadataCollectionId(entityClassification.getMetadataCollectionId());
+                    elementOrigin.setHomeMetadataCollectionName(entityClassification.getMetadataCollectionName());
+                    elementOrigin.setLicense(entityClassification.getInstanceLicense());
+
+                    beanClassification.setOrigin(elementOrigin);
+
+                    beanClassification.setVersions(this.getElementVersions(entityClassification));
 
                     beanClassification.setClassificationName(entityClassification.getName());
                     beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
@@ -6278,6 +6293,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeIntProperty(serviceName,
                                                       OpenMetadataAPIMapper.CONFIDENCE_LEVEL_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract the confidence property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return integer or 0
+     */
+    protected int removeConfidence(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeConfidence";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }

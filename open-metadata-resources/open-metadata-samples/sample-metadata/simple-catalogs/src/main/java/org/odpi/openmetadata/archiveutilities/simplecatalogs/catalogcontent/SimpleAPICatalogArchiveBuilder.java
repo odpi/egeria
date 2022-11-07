@@ -8,6 +8,7 @@ import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class SimpleAPICatalogArchiveBuilder
     private static final String                  archiveName        = "SimpleAPICatalog";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Sample metadata showing API assets and their payloads.";
-    private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
+    private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";
     private static final Date                    creationDate       = new Date(1632046251579L);
 
@@ -85,9 +86,11 @@ public class SimpleAPICatalogArchiveBuilder
     /**
      * Constructor pushes all archive header values to the superclass
      *
-     * @param archiveRootName common name for the guid map
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
      */
-    public SimpleAPICatalogArchiveBuilder(String archiveRootName)
+    public SimpleAPICatalogArchiveBuilder(String archiveName,
+                                          String archiveRootName)
     {
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
@@ -107,16 +110,19 @@ public class SimpleAPICatalogArchiveBuilder
 
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
+                                                            archiveName,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,
                                                             versionNumber,
-                                                            versionName);
+                                                            versionName,
+                                                            InstanceProvenanceType.LOCAL_COHORT,
+                                                            null);
     }
 
 
     /**
-     * Returns the open metadata type archive containing all of the elements extracted from the connector
+     * Returns the open metadata type archive containing all the elements extracted from the connector
      * providers of the featured open connectors.
      *
      * @return populated open metadata archive object

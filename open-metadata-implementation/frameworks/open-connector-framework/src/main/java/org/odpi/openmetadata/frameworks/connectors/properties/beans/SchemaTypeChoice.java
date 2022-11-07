@@ -97,7 +97,7 @@ public class SchemaTypeChoice extends SchemaType
     /**
      * Returns a clone of this object as the abstract SchemaType class.
      *
-     * @return PrimitiveSchemaType object
+     * @return SchemaType object
      */
     @Override
     public SchemaType cloneSchemaType()
@@ -116,30 +116,6 @@ public class SchemaTypeChoice extends SchemaType
     {
         return "SchemaTypeChoice{" +
                 "schemaOptions=" + schemaOptions +
-                ", formula='" + getFormula() + '\'' +
-                ", queries=" + getQueries() +
-                ", cloneSchemaElement=" + cloneSchemaElement() +
-                ", cloneSchemaType=" + cloneSchemaType() +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", securityTags=" + getSecurityTags() +
-                ", searchKeywords=" + getSearchKeywords() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", latestChangeDetails=" + getLatestChangeDetails() +
-                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +

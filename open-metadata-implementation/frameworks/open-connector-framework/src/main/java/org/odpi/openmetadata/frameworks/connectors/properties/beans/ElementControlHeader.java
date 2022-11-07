@@ -30,8 +30,8 @@ public class ElementControlHeader extends PropertyBase
     /*
      * Common header for first class elements from a metadata repository
      */
-    private ElementStatus   status = null;
-    private ElementType     type = null;
+    private ElementStatus   status   = null;
+    private ElementType     type     = null;
     private ElementOrigin   origin   = null;
     private ElementVersions versions = null;
 

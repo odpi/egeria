@@ -3,13 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * AssetSummary holds asset properties that are used for displaying details of

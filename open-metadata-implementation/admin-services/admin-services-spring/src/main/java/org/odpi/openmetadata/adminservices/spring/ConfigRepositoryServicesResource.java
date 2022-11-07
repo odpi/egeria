@@ -36,7 +36,7 @@ import java.util.Map;
 
 public class ConfigRepositoryServicesResource
 {
-    private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+    private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
 
     /*
@@ -496,7 +496,7 @@ public class ConfigRepositoryServicesResource
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
-     * information and events related to changes in their supported metadata types and instances.
+     * information and events related to the changes in their supported metadata types and instances.
      * They are also able to query each other's metadata directly through REST calls.
      *
      * @param userId  user that is issuing the request.
@@ -524,7 +524,7 @@ public class ConfigRepositoryServicesResource
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
-     * information and events related to changes in their supported metadata types and instances.
+     * information and events related to the changes in their supported metadata types and instances.
      * They are also able to query each other's metadata directly through REST calls.
      *
      * @param userId  user that is issuing the request.
@@ -552,7 +552,7 @@ public class ConfigRepositoryServicesResource
      * Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
-     * information and events related to changes in their supported metadata types and instances.
+     * information and events related to the changes in their supported metadata types and instances.
      * They are also able to query each other's metadata directly through REST calls.
      *
      * @param userId  user that is issuing the request.
@@ -652,16 +652,16 @@ public class ConfigRepositoryServicesResource
      */
     @PostMapping(path = "/cohorts/{cohortName}/topic-name-override/registration")
     public VoidResponse overrideRegistrationCohortTopicName(@PathVariable  String userId,
-                                                @PathVariable  String serverName,
-                                                @PathVariable  String cohortName,
-                                                @RequestBody   String topicName)
+                                                            @PathVariable  String serverName,
+                                                            @PathVariable  String cohortName,
+                                                            @RequestBody   String topicName)
     {
         return adminAPI.overrideRegistrationCohortTopicName(userId, serverName, cohortName, topicName);
     }
 
 
     /**
-     * Override the current name for the types topic for the cohort.  This call can only be made once the cohort
+     * Override the current name for the "types" topic for the cohort.  This call can only be made once the cohort
      * is set up with enableCohortRegistration().
      *
      * @param userId  user that is issuing the request.
@@ -684,7 +684,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Override the current name for the instances topic for the cohort.  This call can only be made once the cohort
+     * Override the current name for the "instances" topic for the cohort.  This call can only be made once the cohort
      * is set up with enableCohortRegistration().
      *
      * @param userId  user that is issuing the request.

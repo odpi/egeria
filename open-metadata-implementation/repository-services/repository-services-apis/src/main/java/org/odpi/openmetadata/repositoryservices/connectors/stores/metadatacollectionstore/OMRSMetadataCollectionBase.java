@@ -6069,6 +6069,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                             metadataCollectionId,
                                                             instanceParameterName,
                                                             instanceHeader,
+                                                            auditLog,
                                                             methodName);
     }
 

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class OperationalServicesResource
 {
-    private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+    private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
     /*
      * ========================================================================================

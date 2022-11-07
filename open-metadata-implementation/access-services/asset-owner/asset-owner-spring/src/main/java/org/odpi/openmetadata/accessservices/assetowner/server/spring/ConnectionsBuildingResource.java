@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ConnectionsBuildingResource
 {
-    private ConnectionRESTServices restAPI = new ConnectionRESTServices();
+    private final ConnectionRESTServices restAPI = new ConnectionRESTServices();
 
 
     /**
