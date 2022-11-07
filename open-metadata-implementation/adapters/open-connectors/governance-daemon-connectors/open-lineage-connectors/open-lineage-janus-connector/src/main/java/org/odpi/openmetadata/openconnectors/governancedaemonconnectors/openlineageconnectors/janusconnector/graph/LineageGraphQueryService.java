@@ -652,25 +652,25 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         List<String> upwardEdgeLabels = new ArrayList<>();
         List<String> downwardEdgeLabels = new ArrayList<>();
         if (DATA_FILE_AND_SUBTYPES.contains(label)) {
-            upwardEdgeLabels = Arrays.asList(CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
-            downwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE);
+            upwardEdgeLabels = List.of(CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
+            downwardEdgeLabels = List.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE);
         }
         switch (label) {
             case RELATIONAL_TABLE:
-                upwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET,
+                upwardEdgeLabels = List.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET,
                         CONNECTION_ENDPOINT);
                 downwardEdgeLabels = List.of(NESTED_SCHEMA_ATTRIBUTE);
                 break;
             case TABULAR_COLUMN:
             case TABULAR_FILE_COLUMN:
-                upwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
+                upwardEdgeLabels = List.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
                 break;
             case RELATIONAL_COLUMN:
-                upwardEdgeLabels = Arrays.asList(NESTED_SCHEMA_ATTRIBUTE, ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET,
+                upwardEdgeLabels = List.of(NESTED_SCHEMA_ATTRIBUTE, ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET,
                         CONNECTION_ENDPOINT);
                 break;
             case GLOSSARY_TERM:
-                upwardEdgeLabels = Arrays.asList(TERM_CATEGORIZATION, TERM_ANCHOR);
+                upwardEdgeLabels = List.of(TERM_CATEGORIZATION, TERM_ANCHOR);
                 downwardEdgeLabels = List.of(SEMANTIC_ASSIGNMENT);
                 break;
             case GLOSSARY:
