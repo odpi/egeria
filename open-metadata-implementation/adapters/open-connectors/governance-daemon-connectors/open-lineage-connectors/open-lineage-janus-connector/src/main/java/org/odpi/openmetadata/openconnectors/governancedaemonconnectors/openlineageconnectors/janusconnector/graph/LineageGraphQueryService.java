@@ -92,6 +92,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
@@ -297,7 +298,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     /**
      * Returns the ultimate destination graph of queried entity, which can be a column or a table. In case of tables,
      * relationships of type LineageMapping will be traversed forwards, all the way to the destination. If no vertices
-     * are found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+     * are found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
      * @param guid queried entity
@@ -632,12 +633,12 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private LineageVerticesAndEdges getElementHierarchy(GraphTraversalSource g, ElementHierarchyRequest elementHierarchyRequest) {
         List<String> hierarchyEdgeLabels = getHierarchyEdgeLabels(elementHierarchyRequest);
         if (CollectionUtils.isEmpty(hierarchyEdgeLabels)) {
-            return null;
+            return new LineageVerticesAndEdges();
         }
         Graph hierarchyGraph = this.graphHelper.getResult(this::queryEndToEnd, elementHierarchyRequest.getGuid(), hierarchyEdgeLabels,
                 this::handleLineageNotFoundException);
         if (hierarchyGraph == null || !hierarchyGraph.vertices().hasNext()) {
-            return null;
+            return new LineageVerticesAndEdges();
         }
 
         return this.lineageGraphQueryHelper.getLineageVerticesAndEdges(hierarchyGraph, true);
@@ -651,7 +652,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         List<String> upwardEdgeLabels = new ArrayList<>();
         List<String> downwardEdgeLabels = new ArrayList<>();
         if (DATA_FILE_AND_SUBTYPES.contains(label)) {
-            upwardEdgeLabels = Arrays.asList(CONNECTION_TO_ASSET, FILE_FOLDER, CONNECTION_ENDPOINT);
+            upwardEdgeLabels = Arrays.asList(CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
             downwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE);
         }
         switch (label) {
@@ -662,7 +663,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
                 break;
             case TABULAR_COLUMN:
             case TABULAR_FILE_COLUMN:
-                upwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, FILE_FOLDER, CONNECTION_ENDPOINT);
+                upwardEdgeLabels = Arrays.asList(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
                 break;
             case RELATIONAL_COLUMN:
                 upwardEdgeLabels = Arrays.asList(NESTED_SCHEMA_ATTRIBUTE, ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET,
