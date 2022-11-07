@@ -687,7 +687,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
             case ALL:
                 return Stream.concat(upwardEdgeLabels.stream(), downwardEdgeLabels.stream()).collect(Collectors.toList());
             default:
-                return null;
+                return Collections.emptyList();
         }
     }
 

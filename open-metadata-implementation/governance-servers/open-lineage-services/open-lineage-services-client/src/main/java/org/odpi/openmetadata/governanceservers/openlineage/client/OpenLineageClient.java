@@ -111,11 +111,11 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
     public LineageVerticesAndEdges getElementHierarchy(String userId, ElementHierarchyRequest elementHierarchyRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.getElementHierarchy";
-        LineageResponse searchResponse = callPostRESTCall(methodName, LineageResponse.class,
+        LineageResponse response = callPostRESTCall(methodName, LineageResponse.class,
                 serverPlatformURLRoot + BASE_PATH + HIERARCHY , elementHierarchyRequest, serverName, userId);
 
-        detectExceptions(methodName, searchResponse);
-        return searchResponse.getLineageVerticesAndEdges();
+        detectExceptions(methodName, response);
+        return response.getLineageVerticesAndEdges();
     }
 
     private void detectExceptions(String methodName,
