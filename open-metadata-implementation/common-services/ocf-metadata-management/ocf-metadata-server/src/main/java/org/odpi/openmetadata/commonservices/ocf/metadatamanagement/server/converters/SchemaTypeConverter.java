@@ -85,7 +85,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
                     SchemaType returnBean = null;
 
                     /*
-                     * The schema type has many different subtypes.
+                     * The schema type has different subtypes.
                      * This next piece of logic sorts out which type of schema bean to create.
                      */
 
@@ -96,6 +96,10 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
                     else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME))
                     {
                         returnBean = this.getLiteralSchemaType(instanceProperties);
+                    }
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME))
+                    {
+                        returnBean = this.getAPISchemaType(instanceProperties, attributeCount);
                     }
                     else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
                     {
@@ -180,7 +184,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -208,7 +212,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -236,7 +240,36 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
+
+        return schemaType;
+    }
+
+
+
+    /**
+     * Return the converted bean.
+     *
+     * @param instanceProperties properties describing the schema type
+     * @param attributeCount number of attributes (for a complex schema type)
+     * @return bean populated with properties from the instance properties supplied
+     */
+    private SchemaType getAPISchemaType(InstanceProperties instanceProperties,
+                                        int                attributeCount)
+    {
+        APISchemaType schemaType = new APISchemaType();
+
+        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
+
+        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
+
+        schemaType.setOperationCount(attributeCount);
+
+        /*
+         * Any remaining properties are returned in the extended properties.  They are
+         * assumed to be defined in a subtype.
+         */
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -266,7 +299,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -311,7 +344,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
          * Any remaining properties are returned in the extended properties.  They are
          * assumed to be defined in a subtype.
          */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
 
         return schemaType;
     }
@@ -395,6 +428,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
     private void updateBasicSchemaTypeProperties(SchemaType         bean,
                                                  InstanceProperties instanceProperties)
     {
+        bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
         bean.setDisplayName(this.removeDisplayName(instanceProperties));
         bean.setDescription(this.removeDescription(instanceProperties));
         bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));

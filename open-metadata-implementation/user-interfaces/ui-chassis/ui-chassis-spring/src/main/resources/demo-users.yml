@@ -13,7 +13,7 @@ egeria:
   demoUsers:
     admin:
       username: admin
-      name: James Bond
+      name: Generic Admin
       password: ${demoUserPassword}
       roles: COCO_PHARMA_ADMIN
     garygeeke:
@@ -90,7 +90,7 @@ egeria:
       username: erinoverview
       name:  Erin Overview
       password: ${demoUserPassword}
-      roles: COCO_PHARMA_USER
+      roles: COCO_PHARMA_USER, COCO_PHARMA_ADMIN
     harryhopeful:
       username: harryhopeful
       name:  Harry Hopeful
@@ -115,7 +115,7 @@ egeria:
       username: peterprofile
       name: Peter Profile
       password: ${demoUserPassword}
-      roles: COCO_PHARMA_USER
+      roles: COCO_PHARMA_USER, COCO_PHARMA_ADMIN
     nancynoah:
       username: nancynoah
       name: Nancy Noah

@@ -47,7 +47,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                      "Enterprise Repository Connector",
                                      "Supports enterprise access to the list of open metadata repositories registered " +
                                              "with the OMRS Enterprise Connector Manager.",
-                                     "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.md"),
+                                     "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.md"),
 
     LOCAL_REPOSITORY_CONNECTOR (7,
                                 ComponentDevelopmentStatus.STABLE,

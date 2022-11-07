@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class APIManagerResource
 {
-    private APIManagerRESTServices restAPI = new APIManagerRESTServices();
+    private final APIManagerRESTServices restAPI = new APIManagerRESTServices();
 
     /**
      * Default constructor

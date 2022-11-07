@@ -37,8 +37,7 @@ public class ElementHeader extends ElementControlHeader
     /*
      * Common header for entities from a metadata repository
      */
-    private String          guid = null;
-
+    private String                      guid = null;
     private List<ElementClassification> classifications  = null;
 
 

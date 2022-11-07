@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
-name: "Merge master)"
+name: "Merge main)"
 
 # Trigger after code is merged. only on main repo
 # - does not run on modification (may be just text)
 
 on:
   push:
-    branches: [master,egeria-release-*,feature-*]
+    branches: [main,egeria-release-*,feature-*]
 
 permissions:
   contents: read
@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: "Merge master"
+    name: "Merge main"
     if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v3
@@ -35,9 +35,9 @@ jobs:
           # Keys must be known to maven central - require broad publishing
           gpg-private-key: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      # Build and publish - but only for master
+      # Build and publish - but only for main
       - name: Build with Maven (Publish snapshots to maven central + docker)
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
         # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
         run: 'mvn -B -DuseMavenCentral clean deploy'
         # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
@@ -46,9 +46,9 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-          # Build and publish - but only for master
+          # Build and publish - but only for main
       - name: Build with Maven (no snapshots / docker published)
-        if: ${{ github.repository != 'odpi/egeria' || github.ref != 'refs/heads/master'}}
+        if: ${{ github.repository != 'odpi/egeria' || github.ref != 'refs/heads/main'}}
         run: mvn -B clean verify
       # --
       - name: Set up Docker Buildx
@@ -74,12 +74,12 @@ jobs:
           echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       # Publish container images(egeria) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
         run: |
           mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
           cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-distribution/egeria-omag-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
       - name: Build and push(egeria) to quay.io and docker.io
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
         uses: docker/build-push-action@v3
         with:
           push: true
@@ -88,7 +88,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/main'}}
         uses: docker/build-push-action@v3
         with:
           push: true

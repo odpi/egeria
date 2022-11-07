@@ -37,7 +37,7 @@ There are 3 sections:
 The definition of the connector interface for these connectors is
 defined in the [repository-services-api](../../../repository-services-apis) module
 in the
-[org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore](https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/archivestore) Java package.
+[org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore](https://github.com/odpi/egeria/tree/main/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/archivestore) Java package.
 
 A implementations of this type of connector is located in the
 [adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)

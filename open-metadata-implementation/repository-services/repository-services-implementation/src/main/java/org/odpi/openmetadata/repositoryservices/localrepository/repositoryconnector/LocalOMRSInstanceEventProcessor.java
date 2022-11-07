@@ -1117,7 +1117,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -1144,12 +1144,32 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                           EntityDetail entity)
     {
         final String methodName = "processDeletedEntityEvent";
+        final String entityParameterName = "entity";
 
         try
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.deleteEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+            repositoryValidator.validateReferenceInstanceHeader(sourceName,
+                                                                localMetadataCollectionId,
+                                                                entityParameterName,
+                                                                entity,
+                                                                auditLog,
+                                                                methodName);
+
+            EntityDetail storedEntity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(), entity.getGUID());
+
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if (compareAndValidateReferenceInstance(originatorServerName,
+                                                    entity,
+                                                    storedEntity,
+                                                    OMRSInstanceEventType.DELETED_ENTITY_EVENT,
+                                                    methodName))
+            {
+                localMetadataCollection.deleteEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+            }
         }
         catch (Exception error)
         {
@@ -1182,12 +1202,32 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                           EntityDetail entity)
     {
         final String methodName = "processPurgedEntityEvent";
+        final String entityParameterName = "entity";
 
         try
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+            repositoryValidator.validateReferenceInstanceHeader(sourceName,
+                                                                localMetadataCollectionId,
+                                                                entityParameterName,
+                                                                entity,
+                                                                auditLog,
+                                                                methodName);
+
+            EntityDetail storedEntity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(), entity.getGUID());
+
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if (compareAndValidateReferenceInstance(originatorServerName,
+                                                    entity,
+                                                    storedEntity,
+                                                    OMRSInstanceEventType.DELETE_PURGED_ENTITY_EVENT,
+                                                    methodName))
+            {
+                localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
+            }
         }
         catch (Exception error)
         {
@@ -1232,11 +1272,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
-                                                             instanceGUID,
-                                                             typeDefGUID,
-                                                             typeDefName,
-                                                             originatorMetadataCollectionId);
+            EntityDetail storedEntity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(), instanceGUID);
+
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if ((storedEntity != null) && (originatorMetadataCollectionId.equals(storedEntity.getMetadataCollectionId())))
+            {
+                localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
+                                                                 instanceGUID,
+                                                                 typeDefGUID,
+                                                                 typeDefName,
+                                                                 originatorMetadataCollectionId);
+            }
         }
         catch (EntityNotKnownException  error)
         {
@@ -1321,7 +1369,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1598,7 +1646,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1622,12 +1670,33 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                 Relationship relationship)
     {
         final String methodName = "processDeletedRelationshipEvent";
+        final String relationshipParameterName = "relationship";
 
         try
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.deleteRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+            repositoryValidator.validateReferenceInstanceHeader(sourceName,
+                                                                localMetadataCollectionId,
+                                                                relationshipParameterName,
+                                                                relationship,
+                                                                auditLog,
+                                                                methodName);
+
+            Relationship storedRelationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
+                                                                                          relationship.getGUID());
+
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if (compareAndValidateReferenceInstance(originatorServerName,
+                                                    relationship,
+                                                    storedRelationship,
+                                                    OMRSInstanceEventType.DELETED_RELATIONSHIP_EVENT,
+                                                    methodName))
+            {
+                localMetadataCollection.deleteRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+            }
         }
         catch (Exception error)
         {
@@ -1660,12 +1729,33 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                Relationship relationship)
     {
         final String methodName = "processPurgedRelationshipEvent";
+        final String relationshipParameterName = "relationship";
 
         try
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+            repositoryValidator.validateReferenceInstanceHeader(sourceName,
+                                                                localMetadataCollectionId,
+                                                                relationshipParameterName,
+                                                                relationship,
+                                                                auditLog,
+                                                                methodName);
+
+            Relationship storedRelationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
+                                                                                          relationship.getGUID());
+
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if (compareAndValidateReferenceInstance(originatorServerName,
+                                                    relationship,
+                                                    storedRelationship,
+                                                    OMRSInstanceEventType.DELETE_PURGED_RELATIONSHIP_EVENT,
+                                                    methodName))
+            {
+                localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
+            }
         }
         catch (Exception error)
         {
@@ -1710,12 +1800,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
-                                                                   instanceGUID,
-                                                                   typeDefGUID,
-                                                                   typeDefName,
-                                                                   originatorMetadataCollectionId);
+            Relationship storedRelationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(), instanceGUID);
 
+            /*
+             * Verify that the incoming instance is compatible with the stored instance.
+             */
+            if ((storedRelationship != null) && (originatorMetadataCollectionId.equals(storedRelationship.getMetadataCollectionId())))
+            {
+                localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
+                                                                       instanceGUID,
+                                                                       typeDefGUID,
+                                                                       typeDefName,
+                                                                       originatorMetadataCollectionId);
+            }
         }
         catch (RelationshipNotKnownException error)
         {
@@ -1800,7 +1897,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -2180,7 +2277,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -2202,8 +2299,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 {
                     /*
                      * It would be possible to save the entity directly into the repository,
-                     * but it is possible that some of the properties have been suppressed for the
-                     * requesting user Id.  In which case saving it now would result in other users
+                     * but it is possible that some properties have been suppressed for the
+                     * requesting user id.  In which case saving it now would result in other users
                      * seeing a restricted view of the entity.
                      */
                     localMetadataCollection.refreshEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
@@ -2228,7 +2325,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass a relationship that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -2250,8 +2347,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 {
                     /*
                      * It would be possible to save the relationship directly into the repository,
-                     * but it is possible that some of the properties have been suppressed for the
-                     * requesting user Id.  In which case saving it now would result in other users
+                     * but it is possible that some properties have been suppressed for the
+                     * requesting user id.  In which case saving it now would result in other users
                      * seeing a restricted view of the relationship.
                      */
                     localMetadataCollection.refreshRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
@@ -2275,7 +2372,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -2309,7 +2406,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -2343,7 +2440,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
-     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass a relationship that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -2400,7 +2497,6 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             if (typeDefSummary.getCategory() == TypeDefCategory.ENTITY_DEF)
             {
-
                 localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
                                                                  instanceGUID,
                                                                  typeDefSummary.getGUID(),
@@ -2409,11 +2505,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             }
             else
             {
-                localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
-                                                                 instanceGUID,
-                                                                 typeDefSummary.getGUID(),
-                                                                 typeDefSummary.getName(),
-                                                                 homeMetadataCollectionId);
+                localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
+                                                                       instanceGUID,
+                                                                       typeDefSummary.getGUID(),
+                                                                       typeDefSummary.getName(),
+                                                                       homeMetadataCollectionId);
             }
         }
         catch (Exception error)
@@ -2461,6 +2557,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                 localMetadataCollectionId,
                                                                 entityParameterName,
                                                                 entity,
+                                                                auditLog,
                                                                 methodName);
 
             EntityDetail storedEntity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(),
@@ -2549,7 +2646,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                             /*
                              * All checks are complete - the instance can be saved.  There are two additional actions
                              * to output audit log messages if there are differences in the home metadata collection id
-                             * and type information.  This are valid if reTyping and reHoming have occurred - so the
+                             * and type information.  This is valid if reTyping and reHoming have occurred - so the
                              * audit log message enables operator to check all is ok.
                              */
 
@@ -2568,11 +2665,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                 else
                                 {
                                     /*
-                                     * The metadata collection Ids not matching is only valid for a re-homed instance
+                                     * The metadata collection ids not matching is only valid for a re-homed instance
                                      * event, in all other cases we should respond with an instance conflict event.
                                      * (Note that the same will be done if the 'createTime' does not match in the
                                      * outermost conditional, and this just further covers the case where the 'createTime'
-                                     * is the same but the metadata collection ID differs.)
+                                     * is the same but the metadata collection id differs.)
                                      */
                                     processGUIDConflict(originatorServerName,
                                                         incomingInstance,
@@ -2603,9 +2700,9 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                         else
                         {
                             /*
-                             * For some reason the later version of the instance is using a older version of the type.
+                             * For some reason the later version of the instance is using an older version of the type.
                              * Something is not right.  There is an architected exchange for this case because types can
-                             * change and it probably means the originator of the event (the home of the instance)
+                             * change and so it probably means the originator of the event (the home of the instance)
                              * has had its types regressed.
                              */
                             try
@@ -2735,6 +2832,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         }
     }
 
+
     /**
      * Update the reference relationship in the local repository.
      *
@@ -2766,6 +2864,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                 localMetadataCollectionId,
                                                                 relationshipParameterName,
                                                                 relationship,
+                                                                auditLog,
                                                                 methodName);
 
             Relationship storedRelationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),

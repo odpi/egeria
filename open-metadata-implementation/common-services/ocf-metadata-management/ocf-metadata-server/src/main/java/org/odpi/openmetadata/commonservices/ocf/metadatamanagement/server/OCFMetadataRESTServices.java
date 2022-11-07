@@ -1487,7 +1487,7 @@ public class OCFMetadataRESTServices
      * @param serverName     String   name of server instance to call.
      * @param serviceURLName String   name of the service that created the connector that issued this request.
      * @param userId         String   userId of user making request.
-     * @param schemaTypeGUID String   unique id for containing schema type.
+     * @param parentSchemaGUID String   unique id for containing schema element.
      * @param elementStart   int      starting position for fist returned element.
      * @param maxElements    int      maximum number of elements to return on the call.
      *
@@ -1499,12 +1499,12 @@ public class OCFMetadataRESTServices
    public SchemaAttributesResponse getSchemaAttributes(String  serverName,
                                                        String  serviceURLName,
                                                        String  userId,
-                                                       String  schemaTypeGUID,
+                                                       String  parentSchemaGUID,
                                                        int     elementStart,
                                                        int     maxElements)
    {
         final String methodName = "getSchemaAttributes";
-        final String guidParameterName = "assetGUID";
+        final String guidParameterName = "parentSchemaGUID";
 
        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1516,19 +1516,17 @@ public class OCFMetadataRESTServices
             SchemaAttributeHandler<SchemaAttribute, SchemaType> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getSchemaAttributesForComplexSchemaType(userId,
-                                                                             schemaTypeGUID,
-                                                                             guidParameterName,
-                                                                             OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                             null,
-                                                                             null,
-                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                             elementStart,
-                                                                             maxElements,
-                                                                             false,
-                                                                             false,
-                                                                             new Date(),
-                                                                             methodName));
+            response.setList(handler.getAttachedSchemaAttributes(userId,
+                                                                 parentSchemaGUID,
+                                                                 guidParameterName,
+                                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                 elementStart,
+                                                                 maxElements,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
+                                                                 methodName));
         }
         catch (Exception error)
         {
@@ -1539,4 +1537,157 @@ public class OCFMetadataRESTServices
 
         return response;
    }
+
+
+    /**
+     * Returns a list of schema attributes for a schema type.
+     *
+     * @param serverName     String   name of server instance to call.
+     * @param serviceURLName String   name of the service that created the connector that issued this request.
+     * @param userId         String   userId of user making request.
+     * @param parentSchemaTypeGUID String   unique id for containing schema type.
+     * @param elementStart   int      starting position for fist returned element.
+     * @param maxElements    int      maximum number of elements to return on the call.
+     *
+     * @return a schema attributes response or
+     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public APIOperationsResponse getAPIOperations(String  serverName,
+                                                  String  serviceURLName,
+                                                  String  userId,
+                                                  String  parentSchemaTypeGUID,
+                                                  int     elementStart,
+                                                  int     maxElements)
+    {
+        final String methodName = "getNestedSchemaTypes";
+        final String guidParameterName = "parentSchemaTypeGUID";
+        final String apiOpGUIDParameterName = "apiOperation.getGUID()";
+        final String schemaTypeGUIDParameterName = "apiParameterList.getGUID()";
+
+        Date effectiveTime = new Date();
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        APIOperationsResponse response = new APIOperationsResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            APIOperationHandler<APIOperation> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            List<APIOperation> apiOperations = handler.getAPIOperationsForAPI(userId,
+                                                                              parentSchemaTypeGUID,
+                                                                              guidParameterName,
+                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                              elementStart,
+                                                                              maxElements,
+                                                                              false,
+                                                                              false,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+            if (apiOperations != null)
+            {
+                List<APIOperationResponse> resultsList = new ArrayList<>();
+
+                for (APIOperation apiOperation : apiOperations)
+                {
+                    APIOperationResponse apiOperationResponse = new APIOperationResponse();
+
+                    List<Relationship> relationships = handler.getAllAttachmentLinks(userId,
+                                                                                     apiOperation.getGUID(),
+                                                                                     apiOpGUIDParameterName,
+                                                                                     OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                                                                     false,
+                                                                                     false,
+                                                                                     effectiveTime,
+                                                                                     methodName);
+
+                    if (relationships != null)
+                    {
+                        OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                        SchemaTypeHandler<SchemaType> schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+                        for (Relationship relationship : relationships)
+                        {
+                            if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                            {
+                                SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
+
+                                apiOperation.setHeaderSchemaType(schemaType);
+
+                                int attributeCount = schemaTypeHandler.countAttachments(userId,
+                                                                                        schemaType.getGUID(),
+                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        2,
+                                                                                        false,
+                                                                                        false,
+                                                                                        effectiveTime,
+                                                                                        methodName);
+
+                                apiOperationResponse.setHeaderAttributeCount(attributeCount);
+                            }
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                            {
+                                SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
+
+                                apiOperation.setRequestSchemaType(schemaType);
+
+                                int attributeCount = schemaTypeHandler.countAttachments(userId,
+                                                                                        schemaType.getGUID(),
+                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        2,
+                                                                                        false,
+                                                                                        false,
+                                                                                        effectiveTime,
+                                                                                        methodName);
+
+                                apiOperationResponse.setRequestAttributeCount(attributeCount);
+                            }
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                            {
+                                SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
+
+                                apiOperation.setResponseSchemaType(schemaType);
+
+                                int attributeCount = schemaTypeHandler.countAttachments(userId,
+                                                                                        schemaType.getGUID(),
+                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        2,
+                                                                                        false,
+                                                                                        false,
+                                                                                        effectiveTime,
+                                                                                        methodName);
+
+                                apiOperationResponse.setResponseAttributeCount(attributeCount);
+                            }
+                        }
+                    }
+
+                    apiOperationResponse.setAPIOperation(apiOperation);
+
+                    resultsList.add(apiOperationResponse);
+                }
+
+                response.setList(resultsList);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 }

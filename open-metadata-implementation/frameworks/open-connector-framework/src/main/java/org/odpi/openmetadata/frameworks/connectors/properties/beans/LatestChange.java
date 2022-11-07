@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LatestChange extends ElementBase
+public class LatestChange extends ElementClassificationHeader
 {
     private static final long     serialVersionUID = 1L;
 
@@ -224,20 +224,21 @@ public class LatestChange extends ElementBase
     public String toString()
     {
         return "LatestChange{" +
-                "latestChangeTarget=" + latestChangeTarget +
-                ", latestChangeAction=" + latestChangeAction +
-                ", classificationChange='" + classificationName + '\'' +
-                ", attachmentGUID='" + attachmentGUID + '\'' +
-                ", attachmentTypeName='" + attachmentTypeName + '\'' +
-                ", userId='" + userId + '\'' +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", latestChangeTarget=" + latestChangeTarget +
+                       ", latestChangeAction=" + latestChangeAction +
+                       ", classificationName='" + classificationName + '\'' +
+                       ", attachmentGUID='" + attachmentGUID + '\'' +
+                       ", attachmentTypeName='" + attachmentTypeName + '\'' +
+                       ", userId='" + userId + '\'' +
+                       ", actionDescription='" + actionDescription + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

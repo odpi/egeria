@@ -67,7 +67,7 @@ There are 2 key pieces of information that are provided in the documentation for
 "sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='token' password='MYAPIKEY';",
 "sasl.mechanism":"PLAIN"
 ```
-An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](https://github.com/odpi/egeria-samples/tree/master/helm-charts/odpi-egeria-vdc/README.md)
+An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](https://github.com/odpi/egeria-samples/tree/main/helm-charts/odpi-egeria-vdc/README.md)
 
 ## Handling Kafka Cluster Bring Up Issues
 

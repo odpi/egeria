@@ -63,7 +63,6 @@ public class TestAssetSummary
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
         testObject.setZoneMembership(zoneMembership);
-        testObject.setLatestChange("TestLatestChange");
 
         return new AssetSummary(testObject);
     }
@@ -88,7 +87,6 @@ public class TestAssetSummary
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setLatestChange("TestLatestChange");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -115,7 +113,6 @@ public class TestAssetSummary
         testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setLatestChange("TestLatestChange");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -139,7 +136,6 @@ public class TestAssetSummary
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
-        assertTrue(resultObject.getLatestChange().equals("TestLatestChange"));
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -287,7 +283,7 @@ public class TestAssetSummary
 
     /**
      * Validate that 2 different objects with the same content are evaluated as equal.
-     * Also that different objects are considered not equal.
+     * Also, that different objects are considered not equal.
      */
     @Test public void testEquals()
     {

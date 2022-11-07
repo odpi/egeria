@@ -107,6 +107,17 @@ public class TopicIntegratorContext
     }
 
 
+    /**
+     * Return the unique identifier of the event broker's entity that corresponds to the eventBrokerName.
+     *
+     * @return string name
+     */
+    public String getEventBrokerGUID()
+    {
+        return eventBrokerGUID;
+    }
+
+
     /* ========================================================
      * Set up whether topic/event metadata is owned by the event broker
      */

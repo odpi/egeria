@@ -15,7 +15,7 @@ public  class NestedSchemaType extends ComplexSchemaType
 {
     private static final long     serialVersionUID = 1L;
 
-    protected SchemaAttributes  schemaAttributes      = null;
+    protected SchemaAttributes  schemaAttributes = null;
 
 
     /**
@@ -40,9 +40,7 @@ public  class NestedSchemaType extends ComplexSchemaType
 
 
     /**
-     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
      * @param template template object to copy.
      */
@@ -94,7 +92,6 @@ public  class NestedSchemaType extends ComplexSchemaType
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
-                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
