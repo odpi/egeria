@@ -118,15 +118,14 @@ public class OpenLineageResource {
      *
      * @param userId                  calling user.
      * @param serverName              name of the server instance to connect to.
-     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType
-     *                                of the display name of the nodes, the maximum number of node names to retrieve
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType of the display name of the nodes
      *
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     @PostMapping(path = "elements/hierarchy", produces = MediaType.APPLICATION_JSON_VALUE)
     public LineageResponse getElementHierarchy(@PathVariable("serverName") String serverName,
-                                                  @PathVariable("userId") String userId,
-                                                  @RequestBody ElementHierarchyRequest elementHierarchyRequest) {
+                                               @PathVariable("userId") String userId,
+                                               @RequestBody ElementHierarchyRequest elementHierarchyRequest) {
         return restAPI.getElementHierarchy(serverName, userId, elementHierarchyRequest);
     }
 }

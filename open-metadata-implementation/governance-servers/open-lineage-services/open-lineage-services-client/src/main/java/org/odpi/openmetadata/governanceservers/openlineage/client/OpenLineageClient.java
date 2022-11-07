@@ -11,6 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryPar
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -32,6 +33,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     public static final String TYPES = "types";
     public static final String NODES = "nodes?type={2}&name={3}&limit={4}";
     private static final String SEARCH = "/search";
+    private static final String HIERARCHY = "/elements/hierarchy";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -105,6 +107,15 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
         detectExceptions(methodName, lineageSearchResponse);
         return lineageSearchResponse.getVertices();
+    }
+
+    public LineageVerticesAndEdges getElementHierarchy(String userId, ElementHierarchyRequest elementHierarchyRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        String methodName = "OpenLineageClient.getElementHierarchy";
+        LineageResponse searchResponse = callPostRESTCall(methodName, LineageResponse.class,
+                serverPlatformURLRoot + BASE_PATH + HIERARCHY , elementHierarchyRequest, serverName, userId);
+
+        detectExceptions(methodName, searchResponse);
+        return searchResponse.getLineageVerticesAndEdges();
     }
 
     private void detectExceptions(String methodName,
