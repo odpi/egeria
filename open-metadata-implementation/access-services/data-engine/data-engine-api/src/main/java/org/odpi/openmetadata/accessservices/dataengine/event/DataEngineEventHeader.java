@@ -54,15 +54,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public abstract class DataEngineEventHeader implements Serializable {
 
     /**
-     * Event version ID
+     * Serial version UID
      * -- GETTER --
-     * Gets the event version ID
-     * @return the event version ID
+     * Gets the serial version UID
+     * @return the serial version UID
      * -- SETTER --
-     * Sets the event version ID
-     * @param eventVersionId the event version ID
+     * Sets the serial version UID
+     * @param serialVersionUID the serial version UID
      */
-    private long eventVersionId = 1L;
+    private static final long serialVersionUID = 1L;
 
     /* different data engine event types */
     /**

@@ -24,6 +24,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProcessingStateEvent extends DataEngineEventHeader {
 
     /**
+     * Serial version ID
+     * -- GETTER --
+     * Gets the serial version ID
+     * @return the serial version ID
+     * -- SETTER --
+     * Sets the serial version ID
+     * @param serialVersionUID the serial version ID
+     */
+    private long serialVersionUID = 1L;
+
+    /**
      * The processing state.
      *
      * -- GETTER --

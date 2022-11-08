@@ -587,7 +587,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         PropertiesResponse restResult =  this.callGetRESTCall(methodName, PropertiesResponse.class,
                 serverPlatformRootURL + PROCESSING_STATE_URL_TEMPLATE, serverName, userId, externalSourceName);
 
-        if(MapUtils.isEmpty(restResult.getProperties())) {
+        if(restResult == null || MapUtils.isEmpty(restResult.getProperties())) {
             return Collections.emptyMap();
         }
         return restResult.getProperties().entrySet()

@@ -27,6 +27,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DeleteEvent extends DataEngineEventHeader {
 
     /**
+     * Serial version UID
+     * -- GETTER --
+     * Gets the serial version UID
+     * @return the serial version UID
+     * -- SETTER --
+     * Sets the serial version UID
+     * @param serialVersionUID the serial version UID
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * The qualified name of the entity
      * -- GETTER --
      * Return the entity qualified name
