@@ -32,7 +32,7 @@ public class ProcessingStateEvent extends DataEngineEventHeader {
      * Sets the serial version ID
      * @param serialVersionUID the serial version ID
      */
-    private long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The processing state.
