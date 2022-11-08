@@ -5,7 +5,7 @@
 
 The [Coco Pharmaceuticals case study](https://odpi.github.io/data-governance/coco-pharmaceuticals/) involves the definition of subject areas.
 This sample is code that defines the subject areas
-referred to in [Defining Subject Areas](https://github.com/odpi/data-governance/blob/master/docs/coco-pharmaceuticals/scenarios/defining-subject-areas/README.md).
+referred to in [Defining Subject Areas](https://github.com/odpi/data-governance/blob/main/docs/coco-pharmaceuticals/scenarios/defining-subject-areas/README.md).
 
 
 ----

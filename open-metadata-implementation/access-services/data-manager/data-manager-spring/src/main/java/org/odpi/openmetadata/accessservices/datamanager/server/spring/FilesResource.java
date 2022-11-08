@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class FilesResource
 {
-    private FilesRESTServices restAPI = new FilesRESTServices();
+    private final FilesRESTServices restAPI = new FilesRESTServices();
 
 
     /**

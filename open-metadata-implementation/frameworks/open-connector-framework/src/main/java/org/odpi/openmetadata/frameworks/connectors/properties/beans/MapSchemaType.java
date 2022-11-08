@@ -156,7 +156,6 @@ public class MapSchemaType extends SchemaType
                        ", isDeprecated=" + getIsDeprecated() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", anchorGUID='" + getAnchorGUID() + '\'' +
                        ", calculatedValue=" + isCalculatedValue() +
                        ", expression='" + getExpression() + '\'' +
                        ", formula='" + getFormula() + '\'' +

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigPropertiesResource
 {
-    private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+    private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
 
     /**

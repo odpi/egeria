@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigOpenLineageResource
 {
-    private OMAGServerConfigOpenLineage adminAPI = new OMAGServerConfigOpenLineage();
+    private final OMAGServerConfigOpenLineage adminAPI = new OMAGServerConfigOpenLineage();
 
 
     /**

@@ -17,7 +17,7 @@ a link to more documentation.
 ![Swagger UI Heading](swagger-ui-top.png#pagewidth)
 
 
-The content for this header is located in the [OMAGServerPlatform.java](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/java/org/odpi/openmetadata/serverchassis/springboot/OMAGServerPlatform.java)
+The content for this header is located in the [OMAGServerPlatform.java](https://github.com/odpi/egeria/blob/main/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/java/org/odpi/openmetadata/serverchassis/springboot/OMAGServerPlatform.java)
 file that provides the `main()` method for the OMAG Server Platform.
 
 It is using Open API annotations that look like this:
@@ -35,7 +35,7 @@ are grouped into services by the following `@Tag` annotation that appears in eac
 that is part of the service.  If the name of the `@Tag` matches then the operations in the
 resource beans are all part of the same service.
 
-These are the annotations from [OperationalServicesResource.java](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/admin-services/admin-services-spring/src/main/java/org/odpi/openmetadata/adminservices/spring/OperationalServicesResource.java).
+These are the annotations from [OperationalServicesResource.java](https://github.com/odpi/egeria/blob/main/open-metadata-implementation/admin-services/admin-services-spring/src/main/java/org/odpi/openmetadata/adminservices/spring/OperationalServicesResource.java).
 
 ![Swagger UI Service Annotation](swagger-ui-service-annotations.png#pagewidth)
 

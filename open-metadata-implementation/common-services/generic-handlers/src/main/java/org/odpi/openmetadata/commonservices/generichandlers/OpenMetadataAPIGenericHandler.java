@@ -4225,8 +4225,8 @@ public class OpenMetadataAPIGenericHandler<B>
         if (entity != null)
         {
             validateAnchorEntity(userId,
-                                 startingElementGUID,
-                                 startingElementTypeName,
+                                 entity.getGUID(),
+                                 resultingElementTypeName,
                                  entity,
                                  startingElementGUIDParameterName,
                                  false,
@@ -4235,31 +4235,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                  serviceSupportedZones,
                                  effectiveTime,
                                  methodName);
-
-            if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), resultingElementTypeName))
-            {
-                if (! forLineage)
-                {
-                    try
-                    {
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
-                        {
-                            entity = null;
-                        }
-                    }
-                    catch (ClassificationErrorException error)
-                    {
-                        /*
-                         * Since this classification is not supported, it can not be attached to the entity
-                         */
-                    }
-                }
-
-                return entity;
-            }
         }
 
-        return null;
+        return entity;
     }
 
 

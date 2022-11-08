@@ -7,7 +7,7 @@ Ansible playbooks for loading various sample data and metadata for use in demons
 
 Currently the following samples are provided:
 
-- [Minimal](https://github.com/odpi/egeria-samples/tree/master/sample-data/minimal/README.md)
+- [Minimal](https://github.com/odpi/egeria-samples/tree/main/sample-data/minimal/README.md)
 - [Coco Pharmaceuticals](coco-pharmaceuticals/README.md)
 
 ----

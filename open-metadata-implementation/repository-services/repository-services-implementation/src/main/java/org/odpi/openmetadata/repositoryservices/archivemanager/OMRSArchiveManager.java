@@ -189,7 +189,7 @@ public class OMRSArchiveManager
      * @param archiveContent open metadata archive to process
      * @param archiveSource source of the archive - such as file name
      * @param typeDefProcessor processor of type definitions found in the archive
-     * @param instanceProcessor processor of instances found in the archive
+     * @param instanceProcessor processor of instances that have been found in the archive
      */
     private void processOpenMetadataArchive(OpenMetadataArchive                   archiveContent,
                                             String                                archiveSource,
@@ -543,10 +543,10 @@ public class OMRSArchiveManager
     /**
      * Set up the header of an archive instance.  The header information from the archive
      * is used in the instance header unless it is set up explicitly in an export archive.
-     * The local metadata collection Id is set in the replicatedBy attribute to enable this
+     * The local metadata collection id is set in the replicatedBy attribute to enable this
      * repository to send out refresh events about this archive.
      *
-     * @param localMetadataCollectionId metadata collection Id of the local repository
+     * @param localMetadataCollectionId metadata collection id of the local repository
      * @param metadataCollectionId home metadata collection id
      * @param metadataConnectionName name of the metadata collection
      * @param originatorName originator name

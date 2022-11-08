@@ -24,8 +24,8 @@ Whether we need to differentiate `Process Template` from `process`. Check conclu
 ### Dev-ops OMAS
 - physical vs software
 - cloud provider/infrastructure vs deployedSoftwareServer/software
-- [Digital service lifecycle](https://github.com/odpi/data-governance/tree/master/docs/data-privacy-pack#digital-service-lifecycle)
-- [Digital services](https://github.com/odpi/data-governance/tree/master/docs/digital-services)
+- [Digital service lifecycle](https://github.com/odpi/data-governance/tree/main/docs/data-privacy-pack#digital-service-lifecycle)
+- [Digital services](https://github.com/odpi/data-governance/tree/main/docs/digital-services)
 ### Deduplication through stewardship server 
 - How can we detect duplicate metadata instances for the same physical assets.[\#1650](https://github.com/odpi/egeria/issues/1650)
 ### Salesforce use case of CIM model
@@ -66,7 +66,7 @@ Whether we need to differentiate `Process Template` from `process`. Check conclu
 - [Nexus reports](https://nexus-iq.wl.linuxfoundation.org/assets/index.html#/applicationReport/odpi-egeria/7bc6f8a496d3444ea78a044d9ee1629d/policy)
     for dependencies.
 ### [Dependabot](https://dependabot.com/) for security dependency updates.
-- It can make auto PRs for updates for CVEs for master.
+- It can make auto PRs for updates for CVEs for main.
 - We can set how often to update.
 - Conclusion is we will use it for Egeria and see how it can benefit us. 
 ### Reviewing security scan results

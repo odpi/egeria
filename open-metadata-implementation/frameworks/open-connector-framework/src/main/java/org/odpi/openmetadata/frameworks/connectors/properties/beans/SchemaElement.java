@@ -41,7 +41,7 @@ public abstract class SchemaElement extends GovernedReferenceable
     protected boolean isDeprecated = false;
     protected String  displayName = null;
     protected String  description = null;
-    protected String  anchorGUID = null;
+
 
     /*
      * Some schema elements are calculated values rather than stored values.  These values are stored in the CalculatedValue
@@ -75,7 +75,6 @@ public abstract class SchemaElement extends GovernedReferenceable
             isDeprecated = template.getIsDeprecated();
             displayName = template.getDisplayName();
             description = template.getDescription();
-            anchorGUID = template.getAnchorGUID();
             isCalculatedValue = template.isCalculatedValue();
             expression = template.getExpression();
         }
@@ -146,28 +145,6 @@ public abstract class SchemaElement extends GovernedReferenceable
 
 
     /**
-     * Return the unique identifier of the asset that this schema is ultimately connected to.
-     *
-     * @return string guid
-     */
-    public String getAnchorGUID()
-    {
-        return anchorGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the asset that this schema is ultimately connected to.
-     *
-     * @param anchorGUID string guid
-     */
-    public void setAnchorGUID(String anchorGUID)
-    {
-        this.anchorGUID = anchorGUID;
-    }
-
-
-    /**
      * Return a boolean to indicate if the value for this attribute is stored or calculated.
      * The expression for calculating the value is set if this value is true.
      *
@@ -234,20 +211,12 @@ public abstract class SchemaElement extends GovernedReferenceable
                 "isDeprecated=" + isDeprecated +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", anchorGUID='" + anchorGUID + '\'' +
                 ", isCalculatedValue=" + isCalculatedValue +
                 ", expression='" + expression + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
-                ", securityTags=" + getSecurityTags() +
                 ", searchKeywords=" + getSearchKeywords() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", latestChangeDetails=" + getLatestChangeDetails() +
-                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
@@ -282,8 +251,7 @@ public abstract class SchemaElement extends GovernedReferenceable
         SchemaElement that = (SchemaElement) objectToCompare;
         return isDeprecated == that.isDeprecated &&
                 Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(anchorGUID, that.anchorGUID);
+                Objects.equals(description, that.description);
     }
 
 
@@ -295,6 +263,6 @@ public abstract class SchemaElement extends GovernedReferenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isDeprecated, displayName, description, anchorGUID);
+        return Objects.hash(super.hashCode(), isDeprecated, displayName, description);
     }
 }

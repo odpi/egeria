@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ServerOriginResource
 {
-    OMAGServerOriginServices originAPI = new OMAGServerOriginServices();
+    private final OMAGServerOriginServices originAPI = new OMAGServerOriginServices();
 
     /**
      * Return the origin of this server implementation.
@@ -37,6 +37,7 @@ public class ServerOriginResource
      */
     @GetMapping(path = "/servers/{serverName}/server-origin")
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public String getServerOrigin(@PathVariable String   userId,
                                   @PathVariable String   serverName)
     {
