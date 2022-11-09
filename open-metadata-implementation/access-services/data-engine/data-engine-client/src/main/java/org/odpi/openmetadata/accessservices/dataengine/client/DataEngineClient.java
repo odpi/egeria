@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DataEngineClient provides the client-side interface for a data engine tool to create processes with ports,
@@ -68,10 +69,10 @@ public interface DataEngineClient {
 
 
     /**
-     * Create or update the software server capability entity
+     * Create or update the engine entity
      *
-     * @param userId                   the name of the calling user
-     * @param softwareServerCapability the software server capability bean
+     * @param userId the name of the calling user
+     * @param engine the engine bean
      *
      * @return unique identifier of the server in the repository
      *
@@ -80,7 +81,7 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
+    String createExternalDataEngine(String userId, Engine engine) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException,
                                                                                                              ConnectorCheckedException;
@@ -540,4 +541,19 @@ public interface DataEngineClient {
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException,
                                                                                   ConnectorCheckedException;
+
+    /**
+     * Create or update the engine's processing state classification with the provided properties
+     *  @param userId      the name of the calling user
+     * @param properties  properties of the processing state
+     */
+    void upsertProcessingState(String userId, Map<String, Long> properties) throws PropertyServerException,
+            InvalidParameterException, UserNotAuthorizedException, ConnectorCheckedException;
+
+    /**
+     * Get the engine's processing state classification's properties
+     *
+     * @param userId      the name of the calling user
+     */
+    public Map<String, Long> getProcessingState(String userId) throws PropertyServerException;
 }

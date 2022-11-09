@@ -3,7 +3,7 @@
 
 # Lookup an external tool
 
-An external tool can lookup for the software server capability entity created at registration step.
+An external tool can lookup for the engine entity created at registration step.
 
 Request to use is: [lookup-external-tool](../../data-engine-server/docs/scenarios/lookup-registration.md)
 

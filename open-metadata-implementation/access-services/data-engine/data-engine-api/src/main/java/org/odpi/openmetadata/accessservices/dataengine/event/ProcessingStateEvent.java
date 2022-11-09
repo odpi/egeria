@@ -9,16 +9,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-
-import java.util.List;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * The lineage mappings event of Data Engine OMAS.
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,28 +21,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class LineageMappingsEvent extends DataEngineEventHeader {
+public class ProcessingStateEvent extends DataEngineEventHeader {
 
     /**
-     * Serial version UID
+     * Serial version ID
      * -- GETTER --
-     * Gets the serial version UID
-     * @return the serial version UID
+     * Gets the serial version ID
+     * @return the serial version ID
      * -- SETTER --
-     * Sets the serial version UID
-     * @param serialVersionUID the serial version UID
+     * Sets the serial version ID
+     * @param serialVersionUID the serial version ID
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * The lineage mappings
+     * The processing state.
+     *
      * -- GETTER --
-     * Return the lineage mappings
-     * @return the lineage mappings
+     * Return the processing state
+     *
+     * @return processing state
      * -- SETTER --
-     * Set up the lineage mappings
-     * @param lineageMappings the lineage mappings
+     * Set up the processing state
+     * @param processingState processing state
      */
-    private List<LineageMapping> lineageMappings;
-
+    private ProcessingState processingState;
 }

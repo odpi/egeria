@@ -28,9 +28,10 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
@@ -43,6 +44,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
@@ -61,6 +63,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -87,6 +90,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -229,7 +233,7 @@ class DataEngineRESTServicesTest {
                                            UserNotAuthorizedException {
         mockRegistrationHandler("createExternalDataEngine");
 
-        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getEngine())).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -251,7 +255,7 @@ class DataEngineRESTServicesTest {
         mockRegistrationHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getEngine())).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -273,7 +277,7 @@ class DataEngineRESTServicesTest {
         mockRegistrationHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getSoftwareServerCapability())).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.upsertExternalDataEngine(USER, getEngine())).thenThrow(mockedException);
 
         DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
@@ -1343,6 +1347,47 @@ class DataEngineRESTServicesTest {
                 GUID, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
+    @Test
+    void upsertProcessingState() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockRegistrationHandler("upsertProcessingState");
+
+        ProcessingState processingState = new ProcessingState();
+        ProcessingStateRequestBody requestBody = mockProcessingStateRequestBody(processingState);
+
+        doNothing().when(dataEngineRegistrationHandler).upsertProcessingStateClassification(USER, processingState,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        dataEngineRESTServices.upsertProcessingState(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRegistrationHandler, times(1)).upsertProcessingStateClassification(USER,
+                processingState, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+    }
+
+    @Test
+    void getProcessingState() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockRegistrationHandler("getProcessingState");
+        Map<String, Object> responseProperties = new HashMap<>();
+        responseProperties.put("key", 100L);
+        PropertiesResponse propertiesResponse = new PropertiesResponse();
+        propertiesResponse.setProperties(responseProperties);
+
+        Map<String, Long> classificationProperties = new HashMap<>();
+        classificationProperties.put("key", 100L);
+        ProcessingState processingState = new ProcessingState();
+        processingState.setSyncDatesByKey(classificationProperties);
+
+        when(dataEngineRegistrationHandler.getProcessingStateClassification(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(processingState);
+
+        PropertiesResponse result = dataEngineRESTServices.getProcessingState(USER, SERVER_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        assertEquals(result, propertiesResponse);
+
+        verify(dataEngineRegistrationHandler, times(1)).getProcessingStateClassification(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+    }
+
     private DeleteRequestBody getDeleteRequestBody() {
         DeleteRequestBody deleteRequestBody = new DeleteRequestBody();
         deleteRequestBody.setQualifiedName(QUALIFIED_NAME);
@@ -1409,13 +1454,20 @@ class DataEngineRESTServicesTest {
 
     private DataEngineRegistrationRequestBody mockDataEngineRegistrationRequestBody() {
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
-        requestBody.setSoftwareServerCapability(getSoftwareServerCapability());
+        requestBody.setEngine(getEngine());
         return requestBody;
     }
 
     private SchemaTypeRequestBody mockSchemaTypeRequestBody() {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(getSchemaType());
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        return requestBody;
+    }
+
+    private ProcessingStateRequestBody mockProcessingStateRequestBody(ProcessingState processingState) {
+        ProcessingStateRequestBody requestBody = new ProcessingStateRequestBody();
+        requestBody.setProcessingState(processingState);
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
@@ -1451,18 +1503,18 @@ class DataEngineRESTServicesTest {
         return dataFileRequestBody;
     }
 
-    private SoftwareServerCapability getSoftwareServerCapability() {
-        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
+    private Engine getEngine() {
+        Engine engine = new Engine();
 
-        softwareServerCapability.setQualifiedName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        softwareServerCapability.setName(NAME);
-        softwareServerCapability.setDescription(DESCRIPTION);
-        softwareServerCapability.setEngineType(TYPE);
-        softwareServerCapability.setEngineVersion(VERSION);
-        softwareServerCapability.setPatchLevel(PATCH_LEVEL);
-        softwareServerCapability.setSource(SOURCE);
+        engine.setQualifiedName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        engine.setName(NAME);
+        engine.setDescription(DESCRIPTION);
+        engine.setEngineType(TYPE);
+        engine.setEngineVersion(VERSION);
+        engine.setPatchLevel(PATCH_LEVEL);
+        engine.setSource(SOURCE);
 
-        return softwareServerCapability;
+        return engine;
     }
 
     private DatabaseRequestBody mockDatabaseRequestBody() {

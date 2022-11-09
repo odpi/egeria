@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -38,11 +38,11 @@ public class SoftwareCapabilityFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        SoftwareServerCapability softwareServerCapability = softwareServerCapabilitySetupServer
+        Engine engine = engineSetupService
                 .createExternalDataEngine(userId, dataEngineClient, null);
 
         List<EntityDetail> entityDetails = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                softwareServerCapability.getQualifiedName());
+                engine.getQualifiedName());
         if (entityDetails == null || entityDetails.isEmpty()) {
             fail();
         }
@@ -50,13 +50,13 @@ public class SoftwareCapabilityFVT extends DataEngineFVT {
         assertEquals(1, entityDetails.size());
         EntityDetail entity = entityDetails.get(0);
 
-        assertEquals(softwareServerCapability.getDescription(), entity.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
-        assertEquals(softwareServerCapability.getName(), entity.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(softwareServerCapability.getEngineVersion(), entity.getProperties().getPropertyValue(CAPABILITY_VERSION).valueAsString());
-        assertEquals(softwareServerCapability.getEngineType(), entity.getProperties().getPropertyValue(CAPABILITY_TYPE).valueAsString());
-        assertEquals(softwareServerCapability.getPatchLevel(), entity.getProperties().getPropertyValue(PATCH_LEVEL).valueAsString());
-        assertEquals(softwareServerCapability.getQualifiedName(), entity.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-        assertEquals(softwareServerCapability.getSource(), entity.getProperties().getPropertyValue(SOURCE).valueAsString());
+        assertEquals(engine.getDescription(), entity.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(engine.getName(), entity.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(engine.getEngineVersion(), entity.getProperties().getPropertyValue(CAPABILITY_VERSION).valueAsString());
+        assertEquals(engine.getEngineType(), entity.getProperties().getPropertyValue(CAPABILITY_TYPE).valueAsString());
+        assertEquals(engine.getPatchLevel(), entity.getProperties().getPropertyValue(PATCH_LEVEL).valueAsString());
+        assertEquals(engine.getQualifiedName(), entity.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(engine.getSource(), entity.getProperties().getPropertyValue(SOURCE).valueAsString());
     }
 
     @ParameterizedTest
@@ -67,39 +67,39 @@ public class SoftwareCapabilityFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        SoftwareServerCapability toDeleteSoftwareServerCapability = softwareServerCapabilitySetupServer
-                .createExternalDataEngine(userId, dataEngineClient, getToDeleteSoftwareServerCapability());
+        Engine toDeleteEngine = engineSetupService
+                .createExternalDataEngine(userId, dataEngineClient, getToDeleteEngine());
 
         List<EntityDetail> softwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                toDeleteSoftwareServerCapability.getQualifiedName());
+                toDeleteEngine.getQualifiedName());
         if (softwareServerCapabilities == null || softwareServerCapabilities.isEmpty()) {
             fail();
         }
 
         assertEquals(1, softwareServerCapabilities.size());
-        EntityDetail softwareServerCapabilityAsEntityDetail = softwareServerCapabilities.get(0);
-        softwareServerCapabilitySetupServer.deleteExternalDataEngine(userId, dataEngineClient,
-                softwareServerCapabilityAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
-                softwareServerCapabilityAsEntityDetail.getGUID());
+        EntityDetail engineAsEntityDetail = softwareServerCapabilities.get(0);
+        engineSetupService.deleteExternalDataEngine(userId, dataEngineClient,
+                engineAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
+                engineAsEntityDetail.getGUID());
 
         List<EntityDetail> deletedSoftwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                toDeleteSoftwareServerCapability.getQualifiedName());
-        // TODO: add verification for to be deleted softwareServerCapability once the method is implemented
+                toDeleteEngine.getQualifiedName());
+        // TODO: add verification for to be deleted engine once the method is implemented
         //  in this moment, a FunctionNotSupportedException is thrown
         // on searching the so called deleted capability, we still receive it as the result
         assertNotNull(deletedSoftwareServerCapabilities);
     }
 
-    private SoftwareServerCapability getToDeleteSoftwareServerCapability(){
-        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
-        softwareServerCapability.setName("To Delete Data Engine Display Name");
-        softwareServerCapability.setQualifiedName("ToDeleteDataEngine");
-        softwareServerCapability.setDescription("To Delete Data Engine Description");
-        softwareServerCapability.setEngineType("ToDeleteDataEngine");
-        softwareServerCapability.setEngineVersion("1");
-        softwareServerCapability.setPatchLevel("2");
-        softwareServerCapability.setSource("source");
-        return softwareServerCapability;
+    private Engine getToDeleteEngine(){
+        Engine engine = new Engine();
+        engine.setName("To Delete Data Engine Display Name");
+        engine.setQualifiedName("ToDeleteDataEngine");
+        engine.setDescription("To Delete Data Engine Description");
+        engine.setEngineType("ToDeleteDataEngine");
+        engine.setEngineVersion("1");
+        engine.setPatchLevel("2");
+        engine.setSource("source");
+        return engine;
     }
 
 }
