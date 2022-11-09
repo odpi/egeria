@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -204,7 +204,7 @@ extends java.lang.Object</pre>
                         java.lang.String&nbsp;userId,
                         <a href="../../rest/DataEngineRegistrationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineRegistrationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Register external data engine as source of metadata by creating a software server capability entity</div>
+<div class="block">Register external data engine as source of metadata by creating an engine entity</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -375,7 +375,7 @@ extends java.lang.Object</pre>
                                     java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
-<div class="block">Return the unique identifier of an external data engine from a software server capability definition.</div>
+<div class="block">Return the unique identifier of an external data engine from an engine definition.</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
@@ -387,6 +387,15 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i23" class="rowColor">
+<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/PropertiesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PropertiesResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessingState(java.lang.String,java.lang.String,java.lang.String)">getProcessingState</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;serverName,
+                  java.lang.String&nbsp;externalSourceName)</code></th>
+<td class="colLast">
+<div class="block">Get the data engine's processing state classification properties</div>
+</td>
+</tr>
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody)">search</a></span>&#8203;(java.lang.String&nbsp;userId,
       java.lang.String&nbsp;serverName,
@@ -395,7 +404,7 @@ extends java.lang.Object</pre>
 <div class="block">Find assets</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabase(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody)">upsertDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;serverName,
@@ -404,7 +413,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a Database entity with all the needed relationships</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabaseSchema(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody)">upsertDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;serverName,
@@ -413,7 +422,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a Database Schema entity with all the a relationship to a database, if provided and not virtual</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDataFile(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody)">upsertDataFile</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
@@ -422,7 +431,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a DataFile asset or any of its subtype</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertEventType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody)">upsertEventType</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;serverName,
@@ -431,7 +440,7 @@ extends java.lang.Object</pre>
 <div class="block">Create or update a Event Type entity with all the needed relationships</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertProcessingState(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody)">upsertProcessingState</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;serverName,
@@ -440,7 +449,7 @@ extends java.lang.Object</pre>
 <div class="block">Create or update a processing state entity with the provided properties</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertRelationalTable(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody)">upsertRelationalTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;serverName,
@@ -449,7 +458,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a RelationalTable entity with all the needed relationships</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertTopic(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody)">upsertTopic</a></span>&#8203;(java.lang.String&nbsp;userId,
            java.lang.String&nbsp;serverName,
@@ -515,14 +524,14 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                                              java.lang.String&nbsp;userId,
                                              @RequestBody
                                              <a href="../../rest/DataEngineRegistrationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineRegistrationRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Register external data engine as source of metadata by creating a software server capability entity</div>
+<div class="block">Register external data engine as source of metadata by creating an engine entity</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of server instance to call</dd>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>requestBody</code> - properties of the entity</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the software server capability</dd>
+<dd>unique identifier of the engine</dd>
 </dl>
 </li>
 </ul>
@@ -539,14 +548,14 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                                                          java.lang.String&nbsp;userId,
                                                          @PathVariable
                                                          java.lang.String&nbsp;qualifiedName)</pre>
-<div class="block">Return the unique identifier of an external data engine from a software server capability definition.</div>
+<div class="block">Return the unique identifier of an external data engine from an engine definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of server instance to call</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
-<dd><code>qualifiedName</code> - qualified name of the software server capability</dd>
+<dd><code>qualifiedName</code> - qualified name of the engine</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identified of the software server capability</dd>
+<dd>unique identified of the engine</dd>
 </dl>
 </li>
 </ul>
@@ -1226,7 +1235,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <a id="upsertProcessingState(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>upsertProcessingState</h4>
 <pre class="methodSignature">@PostMapping(path="/processing-state")
@@ -1244,6 +1253,29 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>requestBody</code> - properties of the processing state</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void response</dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessingState(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getProcessingState</h4>
+<pre class="methodSignature">@GetMapping(path="/processing-state")
+public&nbsp;<a href="../../../../commonservices/ffdc/rest/PropertiesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PropertiesResponse</a>&nbsp;getProcessingState&#8203;(@PathVariable("userId")
+                                             java.lang.String&nbsp;userId,
+                                             @PathVariable("serverName")
+                                             java.lang.String&nbsp;serverName,
+                                             @RequestParam("dataEngine")
+                                             java.lang.String&nbsp;externalSourceName)</pre>
+<div class="block">Get the data engine's processing state classification properties</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of server instance to call</dd>
+<dd><code>userId</code> - the name of the calling user</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>PropertiesResponse response</dd>
 </dl>
 </li>
 </ul>

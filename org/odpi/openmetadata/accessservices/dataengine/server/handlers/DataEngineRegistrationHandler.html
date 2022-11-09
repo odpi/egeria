@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -132,8 +132,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">DataEngineRegistrationHandler</span>
 extends java.lang.Object</pre>
-<div class="block">DataEngineRegistrationHandler manages SoftwareServerCapability objects from external data engines. It runs
- server-side in the DataEngine OMAS and creates software server capability entities through the
+<div class="block">DataEngineRegistrationHandler manages Engine objects from external data engines. It runs
+ server-side in the DataEngine OMAS and creates engine entities through the
  SoftwareCapabilityHandler.</div>
 </li>
 </ul>
@@ -182,7 +182,7 @@ extends java.lang.Object</pre>
                              java.lang.String&nbsp;serverName,
                              <a href="../../../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
                              <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
-                             <a href="../../../../commonservices/generichandlers/SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityHandler</a>&lt;<a href="../../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&gt;&nbsp;softwareServerCapabilityHandler,
+                             <a href="../../../../commonservices/generichandlers/SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityHandler</a>&lt;<a href="../../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&gt;&nbsp;softwareServerCapabilityHandler,
                              <a href="../service/ClockService.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.service">ClockService</a>&nbsp;clockService)</code></th>
 <td class="colLast">
 <div class="block">Construct the handler information needed to interact with the repository services</div>
@@ -207,19 +207,18 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDataEngineClassification(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState,java.lang.String)">createDataEngineClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
-                              <a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a>&nbsp;processingState,
-                              java.lang.String&nbsp;externalSourceName)</code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalDataEngine(java.lang.String,java.lang.String)">getExternalDataEngine</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
-<div class="block">Return the guid of a software server capability entity from an external data engine</div>
+<div class="block">Return the guid of an engine entity from an external data engine</div>
 </td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessingStateClassification(java.lang.String,java.lang.String)">getProcessingStateClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;externalSourceName)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -231,11 +230,18 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">upsertExternalDataEngine</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        <a href="../../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Engine)">upsertExternalDataEngine</a></span>&#8203;(java.lang.String&nbsp;userId,
+                        <a href="../../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)</code></th>
 <td class="colLast">
-<div class="block">Create the software server capability entity from an external data engine</div>
+<div class="block">Create the engine entity from an external data engine</div>
 </td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertProcessingStateClassification(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState,java.lang.String)">upsertProcessingStateClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                   <a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a>&nbsp;processingState,
+                                   java.lang.String&nbsp;externalSourceName)</code></th>
+<td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -294,7 +300,7 @@ extends java.lang.Object</pre>
                                      java.lang.String&nbsp;serverName,
                                      <a href="../../../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
                                      <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
-                                     <a href="../../../../commonservices/generichandlers/SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityHandler</a>&lt;<a href="../../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&gt;&nbsp;softwareServerCapabilityHandler,
+                                     <a href="../../../../commonservices/generichandlers/SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SoftwareCapabilityHandler</a>&lt;<a href="../../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&gt;&nbsp;softwareServerCapabilityHandler,
                                      <a href="../service/ClockService.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.service">ClockService</a>&nbsp;clockService)</pre>
 <div class="block">Construct the handler information needed to interact with the repository services</div>
 <dl>
@@ -303,7 +309,7 @@ extends java.lang.Object</pre>
 <dd><code>serverName</code> - name of the local server</dd>
 <dd><code>invalidParameterHandler</code> - handler for managing parameter errors</dd>
 <dd><code>repositoryHelper</code> - provides utilities for manipulating the repository services objects</dd>
-<dd><code>softwareServerCapabilityHandler</code> - handler for the creation of SoftwareServerCapability objects</dd>
+<dd><code>softwareServerCapabilityHandler</code> - handler for the creation of engine objects</dd>
 </dl>
 </li>
 </ul>
@@ -317,22 +323,22 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="upsertExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">
+<a id="upsertExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Engine)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>upsertExternalDataEngine</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;upsertExternalDataEngine&#8203;(java.lang.String&nbsp;userId,
-                                                 <a href="../../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)
+                                                 <a href="../../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)
                                           throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                  <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                  <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create the software server capability entity from an external data engine</div>
+<div class="block">Create the engine entity from an external data engine</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>softwareServerCapability</code> - the entity of external data engine</dd>
+<dd><code>engine</code> - the entity of external data engine</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the external data engine in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -353,7 +359,7 @@ extends java.lang.Object</pre>
                                        throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                               <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                               <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Return the guid of a software server capability entity from an external data engine</div>
+<div class="block">Return the guid of an engine entity from an external data engine</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
@@ -384,23 +390,42 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createDataEngineClassification(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState,java.lang.String)">
+<a id="upsertProcessingStateClassification(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
-<h4>createDataEngineClassification</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;createDataEngineClassification&#8203;(java.lang.String&nbsp;userId,
-                                           <a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a>&nbsp;processingState,
-                                           java.lang.String&nbsp;externalSourceName)
-                                    throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                           <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                           <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<h4>upsertProcessingStateClassification</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;upsertProcessingStateClassification&#8203;(java.lang.String&nbsp;userId,
+                                                <a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a>&nbsp;processingState,
+                                                java.lang.String&nbsp;externalSourceName)
+                                         throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code></dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessingStateClassification(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getProcessingStateClassification</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../model/ProcessingState.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessingState</a>&nbsp;getProcessingStateClassification&#8203;(java.lang.String&nbsp;userId,
+                                                        java.lang.String&nbsp;externalSourceName)
+                                                 throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                        <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                        <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code></dd>
 </dl>
 </li>
 </ul>

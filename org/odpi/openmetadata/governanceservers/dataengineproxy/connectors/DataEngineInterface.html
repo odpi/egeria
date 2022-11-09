@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -196,7 +196,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="../../../accessservices/dataengine/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a></code></td>
+<td class="colFirst"><code><a href="../../../accessservices/dataengine/model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataEngineDetails()">getDataEngineDetails</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Retrieve the details about the data engine to which we are connected.</div>
@@ -211,6 +211,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessingStateSyncKey()">getProcessingStateSyncKey</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Gets processing state sync key.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#requiresPolling()">requiresPolling</a></span>()</code></th>
 <td class="colLast">
@@ -218,7 +225,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  (false).</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setChangesLastSynced(java.util.Date)">setChangesLastSynced</a></span>&#8203;(java.util.Date&nbsp;time)</code></th>
 <td class="colLast">
@@ -248,7 +255,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getDataEngineDetails</h4>
-<pre class="methodSignature"><a href="../../../accessservices/dataengine/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;getDataEngineDetails()</pre>
+<pre class="methodSignature"><a href="../../../accessservices/dataengine/model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;getDataEngineDetails()</pre>
 <div class="block">Retrieve the details about the data engine to which we are connected.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -268,6 +275,20 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean</dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessingStateSyncKey()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getProcessingStateSyncKey</h4>
+<pre class="methodSignature">java.lang.String&nbsp;getProcessingStateSyncKey()</pre>
+<div class="block">Gets processing state sync key.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the processing state sync key</dd>
 </dl>
 </li>
 </ul>

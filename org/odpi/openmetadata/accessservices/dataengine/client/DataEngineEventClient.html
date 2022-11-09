@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -200,10 +200,10 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">createExternalDataEngine</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        <a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Engine)">createExternalDataEngine</a></span>&#8203;(java.lang.String&nbsp;userId,
+                        <a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)</code></th>
 <td class="colLast">
-<div class="block">Create or update the software server capability entity</div>
+<div class="block">Create or update the engine entity</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -388,18 +388,25 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i24" class="altColor">
+<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.Long&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessingState(java.lang.String)">getProcessingState</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
+<td class="colLast">
+<div class="block">Get the engine's processing state classification's properties</div>
+</td>
+</tr>
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDeleteSemantic(org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic)">setDeleteSemantic</a></span>&#8203;(<a href="../model/DeleteSemantic.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">DeleteSemantic</a>&nbsp;deleteSemantic)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalSourceName(java.lang.String)">setExternalSourceName</a></span>&#8203;(java.lang.String&nbsp;externalSourceName)</code></th>
 <td class="colLast">
 <div class="block">Sets external source system name using the data engine client</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabase(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Database)">upsertDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database)</code></th>
@@ -407,7 +414,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <div class="block">Create or update the database entity</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema,java.lang.String)">upsertDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     <a href="../model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a>&nbsp;databaseSchema,
@@ -416,7 +423,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <div class="block">Create or update the database schema entity</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDataFile(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DataFile)">upsertDataFile</a></span>&#8203;(java.lang.String&nbsp;userId,
               <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile)</code></th>
@@ -424,7 +431,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <div class="block">Create or update the data file entity</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertEventType(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.EventType,java.lang.String)">upsertEventType</a></span>&#8203;(java.lang.String&nbsp;userId,
                <a href="../model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">EventType</a>&nbsp;eventType,
@@ -433,7 +440,15 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <div class="block">Create or update the event type entity</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertProcessingState(java.lang.String,java.util.Map)">upsertProcessingState</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.util.Map&lt;java.lang.String,&#8203;java.lang.Long&gt;&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Create or update the engine's processing state classification with the provided properties</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertRelationalTable(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable,java.lang.String)">upsertRelationalTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                      <a href="../model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a>&nbsp;relationalTable,
@@ -442,7 +457,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <div class="block">Create or update the relational table entity</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertTopic(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Topic)">upsertTopic</a></span>&#8203;(java.lang.String&nbsp;userId,
            <a href="../model/Topic.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Topic</a>&nbsp;topic)</code></th>
@@ -569,23 +584,23 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">
+<a id="createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Engine)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createExternalDataEngine</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createExternalDataEngine&#8203;(java.lang.String&nbsp;userId,
-                                                 <a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)
+                                                 <a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)
                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                  <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
-<div class="block">Create or update the software server capability entity</div>
+<div class="block">Create or update the engine entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="DataEngineClient.html#createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">createExternalDataEngine</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
+<dd><code><a href="DataEngineClient.html#createExternalDataEngine(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Engine)">createExternalDataEngine</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>softwareServerCapability</code> - the software server capability bean</dd>
+<dd><code>engine</code> - the engine bean</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the server in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1236,7 +1251,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <a id="deleteEventType(java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>deleteEventType</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteEventType&#8203;(java.lang.String&nbsp;userId,
@@ -1255,6 +1270,47 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
+</dl>
+</li>
+</ul>
+<a id="upsertProcessingState(java.lang.String,java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>upsertProcessingState</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;upsertProcessingState&#8203;(java.lang.String&nbsp;userId,
+                                  java.util.Map&lt;java.lang.String,&#8203;java.lang.Long&gt;&nbsp;properties)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DataEngineClient.html#upsertProcessingState(java.lang.String,java.util.Map)">DataEngineClient</a></code></span></div>
+<div class="block">Create or update the engine's processing state classification with the provided properties</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="DataEngineClient.html#upsertProcessingState(java.lang.String,java.util.Map)">upsertProcessingState</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user</dd>
+<dd><code>properties</code> - properties of the processing state</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessingState(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getProcessingState</h4>
+<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.Long&gt;&nbsp;getProcessingState&#8203;(java.lang.String&nbsp;userId)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DataEngineClient.html#getProcessingState(java.lang.String)">DataEngineClient</a></code></span></div>
+<div class="block">Get the engine's processing state classification's properties</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="DataEngineClient.html#getProcessingState(java.lang.String)">getProcessingState</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user</dd>
 </dl>
 </li>
 </ul>

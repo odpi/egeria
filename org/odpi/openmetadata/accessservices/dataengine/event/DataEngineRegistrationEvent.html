@@ -141,7 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">DataEngineRegistrationEvent</span>
 extends <a href="DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a></pre>
-<div class="block">The Data engine registration event for registering external source as software server capability.</div>
+<div class="block">The Data engine registration event for registering external source as engine.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent">Serialized Form</a></dd>
@@ -198,10 +198,10 @@ extends <a href="DataEngineEventHeader.html" title="class in org.odpi.openmetada
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSoftwareServerCapability()">getSoftwareServerCapability</a></span>()</code></th>
+<td class="colFirst"><code><a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEngine()">getEngine</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Gets the software server capability</div>
+<div class="block">Gets the engine</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -211,9 +211,9 @@ extends <a href="DataEngineEventHeader.html" title="class in org.odpi.openmetada
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSoftwareServerCapability(org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">setSoftwareServerCapability</a></span>&#8203;(<a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEngine(org.odpi.openmetadata.accessservices.dataengine.model.Engine)">setEngine</a></span>&#8203;(<a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)</code></th>
 <td class="colLast">
-<div class="block">Sets the software server capability</div>
+<div class="block">Sets the engine</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -227,7 +227,7 @@ extends <a href="DataEngineEventHeader.html" title="class in org.odpi.openmetada
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.dataengine.event.<a href="DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a></h3>
-<code><a href="DataEngineEventHeader.html#getDataEngineEventType()">getDataEngineEventType</a>, <a href="DataEngineEventHeader.html#getEventVersionId()">getEventVersionId</a>, <a href="DataEngineEventHeader.html#getExternalSourceName()">getExternalSourceName</a>, <a href="DataEngineEventHeader.html#getUserId()">getUserId</a>, <a href="DataEngineEventHeader.html#setDataEngineEventType(org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType)">setDataEngineEventType</a>, <a href="DataEngineEventHeader.html#setEventVersionId(long)">setEventVersionId</a>, <a href="DataEngineEventHeader.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a>, <a href="DataEngineEventHeader.html#setUserId(java.lang.String)">setUserId</a></code></li>
+<code><a href="DataEngineEventHeader.html#getDataEngineEventType()">getDataEngineEventType</a>, <a href="DataEngineEventHeader.html#getExternalSourceName()">getExternalSourceName</a>, <a href="DataEngineEventHeader.html#getUserId()">getUserId</a>, <a href="DataEngineEventHeader.html#setDataEngineEventType(org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType)">setDataEngineEventType</a>, <a href="DataEngineEventHeader.html#setExternalSourceName(java.lang.String)">setExternalSourceName</a>, <a href="DataEngineEventHeader.html#setUserId(java.lang.String)">setUserId</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -271,31 +271,31 @@ extends <a href="DataEngineEventHeader.html" title="class in org.odpi.openmetada
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getSoftwareServerCapability()">
+<a id="getEngine()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getSoftwareServerCapability</h4>
-<pre class="methodSignature">public&nbsp;<a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;getSoftwareServerCapability()</pre>
-<div class="block">Gets the software server capability</div>
+<h4>getEngine</h4>
+<pre class="methodSignature">public&nbsp;<a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;getEngine()</pre>
+<div class="block">Gets the engine</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>the software server capability</dd>
+<dd>the engine</dd>
 </dl>
 </li>
 </ul>
-<a id="setSoftwareServerCapability(org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability)">
+<a id="setEngine(org.odpi.openmetadata.accessservices.dataengine.model.Engine)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setSoftwareServerCapability</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setSoftwareServerCapability&#8203;(<a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)</pre>
-<div class="block">Sets the software server capability</div>
+<h4>setEngine</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setEngine&#8203;(<a href="../model/Engine.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Engine</a>&nbsp;engine)</pre>
+<div class="block">Sets the engine</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>softwareServerCapability</code> - the software server capability</dd>
+<dd><code>engine</code> - the engine</dd>
 </dl>
 </li>
 </ul>
