@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,15 +25,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataEngineRegistrationRequestBody extends DataEngineOMASAPIRequestBody {
 
     /**
-     * Software server capability
+     * Engine
      * -- GETTER --
-     * Gets the software server capability
-     * @return the software server capability
+     * Gets the engine
+     * @return the engine
      * -- SETTER --
-     * Sets the software server capability
-     * @param softwareServerCapability the software server capability
+     * Sets the engine
+     * @param engine the engine
      */
     @JsonProperty("dataEngine")
-    private SoftwareServerCapability softwareServerCapability;
+    private Engine engine;
 
 }

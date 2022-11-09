@@ -38,7 +38,7 @@ public class FindFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
 
         GUIDListResponse guidListResponse = findSetupService.find(userId, dataEngineClient, dataFile.getQualifiedName(),

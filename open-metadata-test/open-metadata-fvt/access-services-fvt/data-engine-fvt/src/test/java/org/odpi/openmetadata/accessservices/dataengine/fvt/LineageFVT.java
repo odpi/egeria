@@ -52,7 +52,7 @@ public class LineageFVT extends DataEngineFVT{
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         List<Process> processes = lineageSetupService.createJobProcessWithContent(userId, dataEngineClient);
         for(Process process : processes){
             validate(process, repositoryService);
@@ -199,7 +199,7 @@ public class LineageFVT extends DataEngineFVT{
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
         assertDatabase(database, databases);

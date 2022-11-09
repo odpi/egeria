@@ -38,6 +38,12 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     @Override
     public boolean requiresPolling() { return true; }
 
+    @Override
+    public String getProcessingStateSyncKey() {
+        log.warn("DataEngineConnectorBase::getProcessingStateSyncKey() is not overridden (unimplemented).");
+        return null;
+    }
+
     /**
      * Retrieve the date and time at which changes were last synchronized.
      *

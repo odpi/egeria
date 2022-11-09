@@ -135,6 +135,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case DELETE_EVENT_TYPE_EVENT:
                             dataEngineEventProcessor.processDeleteEventTypeEvent(dataEngineEvent);
                             break;
+                        case PROCESSING_STATE_TYPE_EVENT:
+                            dataEngineEventProcessor.processProcessingStateEvent(dataEngineEvent);
+                            break;
                         default:
                             log.debug("Ignored instance event - unknown event type");
                             break;

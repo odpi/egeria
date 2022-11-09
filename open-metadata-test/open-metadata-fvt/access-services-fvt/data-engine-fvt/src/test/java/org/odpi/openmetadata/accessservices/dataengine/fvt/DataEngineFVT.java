@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.FindSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.LineageSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.PortSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.ProcessSetupService;
-import org.odpi.openmetadata.accessservices.dataengine.SoftwareServerCapabilitySetupService;
+import org.odpi.openmetadata.accessservices.dataengine.EngineSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.TopicAndEventTypeSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
@@ -83,7 +83,7 @@ public class DataEngineFVT {
     }
 
     protected final LineageSetupService lineageSetupService = new LineageSetupService();
-    protected final SoftwareServerCapabilitySetupService softwareServerCapabilitySetupServer = new SoftwareServerCapabilitySetupService();
+    protected final EngineSetupService engineSetupService = new EngineSetupService();
     protected final DataStoreAndRelationalTableSetupService dataStoreAndRelationalTableSetupService = new DataStoreAndRelationalTableSetupService();
     protected final ProcessSetupService processSetupService = new ProcessSetupService();
     protected final PortSetupService portSetupService = new PortSetupService();
