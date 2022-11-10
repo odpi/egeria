@@ -164,7 +164,7 @@
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.2</janus.version>
         <spring-boot.version>2.7.5</spring-boot.version>
-        <gremlin.version>3.6.1</gremlin.version>
+        <tinkerpop.version>3.6.1</tinkerpop.version>
         <springdoc.version>1.6.12</springdoc.version>
         <spring-data.version>2.7.5</spring-data.version>
         <spring.version>5.3.23</spring.version>
@@ -462,35 +462,35 @@
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-core</artifactId>
                 <scope>compile</scope>
-                <version>${gremlin.version}</version>
+                <version>${tinkerpop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-driver</artifactId>
                 <scope>compile</scope>
-                <version>${gremlin.version}</version>
+                <version>${tinkerpop.version}</version>
 	        </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-shaded</artifactId>
                 <scope>compile</scope>
-                <version>${gremlin.version}</version>
+                <version>${tinkerpop.version}</version>
 	        </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-groovy</artifactId>
                 <scope>compile</scope>
-                <version>${gremlin.version}</version>
+                <version>${tinkerpop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>tinkergraph-gremlin</artifactId>
                 <scope>compile</scope>
-                <version>${gremlin.version}</version>
+                <version>${tinkerpop.version}</version>
             </dependency>
 
             <dependency>
