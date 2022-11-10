@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8099fb01-9085-42ff-8560-049eb7c9a8d4",
+		"_postman_id": "09b88582-5fe0-4192-886d-3234ba2b936d",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3278,6 +3278,63 @@
 						"users",
 						"{{user-id}}",
 						"processing-state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.2 Get Processing State Classification",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processing-state?dataEngine=(organization)=Company::(project)=ExternalDataPlatform",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processing-state"
+					],
+					"query": [
+						{
+							"key": "dataEngine",
+							"value": "(organization)=Company::(project)=ExternalDataPlatform"
+						}
 					]
 				}
 			},

@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,6 +25,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class TopicEvent extends DataEngineEventHeader {
+
+    /**
+     * Serial version UID
+     * -- GETTER --
+     * Gets the serial version UID
+     * @return the serial version UID
+     * -- SETTER --
+     * Sets the serial version UID
+     * @param serialVersionUID the serial version UID
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * The topic to be created
      * -- GETTER --

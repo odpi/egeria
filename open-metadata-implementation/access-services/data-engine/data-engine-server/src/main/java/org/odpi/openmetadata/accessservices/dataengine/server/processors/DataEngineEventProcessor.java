@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessingStateEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent;
@@ -82,7 +83,7 @@ public class DataEngineEventProcessor {
         try {
             DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
-                    dataEngineRegistrationEvent.getSoftwareServerCapability());
+                    dataEngineRegistrationEvent.getEngine());
 
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -576,6 +577,24 @@ public class DataEngineEventProcessor {
             dataEngineRESTServices.deleteEventType(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link ProcessingStateEvent} for deleting an event type
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processProcessingStateEvent(String dataEngineEvent) {
+        final String methodName = "processProcessingStateEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            ProcessingStateEvent event = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessingStateEvent.class);
+
+            dataEngineRESTServices.upsertProcessingState(event.getUserId(), serverName, event.getProcessingState(),
+                    event.getExternalSourceName());
+        } catch (JsonProcessingException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }

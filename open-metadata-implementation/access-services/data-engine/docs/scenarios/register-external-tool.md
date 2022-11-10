@@ -5,7 +5,7 @@
 
 For an external tool to submit metadata to Data Engine OMAS it needs to first register.
 
-This implies creating a SoftwareServerCapability entity with the properties defining the external tool.
+This implies creating an Engine entity with the properties defining the external tool.
 
 Request to use is: [register-external-tool](../../data-engine-server/docs/scenarios/register-data-engine-tool.md)
 

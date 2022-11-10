@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -46,7 +46,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
 
         // assert Database
@@ -62,7 +62,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
 
         // assert Database
@@ -98,7 +98,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
                 dataEngineClient, null, database.getQualifiedName(), false);
@@ -117,7 +117,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
         DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
                 dataEngineClient, getDatabaseSchemaToDelete(), database.getQualifiedName(), false);
@@ -151,7 +151,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId, dataEngineClient,
                 null, database.getQualifiedName(), false);
@@ -194,7 +194,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId, dataEngineClient,
                 null, database.getQualifiedName(), false);
@@ -245,7 +245,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
 
         // assert Data File
@@ -285,7 +285,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        SoftwareServerCapability softwareServerCapability = softwareServerCapabilitySetupServer
+        Engine engine = engineSetupService
                 .createExternalDataEngine(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService
                 .upsertDataFile(userId, dataEngineClient, getDataFileToDelete());
@@ -303,7 +303,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         assertNull(dataFilesToDelete);
 
         // delete FileFolder
-        String fileFolderQualifiedName = softwareServerCapability.getQualifiedName() + "::/to-delete-data-file-pathname";
+        String fileFolderQualifiedName = engine.getQualifiedName() + "::/to-delete-data-file-pathname";
         List<EntityDetail> fileFolders = repositoryService.findEntityByPropertyValue(FILE_FOLDER_TYPE_GUID, fileFolderQualifiedName);
         assertNotNull(fileFolders);
         assertEquals(1, fileFolders.size());
@@ -349,7 +349,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService
                 .upsertDataFile(userId, dataEngineClient, getDataFileToDelete());
 

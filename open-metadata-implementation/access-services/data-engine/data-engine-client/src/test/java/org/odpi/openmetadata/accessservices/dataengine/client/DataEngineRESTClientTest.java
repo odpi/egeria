@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -20,6 +21,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -179,6 +182,33 @@ public class DataEngineRESTClientTest {
         dataEngineRESTClient.deleteEndpoint(USER_ID, QUALIFIED_NAME, null);
 
         verify(connector, times(1)).callDeleteRESTCall(eq("deleteEndpoint"), eq(VoidResponse.class), anyString(), any(), any());
+    }
+
+    @Test
+    public void upsertProcessingState() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        VoidResponse response = mockVoidResponse();
+
+        when(connector.callPostRESTCall(eq("upsertProcessingState"), eq(VoidResponse.class), anyString(), any(), any()))
+                .thenReturn(response);
+        dataEngineRESTClient.upsertProcessingState(USER_ID, new HashMap<>());
+
+        verify(connector, times(1)).callPostRESTCall(eq("upsertProcessingState"), eq(VoidResponse.class), anyString(), any(), any());
+    }
+
+
+    @Test
+    public void getProcessingState() throws RESTServerException, PropertyServerException {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("key", 100L);
+        PropertiesResponse response = new PropertiesResponse();
+        response.setProperties(properties);
+
+        when(connector.callGetRESTCall(eq("getProcessingState"), eq(PropertiesResponse.class), anyString(), any(), any(),
+                any())).thenReturn(response);
+        dataEngineRESTClient.getProcessingState(USER_ID);
+
+        verify(connector, times(1)).callGetRESTCall(eq("getProcessingState"),
+                eq(PropertiesResponse.class), anyString(), any(), any(), any());
     }
 
     private GUIDResponse mockGUIDResponse() {

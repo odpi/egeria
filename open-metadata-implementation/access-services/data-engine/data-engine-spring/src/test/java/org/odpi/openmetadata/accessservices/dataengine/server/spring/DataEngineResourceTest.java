@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
@@ -30,6 +31,7 @@ class DataEngineResourceTest {
 
     private static final String USER = "user";
     private static final String SERVER_NAME = "serverName";
+    private static final String DATA_ENGINE = "DataEngine";
 
     @Mock
     private DataEngineRESTServices dataEngineRestServices;
@@ -131,5 +133,20 @@ class DataEngineResourceTest {
         dataEngineResource.deleteEventType(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineRestServices, times(1)).deleteEventType(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testUpsertProcessingState() {
+        ProcessingStateRequestBody requestBody = new ProcessingStateRequestBody();
+        dataEngineResource.upsertProcessingState(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).upsertProcessingState(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testGetProcessingState() {
+        dataEngineResource.getProcessingState(USER, SERVER_NAME, DATA_ENGINE);
+
+        verify(dataEngineRestServices, times(1)).getProcessingState(USER, SERVER_NAME, DATA_ENGINE);
     }
 }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine;
 
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -12,32 +12,32 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * Generates test data of type SoftwareCapability, and triggers requests via client for aforementioned type
  */
-public class SoftwareServerCapabilitySetupService {
+public class EngineSetupService {
 
-    public SoftwareServerCapabilitySetupService() { }
+    public EngineSetupService() { }
 
     /**
      * Registers an external data engine source.
      *
      * @param userId the user which creates the data engine
      * @param dataEngineOMASClient the data engine client that is used to create the external data engine
-     * @param softwareServerCapability capability to create. If null, a default will be used
+     * @param engine capability to create. If null, a default will be used
      *
-     * @return software server capability containing sent values
+     * @return engine containing sent values
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient,
-                                                             SoftwareServerCapability softwareServerCapability)
+    public Engine createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient,
+                                           Engine engine)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
-        if(softwareServerCapability == null){
-            softwareServerCapability = getDefaultSoftwareServerCapability();
+        if(engine == null){
+            engine = getDefaultEngine();
         }
-        dataEngineOMASClient.createExternalDataEngine(userId, softwareServerCapability);
-        return softwareServerCapability;
+        dataEngineOMASClient.createExternalDataEngine(userId, engine);
+        return engine;
     }
 
     /**
@@ -56,16 +56,16 @@ public class SoftwareServerCapabilitySetupService {
         dataEngineClient.deleteExternalDataEngine(userId, qualifiedName, guid);
     }
 
-    private SoftwareServerCapability getDefaultSoftwareServerCapability(){
-        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
-        softwareServerCapability.setName("Data Engine Display Name");
-        softwareServerCapability.setQualifiedName("DataEngine");
-        softwareServerCapability.setDescription("Data Engine Description");
-        softwareServerCapability.setEngineType("DataEngine");
-        softwareServerCapability.setEngineVersion("1");
-        softwareServerCapability.setPatchLevel("2");
-        softwareServerCapability.setSource("source");
-        return softwareServerCapability;
+    private Engine getDefaultEngine(){
+        Engine engine = new Engine();
+        engine.setName("Data Engine Display Name");
+        engine.setQualifiedName("DataEngine");
+        engine.setDescription("Data Engine Description");
+        engine.setEngineType("DataEngine");
+        engine.setEngineVersion("1");
+        engine.setPatchLevel("2");
+        engine.setSource("source");
+        return engine;
     }
 
 }

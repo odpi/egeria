@@ -61,7 +61,7 @@ public class DataEngineProcessHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
-     * @param registrationHandler     provides utilities for manipulating software server capability entities
+     * @param registrationHandler     provides utilities for manipulating engine entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                     OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.Endpoint;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectionConverter;
@@ -294,9 +294,9 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                 supportedZones, defaultZones, publishZones, auditLog);
 
-        final SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler =
+        final SoftwareCapabilityHandler<Engine> softwareServerCapabilityHandler =
                 new SoftwareCapabilityHandler<>(new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
-                        SoftwareServerCapability.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                        Engine.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
                         repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
         final AssetHandler<Topic> topicHandler = new AssetHandler<>(new TopicConverter<>(repositoryHelper, serviceName, serverName),

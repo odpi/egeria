@@ -28,6 +28,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SchemaTypeEvent extends DataEngineEventHeader {
 
     /**
+     * Serial version UID
+     * -- GETTER --
+     * Gets the serial version UID
+     * @return the serial version UID
+     * -- SETTER --
+     * Sets the serial version UID
+     * @param serialVersionUID the serial version UID
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * The port qualified name
      * -- GETTER --
      * Returns the port qualified name

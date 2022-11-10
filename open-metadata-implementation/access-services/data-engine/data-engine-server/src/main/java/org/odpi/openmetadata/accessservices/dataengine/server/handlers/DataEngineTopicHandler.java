@@ -43,7 +43,7 @@ public class DataEngineTopicHandler {
      * @param invalidParameterHandler       handler for managing parameter errors
      * @param topicHandler                  provides utilities specific for manipulating topic entities
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
-     * @param dataEngineRegistrationHandler provides utilities for  software server capability entities
+     * @param dataEngineRegistrationHandler provides utilities for engine entities
      */
     public DataEngineTopicHandler(InvalidParameterHandler invalidParameterHandler, AssetHandler<Topic> topicHandler,
                                   DataEngineRegistrationHandler dataEngineRegistrationHandler,

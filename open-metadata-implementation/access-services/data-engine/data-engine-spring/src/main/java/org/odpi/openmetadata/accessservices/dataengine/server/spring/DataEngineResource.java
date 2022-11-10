@@ -23,6 +23,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
@@ -59,13 +61,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Register external data engine as source of metadata by creating a software server capability entity
+     * Register external data engine as source of metadata by creating an engine entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the entity
      *
-     * @return unique identifier of the software server capability
+     * @return unique identifier of the engine
      */
     @PostMapping(path = "/registration")
     public GUIDResponse createExternalDataEngine(@PathVariable("serverName") String serverName,
@@ -75,13 +77,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Return the unique identifier of an external data engine from a software server capability definition.
+     * Return the unique identifier of an external data engine from an engine definition.
      *
      * @param serverName    name of server instance to call
      * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the software server capability
+     * @param qualifiedName qualified name of the engine
      *
-     * @return unique identified of the software server capability
+     * @return unique identified of the engine
      */
     @GetMapping(path = "/registration/{qualifiedName}")
     public GUIDResponse getExternalDataEngineByQualifiedName(@PathVariable String serverName,
@@ -556,6 +558,20 @@ public class DataEngineResource {
                                               @PathVariable("serverName") String serverName,
                                               @RequestBody ProcessingStateRequestBody requestBody) {
         return restAPI.upsertProcessingState(userId, serverName, requestBody);
+    }
+
+    /**
+     * Get the data engine's processing state classification properties
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @return PropertiesResponse response
+     */
+    @GetMapping(path = "/processing-state")
+    public PropertiesResponse getProcessingState(@PathVariable("userId") String userId,
+                                                    @PathVariable("serverName") String serverName,
+                                                    @RequestParam("dataEngine") String externalSourceName) {
+        return restAPI.getProcessingState(userId, serverName, externalSourceName);
     }
 
 }
