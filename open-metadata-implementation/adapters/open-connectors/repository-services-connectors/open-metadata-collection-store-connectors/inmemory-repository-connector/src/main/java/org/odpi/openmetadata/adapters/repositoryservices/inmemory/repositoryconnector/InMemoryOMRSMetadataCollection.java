@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -22,11 +23,11 @@ import java.util.*;
  */
 public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectionBase
 {
-    private InMemoryOMRSMetadataStore  repositoryStore = new InMemoryOMRSMetadataStore();
+    private final InMemoryOMRSMetadataStore  repositoryStore;
 
 
     /**
-     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection id.
      *
      * @param parentConnector connector that this metadata collection supports.  The connector has the information
      *                        to call the metadata repository.
@@ -42,14 +43,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                              String                          metadataCollectionId)
     {
         /*
-         * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
+         * The metadata collection id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
 
         /*
          * Set up the repository name in the repository store
          */
-        this.repositoryStore.setRepositoryName(repositoryName);
+        this.repositoryStore = new InMemoryOMRSMetadataStore(repositoryName, repositoryHelper, metadataCollectionId);
     }
 
 
@@ -108,7 +109,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                   EntityNotKnownException,
                                                                   UserNotAuthorizedException
     {
-        final String  methodName        = "getEntitySummary";
+        final String  methodName = "getEntitySummary";
 
         /*
          * Validate parameters
@@ -118,11 +119,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        EntitySummary entity = repositoryStore.getEntity(guid);
-        if (entity == null)
-        {
-            entity = repositoryStore.getEntityProxy(guid);
-        }
+        EntitySummary entity = repositoryStore.getEntitySummary(guid);
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
@@ -416,7 +413,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating in entity since it iterates through all of
+         * This is a brute force implementation of locating in entity since it iterates through all
          * the stored entities.
          */
         List<EntityDetail>         foundEntities = new ArrayList<>();
@@ -513,7 +510,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating in entity since it iterates through all of
+         * This is a brute force implementation of locating in entity since it iterates through all
          * the stored entities.
          */
         List<EntityDetail>         foundEntities = new ArrayList<>();
@@ -542,7 +539,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -611,7 +608,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating in entity since it iterates through all of
+         * This is a brute force implementation of locating in entity since it iterates through all
          * the stored entities.
          */
         Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
@@ -736,7 +733,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Process operation
          *
-         * This is a brute force implementation of locating in entity since it iterates through all of
+         * This is a brute force implementation of locating in entity since it iterates through all
          * the stored entities.
          */
         List<EntityDetail>   foundEntities = new ArrayList<>();
@@ -875,6 +872,81 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                       at the time requested.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationshipHistory";
+
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        boolean oldestFirst = (sequencingOrder == HistorySequencingOrder.FORWARDS);
+        List<Relationship> relationshipHistory = repositoryStore.getRelationshipHistory(guid, fromTime, toTime, oldestFirst);
+
+        if (relationshipHistory == null)
+        {
+            repositoryValidator.validateRelationshipFromStore(repositoryName, guid, null, methodName);
+        }
+        else
+        {
+            if (relationshipHistory.isEmpty())
+            {
+                return null;
+            }
+
+            if (startFromElement > relationshipHistory.size())
+            {
+                return null;
+            }
+
+            if ((pageSize == 0) || (pageSize >= relationshipHistory.size()))
+            {
+                return new ArrayList<>(relationshipHistory.subList(startFromElement, relationshipHistory.size() - 1));
+            }
+            else
+            {
+                return new ArrayList<>(relationshipHistory.subList(startFromElement, pageSize - 1));
+            }
+        }
+
+        return  null;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of
      * pages.
      *
@@ -946,7 +1018,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * This is a brute force implementation of locating a relationship since it iterates through all
          * the stored entities.
          */
         List<Relationship>         foundRelationships = new ArrayList<>();
@@ -1027,9 +1099,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                                       FunctionNotSupportedException,
                                                                                                       UserNotAuthorizedException
     {
-        final String  methodName = "findRelationshipsByProperty";
-        final String  guidParameterName = "relationshipTypeGUID";
-
         /*
          * Validate parameters
          */
@@ -1048,7 +1117,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * This is a brute force implementation of locating a relationship since it iterates through all
          * the stored entities.
          */
         List<Relationship>         foundRelationships = new ArrayList<>();
@@ -1071,10 +1140,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
 
         return repositoryHelper.formatRelationshipResults(foundRelationships,
-                                         fromRelationshipElement,
-                                         sequencingProperty,
-                                         sequencingOrder,
-                                         pageSize);
+                                                          fromRelationshipElement,
+                                                          sequencingProperty,
+                                                          sequencingOrder,
+                                                          pageSize);
     }
 
 
@@ -1147,7 +1216,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          *
-         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * This is a brute force implementation of locating a relationship since it iterates through all
          * the stored relationships.
          */
         List<Relationship>  foundRelationships = new ArrayList<>();
@@ -1344,7 +1413,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete - ok to create new instance
          */
         EntityDetail   newEntity = repositoryHelper.getNewEntity(repositoryName,
-                                                                 null,
+                                                                 metadataCollectionId,
+                                                                 metadataCollectionName,
                                                                  InstanceProvenanceType.LOCAL_COHORT,
                                                                  userId,
                                                                  typeDef.getName(),
@@ -1358,24 +1428,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             newEntity.setStatus(initialStatus);
         }
 
-        newEntity = repositoryStore.createEntityInStore(newEntity);
-
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, newEntity);
-
-        repositoryStore.addEntityProxyToStore(entityProxy);
-
-
-        return newEntity;
+        return repositoryStore.createEntityInStore(newEntity);
     }
 
 
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -1433,6 +1493,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         EntityDetail   newEntity = repositoryHelper.getNewEntity(repositoryName,
                                                                  externalSourceGUID,
+                                                                 externalSourceName,
                                                                  InstanceProvenanceType.EXTERNAL_SOURCE,
                                                                  userId,
                                                                  typeDef.getName(),
@@ -1450,17 +1511,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             newEntity.setStatus(initialStatus);
         }
 
-        newEntity = repositoryStore.createEntityInStore(newEntity);
-
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, newEntity);
-
-        repositoryStore.addEntityProxyToStore(entityProxy);
-
-
-        return newEntity;
+        return repositoryStore.createEntityInStore(newEntity);
     }
 
 
@@ -1491,11 +1542,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete
          */
-        EntityDetail  entity  = this.isEntityKnown(userId, entityProxy.getGUID());
-        if (entity == null)
-        {
-            repositoryStore.addEntityProxyToStore(entityProxy);
-        }
+        repositoryStore.addEntityProxyToStore(entityProxy);
     }
 
 
@@ -1559,14 +1606,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
 
 
@@ -1635,14 +1675,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
 
 
@@ -1678,28 +1711,24 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to restore entity
          */
+        EntityDetail currentEntity  = repositoryStore.getEntity(entityGUID);
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(entityGUID);
-        restoredEntity.setUpdatedBy(userId);
+        restoredEntity = repositoryHelper.incrementVersion(userId, currentEntity, restoredEntity);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, restoredEntity);
+        repositoryStore.addEntityToStore(restoredEntity);
 
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return restoredEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
      * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
@@ -1776,9 +1805,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                             if (metadataCollectionId.equals(relationship.getMetadataCollectionId()))
                             {
                                 this.deleteRelationship(userId,
-                                        type.getTypeDefGUID(),
-                                        type.getTypeDefName(),
-                                        relationship.getGUID());
+                                                        type.getTypeDefGUID(),
+                                                        type.getTypeDefName(),
+                                                        relationship.getGUID());
                             }
                             else
                             {
@@ -1796,7 +1825,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
         /*
-         * A delete is a soft-delete that updates the status to DELETED.
+         * The deleteEntity() call is a soft-delete that updates the status DELETED.
          */
         EntityDetail   updatedEntity = new EntityDetail(entity);
 
@@ -1807,14 +1836,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(obsoleteEntityGUID);
     }
 
 
@@ -1905,12 +1927,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation is complete - ok to remove the entity
          */
-        repositoryStore.removeEntityFromStore(entity);
-
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        repositoryStore.removeEntityProxyFromStore(entity.getGUID());
+        repositoryStore.purgeEntityFromStore(deletedEntityGUID);
     }
 
 
@@ -1966,14 +1983,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(restoredEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, restoredEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return restoredEntity;
+        return repositoryStore.getEntity(deletedEntityGUID);
     }
 
 
@@ -2086,14 +2096,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
 
 
@@ -2161,32 +2164,32 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         InstanceType entityType = entity.getType();
 
         repositoryValidator.validateClassification(repositoryName,
-                classificationParameterName,
-                classificationName,
-                entityType.getTypeDefName(),
-                methodName);
+                                                   classificationParameterName,
+                                                   classificationName,
+                                                   entityType.getTypeDefName(),
+                                                   methodName);
 
         Classification newClassification;
         try
         {
             repositoryValidator.validateClassificationProperties(repositoryName,
-                    classificationName,
-                    propertiesParameterName,
-                    classificationProperties,
-                    methodName);
+                                                                 classificationName,
+                                                                 propertiesParameterName,
+                                                                 classificationProperties,
+                                                                 methodName);
 
             /*
              * Validation complete - build the new classification
              */
             newClassification = repositoryHelper.getNewClassification(repositoryName,
-                    null,
-                    InstanceProvenanceType.LOCAL_COHORT,
-                    userId,
-                    classificationName,
-                    entityType.getTypeDefName(),
-                    ClassificationOrigin.ASSIGNED,
-                    null,
-                    classificationProperties);
+                                                                      null,
+                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                      userId,
+                                                                      classificationName,
+                                                                      entityType.getTypeDefName(),
+                                                                      ClassificationOrigin.ASSIGNED,
+                                                                      null,
+                                                                      classificationProperties);
         }
         catch (PropertyErrorException  error)
         {
@@ -2195,23 +2198,22 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
-                    classificationName,
-                    entityType.getTypeDefName()),
-                    this.getClass().getName(),
-                    methodName);
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
+                                                   this.getClass().getName(),
+                                                   methodName);
         }
 
         /*
          * Validation complete - ok to update entity
          */
-        if(entity instanceof EntityDetail){
+        if (entity instanceof EntityDetail)
+        {
             EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                     (EntityDetail) entity,
                                                                                     newClassification,
                                                                                     methodName);
             repositoryStore.updateEntityInStore(updatedEntity);
-            // The repository store maintains an entity proxy for use with relationships
-            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
         }
         else
         {
@@ -2219,7 +2221,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                   (EntityProxy) entity,
                                                                                   newClassification,
                                                                                   methodName);
-            repositoryStore.updateEntityProxyInStore(updatedProxy);
+            repositoryStore.addEntityProxyToStore(updatedProxy);
         }
 
         return newClassification;
@@ -2353,7 +2355,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to update entity
          */
-
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                 entity,
                                                                                 newClassification,
@@ -2361,15 +2362,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
+
 
     /**
      * Add the requested classification to a specific entity.
@@ -2382,7 +2377,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param classificationOrigin source of the classification
      * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
      * @param classificationProperties list of properties to set in the classification.
-     * @return CLassification showing the resulting entity header and classifications.
+     * @return Classification showing the resulting entity header and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -2495,10 +2490,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
-                    classificationName,
-                    entityType.getTypeDefName()),
-                    this.getClass().getName(),
-                    methodName);
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
+                                                   this.getClass().getName(),
+                                                   methodName);
         }
 
         /*
@@ -2511,8 +2506,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                     newClassification,
                                                                                     methodName);
             repositoryStore.updateEntityInStore(updatedEntity);
-            // The repository store maintains an entity proxy for use with relationships
-            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
         }
         else
         {
@@ -2520,7 +2513,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                   (EntityProxy) entity,
                                                                                   newClassification,
                                                                                   methodName);
-            repositoryStore.updateEntityProxyInStore(updatedProxy);
+            repositoryStore.addEntityProxyToStore(updatedProxy);
         }
 
         return newClassification;
@@ -2552,7 +2545,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                             UserNotAuthorizedException,
                                                                             FunctionNotSupportedException
     {
-        final String  methodName                  = "declassifyEntity";
+        final String  methodName = "declassifyEntity";
 
         /*
          * Validate parameters
@@ -2567,21 +2560,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
-        EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
-                                                                                     entity,
-                                                                                     classificationName,
-                                                                                     methodName);
-
-        repositoryStore.updateEntityInStore(updatedEntity);
-
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.removeClassificationFromEntity(entity, classificationName);
     }
 
 
@@ -2591,7 +2570,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param userId unique identifier for requesting user.
      * @param entityProxy identifier (proxy) for the entity.
      * @param classificationName String name for the classification.
-     * @return Classification showing the resulting entity header, properties and classifications.
+     * @return Classification that has been removed.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -2610,52 +2589,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                   UserNotAuthorizedException,
                                                                                   FunctionNotSupportedException
     {
-        final String  methodName                  = "declassifyEntity (EntityProxy)";
+        final String  methodName = "declassifyEntity (EntityProxy)";
 
-        /*
-         * Validate parameters
-         */
-        String entityGUID = entityProxy.getGUID();
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+        super.declassifyEntityParameterValidation(userId, entityProxy, classificationName, methodName);
 
-        /*
-         * Locate entity
-         */
-        EntitySummary entity = repositoryStore.getEntity(entityGUID);
-        if (entity == null)
-        {
-            entity = repositoryStore.getEntityProxy(entityGUID);
-        }
+        repositoryStore.addEntityProxyToStore(entityProxy);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
-
-        Classification toBeRemoved = repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                                                  entity,
-                                                                                  classificationName,
-                                                                                  methodName);
-
-        if (entity instanceof EntityDetail)
-        {
-            EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
-                                                                                         (EntityDetail) entity,
-                                                                                         classificationName,
-                                                                                         methodName);
-            repositoryStore.updateEntityInStore(updatedEntity);
-            // The repository store maintains an entity proxy for use with relationships
-            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
-        }
-        else
-        {
-            EntityProxy updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
-                                                                                        (EntityProxy) entity,
-                                                                                        classificationName,
-                                                                                        methodName);
-            repositoryStore.updateEntityProxyInStore(updatedEntity);
-        }
-
-        return toBeRemoved;
+        return repositoryStore.removeClassificationFromProxy(entityProxy, classificationName);
     }
+
 
     /**
      * Update one or more properties in one of an entity's classifications.
@@ -2721,14 +2663,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.updateEntityProxyInStore(entityProxy);
-
-        return updatedEntity;
+        return repositoryStore.getEntity(entityGUID);
     }
 
 
@@ -2767,11 +2702,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validate parameters
          */
+        super.classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
         String entityGUID = entityProxy.getGUID();
-        super.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
 
         /*
-         * Locate entity
+         * Save entity proxy
          */
         EntitySummary entity = repositoryStore.getEntity(entityGUID);
         if (entity == null)
@@ -2800,8 +2735,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                        newClassification,
                                                                                        methodName);
             repositoryStore.updateEntityInStore(updatedEntity);
-            // The repository store maintains an entity proxy for use with relationships
-            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
         }
         else
         {
@@ -2809,10 +2742,89 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                   (EntityProxy) entity,
                                                                                   newClassification,
                                                                                   methodName);
-            repositoryStore.updateEntityProxyInStore(updatedProxy);
+            repositoryStore.addEntityProxyToStore(updatedProxy);
         }
 
         return newClassification;
+    }
+
+
+    /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getEntityDetailHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        boolean oldestFirst = (sequencingOrder == HistorySequencingOrder.FORWARDS);
+        List<EntityDetail> entityHistory = repositoryStore.getEntityHistory(guid, fromTime, toTime, oldestFirst);
+
+        if (entityHistory == null)
+        {
+            repositoryValidator.validateEntityFromStore(repositoryName, guid, null, methodName);
+        }
+        else
+        {
+            if (entityHistory.isEmpty())
+            {
+                return null;
+            }
+
+            if (startFromElement > entityHistory.size())
+            {
+                return null;
+            }
+
+            if ((pageSize == 0) || (pageSize >= entityHistory.size()))
+            {
+                return new ArrayList<>(entityHistory.subList(startFromElement, entityHistory.size() - 1));
+            }
+            else
+            {
+                return new ArrayList<>(entityHistory.subList(startFromElement, pageSize - 1));
+            }
+        }
+
+        return null;
     }
 
 
@@ -2872,7 +2884,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete - ok to create new instance
          */
         Relationship   relationship = repositoryHelper.getNewRelationship(repositoryName,
-                                                                         null,
+                                                                          metadataCollectionId,
+                                                                          metadataCollectionName,
                                                                           InstanceProvenanceType.LOCAL_COHORT,
                                                                           userId,
                                                                           typeDef.getName(),
@@ -2882,16 +2895,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         EntityProxy entityOneProxy = repositoryStore.getEntityProxy(entityOneGUID);
 
-        /*
-         * if not see if there is an entity for entity 1
-         *
-         */
-        if (entityOneProxy == null)
-        {
-            EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
-            entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
-        }
-
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
 
@@ -2899,15 +2902,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * See if there is a proxy for entity 2
          */
         EntityProxy entityTwoProxy = repositoryStore.getEntityProxy(entityTwoGUID);
-
-        /*
-         * If not see if there is an entity for entity 2
-         */
-        if (entityTwoProxy == null)
-        {
-            EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
-            entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
-        }
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
@@ -2924,16 +2918,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             relationship.setStatus(initialStatus);
         }
 
-        repositoryStore.createRelationshipInStore(relationship);
-
-        return relationship;
+        return repositoryStore.createRelationshipInStore(relationship);
     }
 
 
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -3009,7 +3001,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityProxy entityOneProxy = repositoryStore.getEntityProxy(entityOneGUID);
 
         /*
-         * if not see if there is an entity for entity 1
+         * if not, see if there is an entity for end 1
          *
          */
         if (entityOneProxy == null)
@@ -3027,7 +3019,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityProxy entityTwoProxy = repositoryStore.getEntityProxy(entityTwoGUID);
 
         /*
-         * If not see if there is an entity for entity 2
+         * If not, see if there is an entity for end 2
          */
         if (entityTwoProxy == null)
         {
@@ -3118,7 +3110,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
-        return updatedRelationship;
+        return repositoryStore.getRelationship(relationshipGUID);
     }
 
 
@@ -3189,7 +3181,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
-        return updatedRelationship;
+        return repositoryStore.getRelationship(relationshipGUID);
     }
 
 
@@ -3225,19 +3217,22 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Restore previous version
          */
+        Relationship currentRelationship = repositoryStore.getRelationship(relationshipGUID);
         Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(relationshipGUID);
-        restoredRelationship.setUpdatedBy(userId);
+        restoredRelationship = repositoryHelper.incrementVersion(userId, currentRelationship, restoredRelationship);
+
+        repositoryStore.updateRelationshipInStore(restoredRelationship);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, restoredRelationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
 
-        return restoredRelationship;
+        return repositoryStore.getRelationship(relationshipGUID);
     }
 
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED and, it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -3282,7 +3277,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                           methodName);
 
         /*
-         * A delete is a soft-delete that updates the status to DELETED.
+         * A deleteRelationship() call is a soft-delete that updates the status to "DELETED".
          */
         Relationship   updatedRelationship = new Relationship(relationship);
 
@@ -3293,7 +3288,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
-        return updatedRelationship;
+        return repositoryStore.getRelationship(obsoleteRelationshipGUID);
     }
 
 
@@ -3354,7 +3349,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation is complete - ok to remove the relationship
          */
-        repositoryStore.removeRelationshipFromStore(relationship);
+        repositoryStore.purgeRelationshipFromStore(deletedRelationshipGUID);
     }
 
 
@@ -3401,8 +3396,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation is complete.  It is ok to restore the relationship.
          */
-
-
         Relationship restoredRelationship = new Relationship(relationship);
 
         restoredRelationship.setStatus(relationship.getStatusOnDelete());
@@ -3415,7 +3408,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
 
-        return restoredRelationship;
+        return repositoryStore.getRelationship(deletedRelationshipGUID);
     }
 
 
@@ -3500,14 +3493,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         try
         {
             List<Relationship> relationships = this.getRelationshipsForEntity(userId,
-                    entityGUID,
-                    null,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    10000);
+                                                                              entityGUID,
+                                                                              null,
+                                                                              0,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              10000);
 
 
             if (relationships != null)
@@ -3540,7 +3533,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * The repository store maintains an entity proxy for use with relationships.
          */
-        repositoryStore.updateEntityProxyInStore(deletedEntityProxy);
+        repositoryStore.addEntityProxyToStore(deletedEntityProxy);
         repositoryStore.addEntityProxyToStore(newEntityProxy);
 
         return updatedEntity;
@@ -3548,7 +3541,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change the type of existing entity.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -3645,7 +3638,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
 
-        repositoryStore.updateEntityProxyInStore(entityProxy);
+        repositoryStore.addEntityProxyToStore(entityProxy);
 
         return updatedEntity;
     }
@@ -3727,7 +3720,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
 
-        repositoryStore.updateEntityProxyInStore(entityProxy);
+        repositoryStore.addEntityProxyToStore(entityProxy);
 
         return updatedEntity;
     }
@@ -3808,7 +3801,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change the type an existing relationship.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -4026,8 +4019,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                             auditLog,
                                                             methodName);
 
-        repositoryStore.saveReferenceEntityToStore(entity);
-        repositoryStore.removeEntityProxyFromStore(entity.getGUID());
+        repositoryStore.addEntityToStore(entity);
     }
 
 
@@ -4053,8 +4045,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                  UserNotAuthorizedException,
                                                                                  FunctionNotSupportedException
     {
-        final String  methodName = "getHomeClassifications";
-        final String  guidParameterName = "entityGUID";
+        final String methodName = "getHomeClassifications";
+        final String guidParameterName = "entityGUID";
 
         this.validateRepositoryConnector(methodName);
         parentConnector.validateRepositoryIsActive(methodName);
@@ -4062,64 +4054,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, entityGUID, methodName);
 
-        EntityDetail retrievedEntity = repositoryStore.getEntity(entityGUID);
-
-        List<Classification> homeClassifications = new ArrayList<>();
-
-        if (retrievedEntity != null)
-        {
-            List<Classification> retrievedClassifications = retrievedEntity.getClassifications();
-
-            if (retrievedClassifications != null)
-            {
-                for (Classification retrievedClassification : retrievedClassifications)
-                {
-                    if (retrievedClassification != null)
-                    {
-                        if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId()))
-                        {
-                            /*
-                             * Locally homed classification
-                             */
-                            homeClassifications.add(retrievedClassification);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            EntityProxy entityProxy = repositoryStore.getEntityProxy(entityGUID);
-
-            if (entityProxy != null)
-            {
-                List<Classification> retrievedClassifications = entityProxy.getClassifications();
-
-                if (retrievedClassifications != null)
-                {
-                    for (Classification retrievedClassification : retrievedClassifications)
-                    {
-                        if (retrievedClassification != null)
-                        {
-                            if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId()))
-                            {
-                                /*
-                                 * Locally homed classification
-                                 */
-                                homeClassifications.add(retrievedClassification);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (homeClassifications.isEmpty())
-        {
-            return null;
-        }
-
-        return homeClassifications;
+        return repositoryStore.getHomeClassifications(entityGUID);
     }
 
 
@@ -4174,7 +4109,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         EntityDetail  entity = repositoryStore.getEntity(entityGUID);
         if (entity != null)
         {
-            repositoryStore.removeReferenceEntityFromStore(entityGUID);
+            repositoryStore.purgeEntityFromStore(entityGUID);
         }
         else
         {
@@ -4214,14 +4149,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         this.validateRepositoryConnector(methodName);
         parentConnector.validateRepositoryIsActive(methodName);
 
+        /*
+         * If the entity is a later version than the stored entity, it is updated.
+         */
+        repositoryStore.addEntityToStore(entity);
+
         EntityDetail retrievedEntity = repositoryStore.getEntity(entity.getGUID());
-        if ((retrievedEntity == null) && (! metadataCollectionId.equals(entity.getMetadataCollectionId())))
-        {
-            /*
-             * If the entity is a reference copy then it can be stored in the repository.
-             */
-            retrievedEntity = entity;
-        }
 
         if (retrievedEntity != null)
         {
@@ -4249,27 +4182,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 /*
                  * Validation complete - ok to update entity
                  */
-
                 EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                         new EntityDetail(retrievedEntity),
                                                                                         classification,
                                                                                         methodName);
 
-                if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
-                {
-                    repositoryStore.updateEntityInStore(updatedEntity);
-                }
-                else
-                {
-                    repositoryStore.saveReferenceEntityToStore(updatedEntity);
-                }
-
-                /*
-                 * The repository store maintains an entity proxy for use with relationships.
-                 */
-                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-                repositoryStore.updateEntityProxyInStore(entityProxy);
+                repositoryStore.updateEntityInStore(updatedEntity);
             }
             catch (EntityNotKnownException  error)
             {
@@ -4289,7 +4207,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * classification.  The entity may be either a locally homed entity or a reference copy.
      *
      * @param userId unique identifier for requesting user.
-     * @param entity entity that the classification is attached to.
+     * @param entityProxy entity that the classification is attached to.
      * @param classification classification to save.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -4302,130 +4220,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      */
     @Override
     public void saveClassificationReferenceCopy(String         userId,
-                                                EntityProxy    entity,
+                                                EntityProxy    entityProxy,
                                                 Classification classification) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,
                                                                                       PropertyErrorException
     {
         final String  methodName = "saveClassificationReferenceCopy(proxy)";
-        final String  classificationParameterName = "classification";
-        final String  propertiesParameterName = "classification.getProperties()";
 
         this.validateRepositoryConnector(methodName);
         parentConnector.validateRepositoryIsActive(methodName);
 
-        EntityDetail retrievedEntity = repositoryStore.getEntity(entity.getGUID());
-
-        if (retrievedEntity != null)
-        {
-            try
-            {
-                repositoryValidator.validateEntityFromStore(repositoryName, entity.getGUID(), retrievedEntity, methodName);
-                repositoryValidator.validateEntityIsNotDeleted(repositoryName, retrievedEntity, methodName);
-
-                repositoryValidator.validateInstanceType(repositoryName, entity);
-
-                InstanceType entityType = entity.getType();
-
-                repositoryValidator.validateClassification(repositoryName,
-                                                           classificationParameterName,
-                                                           classification.getName(),
-                                                           entityType.getTypeDefName(),
-                                                           methodName);
-
-                repositoryValidator.validateClassificationProperties(repositoryName,
-                                                                     classification.getName(),
-                                                                     propertiesParameterName,
-                                                                     classification.getProperties(),
-                                                                     methodName);
-
-                /*
-                 * Validation complete - ok to update entity
-                 */
-
-                EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
-                                                                                        new EntityDetail(retrievedEntity),
-                                                                                        classification,
-                                                                                        methodName);
-
-                if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
-                {
-                    repositoryStore.updateEntityInStore(updatedEntity);
-                }
-                else
-                {
-                    repositoryStore.saveReferenceEntityToStore(updatedEntity);
-                }
-
-                /*
-                 * The repository store maintains an entity proxy for use with relationships.
-                 */
-                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-                repositoryStore.updateEntityProxyInStore(entityProxy);
-            }
-            catch (EntityNotKnownException  error)
-            {
-                // Ignore since the entity has been removed since the classification was added
-            }
-            catch (ClassificationErrorException error)
-            {
-                throw new TypeErrorException(error);
-            }
-        }
-
-        EntityProxy retrievedProxy = repositoryStore.getEntityProxy(entity.getGUID());
-        if ((retrievedProxy == null) && (! metadataCollectionId.equals(entity.getMetadataCollectionId())))
-        {
-            /*
-             * If the entity is a reference copy then it can be stored in the repository.
-             */
-            retrievedProxy = entity;
-        }
-
-        if (retrievedProxy != null)
-        {
-            try
-            {
-                repositoryValidator.validateEntityFromStore(repositoryName, entity.getGUID(), retrievedEntity, methodName);
-                repositoryValidator.validateEntityIsNotDeleted(repositoryName, retrievedProxy, methodName);
-
-                repositoryValidator.validateInstanceType(repositoryName, entity);
-
-                InstanceType entityType = entity.getType();
-
-                repositoryValidator.validateClassification(repositoryName,
-                                                           classificationParameterName,
-                                                           classification.getName(),
-                                                           entityType.getTypeDefName(),
-                                                           methodName);
-
-                repositoryValidator.validateClassificationProperties(repositoryName,
-                                                                     classification.getName(),
-                                                                     propertiesParameterName,
-                                                                     classification.getProperties(),
-                                                                     methodName);
-
-                /*
-                 * Validation complete - ok to update entity
-                 */
-                EntityProxy updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
-                                                                                       new EntityProxy(retrievedProxy),
-                                                                                       classification,
-                                                                                       methodName);
-
-                repositoryStore.updateEntityProxyInStore(updatedEntity);
-            }
-            catch (EntityNotKnownException  error)
-            {
-                // Ignore since the entity has been removed since the classification was added
-            }
-            catch (ClassificationErrorException error)
-            {
-                throw new TypeErrorException(error);
-            }
-        }
+        repositoryStore.addEntityProxyToStore(entityProxy);
+        repositoryStore.saveClassification(entityProxy.getGUID(), classification);
     }
 
 
@@ -4449,52 +4256,54 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                   Classification classification) throws TypeErrorException,
                                                                                         RepositoryErrorException
     {
-        final String methodName                  = "purgeClassificationReferenceCopy";
+        final String methodName = "purgeClassificationReferenceCopy";
 
         this.validateRepositoryConnector(methodName);
         parentConnector.validateRepositoryIsActive(methodName);
 
-        EntityDetail retrievedEntity = repositoryStore.getEntity(entity.getGUID());
-        if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId())))
-        {
-            /*
-             * If the entity is a reference copy then it can be stored in the repository.
-             */
-            retrievedEntity = entity;
-        }
+        repositoryStore.removeClassificationFromEntity(entity, classification.getName());
+    }
 
-        if (retrievedEntity != null)
-        {
-            try
-            {
-                EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
-                                                                                             entity,
-                                                                                             classification.getName(),
-                                                                                             methodName);
 
-                if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
-                {
-                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
-                    repositoryStore.updateEntityInStore(updatedEntity);
-                }
-                else
-                {
-                    repositoryStore.saveReferenceEntityToStore(entity);
-                }
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityProxy    entityProxy,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String methodName = "purgeClassificationReferenceCopy (proxy)";
 
-                /*
-                 * The repository store maintains an entity proxy for use with relationships.
-                 */
-                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
 
-                repositoryStore.updateEntityProxyInStore(entityProxy);
-            }
-            catch (ClassificationErrorException error)
-            {
-                // Do nothing: this simply means the repository did not have the classification reference copy stored
-                // anyway, so nothing to remove (no-op)
-            }
-        }
+        repositoryStore.addEntityProxyToStore(entityProxy);
+        repositoryStore.removeClassificationFromProxy(entityProxy, classification.getName());
     }
 
 
@@ -4539,20 +4348,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
-        EntityProxy entityProxy = repositoryStore.getEntityProxy(relationship.getEntityOneProxy().getGUID());
-
-        if (entityProxy == null)
-        {
-            repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());
-        }
-
-        entityProxy = repositoryStore.getEntityProxy(relationship.getEntityTwoProxy().getGUID());
-        if (entityProxy == null)
-        {
-            repositoryStore.addEntityProxyToStore(relationship.getEntityTwoProxy());
-        }
-
-        repositoryStore.saveReferenceRelationshipToStore(relationship);
+        repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());
+        repositoryStore.addEntityProxyToStore(relationship.getEntityTwoProxy());
+        repositoryStore.addRelationshipToStore(relationship);
     }
 
 
@@ -4605,14 +4403,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Purge relationship
          */
-        Relationship  relationship = repositoryStore.getRelationship(relationshipGUID);
-        if (relationship != null)
-        {
-            repositoryStore.removeReferenceRelationshipFromStore(relationshipGUID);
-        }
-        else
-        {
-            super.reportRelationshipNotKnown(relationshipGUID, methodName);
-        }
+        repositoryStore.purgeRelationshipFromStore(relationshipGUID);
     }
 }
