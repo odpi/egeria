@@ -57,7 +57,7 @@ This is the sample output for the MetamodelInstance-ConceptBeadLink classificati
             "repository-reference-copy-classification-lifecycle-04: MetamodelInstance-ConceptBeadLink classification properties added to entity reference copy of type ConceptBeadLink",
             "repository-reference-copy-classification-lifecycle-05: MetamodelInstance-ConceptBeadLink classification removed from entity reference copy of type ConceptBeadLink"
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-reference-copy-classification-lifecycle-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-reference-copy-classification-lifecycle-test-case.md",
         "testCaseId": "repository-reference-copy-classification-lifecycle-MetamodelInstance-ConceptBeadLink",
         "testCaseName": "Repository reference copy classification lifecycle test case",
         "unsuccessfulAssertions": []

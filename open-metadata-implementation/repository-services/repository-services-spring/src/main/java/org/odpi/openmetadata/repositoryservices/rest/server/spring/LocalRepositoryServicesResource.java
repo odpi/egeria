@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class LocalRepositoryServicesResource
 {
-    private OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices(true);
+    private final OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices(true);
 
     /**
      * Default constructor
@@ -505,7 +504,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
-     * TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
+     * TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 TypeDef can be deleted or
      * FunctionNotSupportedException the repository does not support this call or
@@ -536,7 +535,7 @@ public class LocalRepositoryServicesResource
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
-     * TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 AttributeTypeDef can be deleted or
      * FunctionNotSupportedException the repository does not support this call or
@@ -1571,7 +1570,7 @@ public class LocalRepositoryServicesResource
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -1719,9 +1718,9 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param serverName unique identifier for requested server.
@@ -1833,6 +1832,39 @@ public class LocalRepositoryServicesResource
         return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
+
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param classificationName String name for the classification.
+     * @param requestBody list of properties to set in the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/classification/{classificationName}")
+
+    public ClassificationResponse classifyEntity(@PathVariable String                      serverName,
+                                                 @PathVariable String                      userId,
+                                                 @PathVariable String                      classificationName,
+                                                 @RequestBody  ProxyClassificationRequest  requestBody)
+    {
+        return restAPI.classifyEntity(serverName, userId, classificationName, requestBody);
+    }
+
+
     /**
      * Add the requested classification to a specific entity.
      *
@@ -1867,6 +1899,37 @@ public class LocalRepositoryServicesResource
 
 
     /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param classificationName String name for the classification.
+     * @param requestBody values for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/classification/{classificationName}/detailed")
+
+    public ClassificationResponse  classifyEntity(@PathVariable String                     serverName,
+                                                  @PathVariable String                     userId,
+                                                  @PathVariable String                     classificationName,
+                                                  @RequestBody  ClassificationProxyRequest requestBody)
+    {
+        return restAPI.classifyEntity(serverName, userId, classificationName, requestBody);
+    }
+
+
+    /**
      * Remove a specific classification from an entity.
      *
      * @param serverName unique identifier for requested server.
@@ -1893,6 +1956,34 @@ public class LocalRepositoryServicesResource
                                                  @RequestBody(required = false) OMRSAPIRequest  requestBody)
     {
         return restAPI.declassifyEntity(serverName, userId, entityGUID, classificationName);
+    }
+
+
+
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param classificationName String name for the classification.
+     * @param requestBody entity proxy request body
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * ClassificationErrorException the requested classification is not set on the entity or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/classification/{classificationName}/delete")
+
+    public ClassificationResponse declassifyEntity(@PathVariable String       serverName,
+                                                   @PathVariable String       userId,
+                                                   @PathVariable String       classificationName,
+                                                   @RequestBody  EntityProxy  requestBody)
+    {
+        return restAPI.declassifyEntity(serverName, userId, classificationName, requestBody);
     }
 
 
@@ -1924,6 +2015,35 @@ public class LocalRepositoryServicesResource
                                                            @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
         return restAPI.updateEntityClassification(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
+    }
+
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param classificationName String name for the classification.
+     * @param requestBody list of properties for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is not attached to the classification or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/classification/{classificationName}/properties")
+
+    public ClassificationResponse updateEntityClassification(@PathVariable String                      serverName,
+                                                             @PathVariable String                      userId,
+                                                             @PathVariable String                      classificationName,
+                                                             @RequestBody  ProxyClassificationRequest  requestBody)
+    {
+        return restAPI.updateEntityClassification(serverName, userId, classificationName, requestBody);
     }
 
 
@@ -1960,7 +2080,7 @@ public class LocalRepositoryServicesResource
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -2074,7 +2194,7 @@ public class LocalRepositoryServicesResource
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param serverName unique identifier for requested server.
@@ -2193,7 +2313,7 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -2299,7 +2419,7 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change an existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *

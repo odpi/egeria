@@ -3232,10 +3232,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Validate parameters
          */
         this.classifyEntityParameterValidation(userId,
-                entityProxy.getGUID(),
-                classificationName,
-                classificationProperties,
-                methodName);
+                                               entityProxy,
+                                               classificationName,
+                                               classificationProperties,
+                                               methodName);
 
         /*
          * Locate entity and check classification is not already present.
@@ -3421,7 +3421,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+        this.classifyEntityParameterValidation(userId, entityProxy, classificationName, classificationProperties, methodName);
 
         /*
          * Locate entity and check classification is not already present.
@@ -3549,13 +3549,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        String entityGUID = entityProxy.getGUID();
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+        super.declassifyEntityParameterValidation(userId, entityProxy, classificationName, methodName);
 
         /*
          * Locate entity and retrieve classification.
          */
-        EntitySummary  entity         = this.getEntitySummary(userId, entityGUID);
+        EntitySummary  entity         = this.getEntitySummary(userId, entityProxy.getGUID());
         Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
 
         /*
@@ -3664,7 +3663,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, properties, methodName);
+        classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
 
         /*
          * Locate entity and retrieve classification.

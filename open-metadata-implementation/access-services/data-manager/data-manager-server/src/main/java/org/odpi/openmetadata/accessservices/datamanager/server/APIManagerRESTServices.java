@@ -1276,7 +1276,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param apiGUID unique identifier of the topic to query
+     * @param apiGUID unique identifier of the asset to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

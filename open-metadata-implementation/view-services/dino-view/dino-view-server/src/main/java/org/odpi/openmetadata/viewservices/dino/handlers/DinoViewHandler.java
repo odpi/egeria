@@ -1481,11 +1481,11 @@ public class DinoViewHandler {
                 serverCohortDetails.setCohortDescription(cohortDescription);
 
                 // Get the local registration and add that to the SCD
-                MemberRegistration localRegistration = metadataHighwayServicesClient.getLocalRegistration(serverName, userId, cohortName);
+                MemberRegistration localRegistration = metadataHighwayServicesClient.getLocalRegistration(userId, cohortName);
                 serverCohortDetails.setLocalRegistration(localRegistration);
 
                 // Get the remote registrations and add them to the SCD
-                List<MemberRegistration> remoteRegistrations = metadataHighwayServicesClient.getRemoteRegistrations(serverName, userId, cohortName);
+                List<MemberRegistration> remoteRegistrations = metadataHighwayServicesClient.getRemoteRegistrations(userId, cohortName);
                 serverCohortDetails.setRemoteRegistrations(remoteRegistrations);
 
                 returnMap.put(cohortName, serverCohortDetails);

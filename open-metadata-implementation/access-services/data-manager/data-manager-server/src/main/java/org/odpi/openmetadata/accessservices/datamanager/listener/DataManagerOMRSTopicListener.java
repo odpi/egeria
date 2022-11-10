@@ -184,7 +184,24 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
             }
             catch (UserNotAuthorizedException | InvalidParameterException error)
             {
-                // message already logged
+                if (entity != null)
+                {
+                    auditLog.logMessage(methodName,
+                                          DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(eventType.getEventTypeName(),
+                                                                                                             entity.getGUID(),
+                                                                                                             instanceTypeName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             error.getMessage()));
+                }
+                else /* proxy */
+                {
+                    auditLog.logMessage(methodName,
+                                          DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(eventType.getEventTypeName(),
+                                                                                                             entityProxy.getGUID(),
+                                                                                                             instanceTypeName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             error.getMessage()));
+                }
             }
             catch (Exception error)
             {

@@ -1516,17 +1516,39 @@ public class OCFMetadataRESTServices
             SchemaAttributeHandler<SchemaAttribute, SchemaType> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getAttachedSchemaAttributes(userId,
-                                                                 parentSchemaGUID,
-                                                                 guidParameterName,
-                                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                 elementStart,
-                                                                 maxElements,
-                                                                 false,
-                                                                 false,
-                                                                 new Date(),
-                                                                 methodName));
+            List<SchemaAttribute> schemaAttributes = handler.getAttachedSchemaAttributes(userId,
+                                                                                         parentSchemaGUID,
+                                                                                         guidParameterName,
+                                                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                                         elementStart,
+                                                                                         maxElements,
+                                                                                         false,
+                                                                                         false,
+                                                                                         new Date(),
+                                                                                         methodName);
+            if (schemaAttributes != null)
+            {
+                final String schemaAttributeGUIDParameterName = "schemaAttribute.getGUID()";
+                GlossaryTermHandler<Meaning> meaningHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+                for (SchemaAttribute schemaAttribute : schemaAttributes)
+                {
+                    schemaAttribute.setMeanings(meaningHandler.getAttachedMeanings(userId,
+                                                                                   schemaAttribute.getGUID(),
+                                                                                   schemaAttributeGUIDParameterName,
+                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                                   0,
+                                                                                   0,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date(),
+                                                                                   methodName));
+                }
+
+                response.setList(schemaAttributes);
+            }
         }
         catch (Exception error)
         {
@@ -1561,7 +1583,7 @@ public class OCFMetadataRESTServices
                                                   int     elementStart,
                                                   int     maxElements)
     {
-        final String methodName = "getNestedSchemaTypes";
+        final String methodName = "getAPIOperations";
         final String guidParameterName = "parentSchemaTypeGUID";
         final String apiOpGUIDParameterName = "apiOperation.getGUID()";
         final String schemaTypeGUIDParameterName = "apiParameterList.getGUID()";
@@ -1578,16 +1600,16 @@ public class OCFMetadataRESTServices
             APIOperationHandler<APIOperation> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<APIOperation> apiOperations = handler.getAPIOperationsForAPI(userId,
-                                                                              parentSchemaTypeGUID,
-                                                                              guidParameterName,
-                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                              elementStart,
-                                                                              maxElements,
-                                                                              false,
-                                                                              false,
-                                                                              effectiveTime,
-                                                                              methodName);
+            List<APIOperation> apiOperations = handler.getAPIOperationsForAPISchemaType(userId,
+                                                                                        parentSchemaTypeGUID,
+                                                                                        guidParameterName,
+                                                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                                        elementStart,
+                                                                                        maxElements,
+                                                                                        false,
+                                                                                        false,
+                                                                                        effectiveTime,
+                                                                                        methodName);
 
             if (apiOperations != null)
             {
@@ -1621,7 +1643,7 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,
@@ -1640,7 +1662,7 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,
@@ -1659,7 +1681,7 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        schemaTypeGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                         OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,

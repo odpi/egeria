@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "35153113-aeaa-4be4-b693-98194003a44c",
+		"_postman_id": "9d66711a-e01c-4fe2-9dd5-3eb83e6e5e87",
 		"name": "Egeria-asset-consumer-omas",
 		"description": "This collection documents the the REST APIs for AssetConsumer OMAS.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19267272"
 	},
 	"item": [
 		{
@@ -347,7 +348,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "DropFootWeek*",
+					"raw": ".*",
 					"options": {
 						"raw": {
 							"language": "text"
@@ -399,7 +400,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"CommentRequestBody\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{guid}}/comments",
@@ -437,7 +438,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"CommentRequestBody\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/update",
@@ -513,7 +514,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"CommentRequestBody\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"ANSWER\",\n\t\"commentText\" : \"This is the response to your comment\"\n}"
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"ANSWER\",\n\t\"commentText\" : \"This is the response to your comment\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies",
@@ -553,7 +554,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"RatingRequestBody\",\n\t\"isPublic\" : \"true\",\n\t\"starRating\" : \"ONE_STAR\",\n\t\"review\" : \"This is the optional review text.\"\n}"
+					"raw": "{\n\t\"class\" : \"RatingProperties\",\n\t\"isPublic\" : \"true\",\n\t\"starRating\" : \"ONE_STAR\",\n\t\"review\" : \"This is the optional review text.\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/ratings",
@@ -851,7 +852,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"TagRequestBody\",\n\t\"isPublic\" : \"true\",\n\t\"tagName\" : \"clinical-measurements\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment.\"\n}"
+					"raw": "{\n\t\"class\" : \"InformalTagProperties\",\n\t\"isPublic\" : \"true\",\n\t\"tagName\" : \"clinical-measurements\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment.\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags",
@@ -887,7 +888,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"TagRequestBody\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment and its potential effects.\"\n}"
+					"raw": "{\n\t\"class\" : \"InformalTagProperties\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment and its potential effects.\"\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/{{guid}}/update",

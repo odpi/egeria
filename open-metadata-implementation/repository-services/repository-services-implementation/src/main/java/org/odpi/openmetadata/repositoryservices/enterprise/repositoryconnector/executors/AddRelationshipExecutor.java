@@ -191,6 +191,10 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
+        catch (FunctionNotSupportedException error)
+        {
+            accumulator.captureException(error);
+        }
         catch (Exception error)
         {
             accumulator.captureGenericException(methodName,

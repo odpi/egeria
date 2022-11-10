@@ -187,7 +187,7 @@ public class OMRSCohortManager
                 this.cohortRegistry.initialize(cohortName,
                                                localMetadataCollectionId,
                                                localMetadataCollectionName,
-                                               localRepository.getLocalRepositoryRemoteConnection(),
+                                               localRepository,
                                                localServerName,
                                                localServerType,
                                                localOrganizationName,
@@ -366,22 +366,23 @@ public class OMRSCohortManager
             log.debug(actionDescription + " FAILED with connector checked exception");
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
-            // Record to original exception in the audit log to facilitate debugging as this may indicate an infrastructure issue
+            /*
+             * Record to original exception in the audit log to facilitate debugging as this may indicate an infrastructure issue
+             */
             auditLog.logException(actionDescription,
-                    OMRSAuditCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName,
-                            error.getClass().getName(),
-                            error.getMessage()),
-                    error);
+                                  OMRSAuditCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName,
+                                                                                          error.getClass().getName(),
+                                                                                          error.getMessage()),
+                                  error);
             /*
              * Throw runtime exception to indicate that the topic connector is unavailable (server should shut down if this happens).
              */
             throw new OMRSConnectorErrorException(OMRSErrorCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName),
-                    this.getClass().getName(),
-                    actionDescription,
-                    error);
+                                                  this.getClass().getName(),
+                                                  actionDescription,
+                                                  error);
 
         }
-        // Some other kind of initialization error
         catch (Exception error)
         {
             log.debug("Unable to initialize event listener", error);
@@ -466,6 +467,23 @@ public class OMRSCohortManager
     }
 
 
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     *
+     * If the server has already registered in the past, it sends a reregistration request.
+     */
+    public synchronized void  connectToCohort()
+    {
+        if (cohortRegistry != null)
+        {
+            cohortRegistry.connectToCohort();
+        }
+    }
+
+
     /**
      * Return the remote members for this cohort.
      *
@@ -483,6 +501,22 @@ public class OMRSCohortManager
 
 
     /**
+     * Close the connection to the registry store.
+     *
+     * @param unregister boolean flag indicating whether the disconnection also includes unregistration from the cohort.  If it is set
+     *                  to true, the OMRS Cohort will inform the other members of the cohort that it is leaving and remove all information
+     *                   about the cohort from the cohort registry store.
+     */
+    public void disconnectFromCohort(boolean unregister)
+    {
+        if (cohortRegistry != null)
+        {
+            cohortRegistry.disconnectFromCohort(unregister);
+        }
+    }
+
+
+    /**
      * Return the status of the connection with the metadata highway.
      *
      * @return CohortConnectionStatus
@@ -494,12 +528,12 @@ public class OMRSCohortManager
 
 
     /**
-     * Disconnect from the cohort.
+     * Disconnect from the cohort - part of shutdown logic.
      *
-     * @param permanent flag indicating if the local repository should unregister from the cohort because it is
+     * @param unregister flag indicating if the local repository should unregister from the cohort because it is
      *                  not going ot connect again.
      */
-    public synchronized void  disconnect(boolean   permanent)
+    public synchronized void  disconnect(boolean   unregister)
     {
         final String actionDescription = "Disconnect Cohort Manager";
 
@@ -511,7 +545,7 @@ public class OMRSCohortManager
 
             if (cohortRegistry != null)
             {
-                cohortRegistry.disconnectFromCohort(permanent);
+                cohortRegistry.disconnectFromCohort(unregister);
             }
 
             if (cohortSingleTopicConnector != null)

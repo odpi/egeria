@@ -12,7 +12,7 @@ public enum PlatformConformanceProfileRequirement implements Serializable
 {
     ORIGIN_IDENTIFIER           (0, "Origin identifier",
                                    "The technology under test is able to return the identifier of the platform.",
-                                   "https://egeria.odpi.org/open-metadata-conformance-suite/docs/platform-workbench/profiles/platform-origin/origin-identifier",
+                                   "https://egeria-project.org/guides/cts/platform-workbench/profiles/platform-origin/origin-identifier",
                                    PlatformConformanceProfile.PLATFORM_ORIGIN);
 
     private static final long serialVersionUID = 1L;

@@ -270,15 +270,69 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param classificationName String name for the classification.
      * @param classificationProperties list of properties to set in the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail classifyEntity(String               userId,
                                        String               entityGUID,
                                        String               classificationName,
-                                       InstanceProperties   classificationProperties) throws FunctionNotSupportedException
+                                       InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
     {
-        final String  methodName = "classifyEntity";
+        final String  methodName                  = "classifyEntity";
+
+        super.reportUnsupportedOptionalFunction(methodName);
+
+        return null;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String  methodName                  = "classifyEntity (EntityProxy)";
 
         super.reportUnsupportedOptionalFunction(methodName);
 
@@ -297,20 +351,81 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param classificationOrigin source of the classification
      * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
      * @param classificationProperties list of properties to set in the classification.
-     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @return EntitySummary showing the resulting entity header and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     @Override
-    public  EntityDetail classifyEntity(String               userId,
-                                        String               entityGUID,
-                                        String               classificationName,
-                                        String               externalSourceGUID,
-                                        String               externalSourceName,
-                                        ClassificationOrigin classificationOrigin,
-                                        String               classificationOriginGUID,
-                                        InstanceProperties   classificationProperties) throws FunctionNotSupportedException
+    public   EntityDetail classifyEntity(String               userId,
+                                         String               entityGUID,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
     {
-        final String methodName = "classifyEntity (detailed)";
+        final String  methodName = "classifyEntity (detailed)";
+
+        super.reportUnsupportedOptionalFunction(methodName);
+
+        return null;
+    }
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return Classification showing the resulting entity header and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed - EntityProxy)";
 
         super.reportUnsupportedOptionalFunction(methodName);
 
@@ -325,14 +440,58 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail declassifyEntity(String  userId,
                                          String  entityGUID,
-                                         String  classificationName) throws FunctionNotSupportedException
+                                         String  classificationName) throws InvalidParameterException,
+                                                                            RepositoryErrorException,
+                                                                            EntityNotKnownException,
+                                                                            ClassificationErrorException,
+                                                                            UserNotAuthorizedException,
+                                                                            FunctionNotSupportedException
     {
-        final String  methodName = "declassifyEntity";
+        final String  methodName                  = "declassifyEntity";
+
+        super.reportUnsupportedOptionalFunction(methodName);
+
+        return null;
+    }
+
+
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  ClassificationErrorException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  FunctionNotSupportedException
+    {
+        final String  methodName                  = "declassifyEntity (EntityProxy)";
 
         super.reportUnsupportedOptionalFunction(methodName);
 
@@ -348,15 +507,67 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param classificationName String name for the classification.
      * @param properties list of properties for the classification.
      * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail updateEntityClassification(String               userId,
                                                    String               entityGUID,
                                                    String               classificationName,
-                                                   InstanceProperties   properties) throws FunctionNotSupportedException
+                                                   InstanceProperties   properties) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           ClassificationErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
     {
         final String  methodName = "updateEntityClassification";
+
+        super.reportUnsupportedOptionalFunction(methodName);
+
+        return null;
+    }
+
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification updateEntityClassification(String               userId,
+                                                     EntityProxy          entityProxy,
+                                                     String               classificationName,
+                                                     InstanceProperties   properties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
+    {
+        final String  methodName = "updateEntityClassification (EntityProxy)";
 
         super.reportUnsupportedOptionalFunction(methodName);
 
@@ -771,7 +982,31 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                  (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
                                         entity.getMetadataCollectionId().equals(metadataCollectionId)))
         {
-            super.saveEntityReferenceCopy(userId, entity);
+            List<Classification> classifications = entity.getClassifications();
+
+            if (classifications != null)
+            {
+                EntityDetail strippedEntity = new EntityDetail(entity);
+                List<Classification>  strippedClassifications = new ArrayList<>();
+
+                for (Classification classification : classifications)
+                {
+                    if ((classification != null) && ((classification.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                                     (classification.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
+                                                             classification.getMetadataCollectionId().equals(metadataCollectionId)))
+                    {
+                        strippedClassifications.add(classification);
+                    }
+                }
+
+                strippedEntity.setClassifications(strippedClassifications);
+
+                super.saveEntityReferenceCopy(userId, strippedEntity);
+            }
+            else
+            {
+                super.saveEntityReferenceCopy(userId, entity);
+            }
         }
     }
 
@@ -814,7 +1049,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * classification.  The entity may be either a locally homed entity or a reference copy.
      *
      * @param userId unique identifier for requesting user.
-     * @param entity entity that the classification is attached to.
+     * @param entityProxy entity that the classification is attached to.
      * @param classification classification to save.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -827,7 +1062,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      */
     @Override
     public void saveClassificationReferenceCopy(String         userId,
-                                                EntityProxy    entity,
+                                                EntityProxy    entityProxy,
                                                 Classification classification) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,
@@ -837,7 +1072,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                          (classification.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE) ||
                                           classification.getMetadataCollectionId().equals(metadataCollectionId)))
         {
-            super.saveClassificationReferenceCopy(userId, entity, classification);
+            super.saveClassificationReferenceCopy(userId, entityProxy, classification);
         }
     }
 

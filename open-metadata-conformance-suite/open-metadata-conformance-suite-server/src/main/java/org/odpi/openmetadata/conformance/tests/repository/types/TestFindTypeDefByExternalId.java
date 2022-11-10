@@ -33,10 +33,10 @@ public class TestFindTypeDefByExternalId extends RepositoryConformanceTestCase
 
     private static final String discoveredProperty_numberOfMappedTypeDefs = "Number of type definitions mapped to external standard identifiers";
 
-    private List<TypeDef>               allTypeDefs;
-    private Map<String, List<TypeDef>>  standardsToTypeDefs = new HashMap<>();
-    private Map<String, List<TypeDef>>  orgToTypeDefs = new HashMap<>();
-    private Map<String, List<TypeDef>>  idToTypeDefs = new HashMap<>();
+    private final List<TypeDef>               allTypeDefs;
+    private final Map<String, List<TypeDef>>  standardsToTypeDefs = new HashMap<>();
+    private final Map<String, List<TypeDef>>  orgToTypeDefs = new HashMap<>();
+    private final Map<String, List<TypeDef>>  idToTypeDefs = new HashMap<>();
 
 
     /**

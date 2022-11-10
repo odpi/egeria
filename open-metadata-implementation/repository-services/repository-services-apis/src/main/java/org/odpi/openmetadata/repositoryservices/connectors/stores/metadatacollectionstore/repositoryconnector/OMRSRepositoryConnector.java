@@ -240,7 +240,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
 
 
     /**
-     * Return the unique Id for this metadata collection.
+     * Return the unique id for this metadata collection.
      *
      * @return String unique Id
      */
@@ -252,7 +252,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
 
 
     /**
-     * Set up the unique Id for this metadata collection.
+     * Set up the unique id for this metadata collection.
      *
      * @param metadataCollectionId String unique Id
      */

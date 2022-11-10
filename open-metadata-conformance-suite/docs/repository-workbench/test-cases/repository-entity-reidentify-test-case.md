@@ -56,7 +56,7 @@ This is the sample output for the DesignPattern type.
             "repository-entity-reidentify-05: DesignPattern entity no longer retrievable by previous GUID.",
             "repository-entity-reidentify-06: DesignPattern entity retrievable by new GUID."
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-entity-reidentify-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-entity-reidentify-test-case.md",
         "testCaseId": "repository-entity-reidentify-DesignPattern",
         "testCaseName": "Repository entity reidentify test case",
         "unsuccessfulAssertions": []

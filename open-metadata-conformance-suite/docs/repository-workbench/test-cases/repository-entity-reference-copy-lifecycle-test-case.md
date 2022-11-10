@@ -79,7 +79,7 @@ This is the sample output for the ExternalId type.
             "repository-entity-reference-copy-lifecycle-11: ExternalId reference entity saved.",
             "repository-entity-reference-copy-lifecycle-12: ExternalId reference entity re-homed."
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-entity-reference-copy-lifecycle-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-entity-reference-copy-lifecycle-test-case.md",
         "testCaseId": "repository-entity-reference-copy-lifecycle-ExternalId",
         "testCaseName": "Repository entity reference copy lifecycle test case",
         "unsuccessfulAssertions": []

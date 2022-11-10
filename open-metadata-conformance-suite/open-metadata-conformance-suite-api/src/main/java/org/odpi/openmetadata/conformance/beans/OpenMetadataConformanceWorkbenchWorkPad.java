@@ -423,10 +423,12 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
         testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.SUCCESSFUL_ASSERTION);
-        if (methodName != null) {
+        if (methodName != null)
+        {
             testEvidence.setMethodName(methodName);
         }
-        if (elapsedTime != null) {
+        if (elapsedTime != null)
+        {
             testEvidence.setElapsedTime(elapsedTime);
         }
 
@@ -464,10 +466,12 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
         testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.UNSUCCESSFUL_ASSERTION);
-        if (methodName != null) {
+        if (methodName != null)
+        {
             testEvidence.setMethodName(methodName);
         }
-        if (elapsedTime != null) {
+        if (elapsedTime != null)
+        {
             testEvidence.setElapsedTime(elapsedTime);
         }
 
@@ -719,6 +723,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
         return workbenchSummary;
     }
+
 
     /**
      *  Register any activity to help with working out when the workbench has quiesced.

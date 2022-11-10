@@ -1134,6 +1134,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         Map<String, Serializable> mappingProperties = new HashMap<>();
         mappingProperties.put("stringMappingPropertyKey", "stringMappingPropertyValue");
         mappingProperties.put("integerMappingPropertyKey", 12);
+        remoteEntityWithMappingProperties.setMappingProperties(mappingProperties);
 
         /*
          * Save a reference copy of the 'remote' entity
@@ -1155,7 +1156,11 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
             createdEntityRefCopiesTUT.add(remoteEntityWithMappingProperties);
 
-
+            /*
+             * The metadata collection id/name generated above is not from a member of the cohort.  This means that the retrieved relationship
+             * Will be flagged as from a deregistered repository.
+             */
+            remoteEntityWithMappingProperties.setInstanceProvenanceType(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
 
             EntityDetail retrievedReferenceCopyWithMappingProperties = null;
 

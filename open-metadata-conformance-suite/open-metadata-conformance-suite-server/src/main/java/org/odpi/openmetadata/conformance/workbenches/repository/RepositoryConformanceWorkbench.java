@@ -24,13 +24,13 @@ import java.util.Map;
  * RepositoryConformanceWorkbench provides the thread that drives the repository workbench from the Open Metadata
  * Conformance Suite.  The properties used to initialise the workbench are passed on the constructor.
  * The run() method contains the workbench logic.  It executes until the tests are complete, or it is signaled to
- * shutdown.
+ * shut down.
  */
 public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkbench
 {
     private static final Logger log = LoggerFactory.getLogger(RepositoryConformanceWorkbench.class);
 
-    private RepositoryConformanceWorkPad workPad;
+    private final RepositoryConformanceWorkPad workPad;
 
 
     /**
@@ -85,7 +85,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             testMetadataCollectionId.executeTest();
 
             /*
-             * Validate all of the type definitions
+             * Validate all the type definitions
              */
 
             TestGetTypeDefGallery typeDefGalleryTestCase = new TestGetTypeDefGallery(workPad);
@@ -182,7 +182,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
 
             /*
-             * Search testcases - these are multi-phase tests (create, execute, clean)
+             * Search testcases - these are multiphase tests (create, execute, clean)
              */
 
             List<TestSupportedEntitySearch> entitySearchTestCases = new ArrayList<>();
@@ -196,7 +196,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Resolve the entity inheritance tree to list all subtypes of each entity type.
              * This is useful during find method testcases, to compose expected result.
              * Construct a map of entity type name to list of names of subtypes of that entity type.
-             * The map is held in the workpad.
+             * The map is held in the workPad.
              */
 
             if (entityDefs != null)
@@ -242,7 +242,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Resolve the relationship type into a map from relationship type (name) to the pair of entity types (names)
              * and a corresponding reverse map from entity type to relationship types.
              * These maps are useful during graph query testcases, to compose a supported graph.
-             * The maps are held in the workpad.
+             * The maps are held in the workPad.
              */
 
             if (relationshipDefs != null)
@@ -390,7 +390,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
 
             /*
-             * Validate all of the entities, relationships and classifications
+             * Validate all the entities, relationships and classifications
              */
 
             for (TestSupportedEntityLifecycle testCase : entityTestCases)
@@ -413,7 +413,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
 
             /*
-             * Validate all of the entity and relationship reference copies
+             * Validate all the entity and relationship reference copies
              */
             for (TestSupportedEntityReferenceCopyLifecycle testCase : entityReferenceCopyTestCases)
             {
@@ -445,7 +445,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
 
             /*
-             * Validate all of the entity and relationship reidentify operations
+             * Validate all the entity and relationship reidentify operations
              */
             for (TestSupportedEntityReidentify testCase : entityReidentifyTestCases)
             {
@@ -460,7 +460,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             /*
-             * Validate all of the entity retype operations
+             * Validate all the entity retype operations
              */
             for (TestSupportedEntityRetype testCase : entityRetypeTestCases)
             {
@@ -471,7 +471,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
 
             /*
-             * Validate all of the entity and relationship searches
+             * Validate all the entity and relationship searches
              */
 
             /*

@@ -131,7 +131,7 @@ This is the sample output for a multi-set test run (for the GovernanceControlLin
              "repository-test-case-base-01: Repository connector supplied to conformance suite.",
              "repository-test-case-base-02: Metadata collection for repository connector supplied to conformance suite."
          ],
-         "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-relationship-property-advanced-search-test-case.md",
+         "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-relationship-property-advanced-search-test-case.md",
          "testCaseId": "repository-relationship-property-advanced-search-GovernanceControlLink",
          "testCaseName": "Repository relationship property advanced search test case",
          "unsuccessfulAssertions": []

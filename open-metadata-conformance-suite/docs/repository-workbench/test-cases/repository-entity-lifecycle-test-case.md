@@ -53,7 +53,7 @@ This is the sample output for the Asset type.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-entity-lifecycle",
       "testCaseName" : "Repository entity lifecycle test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-entity-lifecycle-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/repository-workbench/repository-entity-lifecycle-test-case.md",
       "assertionMessage" : "Entities can be managed through their lifecycle",
       "successfulAssertions" : [ "Asset new entity created.", "Asset new entity has createdBy user.", "Asset new entity has creation time.", "Asset new entity has correct provenance type.", "Asset new entity has correct initial status.", "Asset new entity has correct type.", "Asset new entity has local metadata collection.", "Asset new entity has version greater than zero.", "Asset new entity is known.", "Asset new entity summarized.", "Asset new entity retrieved.", "Asset new entity is unattached.", "Asset entity status updated.", "Asset entity new status is Active", "Asset entity with new status version number is 2", "Asset entity can not be set to DELETED status.", "Asset entity properties cleared to min.", "Asset entity with min properties version number is 3", "Asset entity has properties restored.", "Asset entity after undo version number is 4", "Asset entity deleted version number is 5", "Asset entity no longer retrievable after delete.", "Asset entity restored version number is 6", "Asset entity purged." ],
       "unsuccessfulAssertions" : [ ],

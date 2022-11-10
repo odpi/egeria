@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
 import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
@@ -29,7 +31,7 @@ import java.util.UUID;
 
 
 /**
- * Test that all defined entities can be created, retrieved, updated and deleted.
+ * Test that all defined relaitonships can be created, retrieved, updated and deleted.
  */
 public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryConformanceTestCase
 {
@@ -231,7 +233,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         /*
          * In this testcase the repository is believed to support the relationship type defined by
-         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * relationshipDef - but may not support all the entity inheritance hierarchy - it may only
          * support a subset of entity types. So although the relationship type may have end definitions
          * each specifying a given entity type - the repository may only support certain sub-types of the
          * specified type. This is OK, and the testcase needs to only try to use entity types that are
@@ -1241,6 +1243,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             return;
 
+        } catch (AssertionFailureException exc) {
+            throw exc;
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -1356,6 +1360,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         Map<String, Serializable> mappingProperties = new HashMap<>();
         mappingProperties.put("stringMappingPropertyKey", "stringMappingPropertyValue");
         mappingProperties.put("integerMappingPropertyKey", 12);
+        remoteRelationshipWithMappingProperties.setMappingProperties(mappingProperties);
 
         /*
          * Save a reference copy of the 'remote' entity
@@ -1375,8 +1380,14 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             "saveRelationshipReferenceCopy",
                             elapsedTime);
 
+
             createdRelationshipRefCopiesTUT.add(remoteRelationshipWithMappingProperties);
 
+            /*
+             * The metadata collection id/name generated above is not from a member of the cohort.  This means that the retrieved relationship
+             * Will be flagged as from a deregistered repository.
+             */
+            remoteRelationshipWithMappingProperties.setInstanceProvenanceType(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
 
             Relationship retrievedReferenceCopyWithMappingProperties = null;
 
@@ -1422,8 +1433,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
              * This should not be performed on a reference copy of a relationship whose master is on the CTS server - the
              * CTS server is not defunct and we also cannot delete the master instance without also triggering an event
              * that would trigger clean up of the TUT's reference copy. The bottom line is that performing a rehome on
-             * the CTS's instance woudld place the cohort into an invalid state - and taht is not what we are aiming to
-             * test. Therefore the rehome is performed on the locally synthesized instance used above for the
+             * the CTS's instance would place the cohort into an invalid state - and that is not what we are aiming to
+             * test. Therefore, the rehome is performed on the locally synthesized instance used above for the
              * mappingProperties test.
              */
 
@@ -1474,12 +1485,12 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String methodName = "reHomeRelationship";
                 String operationDescription = "rehome a relationship of type " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
-                parameters.put("entityGUID", remoteRelationshipGUID);
+                parameters.put("relationshipGUID", remoteRelationshipGUID);
                 parameters.put("typeDefGUID", relationshipDef.getGUID());
                 parameters.put("typeDefName", relationshipDef.getName());
-                parameters.put("homeMetadataCollecitonId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
-                parameters.put("newHomeMetadataCollecitonId", metadataCollectionId);
-                parameters.put("newHomeMetadataCollecitonName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
+                parameters.put("homeMetadataCollectionId", ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+                parameters.put("newHomeMetadataCollectionId", metadataCollectionId);
+                parameters.put("newHomeMetadataCollectionName", repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
@@ -1583,6 +1594,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
 
+        } catch (AssertionFailureException e) {
+            throw e;
         } catch (FunctionNotSupportedException e) {
 
             super.addNotSupportedAssertion(assertion15,
@@ -1598,7 +1611,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String methodName = "saveRelationshipReferenceCopy";
             String operationDescription = "save a reference copy of a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("entity", remoteRelationshipWithMappingProperties.toString());
+            parameters.put("relationship", remoteRelationshipWithMappingProperties.toString());
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
@@ -1608,7 +1621,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
         /*
-         * And finally clean up the entities - these are nown to be locally master (by the TUT) as they
+         * And finally clean up the entities - these are known to be locally master (by the TUT) as they
          * were never subject to a rehome operation. Soft delete (optional) then purge.
          */
         try {

@@ -19,6 +19,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * LocalOMRSRepositoryConnector provides access the local metadata repository plus manages outbound
@@ -47,6 +51,8 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     private LocalOMRSInstanceEventProcessor     incomingInstanceEventProcessor   = null;
     private OMRSInstanceRetrievalEventProcessor instanceRetrievalEventProcessor  = null;
     private boolean                             produceEventsForRealConnector    = true;
+
+    private final Map<String, List<String>> remoteCohortMetadataCollectionIds = new HashMap<>();
 
 
     /**
@@ -318,6 +324,55 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
 
     /**
+     * Set up the list of metadata collection identifiers from the remote members of a connected cohort.
+     * This is called from the cohort registry as it is handling the remote registrations.
+     *
+     * @param cohortName name of cohort
+     * @param remoteCohortMetadataCollectionIds list of metadata collection ids
+     */
+    @Override
+    public synchronized void setRemoteCohortMetadataCollectionIds(String       cohortName,
+                                                                  List<String> remoteCohortMetadataCollectionIds)
+    {
+        this.remoteCohortMetadataCollectionIds.put(cohortName, remoteCohortMetadataCollectionIds);
+    }
+
+
+    /**
+     * Is the metadata collection id for an active member of the cohort.  This is used to set up the
+     * provenance type correctly (between LOCAL_COHORT and DEREGISTERED_REPOSITORY).
+     *
+     * @param metadataCollectionId id to test
+     * @return boolean flag meaning that the metadata collection is recognized
+     */
+    @Override
+    public synchronized boolean isActiveCohortMember(String metadataCollectionId)
+    {
+        if (metadataCollectionId == null)
+        {
+            return false;
+        }
+
+        if (metadataCollectionId.equals(this.metadataCollectionId))
+        {
+            return true;
+        }
+
+        for (String cohortName : remoteCohortMetadataCollectionIds.keySet())
+        {
+            List<String> cohortMetadataCollectionIds = remoteCohortMetadataCollectionIds.get(cohortName);
+
+            if ((cohortMetadataCollectionIds != null) && (cohortMetadataCollectionIds.contains(metadataCollectionId)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Set up the userId that the local server should use when processing events and there is no external user
      * driving the operation.
      *
@@ -391,7 +446,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                                  this.getLocalServerName(),
                                                                  this.getLocalServerType(),
                                                                  this.getOrganizationName(),
-                                                                 realLocalConnector.getMetadataCollection(),
+                                                                 realLocalConnector.getMetadataCollection(), // If null exception caught
                                                                  outboundRepositoryEventManager,
                                                                  produceEventsForRealConnector,
                                                                  typeDefManager);
