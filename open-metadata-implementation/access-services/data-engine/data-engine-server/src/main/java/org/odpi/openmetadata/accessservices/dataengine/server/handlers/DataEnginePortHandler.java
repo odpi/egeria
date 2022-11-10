@@ -61,7 +61,7 @@ public class DataEnginePortHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param portHandler             provides utilities for manipulating the repository services ports
-     * @param registrationHandler     provides utilities for manipulating software server capability entities
+     * @param registrationHandler     provides utilities for manipulating engine entities
      */
     public DataEnginePortHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                  OMRSRepositoryHelper repositoryHelper, DataEngineCommonHandler dataEngineCommonHandler,

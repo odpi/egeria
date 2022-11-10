@@ -8,8 +8,8 @@ Below is the list of tasks supported by Data Engine OMAS.
 
 #### External Tool registration
 
-Typically the first action to take for an external tool is to [register](register-external-tool.md) as a 
-[software-server-capability](../../../docs/concepts/server-capabilities).
+Typically, the first action to take for an external tool is to [register](register-external-tool.md) as an
+[engine](../../../docs/concepts/server-capabilities).
 
 #### External Tool lookup
 

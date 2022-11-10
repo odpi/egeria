@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "489e39b7-720b-4c6e-9a0d-0dcbfebde4ad",
-		"name": "Data Engine - Topics lienage examples",
+		"name": "Data Engine - Topics lineage examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -256,8 +256,7 @@
 						"{{user-id}}",
 						"processes"
 					]
-				},
-				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+				}
 			},
 			"response": []
 		},
@@ -297,8 +296,7 @@
 						"{{user-id}}",
 						"lineage-mappings"
 					]
-				},
-				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+				}
 			},
 			"response": []
 		},
@@ -393,8 +391,7 @@
 						"{{user-id}}",
 						"lineage-mappings"
 					]
-				},
-				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+				}
 			},
 			"response": []
 		},

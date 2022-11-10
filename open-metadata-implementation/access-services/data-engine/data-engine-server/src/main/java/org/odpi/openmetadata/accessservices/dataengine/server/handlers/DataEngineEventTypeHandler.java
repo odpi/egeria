@@ -44,7 +44,7 @@ public class DataEngineEventTypeHandler {
      * @param invalidParameterHandler          handler for managing parameter errors
      * @param eventTypeHandler                 provides utilities specific for manipulating event type entities
      * @param dataEngineCommonHandler          provides utilities for manipulating entities
-     * @param dataEngineRegistrationHandler    provides utilities for  software server capability entities
+     * @param dataEngineRegistrationHandler    provides utilities for engine entities
      * @param dataEngineSchemaAttributeHandler provides utilities specific for schema attribute entities
      */
     public DataEngineEventTypeHandler(InvalidParameterHandler invalidParameterHandler, EventTypeHandler<EventType> eventTypeHandler,
