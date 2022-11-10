@@ -649,8 +649,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
                 this.graphHelper.getResult(this::getQueriedVertex, elementHierarchyRequest.getGuid(), this::handleGetQueriedVertexException);
         String label = queriedVertex.label();
 
-        List<String> upwardEdgeLabels = new ArrayList<>();
-        List<String> downwardEdgeLabels = new ArrayList<>();
+        List<String> upwardEdgeLabels = Collections.emptyList();
+        List<String> downwardEdgeLabels = Collections.emptyList();
         if (DATA_FILE_AND_SUBTYPES.contains(label)) {
             upwardEdgeLabels = List.of(CONNECTION_TO_ASSET, NESTED_FILE, CONNECTION_ENDPOINT);
             downwardEdgeLabels = List.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE);
