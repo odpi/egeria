@@ -280,10 +280,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#declassifyEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,boolean,boolean,java.util.Date,java.lang.String)">declassifyEntity</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#declassifyEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,boolean,boolean,java.util.Date,java.lang.String)">declassifyEntity</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;externalSourceGUID,
                 java.lang.String&nbsp;externalSourceName,
                 java.lang.String&nbsp;entityGUID,
+                <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
                 java.lang.String&nbsp;entityGUIDParameterName,
                 java.lang.String&nbsp;entityTypeName,
                 java.lang.String&nbsp;classificationTypeGUID,
@@ -1833,7 +1834,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="declassifyEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="declassifyEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1843,6 +1844,7 @@ extends java.lang.Object</pre>
                              java.lang.String&nbsp;externalSourceGUID,
                              java.lang.String&nbsp;externalSourceName,
                              java.lang.String&nbsp;entityGUID,
+                             <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
                              java.lang.String&nbsp;entityGUIDParameterName,
                              java.lang.String&nbsp;entityTypeName,
                              java.lang.String&nbsp;classificationTypeGUID,
@@ -1862,6 +1864,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier (guid) for the external source, or null for local.</dd>
 <dd><code>externalSourceName</code> - unique name for the external source.</dd>
 <dd><code>entityGUID</code> - unique identifier of entity to update</dd>
+<dd><code>entity</code> - full entity bean</dd>
 <dd><code>entityGUIDParameterName</code> - parameter name that passed the entityGUID</dd>
 <dd><code>entityTypeName</code> - type of entity</dd>
 <dd><code>classificationTypeGUID</code> - type of classification to create</dd>
@@ -3422,7 +3425,8 @@ public&nbsp;<a href="../../repositoryservices/connectors/stores/metadatacollecti
                                                 boolean&nbsp;forDuplicateProcessing,
                                                 java.util.Date&nbsp;effectiveTime,
                                                 java.lang.String&nbsp;methodName)
-                                         throws <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                 <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of relationships of the requested type connected to the starting entity where the
  starting entity is at the end indicated by the startAtEnd1 boolean parameter.
@@ -3443,6 +3447,7 @@ public&nbsp;<a href="../../repositoryservices/connectors/stores/metadatacollecti
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>retrieved relationship or null</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is no longer available</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -180,6 +180,25 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#connectToCohort(java.lang.String,java.lang.String,java.lang.String)">connectToCohort</a></span>&#8203;(java.lang.String&nbsp;serverName,
+               java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectFromCohort(java.lang.String,java.lang.String,java.lang.String)">disconnectFromCohort</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                    java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">Disconnect communications from a specific cohort.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../properties/CohortListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">CohortListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCohorts(java.lang.String,java.lang.String)">getCohorts</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;userId)</code></th>
@@ -187,7 +206,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the details of the cohorts that this server is participating in.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../properties/CohortMembershipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">CohortMembershipResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalRegistration(java.lang.String,java.lang.String)">getLocalRegistration</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId)</code></th>
@@ -195,7 +214,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the local registration information used by this server to register with open metadata repository cohorts.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../properties/CohortMembershipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">CohortMembershipResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalRegistration(java.lang.String,java.lang.String,java.lang.String)">getLocalRegistration</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -205,13 +224,22 @@ extends java.lang.Object</pre>
  open metadata repository cohort.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../properties/CohortMembershipListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">CohortMembershipListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRemoteRegistrations(java.lang.String,java.lang.String,java.lang.String)">getRemoteRegistrations</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;cohortName)</code></th>
 <td class="colLast">
 <div class="block">Return the list of registrations received from remote members of the cohort.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterFromCohort(java.lang.String,java.lang.String,java.lang.String)">unregisterFromCohort</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                    java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">Unregister from a specific cohort and disconnect from cohort communications.</div>
 </td>
 </tr>
 </table>
@@ -326,10 +354,38 @@ public&nbsp;<a href="../../properties/CohortMembershipResponse.html" title="clas
 </dl>
 </li>
 </ul>
+<a id="connectToCohort(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>connectToCohort</h4>
+<pre class="methodSignature">@GetMapping(path="/cohorts/{cohortName}/connect")
+public&nbsp;<a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a>&nbsp;connectToCohort&#8203;(@PathVariable
+                                       java.lang.String&nbsp;serverName,
+                                       @PathVariable
+                                       java.lang.String&nbsp;userId,
+                                       @PathVariable
+                                       java.lang.String&nbsp;cohortName)</pre>
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+ event has been sent.
+
+ If the server has already registered in the past, it sends a reregistration request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - server to query</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known</dd>
+</dl>
+</li>
+</ul>
 <a id="getRemoteRegistrations(java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getRemoteRegistrations</h4>
 <pre class="methodSignature">@GetMapping(path="/cohorts/{cohortName}/remote-members")
@@ -347,6 +403,54 @@ public&nbsp;<a href="../../properties/CohortMembershipListResponse.html" title="
 <dd><code>cohortName</code> - name of the specific cohort</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of registration information for remote members</dd>
+</dl>
+</li>
+</ul>
+<a id="disconnectFromCohort(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>disconnectFromCohort</h4>
+<pre class="methodSignature">@GetMapping(path="/cohorts/{cohortName}/disconnect")
+public&nbsp;<a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a>&nbsp;disconnectFromCohort&#8203;(@PathVariable
+                                            java.lang.String&nbsp;serverName,
+                                            @PathVariable
+                                            java.lang.String&nbsp;userId,
+                                            @PathVariable
+                                            java.lang.String&nbsp;cohortName)</pre>
+<div class="block">Disconnect communications from a specific cohort.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - server to query</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known</dd>
+</dl>
+</li>
+</ul>
+<a id="unregisterFromCohort(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>unregisterFromCohort</h4>
+<pre class="methodSignature">@GetMapping(path="/cohorts/{cohortName}/unregister")
+public&nbsp;<a href="../../properties/BooleanResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">BooleanResponse</a>&nbsp;unregisterFromCohort&#8203;(@PathVariable
+                                            java.lang.String&nbsp;serverName,
+                                            @PathVariable
+                                            java.lang.String&nbsp;userId,
+                                            @PathVariable
+                                            java.lang.String&nbsp;cohortName)</pre>
+<div class="block">Unregister from a specific cohort and disconnect from cohort communications.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - server to query</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known</dd>
 </dl>
 </li>
 </ul>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -344,6 +344,22 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 </td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="APIOperationHandler.html" title="type parameter in APIOperationHandler">B</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIOperationsForAPISchemaType(java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">getAPIOperationsForAPISchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;apiSchemaTypeGUID,
+                                java.lang.String&nbsp;apiSchemaTypeGUIDParameterName,
+                                java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
+                                int&nbsp;startFrom,
+                                int&nbsp;pageSize,
+                                boolean&nbsp;forLineage,
+                                boolean&nbsp;forDuplicateProcessing,
+                                java.util.Date&nbsp;effectiveTime,
+                                java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the API Operations metadata element with the supplied unique identifier.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAPIOperation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">removeAPIOperation</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
@@ -359,7 +375,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Remove the metadata element representing an API Operations.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAPIOperation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateAPIOperation</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
@@ -843,6 +859,47 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <dd><code>userId</code> - calling user</dd>
 <dd><code>apiGUID</code> - unique identifier of the requested metadata element</dd>
 <dd><code>apiGUIDParameterName</code> - parameter name of the apiGUID</dd>
+<dd><code>serviceSupportedZones</code> - supported zones for calling service</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of API Operations element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getAPIOperationsForAPISchemaType(java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,boolean,boolean,java.util.Date,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAPIOperationsForAPISchemaType</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="APIOperationHandler.html" title="type parameter in APIOperationHandler">B</a>&gt;&nbsp;getAPIOperationsForAPISchemaType&#8203;(java.lang.String&nbsp;userId,
+                                                          java.lang.String&nbsp;apiSchemaTypeGUID,
+                                                          java.lang.String&nbsp;apiSchemaTypeGUIDParameterName,
+                                                          java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
+                                                          int&nbsp;startFrom,
+                                                          int&nbsp;pageSize,
+                                                          boolean&nbsp;forLineage,
+                                                          boolean&nbsp;forDuplicateProcessing,
+                                                          java.util.Date&nbsp;effectiveTime,
+                                                          java.lang.String&nbsp;methodName)
+                                                   throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                          <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the API Operations metadata element with the supplied unique identifier.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>apiSchemaTypeGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>apiSchemaTypeGUIDParameterName</code> - parameter name of the apiSchemaTypeGUID</dd>
 <dd><code>serviceSupportedZones</code> - supported zones for calling service</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>

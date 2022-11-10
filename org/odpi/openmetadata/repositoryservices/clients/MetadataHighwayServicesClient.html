@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -226,42 +226,65 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#connectToCohort(java.lang.String,java.lang.String)">connectToCohort</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectFromCohort(java.lang.String,java.lang.String)">disconnectFromCohort</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">Disconnect communications from a specific cohort.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../properties/CohortDescription.html" title="class in org.odpi.openmetadata.repositoryservices.properties">CohortDescription</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCohortDescriptions(java.lang.String)">getCohortDescriptions</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Returns the descriptions of all cohorts the server is a member of.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorComponentDescription()">getConnectorComponentDescription</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalRegistration(java.lang.String,java.lang.String,java.lang.String)">getLocalRegistration</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                    java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalRegistration(java.lang.String,java.lang.String)">getLocalRegistration</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;cohortName)</code></th>
 <td class="colLast">
-<div class="block">Returns the registration of the local server in the specified cohort</div>
+<div class="block">Returns the registration of the local server in the specified cohort.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRemoteRegistrations(java.lang.String,java.lang.String,java.lang.String)">getRemoteRegistrations</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                      java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRemoteRegistrations(java.lang.String,java.lang.String)">getRemoteRegistrations</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;cohortName)</code></th>
 <td class="colLast">
-<div class="block">Returns the remote member registrations seen by the local server in the specified cohort</div>
+<div class="block">Returns the remote member registrations seen by the local server in the specified cohort.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a></span>&#8203;(<a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterFromCohort(java.lang.String,java.lang.String)">unregisterFromCohort</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;cohortName)</code></th>
+<td class="colLast">
+<div class="block">Unregister from a specific cohort and disconnect from cohort communications.</div>
 </td>
 </tr>
 </table>
@@ -418,22 +441,20 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </dl>
 </li>
 </ul>
-<a id="getLocalRegistration(java.lang.String,java.lang.String,java.lang.String)">
+<a id="getLocalRegistration(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getLocalRegistration</h4>
-<pre class="methodSignature">public&nbsp;<a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a>&nbsp;getLocalRegistration&#8203;(java.lang.String&nbsp;serverName,
-                                               java.lang.String&nbsp;userId,
+<pre class="methodSignature">public&nbsp;<a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a>&nbsp;getLocalRegistration&#8203;(java.lang.String&nbsp;userId,
                                                java.lang.String&nbsp;cohortName)
                                         throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                                <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                                <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Returns the registration of the local server in the specified cohort</div>
+<div class="block">Returns the registration of the local server in the specified cohort.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - the name of the server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>cohortName</code> - the name of the cohort</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -445,26 +466,103 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </dl>
 </li>
 </ul>
-<a id="getRemoteRegistrations(java.lang.String,java.lang.String,java.lang.String)">
+<a id="connectToCohort(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
+<li class="blockList">
+<h4>connectToCohort</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;connectToCohort&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;cohortName)
+                        throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                               <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                               <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+ event has been sent.
+
+ If the server has already registered in the past, it sends a reregistration request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the supplied parameters caused a problem</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the remote server.</dd>
+<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not authorized to perform the operation requested</dd>
+</dl>
+</li>
+</ul>
+<a id="getRemoteRegistrations(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
 <li class="blockList">
 <h4>getRemoteRegistrations</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a>&gt;&nbsp;getRemoteRegistrations&#8203;(java.lang.String&nbsp;serverName,
-                                                                 java.lang.String&nbsp;userId,
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../connectors/stores/cohortregistrystore/properties/MemberRegistration.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties">MemberRegistration</a>&gt;&nbsp;getRemoteRegistrations&#8203;(java.lang.String&nbsp;userId,
                                                                  java.lang.String&nbsp;cohortName)
                                                           throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                                                  <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                                                  <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Returns the remote member registrations seen by the local server in the specified cohort</div>
+<div class="block">Returns the remote member registrations seen by the local server in the specified cohort.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - the name of the server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>cohortName</code> - the name of the cohort</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>MemberRegistration local registration</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the supplied parameters caused a problem</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the remote server.</dd>
+<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not authorized to perform the operation requested</dd>
+</dl>
+</li>
+</ul>
+<a id="disconnectFromCohort(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>disconnectFromCohort</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;disconnectFromCohort&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;cohortName)
+                             throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                    <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                    <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
+<div class="block">Disconnect communications from a specific cohort.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag to indicate success.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the supplied parameters caused a problem</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the remote server.</dd>
+<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the user is not authorized to perform the operation requested</dd>
+</dl>
+</li>
+</ul>
+<a id="unregisterFromCohort(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>unregisterFromCohort</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;unregisterFromCohort&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;cohortName)
+                             throws <a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                    <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
+                                    <a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
+<div class="block">Unregister from a specific cohort and disconnect from cohort communications.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag to indicate success.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the supplied parameters caused a problem</dd>
 <dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the remote server.</dd>

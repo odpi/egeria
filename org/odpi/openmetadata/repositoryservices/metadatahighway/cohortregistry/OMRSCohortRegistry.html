@@ -212,7 +212,7 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectFromCohort(boolean)">disconnectFromCohort</a></span>&#8203;(boolean&nbsp;permanent)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectFromCohort(boolean)">disconnectFromCohort</a></span>&#8203;(boolean&nbsp;unregister)</code></th>
 <td class="colLast">
 <div class="block">Close the connection to the registry store.</div>
 </td>
@@ -233,10 +233,10 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initialize(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor,org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore,org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer)">initialize</a></span>&#8203;(java.lang.String&nbsp;cohortName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initialize(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor,org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore,org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer)">initialize</a></span>&#8203;(java.lang.String&nbsp;cohortName,
           java.lang.String&nbsp;localMetadataCollectionId,
           java.lang.String&nbsp;localMetadataCollectionName,
-          <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;localRepositoryRemoteConnection,
+          <a href="../../localrepository/OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a>&nbsp;localRepository,
           java.lang.String&nbsp;localServerName,
           java.lang.String&nbsp;localServerType,
           java.lang.String&nbsp;localOrganizationName,
@@ -382,7 +382,7 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="initialize(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor,org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore,org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer)">
+<a id="initialize(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor,org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore,org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -391,7 +391,7 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 <pre class="methodSignature">public&nbsp;void&nbsp;initialize&#8203;(java.lang.String&nbsp;cohortName,
                        java.lang.String&nbsp;localMetadataCollectionId,
                        java.lang.String&nbsp;localMetadataCollectionName,
-                       <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;localRepositoryRemoteConnection,
+                       <a href="../../localrepository/OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a>&nbsp;localRepository,
                        java.lang.String&nbsp;localServerName,
                        java.lang.String&nbsp;localServerType,
                        java.lang.String&nbsp;localOrganizationName,
@@ -405,8 +405,7 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 <dd><code>localMetadataCollectionId</code> - configured value for the local metadata collection id may be null
                                   if no local repository.</dd>
 <dd><code>localMetadataCollectionName</code> - display name for the local metadata collection</dd>
-<dd><code>localRepositoryRemoteConnection</code> - the connection properties for a connector that can call this
-                                        server from a remote server.</dd>
+<dd><code>localRepository</code> - the optional local repository.</dd>
 <dd><code>localServerName</code> - the name of the local server. It is a descriptive name for informational purposes.</dd>
 <dd><code>localServerType</code> - the type of the local server.  It is a descriptive name for informational purposes.</dd>
 <dd><code>localOrganizationName</code> - the name of the organization that owns the local server/repository.
@@ -431,7 +430,7 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
  open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
  event has been sent.
 
- If the server has already registered in the past, it does not need to take any action.</div>
+ If the server has already registered in the past, it sends a registration request.</div>
 </li>
 </ul>
 <a id="getLocalRegistration()">
@@ -468,13 +467,13 @@ extends <a href="../../events/OMRSRegistryEventProcessor.html" title="class in o
 <ul class="blockList">
 <li class="blockList">
 <h4>disconnectFromCohort</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;disconnectFromCohort&#8203;(boolean&nbsp;permanent)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;disconnectFromCohort&#8203;(boolean&nbsp;unregister)</pre>
 <div class="block">Close the connection to the registry store.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>permanent</code> - boolean flag indicating whether the disconnection is permanent or not.  If it is set
-                  to true, the OMRS Cohort will remove all information about the cohort from the
-                  cohort registry store.</dd>
+<dd><code>unregister</code> - boolean flag indicating whether the disconnection also includes unregistration from the cohort.  If it is set
+                  to true, the OMRS Cohort will inform the other members of the cohort that it is leaving and remove all information
+                   about the cohort from the cohort registry store.</dd>
 </dl>
 </li>
 </ul>

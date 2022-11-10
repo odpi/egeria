@@ -183,7 +183,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.AssetHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">AssetManagerOMRSTopicListener</a></span>&#8203;(java.lang.String&nbsp;serviceName,
                              java.lang.String&nbsp;localServerUserId,
                              <a href="../outtopic/AssetManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.outtopic">AssetManagerOutTopicPublisher</a>&nbsp;eventPublisher,
-                             <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&nbsp;assetHandler,
+                             <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceActionProcessElement</a>&gt;&nbsp;assetHandler,
                              java.util.List&lt;java.lang.String&gt;&nbsp;supportedZones,
                              <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
@@ -577,7 +577,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <pre>public&nbsp;AssetManagerOMRSTopicListener&#8203;(java.lang.String&nbsp;serviceName,
                                      java.lang.String&nbsp;localServerUserId,
                                      <a href="../outtopic/AssetManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.outtopic">AssetManagerOutTopicPublisher</a>&nbsp;eventPublisher,
-                                     <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&nbsp;assetHandler,
+                                     <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceActionProcessElement</a>&gt;&nbsp;assetHandler,
                                      java.util.List&lt;java.lang.String&gt;&nbsp;supportedZones,
                                      <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</pre>
 <div class="block">Initialize the topic listener.</div>
@@ -940,7 +940,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                       java.lang.String&nbsp;originatorServerType,
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</pre>
-<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -1067,7 +1067,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;originalTypeDefSummary,
                                       <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</pre>
-<div class="block">An existing entity has had its type changed.  Typically this action is taken to move an entity's
+<div class="block">An existing entity has had its type changed.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -1216,7 +1216,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                             java.lang.String&nbsp;originatorServerType,
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</pre>
-<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1309,7 +1309,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;originalTypeDefSummary,
                                             <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship)</pre>
-<div class="block">An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+<div class="block">An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>

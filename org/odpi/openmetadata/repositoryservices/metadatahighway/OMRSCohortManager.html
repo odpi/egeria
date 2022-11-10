@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -155,19 +155,34 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnect(boolean)">disconnect</a></span>&#8203;(boolean&nbsp;permanent)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#connectToCohort()">connectToCohort</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Disconnect from the cohort.</div>
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnect(boolean)">disconnect</a></span>&#8203;(boolean&nbsp;unregister)</code></th>
+<td class="colLast">
+<div class="block">Disconnect from the cohort - part of shutdown logic.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectFromCohort(boolean)">disconnectFromCohort</a></span>&#8203;(boolean&nbsp;unregister)</code></th>
+<td class="colLast">
+<div class="block">Close the connection to the registry store.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCohortName()">getCohortName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the name of the cohort.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initialize(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStore,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule)">initialize</a></span>&#8203;(java.lang.String&nbsp;cohortName,
           java.lang.String&nbsp;localMetadataCollectionId,
@@ -193,7 +208,7 @@ extends java.lang.Object</pre>
 <div class="block">The constructor defines the minimum information necessary to connect to a cohort.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSecurityVerifier(org.odpi.openmetadata.repositoryservices.events.OpenMetadataEventsSecurity)">setSecurityVerifier</a></span>&#8203;(<a href="../events/OpenMetadataEventsSecurity.html" title="interface in org.odpi.openmetadata.repositoryservices.events">OpenMetadataEventsSecurity</a>&nbsp;securityVerifier)</code></th>
 <td class="colLast">
@@ -201,7 +216,7 @@ extends java.lang.Object</pre>
  method is called).</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -322,17 +337,47 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
+<a id="connectToCohort()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>connectToCohort</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;connectToCohort()</pre>
+<div class="block">A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+ open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+ event has been sent.
+
+ If the server has already registered in the past, it sends a reregistration request.</div>
+</li>
+</ul>
+<a id="disconnectFromCohort(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>disconnectFromCohort</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;disconnectFromCohort&#8203;(boolean&nbsp;unregister)</pre>
+<div class="block">Close the connection to the registry store.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>unregister</code> - boolean flag indicating whether the disconnection also includes unregistration from the cohort.  If it is set
+                  to true, the OMRS Cohort will inform the other members of the cohort that it is leaving and remove all information
+                   about the cohort from the cohort registry store.</dd>
+</dl>
+</li>
+</ul>
 <a id="disconnect(boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>disconnect</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;disconnect&#8203;(boolean&nbsp;permanent)</pre>
-<div class="block">Disconnect from the cohort.</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;disconnect&#8203;(boolean&nbsp;unregister)</pre>
+<div class="block">Disconnect from the cohort - part of shutdown logic.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>permanent</code> - flag indicating if the local repository should unregister from the cohort because it is
+<dd><code>unregister</code> - flag indicating if the local repository should unregister from the cohort because it is
                   not going ot connect again.</dd>
 </dl>
 </li>

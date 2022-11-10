@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -220,6 +220,21 @@ extends <a href="../connectors/stores/metadatacollectionstore/repositoryconnecto
 <div class="block">Return the event manager that the local repository uses to</div>
 </td>
 </tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isActiveCohortMember(java.lang.String)">isActiveCohortMember</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId)</code></th>
+<td class="colLast">
+<div class="block">Is the metadata collection id for an active member of the cohort.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)">setRemoteCohortMetadataCollectionIds</a></span>&#8203;(java.lang.String&nbsp;cohortName,
+                                    java.util.List&lt;java.lang.String&gt;&nbsp;remoteCohortMetadataCollectionIds)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of metadata collection identifiers from the remote members of a connected cohort.</div>
+</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager">
@@ -364,7 +379,7 @@ extends <a href="../connectors/stores/metadatacollectionstore/repositoryconnecto
 <a id="getOrganizationName()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getOrganizationName</h4>
 <pre class="methodSignature">java.lang.String&nbsp;getOrganizationName()</pre>
@@ -374,6 +389,39 @@ extends <a href="../connectors/stores/metadatacollectionstore/repositoryconnecto
 <dd><code><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html#getOrganizationName()">getOrganizationName</a></code>&nbsp;in interface&nbsp;<code><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>
+</dl>
+</li>
+</ul>
+<a id="setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRemoteCohortMetadataCollectionIds</h4>
+<pre class="methodSignature">void&nbsp;setRemoteCohortMetadataCollectionIds&#8203;(java.lang.String&nbsp;cohortName,
+                                          java.util.List&lt;java.lang.String&gt;&nbsp;remoteCohortMetadataCollectionIds)</pre>
+<div class="block">Set up the list of metadata collection identifiers from the remote members of a connected cohort.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dd><code>remoteCohortMetadataCollectionIds</code> - list of metadata collection ids</dd>
+</dl>
+</li>
+</ul>
+<a id="isActiveCohortMember(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>isActiveCohortMember</h4>
+<pre class="methodSignature">boolean&nbsp;isActiveCohortMember&#8203;(java.lang.String&nbsp;metadataCollectionId)</pre>
+<div class="block">Is the metadata collection id for an active member of the cohort.  This is used to set up the
+ provenance type correctly (between LOCAL_COHORT and DEREGISTERED_REPOSITORY).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>metadataCollectionId</code> - id to test</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag meaning that the metadata collection is recognized</dd>
 </dl>
 </li>
 </ul>

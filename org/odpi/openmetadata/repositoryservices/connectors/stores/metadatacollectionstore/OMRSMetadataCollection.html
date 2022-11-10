@@ -135,7 +135,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollectionBase</a></code></dd>
+<dd><code><a href="OMRSMetadataCollectionBase.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollectionBase</a></code>, <code><a href="../../../../adapters/repositoryservices/rest/repositoryconnector/OMRSRESTMetadataCollection.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector">OMRSRESTMetadataCollection</a></code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">OMRSMetadataCollection</span>
@@ -1110,7 +1110,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
             <a href="properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
             <a href="properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></th>
 <td class="colLast">
-<div class="block">Change the type of an existing entity.</div>
+<div class="block">Change the existing entity's type.</div>
 </td>
 </tr>
 <tr id="i78" class="altColor">
@@ -1120,7 +1120,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
                   <a href="properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;currentTypeDefSummary,
                   <a href="properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></th>
 <td class="colLast">
-<div class="block">Change the type of an existing relationship.</div>
+<div class="block">Change the existing relationship's type.</div>
 </td>
 </tr>
 <tr id="i79" class="rowColor">
@@ -1695,7 +1695,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code>organization</code> - name of the organization null means any.</dd>
 <dd><code>identifier</code> - identifier of the element in the standard null means any.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>TypeDefs list  each entry in the list contains a TypeDef.  This is is a structure
+<dd>TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
@@ -1721,7 +1721,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>searchCriteria</code> - String search criteria.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>TypeDefs list each entry in the list contains a TypeDef.  This is is a structure
+<dd>TypeDefs list each entry in the list contains a TypeDef.  This is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the searchCriteria is null.</dd>
@@ -2069,7 +2069,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - the requested TypeDef is not found in the metadata collection.</dd>
-<dd><code><a href="../../../ffdc/exception/TypeDefInUseException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefInUseException</a></code> - the TypeDef can not be deleted because there are instances of this type in the
+<dd><code><a href="../../../ffdc/exception/TypeDefInUseException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefInUseException</a></code> - the TypeDef can not be deleted because there are instances of this type in
                                  the metadata collection.  These instances need to be purged before the
                                  TypeDef can be deleted.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
@@ -2104,7 +2104,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../../../ffdc/exception/TypeDefNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefNotKnownException</a></code> - the requested AttributeTypeDef is not found in the metadata collection.</dd>
-<dd><code><a href="../../../ffdc/exception/TypeDefInUseException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefInUseException</a></code> - the AttributeTypeDef can not be deleted because there are instances of this type in the
+<dd><code><a href="../../../ffdc/exception/TypeDefInUseException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">TypeDefInUseException</a></code> - the AttributeTypeDef can not be deleted because there are instances of this type in
                                  the metadata collection.  These instances need to be purged before the
                                  AttributeTypeDef can be deleted.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support this call.</dd>
@@ -2571,7 +2571,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>entityTypeGUID</code> - unique identifier for the type of entity requested.  Null means any type of entity
-                       (but could be slow so not recommended.</dd>
+                       (but could be slow so not recommended).</dd>
 <dd><code>classificationName</code> - name of the classification, note a null is not valid.</dd>
 <dd><code>matchClassificationProperties</code> - list of classification properties used to narrow the search (where any String
                                       property's value should be defined as a Java regular expression, even if it
@@ -3398,9 +3398,9 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                           <a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
                                           <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
                                           <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+<div class="block">Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
  on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
- To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+ To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
  The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -3882,7 +3882,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                             <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></pre>
 <div class="block">Save a new relationship that is sourced from an external technology.  The external
  technology is identified by a GUID and a name.  These can be recorded in a
- Software Server Capability (guid and qualifiedName respectively.
+ Software Server Capability (guid and qualifiedName respectively).
  The new relationship is assigned a new GUID and put
  in the requested state.  The new relationship is returned.</div>
 <dl>
@@ -4028,7 +4028,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
                                                 <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
- DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+ DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
  metadata collection, use purgeRelationship().</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -4172,7 +4172,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                           <a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
                                           <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
                                           <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Change the type of an existing entity.  Typically this action is taken to move an entity's
+<div class="block">Change the existing entity's type.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type and the properties adjusted.</div>
 <dl>
@@ -4337,7 +4337,7 @@ public&nbsp;<a href="properties/instances/EntityDetail.html" title="class in org
                                                 <a href="../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
                                                 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
                                                 <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+<div class="block">Change the existing relationship's type.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -4618,7 +4618,7 @@ public&nbsp;<a href="properties/instances/Relationship.html" title="class in org
 
  This method is called when a remote repository calls the variant of purgeEntity that
  passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
- However it may also be used to purge after a soft-delete.</div>
+ However, it may also be used to purge after a soft-delete.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -4986,7 +4986,7 @@ public&nbsp;<a href="properties/instances/Relationship.html" title="class in org
                                            <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">This method is called when a remote repository calls the variant of purgeRelationship that
  passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
- However it may also be used to purge after a soft-delete.
+ However, it may also be used to purge after a soft-delete.
 
  Remove the reference copy of the relationship from the local repository. This method can be used to
  remove reference copies from the local cohort, repositories that have left the cohort,

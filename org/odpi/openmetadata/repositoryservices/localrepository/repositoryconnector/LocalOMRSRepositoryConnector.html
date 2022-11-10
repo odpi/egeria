@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -332,55 +332,70 @@ implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.op
 </td>
 </tr>
 <tr id="i11" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isActiveCohortMember(java.lang.String)">isActiveCohortMember</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId)</code></th>
+<td class="colLast">
+<div class="block">Is the metadata collection id for an active member of the cohort.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAuditLog(org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog)">setAuditLog</a></span>&#8203;(<a href="../../auditlog/OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMaxPageSize(int)">setMaxPageSize</a></span>&#8203;(int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Set up the maximum PageSize</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetadataCollectionId(java.lang.String)">setMetadataCollectionId</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique id for this metadata collection.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetadataCollectionName(java.lang.String)">setMetadataCollectionName</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionName)</code></th>
 <td class="colLast">
 <div class="block">Explicitly set up the metadata collection name.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOrganizationName(java.lang.String)">setOrganizationName</a></span>&#8203;(java.lang.String&nbsp;organizationName)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the organization that runs/owns the server.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)">setRemoteCohortMetadataCollectionIds</a></span>&#8203;(java.lang.String&nbsp;cohortName,
+                                    java.util.List&lt;java.lang.String&gt;&nbsp;remoteCohortMetadataCollectionIds)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of metadata collection identifiers from the remote members of a connected cohort.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryHelper(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper)">setRepositoryHelper</a></span>&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentHelper.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentHelper</a>&nbsp;repositoryHelper)</code></th>
 <td class="colLast">
 <div class="block">Set up a repository helper object for the repository connector to use.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryValidator(org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator)">setRepositoryValidator</a></span>&#8203;(<a href="../repositorycontentmanager/OMRSRepositoryContentValidator.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentValidator</a>&nbsp;repositoryValidator)</code></th>
 <td class="colLast">
 <div class="block">Set up a repository validator for the repository connector to use.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)">setSecurityVerifier</a></span>&#8203;(<a href="../../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></th>
 <td class="colLast">
@@ -388,21 +403,21 @@ implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.op
  method is called).</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setServerName(java.lang.String)">setServerName</a></span>&#8203;(java.lang.String&nbsp;serverName)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the server where the metadata collection resides.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setServerType(java.lang.String)">setServerType</a></span>&#8203;(java.lang.String&nbsp;serverType)</code></th>
 <td class="colLast">
 <div class="block">Set up the descriptive string describing the type of the server.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setServerUserId(java.lang.String)">setServerUserId</a></span>&#8203;(java.lang.String&nbsp;localServerUserId)</code></th>
 <td class="colLast">
@@ -410,7 +425,7 @@ implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.op
  driving the operation.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
 <td class="colLast">
@@ -662,6 +677,44 @@ implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.op
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html#setOrganizationName(java.lang.String)">setOrganizationName</a></code>&nbsp;in class&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>organizationName</code> - String organization name</dd>
+</dl>
+</li>
+</ul>
+<a id="setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRemoteCohortMetadataCollectionIds</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRemoteCohortMetadataCollectionIds&#8203;(java.lang.String&nbsp;cohortName,
+                                                 java.util.List&lt;java.lang.String&gt;&nbsp;remoteCohortMetadataCollectionIds)</pre>
+<div class="block">Set up the list of metadata collection identifiers from the remote members of a connected cohort.
+ This is called from the cohort registry as it is handling the remote registrations.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../OMRSLocalRepository.html#setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)">setRemoteCohortMetadataCollectionIds</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>cohortName</code> - name of cohort</dd>
+<dd><code>remoteCohortMetadataCollectionIds</code> - list of metadata collection ids</dd>
+</dl>
+</li>
+</ul>
+<a id="isActiveCohortMember(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isActiveCohortMember</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isActiveCohortMember&#8203;(java.lang.String&nbsp;metadataCollectionId)</pre>
+<div class="block">Is the metadata collection id for an active member of the cohort.  This is used to set up the
+ provenance type correctly (between LOCAL_COHORT and DEREGISTERED_REPOSITORY).</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../OMRSLocalRepository.html#isActiveCohortMember(java.lang.String)">isActiveCohortMember</a></code>&nbsp;in interface&nbsp;<code><a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>metadataCollectionId</code> - id to test</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag meaning that the metadata collection is recognized</dd>
 </dl>
 </li>
 </ul>
