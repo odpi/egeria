@@ -3134,6 +3134,64 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity as a proxy
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return Classification newly added classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntityProxy";
+        final String operationSpecificURL = "instances/entity/classification/{1}";
+
+        ProxyClassificationRequest requestBody = new ProxyClassificationRequest();
+        requestBody.setEntityProxy(entityProxy);
+        requestBody.setInstanceProperties(classificationProperties);
+
+        ClassificationResponse restResult = this.callClassificationPostRESTCall(methodName,
+                                                                                restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                requestBody,
+                                                                                userId,
+                                                                                classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassification();
+    }
+
+
+    /**
      * Add the requested classification to a specific entity.
      *
      * @param userId unique identifier for requesting user.
@@ -3200,6 +3258,77 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     }
 
 
+
+    /**
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity as a proxy
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return Classification newly added classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntityProxy (detailed)";
+        final String operationSpecificURL = "instances/entity/classification/{1}/detailed";
+
+        ClassificationProxyRequest requestBody = new ClassificationProxyRequest();
+        requestBody.setEntityProxy(entityProxy);
+        requestBody.setMetadataCollectionId(externalSourceGUID);
+        requestBody.setMetadataCollectionName(externalSourceName);
+        requestBody.setClassificationOrigin(classificationOrigin);
+        requestBody.setClassificationOriginGUID(classificationOriginGUID);
+        requestBody.setClassificationProperties(classificationProperties);
+
+        ClassificationResponse restResult = this.callClassificationPostRESTCall(methodName,
+                                                                               restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                requestBody,
+                                                                                userId,
+                                                                                classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassification();
+    }
+
+
     /**
      * Remove a specific classification from an entity.
      *
@@ -3244,6 +3373,50 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
+    }
+
+
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Classification declassifyEntity(String       userId,
+                                           EntityProxy  entityProxy,
+                                           String       classificationName) throws InvalidParameterException,
+                                                                                   RepositoryErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   ClassificationErrorException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   FunctionNotSupportedException
+    {
+        final String methodName = "declassifyEntityProxy";
+        final String operationSpecificURL = "instances/entity/classification/{1}/delete";
+
+        ClassificationResponse restResult = this.callClassificationPostRESTCall(methodName,
+                                                                               restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                entityProxy,
+                                                                                userId,
+                                                                                classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassification();
     }
 
 
@@ -3300,6 +3473,59 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         return restResult.getEntity();
     }
 
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Classification updateEntityClassification(String               userId,
+                                                     EntityProxy          entityProxy,
+                                                     String               classificationName,
+                                                     InstanceProperties   properties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
+    {
+        final String methodName = "updateEntityProxyClassification";
+        final String operationSpecificURL = "instances/entity/classification/{1}/properties";
+
+        ProxyClassificationRequest requestBody = new ProxyClassificationRequest();
+        requestBody.setEntityProxy(entityProxy);
+        requestBody.setInstanceProperties(properties);
+
+        ClassificationResponse restResult = this.callClassificationPostRESTCall(methodName,
+                                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassification();
+    }
 
 
     /**
@@ -4613,6 +4839,61 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityProxy    entity,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String methodName  = "purgeClassificationReferenceCopy";
+        final String operationSpecificURL = "instances/entities/classifications/reference-copy/purge";
+
+        ClassificationWithEntityRequest requestBody = new ClassificationWithEntityRequest();
+        requestBody.setEntityProxy(entity);
+        requestBody.setClassification(classification);
+
+        VoidResponse restResult = this.callVoidPostRESTCall(methodName,
+                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                            requestBody,
+                                                            userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityConflictException(methodName, restResult);
+        this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+    }
+
+
+    /**
      * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
      * relationship.
      *
@@ -5143,6 +5424,29 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     {
         return this.callPostRESTCall(methodName,
                                      EntityDetailResponse.class,
+                                     operationSpecificURL,
+                                     requestBody,
+                                     params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a ClassificationResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return EntityDetailResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private ClassificationResponse callClassificationPostRESTCall(String    methodName,
+                                                                  String    operationSpecificURL,
+                                                                  Object    requestBody,
+                                                                  Object... params) throws RepositoryErrorException
+    {
+        return this.callPostRESTCall(methodName,
+                                     ClassificationResponse.class,
                                      operationSpecificURL,
                                      requestBody,
                                      params);
