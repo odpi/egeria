@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -25,7 +26,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupporte
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -113,14 +113,14 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
 
-    private RepositoryConformanceWorkPad  workPad;
-    private String                        metadataCollectionId;
-    private Map<String, EntityDef>        entityDefs;
-    private RelationshipDef               relationshipDef;
-    private String                        testTypeName;
+    private final RepositoryConformanceWorkPad  workPad;
+    private final String                        metadataCollectionId;
+    private final Map<String, EntityDef>        entityDefs;
+    private final RelationshipDef               relationshipDef;
+    private final String                        testTypeName;
 
-    private List<EntityDetail>            createdEntities       = new ArrayList<>();
-    private List<Relationship>            createdRelationships  = new ArrayList<>();
+    private final List<EntityDetail>            createdEntities       = new ArrayList<>();
+    private final List<Relationship>            createdRelationships  = new ArrayList<>();
 
 
     /**
@@ -344,6 +344,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             createdRelationships.add(newRelationship);
 
+
+        } catch (AssertionFailureException exception) {
+
+            throw exception;
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -682,14 +686,13 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                 "undoRelationshipUpdate",
                                 elapsedTime);
 
-
-                assertCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
+                verifyCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
                                 assertion17,
                                 testTypeName + assertionMsg17,
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
 
-                assertCondition(((undoneRelationship != null) && (undoneRelationship.getVersion() >= nextVersion)),
+                verifyCondition(((undoneRelationship != null) && (undoneRelationship.getVersion() >= nextVersion)),
                                 assertion18,
                                 testTypeName + assertionMsg18 + nextVersion,
                                 RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
@@ -697,6 +700,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 nextVersion = undoneRelationship.getVersion() + 1;
 
+
+            } catch (AssertionFailureException exception) {
+
+                throw exception;
 
             } catch (FunctionNotSupportedException exception) {
 
@@ -751,7 +758,7 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         }
 
         /*
-         * Test that the relationship can be soft deleted, and that the soft deleted relationship has a higher version.
+         * Test that the relationship can be soft-deleted, and that the soft deleted relationship has a higher version.
          * Verify that the soft deleted relationship cannot be retrieved, but can be restored and that the restored relationship has
          * a valid version (higher than when it was deleted).
          * Check that the restored relationship can be retrieved.
@@ -1056,6 +1063,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             "getRelationship-negative",
                             elapsedTime);
 
+
+        } catch (AssertionFailureException exception) {
+
+            throw exception;
 
         } catch (RelationshipNotKnownException exception) {
             /*

@@ -43,7 +43,7 @@ drives it through each phase of its lifecycle validating that the relationship v
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-relationship-lifecycle",
       "testCaseName" : "Repository relationship lifecycle test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-relationship-lifecycle-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/repository-workbench/repository-relationship-lifecycle-test-case.md",
       "assertionMessage" : "Relationships can be managed through their lifecycle",
       "successfulAssertions" : [ "TermISATypeOFRelationship new relationship created.", "TermISATypeOFRelationship new relationship has createdBy user.", "TermISATypeOFRelationship new relationship has creation time.", "TermISATypeOFRelationship new relationship has correct provenance type.", "TermISATypeOFRelationship new relationship has correct initial status.", "TermISATypeOFRelationship new relationship has correct type.", "TermISATypeOFRelationship new relationship has local metadata collection.", "TermISATypeOFRelationship new relationship has version greater than zero.", "TermISATypeOFRelationship new relationship is known.", "TermISATypeOFRelationship new relationship retrieved.", "TermISATypeOFRelationship relationship deleted version number is 2", "TermISATypeOFRelationship relationship no longer retrievable after delete.", "TermISATypeOFRelationship relationship restored version number is 3", "TermISATypeOFRelationship relationship purged." ],
       "unsuccessfulAssertions" : [ ],

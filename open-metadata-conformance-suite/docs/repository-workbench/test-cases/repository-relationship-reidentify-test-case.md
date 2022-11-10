@@ -56,7 +56,7 @@ This is the sample output for the SchemaQueryImplementation type.
             "repository-relationship-reidentify-05: SchemaQueryImplementation relationship no longer retrievable by previous GUID.",
             "repository-relationship-reidentify-06: SchemaQueryImplementation relationship retrievable by new GUID."
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-relationship-reidentify-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-relationship-reidentify-test-case.md",
         "testCaseId": "repository-relationship-reidentify-DesignPattern",
         "testCaseName": "Repository relationship reidentify test case",
         "unsuccessfulAssertions": []

@@ -23,7 +23,7 @@ public enum PlatformConformanceProfile implements Serializable
 {
     PLATFORM_ORIGIN       (0,  "Platform origin",
                                "The technology under test is able to report on its origin.",
-                               "https://egeria.odpi.org/open-metadata-conformance-suite/docs/platform-workbench/profiles/platform-origin",
+                               "https://egeria-project.org/guides/cts/platform-workbench/profiles/platform-origin",
                                OpenMetadataConformanceProfilePriority.MANDATORY_PROFILE);
 
     private static final long serialVersionUID = 1L;
