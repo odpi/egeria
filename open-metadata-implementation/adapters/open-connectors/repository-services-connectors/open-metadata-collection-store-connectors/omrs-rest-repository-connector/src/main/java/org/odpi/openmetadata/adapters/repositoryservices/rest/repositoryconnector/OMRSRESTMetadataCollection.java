@@ -2459,6 +2459,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Classification classifyEntity(String               userId,
                                          EntityProxy          entityProxy,
                                          String               classificationName,
@@ -2592,6 +2593,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Classification classifyEntity(String               userId,
                                          EntityProxy          entityProxy,
                                          String               classificationName,
@@ -2704,6 +2706,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Classification declassifyEntity(String       userId,
                                            EntityProxy  entityProxy,
                                            String       classificationName) throws InvalidParameterException,
@@ -2811,6 +2814,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public Classification updateEntityClassification(String               userId,
                                                      EntityProxy          entityProxy,
                                                      String               classificationName,

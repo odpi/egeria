@@ -2772,6 +2772,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<EntityDetail> getEntityDetailHistory(String                 userId,
                                                      String                 guid,
                                                      Date                   fromTime,
@@ -4286,6 +4287,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public  void purgeClassificationReferenceCopy(String         userId,
                                                   EntityProxy    entityProxy,
                                                   Classification classification) throws InvalidParameterException,
