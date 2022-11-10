@@ -70,7 +70,7 @@ This is the sample output this testcase. Graph query tests are not specific to a
              "repository-graph-queries-10: <null> graph query returned the expected number of relationships.",
              "repository-graph-queries-11: <null> graph query returned all the expected relationships."
          ],
-         "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-graph-queries-test-case.md",
+         "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-graph-queries-test-case.md",
          "testCaseId": "repository-graph-queries-<null>",
          "testCaseName": "Repository graph query test case",
          "unsuccessfulAssertions": []

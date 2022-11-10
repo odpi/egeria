@@ -156,7 +156,7 @@ This is the sample output for a multi-set test run (for the ExternalReferenceLin
              "repository-test-case-base-01: Repository connector supplied to conformance suite.",
              "repository-test-case-base-02: Metadata collection for repository connector supplied to conformance suite."
          ],
-         "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-relationship-property-search-test-case.md",
+         "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-relationship-property-search-test-case.md",
          "testCaseId": "repository-relationship-property-search-ExternalReferenceLink",
          "testCaseName": "Repository relationship property search test case",
          "unsuccessfulAssertions": []

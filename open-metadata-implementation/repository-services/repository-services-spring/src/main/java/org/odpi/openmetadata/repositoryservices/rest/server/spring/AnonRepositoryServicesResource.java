@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AnonRepositoryServicesResource
 {
-    private OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices(true);
+    private final OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices(true);
 
     /**
      * Default constructor

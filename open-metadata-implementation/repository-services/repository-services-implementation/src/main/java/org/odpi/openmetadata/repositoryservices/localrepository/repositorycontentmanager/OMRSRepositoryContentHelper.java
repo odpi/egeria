@@ -1511,21 +1511,29 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                   Classification newClassification,
                                                   String         methodName)
     {
+        final String thisMethodName = "addClassificationToEntity";
 
         if (newClassification != null)
         {
-            EntityDetail updatedEntity = new EntityDetail(entity);
+            if (entity != null)
+            {
+                EntityDetail updatedEntity = new EntityDetail(entity);
 
-            updatedEntity.setClassifications(this.addClassificationToList(sourceName,
-                                                                          entity.getClassifications(),
-                                                                          newClassification,
-                                                                          methodName));
-            return updatedEntity;
+                updatedEntity.setClassifications(this.addClassificationToList(sourceName,
+                                                                              entity.getClassifications(),
+                                                                              newClassification,
+                                                                              methodName));
+                return updatedEntity;
+            }
+            else
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
         }
         else
         {
-            final String thisMethodName = "addClassificationToEntity";
-
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
                                                                                                              thisMethodName,
                                                                                                              methodName),
@@ -1533,6 +1541,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                               methodName);
         }
     }
+
 
     /**
      * Add a classification to an existing entity proxy
@@ -1549,21 +1558,29 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                  Classification newClassification,
                                                  String         methodName)
     {
+        final String thisMethodName = "addClassificationToEntity(Proxy)";
 
         if (newClassification != null)
         {
-            EntityProxy updatedEntity = new EntityProxy(entity);
+            if (entity != null)
+            {
+                EntityProxy updatedEntity = new EntityProxy(entity);
 
-            updatedEntity.setClassifications(this.addClassificationToList(sourceName,
-                                                                          entity.getClassifications(),
-                                                                          newClassification,
-                                                                          methodName));
-            return updatedEntity;
+                updatedEntity.setClassifications(this.addClassificationToList(sourceName,
+                                                                              entity.getClassifications(),
+                                                                              newClassification,
+                                                                              methodName));
+                return updatedEntity;
+            }
+            else
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
         }
         else
         {
-            final String thisMethodName = "addClassificationToEntity";
-
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
                                                                                                              thisMethodName,
                                                                                                              methodName),
@@ -2071,7 +2088,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             maintainedBy = new ArrayList<>();
         }
-        if (!maintainedBy.contains(userId))
+        if (! maintainedBy.contains(userId))
         {
             maintainedBy.add(userId);
             updatedInstance.setMaintainedBy(maintainedBy);

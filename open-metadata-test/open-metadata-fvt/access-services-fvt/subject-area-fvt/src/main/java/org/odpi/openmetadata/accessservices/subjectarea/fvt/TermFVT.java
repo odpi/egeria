@@ -208,7 +208,7 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
         }
         if (updatedTerm3.getGovernanceClassifications().getRetention() !=null) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not null as expected");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not null as expected: " + updatedTerm3);
         }
         // https://github.com/odpi/egeria/issues/3457  the below line when uncommented causes an error with the graph repo.
 //        if (updatedTerm3.getGovernanceActions().getCriticality().getLevel() !=null) {

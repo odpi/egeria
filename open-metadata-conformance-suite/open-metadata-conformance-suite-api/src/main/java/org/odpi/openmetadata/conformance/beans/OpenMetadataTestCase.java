@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public abstract class OpenMetadataTestCase
 {
-    private static final String  documentationRootURL = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/";
+    private static final String  documentationRootURL = "https://egeria-project.org/guides/cts/";
 
     protected String  testCaseId = "<Unknown>";
     protected String  testCaseName = "<Unknown>";
@@ -68,7 +68,7 @@ public abstract class OpenMetadataTestCase
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseId + "-test-case.md";
+        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseId + "-test-case";
         this.defaultProfileId = defaultProfileId;
         this.defaultRequirementId = defaultRequirementId;
         this.workPad = workPad;
@@ -107,7 +107,7 @@ public abstract class OpenMetadataTestCase
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseRootId + "-test-case.md";
+        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseRootId + "-test-case";
 
         workPad.registerTestCase(this);
     }

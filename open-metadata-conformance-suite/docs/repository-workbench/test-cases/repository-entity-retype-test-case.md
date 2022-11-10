@@ -135,7 +135,7 @@ This is the sample output for the DesignModelElement type.
             "repository-entity-retype-15: DesignModelElement retyped entity has expected type.",
             "repository-entity-retype-16: DesignModelElement retyped entity has expected properties."
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-entity-retype-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-entity-retype-test-case.md",
         "testCaseId": "repository-entity-retype-DesignModelElement",
         "testCaseName": "Repository entity retype test case",
         "unsuccessfulAssertions": []

@@ -20,11 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * <ul>
  *     <li>
  *         FORWARDS: return the historical versions in chronological order, such that the first element is an older
- *         version than the second element, which is older than the third, and so on.
+ *         version then the second element, which is older than the third, and so on.
  *     </li>
  *     <li>
  *         BACKWARDS: return the historical versions in reverse chronological order, such that the first element is a
- *         more recent version than the second element, which is more recent than the third, and so on.
+ *         more recent version then the second element, which is more recent than the third, and so on.
  *     </li>
  * </ul>
  */
@@ -38,9 +38,9 @@ public enum HistorySequencingOrder implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
     /**
      * Constructor to set up a single instances of the enum.

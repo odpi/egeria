@@ -11,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>

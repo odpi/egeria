@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * InstanceAuditHeader manages the attributes that are common to classifications,
  * entities and relationships.  We need to be able to audit when these fundamental elements change and
- * by whom.  Thus they share this header.  The fields in this header are managed as follows:
+ * by whom.  Thus, they share this header.  The fields in this header are managed as follows:
  * <ul>
  *     <li>
  *         Type identifies which TypeDef defines the type of concept/thing that this instance represents and
@@ -97,7 +97,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * in read in a back-level version of the OMRS.  The default is 0 to indicate that the instance came from
      * a version of the OMRS that does not have a version number encoded.
      */
-    private long headerVersion = 0;
+    private final long headerVersion = 0;
 
     /*
      * Summary information about this element's type
@@ -273,7 +273,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
     /**
      * Return the metadata collection id of the cohort member responsible for replicating metadata
-     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * owned by repositories (eg data tools/engines/platforms) from outside the
      * cohort or from an open metadata archive.  Null means the metadata is owned
      * by a cohort member, or is not to be replicated.
      *
@@ -287,7 +287,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
     /**
      * Set up the metadata collection id of the cohort member responsible for replicating metadata
-     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * owned by repositories (eg data tools/engines/platforms) from outside the
      * cohort or from an open metadata archive.  Null means the metadata is owned
      * by a cohort member, or is not to be replicated.
      *

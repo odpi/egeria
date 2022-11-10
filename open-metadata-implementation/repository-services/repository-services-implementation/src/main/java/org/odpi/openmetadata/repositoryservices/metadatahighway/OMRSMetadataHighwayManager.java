@@ -320,6 +320,43 @@ public class OMRSMetadataHighwayManager
 
 
     /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     *
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @param cohortName name of cohort
+     * @return flag indicating that the cohort name was recognized
+     */
+    public boolean connectToCohort(String cohortName)
+    {
+        if (cohortName == null)
+        {
+            final String  actionDescription = "connect to cohort";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_COHORT_NAME.getMessageDefinition(),
+                                              this.getClass().getName(),
+                                              actionDescription);
+        }
+
+        for (OMRSCohortManager  existingCohortManager : cohortManagers)
+        {
+            if (existingCohortManager != null)
+            {
+                if (cohortName.equals(existingCohortManager.getCohortName()))
+                {
+                    existingCohortManager.connectToCohort();
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Return the remote member of a specific cohort
      *
      * @param cohortName name of cohort
@@ -344,7 +381,6 @@ public class OMRSMetadataHighwayManager
                 {
                     return existingCohortManager.getRemoteMembers();
                 }
-
             }
         }
 
@@ -419,11 +455,11 @@ public class OMRSMetadataHighwayManager
      * Disconnect communications from a specific cohort.
      *
      * @param cohortName name of cohort
-     * @param permanent is the local server permanently disconnecting from the cohort causes an unregistration
+     * @param unregister is the local server permanently disconnecting from the cohort causes an unregistration
      *                  event to be sent to the other members.
      * @return boolean flag to indicate success.
      */
-    public boolean disconnectFromCohort(String  cohortName, boolean permanent)
+    public boolean disconnectFromCohort(String  cohortName, boolean unregister)
     {
         String actionDescription = "Disconnect cohort";
 
@@ -440,7 +476,7 @@ public class OMRSMetadataHighwayManager
             {
                 if (cohortName.equals(existingCohortManager.getCohortName()))
                 {
-                    existingCohortManager.disconnect(permanent);
+                    existingCohortManager.disconnectFromCohort(unregister);
                     return true;
                 }
             }
@@ -451,7 +487,7 @@ public class OMRSMetadataHighwayManager
 
 
     /**
-     * Disconnect from all cohorts.
+     * Disconnect from all cohorts - part of server shutdown.
      *
      * @param permanent indicates whether the cohort registry should unregister from the cohort
      *                  and clear its registry store or just disconnect from the event topic.

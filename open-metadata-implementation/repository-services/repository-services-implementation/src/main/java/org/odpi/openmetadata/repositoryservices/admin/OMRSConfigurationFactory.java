@@ -167,6 +167,7 @@ public class OMRSConfigurationFactory
                                                                                            localServerURL);
 
         localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
+
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection());
 
         return localRepositoryConfig;
