@@ -489,7 +489,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -637,7 +637,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -751,7 +751,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is sent.
      */
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,

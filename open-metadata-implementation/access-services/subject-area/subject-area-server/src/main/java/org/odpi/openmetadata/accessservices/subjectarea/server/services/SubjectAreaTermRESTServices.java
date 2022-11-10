@@ -249,7 +249,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Term> updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)

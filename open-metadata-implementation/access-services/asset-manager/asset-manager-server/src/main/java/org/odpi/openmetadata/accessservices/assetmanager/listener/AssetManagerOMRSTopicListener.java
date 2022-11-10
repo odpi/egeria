@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.listener;
 
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEventType;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -28,10 +29,10 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(AssetManagerOMRSTopicListener.class);
 
-    private final AssetManagerOutTopicPublisher eventPublisher;
-    private final AssetHandler                  assetHandler;
-    private final String                        localServerUserId;
-    private final List<String>                  supportedZones;
+    private final AssetManagerOutTopicPublisher                 eventPublisher;
+    private final AssetHandler<GovernanceActionProcessElement>  assetHandler;
+    private final String                                        localServerUserId;
+    private final List<String>                                  supportedZones;
 
 
     /**
@@ -44,12 +45,12 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetManagerOMRSTopicListener(String                        serviceName,
-                                         String                        localServerUserId,
-                                         AssetManagerOutTopicPublisher eventPublisher,
-                                         AssetHandler                  assetHandler,
-                                         List<String>                  supportedZones,
-                                         AuditLog                      auditLog)
+    public AssetManagerOMRSTopicListener(String                                       serviceName,
+                                         String                                       localServerUserId,
+                                         AssetManagerOutTopicPublisher                eventPublisher,
+                                         AssetHandler<GovernanceActionProcessElement> assetHandler,
+                                         List<String>                                 supportedZones,
+                                         AuditLog                                     auditLog)
     {
         super(serviceName, auditLog);
 
@@ -484,7 +485,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -632,7 +633,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -794,7 +795,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -880,7 +881,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -977,7 +978,6 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param entityProxy entity proxy when entity is not available
      * @return entity detail if it is to be sent.
      */
-    @SuppressWarnings(value="unchecked")
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,
                                           EntityProxy  entityProxy)

@@ -19,9 +19,9 @@ import java.util.Map;
  */
 public abstract class ClassificationAccumulator extends MaintenanceAccumulator
 {
-    private volatile List<String>                contributingMetadataCollections = new ArrayList<>();
-    private volatile Map<String, Classification> allClassifications              = new HashMap<>();
-    private volatile boolean                     inPhaseOne                      = true;
+    private final List<String>                contributingMetadataCollections = new ArrayList<>();
+    private final Map<String, Classification> allClassifications              = new HashMap<>();
+    private volatile boolean                  inPhaseOne                      = true;
 
 
     /**

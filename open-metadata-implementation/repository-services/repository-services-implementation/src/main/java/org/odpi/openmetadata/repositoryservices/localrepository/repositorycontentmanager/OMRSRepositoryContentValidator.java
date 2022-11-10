@@ -3050,6 +3050,14 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     updateAllowed = true;
                 }
                 break;
+
+            default:
+                /*
+                 * For any other instance provenance values allow the rehome action - this allows content pack information, deregistered repositories
+                 * and configuration to be rehomed
+                 */
+                updateAllowed = true;
+                break;
         }
 
         if (!updateAllowed)
@@ -3273,6 +3281,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
                 break;
 
+            default:
+                /*
+                 * For any other instance provenance values allow the rehome action - this allows content pack information, deregistered repositories
+                 * and configuration to be rehomed
+                 */
+                updateAllowed = true;
+                break;
         }
 
         if (!updateAllowed)
@@ -3280,11 +3295,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * The instance should not be updated - throw InvalidParameterException
              */
-            throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(instance.getMetadataCollectionId(),
-                                                                                                           methodName,
-                                                                                                           instance.getGUID(),
-                                                                                                           metadataCollectionId,
-                                                                                                           sourceName),
+            throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_IS_LOCAL.getMessageDefinition(instance.getMetadataCollectionId(),
+                                                                                                          methodName,
+                                                                                                          instance.getGUID(),
+                                                                                                          metadataCollectionId,
+                                                                                                          sourceName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "instance");
@@ -4139,19 +4154,19 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         matchesProperties = !Objects.equals(actualValue, testValue);
                         break;
                     case LT:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) < 0);
                         break;
                     case LTE:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) <= 0);
                         break;
                     case GT:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) > 0);
                         break;
                     case GTE:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
                         break;
                     case IN:
@@ -4337,6 +4352,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         this.validateReferenceInstanceHeader(sourceName, localMetadataCollectionId, instanceParameterName, instance, null, methodName);
     }
 
+
     /**
      * Validates that an instance has the correct header for it to be a reference copy.
      *
@@ -4374,9 +4390,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName, OMRSAuditCode.LOCAL_REFERENCE_INSTANCE.getMessageDefinition(sourceName,
+                auditLog.logMessage(methodName, OMRSAuditCode.LOCAL_REFERENCE_INSTANCE.getMessageDefinition(instanceParameterName,
                                                                                                             methodName,
-                                                                                                            instanceParameterName,
                                                                                                             localMetadataCollectionId));
             }
         }

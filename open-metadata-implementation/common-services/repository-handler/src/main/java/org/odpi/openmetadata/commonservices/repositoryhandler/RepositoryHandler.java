@@ -862,6 +862,7 @@ public class RepositoryHandler
                                               externalSourceGUID,
                                               externalSourceName,
                                               entityGUID,
+                                              null,
                                               entityGUIDParameterName,
                                               entityTypeName,
                                               getClassificationTypeGUID(obsoleteClassification),
@@ -966,6 +967,7 @@ public class RepositoryHandler
                                                   externalSourceGUID,
                                                   externalSourceName,
                                                   entityGUID,
+                                                  null,
                                                   entityGUIDParameterName,
                                                   entityTypeName,
                                                   getClassificationTypeGUID(classification),
@@ -1676,6 +1678,7 @@ public class RepositoryHandler
      * @param externalSourceGUID           unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName           unique name for the external source.
      * @param entityGUID                   unique identifier of entity to update
+     * @param entity                       full entity bean
      * @param entityGUIDParameterName      parameter name that passed the entityGUID
      * @param entityTypeName               type of entity
      * @param classificationTypeGUID       type of classification to create
@@ -1694,6 +1697,7 @@ public class RepositoryHandler
                                  String              externalSourceGUID,
                                  String              externalSourceName,
                                  String              entityGUID,
+                                 EntityDetail        entity,
                                  String              entityGUIDParameterName,
                                  String              entityTypeName,
                                  String              classificationTypeGUID,
@@ -1747,14 +1751,18 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail entityDetail = this.getEntityByGUID(userId,
-                                                                 entityGUID,
-                                                                 entityGUIDParameterName,
-                                                                 entityTypeName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
+                EntityDetail entityDetail = entity;
+                if (entityDetail == null)
+                {
+                    entityDetail = this.getEntityByGUID(userId,
+                                                        entityGUID,
+                                                        entityGUIDParameterName,
+                                                        entityTypeName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+                }
 
                 // create a proxy representation to allow declassification of entities incoming from other metadata collections
                 EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
@@ -5034,6 +5042,7 @@ public class RepositoryHandler
      *
      * @return retrieved relationship or null
      *
+     * @throws InvalidParameterException one of the guids is no longer available
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
@@ -5046,7 +5055,8 @@ public class RepositoryHandler
                                                     boolean forLineage,
                                                     boolean forDuplicateProcessing,
                                                     Date    effectiveTime,
-                                                    String  methodName) throws UserNotAuthorizedException,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
                                                                                PropertyServerException
     {
         final String localMethodName = "getUniqueRelationshipByType";
@@ -5087,7 +5097,7 @@ public class RepositoryHandler
                 }
             }
         }
-        catch (PropertyServerException | UserNotAuthorizedException error)
+        catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException error)
         {
             throw error;
         }
