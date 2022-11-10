@@ -6813,6 +6813,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
+    @Override
     public  void purgeClassificationReferenceCopy(String         userId,
                                                   EntityProxy    entityProxy,
                                                   Classification classification) throws InvalidParameterException,
