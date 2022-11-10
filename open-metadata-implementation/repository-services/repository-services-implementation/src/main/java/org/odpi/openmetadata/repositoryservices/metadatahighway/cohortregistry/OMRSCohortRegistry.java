@@ -14,7 +14,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistry
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectionConsumer;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
+import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,12 +51,13 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
     /*
      * These variables describe the local server's properties.
      */
-    private String     localMetadataCollectionId       = null;
-    private String     localMetadataCollectionName     = null;
-    private Connection localRepositoryRemoteConnection = null;
-    private String     localServerName                 = null;
-    private String     localServerType                 = null;
-    private String     localOrganizationName           = null;
+    private String              localMetadataCollectionId       = null;
+    private String              localMetadataCollectionName     = null;
+    private OMRSLocalRepository localRepository                 = null;
+    private Connection          localRepositoryRemoteConnection = null;
+    private String              localServerName                 = null;
+    private String              localServerType                 = null;
+    private String              localOrganizationName           = null;
 
     /*
      * The registry store is used to save information about the members of the open metadata repository cohort.
@@ -169,8 +172,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param localMetadataCollectionId configured value for the local metadata collection id may be null
      *                                  if no local repository.
      * @param localMetadataCollectionName display name for the local metadata collection
-     * @param localRepositoryRemoteConnection the connection properties for a connector that can call this
-     *                                        server from a remote server.
+     * @param localRepository the optional local repository.
      * @param localServerName the name of the local server. It is a descriptive name for informational purposes.
      * @param localServerType the type of the local server.  It is a descriptive name for informational purposes.
      * @param localOrganizationName the name of the organization that owns the local server/repository.
@@ -185,7 +187,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
     public void initialize(String                     cohortName,
                            String                     localMetadataCollectionId,
                            String                     localMetadataCollectionName,
-                           Connection                 localRepositoryRemoteConnection,
+                           OMRSLocalRepository        localRepository,
                            String                     localServerName,
                            String                     localServerType,
                            String                     localOrganizationName,
@@ -233,9 +235,14 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
         /*
          * Save the connections to the local repository.  The localRepositoryRemoteConnection is used
-         * in the registration request that this repository sends out.
+         * in the registration request that this repository sends out. A null value tells the
+         * other cohort members that this server does not have a local repository.
          */
-        this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
+        this.localRepository = localRepository;
+        if (localRepository != null)
+        {
+            this.localRepositoryRemoteConnection = localRepository.getLocalRepositoryRemoteConnection();
+        }
     }
 
 
@@ -244,7 +251,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
      * event has been sent.
      *
-     * If the server has already registered in the past, it does not need to take any action.
+     * If the server has already registered in the past, it sends a registration request.
      */
     public synchronized void  connectToCohort()
     {
@@ -260,7 +267,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                            methodName);
         }
 
-
         /*
          * Extract member registration information from the cohort registry store.  If there is
          * no local registration, it means the local repository is not currently registered with the metadata
@@ -272,7 +278,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         {
             localRegistration = new MemberRegistration();
         }
-
 
         /*
          * Fill in the local registration with details from this server.  Any value from the local repository
@@ -402,17 +407,17 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
     /**
      * Close the connection to the registry store.
      *
-     * @param permanent boolean flag indicating whether the disconnection is permanent or not.  If it is set
-     *                  to true, the OMRS Cohort will remove all information about the cohort from the
-     *                  cohort registry store.
+     * @param unregister boolean flag indicating whether the disconnection also includes unregistration from the cohort.  If it is set
+     *                  to true, the OMRS Cohort will inform the other members of the cohort that it is leaving and remove all information
+     *                   about the cohort from the cohort registry store.
      */
-    public synchronized void disconnectFromCohort(boolean   permanent)
+    public synchronized void disconnectFromCohort(boolean   unregister)
     {
         final String  actionDescription = "Disconnect from Cohort";
 
         if (registryStore != null)
         {
-            if (permanent)
+            if (unregister)
             {
                 MemberRegistration  localRegistration = registryStore.retrieveLocalRegistration();
 
@@ -424,6 +429,10 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                 }
 
                 registryStore.clearAllRegistrations();
+                if (localRepository != null)
+                {
+                    localRepository.setRemoteCohortMetadataCollectionIds(cohortName, null);
+                }
 
                 if (connectionConsumer != null)
                 {
@@ -670,6 +679,11 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
         registryStore.saveRemoteRegistration(remoteRegistration);
 
+        if (localRepository != null)
+        {
+            localRepository.setRemoteCohortMetadataCollectionIds(cohortName, this.getRemoteCohortMetadataCollectionIds());
+        }
+
         if (remoteConnection != null)
         {
             /*
@@ -684,6 +698,35 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
     }
 
+
+    /**
+     * Construct the list of metadata collection identifiers for the remote members of this cohort.
+     *
+     * @return null or list
+     */
+    private List<String> getRemoteCohortMetadataCollectionIds()
+    {
+        if (registryStore != null)
+        {
+            List<String>             remoteMetadataCollectionIds = new ArrayList<>();
+            List<MemberRegistration> remoteMembers = registryStore.retrieveRemoteRegistrations();
+
+            if (remoteMembers != null)
+            {
+                for (MemberRegistration remoteMember : remoteMembers)
+                {
+                    if (remoteMember != null)
+                    {
+                        remoteMetadataCollectionIds.add(remoteMember.getMetadataCollectionId());
+                    }
+                }
+            }
+
+            return remoteMetadataCollectionIds;
+        }
+
+        return null;
+    }
 
     /**
      * Check that the registry store is available.
@@ -884,6 +927,10 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
              * Remove the remote member from the registry store.
              */
             registryStore.removeRemoteRegistration(originatorMetadataCollectionId);
+            if (localRepository != null)
+            {
+                localRepository.setRemoteCohortMetadataCollectionIds(cohortName, this.getRemoteCohortMetadataCollectionIds());
+            }
 
             /*
              * Pass the new remote connection to the connection consumer.
