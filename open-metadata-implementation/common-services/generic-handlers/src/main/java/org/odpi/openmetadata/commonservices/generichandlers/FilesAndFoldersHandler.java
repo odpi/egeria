@@ -426,7 +426,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        externalSourceGUID,
                                                        externalSourceName,
                                                        folderAssetGUIDParameterName,
-                                                       this.createQualifiedName(folderAssetTypeName, pathName, versionIdentifier),
+                                                       this.createQualifiedName(folderAssetTypeName, null, pathName, versionIdentifier),
                                                        name,
                                                        versionIdentifier,
                                                        description,
@@ -520,7 +520,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceGUID,
                                                      externalSourceName,
                                                      fileAssetGUIDParameterName,
-                                                     this.createQualifiedName(fileAssetTypeName, pathName, versionIdentifier),
+                                                     this.createQualifiedName(fileAssetTypeName, null, pathName, versionIdentifier),
                                                      displayName,
                                                      versionIdentifier,
                                                      description,
@@ -547,14 +547,21 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * Construct the qualified name for a file resource.
      *
      * @param typeName type of element
+     * @param qualifiedName supplied qualified name
      * @param pathName pathname in file system
      * @param versionIdentifier version identifier
      * @return qualified name
      */
     private String createQualifiedName(String typeName,
+                                       String qualifiedName,
                                        String pathName,
                                        String versionIdentifier)
     {
+        if (qualifiedName != null)
+        {
+            return qualifiedName;
+        }
+
         if (versionIdentifier == null)
         {
             return typeName + ":" + pathName;
@@ -1647,6 +1654,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
+     * @param qualifiedName optional qualified name
      * @param pathName pathname of the file
      * @param name  name for the folder in the catalog
      * @param versionIdentifier  version identifier for the folder in the catalog
@@ -1677,6 +1685,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String> addDataFolderAssetToCatalog(String              userId,
                                                     String              externalSourceGUID,
                                                     String              externalSourceName,
+                                                    String              qualifiedName,
                                                     String              pathName,
                                                     String              name,
                                                     String              versionIdentifier,
@@ -1728,7 +1737,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        externalSourceGUID,
                                                                        externalSourceName,
                                                                        folderAssetParameterName,
-                                                                       pathName,
+                                                                       createQualifiedName(folderAssetTypeName, qualifiedName, pathName, versionIdentifier),
                                                                        name,
                                                                        versionIdentifier,
                                                                        description,
@@ -1957,7 +1966,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      externalSourceGUID,
                                                                      externalSourceName,
                                                                      fileAssetParameterName,
-                                                                     fullPath,
+                                                                     createQualifiedName(fileAssetTypeName, qualifiedName, pathName, versionIdentifier),
                                                                      name,
                                                                      versionIdentifier,
                                                                      description,
@@ -2004,6 +2013,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the asset description to copy
+     * @param qualifiedName optional unique name
      * @param fullPath unique path and file name for file
      * @param name short display name for file (defaults to the file name without the path)
      * @param versionIdentifier version identifier of the file
@@ -2022,6 +2032,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       String  externalSourceGUID,
                                                       String  externalSourceName,
                                                       String  templateGUID,
+                                                      String  qualifiedName,
                                                       String  fullPath,
                                                       String  name,
                                                       String  versionIdentifier,
@@ -2048,7 +2059,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                 templateGUIDParameterName,
                                                                 OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                                createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, fullPath, versionIdentifier),
+                                                                createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, qualifiedName, fullPath, versionIdentifier),
                                                                 pathNameParameterName,
                                                                 name,
                                                                 versionIdentifier,
@@ -2086,6 +2097,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the asset description to copy
+     * @param qualifiedName optional qualified name
      * @param pathName unique path and file name for file
      * @param name short name for file (defaults to the file name without the path)
      * @param versionIdentifier version identifier for the file
@@ -2104,6 +2116,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                         String  externalSourceGUID,
                                                         String  externalSourceName,
                                                         String  templateGUID,
+                                                        String  qualifiedName,
                                                         String  pathName,
                                                         String  name,
                                                         String  versionIdentifier,
@@ -2130,7 +2143,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   templateGUIDParameterName,
                                                                   OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                                  this.createQualifiedName(OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME, pathName, versionIdentifier),
+                                                                  this.createQualifiedName(OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME, qualifiedName, pathName, versionIdentifier),
                                                                   pathNameParameterName,
                                                                   name,
                                                                   versionIdentifier,
@@ -2525,7 +2538,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         }
         if (! isMergeUpdate)
         {
-            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, fullPath, versionIdentifier);
+            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, null, fullPath, versionIdentifier);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
@@ -2638,7 +2651,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (! isMergeUpdate)
         {
-            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME, fullPath, versionIdentifier);
+            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME, qualifiedName, fullPath, versionIdentifier);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
