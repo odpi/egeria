@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,9 +22,8 @@ import java.util.List;
 
 
 /**
- * FileBasedOpenLineageLogStoreConnector provides a connector implementation for a file based open lineage log.
- * The open lineage log is stored in a directory and each open lineage event record is stored as a file with a filename built
- * from the record's unique identifier (runId), time and status. The record is stored in a subdirectory that is made from the namespace and job.
+ * APIBasedOpenLineageLogStoreConnector provides a connector implementation for an API based open lineage log.
+ * Each lineage record is passed to the supplied lineage API.
  */
 public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreConnectorBase
 {

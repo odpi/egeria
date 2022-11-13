@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DatabaseIntegratorResource
 {
-    private DatabaseIntegratorRESTServices restAPI = new DatabaseIntegratorRESTServices();
+    private final DatabaseIntegratorRESTServices restAPI = new DatabaseIntegratorRESTServices();
 
 
     /**
