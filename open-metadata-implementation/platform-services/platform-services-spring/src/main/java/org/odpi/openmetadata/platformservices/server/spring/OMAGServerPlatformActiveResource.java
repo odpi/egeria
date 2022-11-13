@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class OMAGServerPlatformActiveResource
 {
-    OMAGServerPlatformActiveServices  platformAPI = new OMAGServerPlatformActiveServices();
+    private final OMAGServerPlatformActiveServices  platformAPI = new OMAGServerPlatformActiveServices();
 
 
     /**
@@ -93,7 +94,7 @@ public class OMAGServerPlatformActiveResource
 
     /**
      * Return the list of integration services that are implemented in this OMAG Server Platform
-     * and can be configured for a integration daemon server.
+     * and can be configured for an integration daemon server.
      *
      * @param userId calling user
      * @return list of service descriptions
@@ -214,6 +215,37 @@ public class OMAGServerPlatformActiveResource
     public RegisteredOMAGServicesResponse getAllRegisteredServices(@Parameter(description="calling user") @PathVariable String userId)
     {
         return platformAPI.getAllRegisteredServices(userId);
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider after validating that the
+     * connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
+     * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
+     *
+     * @param userId calling user
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean or exceptions that occur when trying to create the connector
+     */
+    @GetMapping(path = "/connector-types/{connectorProviderClassName}")
+    @Operation( summary = "Return the connector type for the requested connector provider",
+                description="Return the connector type for the requested connector provider after validating that the" +
+                                    " connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring" +
+                                    " connectors into an Egeria server.  It does not validate that the connector will load and initialize.",
+                responses = {
+                        @ApiResponse(responseCode = "200",description="Connector type",
+                                     content = @Content(
+                                             mediaType ="application/json",
+                                             schema = @Schema(implementation=ConnectorTypeResponse.class)
+                                     )
+
+                        )
+                })
+
+    public ConnectorTypeResponse getConnectorType(@Parameter(description="calling user")                         @PathVariable String userId,
+                                                  @Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
+    {
+        return platformAPI.getConnectorType(userId, connectorProviderClassName);
     }
 
 

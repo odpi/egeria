@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class IntegrationDaemonResource
 {
-    private IntegrationDaemonRESTServices restAPI = new IntegrationDaemonRESTServices();
+    private final IntegrationDaemonRESTServices restAPI = new IntegrationDaemonRESTServices();
 
 
 
