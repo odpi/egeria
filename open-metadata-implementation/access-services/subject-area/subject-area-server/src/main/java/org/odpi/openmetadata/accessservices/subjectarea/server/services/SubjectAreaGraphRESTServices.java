@@ -6,9 +6,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGrap
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -21,8 +22,9 @@ import java.util.Date;
 
 public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance {
     private static final String className = SubjectAreaGraphRESTServices.class.getName();
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaGraphRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -67,9 +69,7 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                                                       Integer level ) {
 
         final String methodName = "getGraph";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Graph> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -89,9 +89,7 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

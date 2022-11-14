@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceCli
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -131,27 +130,23 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-        String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null)
+        if (metadataSourceQualifiedName != null)
         {
-            APIManagerProperties properties = new APIManagerProperties();
+            String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
+            if (metadataSourceGUID == null)
+            {
+                APIManagerProperties properties = new APIManagerProperties();
 
-            metadataSourceGUID = metadataSourceClient.createAPIManager(localServerUserId, null, null, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = metadataSourceClient.createAPIManager(localServerUserId, null, null, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        return metadataSourceGUID;
+        return null;
     }
 
 
@@ -223,9 +218,9 @@ public class APIIntegratorContextManager extends IntegrationContextManager
             final String  parameterName = "integrationConnector";
 
             throw new InvalidParameterException(APIIntegratorErrorCode.INVALID_CONNECTOR.
-                    getMessageDefinition(connectorName,
-                                         IntegrationServiceDescription.API_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
-                                         APIIntegratorConnector.class.getCanonicalName()),
+                                                        getMessageDefinition(connectorName,
+                                                                             IntegrationServiceDescription.API_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                             APIIntegratorConnector.class.getCanonicalName()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 parameterName);

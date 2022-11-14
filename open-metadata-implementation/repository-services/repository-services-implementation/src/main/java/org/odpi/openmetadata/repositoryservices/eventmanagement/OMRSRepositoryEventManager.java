@@ -156,7 +156,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * Indicate that all the event processors are registered and they are ready to process events.
+     * Indicate that all the event processors are registered, and they are ready to process events.
      */
     public void start()
     {
@@ -379,7 +379,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         }
         else
         {
-            //If distributeInstanceEvent() is not being called now and we are just adding
+            //If distributeInstanceEvent() is not being called now, and we are just adding
             //the event to the buffer, we still need a way for the OpenMetadataTopicConnector
             //to monitor the state of event processing.  This makes it so that we do not
             //treat the event is being fully processed until it is actually distributed

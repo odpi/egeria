@@ -8,10 +8,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -23,9 +24,10 @@ import java.util.Date;
  */
 
 public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaProjectRESTServices.class);
     private static final String className = SubjectAreaProjectRESTServices.class.getName();
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaProjectRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -57,9 +59,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Project> createProject(String serverName, String userId, Project suppliedProject) {
         final String methodName = "createProject";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId );
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -71,9 +71,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -94,9 +92,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Project> getProjectByGuid(String serverName, String userId, String guid) {
         final String methodName = "getProjectByGuid";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -108,9 +104,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -149,9 +143,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
                                                            String sequencingProperty) {
 
         final String methodName = "findProject";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId );
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -170,9 +162,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -208,9 +198,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
                                                                             SequencingOrder sequencingOrder,
                                                                             String sequencingProperty) {
         String methodName = "getProjectRelationships";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -228,9 +216,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -306,9 +292,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Project> updateProject(String serverName, String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -320,9 +304,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -353,9 +335,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid) {
         final String methodName = "deleteProject";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -367,9 +347,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -392,9 +370,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Project> restoreProject(String serverName, String userId, String guid) {
         final String methodName = "restoreProject";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -406,9 +382,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

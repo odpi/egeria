@@ -38,7 +38,7 @@ the original complied lists.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-find-attribute-typedefs-by-category",
       "testCaseName" : "Repository find attribute type definitions by category test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-find-attribute-typedefs-by-category-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/repository-workbench/repository-find-attribute-typedefs-by-category-test-case.md",
       "assertionMessage" : "Attribute type definitions can be extracted by category",
       "successfulAssertions" : [ "All attribute type definitions returned by category." ],
       "unsuccessfulAssertions" : [ ],

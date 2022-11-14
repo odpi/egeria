@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -58,6 +60,41 @@ public class EntityProxy extends EntitySummary
     public EntityProxy(EntitySummary   template)
     {
         super(template);
+
+        if (template instanceof EntityProxy)
+        {
+            EntityProxy entityProxy = (EntityProxy) template;
+
+            this.uniqueProperties = entityProxy.getUniqueProperties();
+        }
+        else if (template instanceof EntityDetail)
+        {
+            /*
+             * This implementation is taking advantage that the only unique property used in the open metadata types
+             * is qualified name.  The problem is that there is no indication in the InstanceProperties of which
+             * properties are unique.  This needs to come from the type definition.
+             */
+            final String qualifiedNameProperty = "qualifiedName";
+
+            EntityDetail entityDetail = (EntityDetail) template;
+
+            if (entityDetail.getProperties() != null)
+            {
+                InstancePropertyValue qualifiedName = entityDetail.getProperties().getPropertyValue(qualifiedNameProperty);
+
+                InstanceProperties properties = new InstanceProperties();
+
+                Map<String, InstancePropertyValue> propertyValueMap = new HashMap<>();
+
+                propertyValueMap.put(qualifiedNameProperty, qualifiedName);
+
+                properties.setInstanceProperties(propertyValueMap);
+                properties.setEffectiveFromTime(entityDetail.getProperties().getEffectiveFromTime());
+                properties.setEffectiveToTime(entityDetail.getProperties().getEffectiveToTime());
+
+                this.uniqueProperties = properties;
+            }
+        }
     }
 
 

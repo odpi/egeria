@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -48,13 +49,13 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
     private static final String assertionMsg7 = " repository supports storage of reference copies.";
 
 
-    private EntityDef         testEntityDef;
-    private ClassificationDef classificationDef;
-    private String            testTypeName;
+    private final EntityDef         testEntityDef;
+    private final ClassificationDef classificationDef;
+    private final String            testTypeName;
 
 
-    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
-    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
+    private final List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private final List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
@@ -91,14 +92,15 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
         /*
          * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
-         * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
+         * in a try...catch to check for FunctionNotSupportedException. If the connector throws this, then give up
          * on the test by setting the discovered property to disabled and returning.
          */
 
         EntityDetail newEntity;
         InstanceProperties instProps = null;
 
-        try {
+        try
+        {
             /*
              * Create an entity reference copy of the entity type.
              * To do this, a local entity is created, copied and deleted/purged. The copy is modified (to look remote)
@@ -134,7 +136,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             createdEntitiesTUT.add(newEntity);
 
 
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -150,7 +154,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             return;
 
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -160,7 +166,7 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", testEntityDef.getGUID());
             parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
-            parameters.put("initialClasiifications", "null");
+            parameters.put("initialClassifications", "null");
             parameters.put("initialStatus", "null");
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
@@ -174,7 +180,7 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
 
         /*
-         * Make a copy of the entity under a different variable name - not strictly necessary but makes things clearer - then modify it so
+         * Make a copy of the entity under a different variable name - not strictly necessary but makes things clearer - then modify it, so
          * it appears to be from a remote metadata collection.
          */
 
@@ -282,6 +288,12 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                             elapsedTime);
 
             createdEntityRefCopiesTUT.add(remoteEntity);
+
+            /*
+             * The metadata collection id/name generated above is not from a member of the cohort.  This means that the retrieved relationship
+             * Will be flagged as from a deregistered repository.
+             */
+            remoteEntity.setInstanceProvenanceType(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
 
 
             EntityDetail retrievedReferenceCopy = null;

@@ -682,7 +682,7 @@ public class ConnectedAssetResource
 
 
     /**
-     * Returns a list of schema attributes for a schema type.
+     * Returns a list of api operations for a schema type.
      *
      * @param serverName     String   name of server instance to call.
      * @param serviceURLName    String   name of the service that created the connector that issued this request.

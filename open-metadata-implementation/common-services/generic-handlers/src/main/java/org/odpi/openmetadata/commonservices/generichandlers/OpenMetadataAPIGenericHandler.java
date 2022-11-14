@@ -1465,6 +1465,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    externalSourceGUID,
                                                    externalSourceName,
                                                    beanEntity.getGUID(),
+                                                   beanEntity,
                                                    beanGUIDParameterName,
                                                    beanGUIDTypeName,
                                                    classificationTypeGUID,
@@ -1797,19 +1798,40 @@ public class OpenMetadataAPIGenericHandler<B>
                     }
                     else
                     {
-                        repositoryHandler.declassifyEntity(localServerUserId,
-                                                           null,
-                                                           null,
-                                                           targetGUID,
-                                                           targetGUIDParameterName,
-                                                           targetEntity.getType().getTypeDefName(),
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                           anchorsClassification,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
+                        if (targetEntity instanceof EntityDetail)
+                        {
+                            repositoryHandler.declassifyEntity(localServerUserId,
+                                                               null,
+                                                               null,
+                                                               targetGUID,
+                                                               (EntityDetail) targetEntity,
+                                                               targetGUIDParameterName,
+                                                               targetEntity.getType().getTypeDefName(),
+                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                               anchorsClassification,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                        }
+                        else
+                        {
+                            repositoryHandler.declassifyEntity(localServerUserId,
+                                                               null,
+                                                               null,
+                                                               targetGUID,
+                                                               null,
+                                                               targetGUIDParameterName,
+                                                               targetEntity.getType().getTypeDefName(),
+                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                               anchorsClassification,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                        }
                     }
                 }
             }
@@ -2146,6 +2168,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached asset or null if there is no attached asset
      *
+     * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2154,7 +2177,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                               boolean forLineage,
                                               boolean forDuplicateProcessing,
                                               Date    effectiveTime,
-                                              String  methodName) throws PropertyServerException,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         /*
@@ -2197,6 +2221,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached asset or null if there is no attached asset
      *
+     * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2205,7 +2230,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                         boolean forLineage,
                                         boolean forDuplicateProcessing,
                                         Date    effectiveTime,
-                                        String  methodName) throws PropertyServerException,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
                                                                    UserNotAuthorizedException
     {
         /*
@@ -2247,6 +2273,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached asset or null if there is no attached asset
      *
+     * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2255,7 +2282,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                           boolean forLineage,
                                           boolean forDuplicateProcessing,
                                           Date    effectiveTime,
-                                          String  methodName) throws PropertyServerException,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
                                                                      UserNotAuthorizedException
     {
         /*
@@ -2297,6 +2325,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached asset or null if there is no attached asset
      *
+     * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2305,7 +2334,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                boolean forLineage,
                                                                boolean forDuplicateProcessing,
                                                                Date    effectiveTime,
-                                                               String  methodName) throws PropertyServerException,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
         /*

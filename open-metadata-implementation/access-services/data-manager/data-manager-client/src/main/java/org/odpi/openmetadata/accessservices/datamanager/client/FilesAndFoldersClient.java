@@ -382,7 +382,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
     {
         final String methodName                  = "addDataFileToCatalogFromTemplate";
         final String propertiesParameterName     = "templateProperties";
-        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+        final String pathNameParameterName       = "pathName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
@@ -390,7 +390,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
         String pathName = this.getPathName(templateProperties.getPathName(),
                                            templateProperties.getQualifiedName());
 
-        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(pathName, pathNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/from-template/{2}";
 

@@ -12,9 +12,13 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -955,19 +959,64 @@ public class AssetConsumerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAttachedElementGUIDs(userId,
-                                                              termGUID,
-                                                              guidParameterName,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                              false,
-                                                              false,
-                                                              startFrom,
-                                                              pageSize,
-                                                              new Date(),
-                                                              methodName));
+
+            List<EntityDetail> attachedEntities = handler.getAttachedEntities(userId,
+                                                                              termGUID,
+                                                                              guidParameterName,
+                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                              null,
+                                                                              null,
+                                                                              1,
+                                                                              false,
+                                                                              false,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              new Date(),
+                                                                              methodName);
+
+            if (attachedEntities != null)
+            {
+                final String entityGUIDParameterName = "attachedEntity.getGUID";
+                OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                List<String> guids = new ArrayList<>();
+
+                for (EntityDetail entity : attachedEntities)
+                {
+                    if (repositoryHelper.isTypeOf(serverName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                    {
+                        if (! guids.contains(entity.getGUID()))
+                        {
+                            guids.add(entity.getGUID());
+                        }
+                    }
+                    else
+                    {
+                        EntityDetail anchorEntity = handler.validateAnchorEntity(userId,
+                                                                                 entity.getGUID(),
+                                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                 entity,
+                                                                                 entityGUIDParameterName,
+                                                                                 false,
+                                                                                 false,
+                                                                                 false,
+                                                                                 handler.getSupportedZones(),
+                                                                                 new Date(),
+                                                                                 methodName);
+                        if (anchorEntity != null)
+                        {
+                            if (! guids.contains(anchorEntity.getGUID()))
+                            {
+                                guids.add(anchorEntity.getGUID());
+                            }
+                        }
+                    }
+                }
+
+                response.setGUIDs(guids);
+            }
         }
         catch (Exception error)
         {

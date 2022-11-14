@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
@@ -739,26 +740,48 @@ public class RepositoryErrorHandler
                                       String     methodName,
                                       String     localMethodName) throws PropertyServerException
     {
-        if (auditLog != null)
+        if (error instanceof FunctionNotSupportedException)
         {
-            auditLog.logException(methodName,
-                                  RepositoryHandlerAuditCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
-                                                                                                        methodName,
-                                                                                                        serviceName,
-                                                                                                        serverName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        localMethodName),
-                                  error);
-        }
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      RepositoryHandlerAuditCode.FUNCTION_NOT_SUPPORTED.getMessageDefinition(localMethodName,
+                                                                                                             methodName,
+                                                                                                             serviceName,
+                                                                                                             serverName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
 
-        throw new PropertyServerException(RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
-                                                                                                                methodName,
-                                                                                                                serviceName,
-                                                                                                                serverName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                localMethodName),
-                                          this.getClass().getName(),
-                                          methodName);
+            throw new PropertyServerException(RepositoryHandlerErrorCode.FUNCTION_NOT_SUPPORTED.getMessageDefinition(methodName,
+                                                                                                                     serviceName,
+                                                                                                                     serverName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+        else
+        {
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      RepositoryHandlerAuditCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
+                                                                                                            methodName,
+                                                                                                            serviceName,
+                                                                                                            serverName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            localMethodName),
+                                      error);
+            }
+
+            throw new PropertyServerException(RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
+                                                                                                                    methodName,
+                                                                                                                    serviceName,
+                                                                                                                    serverName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    localMethodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
     }
 
 

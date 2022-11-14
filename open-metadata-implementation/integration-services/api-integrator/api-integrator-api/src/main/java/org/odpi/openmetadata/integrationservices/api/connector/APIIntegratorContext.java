@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class APIIntegratorContext
 {
-    private APIManagerClient        apiManagerClient;
-    private ConnectionManagerClient connectionManagerClient;
-    private DataManagerEventClient  eventClient;
-    private String                  userId;
-    private String                  apiManagerGUID;
-    private String                  apiManagerName;
+    private final APIManagerClient        apiManagerClient;
+    private final ConnectionManagerClient connectionManagerClient;
+    private final DataManagerEventClient  eventClient;
+    private final String                  userId;
+    private final String                  apiManagerGUID;
+    private final String                  apiManagerName;
 
     private boolean                apiManagerIsHome = true;
 

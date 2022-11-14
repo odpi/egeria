@@ -3,52 +3,83 @@
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 /**
- * InMemoryOMRSMetadataStore provides the in memory stores for the InMemoryRepositoryConnector
+ * InMemoryOMRSMetadataStore provides the in memory store for the InMemoryRepositoryConnector.
  */
 class InMemoryOMRSMetadataStore
 {
-    private String                                 repositoryName           = null;
-    private volatile Map<String, EntityDetail>     entityStore              = new HashMap<>();
-    private volatile Map<String, EntityProxy>      entityProxyStore         = new HashMap<>();
-    private volatile List<EntityDetail>            entityHistoryStore       = new ArrayList<>();
-    private volatile Map<String, Relationship>     relationshipStore        = new HashMap<>();
-    private volatile List<Relationship>            relationshipHistoryStore = new ArrayList<>();
+    private final String               repositoryName;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final String               localMetadataCollectionId;
+
+    private final Map<String, StoredEntity>       entityStore       = new HashMap<>();
+    private final Map<String, StoredRelationship> relationshipStore = new HashMap<>();
+
+    private static final Logger log = LoggerFactory.getLogger(InMemoryOMRSMetadataStore.class);
 
 
     /**
-     * Default constructor
+     * Determine is an instance was active between the from and to date.
+     *
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param instanceHeader instance version
+     * @param versionEndTime time when this version was superseded
+     * @return boolean flag - true means it is valid
      */
-    InMemoryOMRSMetadataStore()
+    static boolean checkInclusiveDate(Date           fromTime,
+                                      Date           toTime,
+                                      InstanceHeader instanceHeader,
+                                      Date           versionEndTime)
     {
+        Date versionStartTime = instanceHeader.getUpdateTime();
+
+        if (versionStartTime == null)
+        {
+            versionStartTime = instanceHeader.getCreateTime();
+        }
+
+        if (toTime.before(versionStartTime))
+        {
+            return false;
+        }
+
+        if (versionEndTime == null)
+        {
+            return true;
+        }
+
+        return ! fromTime.after(versionEndTime);
     }
 
 
     /**
-     * Set up the name of the repository for logging.
+     * Constructor to initialize store.
      *
-     * @param repositoryName - String name
+     * @param repositoryName name of this repository
+     * @param repositoryHelper helper
+     * @param localMetadataCollectionId identifier for this store's metadata collection
      */
-    protected void  setRepositoryName(String    repositoryName)
+    InMemoryOMRSMetadataStore(String               repositoryName,
+                              OMRSRepositoryHelper repositoryHelper,
+                              String               localMetadataCollectionId)
     {
         this.repositoryName = repositoryName;
-    }
-
-
-    /**
-     * Return a list of entities from the store that are at the latest level.
-     *
-     * @return list of EntityDetail objects
-     */
-    synchronized List<EntityDetail>   getEntities()
-    {
-        return new ArrayList<>(entityStore.values());
+        this.repositoryHelper = repositoryHelper;
+        this.localMetadataCollectionId = localMetadataCollectionId;
     }
 
 
@@ -58,9 +89,42 @@ class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the entity
      * @return entity object
      */
-    synchronized EntityDetail  getEntity(String   guid)
+    synchronized EntityDetail  getEntity(String guid)
     {
-        return entityStore.get(guid);
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity != null)
+        {
+            return storedEntity.getEntity();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entity identified by the guid.
+     *
+     * @param guid - unique identifier for the entity
+     * @return entity object
+     */
+    synchronized EntitySummary  getEntitySummary(String guid)
+    {
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity != null)
+        {
+            if (storedEntity.getEntity() != null)
+            {
+                return storedEntity.getEntity();
+            }
+            else
+            {
+                return storedEntity.getEntityProxy();
+            }
+        }
+
+        return null;
     }
 
 
@@ -70,9 +134,16 @@ class InMemoryOMRSMetadataStore
      * @param guid - unique identifier
      * @return entity proxy object
      */
-    synchronized EntityProxy  getEntityProxy(String   guid)
+    synchronized EntityProxy  getEntityProxy(String guid)
     {
-        return entityProxyStore.get(guid);
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity != null)
+        {
+            return storedEntity.getEntityProxy();
+        }
+
+        return null;
     }
 
 
@@ -83,91 +154,21 @@ class InMemoryOMRSMetadataStore
      * @param asOfTime - time for the store (or null means now)
      * @return entity store for the requested time
      */
-    synchronized Map<String, EntityDetail>  timeWarpEntityStore(Date         asOfTime)
+    synchronized Map<String, EntityDetail>  timeWarpEntityStore(Date asOfTime)
     {
-        if (asOfTime == null)
-        {
-            return new HashMap<>(entityStore);
-        }
-
         Map<String, EntityDetail>  timeWarpedEntityStore = new HashMap<>();
 
-        /*
-         * First step through the current relationship store and extract all the relationships that were
-         * last updated before the asOfTime.
-         */
-        for (EntityDetail  entity : entityStore.values())
+        for (StoredEntity storedEntity : entityStore.values())
         {
-            if (entity != null)
+            EntityDetail entityDetail = storedEntity.getEntity(asOfTime);
+
+            if (entityDetail != null)
             {
-                if (entity.getUpdateTime() != null)
-                {
-                    String entityGUID = entity.getGUID();
-
-                    if (entityGUID != null)
-                    {
-                        if (! entity.getUpdateTime().after(asOfTime))
-                        {
-                            timeWarpedEntityStore.put(entityGUID, entity);
-                        }
-                    }
-                }
-                else if (entity.getCreateTime() != null)
-                {
-                    if (! entity.getCreateTime().after(asOfTime))
-                    {
-                        timeWarpedEntityStore.put(entity.getGUID(), entity);
-                    }
-                }
-            }
-        }
-
-        /*
-         * Now step through the history store picking up the versions of other entities that were active
-         * at the time of the asOfTime.
-         */
-        for (EntityDetail oldEntity : entityHistoryStore)
-        {
-            if (oldEntity != null)
-            {
-                String entityGUID = oldEntity.getGUID();
-
-                if (oldEntity.getUpdateTime() != null)
-                {
-                    if (! oldEntity.getUpdateTime().after(asOfTime))
-                    {
-                        EntityDetail newerEntity = timeWarpedEntityStore.put(entityGUID, oldEntity);
-
-                        if (newerEntity != null)
-                        {
-                            timeWarpedEntityStore.put(entityGUID, newerEntity);
-                        }
-                        break;
-                    }
-                }
-                else if (oldEntity.getCreateTime() != null)
-                {
-                    if (! oldEntity.getCreateTime().after(asOfTime))
-                    {
-                        timeWarpedEntityStore.put(entityGUID, oldEntity);
-                        break;
-                    }
-                }
+                timeWarpedEntityStore.put(entityDetail.getGUID(), entityDetail);
             }
         }
 
         return timeWarpedEntityStore;
-    }
-
-
-    /**
-     * Return the list of relationships at their current level.
-     *
-     * @return list of relationships
-     */
-    synchronized List<Relationship>   getRelationships()
-    {
-        return new ArrayList<>(relationshipStore.values());
     }
 
 
@@ -177,10 +178,18 @@ class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the relationship
      * @return relationship object
      */
-    protected synchronized Relationship  getRelationship(String   guid)
+    synchronized Relationship  getRelationship(String guid)
     {
-        return relationshipStore.get(guid);
+        StoredRelationship storedRelationship = relationshipStore.get(guid);
+
+        if (storedRelationship != null)
+        {
+            return storedRelationship.getRelationship();
+        }
+
+        return null;
     }
+
 
     /**
      * Return a relationship store that contains relationships as they were at the time supplied in the asOfTime
@@ -191,100 +200,45 @@ class InMemoryOMRSMetadataStore
      */
     synchronized Map<String, Relationship>  timeWarpRelationshipStore(Date         asOfTime)
     {
-        if (asOfTime == null)
-        {
-            return new HashMap<>(relationshipStore);
-        }
-
         Map<String, Relationship>  timeWarpedRelationshipStore = new HashMap<>();
 
-
-        /*
-         * First step through the current relationship store and extract all the relationships that were
-         * last updated before the asOfTime.
-         */
-        for (Relationship  relationship : relationshipStore.values())
+        for (StoredRelationship storedRelationship : relationshipStore.values())
         {
+            Relationship relationship = storedRelationship.getRelationship(asOfTime);
+
             if (relationship != null)
             {
-                if (relationship.getUpdateTime() != null)
-                {
-                    String relationshipGUID = relationship.getGUID();
-
-                    if (relationshipGUID != null)
-                    {
-                        if (! relationship.getUpdateTime().after(asOfTime))
-                        {
-                            timeWarpedRelationshipStore.put(relationshipGUID, relationship);
-                        }
-                    }
-                }
-                else if (relationship.getCreateTime() != null)
-                {
-                    if (! relationship.getCreateTime().after(asOfTime))
-                    {
-                        timeWarpedRelationshipStore.put(relationship.getGUID(), relationship);
-                    }
-                }
-            }
-        }
-
-        /*
-         * Now step through the history store picking up the versions of other relationships that were active
-         * at the time of the asOfTime.
-         */
-        for (Relationship oldRelationship : relationshipHistoryStore)
-        {
-            if (oldRelationship != null)
-            {
-                String relationshipGUID = oldRelationship.getGUID();
-
-                if (oldRelationship.getUpdateTime() != null)
-                {
-                    if (! oldRelationship.getUpdateTime().after(asOfTime))
-                    {
-                        Relationship newerRelationship = timeWarpedRelationshipStore.put(relationshipGUID, oldRelationship);
-
-                        if (newerRelationship != null)
-                        {
-                            timeWarpedRelationshipStore.put(relationshipGUID, newerRelationship);
-                        }
-                        break;
-                    }
-                }
-                else if (oldRelationship.getCreateTime() != null)
-                {
-                    if (! oldRelationship.getCreateTime().after(asOfTime))
-                    {
-                        timeWarpedRelationshipStore.put(relationshipGUID, oldRelationship);
-                        break;
-                    }
-                }
+                timeWarpedRelationshipStore.put(relationship.getGUID(), relationship);
             }
         }
 
         return timeWarpedRelationshipStore;
     }
 
+
     /**
      * Create a new entity in the entity store.
      *
      * @param entity - new version of the entity
      * @return entity with potentially updated GUID
+     * @throws RepositoryErrorException problem generating entity proxy - probably bad entity
      */
-    synchronized EntityDetail createEntityInStore(EntityDetail    entity)
+    synchronized EntityDetail createEntityInStore(EntityDetail entity) throws RepositoryErrorException
     {
-        /*
-         * There is a small chance the randomly generated GUID will clash with an existing relationship.
-         * If this happens a new GUID is generated for the relationship and the process repeats.
-         */
-        EntityDetail existingEntity = entityStore.put(entity.getGUID(), entity);
+        StoredEntity newStoredEntity = new StoredEntity(entity);
 
-        while (existingEntity != null)
+        /*
+         * There is a small chance the randomly generated GUID will clash with an existing entity.
+         * If this happens a new GUID is generated for the entity and the process repeats.
+         */
+        StoredEntity existingStoredEntity = entityStore.put(entity.getGUID(), newStoredEntity);
+
+        while (existingStoredEntity != null)
         {
-            entityStore.put(entity.getGUID(), existingEntity);
+            entityStore.put(entity.getGUID(), existingStoredEntity);
             entity.setGUID(UUID.randomUUID().toString());
-            existingEntity = entityStore.put(entity.getGUID(), entity);
+            newStoredEntity = new StoredEntity(entity);
+            existingStoredEntity = entityStore.put(entity.getGUID(), newStoredEntity);
         }
 
         return entity;
@@ -297,19 +251,22 @@ class InMemoryOMRSMetadataStore
      * @param relationship - new version of the relationship
      * @return relationship with potentially updated GUID
      */
-    synchronized Relationship createRelationshipInStore(Relationship    relationship)
+    synchronized Relationship createRelationshipInStore(Relationship relationship)
     {
+        StoredRelationship newStoredRelationship = new StoredRelationship(relationship);
+
         /*
          * There is a small chance the randomly generated GUID will clash with an existing relationship.
          * If this happens a new GUID is generated for the relationship and the process repeats.
          */
-        Relationship existingRelationship = relationshipStore.put(relationship.getGUID(), relationship);
+        StoredRelationship existingStoredRelationship = relationshipStore.put(relationship.getGUID(), newStoredRelationship);
 
-        while (existingRelationship != null)
+        while (existingStoredRelationship != null)
         {
-            relationshipStore.put(relationship.getGUID(), existingRelationship);
+            relationshipStore.put(relationship.getGUID(), existingStoredRelationship);
             relationship.setGUID(UUID.randomUUID().toString());
-            existingRelationship = relationshipStore.put(relationship.getGUID(), relationship);
+            newStoredRelationship = new StoredRelationship(relationship);
+            existingStoredRelationship = relationshipStore.put(relationship.getGUID(), newStoredRelationship);
         }
 
         return relationship;
@@ -317,13 +274,64 @@ class InMemoryOMRSMetadataStore
 
 
     /**
+     * Save an entity to the entity store.
+     *
+     * @param entityDetail - entity object to add
+     * @throws RepositoryErrorException unable to create proxy
+     */
+    synchronized void addEntityToStore(EntityDetail entityDetail) throws RepositoryErrorException
+    {
+        StoredEntity storedEntity = entityStore.get(entityDetail.getGUID());
+
+        if (storedEntity == null)
+        {
+            entityStore.put(entityDetail.getGUID(), new StoredEntity(entityDetail));
+        }
+        else
+        {
+            storedEntity.saveEntity(entityDetail);
+        }
+    }
+
+
+
+    /**
      * Save an entity proxy to the entity store.
      *
      * @param entityProxy - entity proxy object to add
      */
-    synchronized void addEntityProxyToStore(EntityProxy    entityProxy)
+    synchronized void addEntityProxyToStore(EntityProxy entityProxy)
     {
-        entityProxyStore.put(entityProxy.getGUID(), entityProxy);
+        StoredEntity storedEntity = entityStore.get(entityProxy.getGUID());
+
+        if (storedEntity == null)
+        {
+            entityStore.put(entityProxy.getGUID(), new StoredEntity(entityProxy));
+        }
+        else
+        {
+            storedEntity.saveEntityProxy(entityProxy);
+        }
+    }
+
+
+    /**
+     * Save an entity proxy to the entity store.
+     *
+     * @param relationship - entity proxy object to add
+     */
+    synchronized void addRelationshipToStore(Relationship relationship)
+    {
+        StoredRelationship storedRelationship = relationshipStore.get(relationship.getGUID());
+
+        if (storedRelationship == null)
+        {
+            relationshipStore.put(relationship.getGUID(), new StoredRelationship(relationship));
+        }
+        else
+        {
+            storedRelationship.saveRelationship(relationship);
+        }
     }
 
 
@@ -332,26 +340,78 @@ class InMemoryOMRSMetadataStore
      * The history is maintained with the latest changes first in the list.
      *
      * @param entity - new version of the entity
+     * @throws RepositoryErrorException problem generating entity proxy - probably bad entity
      */
-    synchronized void updateEntityInStore(EntityDetail entity)
+    synchronized void updateEntityInStore(EntityDetail entity) throws RepositoryErrorException
     {
-        EntityDetail oldEntity = entityStore.put(entity.getGUID(), entity);
+        StoredEntity storedEntity = entityStore.get(entity.getGUID());
 
-        if (oldEntity != null)
+        if (storedEntity == null)
         {
-            entityHistoryStore.add(0, oldEntity);
+            entityStore.put(entity.getGUID(), new StoredEntity(entity));
+        }
+        else
+        {
+            storedEntity.saveEntity(entity);
         }
     }
 
 
     /**
-     * Update an entity proxy in the proxy store.
+     * Maintain a classification within the entity proxy.
      *
-     * @param entityProxy - entity proxy object to add
+     * @param entityGUID unique identifier of entity
+     * @param classification classification to update
      */
-    synchronized void updateEntityProxyInStore(EntityProxy entityProxy)
+    synchronized void saveClassification(String          entityGUID,
+                                         Classification  classification)
     {
-        entityProxyStore.put(entityProxy.getGUID(), entityProxy);
+        StoredEntity storedEntity = entityStore.get(entityGUID);
+
+        if (storedEntity != null)
+        {
+           storedEntity.saveClassification(classification);
+        }
+    }
+
+
+    /**
+     * Maintain a classification within the entity.
+     *
+     * @param entityDetail entity
+     * @param classificationName name of classification to remove
+     */
+    synchronized EntityDetail removeClassificationFromEntity(EntityDetail entityDetail,
+                                                             String       classificationName)
+    {
+        StoredEntity storedEntity = entityStore.get(entityDetail.getGUID());
+
+        if (storedEntity != null)
+        {
+            return storedEntity.removeClassificationFromEntity(classificationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Maintain a classification within the entity proxy.
+     *
+     * @param entityProxy entity
+     * @param classificationName name of classification to remove
+     */
+    synchronized Classification removeClassificationFromProxy(EntityProxy entityProxy,
+                                                              String      classificationName)
+    {
+        StoredEntity storedEntity = entityStore.get(entityProxy.getGUID());
+
+        if (storedEntity != null)
+        {
+            return storedEntity.removeClassificationFromEntityProxy(classificationName);
+        }
+
+        return null;
     }
 
 
@@ -361,38 +421,18 @@ class InMemoryOMRSMetadataStore
      *
      * @param relationship - new version of the relationship
      */
-    synchronized void updateRelationshipInStore(Relationship    relationship)
+    synchronized void updateRelationshipInStore(Relationship relationship)
     {
-        Relationship    oldRelationship = relationshipStore.put(relationship.getGUID(), relationship);
+        StoredRelationship storedRelationship = relationshipStore.get(relationship.getGUID());
 
-        if (oldRelationship != null)
+        if (storedRelationship == null)
         {
-            relationshipHistoryStore.add(0, oldRelationship);
+            relationshipStore.put(relationship.getGUID(), new StoredRelationship(relationship));
         }
-    }
-
-
-    /**
-     * Save a reference copy of an entity to the active store.  Reference copies are not maintained in the
-     * history store.
-     *
-     * @param entity - object to save
-     */
-    synchronized void saveReferenceEntityToStore(EntityDetail    entity)
-    {
-        entityStore.put(entity.getGUID(), entity);
-    }
-
-
-    /**
-     * Save a reference copy of a relationship to the active store.  Reference copies are not maintained in the
-     * history store.
-     *
-     * @param relationship - object to save
-     */
-    synchronized void saveReferenceRelationshipToStore(Relationship    relationship)
-    {
-        relationshipStore.put(relationship.getGUID(), relationship);
+        else
+        {
+            storedRelationship.saveRelationship(relationship);
+        }
     }
 
 
@@ -405,46 +445,11 @@ class InMemoryOMRSMetadataStore
      */
     synchronized Relationship retrievePreviousVersionOfRelationship(String   guid)
     {
-        if (guid != null)
+        StoredRelationship storedRelationship = relationshipStore.get(guid);
+
+        if (storedRelationship != null)
         {
-            Relationship  currentVersionOfRelationship = relationshipStore.get(guid);
-
-            long versionNumber = 0;
-
-            if (currentVersionOfRelationship != null)
-            {
-                versionNumber = currentVersionOfRelationship.getVersion() + 1;
-            }
-
-
-            for (Relationship relationship : relationshipHistoryStore)
-            {
-                if (relationship != null)
-                {
-                    if (guid.equals(relationship.getGUID()))
-                    {
-                        if (versionNumber == 0)
-                        {
-                            versionNumber = relationship.getVersion() + 1;
-                        }
-                        /*
-                         * Clone the head (most recent) version in the history, set its version number to the next version
-                         * and insert the new clone into the current store (under key GUID). Also, take the 'current version'
-                         * (as was at start of method) and shunt that into the history. Do not remove anything from the history.
-                         * Remember also to set the updateTime to NOW - otherwise the historical copy will appear to have been
-                         * updated longer ago than was really the case.
-                         */
-                        Relationship newRelationship = new Relationship(relationship);
-                        newRelationship.setVersion(versionNumber);
-                        Date restoreTime = new Date();
-                        newRelationship.setUpdateTime(restoreTime);
-                        relationshipStore.put(guid, newRelationship);
-                        relationshipHistoryStore.add(0, currentVersionOfRelationship);
-                        return newRelationship;
-
-                    }
-                }
-            }
+            return storedRelationship.retrievePreviousVersion();
         }
 
         return null;
@@ -460,47 +465,11 @@ class InMemoryOMRSMetadataStore
      */
     synchronized EntityDetail retrievePreviousVersionOfEntity(String   guid)
     {
-        if (guid != null)
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity != null)
         {
-            EntityDetail  currentVersionOfEntity = entityStore.get(guid);
-
-            long versionNumber = 0;
-
-            if (currentVersionOfEntity != null)
-            {
-                versionNumber = currentVersionOfEntity.getVersion() + 1;
-            }
-
-            for (EntityDetail entity : entityHistoryStore)
-            {
-                if (entity != null)
-                {
-                    if (guid.equals(entity.getGUID()))
-                    {
-                        if (versionNumber == 0)
-                        {
-                            versionNumber = entity.getVersion() + 1;
-                        }
-
-                        /*
-                         * Clone the head (most recent) version in the history, set its version number to the next version
-                         * and insert the new clone into the current store (under key GUID). Also, take the 'current version'
-                         * (as was at start of method) and shunt that into the history. Do not remove anything from the history.
-                         * Remember also to set the updateTime to NOW - otherwise the historical copy will appear to have been
-                         * updated longer ago than was really the case.
-                         *
-                         */
-                        EntityDetail newEntity = new EntityDetail(entity);
-                        newEntity.setVersion(versionNumber);
-                        Date restoreTime = new Date();
-                        newEntity.setUpdateTime(restoreTime);
-                        entityStore.put(guid, newEntity);
-                        entityHistoryStore.add(0, currentVersionOfEntity);
-                        return newEntity;
-
-                    }
-                }
-            }
+            return storedEntity.retrievePreviousVersion();
         }
 
         return null;
@@ -508,79 +477,108 @@ class InMemoryOMRSMetadataStore
 
 
     /**
-     * Remove an entity from the active store and add it to the history store.
+     * Return the list of home classifications for an entity.
      *
-     * @param entity - entity to remove
+     * @param guid unique identifier of the entity
+     * @return list of classifications or null
      */
-    synchronized void removeEntityFromStore(EntityDetail     entity)
+    synchronized List<Classification> getHomeClassifications(String guid)
     {
-        String entityGUID = entity.getGUID();
-        entityStore.remove(entityGUID);
-        List<EntityDetail> purgedHistory = new ArrayList<>();
-        for (EntityDetail history : entityHistoryStore)
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity != null)
         {
-            if (history != null && !entityGUID.equals(history.getGUID()))
-            {
-                purgedHistory.add(history);
-            }
+            return storedEntity.getHomeClassifications();
         }
-        entityHistoryStore = purgedHistory;
+
+        return null;
     }
 
 
     /**
-     * Remove a reference entity from the active store and add it to the history store.
+     * Return the versions of the instance that where active between the "from" and "to" times.
+     *
+     * @param guid unique identifier of the instance
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     */
+    synchronized List<EntityDetail> getEntityHistory(String  guid,
+                                                     Date    fromTime,
+                                                     Date    toTime,
+                                                     boolean oldestFirst)
+    {
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity == null)
+        {
+            return null;
+        }
+
+        return storedEntity.getEntityHistory(fromTime, toTime, oldestFirst);
+    }
+
+
+    /**
+     * Return the versions of the instance that where active between the "from" and "to" times.
+     *
+     * @param guid unique identifier of the instance
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     */
+    synchronized  List<Relationship> getRelationshipHistory(String  guid,
+                                                            Date    fromTime,
+                                                            Date    toTime,
+                                                            boolean oldestFirst)
+    {
+        StoredRelationship storedRelationship = relationshipStore.get(guid);
+
+        if (storedRelationship == null)
+        {
+            return null;
+        }
+
+        return storedRelationship.getRelationshipHistory(fromTime, toTime, oldestFirst);
+    }
+
+
+    /**
+     * Remove all record of an entity - including its history.
      *
      * @param guid - entity to remove
      */
-    synchronized void removeReferenceEntityFromStore(String     guid)
+    synchronized void purgeEntityFromStore(String guid)
     {
-        EntityDetail entity = entityStore.remove(guid);
+        StoredEntity storedEntity = entityStore.get(guid);
 
-        if (entity != null)
+        if (storedEntity != null)
         {
-            List<EntityDetail> purgedHistory = new ArrayList<>();
-            for (EntityDetail history : entityHistoryStore)
-            {
-                if (history != null && !guid.equals(history.getGUID()))
-                {
-                    purgedHistory.add(history);
-                }
-            }
-            entityHistoryStore = purgedHistory;
+            entityStore.remove(guid);
         }
-    }
-
-
-    /**
-     * Remove an entity from the active store and add it to the history store.
-     *
-     * @param guid - entity proxy to remove
-     */
-    synchronized void removeEntityProxyFromStore(String     guid)
-    {
-        entityProxyStore.remove(guid);
     }
 
 
     /**
      * Remove a relationship from the active store and add it to the history store.
+     * This occurs when an entity is deleted.
      *
      * @param relationship - relationship to remove
      */
     synchronized void removeRelationshipFromStore(Relationship     relationship)
     {
-        String relationshipGUID = relationship.getGUID();
-        relationshipStore.remove(relationshipGUID);
-        List<Relationship> purgedHistory = new ArrayList<>();
-        for (Relationship history : relationshipHistoryStore)
+        StoredRelationship storedRelationship = relationshipStore.get(relationship.getGUID());
+
+        if (storedRelationship == null)
         {
-            if (history != null && !relationshipGUID.equals(history.getGUID()))
-            {
-                purgedHistory.add(history);
-            }
+            storedRelationship = new StoredRelationship(relationship);
+
+            relationshipStore.put(relationship.getGUID(), storedRelationship);
         }
-        relationshipHistoryStore = purgedHistory;
+
+        storedRelationship.purgeRelationship();
     }
 
 
@@ -589,22 +587,869 @@ class InMemoryOMRSMetadataStore
      *
      * @param guid - relationship to remove
      */
-    synchronized void removeReferenceRelationshipFromStore(String     guid)
+    synchronized void purgeRelationshipFromStore(String guid)
     {
-        Relationship  relationship = relationshipStore.remove(guid);
+        StoredRelationship storedRelationship = relationshipStore.get(guid);
 
-        if (relationship != null)
+        if (storedRelationship != null)
         {
-            List<Relationship> purgedHistory = new ArrayList<>();
-            for (Relationship history : relationshipHistoryStore)
-            {
-                if (history != null && !guid.equals(history.getGUID()))
-                {
-                    purgedHistory.add(history);
-                }
-            }
-            relationshipHistoryStore = purgedHistory;
+            relationshipStore.remove(guid);
         }
     }
 
+
+    /**
+     * Provides storage for an entity, its proxy and classifications.  It is proactively keeping the stored entity
+     * and entity proxy up-to-date with the latest known classifications.
+     */
+    private class StoredEntity
+    {
+        private final Map<String, HomeClassification> homeClassifications = new HashMap<>();
+        private final List<EntityDetail>              entityHistory       = new ArrayList<>();
+
+        private EntityDetail entity = null;
+        private EntityProxy  entityProxy = null;
+
+        /**
+         * Constructor for when the first element stored is an entity
+         *
+         * @param entity first version of the entity
+         */
+        StoredEntity(EntityDetail entity) throws RepositoryErrorException
+        {
+            saveEntity(entity);
+        }
+
+
+        /**
+         * Constructor for when the first element stored is an entity proxy.
+         *
+         * @param entityProxy first version of the entity proxy
+         */
+        StoredEntity(EntityProxy entityProxy)
+        {
+            saveEntityProxy(entityProxy);
+        }
+
+
+        /**
+         * Retrieve and save any classifications that belong to the local metadata collection.
+         *
+         * @param entitySummary header of either an entity or an entity proxy
+         */
+        private void saveHomeClassifications(EntitySummary entitySummary)
+        {
+            List<Classification>  entityClassifications = entitySummary.getClassifications();
+
+            if (entityClassifications != null)
+            {
+                for (Classification classification : entityClassifications)
+                {
+                    saveHomeClassification(classification);
+                }
+            }
+        }
+
+
+        /**
+         * If the classification is part of the home metadata collection, save it to home metadata collections.
+         *
+         * @param classification potential classification to save
+         */
+        private void saveHomeClassification(Classification classification)
+        {
+            if (classification != null)
+            {
+                if ((classification.getMetadataCollectionId() == null) || (classification.getMetadataCollectionId().equals(localMetadataCollectionId)))
+                {
+                    HomeClassification existingHomeClassification = homeClassifications.get(classification.getName());
+
+                    if (existingHomeClassification != null)
+                    {
+                        existingHomeClassification.saveClassification(classification);
+                    }
+                    else
+                    {
+                        HomeClassification homeClassification = new HomeClassification(classification);
+
+                        homeClassifications.put(classification.getName(), homeClassification);
+                    }
+                }
+            }
+        }
+
+
+        /**
+         * Ensure any home classifications are added to the entity/entity proxy.
+         *
+         * @param entitySummary entity/entity proxy
+         */
+        private void addHomeClassifications(EntitySummary entitySummary)
+        {
+            if (! homeClassifications.isEmpty())
+            {
+                if (entitySummary.getClassifications() == null)
+                {
+                    entitySummary.setClassifications(getHomeClassifications());
+                }
+                else
+                {
+                    /*
+                     * Need to merge the two classification lists
+                     */
+                    Map<String, Classification> mergedList = new HashMap<>();
+
+                    for (String homeClassificationName : homeClassifications.keySet())
+                    {
+                        Classification classification = homeClassifications.get(homeClassificationName).getHomeClassification();
+
+                        if (classification != null)
+                        {
+                            mergedList.put(homeClassificationName, classification);
+                        }
+                    }
+
+                    for (Classification entityClassification : entitySummary.getClassifications())
+                    {
+                        Classification existingClassification = mergedList.put(entityClassification.getName(), entityClassification);
+
+                        if ((existingClassification != null) &&
+                                    (existingClassification.getVersion() > entityClassification.getVersion()))
+                        {
+                            mergedList.put(entityClassification.getName(), existingClassification);
+                        }
+                    }
+
+                    entitySummary.setClassifications(new ArrayList<>(mergedList.values()));
+                }
+            }
+        }
+
+
+        /**
+         * Return the home classifications for this instance.
+         *
+         * @return list of classifications or null
+         */
+        List<Classification> getHomeClassifications()
+        {
+            if (! homeClassifications.isEmpty())
+            {
+                List<Classification> results = new ArrayList<>();
+
+                for (String homeClassificationName : homeClassifications.keySet())
+                {
+                    Classification homeClassification = homeClassifications.get(homeClassificationName).getHomeClassification();
+                    if (homeClassification != null)
+                    {
+                        results.add(homeClassification);
+                    }
+
+                    return results;
+                }
+
+                return null;
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Remove the classification from the entity
+         *
+         * @param classificationName classification to remove
+         */
+        EntityDetail removeClassificationFromEntity(String classificationName)
+        {
+            final String methodName = "removeClassificationFromEntity";
+
+            HomeClassification homeClassification = homeClassifications.get(classificationName);
+
+            if (homeClassification != null)
+            {
+                homeClassification.deleteClassification(null);
+            }
+
+            try
+            {
+                EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                             entity,
+                                                                                             classificationName,
+                                                                                             methodName);
+
+                this.saveEntity(updatedEntity);
+            }
+            catch (Exception error)
+            {
+                // No action required
+                log.info(error.toString());
+            }
+
+            return this.entity;
+        }
+
+
+        /**
+         * Remove the classification from the entity
+         *
+         * @param classificationName classification to remove
+         */
+        Classification removeClassificationFromEntityProxy(String classificationName)
+        {
+            final String methodName = "removeClassificationFromEntityProxy";
+
+            Classification removedClassification = null;
+
+            HomeClassification homeClassification = homeClassifications.get(classificationName);
+
+            if (homeClassification != null)
+            {
+                removedClassification = homeClassification.getHomeClassification();
+            }
+
+            if ((removedClassification == null) && (this.entity != null))
+            {
+                try
+                {
+                    removedClassification = repositoryHelper.getClassificationFromEntity(repositoryName, this.entity, classificationName, methodName);
+                }
+                catch (Exception error)
+                {
+                    // No action required
+                    log.info(error.toString());
+                }
+            }
+
+            if ((removedClassification == null) && (this.entityProxy != null))
+            {
+                try
+                {
+                    removedClassification = repositoryHelper.getClassificationFromEntity(repositoryName, this.entityProxy, classificationName, methodName);
+                }
+                catch (Exception error)
+                {
+                    // No action required
+                    log.info(error.toString());
+                }
+            }
+
+            if (homeClassification != null)
+            {
+                homeClassification.deleteClassification(removedClassification);
+            }
+
+            if (this.entity != null)
+            {
+                try
+                {
+                    EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                                this.entity,
+                                                                                                classificationName,
+                                                                                                methodName);
+                    this.saveEntity(updatedEntity);
+                }
+                catch (Exception error)
+                {
+                    // No action required
+                    log.info(error.toString());
+                }
+            }
+
+            if (this.entityProxy != null)
+            {
+                try
+                {
+                    EntityProxy updatedProxy = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                               this.entityProxy,
+                                                                                               classificationName,
+                                                                                               methodName);
+                    this.saveEntityProxy(updatedProxy);
+                }
+                catch (Exception error)
+                {
+                    // No action required
+                    log.info(error.toString());
+                }
+            }
+
+            return removedClassification;
+        }
+
+
+        /**
+         * Return the entity identified by the guid.
+         *
+         * @param entity entity object
+         * @throws RepositoryErrorException problem forming entity proxy
+         */
+        void saveEntity(EntityDetail entity) throws RepositoryErrorException
+        {
+            saveHomeClassifications(entity);
+
+            /*
+             * The test of the version is >= to ensure updates to classifications (that do not change the entity version) are stored.
+             * The history contains the intermediate versions of the entity caused by classification changes.
+             */
+            if ((this.entity == null) || (entity.getVersion() >= this.entity.getVersion()))
+            {
+                entityHistory.add(0, this.entity);
+                this.entity = new EntityDetail(entity);
+            }
+
+            addHomeClassifications(this.entity);
+
+            this.entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, this.entity);
+        }
+
+
+        /**
+         * Save an entity proxy - this may come from a relationship - or from a classification
+         *
+         * @param entityProxy entity proxy
+         */
+        void saveEntityProxy(EntityProxy entityProxy)
+        {
+            /*
+             * The proxy is saved if it is not older than the stored proxy.  Note the entity proxy may (temporarily)
+             * be a later version than the entity.  However, the entity should catch up through replication
+             * within the cohort (as long as events are flowing).
+             */
+            saveHomeClassifications(entityProxy);
+
+            if ((this.entityProxy == null) || (entityProxy.getVersion() >= this.entityProxy.getVersion()))
+            {
+                this.entityProxy = new EntityProxy(entityProxy);
+            }
+
+            addHomeClassifications(this.entityProxy);
+
+            if (this.entity != null)
+            {
+                addHomeClassifications(this.entity);
+            }
+        }
+
+
+        /**
+         * Save a classification to the entities (and HomeClassifications if needed).
+         *
+         * @param classification classification to save
+         */
+        void saveClassification(Classification classification)
+        {
+            final String methodName = "saveClassification";
+
+            if (classification != null)
+            {
+                saveHomeClassification(classification);
+
+                if (this.entity != null)
+                {
+                    repositoryHelper.addClassificationToEntity(repositoryName, this.entity, new Classification(classification), methodName);
+                }
+
+                if (this.entityProxy != null)
+                {
+                    repositoryHelper.addClassificationToEntity(repositoryName, this.entityProxy, new Classification(classification), methodName);
+                }
+            }
+        }
+
+
+        /**
+         * Return the entity identified by the guid.
+         *
+         * @return entity object
+         */
+        EntityDetail  getEntity()
+        {
+            return entity;
+        }
+
+
+        /**
+         * Return the entity proxy.
+         *
+         * @return entity proxy object
+         */
+        EntityProxy  getEntityProxy()
+        {
+            return entityProxy;
+        }
+
+
+        /**
+         * Retrieve the version that was active in the repository at a particular time.
+         *
+         * @param asOfTime time to use on the query
+         * @return selected instance
+         */
+        EntityDetail getEntity(Date asOfTime)
+        {
+            if (asOfTime == null)
+            {
+                return getEntity();
+            }
+
+            if (this.entity != null)
+            {
+                /*
+                 * The requested time is before the element was created.
+                 */
+                if (asOfTime.before(entity.getCreateTime()))
+                {
+                    return null;
+                }
+
+                /*
+                 * The element has never been updated so the initial version is still valid.
+                 */
+                if (entity.getUpdateTime() != null)
+                {
+                    return entity;
+                }
+
+                if ((asOfTime.equals(entity.getUpdateTime())) ||
+                            (asOfTime.after(entity.getUpdateTime())))
+                {
+                    /*
+                     * The asOfTime is within the window of when this instance is valid.
+                     */
+                    return entity;
+                }
+            }
+
+            for (EntityDetail historicalEntity : entityHistory)
+            {
+                if (historicalEntity.getUpdateTime() == null)
+                {
+                    /*
+                     * This is the first version of the instance.
+                     */
+                    return historicalEntity;
+                }
+
+                if ((asOfTime.equals(historicalEntity.getUpdateTime())) ||
+                            (asOfTime.after(historicalEntity.getUpdateTime())))
+                {
+                    /*
+                     * The asOfTime is within the window of when this instance was valid.
+                     */
+                    return historicalEntity;
+                }
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Return the instances that match the history.
+         *
+         * @param fromTime starting time
+         * @param toTime ending time
+         * @param oldestFirst ordering of results
+         * @return list of versions of this relationship
+         */
+        List<EntityDetail> getEntityHistory(Date    fromTime,
+                                            Date    toTime,
+                                            boolean oldestFirst)
+        {
+            List<EntityDetail> historyResults = new ArrayList<>();
+            Date               followingUpdateTime = null;
+
+            if (this.entity != null)
+            {
+                if (toTime.before(this.entity.getCreateTime()))
+                {
+                    /*
+                     * The entity is known - but none of its instances are in the requested date range.
+                     */
+                    return historyResults;
+                }
+                else
+                {
+                    /*
+                     * The current version of the entity is in range.
+                     */
+                    if (oldestFirst)
+                    {
+                        historyResults.add(this.entity);
+                    }
+                    else
+                    {
+                        historyResults.add(0, this.entity);
+                    }
+
+                    followingUpdateTime = this.entity.getUpdateTime();
+                }
+            }
+
+
+            if (! this.entityHistory.isEmpty())
+            {
+                for (EntityDetail historicalInstance : this.entityHistory)
+                {
+                    if (checkInclusiveDate(fromTime, toTime, historicalInstance, followingUpdateTime))
+                    {
+                        historyResults.add(historicalInstance);
+                        followingUpdateTime = historicalInstance.getUpdateTime();
+                    }
+                }
+            }
+
+            return historyResults;
+        }
+
+
+        /**
+         * Retrieve the previous version of the instance.
+         *
+         * @return first element in the history
+         */
+        EntityDetail retrievePreviousVersion()
+        {
+            if (! entityHistory.isEmpty())
+            {
+                return entityHistory.get(0);
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Class used to store and manage a single home classification.
+         */
+        private class HomeClassification
+        {
+            volatile Classification latestClassification;
+            volatile long           deletedVersionNumber = 0;
+
+
+            /**
+             * Constructor always includes the first version of the classification.
+             *
+             * @param classification classification to save
+             */
+            HomeClassification(Classification classification)
+            {
+                this.latestClassification = new Classification(classification);
+            }
+
+
+            /**
+             * Return the saved classification (if any)
+             *
+             * @return active classification or null if the classification has been deleted
+             */
+            Classification getHomeClassification()
+            {
+                return this.latestClassification;
+            }
+
+
+            /**
+             * Save an update to the classification.
+             *
+             * @param classification latest version of the classification
+             */
+            void saveClassification(Classification classification)
+            {
+                if (this.latestClassification == null)
+                {
+                    if (classification.getVersion() > this.deletedVersionNumber)
+                    {
+                        this.latestClassification = classification;
+                    }
+                }
+                else
+                {
+                    if (classification.getVersion() > this.latestClassification.getVersion())
+                    {
+                        this.latestClassification = classification;
+                    }
+                }
+            }
+
+
+            /**
+             * Remove the classification.  Care is take to retain the deleted version number to
+             * be able to distinguish between a late update request and a restore request.
+             *
+             * @param classification optional classification from the caller
+             */
+            void deleteClassification(Classification classification)
+            {
+                if (this.latestClassification != null)
+                {
+                    this.deletedVersionNumber = this.latestClassification.getVersion();
+                    this.latestClassification = null;
+                }
+
+                if (classification != null)
+                {
+                    if (classification.getVersion() > this.deletedVersionNumber)
+                    {
+                        this.deletedVersionNumber = classification.getVersion();
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Class to manage the storage of relationships.
+     */
+    private class StoredRelationship
+    {
+        private final List<Relationship> relationshipHistory = new ArrayList<>();
+
+        private volatile Relationship relationship = null;
+        private volatile Date         purgeTime = null;
+
+
+        /**
+         * StoredRelationship is constructed with a valid relationship.  It may not be version 1.
+         *
+         * @param relationship first relationship
+         */
+        StoredRelationship(Relationship relationship)
+        {
+            saveRelationship(relationship);
+        }
+
+
+        /**
+         * Save the new instance in the store and move the current instance to the front of the history.
+         *
+         * @param relationship new instance
+         */
+        void saveRelationship(Relationship relationship)
+        {
+            if (this.relationship != null)
+            {
+                this.relationshipHistory.add(0, this.relationship);
+            }
+
+            this.relationship = refreshRelationshipProxies(relationship);
+        }
+
+
+        /**
+         * Remove the current version of the instance.  The history is still in place.
+         **/
+        void purgeRelationship()
+        {
+            if (this.relationship != null)
+            {
+                this.relationshipHistory.add(this.relationship);
+                this.purgeTime = new Date();
+            }
+
+            this.relationship = null;
+        }
+
+
+        /**
+         * Retrieve the current instance.
+         *
+         * @return selected instance
+         */
+        Relationship getRelationship()
+        {
+            if (relationship != null)
+            {
+                return refreshRelationshipProxies(this.relationship);
+            }
+
+            return relationship;
+        }
+
+
+        /**
+         * Retrieve the version that was active in the repository at a particular time.
+         *
+         * @param asOfTime time to use on the query
+         * @return selected instance
+         */
+        Relationship getRelationship(Date asOfTime)
+        {
+            if (asOfTime == null)
+            {
+                return getRelationship();
+            }
+
+            if (this.relationship != null)
+            {
+                /*
+                 * The requested time is before the element was created.
+                 */
+                if (asOfTime.before(relationship.getCreateTime()))
+                {
+                    return null;
+                }
+
+                /*
+                 * The element has never been updated so the initial version is still valid.
+                 */
+                if (relationship.getUpdateTime() != null)
+                {
+                    return relationship;
+                }
+
+                if ((asOfTime.equals(relationship.getUpdateTime())) ||
+                            (asOfTime.after(relationship.getUpdateTime())))
+                {
+                    /*
+                     * The asOfTime is within the window of when this instance is valid.
+                     */
+                    return relationship;
+                }
+            }
+
+            for (Relationship historicalRelationship : relationshipHistory)
+            {
+                if (historicalRelationship.getUpdateTime() == null)
+                {
+                    /*
+                     * This is the first version of the instance.
+                     */
+                    return historicalRelationship;
+                }
+
+                if ((asOfTime.equals(historicalRelationship.getUpdateTime())) ||
+                            (asOfTime.after(historicalRelationship.getUpdateTime())))
+                {
+                    /*
+                     * The asOfTime is within the window of when this instance was valid.
+                     */
+                    return historicalRelationship;
+                }
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Return the instances that match the history.
+         *
+         * @param fromTime starting time
+         * @param toTime ending time
+         * @param oldestFirst ordering of results
+         * @return list of versions of this relationship
+         */
+        List<Relationship> getRelationshipHistory(Date    fromTime,
+                                                  Date    toTime,
+                                                  boolean oldestFirst)
+        {
+            List<Relationship> historyResults = new ArrayList<>();
+            Date               followingUpdateTime = null;
+
+            if (this.relationship != null)
+            {
+                if (toTime.before(this.relationship.getCreateTime()))
+                {
+                    /*
+                     * The entity is known - but none of its instances are in the requested date range.
+                     */
+                    return historyResults;
+                }
+                else
+                {
+                    /*
+                     * The current version of the entity is in range.
+                     */
+                    if (oldestFirst)
+                    {
+                        historyResults.add(this.relationship);
+                    }
+                    else
+                    {
+                        historyResults.add(0, this.relationship);
+                    }
+
+                    followingUpdateTime = this.relationship.getUpdateTime();
+                }
+            }
+            else if (purgeTime != null)
+            {
+                if (fromTime.after(purgeTime))
+                {
+                    /*
+                     * The entity has been purged before the "fromTime".
+                     */
+                    return historyResults;
+                }
+
+                followingUpdateTime = purgeTime;
+            }
+
+            if (! this.relationshipHistory.isEmpty())
+            {
+                for (Relationship historicalInstance : this.relationshipHistory)
+                {
+                    if (checkInclusiveDate(fromTime, toTime, historicalInstance, followingUpdateTime))
+                    {
+                        historyResults.add(historicalInstance);
+                        followingUpdateTime = historicalInstance.getUpdateTime();
+                    }
+                }
+            }
+
+            return historyResults;
+        }
+
+
+        /**
+         * Retrieve the previous version of the instance.
+         *
+         * @return first element in the history
+         */
+        Relationship retrievePreviousVersion()
+        {
+            if (! relationshipHistory.isEmpty())
+            {
+                return relationshipHistory.get(0);
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Ensure a returned relationship is a clone of a stored value and contains the latest proxies for its ends.
+         *
+         * @param storedRelationship relationship retrieved from one of the relationship stores.
+         * @return a cloned relationship with the latest proxies.
+         */
+        private Relationship refreshRelationshipProxies(Relationship storedRelationship)
+        {
+            if (storedRelationship != null)
+            {
+                Relationship result = new Relationship(storedRelationship);
+
+                StoredEntity storedEntity = entityStore.get(storedRelationship.getEntityOneProxy().getGUID());
+
+                if (storedEntity != null)
+                {
+                    result.setEntityOneProxy(storedEntity.getEntityProxy());
+                }
+
+                storedEntity = entityStore.get(storedRelationship.getEntityTwoProxy().getGUID());
+
+                if (storedEntity != null)
+                {
+                    result.setEntityTwoProxy(storedEntity.getEntityProxy());
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+    }
 }

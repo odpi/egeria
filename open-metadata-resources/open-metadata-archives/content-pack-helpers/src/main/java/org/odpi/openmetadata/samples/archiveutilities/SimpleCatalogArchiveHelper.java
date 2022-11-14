@@ -145,7 +145,7 @@ public class SimpleCatalogArchiveHelper
     private static final String TERM_ANCHOR_TYPE_NAME                    = "TermAnchor";
     private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
     private static final String SYNONYM_RELATIONSHIP_TYPE_NAME           = "Synonym";
-    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
+    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "SemanticAssignment";
     private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
@@ -4392,7 +4392,7 @@ public class SimpleCatalogArchiveHelper
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description, null, null, null,null, false, false, false, null, null, null);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, null, description, null, null,null, false, false, false, null, null, null);
     }
 
 

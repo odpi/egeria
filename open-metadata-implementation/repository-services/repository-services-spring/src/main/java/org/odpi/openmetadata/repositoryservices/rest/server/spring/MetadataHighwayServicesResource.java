@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.repositoryservices.rest.properties.BooleanResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortListResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipResponse;
@@ -31,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class MetadataHighwayServicesResource
 {
-    private OMRSMetadataHighwayRESTServices restAPI = new OMRSMetadataHighwayRESTServices();
+    private final OMRSMetadataHighwayRESTServices restAPI = new OMRSMetadataHighwayRESTServices();
 
     /**
      * Default constructor
@@ -50,8 +52,13 @@ public class MetadataHighwayServicesResource
      */
     @GetMapping(path = "/cohort-descriptions")
 
-    public CohortListResponse getCohorts(@PathVariable String   serverName,
-                                         @PathVariable String   userId)
+    @Operation(summary="getCohorts",
+               description="Return the details of the cohorts that this server is participating in.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public CohortListResponse getCohorts(@PathVariable String serverName,
+                                         @PathVariable String userId)
     {
         return restAPI.getCohortList(serverName, userId);
     }
@@ -66,6 +73,12 @@ public class MetadataHighwayServicesResource
      * @return registration properties for server
      */
     @GetMapping(path = "/local-registration")
+
+    @Operation(summary="getLocalRegistration",
+               description="Return the local registration information used by this server to register with open metadata repository cohorts.  " +
+                                   "No registration time is provided.  Use the cohort specific version to retrieve the registration time.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
 
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
                                                          @PathVariable String   userId)
@@ -85,11 +98,46 @@ public class MetadataHighwayServicesResource
      */
     @GetMapping(path = "/cohorts/{cohortName}/local-registration")
 
+    @Operation(summary="getLocalRegistration",
+               description="Return the local registration information used by this server to register with the requested open metadata repository cohort.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
                                                          @PathVariable String   userId,
                                                          @PathVariable String   cohortName)
     {
         return restAPI.getLocalRegistration(serverName, userId, cohortName);
+    }
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     *
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     */
+    @GetMapping(path = "/cohorts/{cohortName}/connect")
+
+    @Operation(summary="connectToCohort",
+               description="A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
+                                   " open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration" +
+                                   " event has been sent." +
+                                   " If the server has already registered in the past, it sends a reregistration request.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse connectToCohort(@PathVariable String serverName,
+                                           @PathVariable String userId,
+                                           @PathVariable String cohortName)
+    {
+        return restAPI.connectToCohort(serverName, userId, cohortName);
     }
 
 
@@ -103,6 +151,11 @@ public class MetadataHighwayServicesResource
      */
     @GetMapping(path = "/cohorts/{cohortName}/remote-members")
 
+    @Operation(summary="getRemoteRegistrations",
+               description="Return the list of registrations received from remote members of the cohort.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
     public CohortMembershipListResponse getRemoteRegistrations(@PathVariable String   serverName,
                                                                @PathVariable String   userId,
                                                                @PathVariable String   cohortName)
@@ -110,4 +163,49 @@ public class MetadataHighwayServicesResource
         return restAPI.getRemoteRegistrations(serverName, userId, cohortName);
     }
 
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @GetMapping(path = "/cohorts/{cohortName}/disconnect")
+
+    @Operation(summary="disconnectFromCohort",
+               description="Disconnect communications from a specific cohort.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse disconnectFromCohort(@PathVariable String serverName,
+                                                @PathVariable String userId,
+                                                @PathVariable String cohortName)
+    {
+        return restAPI.disconnectFromCohort(serverName, userId, cohortName);
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @GetMapping(path = "/cohorts/{cohortName}/unregister")
+
+    @Operation(summary="unregisterFromCohort",
+               description="Unregister from a specific cohort and disconnect from cohort communications.",
+               externalDocs=@ExternalDocumentation(description="Cohort Member",
+                                                   url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse unregisterFromCohort(@PathVariable String serverName,
+                                                @PathVariable String userId,
+                                                @PathVariable String cohortName)
+    {
+        return restAPI.unregisterFromCohort(serverName, userId, cohortName);
+    }
 }

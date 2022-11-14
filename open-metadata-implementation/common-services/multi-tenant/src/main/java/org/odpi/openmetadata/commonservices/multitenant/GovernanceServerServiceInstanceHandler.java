@@ -38,7 +38,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
 
 
     /**
-     * Return the connector type for the requested connector provider after validating that the resulting
+     * Return a description of the connector for the requested connector provider after validating that the resulting
      * connector implements the correct interface.  This method is for tools that are configuring
      * connector into an Egeria governance server.  Each integration service/engine service has a specific
      * REST API endpoint for their service.  The configuration tool calls it and this method is called.
@@ -48,7 +48,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
      * @param connectorProviderClassName name of the connector provider class
      * @param requiredConnectorInterface  connector interface class
      * @param serviceName service name
-     * @return ConnectorType bean
+     * @return Connector report bean
      * @throws InvalidParameterException one of the parameters is null
      * @throws ConnectionCheckedException the connection passed to the connector provider is not valid
      * @throws ConnectorCheckedException the connector is not valid
@@ -139,6 +139,8 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
             connectorReport.setSupportedActionTargetNames(governanceActionServiceProvider.supportedActionTargetNames());
             connectorReport.setSupportedGuards(governanceActionServiceProvider.supportedGuards());
         }
+
+        connector.disconnect();
 
         return connectorReport;
     }

@@ -114,7 +114,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                      "The local server has started to unregister from all future communication with the named " +
                                  "open metadata repository cohort.",
                                      "No action is required if the server is shutting down, or there has been a deliberate " +
-                                             "action to permanently remove the server from the cohort.  If this is unexpected " +
+                                             "action to remove the server from the cohort.  If this is unexpected " +
                                              "then look for reasons why the server is disconnecting - it may be an operator action or failure in the " +
                                              "cohort."),
 
@@ -246,8 +246,8 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     LOCAL_REFERENCE_INSTANCE("OMRS-AUDIT-0028",
                              OMRSAuditLogRecordSeverity.INFO,
-                             "A reference instance has been passed to repository {0} during the {1} in the {2} parameter which has the local repository metadata collection id {3} as its home",
-                             "The system saves the instance since it assumes it comes from a back up.",
+                             "A reference instance has been passed to the local repository on the {0} parameter of the {1} method which has the local repository metadata collection id {2} as its home",
+                             "The system saves the instance since it assumes it comes from a back-up open metadata archive.",
                              "Validate that the reference instance comes from a back-up.  If it does then all is well.  If it does not, look for errors in the audit log and validate that the message passing " +
                                      "protocol levels are compatible. If nothing is clearly wrong with the set up, " +
                                      "raise a Github issue or ask for help on the dev mailing list."),
@@ -663,6 +663,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                          "The enterprise connector has received an unexpected exception from a remote repository. " +
                                   "This exception is saved and may be returned to the caller if the other repositories can not satisfy the caller's request.",
                                          "Investigate whether this exception is the result of an underlying issue in the remote repository."),
+
+    UNSUPPORTED_REMOTE_FUNCTION("OMRS-AUDIT-0137",
+                                         OMRSAuditLogRecordSeverity.INFO,
+                                         "The remote repository {0} with metadata collection id {1} does not support method {2}}",
+                                         "The cohort member client connector has received an function not supported exception from a remote repository. " +
+                                                 "This exception is remembered and the connector will not call this method again until this local server is restarted.",
+                                         "Verify that the repository is known not to support the requested function."),
 
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                                   OMRSAuditLogRecordSeverity.TYPES,
