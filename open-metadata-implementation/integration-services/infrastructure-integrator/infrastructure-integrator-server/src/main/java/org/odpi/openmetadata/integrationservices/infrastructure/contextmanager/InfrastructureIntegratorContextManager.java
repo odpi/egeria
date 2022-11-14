@@ -18,7 +18,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfra
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -141,34 +140,32 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-        String metadataSourceGUID = null;
-
-        List<SoftwareCapabilityElement> softwareCapabilityElements = capabilityManagerClient.getSoftwareCapabilitiesByName(localServerUserId, metadataSourceQualifiedName, null, 0 , 0);
-
-        if ((softwareCapabilityElements != null) && (! softwareCapabilityElements.isEmpty()))
+        if (metadataSourceQualifiedName != null)
         {
-            metadataSourceGUID = softwareCapabilityElements.get(0).getElementHeader().getGUID();
+            String metadataSourceGUID = null;
+
+            List<SoftwareCapabilityElement> softwareCapabilityElements = capabilityManagerClient.getSoftwareCapabilitiesByName(localServerUserId,
+                                                                                                                               metadataSourceQualifiedName,
+                                                                                                                               null, 0, 0);
+
+            if ((softwareCapabilityElements != null) && (! softwareCapabilityElements.isEmpty()))
+            {
+                metadataSourceGUID = softwareCapabilityElements.get(0).getElementHeader().getGUID();
+            }
+
+            if (metadataSourceGUID == null)
+            {
+                SoftwareCapabilityProperties properties = new SoftwareCapabilityProperties();
+
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = capabilityManagerClient.createSoftwareCapability(localServerUserId, null, null, false, null, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        if (metadataSourceGUID == null)
-        {
-            SoftwareCapabilityProperties properties = new SoftwareCapabilityProperties();
-
-            properties.setQualifiedName(metadataSourceQualifiedName);
-
-            metadataSourceGUID = capabilityManagerClient.createSoftwareCapability(localServerUserId, null, null, false, null, properties);
-        }
-
-        return metadataSourceGUID;
+        return null;
     }
 
     /**

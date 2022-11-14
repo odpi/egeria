@@ -47,7 +47,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      */
     class FileCataloguingListener extends FileAlterationListenerAdaptor
     {
-        private DataFilesMonitorIntegrationConnector connector;
+        private final DataFilesMonitorIntegrationConnector connector;
 
         FileCataloguingListener(DataFilesMonitorIntegrationConnector connector)
         {

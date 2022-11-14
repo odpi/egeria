@@ -30,8 +30,8 @@ import java.util.*;
  */
 public class OMAGServerPlatformInstanceMap
 {
-    private static Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
-    private static Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
+    private static final Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
+    private static final Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
 
 
     /**
@@ -40,7 +40,7 @@ public class OMAGServerPlatformInstanceMap
      * @param userId calling user
      * @throws UserNotAuthorizedException calling user not allowed to use these services
      */
-    private static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
+    public static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
     {
         try
         {

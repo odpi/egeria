@@ -3,15 +3,21 @@
 package org.odpi.openmetadata.platformservices.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -20,12 +26,14 @@ import org.slf4j.LoggerFactory;
  */
 public class OMAGServerPlatformActiveServices
 {
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatformActiveServices.class);
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerPlatformActiveServices.class),
+                                                                            CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
 
-    private OMAGServerPlatformInstanceMap serverInstanceMap = new OMAGServerPlatformInstanceMap();
+    private final OMAGServerPlatformInstanceMap serverInstanceMap = new OMAGServerPlatformInstanceMap();
 
-    private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
+    private final String serverName = "<null>";
 
     /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
@@ -38,7 +46,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredAccessServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -51,7 +59,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -68,7 +76,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredEngineServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -81,7 +89,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -98,7 +106,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredIntegrationServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -111,7 +119,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -128,7 +136,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredViewServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -141,7 +149,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -158,7 +166,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredGovernanceServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -171,7 +179,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -188,7 +196,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getRegisteredCommonServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -201,7 +209,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -217,7 +225,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String methodName = "getAllRegisteredServices";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -230,7 +238,56 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider after validating that the
+     * connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
+     * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
+     *
+     * @param userId calling user
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean or exceptions that occur when trying to create the connector
+     */
+    public ConnectorTypeResponse getConnectorType(String userId,
+                                                  String connectorProviderClassName)
+    {
+        final String methodName = "validateConnector";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectorTypeResponse response = new ConnectorTypeResponse();
+
+        try
+        {
+            OMAGServerPlatformInstanceMap.validateUserAsInvestigatorForPlatform(userId);
+
+            Class<?> connectorProviderClass     = Class.forName(connectorProviderClassName);
+            Object   potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
+
+            ConnectorProvider connectorProvider = (ConnectorProvider) potentialConnectorProvider;
+
+            ConnectorType connectorType = connectorProvider.getConnectorType();
+
+            if (connectorType == null)
+            {
+                connectorType = new ConnectorType();
+
+                connectorType.setConnectorProviderClassName(connectorProviderClassName);
+            }
+
+            response.setConnectorType(connectorType);
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -248,7 +305,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String   methodName = "isServerKnown";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         BooleanResponse response = new BooleanResponse();
 
@@ -261,7 +318,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -277,7 +334,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String   methodName = "getKnownServerList";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ServerListResponse response = new ServerListResponse();
 
@@ -290,7 +347,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -306,7 +363,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String   methodName = "getActiveServerList";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ServerListResponse response = new ServerListResponse();
 
@@ -319,7 +376,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -337,7 +394,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String   methodName = "getServerStatus";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ServerStatusResponse response = new ServerStatusResponse();
 
@@ -355,7 +412,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -373,7 +430,7 @@ public class OMAGServerPlatformActiveServices
     {
         final String   methodName = "getActiveServerList";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ServerServicesListResponse response = new ServerServicesListResponse();
 
@@ -387,7 +444,7 @@ public class OMAGServerPlatformActiveServices
             exceptionHandler.captureExceptions(response, error, methodName, null);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

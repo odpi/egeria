@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -15,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -26,7 +24,7 @@ import java.util.Map;
 public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener
 {
     private LineageIntegratorContext                myContext       = null;
-    private Map<String, OpenMetadataTopicConnector> topicConnectors = new HashMap<>();
+    private final Map<String, OpenMetadataTopicConnector> topicConnectors = new HashMap<>();
 
 
     /**
