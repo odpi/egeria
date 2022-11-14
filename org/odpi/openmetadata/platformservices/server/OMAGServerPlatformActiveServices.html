@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -198,13 +198,22 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../commonservices/ffdc/rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorType(java.lang.String,java.lang.String)">getConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;connectorProviderClassName)</code></th>
+<td class="colLast">
+<div class="block">Return the connector type for the requested connector provider after validating that the
+ connector provider is available on the OMAGServerPlatform's class path.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../rest/ServerListResponse.html" title="class in org.odpi.openmetadata.platformservices.rest">ServerListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownServerList(java.lang.String)">getKnownServerList</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredAccessServices(java.lang.String)">getRegisteredAccessServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -212,14 +221,14 @@ extends java.lang.Object</pre>
  and can be configured in a metadata access point or metadata server.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredCommonServices(java.lang.String)">getRegisteredCommonServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Return the list of common services that are registered (supported) in this OMAG Server Platform.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredEngineServices(java.lang.String)">getRegisteredEngineServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -227,7 +236,7 @@ extends java.lang.Object</pre>
  and can be configured in an engine hosting OMAG server.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredGovernanceServices(java.lang.String)">getRegisteredGovernanceServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -235,7 +244,7 @@ extends java.lang.Object</pre>
  and can be configured as part of a governance server.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredIntegrationServices(java.lang.String)">getRegisteredIntegrationServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -243,7 +252,7 @@ extends java.lang.Object</pre>
  and can be configured in an integration daemon.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredViewServices(java.lang.String)">getRegisteredViewServices</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
@@ -251,7 +260,7 @@ extends java.lang.Object</pre>
  and can be configured in a view server.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../rest/ServerStatusResponse.html" title="class in org.odpi.openmetadata.platformservices.rest">ServerStatusResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getServerStatus(java.lang.String,java.lang.String)">getServerStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;serverName)</code></th>
@@ -259,7 +268,7 @@ extends java.lang.Object</pre>
 <div class="block">Return information about when the server has been active.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../commonservices/ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isServerKnown(java.lang.String,java.lang.String)">isServerKnown</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;serverName)</code></th>
@@ -425,6 +434,26 @@ extends java.lang.Object</pre>
 <dd><code>userId</code> - calling user</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of service descriptions</dd>
+</dl>
+</li>
+</ul>
+<a id="getConnectorType(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getConnectorType</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../commonservices/ffdc/rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;getConnectorType&#8203;(java.lang.String&nbsp;userId,
+                                              java.lang.String&nbsp;connectorProviderClassName)</pre>
+<div class="block">Return the connector type for the requested connector provider after validating that the
+ connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
+ connectors into an Egeria server.  It does not validate that the connector will load and initialize.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>connectorProviderClassName</code> - name of the connector provider class</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>ConnectorType bean or exceptions that occur when trying to create the connector</dd>
 </dl>
 </li>
 </ul>

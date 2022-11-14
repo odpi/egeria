@@ -227,7 +227,7 @@ extends <a href="AuditableServerServiceInstanceHandler.html" title="class in org
                  java.lang.Class&lt;?&gt;&nbsp;requiredConnectorInterface,
                  java.lang.String&nbsp;serviceName)</code></th>
 <td class="colLast">
-<div class="block">Return the connector type for the requested connector provider after validating that the resulting
+<div class="block">Return a description of the connector for the requested connector provider after validating that the resulting
  connector implements the correct interface.</div>
 </td>
 </tr>
@@ -329,7 +329,7 @@ extends <a href="AuditableServerServiceInstanceHandler.html" title="class in org
                                          java.lang.IllegalAccessException,
                                          java.lang.NoSuchMethodException,
                                          java.lang.reflect.InvocationTargetException</pre>
-<div class="block">Return the connector type for the requested connector provider after validating that the resulting
+<div class="block">Return a description of the connector for the requested connector provider after validating that the resulting
  connector implements the correct interface.  This method is for tools that are configuring
  connector into an Egeria governance server.  Each integration service/engine service has a specific
  REST API endpoint for their service.  The configuration tool calls it and this method is called.
@@ -341,7 +341,7 @@ extends <a href="AuditableServerServiceInstanceHandler.html" title="class in org
 <dd><code>requiredConnectorInterface</code> - connector interface class</dd>
 <dd><code>serviceName</code> - service name</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>ConnectorType bean</dd>
+<dd>Connector report bean</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - the connection passed to the connector provider is not valid</dd>

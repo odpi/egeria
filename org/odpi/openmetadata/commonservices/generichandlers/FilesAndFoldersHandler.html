@@ -260,28 +260,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">addDataFolderAssetToCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">addDataFolderAssetToCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;externalSourceGUID,
                            java.lang.String&nbsp;externalSourceName,
-                           java.lang.String&nbsp;pathName,
-                           java.lang.String&nbsp;name,
-                           java.lang.String&nbsp;versionIdentifier,
-                           java.lang.String&nbsp;description,
-                           java.util.Date&nbsp;effectiveFrom,
-                           java.util.Date&nbsp;effectiveTo,
-                           boolean&nbsp;forLineage,
-                           boolean&nbsp;forDuplicateProcessing,
-                           java.util.Date&nbsp;effectiveTime,
-                           java.lang.String&nbsp;methodName)</code></th>
-<td class="colLast">
-<div class="block">Creates a new folder asset that is identified as a data asset.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">addDataFolderAssetToCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
-                           java.lang.String&nbsp;externalSourceGUID,
-                           java.lang.String&nbsp;externalSourceName,
+                           java.lang.String&nbsp;qualifiedName,
                            java.lang.String&nbsp;pathName,
                            java.lang.String&nbsp;name,
                            java.lang.String&nbsp;versionIdentifier,
@@ -296,6 +278,25 @@ extends java.lang.Object</pre>
                            java.lang.String&nbsp;connectorProviderClassName,
                            java.lang.String&nbsp;typeName,
                            java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties,
+                           java.util.Date&nbsp;effectiveFrom,
+                           java.util.Date&nbsp;effectiveTo,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing,
+                           java.util.Date&nbsp;effectiveTime,
+                           java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Creates a new folder asset that is identified as a data asset.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">addDataFolderAssetToCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;externalSourceGUID,
+                           java.lang.String&nbsp;externalSourceName,
+                           java.lang.String&nbsp;pathName,
+                           java.lang.String&nbsp;name,
+                           java.lang.String&nbsp;versionIdentifier,
+                           java.lang.String&nbsp;description,
                            java.util.Date&nbsp;effectiveFrom,
                            java.util.Date&nbsp;effectiveTo,
                            boolean&nbsp;forLineage,
@@ -339,10 +340,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addFileToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">addFileToCatalogFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addFileToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">addFileToCatalogFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;externalSourceGUID,
                             java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;templateGUID,
+                            java.lang.String&nbsp;qualifiedName,
                             java.lang.String&nbsp;fullPath,
                             java.lang.String&nbsp;name,
                             java.lang.String&nbsp;versionIdentifier,
@@ -357,10 +359,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addFolderToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">addFolderToCatalogFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addFolderToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">addFolderToCatalogFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;externalSourceGUID,
                               java.lang.String&nbsp;externalSourceName,
                               java.lang.String&nbsp;templateGUID,
+                              java.lang.String&nbsp;qualifiedName,
                               java.lang.String&nbsp;pathName,
                               java.lang.String&nbsp;name,
                               java.lang.String&nbsp;versionIdentifier,
@@ -1348,7 +1351,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="addDataFolderAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1357,6 +1360,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;addDataFolderAssetToCatalog&#8203;(java.lang.String&nbsp;userId,
                                                                     java.lang.String&nbsp;externalSourceGUID,
                                                                     java.lang.String&nbsp;externalSourceName,
+                                                                    java.lang.String&nbsp;qualifiedName,
                                                                     java.lang.String&nbsp;pathName,
                                                                     java.lang.String&nbsp;name,
                                                                     java.lang.String&nbsp;versionIdentifier,
@@ -1392,6 +1396,7 @@ extends java.lang.Object</pre>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
+<dd><code>qualifiedName</code> - optional qualified name</dd>
 <dd><code>pathName</code> - pathname of the file</dd>
 <dd><code>name</code> - name for the folder in the catalog</dd>
 <dd><code>versionIdentifier</code> - version identifier for the folder in the catalog</dd>
@@ -1545,7 +1550,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addFileToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="addFileToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1555,6 +1560,7 @@ extends java.lang.Object</pre>
                                                                      java.lang.String&nbsp;externalSourceGUID,
                                                                      java.lang.String&nbsp;externalSourceName,
                                                                      java.lang.String&nbsp;templateGUID,
+                                                                     java.lang.String&nbsp;qualifiedName,
                                                                      java.lang.String&nbsp;fullPath,
                                                                      java.lang.String&nbsp;name,
                                                                      java.lang.String&nbsp;versionIdentifier,
@@ -1573,6 +1579,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>templateGUID</code> - unique identifier of the asset description to copy</dd>
+<dd><code>qualifiedName</code> - optional unique name</dd>
 <dd><code>fullPath</code> - unique path and file name for file</dd>
 <dd><code>name</code> - short display name for file (defaults to the file name without the path)</dd>
 <dd><code>versionIdentifier</code> - version identifier of the file</dd>
@@ -1590,7 +1597,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addFolderToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="addFolderToCatalogFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1600,6 +1607,7 @@ extends java.lang.Object</pre>
                                                                        java.lang.String&nbsp;externalSourceGUID,
                                                                        java.lang.String&nbsp;externalSourceName,
                                                                        java.lang.String&nbsp;templateGUID,
+                                                                       java.lang.String&nbsp;qualifiedName,
                                                                        java.lang.String&nbsp;pathName,
                                                                        java.lang.String&nbsp;name,
                                                                        java.lang.String&nbsp;versionIdentifier,
@@ -1618,6 +1626,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>templateGUID</code> - unique identifier of the asset description to copy</dd>
+<dd><code>qualifiedName</code> - optional qualified name</dd>
 <dd><code>pathName</code> - unique path and file name for file</dd>
 <dd><code>name</code> - short name for file (defaults to the file name without the path)</dd>
 <dd><code>versionIdentifier</code> - version identifier for the file</dd>

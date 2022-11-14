@@ -161,9 +161,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">APIBasedOpenLineageLogStoreConnector</span>
 extends <a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></pre>
-<div class="block">FileBasedOpenLineageLogStoreConnector provides a connector implementation for a file based open lineage log.
- The open lineage log is stored in a directory and each open lineage event record is stored as a file with a filename built
- from the record's unique identifier (runId), time and status. The record is stored in a subdirectory that is made from the namespace and job.</div>
+<div class="block">APIBasedOpenLineageLogStoreConnector provides a connector implementation for an API based open lineage log.
+ Each lineage record is passed to the supplied lineage API.</div>
 </li>
 </ul>
 </div>
