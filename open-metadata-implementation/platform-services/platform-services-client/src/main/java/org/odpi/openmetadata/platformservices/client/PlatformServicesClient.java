@@ -5,6 +5,7 @@ package org.odpi.openmetadata.platformservices.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
@@ -159,7 +160,7 @@ public class PlatformServicesClient
                                                                                     PropertyServerException
     {
         final String methodName = "getConnectorType";
-        final String connectorProviderParameterName = "getConnectorType";
+        final String connectorProviderParameterName = "connectorProviderClassName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, connectorProviderParameterName, methodName);

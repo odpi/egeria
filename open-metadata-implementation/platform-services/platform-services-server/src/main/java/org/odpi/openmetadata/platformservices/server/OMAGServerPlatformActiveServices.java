@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
@@ -18,6 +19,9 @@ import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
 
 
 /**
@@ -256,7 +260,7 @@ public class OMAGServerPlatformActiveServices
     public ConnectorTypeResponse getConnectorType(String userId,
                                                   String connectorProviderClassName)
     {
-        final String methodName = "validateConnector";
+        final String methodName = "getConnectorType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

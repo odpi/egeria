@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorE
  * CatalogIntegratorConnector is the base class for an integration connector that is managed by the
  * Catalog Integrator OMIS.
  */
-public abstract class CatalogIntegratorConnector extends IntegrationConnectorBase
+public abstract class CatalogIntegratorConnector extends IntegrationConnectorBase implements CatalogIntegratorOMISConnector
 {
     private CatalogIntegratorContext context = null;
 

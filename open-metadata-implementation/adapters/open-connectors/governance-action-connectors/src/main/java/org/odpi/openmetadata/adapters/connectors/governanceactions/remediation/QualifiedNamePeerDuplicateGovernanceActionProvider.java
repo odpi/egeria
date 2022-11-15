@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class QualifiedNamePeerDuplicateGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "346939c4-de2c-44aa-a044-0ec64df0560f";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:Deduplication";
+    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Remediation:Deduplication";
     private static final String  connectorTypeDisplayName = "Deduplication Governance Action Service";
     private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.";
 

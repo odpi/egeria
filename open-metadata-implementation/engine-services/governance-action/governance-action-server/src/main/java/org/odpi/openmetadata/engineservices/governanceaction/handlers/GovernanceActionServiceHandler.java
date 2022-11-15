@@ -84,10 +84,10 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
               governanceActionServiceConnector,
               auditLog);
 
-        final String actionDescription = "Initializing GovernanceActionService";
+        final String actionDescription = "Initializing GeneralGovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String genericGovernanceActionServiceType      = "GovernanceActionService";
+        final String genericGovernanceActionServiceType      = "GeneralGovernanceActionService";
         final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceActionService";
         final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceActionService";
         final String verificationGovernanceActionServiceType = "VerificationGovernanceActionService";
@@ -122,7 +122,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 this.governanceContext = context;
                 this.governanceActionService = service;
 
-                if (governanceActionServiceConnector instanceof GovernanceActionService)
+                if (governanceActionServiceConnector instanceof GeneralGovernanceActionService)
                 {
                     this.governanceActionServiceType = genericGovernanceActionServiceType;
                 }

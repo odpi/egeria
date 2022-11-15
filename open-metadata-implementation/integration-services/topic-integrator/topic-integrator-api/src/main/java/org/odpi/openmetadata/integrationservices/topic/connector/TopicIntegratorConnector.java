@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.topic.ffdc.TopicIntegratorError
  * TopicIntegratorConnector is the base class for an integration connector that is managed by the
  * Topic Integrator OMIS.
  */
-public abstract class TopicIntegratorConnector extends IntegrationConnectorBase
+public abstract class TopicIntegratorConnector extends IntegrationConnectorBase implements TopicIntegratorOMISConnector
 {
     private TopicIntegratorContext context = null;
 

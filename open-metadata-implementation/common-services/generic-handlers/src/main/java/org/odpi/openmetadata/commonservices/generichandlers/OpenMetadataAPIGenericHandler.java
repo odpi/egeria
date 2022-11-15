@@ -5575,8 +5575,8 @@ public class OpenMetadataAPIGenericHandler<B>
              * Verify that the user is permitted to create a new bean.
              */
             validateNewEntityRequest(userId,
-                                     entityTypeGUID,
-                                     entityTypeName,
+                                     templateEntity.getType().getTypeDefGUID(),
+                                     templateEntity.getType().getTypeDefName(),
                                      propertyBuilder.getInstanceProperties(methodName),
                                      propertyBuilder.getEntityClassifications(),
                                      propertyBuilder.getInstanceStatus(),
@@ -5627,8 +5627,8 @@ public class OpenMetadataAPIGenericHandler<B>
              * Ready to create the new bean
              */
             String newEntityGUID = repositoryHandler.createEntity(userId,
-                                                                  entityTypeGUID,
-                                                                  entityTypeName,
+                                                                  templateEntity.getType().getTypeDefGUID(),
+                                                                  templateEntity.getType().getTypeDefName(),
                                                                   externalSourceGUID,
                                                                   externalSourceName,
                                                                   propertyBuilder.getInstanceProperties(methodName),

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.integrationservices.lineage.client;
 import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -19,11 +19,11 @@ import org.odpi.openmetadata.integrationservices.lineage.api.LineageIntegratorAP
  */
 public class LineageIntegrator implements LineageIntegratorAPI
 {
-    private FFDCRESTClient restClient;               /* Initialized in constructor */
-    private String         serverName;
-    private String         serverPlatformRootURL;
+    private final FFDCRESTClient restClient;               /* Initialized in constructor */
+    private final String         serverName;
+    private final String         serverPlatformRootURL;
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -138,13 +138,13 @@ public class LineageIntegrator implements LineageIntegratorAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
-                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      connectorProviderClassName);
+        ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          connectorProviderClassName);
 
-        return new ConnectorReport(restResult);
+        return restResult.getConnectorReport();
     }
 
 

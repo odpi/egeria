@@ -82,7 +82,7 @@ public class OMRSAuditLog extends AuditLog
         this.omrsReportingComponent = new OMRSAuditLogReportingComponent(omrsReportingComponent.getComponentId(),
                                                                          omrsReportingComponent.getComponentDevelopmentStatus(),
                                                                          omrsReportingComponent.getComponentName(),
-                                                                         omrsReportingComponent.getComponentType(),
+                                                                         omrsReportingComponent.getComponentDescription(),
                                                                          omrsReportingComponent.getComponentWikiURL());
     }
 
@@ -127,7 +127,7 @@ public class OMRSAuditLog extends AuditLog
         return createNewAuditLog(reportingComponent.getComponentId(),
                                  reportingComponent.getComponentDevelopmentStatus(),
                                  reportingComponent.getComponentName(),
-                                 reportingComponent.getComponentType(),
+                                 reportingComponent.getComponentDescription(),
                                  reportingComponent.getComponentWikiURL());
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 public class ZonePublisherGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "add1ff1b-d32d-42e7-9ebf-a2d26276aafe";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:ZonePublisher";
+    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Remediation:ZonePublisher";
     private static final String  connectorTypeDisplayName = "Zone Publisher Governance Action Service";
     private static final String  connectorTypeDescription = "Assigns the configured zone(s) to the requested asset.";
 

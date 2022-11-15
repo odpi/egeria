@@ -49,7 +49,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
             this.componentId = template.getComponentId();
             this.componentDevelopmentStatus = template.getComponentDevelopmentStatus();
             this.componentName = template.getComponentName();
-            this.componentDescription = template.getComponentType();
+            this.componentDescription = template.getComponentDescription();
             this.componentWikiURL = template.getComponentWikiURL();
         }
     }
@@ -153,7 +153,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
      *
      * @return String description
      */
-    public String getComponentType()
+    public String getComponentDescription()
     {
         return componentDescription;
     }
@@ -233,7 +233,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
         AuditLogReportingComponent that = (AuditLogReportingComponent) objectToCompare;
         return getComponentId() == that.getComponentId() &&
                 Objects.equals(getComponentName(), that.getComponentName()) &&
-                Objects.equals(getComponentType(), that.getComponentType()) &&
+                Objects.equals(getComponentDescription(), that.getComponentDescription()) &&
                 Objects.equals(getComponentWikiURL(), that.getComponentWikiURL());
     }
 
@@ -246,6 +246,6 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComponentId(), getComponentName(), getComponentType(), getComponentWikiURL());
+        return Objects.hash(getComponentId(), getComponentName(), getComponentDescription(), getComponentWikiURL());
     }
 }

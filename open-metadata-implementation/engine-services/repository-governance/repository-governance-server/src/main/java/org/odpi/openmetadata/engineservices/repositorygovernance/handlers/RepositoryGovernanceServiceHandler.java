@@ -5,7 +5,7 @@ package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext;
-import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceService;
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceServiceConnector;
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceAuditCode;
@@ -22,8 +22,8 @@ import java.util.Date;
  */
 public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 {
-    private RepositoryGovernanceService repositoryGovernanceService;
-    private RepositoryGovernanceContext repositoryGovernanceContext;
+    private RepositoryGovernanceServiceConnector repositoryGovernanceService;
+    private RepositoryGovernanceContext          repositoryGovernanceContext;
 
 
     /**
@@ -73,12 +73,12 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            this.repositoryGovernanceService = (RepositoryGovernanceService) repositoryGovernanceServiceConnector;
+            this.repositoryGovernanceService = (RepositoryGovernanceServiceConnector) repositoryGovernanceServiceConnector;
         }
         catch (Exception error)
         {
             final String repositoryGovernanceServiceConnectorParameterName = "repositoryGovernanceServiceConnector";
-            final String actionDescription = "Cast connector to RepositoryGovernanceService";
+            final String actionDescription = "Cast connector to RepositoryGovernanceServiceConnector";
 
             auditLog.logException(actionDescription,
                                   RepositoryGovernanceAuditCode.INVALID_REPOSITORY_GOVERNANCE_SERVICE.getMessageDefinition(repositoryGovernanceServiceName,

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.analytics.ffdc.AnalyticsIntegra
  * AnalyticsIntegratorConnector is the base class for an integration connector that is managed by the
  * Analytics Integrator OMIS.
  */
-public abstract class AnalyticsIntegratorConnector extends IntegrationConnectorBase
+public abstract class AnalyticsIntegratorConnector extends IntegrationConnectorBase implements AnalyticsIntegratorOMISConnector
 {
     private AnalyticsIntegratorContext context = null;
 
