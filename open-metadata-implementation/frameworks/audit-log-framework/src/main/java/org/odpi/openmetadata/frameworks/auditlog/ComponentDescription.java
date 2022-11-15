@@ -32,14 +32,15 @@ public interface ComponentDescription
     String getComponentName();
 
 
+
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @return String description
      */
-    String getComponentType();
+    String getComponentDescription();
 
     /**
      * URL link to the wiki page that describes this component.  This provides more information to the log reader

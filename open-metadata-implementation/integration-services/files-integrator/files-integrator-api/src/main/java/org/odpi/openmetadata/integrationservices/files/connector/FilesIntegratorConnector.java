@@ -11,7 +11,7 @@ import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorError
 /**
  * FilesIntegratorConnector is the base class for an integration connector that is managed by the Files Integrator OMIS.
  */
-public abstract class FilesIntegratorConnector extends IntegrationConnectorBase
+public abstract class FilesIntegratorConnector extends IntegrationConnectorBase implements FilesIntegratorOMISConnector
 {
     private volatile FilesIntegratorContext context = null;
 

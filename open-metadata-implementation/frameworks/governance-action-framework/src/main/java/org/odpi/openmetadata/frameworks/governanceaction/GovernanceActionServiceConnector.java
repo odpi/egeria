@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * GovernanceActionServiceConnector describes the base class for a specific type of connector that is responsible for preforming
- * specific governance actions on demand.  There are five types of governance action service:
+ * specific governance actions on demand.  There are six types of governance action service:
  *
  * <ul>
  *     <li><b>WatchdogGovernanceActionService</b> - monitors for changes to the metadata elements and initiates other governance actions depending on the nature of the change.</li>
@@ -24,16 +24,19 @@ import java.util.List;
  *     <li><b>TriageGovernanceActionService</b> - manages the choices on how to resolve a situation, often involving a human decision maker.</li>
  *     <li><b>RemediationGovernanceActionService</b> - maintains the metadata elements.</li>
  *     <li><b>ProvisioningGovernanceActionService</b> - provisions resources in the digital landscape and maintains lineage.</li>
+ *     <li><b>GeneralGovernanceActionService</b> - combines all of the capability of the specialist services above.</li>
  * </ul>
  *
- * Each type of governance action service is passed a specialize context that provides it with the metadata methods it needs for its specific role.
+ * Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
  *
- * In addition there is a generic governance action service called <b>GovernanceActionService</b> that combines all the functions of the
+ * In addition, there is a generic governance action service called <b>GeneralGovernanceActionService</b> that combines all the functions of the
  * five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.
  */
-public abstract class GovernanceActionServiceConnector extends ConnectorBase implements AuditLoggingComponent, VirtualConnectorExtension
+public abstract class GovernanceActionServiceConnector extends ConnectorBase implements GovernanceActionService,
+                                                                                        AuditLoggingComponent,
+                                                                                        VirtualConnectorExtension
 {
     protected String          governanceServiceName = "<Unknown>";
     protected AuditLog        auditLog = null;

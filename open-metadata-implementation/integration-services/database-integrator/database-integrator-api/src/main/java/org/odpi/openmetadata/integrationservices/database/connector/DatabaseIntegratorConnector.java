@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegrato
  * DatabaseIntegratorConnector is the base class for an integration connector that is managed by the
  * Database Integrator OMIS.
  */
-public abstract class DatabaseIntegratorConnector extends IntegrationConnectorBase
+public abstract class DatabaseIntegratorConnector extends IntegrationConnectorBase implements DatabaseIntegratorOMISConnector
 {
     private DatabaseIntegratorContext context = null;
 

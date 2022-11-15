@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AccessServiceDescription provides a list of registered OMAS services.
+ * CommonServicesDescription provides a list of fixed services that support the platform.
  */
 public enum CommonServicesDescription implements Serializable
 {

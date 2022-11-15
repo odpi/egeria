@@ -90,7 +90,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a GET REST call that returns a list of names.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return NameListResponse
@@ -116,7 +116,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a GET REST call that returns a list of names mapped to their descriptions.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return StringMapResponse
@@ -142,7 +142,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a GET REST call that returns a GUIDResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GUIDResponse
@@ -169,7 +169,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a POST REST call that returns a guid object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params  a list of parameters that are slotted into the url template.
      *
@@ -201,7 +201,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a GET REST call that returns a list of GUIDs object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GUIDListResponse
@@ -227,7 +227,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a POST REST call that returns a list of GUIDs object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -255,7 +255,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  template of the URL for the REST API with place-holders for the parameters.
      * @param params  a list of parameters that are slotted into the url template.
      *
      * @return VoidResponse
@@ -284,7 +284,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params  a list of parameters that are slotted into the url template.
      *
@@ -316,7 +316,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * Issue a GET REST call that returns a CountResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return CountResponse
@@ -339,27 +339,27 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a GET REST call that returns a ConnectorTypeResponse object.
+     * Issue a GET REST call that returns a ConnectorReportResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return DiscoveryEnginePropertiesResponse
+     * @return ConnectorReportResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ConnectorTypeResponse callOCFConnectorTypeGetRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object... params) throws InvalidParameterException,
+    public ConnectorReportResponse callOCFConnectorReportGetRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object... params) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        ConnectorTypeResponse restResult = this.callGetRESTCall(methodName,
-                                                                ConnectorTypeResponse.class,
-                                                                urlTemplate,
-                                                                params);
+        ConnectorReportResponse restResult = this.callGetRESTCall(methodName,
+                                                                  ConnectorReportResponse.class,
+                                                                  urlTemplate,
+                                                                  params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

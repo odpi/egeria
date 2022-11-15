@@ -1730,7 +1730,7 @@ public class OpenMetadataAPIMapper
     /* GovernanceEngine */
 
     public static final String GOVERNANCE_ACTION_SERVICE_TYPE_GUID       = "ececb378-31ac-4cc3-99b4-1c44e5fbc4d9";
-    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GovernanceActionService";
+    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GeneralGovernanceActionService";
     /* DeployedConnector */
 
     public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID    = "2726df0e-4f3a-44e1-8433-4ca5301457fd";

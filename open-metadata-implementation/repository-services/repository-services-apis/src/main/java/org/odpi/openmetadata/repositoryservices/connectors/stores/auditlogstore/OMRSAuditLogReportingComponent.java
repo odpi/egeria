@@ -67,7 +67,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
             this.componentId                = template.getComponentId();
             this.componentDevelopmentStatus = template.getComponentDevelopmentStatus();
             this.componentName              = template.getComponentName();
-            this.componentDescription       = template.getComponentType();
+            this.componentDescription       = template.getComponentDescription();
             this.componentWikiURL           = template.getComponentWikiURL();
         }
     }
@@ -114,7 +114,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return String description
      */
-    public String getComponentType()
+    public String getComponentDescription()
     {
         return componentDescription;
     }
@@ -146,7 +146,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
                        ", componentName='" + componentName + '\'' +
                        ", componentDescription='" + componentDescription + '\'' +
                        ", componentWikiURL='" + componentWikiURL + '\'' +
-                       ", componentType='" + getComponentType() + '\'' +
+                       ", componentType='" + getComponentDescription() + '\'' +
                        '}';
     }
 
@@ -185,6 +185,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComponentId(), getComponentDevelopmentStatus(), getComponentName(), getComponentType(), getComponentWikiURL());
+        return Objects.hash(getComponentId(), getComponentDevelopmentStatus(), getComponentName(), getComponentDescription(), getComponentWikiURL());
     }
 }

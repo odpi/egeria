@@ -19,7 +19,7 @@ import java.util.List;
 public class GenericElementWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
     private static final String  connectorTypeGUID = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericElement";
+    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Watchdog:GenericElement";
     private static final String  connectorTypeDisplayName = "Generic Element Watchdog Governance Action Service";
     private static final String  connectorTypeDescription =
             "A Watchdog Governance Action Service that detects changes to requested elements and initiates a governance action process when they " +

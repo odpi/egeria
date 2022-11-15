@@ -6,7 +6,6 @@ package org.odpi.openmetadata.commonservices.ffdc.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
@@ -67,23 +66,6 @@ public class ConnectorReport implements Serializable
             this.supportedRequestSourceNames = template.getSupportedRequestSourceNames();
             this.supportedActionTargetNames  = template.getSupportedActionTargetNames();
             this.supportedGuards             = template.getSupportedGuards();
-        }
-    }
-
-
-    /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public ConnectorReport(ConnectorTypeResponse template)
-    {
-        if (template != null)
-        {
-            this.componentDescription     = template.getComponentDescription();
-            this.connectorType            = template.getConnectorType();
-            this.refreshTimeInterval      = template.getRefreshTimeInterval();
-            this.usesBlockingCalls        = template.getUsesBlockingCalls();
         }
     }
 
@@ -159,7 +141,7 @@ public class ConnectorReport implements Serializable
 
 
     /**
-     * Return if the connector should be started in its own thread to allow it is block on a listening call.
+     * Return if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @return boolean flag
      */
@@ -170,7 +152,7 @@ public class ConnectorReport implements Serializable
 
 
     /**
-     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     * Set up if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @param usesBlockingCalls boolean flag
      */

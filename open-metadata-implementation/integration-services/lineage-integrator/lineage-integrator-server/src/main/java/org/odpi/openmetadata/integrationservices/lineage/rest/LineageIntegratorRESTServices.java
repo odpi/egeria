@@ -6,7 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
  */
 public class LineageIntegratorRESTServices
 {
-    private static IntegrationDaemonInstanceHandler instanceHandler = new IntegrationDaemonInstanceHandler();
+    private static final IntegrationDaemonInstanceHandler instanceHandler = new IntegrationDaemonInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LineageIntegratorRESTServices.class),
-                                                                      instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(LineageIntegratorRESTServices.class),
+                                                                            instanceHandler.getServiceName());
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -54,16 +54,16 @@ public class LineageIntegratorRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorTypeResponse validateConnector(String serverName,
-                                                   String userId,
-                                                   String connectorProviderClassName)
+    public ConnectorReportResponse validateConnector(String serverName,
+                                                     String userId,
+                                                     String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectorTypeResponse response = new ConnectorTypeResponse();
-        AuditLog              auditLog = null;
+        ConnectorReportResponse response = new ConnectorReportResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -75,7 +75,7 @@ public class LineageIntegratorRESTServices
 
             if (connectorReport != null)
             {
-                response = new ConnectorTypeResponse(connectorReport);
+                response.setConnectorReport(connectorReport);
             }
         }
         catch (Exception error)

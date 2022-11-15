@@ -288,7 +288,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String description
      */
-    public String getComponentType()
+    public String getComponentDescription()
     {
         return componentDescription;
     }
@@ -320,6 +320,6 @@ public enum OMRSAuditingComponent implements ComponentDescription
                        ", componentName='" + componentName + '\'' +
                        ", componentDescription='" + componentDescription + '\'' +
                        ", componentWikiURL='" + componentWikiURL + '\'' +
-                       ", componentType='" + getComponentType() + '\'' +
+                       ", componentType='" + getComponentDescription() + '\'' +
                        '}';
     }}

@@ -18,7 +18,7 @@ import java.util.List;
 public class VerifyAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "26df5406-8c4b-4738-96f6-1aea5dfd71de";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:VerifyAsset";
+    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Verification:VerifyAsset";
     private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 

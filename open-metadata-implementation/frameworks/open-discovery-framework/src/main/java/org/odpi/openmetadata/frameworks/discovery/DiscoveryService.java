@@ -24,7 +24,8 @@ import java.util.List;
  * Some discovery services manage the invocation of other discovery services.  These discovery services are called
  * discovery pipelines.
  */
-public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent,
+public abstract class DiscoveryService extends ConnectorBase implements OpenDiscoveryService,
+                                                                        AuditLoggingComponent,
                                                                         VirtualConnectorExtension
 {
     protected String           discoveryServiceName = "<Unknown>";

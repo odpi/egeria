@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ConnectorTypeResponse is a response object for passing back a single connector type object.
+ * ConnectorReportResponse is a response object for passing back a single connector type object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -81,7 +81,7 @@ public class ConnectorTypeResponse extends DataManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ConnectorTypeResponse{" +
+        return "ConnectorReportResponse{" +
                 "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +

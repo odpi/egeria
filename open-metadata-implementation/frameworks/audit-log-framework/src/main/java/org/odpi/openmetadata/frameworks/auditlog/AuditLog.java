@@ -67,7 +67,7 @@ public class AuditLog extends MessageFormatter
         this.reportingComponent = new AuditLogReportingComponent(reportingComponent.getComponentId(),
                                                                  reportingComponent.getComponentDevelopmentStatus(),
                                                                  reportingComponent.getComponentName(),
-                                                                 reportingComponent.getComponentType(),
+                                                                 reportingComponent.getComponentDescription(),
                                                                  reportingComponent.getComponentWikiURL());
     }
 
@@ -115,7 +115,7 @@ public class AuditLog extends MessageFormatter
         return createNewAuditLog(childComponent.getComponentId(),
                                  childComponent.getComponentDevelopmentStatus(),
                                  childComponent.getComponentName(),
-                                 childComponent.getComponentType(),
+                                 childComponent.getComponentDescription(),
                                  childComponent.getComponentWikiURL());
     }
 
