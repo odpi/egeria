@@ -141,18 +141,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
+<dd><code><a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="GovernanceActionService.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionService</a></code></dd>
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="GovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionService</a></code>, <code><a href="ProvisioningGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceActionService</a></code>, <code><a href="RemediationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceActionService</a></code>, <code><a href="TriageGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">TriageGovernanceActionService</a></code>, <code><a href="VerificationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceActionService</a></code>, <code><a href="WatchdogGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceActionService</a></code></dd>
+<dd><code><a href="GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GeneralGovernanceActionService</a></code>, <code><a href="ProvisioningGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceActionService</a></code>, <code><a href="RemediationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceActionService</a></code>, <code><a href="TriageGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">TriageGovernanceActionService</a></code>, <code><a href="VerificationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceActionService</a></code>, <code><a href="WatchdogGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceActionService</a></code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">GovernanceActionServiceConnector</span>
 extends <a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
-implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a>, <a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></pre>
+implements <a href="GovernanceActionService.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionService</a>, <a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a>, <a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></pre>
 <div class="block">GovernanceActionServiceConnector describes the base class for a specific type of connector that is responsible for preforming
- specific governance actions on demand.  There are five types of governance action service:
+ specific governance actions on demand.  There are six types of governance action service:
 
  <ul>
      <li><b>WatchdogGovernanceActionService</b> - monitors for changes to the metadata elements and initiates other governance actions depending on the nature of the change.</li>
@@ -160,13 +160,14 @@ implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in 
      <li><b>TriageGovernanceActionService</b> - manages the choices on how to resolve a situation, often involving a human decision maker.</li>
      <li><b>RemediationGovernanceActionService</b> - maintains the metadata elements.</li>
      <li><b>ProvisioningGovernanceActionService</b> - provisions resources in the digital landscape and maintains lineage.</li>
+     <li><b>GeneralGovernanceActionService</b> - combines all of the capability of the specialist services above.</li>
  </ul>
 
- Each type of governance action service is passed a specialize context that provides it with the metadata methods it needs for its specific role.
+ Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
  When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  to ensure your code receives a context with the appropriate interface.
 
- In addition there is a generic governance action service called <b>GovernanceActionService</b> that combines all the functions of the
+ In addition, there is a generic governance action service called <b>GeneralGovernanceActionService</b> that combines all the functions of the
  five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.</div>
 </li>
 </ul>

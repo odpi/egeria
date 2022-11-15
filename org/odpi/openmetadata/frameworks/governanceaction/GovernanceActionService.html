@@ -26,12 +26,6 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 var pathtoroot = "../../../../../";
 var useModuleDirectories = true;
 loadScripts(document, 'script');</script>
@@ -87,16 +81,16 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.top">
@@ -115,322 +109,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <main role="main">
 <div class="header">
 <div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">org.odpi.openmetadata.frameworks.governanceaction</a></div>
-<h2 title="Class GovernanceActionService" class="title">Class GovernanceActionService</h2>
+<h2 title="Interface GovernanceActionService" class="title">Interface GovernanceActionService</h2>
 </div>
 <div class="contentContainer">
-<ul class="inheritance">
-<li>java.lang.Object</li>
-<li>
-<ul class="inheritance">
-<li><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.Connector</a></li>
-<li>
-<ul class="inheritance">
-<li><a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorBase</a></li>
-<li>
-<ul class="inheritance">
-<li><a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector</a></li>
-<li>
-<ul class="inheritance">
-<li>org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
 <dl>
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GeneralGovernanceActionService</a></code>, <code><a href="../../adapters/connectors/governanceactions/watchdog/GenericElementWatchdogGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericElementWatchdogGovernanceActionConnector</a></code>, <code><a href="../../adapters/connectors/governanceactions/watchdog/GenericFolderWatchdogGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericFolderWatchdogGovernanceActionConnector</a></code>, <code><a href="../../adapters/connectors/governanceactions/watchdog/GenericWatchdogGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericWatchdogGovernanceActionConnector</a></code>, <code><a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></code>, <code><a href="../../adapters/connectors/governanceactions/provisioning/MoveCopyFileGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">MoveCopyFileGovernanceActionConnector</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionConnector</a></code>, <code><a href="ProvisioningGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceActionService</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGovernanceActionConnector</a></code>, <code><a href="RemediationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">RemediationGovernanceActionService</a></code>, <code><a href="TriageGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">TriageGovernanceActionService</a></code>, <code><a href="VerificationGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">VerificationGovernanceActionService</a></code>, <code><a href="../../adapters/connectors/governanceactions/verification/VerifyFileFolderGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyFileFolderGovernanceActionConnector</a></code>, <code><a href="WatchdogGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceActionService</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/ZonePublisherGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">ZonePublisherGovernanceActionConnector</a></code></dd>
 </dl>
 <hr>
-<pre>public abstract class <span class="typeNameLabel">GovernanceActionService</span>
-extends <a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></pre>
-<div class="block">GovernanceActionService describes the base class for a specific type of connector that is responsible for preforming
- specific governance actions on demand.  There are five types of governance action service:
-
- <ul>
-     <li><b>WatchdogGovernanceActionService</b> - monitors for changes to the metadata elements and initiates other governance actions depending on the nature of the change.</li>
-     <li><b>VerificationGovernanceActionService</b> - tests values in the metadata elements to detect errors or to classify the status of the metadata elements.</li>
-     <li><b>TriageGovernanceActionService</b> - manages the choices on how to resolve a situation, often involving a human decision maker.</li>
-     <li><b>RemediationGovernanceActionService</b> - maintains the metadata elements.</li>
-     <li><b>ProvisioningGovernanceActionService</b> - provisions resources in the digital landscape and maintains lineage.</li>
- </ul>
-
- Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
- When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
- to ensure your code receives a context with the appropriate interface.</div>
-</li>
-</ul>
-</div>
-<div class="summary">
-<ul class="blockList">
-<li class="blockList">
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="nested.class.summary">
-<!--   -->
-</a>
-<h3>Nested Class Summary</h3>
-<ul class="blockList">
-<li class="blockList"><a id="nested.classes.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.ConnectorBase">
-<!--   -->
-</a>
-<h3>Nested classes/interfaces inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../connectors/ConnectorBase.ProtectedConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase.ProtectedConnection</a></code></li>
-</ul>
-</li>
-</ul>
-</section>
-<!-- =========== FIELD SUMMARY =========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colSecond" scope="col">Field</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#governanceContext">governanceContext</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-</table>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></h3>
-<code><a href="GovernanceActionServiceConnector.html#auditLog">auditLog</a>, <a href="GovernanceActionServiceConnector.html#embeddedConnectors">embeddedConnectors</a>, <a href="GovernanceActionServiceConnector.html#governanceServiceName">governanceServiceName</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.ConnectorBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../connectors/ConnectorBase.html#connectedAssetProperties">connectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../connectors/ConnectorBase.html#connectionProperties">connectionProperties</a>, <a href="../connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../connectors/ConnectorBase.html#securedProperties">securedProperties</a></code></li>
-</ul>
-</li>
-</ul>
-</section>
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Constructor</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">GovernanceActionService</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-</table>
-</li>
-</ul>
-</section>
-<!-- ========== METHOD SUMMARY =========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="method.summary">
-<!--   -->
-</a>
-<h3>Method Summary</h3>
-<table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colSecond" scope="col">Method</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnect()">disconnect</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)">setGovernanceContext</a></span>&#8203;(<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a>&nbsp;governanceContext)</code></th>
-<td class="colLast">
-<div class="block">Set up details of the governance action request and access to the metadata store.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
-</td>
-</tr>
-</table>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></h3>
-<code><a href="GovernanceActionServiceConnector.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="GovernanceActionServiceConnector.html#handleUnexpectedException(java.lang.String,java.lang.Throwable)">handleUnexpectedException</a>, <a href="GovernanceActionServiceConnector.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="GovernanceActionServiceConnector.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="GovernanceActionServiceConnector.html#setGovernanceServiceName(java.lang.String)">setGovernanceServiceName</a>, <a href="GovernanceActionServiceConnector.html#validateContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceContext)">validateContext</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.ConnectorBase">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../connectors/ConnectorBase.html#toString()">toString</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.Connector">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
-<code><a href="../connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
-<code>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</code></li>
-</ul>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</div>
-<div class="details">
-<ul class="blockList">
-<li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a id="governanceContext">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>governanceContext</h4>
-<pre>protected&nbsp;<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a> governanceContext</pre>
-</li>
-</ul>
-</li>
-</ul>
-</section>
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a id="&lt;init&gt;()">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>GovernanceActionService</h4>
-<pre>public&nbsp;GovernanceActionService()</pre>
-</li>
-</ul>
-</li>
-</ul>
-</section>
-<!-- ============ METHOD DETAIL ========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="method.detail">
-<!--   -->
-</a>
-<h3>Method Detail</h3>
-<a id="setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setGovernanceContext</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setGovernanceContext&#8203;(<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a>&nbsp;governanceContext)</pre>
-<div class="block">Set up details of the governance action request and access to the metadata store.
- This method is called before start and should not be null</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="GovernanceActionServiceConnector.html#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)">setGovernanceContext</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>governanceContext</code> - specialist context for this type of governance action.</dd>
-</dl>
-</li>
-</ul>
-<a id="start()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>start</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;start()
-           throws <a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
-<div class="block">Indicates that the governance action service is completely configured and can begin processing.
-
- This is a standard method from the Open Connector Framework (OCF) so
- be sure to call super.start() in your version.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the governance action service.</dd>
-</dl>
-</li>
-</ul>
-<a id="disconnect()">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>disconnect</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;disconnect()
-                throws <a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
-<div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.
-
- If disconnect completes before the governance action service records
- its completion status then the governance action service is restarted either at the administrator's request
- or the next time the server starts.
- If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-
- The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
- be sure to call super.disconnect() in your version.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../connectors/ConnectorBase.html#disconnect()">disconnect</a></code>&nbsp;in class&nbsp;<code><a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the governance action service.</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-</section>
+<pre>public interface <span class="typeNameLabel">GovernanceActionService</span></pre>
+<div class="block">A marker interface to identify the service that this connector works with.</div>
 </li>
 </ul>
 </div>
@@ -479,16 +170,16 @@ extends <a href="GovernanceActionServiceConnector.html" title="class in org.odpi
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.bottom">

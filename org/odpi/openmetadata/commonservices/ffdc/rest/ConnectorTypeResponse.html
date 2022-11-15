@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -173,13 +173,13 @@ extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.co
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport)">ConnectorTypeResponse</a></span>&#8203;(<a href="../properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;template)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse)">ConnectorTypeResponse</a></span>&#8203;(<a href="ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;template)</code></th>
 <td class="colLast">
 <div class="block">Copy/clone constructor</div>
 </td>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse)">ConnectorTypeResponse</a></span>&#8203;(<a href="ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;template)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">ConnectorTypeResponse</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;template)</code></th>
 <td class="colLast">
 <div class="block">Copy/clone constructor</div>
 </td>
@@ -210,69 +210,27 @@ extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.co
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getComponentDescription()">getComponentDescription</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the component description information that the connector uses to register with the audit log.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorType()">getConnectorType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the ConnectorType object.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>long</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRefreshTimeInterval()">getRefreshTimeInterval</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the number of minutes between each call to the connector to refresh the metadata.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUsesBlockingCalls()">getUsesBlockingCalls</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setComponentDescription(org.odpi.openmetadata.frameworks.auditlog.ComponentDescription)">setComponentDescription</a></span>&#8203;(<a href="../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a>&nbsp;componentDescription)</code></th>
-<td class="colLast">
-<div class="block">Set up the component description information that the connector uses to register with the audit log.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorType</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;connectorType)</code></th>
 <td class="colLast">
 <div class="block">Set up the ConnectorType object.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRefreshTimeInterval(long)">setRefreshTimeInterval</a></span>&#8203;(long&nbsp;refreshTimeInterval)</code></th>
-<td class="colLast">
-<div class="block">Set up the number of minutes between each call to the connector to refresh the metadata.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setUsesBlockingCalls(boolean)">setUsesBlockingCalls</a></span>&#8203;(boolean&nbsp;usesBlockingCalls)</code></th>
-<td class="colLast">
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -334,13 +292,13 @@ extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.co
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ConnectorTypeResponse</h4>
-<pre>public&nbsp;ConnectorTypeResponse&#8203;(<a href="../properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;template)</pre>
+<pre>public&nbsp;ConnectorTypeResponse&#8203;(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;template)</pre>
 <div class="block">Copy/clone constructor</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -358,34 +316,6 @@ extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.co
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getComponentDescription()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getComponentDescription</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a>&nbsp;getComponentDescription()</pre>
-<div class="block">Return the component description information that the connector uses to register with the audit log.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>component description structure</dd>
-</dl>
-</li>
-</ul>
-<a id="setComponentDescription(org.odpi.openmetadata.frameworks.auditlog.ComponentDescription)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setComponentDescription</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setComponentDescription&#8203;(<a href="../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a>&nbsp;componentDescription)</pre>
-<div class="block">Set up the component description information that the connector uses to register with the audit log.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>componentDescription</code> - component description structure</dd>
-</dl>
-</li>
-</ul>
 <a id="getConnectorType()">
 <!--   -->
 </a>
@@ -411,66 +341,6 @@ extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.co
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>connectorType</code> - - connectorType object</dd>
-</dl>
-</li>
-</ul>
-<a id="getRefreshTimeInterval()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getRefreshTimeInterval</h4>
-<pre class="methodSignature">public&nbsp;long&nbsp;getRefreshTimeInterval()</pre>
-<div class="block">Return the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
- is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
- If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>minute count</dd>
-</dl>
-</li>
-</ul>
-<a id="setRefreshTimeInterval(long)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setRefreshTimeInterval</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setRefreshTimeInterval&#8203;(long&nbsp;refreshTimeInterval)</pre>
-<div class="block">Set up the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
- is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
- If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>refreshTimeInterval</code> - minute count</dd>
-</dl>
-</li>
-</ul>
-<a id="getUsesBlockingCalls()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getUsesBlockingCalls</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;getUsesBlockingCalls()</pre>
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>boolean flag</dd>
-</dl>
-</li>
-</ul>
-<a id="setUsesBlockingCalls(boolean)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setUsesBlockingCalls</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setUsesBlockingCalls&#8203;(boolean&nbsp;usesBlockingCalls)</pre>
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>usesBlockingCalls</code> - boolean flag</dd>
 </dl>
 </li>
 </ul>

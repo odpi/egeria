@@ -174,12 +174,6 @@ implements java.io.Serializable</pre>
 <div class="block">Copy/clone constructor</div>
 </td>
 </tr>
-<tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse)">ConnectorReport</a></span>&#8203;(<a href="../rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;template)</code></th>
-<td class="colLast">
-<div class="block">Copy/clone constructor</div>
-</td>
-</tr>
 </table>
 </li>
 </ul>
@@ -265,7 +259,7 @@ implements java.io.Serializable</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUsesBlockingCalls()">getUsesBlockingCalls</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Return if the connector should be started in its own thread to allow it to block on a listening call.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
@@ -335,7 +329,7 @@ implements java.io.Serializable</pre>
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setUsesBlockingCalls(boolean)">setUsesBlockingCalls</a></span>&#8203;(boolean&nbsp;usesBlockingCalls)</code></th>
 <td class="colLast">
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Set up if the connector should be started in its own thread to allow it to block on a listening call.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -382,24 +376,10 @@ implements java.io.Serializable</pre>
 <a id="&lt;init&gt;(org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport)">
 <!--   -->
 </a>
-<ul class="blockList">
-<li class="blockList">
-<h4>ConnectorReport</h4>
-<pre>public&nbsp;ConnectorReport&#8203;(<a href="ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;template)</pre>
-<div class="block">Copy/clone constructor</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>template</code> - object to copy</dd>
-</dl>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse)">
-<!--   -->
-</a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ConnectorReport</h4>
-<pre>public&nbsp;ConnectorReport&#8203;(<a href="../rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;template)</pre>
+<pre>public&nbsp;ConnectorReport&#8203;(<a href="ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;template)</pre>
 <div class="block">Copy/clone constructor</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -512,7 +492,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getUsesBlockingCalls</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;getUsesBlockingCalls()</pre>
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Return if the connector should be started in its own thread to allow it to block on a listening call.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean flag</dd>
@@ -526,7 +506,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>setUsesBlockingCalls</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setUsesBlockingCalls&#8203;(boolean&nbsp;usesBlockingCalls)</pre>
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Set up if the connector should be started in its own thread to allow it to block on a listening call.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>usesBlockingCalls</code> - boolean flag</dd>

@@ -177,7 +177,7 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a></code></td>
+<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnector(java.lang.String,java.lang.String,java.lang.String)">validateConnector</a></span>&#8203;(java.lang.String&nbsp;serverName,
                  java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;connectorProviderClassName)</code></th>
@@ -235,12 +235,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>validateConnector</h4>
 <pre class="methodSignature">@GetMapping(path="/validate-connector/{connectorProviderClassName}")
-public&nbsp;<a href="../../../../commonservices/ffdc/rest/ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;validateConnector&#8203;(@PathVariable
-                                               java.lang.String&nbsp;serverName,
-                                               @PathVariable
-                                               java.lang.String&nbsp;userId,
-                                               @PathVariable
-                                               java.lang.String&nbsp;connectorProviderClassName)</pre>
+public&nbsp;<a href="../../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a>&nbsp;validateConnector&#8203;(@PathVariable
+                                                 java.lang.String&nbsp;serverName,
+                                                 @PathVariable
+                                                 java.lang.String&nbsp;userId,
+                                                 @PathVariable
+                                                 java.lang.String&nbsp;connectorProviderClassName)</pre>
 <div class="block">Validate the connector and return its connector type.  The integration service does not need to
  be running in the integration daemon in order for this call to be successful.  It only needs to be registered with the
  integration daemon.</div>
