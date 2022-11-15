@@ -79,6 +79,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return int componentId
      */
+    @Override
     public int getComponentId()
     {
         return componentId;
@@ -90,6 +91,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return enum describing the status
      */
+    @Override
     public ComponentDevelopmentStatus getComponentDevelopmentStatus()
     {
         return componentDevelopmentStatus;
@@ -101,6 +103,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return String component name
      */
+    @Override
     public String getComponentName()
     {
         return componentName;
@@ -114,6 +117,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return String description
      */
+    @Override
     public String getComponentDescription()
     {
         return componentDescription;
@@ -126,6 +130,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      *
      * @return String URL
      */
+    @Override
     public String getComponentWikiURL()
     {
         return componentWikiURL;
