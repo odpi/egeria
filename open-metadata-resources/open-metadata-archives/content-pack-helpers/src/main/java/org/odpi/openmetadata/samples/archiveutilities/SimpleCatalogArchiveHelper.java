@@ -103,6 +103,7 @@ public class SimpleCatalogArchiveHelper
 
     private static final String GOVERNANCE_DEFINITION_SCOPE_RELATIONSHIP_NAME = "GovernanceDefinitionScope";
     private static final String GOVERNED_BY_RELATIONSHIP_NAME                 = "GovernedBy";
+    private static final String RESOURCE_LIST_RELATIONSHIP_NAME               = "ResourceList";
 
     public static final String GOVERNANCE_DRIVER_LINK_RELATIONSHIP_NAME      = "GovernanceDriverLink";
     public static final String GOVERNANCE_RESPONSE_RELATIONSHIP_NAME         = "GovernanceResponse";
@@ -357,6 +358,8 @@ public class SimpleCatalogArchiveHelper
     private static final String PROJECT_TYPE_PROPERTY                        = "projectType";
     private static final String PURPOSES_PROPERTY                            = "purposes";
     private static final String DETAILS_PROPERTY                             = "details";
+    private static final String RESOURCE_USE_PROPERTY                        = "resourceUse";
+    private static final String WATCH_RESOURCE_PROPERTY                      = "watchResource";
 
     private static final String GROUPS_PROPERTY                              = "groups";
     private static final String SECURITY_LABELS_PROPERTY                     = "securityLabels";
@@ -2458,6 +2461,36 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(GOVERNED_BY_RELATIONSHIP_NAME,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governed_by_relationship"),
                                                                      null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+    /**
+     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param resourceQName qualified name of the second referenceable
+     */
+    public void addResourceListRelationship(String  referenceableQName,
+                                            String  resourceQName,
+                                            String  resourceUse,
+                                            boolean watchResource)
+    {
+        final String methodName = "addResourceListRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(resourceQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, RESOURCE_USE_PROPERTY, resourceUse, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, WATCH_RESOURCE_PROPERTY, watchResource, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(RESOURCE_LIST_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
