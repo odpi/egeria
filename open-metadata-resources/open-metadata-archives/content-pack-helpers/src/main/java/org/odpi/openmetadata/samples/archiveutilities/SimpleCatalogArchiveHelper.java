@@ -2471,6 +2471,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param referenceableQName qualified name of the referenceable
      * @param resourceQName qualified name of the second referenceable
+     * @param resourceUse string description
+     * @param watchResource should the resource be watched (boolean)
      */
     public void addResourceListRelationship(String  referenceableQName,
                                             String  resourceQName,

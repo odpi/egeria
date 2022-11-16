@@ -16,7 +16,7 @@ They are as follows:
 The content covers basic commerce concepts such as Party, Product, Invoice and Shipping.
 The cloud information project has been archived.  However, this is a useful starter set glossary,
 
-The next four archives are build from the [archive writers in egeria-samples.git](https://github.com/odpi/egeria-samples/tree/main/sample-metadata-archives/coco-metadata-archives).
+The next four archives are built from the [archive writers in egeria-samples.git](https://github.com/odpi/egeria-samples/tree/main/sample-metadata-archives/coco-metadata-archives).
 They supply metadata to support the Coco Pharmaceuticals scenarios.
 
 * **CocoBusinessSystemsArchive** provides a catalog of the business systems and the lineage between
