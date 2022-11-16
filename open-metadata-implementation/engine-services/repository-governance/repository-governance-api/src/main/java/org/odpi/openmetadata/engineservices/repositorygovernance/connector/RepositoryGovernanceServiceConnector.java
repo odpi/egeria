@@ -123,7 +123,7 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
      * @throws ConnectorCheckedException there is a problem within the archive service.
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException
     {
         super.start();
 

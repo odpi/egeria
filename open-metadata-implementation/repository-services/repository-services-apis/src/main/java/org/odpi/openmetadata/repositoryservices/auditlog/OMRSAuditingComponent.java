@@ -264,6 +264,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return enum describing the status
      */
+    @Override
     public ComponentDevelopmentStatus getComponentDevelopmentStatus()
     {
         return componentDevelopmentStatus;
@@ -275,6 +276,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String component name
      */
+    @Override
     public String getComponentName()
     {
         return componentName;
@@ -288,6 +290,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String description
      */
+    @Override
     public String getComponentDescription()
     {
         return componentDescription;
@@ -300,6 +303,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String URL
      */
+    @Override
     public String getComponentWikiURL()
     {
         return componentWikiURL;

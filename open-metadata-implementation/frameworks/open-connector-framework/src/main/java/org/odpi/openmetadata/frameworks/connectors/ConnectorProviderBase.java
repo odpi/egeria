@@ -156,6 +156,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
+    @Override
     public synchronized ConnectorType getConnectorType()
     {
         final String javaLanguageName = "Java";
@@ -269,6 +270,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
      */
+    @Override
     public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         return this.getConnector(new ConnectionProperties(connection));
@@ -284,6 +286,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
+    @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         final String             methodName = "getConnector";
@@ -410,6 +413,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      *
      * @return random UUID as hashcode
      */
+    @Override
     public int hashCode()
     {
         return hashCode;
