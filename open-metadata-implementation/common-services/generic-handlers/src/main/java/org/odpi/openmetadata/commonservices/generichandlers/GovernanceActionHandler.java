@@ -384,10 +384,12 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         final String qualifiedNameParameterName  = "qualifiedName";
         final String engineNameParameterName     = "governanceEngineName";
+        final String requestTypeParameterName    = "requestType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(governanceEngineName, engineNameParameterName, methodName);
+        invalidParameterHandler.validateName(requestType, requestTypeParameterName, methodName);
 
         /*
          * Log details of the requested governance action.
@@ -445,7 +447,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
          */
         Date effectiveTime = null;
 
-        String governanceEngineGUID = this.validateGovernanceEngineName(userId, governanceEngineName, engineNameParameterName, methodName);
+        String governanceEngineGUID = this.validateGovernanceEngineName(userId, governanceEngineName, engineNameParameterName, requestType, methodName);
 
         GovernanceActionBuilder builder = new GovernanceActionBuilder(qualifiedName,
                                                                       domainIdentifier,
@@ -671,6 +673,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param governanceEngineName name of the engine
      * @param governanceEngineNameParameterName parameter supplying engine name
+     * @param requestType requested function
      * @param methodName calling method
      * @return unique identifier of the governance engine
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -680,6 +683,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     private String validateGovernanceEngineName(String userId,
                                                 String governanceEngineName,
                                                 String governanceEngineNameParameterName,
+                                                String requestType,
                                                 String methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -706,7 +710,56 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 governanceEngineNameParameterName);
         }
 
-        return governanceEngineGUID;
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
+                                                                   governanceEngineGUID,
+                                                                   governanceEngineNameParameterName,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                   null,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                   2,
+                                                                   false,
+                                                                   false,
+                                                                   supportedZones,
+                                                                   0,
+                                                                   0,
+                                                                   new Date(),
+                                                                   methodName);
+
+        if (relationships == null)
+        {
+            throw new InvalidParameterException(GenericHandlersErrorCode.NO_REQUEST_TYPE_FOR_ENGINE.getMessageDefinition(governanceEngineName,
+                                                                                                                         governanceEngineGUID,
+                                                                                                                         requestType,
+                                                                                                                         serviceName,
+                                                                                                                         serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                governanceEngineNameParameterName);
+        }
+
+        for (Relationship relationship : relationships)
+        {
+            String relationshipRequestType = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                relationship.getProperties(),
+                                                                                methodName);
+
+            if (requestType.equals(relationshipRequestType))
+            {
+                return governanceEngineGUID;
+            }
+        }
+
+        throw new InvalidParameterException(GenericHandlersErrorCode.UNKNOWN_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
+                                                                                                               governanceEngineGUID,
+                                                                                                               requestType,
+                                                                                                               serviceName,
+                                                                                                               serverName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            governanceEngineNameParameterName);
     }
 
 

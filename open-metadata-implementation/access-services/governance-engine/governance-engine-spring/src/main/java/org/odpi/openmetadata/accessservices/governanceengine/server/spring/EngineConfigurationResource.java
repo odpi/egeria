@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class EngineConfigurationResource
 {
-    private GovernanceConfigRESTServices restAPI = new GovernanceConfigRESTServices();
+    private final GovernanceConfigRESTServices restAPI = new GovernanceConfigRESTServices();
 
 
     /**

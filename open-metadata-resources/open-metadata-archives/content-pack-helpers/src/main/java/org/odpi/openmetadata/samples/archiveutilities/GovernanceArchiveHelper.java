@@ -268,7 +268,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, REQUEST_PARAMETERS_PROPERTY, requestParameters, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_supported_governance_service_relationship"),
+                                                                     idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_" + requestType + "_supported_governance_service_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GovernanceEngineOMASResource
 {
 
-    private GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
+    private final GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
 
 
     /**

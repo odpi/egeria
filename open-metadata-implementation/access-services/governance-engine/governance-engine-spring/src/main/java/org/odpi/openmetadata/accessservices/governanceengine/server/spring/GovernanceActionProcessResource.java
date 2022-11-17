@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class GovernanceActionProcessResource
 {
 
-    private GovernanceActionProcessRESTServices restAPI = new GovernanceActionProcessRESTServices();
+    private final GovernanceActionProcessRESTServices restAPI = new GovernanceActionProcessRESTServices();
 
     /**
      * Default constructor
