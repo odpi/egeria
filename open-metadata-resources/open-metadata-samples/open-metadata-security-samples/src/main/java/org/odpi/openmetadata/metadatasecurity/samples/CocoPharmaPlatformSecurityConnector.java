@@ -10,8 +10,6 @@ import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSec
  * to allow requests the Coco Pharmaceutical's server administrator APIs.  In this example,
  * only Gary Geeke is allowed to issue these requests.
  */
-@SuppressWarnings("BlahBlahBlah")
-
 public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSecurityConnector
 {
     final static String  platformAdministrator = "garygeeke";
