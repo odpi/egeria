@@ -12,9 +12,6 @@ on:
 permissions:
   contents: read
 
-env:
-  MAIN_BRANCH='egeria-release-4.0pre'
-
 jobs:
   build:
     permissions:
@@ -34,7 +31,7 @@ jobs:
           distribution: 'temurin'
       # Build first - lombok & other pre-processing may be needed. safer...
       - name: build and publish to maven central
-        if: ${{ github.ref == 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref == 'refs/heads/egeria-release-4.0pre'}}
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
@@ -48,27 +45,24 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       # In other cases just build but don't publish
       - name: build (no publish to maven central)
-        if: ${{ github.ref != 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref != 'refs/heads/egeria-release-4.0pre'}}
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
           arguments: build
       # Now aggregate javadoc - main only
       - name: build
-        if: ${{ github.ref == 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref == 'refs/heads/egeria-release-4.0pre'}}
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
           arguments: aggregateJavadoc
-      # - name: publish aggregate javadoc
-      #  if: ${{ github.ref == 'refs/heads/$MAIN_BRANCH'}}
-      #  uses: JamesIves/github-pages-deploy-action@v4
-      #  with:
-      #    branch: gh-pages
-      #    folder: build/docs/javadoc
-      # --
-
-
+      - name: publish aggregate javadoc
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/docs/javadoc
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to container registry (Quay.io)
@@ -95,7 +89,7 @@ jobs:
           mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
           cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution,tar.gz/ open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
       - name: Build and push(egeria) to quay.io and docker.io (tag latest)
-        if: ${{ github.ref == 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref == 'refs/heads/egeria-release-4.0pre'}}
         uses: docker/build-push-action@v3
         with:
           push: true
@@ -103,7 +97,7 @@ jobs:
           context: ./open-metadata-resources/open-metadata-deployment/docker/egeria
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria) to quay.io and docker.io (no tag latest)
-        if: ${{ github.ref != 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref != 'refs/heads/egeria-release-4.0pre'}}
         uses: docker/build-push-action@v3
         with:
           push: true
@@ -112,7 +106,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io (tag latest)
-        if: ${{ github.ref == 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref == 'refs/heads/egeria-release-4.0pre'}}
         uses: docker/build-push-action@v3
         with:
           push: true
@@ -122,7 +116,7 @@ jobs:
       # --
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io (no tag latest)
-        if: ${{ github.ref != 'refs/heads/$MAIN_BRANCH'}}
+        if: ${{ github.ref != 'refs/heads/egeria-release-4.0pre'}}
         uses: docker/build-push-action@v3
         with:
           push: true
