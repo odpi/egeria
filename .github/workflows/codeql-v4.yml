@@ -21,7 +21,7 @@ on:
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
-    name: CodeQL Build v4
+    name: "CodeQL Build v4"
     runs-on: ubuntu-latest
     permissions:
        actions: read
