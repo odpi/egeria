@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -25,7 +25,8 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          cache-read-only: false
+          # Only cache for main build
+          cache-read-only: true
           arguments: clean build
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v3
@@ -38,4 +39,3 @@ jobs:
           name: Dependency Analysis Report (on failure)
           path: build/reports/dependency-analysis/build-health-report.txt
           if-no-files-found: ignore
-
