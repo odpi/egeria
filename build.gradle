@@ -359,7 +359,7 @@ allprojects {
 
     publishing {
         publications {
-            connector(MavenPublication) {
+            mavenmodule(MavenPublication) {
                 from components.java
                 pom {
                     url = 'http://egeria.odpi.org'
