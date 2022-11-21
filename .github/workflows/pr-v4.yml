@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
-name: "Gradle v4"
+name: "Verify PR v4"
 
 on:
   pull_request:
@@ -12,12 +12,12 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: "Gradle v4"
+    name: "Verify PR v4"
     if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
