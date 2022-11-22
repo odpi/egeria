@@ -53,6 +53,7 @@ allprojects {
 
     // Assign variables for any constraints
     ext {
+        lombokVersion= '1.18.24'
         antlrVersion = '3.5.3'
         ST4Version = '4.3.4'
         avroVersion = '1.11.1'
@@ -259,6 +260,10 @@ allprojects {
             implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
             implementation("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
 
+            annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+            implementation("org.projectlombok:lombok:${lombokVersion}")
+
+
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
             runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
@@ -323,6 +328,10 @@ allprojects {
         toolVersion = "0.8.8"
     }
 
+    // lombok
+    lombok {
+        version = "${lombokVersion}"
+    }
     // Testing
     test {
         useJUnitPlatform {
@@ -344,9 +353,8 @@ allprojects {
     /*
      * Publishing of maven artifacts -- and signing (only for CI)
      */
-    if (System.getenv("CI")) {
-        apply plugin: 'signing'
-    }
+    apply plugin: 'signing'
+
 
     publishing {
         publications {
@@ -388,9 +396,8 @@ allprojects {
         }
         // Release versions get pushed to staging area on maven central, snapshots to snapshot repo
         // Secrets for credentials
-        if (System.getenv("CI")) {
-            repositories {
-                maven {
+        repositories {
+            maven {
                     name = 'OSSRH'
                     def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
                     def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
@@ -401,7 +408,6 @@ allprojects {
                         password = System.getenv("OSSRH_TOKEN")
                     }
                 }
-            }
         }
     }
 
