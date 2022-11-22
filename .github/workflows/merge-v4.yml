@@ -87,7 +87,7 @@ jobs:
       - name: Copy the distribution content to be used in docker copy command
         run: |
           mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
-          cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/ open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
       - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
         if: ${{ github.ref == 'refs/heads/main'}}
         uses: docker/build-push-action@v3
