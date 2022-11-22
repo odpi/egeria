@@ -612,7 +612,105 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "7.1 Get Element Hierarchy upward",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"guid\": \"{{entity-guid}}\",\n    \"hierarchyType\": \"UPWARD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"elements",
+						"hierarchy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.2 Get Element Hierarchy downward",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"guid\": \"{{entity-guid}}\",\n    \"hierarchyType\": \"DOWNWARD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"elements",
+						"hierarchy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.3 Get Element Hierarchy all",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"guid\": \"{{entity-guid}}\",\n    \"hierarchyType\": \"ALL\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"elements",
+						"hierarchy"
+					]
+				}
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
