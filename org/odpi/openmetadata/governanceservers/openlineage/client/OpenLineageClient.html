@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -234,12 +234,18 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHierarchy(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">getElementHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   <a href="../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String,java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,int)">getNodes</a></span>&#8203;(java.lang.String&nbsp;userId,
         java.lang.String&nbsp;type,
@@ -247,12 +253,12 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
         int&nbsp;limit)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes(java.lang.String)">getTypes</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(java.lang.String&nbsp;userId,
        <a href="../model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
@@ -262,7 +268,7 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <div class="block">Returns the graph that the user will initially see when querying lineage.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(java.lang.String&nbsp;userId,
       <a href="../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</code></th>
@@ -483,7 +489,7 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <a id="search(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>search</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a>&gt;&nbsp;search&#8203;(java.lang.String&nbsp;userId,
@@ -491,6 +497,25 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                             <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getElementHierarchy(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getElementHierarchy</h4>
+<pre class="methodSignature">public&nbsp;<a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&nbsp;getElementHierarchy&#8203;(java.lang.String&nbsp;userId,
+                                                   <a href="../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                   <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>

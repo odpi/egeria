@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -178,16 +178,23 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#elementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">elementHierarchy</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></th>
+<td class="colLast">
+<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#endToEndLineage(java.lang.String,boolean)">endToEndLineage</a></span>&#8203;(java.lang.String&nbsp;guid,
                boolean&nbsp;includeProcesses)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,int)">getNodes</a></span>&#8203;(java.lang.String&nbsp;type,
         java.lang.String&nbsp;searchValue,
@@ -196,38 +203,38 @@ extends java.lang.Object</pre>
 <div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes()">getTypes</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets available entities types from lineage repository.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initBinder(org.springframework.web.bind.WebDataBinder)">initBinder</a></span>&#8203;(org.springframework.web.bind.WebDataBinder&nbsp;webdataBinder)</code></th>
 <td class="colLast">
 <div class="block">This method is registering a custom converter for View and Scope enums in order to be able to use in url the text of the enum and not the actual name</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;searchRequest)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateDestination(java.lang.String,boolean)">ultimateDestination</a></span>&#8203;(java.lang.String&nbsp;guid,
                    boolean&nbsp;includeProcesses)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateSourceGraph(java.lang.String,boolean)">ultimateSourceGraph</a></span>&#8203;(java.lang.String&nbsp;guid,
                    boolean&nbsp;includeProcesses)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verticalLineage(java.lang.String,boolean)">verticalLineage</a></span>&#8203;(java.lang.String&nbsp;guid,
                boolean&nbsp;includeProcesses)</code></th>
@@ -469,6 +476,24 @@ public&nbsp;java.util.List&lt;<a href="../../../../../governanceservers/openline
 <dd><code><a href="../../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - from the underlying service</dd>
 <dd><code><a href="../../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - from the underlying service</dd>
 <dd><code><a href="../../../../../governanceservers/openlineage/ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code> - from the underlying service</dd>
+</dl>
+</li>
+</ul>
+<a id="elementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHierarchy</h4>
+<pre class="methodSignature">@PostMapping("elements/hierarchy")
+public&nbsp;<a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a>&nbsp;elementHierarchy&#8203;(@RequestBody
+                              <a href="../../../../../governanceservers/openlineage/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</pre>
+<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementHierarchyRequest</code> - contains the guid of the queried node and the hierarchyType of the display name of the nodes</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a subgraph containing all relevant paths,</dd>
 </dl>
 </li>
 </ul>

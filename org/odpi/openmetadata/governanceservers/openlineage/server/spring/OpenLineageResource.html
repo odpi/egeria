@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -177,6 +177,15 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">getElementHierarchy</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                   java.lang.String&nbsp;userId,
+                   <a href="../../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></th>
+<td class="colLast">
+<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String,java.lang.String,java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
@@ -185,7 +194,7 @@ extends java.lang.Object</pre>
 <div class="block">Gets entity details.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">getNodes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId,
@@ -196,14 +205,14 @@ extends java.lang.Object</pre>
 <div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSearchResults(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">getSearchResults</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 <a href="../../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes(java.lang.String,java.lang.String)">getTypes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId)</code></th>
@@ -211,7 +220,7 @@ extends java.lang.Object</pre>
 <div class="block">Gets available entities types from lineage repository.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters)">lineage</a></span>&#8203;(java.lang.String&nbsp;serverName,
        java.lang.String&nbsp;userId,
@@ -374,7 +383,7 @@ public&nbsp;<a href="../../responses/LineageNodeNamesResponse.html" title="class
 <a id="getSearchResults(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getSearchResults</h4>
 <pre class="methodSignature">@PostMapping(path="lineage/search",
@@ -385,6 +394,31 @@ public&nbsp;<a href="../../responses/LineageSearchResponse.html" title="class in
                                               java.lang.String&nbsp;userId,
                                               @RequestBody
                                               <a href="../../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</pre>
+</li>
+</ul>
+<a id="getElementHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getElementHierarchy</h4>
+<pre class="methodSignature">@PostMapping(path="elements/hierarchy",
+             produces="application/json")
+public&nbsp;<a href="../../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a>&nbsp;getElementHierarchy&#8203;(@PathVariable("serverName")
+                                           java.lang.String&nbsp;serverName,
+                                           @PathVariable("userId")
+                                           java.lang.String&nbsp;userId,
+                                           @RequestBody
+                                           <a href="../../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</pre>
+<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user.</dd>
+<dd><code>serverName</code> - name of the server instance to connect to.</dd>
+<dd><code>elementHierarchyRequest</code> - contains the guid of the queried node and the hierarchyType of the display name of the nodes</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A subgraph containing all relevant paths, in graphSON format.</dd>
+</dl>
 </li>
 </ul>
 </li>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -188,27 +188,34 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">getElementHierarchy</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></th>
+<td class="colLast">
+<div class="block">Retrieve hierarchy starting from the entity identified by the guid</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Gets entity details.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">getNodes</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</code></th>
 <td class="colLast">
 <div class="block">Gets nodes names of certain type with display name containing a certain value - case insensitive</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes()">getTypes</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets available entities types from lineage repository.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
        java.lang.String&nbsp;guid,
@@ -217,28 +224,28 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 <div class="block">Retrieve lineage starting from the entity identified by the guid</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../../governanceservers/openlineage/responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</code></th>
 <td class="colLast">
 <div class="block">Search the database for entities matching the search request</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateDestination(java.lang.String)">ultimateDestination</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate destination graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateSource(java.lang.String)">ultimateSource</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate source graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verticalLineage(java.lang.String)">verticalLineage</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
@@ -359,7 +366,7 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;&nbsp;ultimateDestination&#8203;(java.lang.String&nbsp;guid)</pre>
 <div class="block">Returns the ultimate destination graph of queried entity, which can be a column or a table. In case of tables,
  relationships of type LineageMapping will be traversed forwards, all the way to the destination. If no vertices
- are found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+ are found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
  directly used</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -436,6 +443,26 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
                       of the display name of the nodes, the maximum number of node names to retrieve</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the node names that match criteria</dd>
+</dl>
+</li>
+</ul>
+<a id="getElementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getElementHierarchy</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../../../governanceservers/openlineage/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a>&nbsp;getElementHierarchy&#8203;(<a href="../../../../../governanceservers/openlineage/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">OpenLineageQueryService</a></code></span></div>
+<div class="block">Retrieve hierarchy starting from the entity identified by the guid</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">getElementHierarchy</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/openlineage/OpenLineageQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.openlineage">OpenLineageQueryService</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementHierarchyRequest</code> - contains the guid of the queried node and the hierarchyType
+                                of the display name of the nodes, the maximum number of node names to retrieve</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the lineage vertices and edges that compose the hierarchy</dd>
 </dl>
 </li>
 </ul>

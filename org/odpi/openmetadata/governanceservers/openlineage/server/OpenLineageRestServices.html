@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -174,26 +174,33 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">getElementHierarchy</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                   java.lang.String&nbsp;userId,
+                   <a href="../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageVertexResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String,java.lang.String,java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageNodeNamesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">getNodes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId,
         <a href="../model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes(java.lang.String,java.lang.String)">getTypes</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(java.lang.String&nbsp;serverName,
        java.lang.String&nbsp;userId,
@@ -202,7 +209,7 @@ extends java.lang.Object</pre>
        boolean&nbsp;includeProcesses)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(java.lang.String&nbsp;serverName,
       java.lang.String&nbsp;userId,
@@ -300,12 +307,23 @@ extends java.lang.Object</pre>
 <a id="search(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>search</h4>
 <pre class="methodSignature">public&nbsp;<a href="../responses/LineageSearchResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageSearchResponse</a>&nbsp;search&#8203;(java.lang.String&nbsp;serverName,
                                     java.lang.String&nbsp;userId,
                                     <a href="../requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">LineageSearchRequest</a>&nbsp;lineageSearchRequest)</pre>
+</li>
+</ul>
+<a id="getElementHierarchy(java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getElementHierarchy</h4>
+<pre class="methodSignature">public&nbsp;<a href="../responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.responses">LineageResponse</a>&nbsp;getElementHierarchy&#8203;(java.lang.String&nbsp;serverName,
+                                           java.lang.String&nbsp;userId,
+                                           <a href="../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</pre>
 </li>
 </ul>
 </li>
