@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.security.ffdc.SecurityIntegrato
  * SecurityIntegratorConnector is the base class for an integration connector that is managed by the
  * Security Integrator OMIS.
  */
-public abstract class SecurityIntegratorConnector extends IntegrationConnectorBase
+public abstract class SecurityIntegratorConnector extends IntegrationConnectorBase implements SecurityIntegratorOMISConnector
 {
     private SecurityIntegratorContext context = null;
 

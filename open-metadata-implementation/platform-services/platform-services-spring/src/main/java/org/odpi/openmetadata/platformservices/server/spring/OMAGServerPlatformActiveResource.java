@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformActiveSer
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -241,7 +243,6 @@ public class OMAGServerPlatformActiveResource
 
                         )
                 })
-
     public ConnectorTypeResponse getConnectorType(@Parameter(description="calling user")                         @PathVariable String userId,
                                                   @Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
     {

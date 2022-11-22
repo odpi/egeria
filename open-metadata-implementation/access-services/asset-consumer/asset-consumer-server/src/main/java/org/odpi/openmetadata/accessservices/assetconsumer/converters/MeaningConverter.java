@@ -3,18 +3,13 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.MeaningProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 
 /**
@@ -67,7 +62,7 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties = null;
+                InstanceProperties instanceProperties;
 
                 /*
                  * The initial set of values come from the entity.
@@ -79,6 +74,7 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
                     meaningProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     meaningProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     meaningProperties.setName(this.removeDisplayName(instanceProperties));
+                    meaningProperties.setSummary(this.removeSummary(instanceProperties));
                     meaningProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*

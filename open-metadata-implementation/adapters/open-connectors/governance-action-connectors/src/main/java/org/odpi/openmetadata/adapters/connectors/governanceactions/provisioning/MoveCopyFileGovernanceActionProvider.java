@@ -17,7 +17,7 @@ import java.util.List;
 public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyFile";
+    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Provisioning:MoveCopyFile";
     private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 

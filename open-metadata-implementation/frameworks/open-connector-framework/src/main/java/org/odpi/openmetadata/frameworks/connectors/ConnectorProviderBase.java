@@ -145,27 +145,107 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
         }
         else
         {
-            return new ConnectorTypeProperties(connectorTypeBean);
+            return new ConnectorTypeProperties(this.getConnectorType());
         }
     }
 
 
     /**
-     * Returns the properties about the type of connector that this ConnectorTypeManager supports.
+     * Returns the properties about the type of connector that this ConnectorProvider supports.
      *
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
-    public ConnectorType getConnectorType()
+    @Override
+    public synchronized ConnectorType getConnectorType()
     {
+        final String javaLanguageName = "Java";
+        final String ocfFrameworkName = "Open Connector Framework (OCF)";
+
         if (connectorTypeBean == null)
         {
-            return null;
+            connectorTypeBean = new ConnectorType();
         }
-        else
+
+        if (connectorTypeBean.getType() == null)
         {
-            return new ConnectorType(connectorTypeBean);
+            connectorTypeBean.setType(ConnectorType.getConnectorTypeType());
         }
+
+        if (connectorTypeBean.getQualifiedName() == null)
+        {
+            connectorTypeBean.setQualifiedName(this.getClass().getName());
+        }
+
+        if (connectorTypeBean.getDisplayName() == null)
+        {
+            if (connectorComponentDescription != null)
+            {
+                connectorTypeBean.setDisplayName(connectorComponentDescription.getComponentName());
+            }
+        }
+
+        if (connectorTypeBean.getDescription() == null)
+        {
+            if (connectorComponentDescription != null)
+            {
+                connectorTypeBean.setDescription(connectorComponentDescription.getComponentDescription());
+            }
+        }
+
+        if (connectorTypeBean.getConnectorProviderClassName() == null)
+        {
+            connectorTypeBean.setConnectorProviderClassName(this.getClass().getName());
+        }
+
+        if (connectorTypeBean.getConnectorInterfaceLanguage() == null)
+        {
+            connectorTypeBean.setConnectorInterfaceLanguage(javaLanguageName);
+        }
+
+        if (connectorTypeBean.getConnectorFrameworkName() == null)
+        {
+            connectorTypeBean.setConnectorFrameworkName(ocfFrameworkName);
+        }
+
+        if (connectorTypeBean.getConnectorInterfaces() == null || connectorTypeBean.getConnectorInterfaces().isEmpty())
+        {
+            if (connectorClassName != null)
+            {
+                List<String>  connectorInterfaces = new ArrayList<>();
+
+                try
+                {
+                    Class<?> nextConnectorClass = Class.forName(connectorClassName);
+
+                    while (nextConnectorClass != null)
+                    {
+                        Class<?>[] interfaces = nextConnectorClass.getInterfaces();
+
+                        for (Class<?> implementedInterface : interfaces)
+                        {
+                            if (implementedInterface != null)
+                            {
+                                connectorInterfaces.add(0, implementedInterface.getName());
+                            }
+                        }
+
+                        nextConnectorClass = nextConnectorClass.getSuperclass();
+                    }
+                }
+                catch (Exception error)
+                {
+                    // ignore
+                }
+
+                if (! connectorInterfaces.isEmpty())
+                {
+                    connectorTypeBean.setConnectorInterfaces(connectorInterfaces);
+                }
+            }
+        }
+
+        return new ConnectorType(connectorTypeBean);
     }
 
 
@@ -190,6 +270,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
      */
+    @Override
     public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         return this.getConnector(new ConnectionProperties(connection));
@@ -205,6 +286,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
+    @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         final String             methodName = "getConnector";
@@ -270,7 +352,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
                         ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
                                                                                                    connectorComponentDescription.getComponentDevelopmentStatus(),
                                                                                                    connectorComponentDescription.getComponentName() + ":" + guid,
-                                                                                                   connectorComponentDescription.getComponentType(),
+                                                                                                   connectorComponentDescription.getComponentDescription(),
                                                                                                    connectorComponentDescription.getComponentWikiURL()));
                     }
                 }
@@ -298,7 +380,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
                                                  methodName,
                                                  castException);
         }
-        catch (Throwable unexpectedSomething)
+        catch (Exception unexpectedSomething)
         {
             /*
              * Wrap throwable in a connection exception with error message to say that there was a problem with
@@ -331,6 +413,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      *
      * @return random UUID as hashcode
      */
+    @Override
     public int hashCode()
     {
         return hashCode;

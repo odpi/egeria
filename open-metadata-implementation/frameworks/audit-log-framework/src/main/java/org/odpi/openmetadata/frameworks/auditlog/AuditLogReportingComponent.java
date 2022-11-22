@@ -49,7 +49,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
             this.componentId = template.getComponentId();
             this.componentDevelopmentStatus = template.getComponentDevelopmentStatus();
             this.componentName = template.getComponentName();
-            this.componentDescription = template.getComponentType();
+            this.componentDescription = template.getComponentDescription();
             this.componentWikiURL = template.getComponentWikiURL();
         }
     }
@@ -83,6 +83,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
      *
      * @return int componentId
      */
+    @Override
     public int getComponentId()
     {
         return componentId;
@@ -106,6 +107,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
      *
      * @return enum describing the status
      */
+    @Override
     public ComponentDevelopmentStatus getComponentDevelopmentStatus()
     {
         return componentDevelopmentStatus;
@@ -128,6 +130,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
      *
      * @return String component name
      */
+    @Override
     public String getComponentName()
     {
         return componentName;
@@ -148,12 +151,13 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
 
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @return String description
      */
-    public String getComponentType()
+    @Override
+    public String getComponentDescription()
     {
         return componentDescription;
     }
@@ -161,7 +165,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
 
     /**
      * Set up the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @param componentDescription String description
@@ -178,6 +182,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
      *
      * @return String URL
      */
+    @Override
     public String getComponentWikiURL()
     {
         return componentWikiURL;
@@ -233,7 +238,7 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
         AuditLogReportingComponent that = (AuditLogReportingComponent) objectToCompare;
         return getComponentId() == that.getComponentId() &&
                 Objects.equals(getComponentName(), that.getComponentName()) &&
-                Objects.equals(getComponentType(), that.getComponentType()) &&
+                Objects.equals(getComponentDescription(), that.getComponentDescription()) &&
                 Objects.equals(getComponentWikiURL(), that.getComponentWikiURL());
     }
 
@@ -246,6 +251,6 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComponentId(), getComponentName(), getComponentType(), getComponentWikiURL());
+        return Objects.hash(getComponentId(), getComponentName(), getComponentDescription(), getComponentWikiURL());
     }
 }

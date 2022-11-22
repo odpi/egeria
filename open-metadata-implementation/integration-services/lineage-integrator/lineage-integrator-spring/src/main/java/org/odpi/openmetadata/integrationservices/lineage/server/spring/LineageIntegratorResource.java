@@ -4,7 +4,7 @@ package org.odpi.openmetadata.integrationservices.lineage.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.integrationservices.lineage.rest.LineageIntegratorRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +41,9 @@ public class LineageIntegratorResource
      */
     @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
 
-    public ConnectorTypeResponse validateConnector(@PathVariable String serverName,
-                                                   @PathVariable String userId,
-                                                   @PathVariable String connectorProviderClassName)
+    public ConnectorReportResponse validateConnector(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String connectorProviderClassName)
     {
         return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
     }

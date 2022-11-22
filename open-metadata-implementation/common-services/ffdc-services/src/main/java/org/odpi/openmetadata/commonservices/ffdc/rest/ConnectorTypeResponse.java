@@ -6,8 +6,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.util.Arrays;
@@ -26,12 +26,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private ComponentDescription     componentDescription        = null;
-    private ConnectorType            connectorType               = null;
-    private long                     refreshTimeInterval         = 0L;
-    private boolean                  usesBlockingCalls           = false;
+    private ConnectorType connectorType = null;
 
     /**
      * Default constructor
@@ -53,10 +50,7 @@ public class ConnectorTypeResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            this.componentDescription     = template.getComponentDescription();
-            this.connectorType            = template.getConnectorType();
-            this.refreshTimeInterval      = template.getRefreshTimeInterval();
-            this.usesBlockingCalls        = template.getUsesBlockingCalls();
+            this.connectorType = template.getConnectorType();
         }
     }
 
@@ -66,39 +60,15 @@ public class ConnectorTypeResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public ConnectorTypeResponse(ConnectorReport template)
+    public ConnectorTypeResponse(ConnectorType template)
     {
+        super(null);
+
         if (template != null)
         {
-            this.componentDescription     = template.getComponentDescription();
-            this.connectorType            = template.getConnectorType();
-            this.refreshTimeInterval      = template.getRefreshTimeInterval();
-            this.usesBlockingCalls        = template.getUsesBlockingCalls();
+            this.connectorType = template;
         }
     }
-
-
-    /**
-     * Return the component description information that the connector uses to register with the audit log.
-     *
-     * @return component description structure
-     */
-    public ComponentDescription getComponentDescription()
-    {
-        return componentDescription;
-    }
-
-
-    /**
-     * Set up the component description information that the connector uses to register with the audit log.
-     *
-     * @param componentDescription component description structure
-     */
-    public void setComponentDescription(ComponentDescription componentDescription)
-    {
-        this.componentDescription = componentDescription;
-    }
-
 
     /**
      * Return the ConnectorType object.
@@ -123,54 +93,6 @@ public class ConnectorTypeResponse extends FFDCResponseBase
 
 
     /**
-     * Return the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
-     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
-     *
-     * @return minute count
-     */
-    public long getRefreshTimeInterval()
-    {
-        return refreshTimeInterval;
-    }
-
-
-    /**
-     * Set up the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
-     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
-     *
-     * @param refreshTimeInterval minute count
-     */
-    public void setRefreshTimeInterval(long refreshTimeInterval)
-    {
-        this.refreshTimeInterval = refreshTimeInterval;
-    }
-
-
-    /**
-     * Return if the connector should be started in its own thread to allow it is block on a listening call.
-     *
-     * @return boolean flag
-     */
-    public boolean getUsesBlockingCalls()
-    {
-        return usesBlockingCalls;
-    }
-
-
-    /**
-     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
-     *
-     * @param usesBlockingCalls boolean flag
-     */
-    public void setUsesBlockingCalls(boolean usesBlockingCalls)
-    {
-        this.usesBlockingCalls = usesBlockingCalls;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -179,10 +101,7 @@ public class ConnectorTypeResponse extends FFDCResponseBase
     public String toString()
     {
         return "ConnectorTypeResponse{" +
-                       "componentDescription=" + componentDescription +
-                       ", connectorType=" + connectorType +
-                       ", refreshTimeInterval=" + refreshTimeInterval +
-                       ", usesBlockingCalls=" + usesBlockingCalls +
+                       "connectorType=" + connectorType +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                        ", actionDescription='" + getActionDescription() + '\'' +
@@ -210,7 +129,7 @@ public class ConnectorTypeResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ConnectorTypeResponse))
         {
             return false;
         }
@@ -218,11 +137,10 @@ public class ConnectorTypeResponse extends FFDCResponseBase
         {
             return false;
         }
-        ConnectorTypeResponse that = (ConnectorTypeResponse) objectToCompare;
-        return refreshTimeInterval == that.refreshTimeInterval &&
-                       usesBlockingCalls == that.usesBlockingCalls &&
-                       Objects.equals(componentDescription, that.componentDescription) &&
-                       Objects.equals(connectorType, that.connectorType);
+
+        ConnectorTypeResponse response = (ConnectorTypeResponse) objectToCompare;
+
+        return connectorType != null ? connectorType.equals(response.connectorType) : response.connectorType == null;
     }
 
 
@@ -234,6 +152,6 @@ public class ConnectorTypeResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls);
+        return Objects.hash(super.hashCode(), connectorType);
     }
 }

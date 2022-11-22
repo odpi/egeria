@@ -8,9 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 
-import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceService;
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceServiceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
  */
 public class RepositoryGovernanceRESTServices
 {
-    private static RepositoryGovernanceInstanceHandler instanceHandler = new RepositoryGovernanceInstanceHandler();
+    private static final RepositoryGovernanceInstanceHandler instanceHandler = new RepositoryGovernanceInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(RepositoryGovernanceRESTServices.class),
-                                                                      instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(RepositoryGovernanceRESTServices.class),
+                                                                            instanceHandler.getServiceName());
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -43,28 +43,28 @@ public class RepositoryGovernanceRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorTypeResponse validateConnector(String serverName,
-                                                   String userId,
-                                                   String connectorProviderClassName)
+    public ConnectorReportResponse validateConnector(String serverName,
+                                                     String userId,
+                                                     String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectorTypeResponse response = new ConnectorTypeResponse();
-        AuditLog              auditLog = null;
+        ConnectorReportResponse response = new ConnectorReportResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
-                                                                                RepositoryGovernanceService.class,
+                                                                                RepositoryGovernanceServiceConnector.class,
                                                                                 EngineServiceDescription.REPOSITORY_GOVERNANCE_OMES.getEngineServiceFullName());
 
             if (connectorReport != null)
             {
-                response = new ConnectorTypeResponse(connectorReport);
+                response.setConnectorReport(connectorReport);
             }
         }
         catch (Exception error)

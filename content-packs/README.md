@@ -11,10 +11,13 @@ or [while the server is running](https://egeria-project.org/guides/operations/ad
 
 They are as follows:
 
-* **CloudInformationModel.json** - extracted metadata from the **Cloud Information Model**'s
+* **CloudInformationModel.json** - glossary from the **Cloud Information Model**'s
 [JSONLD formatted model](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/master/dist/model.jsonld).
+The content covers basic commerce concepts such as Party, Product, Invoice and Shipping.
+The cloud information project has been archived.  However, this is a useful starter set glossary,
 
-The next four archives are build from archive writers in egeria-samples.git.
+The next four archives are built from the [archive writers in egeria-samples.git](https://github.com/odpi/egeria-samples/tree/main/sample-metadata-archives/coco-metadata-archives).
+They supply metadata to support the Coco Pharmaceuticals scenarios.
 
 * **CocoBusinessSystemsArchive** provides a catalog of the business systems and the lineage between
   them and the load of their data into the data lake.  This archive simulates the type of metadata expected from
@@ -43,6 +46,7 @@ external utilities since each OMAG server capable of being a cohort member will 
 This final four archives are for a demo showing 4 metadata access servers connected together in a single cohort.
 The archives are each loaded into a different server.  
 It is then possible to show how the cohort integrates metadata from different catalogs.
+These archives are used in the *Development labs* which are part of the [Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
 * **SimpleAPICatalog** - API metadata typically found in an API catalog.
 

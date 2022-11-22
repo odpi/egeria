@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.platformservices.client;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
@@ -98,7 +99,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a String object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -124,7 +125,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a ServerStatusResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -145,11 +146,12 @@ class PlatformServicesRESTClient extends FFDCRESTClient
         return restResult;
     }
 
+
     /**
      * Issue a GET REST call that returns a ConnectorTypeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -173,10 +175,37 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a ConnectorTypeListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    ConnectorTypeListResponse callConnectorTypeListGetRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object... params) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        ConnectorTypeListResponse restResult = this.callGetRESTCall(methodName, ConnectorTypeListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
      * Issue a GET REST call that returns a 'ServerServicesListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -202,7 +231,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a ServerListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -228,7 +257,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a RegisteredOMAGServicesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object

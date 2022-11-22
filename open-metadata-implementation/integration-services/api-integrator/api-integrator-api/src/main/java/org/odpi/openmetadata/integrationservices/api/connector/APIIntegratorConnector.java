@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.api.ffdc.APIIntegratorErrorCode
  * APIIntegratorConnector is the base class for an integration connector that is managed by the
  * API Integrator OMIS.
  */
-public abstract class APIIntegratorConnector extends IntegrationConnectorBase
+public abstract class APIIntegratorConnector extends IntegrationConnectorBase implements APIIntegratorOMISConnector
 {
     private APIIntegratorContext context = null;
 
