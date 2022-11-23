@@ -3448,6 +3448,13 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <!-- https://nvd.nist.gov/vuln/detail/CVE-2022-37865 org.apache.ivy:ivy:jar:2.4.0 via org.apache.tinkerpop:gremlin-groovy:jar:3.5.2 << org.janusgraph:janusgraph-driver:jar:0.6.1  -->
+            <dependency>
+                <groupId>org.apache.ivy</groupId>
+                <artifactId>ivy</artifactId>
+                <version>2.5.1</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>

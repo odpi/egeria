@@ -299,6 +299,7 @@ allprojects {
             //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
             runtimeOnly("com.beust:jcommander:1.82")
             runtimeOnly("org.antlr:antlr4:4.11.1")
+            runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
         implementation platform('net.openhft:chronicle-bom:2.24ea7')
     }
