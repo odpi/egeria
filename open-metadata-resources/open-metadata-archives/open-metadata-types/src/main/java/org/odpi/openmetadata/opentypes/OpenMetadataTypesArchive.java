@@ -7,12 +7,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
@@ -164,6 +158,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update536APIOperations();
+        updateGovernanceEngines();
     }
 
     /*
@@ -198,6 +193,50 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+
+    /**
+     * Allow a mapping from a governance engine request type to a request type supported by a governance service.
+     */
+    private void updateGovernanceEngines()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
+    }
+
+
+    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SupportedGovernanceService";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "serviceRequestType";
+        final String attribute1Description     = "Request type supported by the governance action service (overrides requestType on call to governance service if specified).";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

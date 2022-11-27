@@ -710,6 +710,7 @@ public class GovernanceConfigRESTServices
                                                             governanceEngineGUID,
                                                             requestBody.getGovernanceServiceGUID(),
                                                             requestBody.getRequestType(),
+                                                            requestBody.getServiceRequestType(),
                                                             requestBody.getRequestParameters());
             }
             else
@@ -785,25 +786,25 @@ public class GovernanceConfigRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the governance engine definition.
      */
-    public  GUIDListResponse  getRegisteredGovernanceServices(String  serverName,
-                                                              String  userId,
-                                                              String  governanceEngineGUID,
-                                                              int     startingFrom,
-                                                              int     maximumResults)
+    public RegisteredGovernanceServicesResponse  getRegisteredGovernanceServices(String  serverName,
+                                                                                 String  userId,
+                                                                                 String  governanceEngineGUID,
+                                                                                 int     startingFrom,
+                                                                                 int     maximumResults)
     {
         final String methodName = "getRegisteredGovernanceServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDListResponse response = new GUIDListResponse();
-        AuditLog         auditLog = null;
+        RegisteredGovernanceServicesResponse response = new RegisteredGovernanceServicesResponse();
+        AuditLog                             auditLog = null;
 
         try
         {
             GovernanceConfigurationHandler handler = instanceHandler.getGovernanceConfigurationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
-            response.setGUIDs(handler.getRegisteredGovernanceServices(userId, governanceEngineGUID, startingFrom, maximumResults));
+            response.setElements(handler.getRegisteredGovernanceServices(userId, governanceEngineGUID, startingFrom, maximumResults));
         }
         catch (Exception error)
         {

@@ -28,18 +28,18 @@ import java.util.*;
 /**
  * The GovernanceEngineHandler is responsible for running governance services on demand.  It is initialized
  * with the configuration for the engine service it supports along with the clients to the metadata store where the
- * definitions of the .
+ * definitions of the governance engine are managed.
  */
 public abstract class GovernanceEngineHandler
 {
     protected String                 serverName;        /* Initialized in constructor */
     protected String                 serverUserId;      /* Initialized in constructor */
-    private   String                 engineServiceName; /* Initialized in constructor */
     protected GovernanceEngineClient serverClient;      /* Initialized in constructor */
     protected String                 engineUserId;      /* Initialized in constructor */
     protected AuditLog               auditLog;          /* Initialized in constructor */
     protected int                    maxPageSize;       /* Initialized in constructor */
 
+    private final String                 engineServiceName; /* Initialized in constructor */
     protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
     protected GovernanceEngineProperties governanceEngineProperties = null;
@@ -49,10 +49,9 @@ public abstract class GovernanceEngineHandler
     private List<String>  governanceEngineSuperTypeNames = null;
 
 
-    private GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
+    private final GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
 
-
-    private GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
+    private final GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
 
     /**
@@ -92,8 +91,6 @@ public abstract class GovernanceEngineHandler
     }
 
 
-
-
     /**
      * Return the governance Engine name - used for error logging.
      *
@@ -110,7 +107,7 @@ public abstract class GovernanceEngineHandler
      *
      * @return governance engine summary
      */
-    public GovernanceEngineSummary getSummary()
+    public synchronized GovernanceEngineSummary getSummary()
     {
         GovernanceEngineSummary mySummary = new GovernanceEngineSummary();
 
@@ -146,12 +143,12 @@ public abstract class GovernanceEngineHandler
      * This request ensures that the latest configuration is in use.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public void refreshConfig() throws InvalidParameterException,
-                                       UserNotAuthorizedException,
-                                       PropertyServerException
+    public synchronized void refreshConfig() throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException
     {
         final String methodName = "refreshConfig";
 
@@ -195,13 +192,15 @@ public abstract class GovernanceEngineHandler
      * is in use.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
     private void refreshAllServiceConfig() throws InvalidParameterException,
                                                   UserNotAuthorizedException,
                                                   PropertyServerException
     {
+        final String methodName = "refreshAllServiceConfig";
+
         /*
          * Clear the lookup table - this will cause temporary failures in governance requests if services were already
          * configured.
@@ -218,26 +217,19 @@ public abstract class GovernanceEngineHandler
 
         while (moreToReceive)
         {
-            List<String> registeredGovernanceServices = configurationClient.getRegisteredGovernanceServices(serverUserId,
-                                                                                                            governanceEngineGUID,
-                                                                                                            startingFrom,
-                                                                                                            maxPageSize);
+            List<RegisteredGovernanceServiceElement> registeredGovernanceServices = configurationClient.getRegisteredGovernanceServices(serverUserId,
+                                                                                                                                        governanceEngineGUID,
+                                                                                                                                        startingFrom,
+                                                                                                                                        maxPageSize);
 
             if ((registeredGovernanceServices != null) && (! registeredGovernanceServices.isEmpty()))
             {
-                for (String registeredGovernanceServiceGUID : registeredGovernanceServices)
+                for (RegisteredGovernanceServiceElement registeredGovernanceService : registeredGovernanceServices)
                 {
-                    refreshServiceConfig(registeredGovernanceServiceGUID, null);
+                    refreshRegisteredGovernanceService(registeredGovernanceService, null, methodName);
                 }
 
-                if (registeredGovernanceServices.size() < maxPageSize)
-                {
-                    moreToReceive = false;
-                }
-                else
-                {
-                    startingFrom = startingFrom + maxPageSize;
-                }
+                startingFrom = startingFrom + maxPageSize;
             }
             else
             {
@@ -259,53 +251,77 @@ public abstract class GovernanceEngineHandler
      * @param specificRequestType specific request type to refresh
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public void refreshServiceConfig(String  registeredGovernanceServiceGUID,
-                                     String  specificRequestType) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public synchronized void refreshServiceConfig(String  registeredGovernanceServiceGUID,
+                                                  String  specificRequestType) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName = "refreshServiceConfig";
 
         if (registeredGovernanceServiceGUID != null)
         {
-            RegisteredGovernanceServiceElement governanceServiceElement = configurationClient.getRegisteredGovernanceService(serverUserId,
-                                                                                                                             governanceEngineGUID,
-                                                                                                                             registeredGovernanceServiceGUID);
+            RegisteredGovernanceServiceElement registeredGovernanceServiceElement = configurationClient.getRegisteredGovernanceService(serverUserId,
+                                                                                                                                       governanceEngineGUID,
+                                                                                                                                       registeredGovernanceServiceGUID);
 
-            if ((governanceServiceElement != null) &&
-                        (governanceServiceElement.getElementHeader() != null) &&
-                        (governanceServiceElement.getProperties() != null))
+            this.refreshRegisteredGovernanceService(registeredGovernanceServiceElement,
+                                                    specificRequestType,
+                                                    methodName);
+        }
+    }
+
+
+    /**
+     * Set up the service cache for each registered service.  An entry is added for each governance request type.
+     *
+     * @param registeredGovernanceServiceElement description of the governance service and its governance request types
+     * @param specificRequestType refresh all request types (null) or a specific one?
+     * @param methodName calling method for message
+     * @throws InvalidParameterException invalid configuration elements
+     * @throws PropertyServerException error detected in remote server
+     */
+    private void refreshRegisteredGovernanceService(RegisteredGovernanceServiceElement registeredGovernanceServiceElement,
+                                                    String                             specificRequestType,
+                                                    String                             methodName) throws InvalidParameterException,
+                                                                                                          PropertyServerException
+    {
+        if ((registeredGovernanceServiceElement != null) &&
+                    (registeredGovernanceServiceElement.getElementHeader() != null) &&
+                    (registeredGovernanceServiceElement.getProperties() != null))
+        {
+            RegisteredGovernanceService registeredGovernanceService = registeredGovernanceServiceElement.getProperties();
+
+            if (registeredGovernanceService.getRequestTypes() != null)
             {
-                RegisteredGovernanceService governanceService = governanceServiceElement.getProperties();
+                Set<String> governanceRequestTypes;
 
-                if (governanceService.getRequestTypes() != null)
+                if (specificRequestType == null)
                 {
-                    Set<String> governanceRequestTypes;
+                    governanceRequestTypes = registeredGovernanceService.getRequestTypes().keySet();
+                }
+                else
+                {
+                    governanceRequestTypes = new HashSet<>();
 
-                    if (specificRequestType == null)
-                    {
-                        governanceRequestTypes = governanceService.getRequestTypes().keySet();
-                    }
-                    else
-                    {
-                        governanceRequestTypes = new HashSet<>();
+                    governanceRequestTypes.add(specificRequestType);
+                }
 
-                        governanceRequestTypes.add(specificRequestType);
-                    }
+                for (String governanceRequestType : governanceRequestTypes)
+                {
+                    GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName,
+                                                                                               governanceEngineName,
+                                                                                               registeredGovernanceServiceElement,
+                                                                                               governanceRequestType,
+                                                                                               auditLog);
+                    governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
-                    for (String governanceRequestType : governanceRequestTypes)
-                    {
-                        GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName, governanceEngineName, governanceServiceElement, auditLog);
-                        governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
-
-                        auditLog.logMessage(methodName,
-                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
-                                                                                                                    serverName,
-                                                                                                                    governanceRequestType));
-                    }
+                    auditLog.logMessage(methodName,
+                                        EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
+                                                                                                                serverName,
+                                                                                                                governanceRequestType));
                 }
             }
         }
@@ -465,7 +481,7 @@ public abstract class GovernanceEngineHandler
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
-     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param governanceRequestType governance request type to use when calling the governance engine
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -477,7 +493,7 @@ public abstract class GovernanceEngineHandler
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     public abstract GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                                  String                     requestType,
+                                                                  String                     governanceRequestType,
                                                                   Map<String, String>        requestParameters,
                                                                   List<RequestSourceElement> requestSourceElements,
                                                                   List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -494,6 +510,7 @@ public abstract class GovernanceEngineHandler
      * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
      * @throws PropertyServerException there is a problem communicating with the open metadata stores
      */
+    @SuppressWarnings(value = "unused")
     public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package provides the definition of the Java API for the Asset Owner OMAS.
+ * The API package defines the Java interfaces supported by the Asset Owner OMAS.
+ *
+ * These Java interfaces wrap the REST API calls to the server and the asynchronous event passing through Asset Owner OMAS's Out Topic.
  */
 package org.odpi.openmetadata.accessservices.assetowner.api;

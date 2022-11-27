@@ -32,22 +32,26 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
             "The name of the directory should be set up in the address property of the connection's Endpoint object.  Correct this in the configuration " +
                     "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
                     "Integration Daemon OMAG server where this connector is running."),
+
     FILES_LOCATION_NOT_DIRECTORY(400, "GOVERNANCE-ACTION-CONNECTORS-400-002",
             "The location of the files {0} given in Connection object {1} is not a directory",
             "The connector is unable to work with this location since it is not a directory (folder).",
             "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
                     "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
                     "of the Integration Daemon OMAG server where this connector is running."),
+
     FILES_LOCATION_NOT_READABLE(400, "GOVERNANCE-ACTION-CONNECTORS-400-003",
             "The directory {0} given in Connection object {1} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
+
     UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"GOVERNANCE-ACTION-CONNECTORS-400-004",
             "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
             "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
             "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                     "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
+
     UNEXPECTED_EXC_DATA_FILE_UPDATE(400,"GOVERNANCE-ACTION-CONNECTORS-400-005",
             "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                     "DataFile in the metadata repositories for file {2}.  The error message was {3}",
@@ -68,14 +72,21 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),
 
+    FOLDER_ELEMENT_NOT_FOUND(404, "GOVERNANCE-ACTION-CONNECTORS-404-002",
+                             "A FileFolder element with a path name of {0} is not found in the open metadata ecosystem",
+                             "The governance action service is not able to proceed until the element has been created.",
+                             "The path name of the folder is passed either in the folderName configuration property; folderName request parameters or folderTarget action target."),
+
     UNEXPECTED_SECURITY_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     UNEXPECTED_IO_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     UNABLE_TO_REGISTER_LISTENER(500, "GOVERNANCE-ACTION-CONNECTORS-500-003",
                                 "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
                                 "The governance action throws a GovernanceServiceException in the hope that the .",

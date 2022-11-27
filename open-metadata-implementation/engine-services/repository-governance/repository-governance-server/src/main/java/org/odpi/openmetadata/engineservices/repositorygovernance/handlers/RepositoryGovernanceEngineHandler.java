@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
 {
-    private EnterpriseRepositoryServicesClient repositoryGovernanceEngineClient;    /* Initialized in constructor */
+    private final EnterpriseRepositoryServicesClient repositoryGovernanceEngineClient;    /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "RepositoryGovernanceEngine";
 
@@ -66,7 +66,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
-     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param governanceRequestType governance request type to use when calling the governance engine
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -78,7 +78,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      */
     @Override
     public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                         String                     requestType,
+                                                         String                     governanceRequestType,
                                                          Map<String, String>        requestParameters,
                                                          List<RequestSourceElement> requestSourceElements,
                                                          List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -88,19 +88,19 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
 
         super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
 
-        GovernanceServiceCache governanceServiceCache = super.getServiceCache(requestType);
+        GovernanceServiceCache governanceServiceCache = super.getServiceCache(governanceRequestType);
 
         if ((governanceServiceCache != null) && (actionTargetElements != null) && (! actionTargetElements.isEmpty()))
         {
             RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = this.getRepositoryGovernanceServiceHandler(governanceServiceCache.getGovernanceServiceName(),
-                                                                                                                               requestType,
-                                                                                                                               requestParameters,
+                                                                                                                               governanceServiceCache.getServiceRequestType(),
+                                                                                                                               governanceServiceCache.getRequestParameters(requestParameters),
                                                                                                                                requestSourceElements,
                                                                                                                                actionTargetElements,
                                                                                                                                governanceActionGUID,
                                                                                                                                governanceServiceCache);
 
-            Thread thread = new Thread(repositoryGovernanceServiceHandler, governanceServiceCache.getGovernanceServiceName() + new Date().toString());
+            Thread thread = new Thread(repositoryGovernanceServiceHandler, governanceServiceCache.getGovernanceServiceName() + new Date());
             thread.start();
 
             return repositoryGovernanceServiceHandler;

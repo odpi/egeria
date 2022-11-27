@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package ...
- */
-
-/**
  * This package defines the beans used to build the REST request and response payloads.
  *
  * REST APIs can pass parameters in their URLs (called path variables) as well has having a RequestBody bean

@@ -1098,15 +1098,15 @@ public class FileSystemRESTServices
                     FolderElement,
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setGUIDs(handler.getFolderFiles(userId,
-                                                     folderGUID,
-                                                     folderGUIDParameterName,
-                                                     startingFrom,
-                                                     maxPageSize,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName));
+            response.setGUIDs(handler.getFolderFileGUIDs(userId,
+                                                         folderGUID,
+                                                         folderGUIDParameterName,
+                                                         startingFrom,
+                                                         maxPageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {

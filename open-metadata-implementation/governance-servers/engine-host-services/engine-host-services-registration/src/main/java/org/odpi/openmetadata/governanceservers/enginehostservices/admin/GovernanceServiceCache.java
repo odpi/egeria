@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -11,8 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,11 +23,15 @@ import java.util.Map;
  */
 public class GovernanceServiceCache
 {
-    private Connector                          nextGovernanceService;
-    private RegisteredGovernanceServiceElement element;
-    private RegisteredGovernanceService        properties;
-    private Map<String, Map<String, String>>   requestTypeMapping;
-    private AuditLog                           auditLog;
+    private final String              governanceServiceGUID;
+    private final String              governanceServiceName;
+    private final String              serviceRequestType;
+    private final Map<String, String> requestParameters;
+    private final Connection          serviceConnection;
+    private final AuditLog            auditLog;
+
+    private Connector                 nextGovernanceService;
+
 
     /**
      * Sets up the cache
@@ -41,6 +47,7 @@ public class GovernanceServiceCache
     GovernanceServiceCache(String                              governanceServerName,
                            String                              governanceEngineName,
                            RegisteredGovernanceServiceElement  element,
+                           String                              requestType,
                            AuditLog                            auditLog) throws InvalidParameterException,
                                                                                 PropertyServerException
     {
@@ -48,19 +55,32 @@ public class GovernanceServiceCache
 
         this.auditLog = auditLog;
 
-        if ((element != null) && (element.getElementHeader() != null) && (element.getProperties() != null))
+        if ((requestType != null) &&
+                    (element != null) && (element.getElementHeader() != null) && (element.getProperties() != null) &&
+                    (element.getProperties().getRequestTypes() != null) && (! element.getProperties().getRequestTypes().isEmpty()))
         {
-            this.element            = element;
-            this.properties         = element.getProperties();
-            this.requestTypeMapping = properties.getRequestTypes();
+            this.governanceServiceGUID = element.getElementHeader().getGUID();
+            this.governanceServiceName = element.getProperties().getQualifiedName();
+            this.serviceConnection = element.getProperties().getConnection();
+
+            RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
+
+            this.serviceRequestType = registeredGovernanceServiceProperties.getServiceRequestType();
+            this.requestParameters  = registeredGovernanceServiceProperties.getRequestParameters();
 
             getNextGovernanceService(); /* validate that the connection works */
         }
         else
         {
+            String elementString = "<null>";
+            if (element != null)
+            {
+                elementString = element.toString();
+            }
             throw new PropertyServerException(EngineHostServicesErrorCode.NULL_GOVERNANCE_SERVICE.getMessageDefinition(methodName,
                                                                                                                        governanceEngineName,
-                                                                                                                       governanceServerName),
+                                                                                                                       governanceServerName,
+                                                                                                                       elementString),
                                               this.getClass().getName(),
                                               methodName);
         }
@@ -74,7 +94,7 @@ public class GovernanceServiceCache
      */
     public String getGovernanceServiceName()
     {
-        return properties.getQualifiedName();
+        return this.governanceServiceName;
     }
 
 
@@ -85,19 +105,51 @@ public class GovernanceServiceCache
      */
     public String getGovernanceServiceGUID()
     {
-        return element.getElementHeader().getGUID();
+        return governanceServiceGUID;
     }
 
 
     /**
-     * Return the analysis parameters to use if none supplied from the caller - these can be null too.
+     * Simple getter for the requestType to pass to governance service.
      *
-     * @param requestType name of the request type
+     * @return string name
+     */
+    public String getServiceRequestType()
+    {
+        return serviceRequestType;
+    }
+
+
+    /**
+     * Return the request/analysis parameters to use if none supplied from the caller - these can be null too.
+     *
+     * @param suppliedRequestParameters request parameters from the caller
      * @return map of string property name to string property value
      */
-    public Map<String, String> getRequestParameters(String requestType)
+    public Map<String, String> getRequestParameters(Map<String, String> suppliedRequestParameters)
     {
-        return requestTypeMapping.get(requestType);
+        Map<String, String> runRequestParameters;
+
+        if (this.requestParameters == null)
+        {
+            runRequestParameters = new HashMap<>();
+        }
+        else
+        {
+            runRequestParameters = new HashMap<>(this.requestParameters);
+        }
+
+        if (suppliedRequestParameters != null)
+        {
+            runRequestParameters.putAll(suppliedRequestParameters);
+        }
+
+        if (runRequestParameters.isEmpty())
+        {
+            runRequestParameters = null;
+        }
+
+        return runRequestParameters;
     }
 
 
@@ -117,11 +169,11 @@ public class GovernanceServiceCache
         {
             ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
-            nextGovernanceService = connectorBroker.getConnector(properties.getConnection());
+            nextGovernanceService = connectorBroker.getConnector(serviceConnection);
         }
         catch (ConnectionCheckedException error)
         {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error, properties.getQualifiedName() + "GovernanceService Connection");
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error, governanceServiceName + "GovernanceService Connection");
         }
         catch (ConnectorCheckedException error)
         {

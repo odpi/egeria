@@ -61,6 +61,14 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedRequestParameters = new ArrayList<>();
         supportedRequestParameters.add(SOURCE_FILE_PROPERTY);
         supportedRequestParameters.add(DESTINATION_FOLDER_PROPERTY);
+        supportedRequestParameters.add(DESTINATION_TEMPLATE_NAME_PROPERTY);
+        supportedRequestParameters.add(TARGET_FILE_NAME_PATTERN_PROPERTY);
+        supportedRequestParameters.add(NO_LINEAGE_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_NAME_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
+        supportedRequestParameters.add(LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
+        supportedRequestParameters.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);
 
         supportedTargetActionNames = new ArrayList<>();
         supportedTargetActionNames.add(SOURCE_FILE_PROPERTY);

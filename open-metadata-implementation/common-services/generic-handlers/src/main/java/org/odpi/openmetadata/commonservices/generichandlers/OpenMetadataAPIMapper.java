@@ -1738,6 +1738,7 @@ public class OpenMetadataAPIMapper
     /* End1 = GovernanceEngine; End 2 = GovernanceService */
 
     public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";        /* from SupportedGovernanceService relationship */
+    public static final String SERVICE_REQUEST_TYPE_PROPERTY_NAME        = "serviceRequestType"; /* from SupportedGovernanceService relationship */
     public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
 
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
