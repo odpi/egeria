@@ -135,7 +135,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Object</pre>
 <div class="block">OMAGServerPlatformInstanceMap provides part of the mapping for inbound REST requests to the appropriate
  service instances for the requested server.  It manages the server name to server instance mapping.
- The map is maintained in a static so it is scoped to the class loader.
+ The map is maintained in a static, so it is scoped to the class loader.
 
  Instances of this class call the synchronized static methods to work with the map.</div>
 </li>
@@ -570,7 +570,7 @@ extends java.lang.Object</pre>
                               java.lang.String&nbsp;serverName)
                        throws <a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></pre>
 <div class="block">Return whether a particular server is active (running) in the platform.
- This is used by the admin services when there being no instance is not an error.</div>
+ This is used by the admin services when no instance is not an error.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user or null if it is an anonymous request</dd>
@@ -592,7 +592,7 @@ extends java.lang.Object</pre>
                              java.lang.String&nbsp;serverName)
                       throws <a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></pre>
 <div class="block">Return whether a particular server is registered with the platform.
- This is used by the admin services when there being no instance is not an error.</div>
+ This is used by the admin services when no instance is not an error.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user or null if it is an anonymous request</dd>

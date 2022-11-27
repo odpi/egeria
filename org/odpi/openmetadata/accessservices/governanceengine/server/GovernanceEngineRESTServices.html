@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -190,106 +190,6 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody)">classifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                              java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;metadataElementGUID,
-                              java.lang.String&nbsp;classificationName,
-                              <a href="../rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Add a new classification to the metadata element.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createIncidentReport(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody)">createIncidentReport</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                    java.lang.String&nbsp;userId,
-                    <a href="../rest/IncidentReportRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IncidentReportRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            <a href="../rest/NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewMetadataElementRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Create a new metadata element in the metadata store.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody)">createRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            <a href="../rest/NewRelatedElementsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewRelatedElementsRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Create a relationship between two metadata elements.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">deleteMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;metadataElementGUID,
-                            <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Delete a specific metadata element.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;relationshipGUID,
-                            <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Delete a relationship between two metadata elements.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code><a href="../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElements(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody)">findMetadataElements</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                    java.lang.String&nbsp;userId,
-                    boolean&nbsp;forLineage,
-                    boolean&nbsp;forDuplicateProcessing,
-                    long&nbsp;effectiveTime,
-                    int&nbsp;startFrom,
-                    int&nbsp;pageSize,
-                    <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">FindRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Return a list of metadata elements that match the supplied criteria.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code><a href="../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findMetadataElementsWithString</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                              java.lang.String&nbsp;userId,
-                              boolean&nbsp;forLineage,
-                              boolean&nbsp;forDuplicateProcessing,
-                              long&nbsp;effectiveTime,
-                              int&nbsp;startFrom,
-                              int&nbsp;pageSize,
-                              <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the metadata elements that contain the requested string.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="../rest/RelatedMetadataElementsListResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RelatedMetadataElementsListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody)">findRelationshipsBetweenMetadataElements</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                        java.lang.String&nbsp;userId,
-                                        boolean&nbsp;forLineage,
-                                        boolean&nbsp;forDuplicateProcessing,
-                                        long&nbsp;effectiveTime,
-                                        int&nbsp;startFrom,
-                                        int&nbsp;pageSize,
-                                        <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">FindRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Return a list of relationships that match the requested conditions.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveClaimedGovernanceActions(java.lang.String,java.lang.String,java.lang.String,int,int)">getActiveClaimedGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                  java.lang.String&nbsp;userId,
@@ -300,7 +200,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveGovernanceActions(java.lang.String,java.lang.String,int,int)">getActiveGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;userId,
@@ -310,7 +210,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are still in process.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../rest/GovernanceActionElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceAction(java.lang.String,java.lang.String,java.lang.String)">getGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -319,7 +219,7 @@ extends java.lang.Object</pre>
 <div class="block">Request the status and properties of an executing governance action request.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActions(java.lang.String,java.lang.String,int,int)">getGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -329,43 +229,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are known to the server.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code><a href="../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long)">getMetadataElementByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                        java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;elementGUID,
-                        boolean&nbsp;forLineage,
-                        boolean&nbsp;forDuplicateProcessing,
-                        long&nbsp;effectiveTime)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the metadata element using its unique identifier.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code><a href="../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMetadataElementByUniqueName</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                              java.lang.String&nbsp;userId,
-                              boolean&nbsp;forLineage,
-                              boolean&nbsp;forDuplicateProcessing,
-                              long&nbsp;effectiveTime,
-                              <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMetadataElementGUIDByUniqueName</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                  java.lang.String&nbsp;userId,
-                                  boolean&nbsp;forLineage,
-                                  boolean&nbsp;forDuplicateProcessing,
-                                  long&nbsp;effectiveTime,
-                                  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectionResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)">getOutTopicConnection</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -374,23 +238,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the connection object for the Governance Engine OMAS's out topic.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
-<td class="colFirst"><code><a href="../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RelatedMetadataElementListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,int)">getRelatedMetadataElements</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                          java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;elementGUID,
-                          java.lang.String&nbsp;relationshipTypeName,
-                          boolean&nbsp;forLineage,
-                          boolean&nbsp;forDuplicateProcessing,
-                          long&nbsp;effectiveTime,
-                          int&nbsp;startingAtEnd,
-                          int&nbsp;startFrom,
-                          int&nbsp;pageSize)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
-</td>
-</tr>
-<tr id="i19" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -401,7 +249,7 @@ extends java.lang.Object</pre>
  associated with the supplied request type.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                java.lang.String&nbsp;userId,
@@ -410,7 +258,7 @@ extends java.lang.Object</pre>
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.ConsolidatedDuplicatesRequestBody)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -419,7 +267,7 @@ extends java.lang.Object</pre>
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsDuplicates(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody)">linkElementsAsDuplicates</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -428,7 +276,7 @@ extends java.lang.Object</pre>
 <div class="block">Link elements as peer duplicates.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logAssetAuditMessage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">logAssetAuditMessage</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -439,18 +287,7 @@ extends java.lang.Object</pre>
 <div class="block">Log an audit message about this asset.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;metadataElementGUID,
-                                java.lang.String&nbsp;classificationName,
-                                <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
-</td>
-</tr>
-<tr id="i25" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody)">recordCompletionStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
@@ -460,18 +297,7 @@ extends java.lang.Object</pre>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;metadataElementGUID,
-                                java.lang.String&nbsp;classificationName,
-                                <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Remove the named classification from a specific metadata element.</div>
-</td>
-</tr>
-<tr id="i27" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -480,18 +306,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the status of a specific action target.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">updateClassificationEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                      java.lang.String&nbsp;userId,
-                                      java.lang.String&nbsp;metadataElementGUID,
-                                      java.lang.String&nbsp;classificationName,
-                                      <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
-</td>
-</tr>
-<tr id="i29" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody)">updateGovernanceActionStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
@@ -499,56 +314,6 @@ extends java.lang.Object</pre>
                             <a href="../rest/StatusRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">StatusRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the status of the governance action - providing the caller is permitted.</div>
-</td>
-</tr>
-<tr id="i30" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                       java.lang.String&nbsp;userId,
-                                       java.lang.String&nbsp;metadataElementGUID,
-                                       <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
-</td>
-</tr>
-<tr id="i31" class="rowColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">updateMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;metadataElementGUID,
-                            <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the properties of a specific metadata element.</div>
-</td>
-</tr>
-<tr id="i32" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                  java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;metadataElementGUID,
-                                  <a href="../rest/UpdateStatusRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateStatusRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the status of specific metadata element.</div>
-</td>
-</tr>
-<tr id="i33" class="rowColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">updateRelatedElementsEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                                       java.lang.String&nbsp;userId,
-                                       java.lang.String&nbsp;relationshipGUID,
-                                       <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
-</td>
-</tr>
-<tr id="i34" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                            java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;relationshipGUID,
-                            <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></th>
-<td class="colLast">
-<div class="block">Update the properties associated with a relationship.</div>
 </td>
 </tr>
 </table>
@@ -647,510 +412,6 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getMetadataElementByGUID</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementResponse</a>&nbsp;getMetadataElementByGUID&#8203;(java.lang.String&nbsp;serverName,
-                                                            java.lang.String&nbsp;userId,
-                                                            java.lang.String&nbsp;elementGUID,
-                                                            boolean&nbsp;forLineage,
-                                                            boolean&nbsp;forDuplicateProcessing,
-                                                            long&nbsp;effectiveTime)</pre>
-<div class="block">Retrieve the metadata element using its unique identifier.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>elementGUID</code> - unique identifier for the metadata element</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>metadata element properties or
- 
-  InvalidParameterException the unique identifier is null or not known.
-  UserNotAuthorizedException the governance action service is not able to access the element
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getMetadataElementByUniqueName</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementResponse</a>&nbsp;getMetadataElementByUniqueName&#8203;(java.lang.String&nbsp;serverName,
-                                                                  java.lang.String&nbsp;userId,
-                                                                  boolean&nbsp;forLineage,
-                                                                  boolean&nbsp;forDuplicateProcessing,
-                                                                  long&nbsp;effectiveTime,
-                                                                  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>requestBody</code> - unique name for the metadata element</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>metadata element properties or
-  InvalidParameterException the unique identifier is null or not known.
-  UserNotAuthorizedException the governance action service is not able to access the element
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getMetadataElementGUIDByUniqueName</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;getMetadataElementGUIDByUniqueName&#8203;(java.lang.String&nbsp;serverName,
-                                                       java.lang.String&nbsp;userId,
-                                                       boolean&nbsp;forLineage,
-                                                       boolean&nbsp;forDuplicateProcessing,
-                                                       long&nbsp;effectiveTime,
-                                                       <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>requestBody</code> - unique name for the metadata element</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>metadata element unique identifier (guid) or
-  InvalidParameterException the unique identifier is null or not known or
-  UserNotAuthorizedException the governance action service is not able to access the element or
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="findMetadataElementsWithString(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>findMetadataElementsWithString</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementsResponse</a>&nbsp;findMetadataElementsWithString&#8203;(java.lang.String&nbsp;serverName,
-                                                                   java.lang.String&nbsp;userId,
-                                                                   boolean&nbsp;forLineage,
-                                                                   boolean&nbsp;forDuplicateProcessing,
-                                                                   long&nbsp;effectiveTime,
-                                                                   int&nbsp;startFrom,
-                                                                   int&nbsp;pageSize,
-                                                                   <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Retrieve the metadata elements that contain the requested string.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>forLineage</code> - the retrieved elements are for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved elements are for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - searchString  to retrieve</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements (or null if no elements match the name) or
-
-  InvalidParameterException the qualified name is null
-  UserNotAuthorizedException the governance action service is not able to access the element
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="getRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getRelatedMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RelatedMetadataElementListResponse</a>&nbsp;getRelatedMetadataElements&#8203;(java.lang.String&nbsp;serverName,
-                                                                     java.lang.String&nbsp;userId,
-                                                                     java.lang.String&nbsp;elementGUID,
-                                                                     java.lang.String&nbsp;relationshipTypeName,
-                                                                     boolean&nbsp;forLineage,
-                                                                     boolean&nbsp;forDuplicateProcessing,
-                                                                     long&nbsp;effectiveTime,
-                                                                     int&nbsp;startingAtEnd,
-                                                                     int&nbsp;startFrom,
-                                                                     int&nbsp;pageSize)</pre>
-<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>elementGUID</code> - unique identifier for the starting metadata element</dd>
-<dd><code>relationshipTypeName</code> - type name of relationships to follow (or null for all)</dd>
-<dd><code>startingAtEnd</code> - indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved elements are for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of related elements
-
-  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-  UserNotAuthorizedException the governance action service is not able to access the elements
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="findMetadataElements(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>findMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">OpenMetadataElementsResponse</a>&nbsp;findMetadataElements&#8203;(java.lang.String&nbsp;serverName,
-                                                         java.lang.String&nbsp;userId,
-                                                         boolean&nbsp;forLineage,
-                                                         boolean&nbsp;forDuplicateProcessing,
-                                                         long&nbsp;effectiveTime,
-                                                         int&nbsp;startFrom,
-                                                         int&nbsp;pageSize,
-                                                         <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">FindRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved elements are for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - properties defining the search criteria</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
-  InvalidParameterException one of the search parameters are is invalid
-  UserNotAuthorizedException the governance action service is not able to access the elements
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>findRelationshipsBetweenMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;<a href="../rest/RelatedMetadataElementsListResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RelatedMetadataElementsListResponse</a>&nbsp;findRelationshipsBetweenMetadataElements&#8203;(java.lang.String&nbsp;serverName,
-                                                                                    java.lang.String&nbsp;userId,
-                                                                                    boolean&nbsp;forLineage,
-                                                                                    boolean&nbsp;forDuplicateProcessing,
-                                                                                    long&nbsp;effectiveTime,
-                                                                                    int&nbsp;startFrom,
-                                                                                    int&nbsp;pageSize,
-                                                                                    <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">FindRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved elements are for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - properties defining the search criteria</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>a list of relationships - null means no matching relationships - or
-
-  InvalidParameterException one of the search parameters are is invalid
-  UserNotAuthorizedException the governance action service is not able to access the elements
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>createMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 <a href="../rest/NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewMetadataElementRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
- The selected type also controls the names and types of the properties that are allowed.
- This version of the method allows access to advanced features such as multiple states and
- effectivity dates.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>requestBody</code> - properties for the new element</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the new metadata element
-
-  InvalidParameterException the type name, status or one of the properties is invalid
-  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;metadataElementGUID,
-                                                 <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the properties of a specific metadata element.  The properties must match the type definition associated with the
- metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
- the value used in the replaceProperties flag.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>requestBody</code> - new properties</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException either the unique identifier or the properties are invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateMetadataElementStatusInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateMetadataElementStatusInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                       java.lang.String&nbsp;userId,
-                                                       java.lang.String&nbsp;metadataElementGUID,
-                                                       <a href="../rest/UpdateStatusRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateStatusRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
- assigned when it was created.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>requestBody</code> - new status values - use null to leave as is</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException either the unique identifier or the status are invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateMetadataElementEffectivityInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateMetadataElementEffectivityInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                            java.lang.String&nbsp;userId,
-                                                            java.lang.String&nbsp;metadataElementGUID,
-                                                            <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>requestBody</code> - new status values - use null to leave as is</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException either the unique identifier or the status are invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>deleteMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;deleteMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;metadataElementGUID,
-                                                 <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Delete a specific metadata element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>requestBody</code> - null request body</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier is null or invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to delete this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>classifyMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;classifyMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                   java.lang.String&nbsp;userId,
-                                                   java.lang.String&nbsp;metadataElementGUID,
-                                                   java.lang.String&nbsp;classificationName,
-                                                   <a href="../rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
- a metadata element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
-<dd><code>requestBody</code> - properties to store in the new classification.  These must conform to the valid properties associated with the
-                   classification name</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
-                                   valid properties associated with the classification's type definition
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>reclassifyMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;reclassifyMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                     java.lang.String&nbsp;userId,
-                                                     java.lang.String&nbsp;metadataElementGUID,
-                                                     java.lang.String&nbsp;classificationName,
-                                                     <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>classificationName</code> - unique name of the classification to update</dd>
-<dd><code>requestBody</code> - new properties for the classification</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
-                                   valid properties associated with the classification's type definition
-  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateClassificationEffectivityInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateClassificationEffectivityInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                           java.lang.String&nbsp;userId,
-                                                           java.lang.String&nbsp;metadataElementGUID,
-                                                           java.lang.String&nbsp;classificationName,
-                                                           <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.
- The effectivity dates control the visibility of the classification through specific APIs.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>classificationName</code> - unique name of the classification to update</dd>
-<dd><code>requestBody</code> - the dates when this element is active / inactive - null for no restriction</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException either the unique identifier or the status are invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unclassifyMetadataElementInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;unclassifyMetadataElementInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                     java.lang.String&nbsp;userId,
-                                                     java.lang.String&nbsp;metadataElementGUID,
-                                                     java.lang.String&nbsp;classificationName,
-                                                     <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Remove the named classification from a specific metadata element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>classificationName</code> - unique name of the classification to remove</dd>
-<dd><code>requestBody</code> - null request body</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier or classification name is null or invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to remove this classification
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="createRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>createRelatedElementsInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createRelatedElementsInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 <a href="../rest/NewRelatedElementsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NewRelatedElementsRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
- according to the type definition since this will affect how the relationship is interpreted.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>requestBody</code> - the properties of the relationship</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the new relationship or
-
-  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-                                    not valid for this type of relationship
-  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
 <a id="linkElementsAsDuplicates(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody)">
 <!--   -->
 </a>
@@ -1198,86 +459,6 @@ extends java.lang.Object</pre>
  InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
  PropertyServerException problem accessing property server
  UserNotAuthorizedException security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateRelatedElementsInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateRelatedElementsInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;relationshipGUID,
-                                                 <a href="../rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the properties associated with a relationship.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
-<dd><code>requestBody</code> - new properties for the relationship</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
-                                    not valid for this type of relationship
-  UserNotAuthorizedException the governance action service is not authorized to update this relationship
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateRelatedElementsEffectivityInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateRelatedElementsEffectivityInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                            java.lang.String&nbsp;userId,
-                                                            java.lang.String&nbsp;relationshipGUID,
-                                                            <a href="../rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Update the effectivity dates of a specific relationship between metadata elements.
- The effectivity dates control the visibility of the classification through specific APIs.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
-<dd><code>requestBody</code> - the dates when this element is active / inactive - null for no restriction</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException either the unique identifier or the status are invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to update this element
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>deleteRelatedElementsInStore</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;deleteRelatedElementsInStore&#8203;(java.lang.String&nbsp;serverName,
-                                                 java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;relationshipGUID,
-                                                 <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Delete a relationship between two metadata elements.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
-<dd><code>requestBody</code> - null request body</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>void or
-
-  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
-  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-  PropertyServerException there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1408,31 +589,6 @@ extends java.lang.Object</pre>
 
   InvalidParameterException null or unrecognized qualified name of the process
   UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-  PropertyServerException there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="createIncidentReport(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>createIncidentReport</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createIncidentReport&#8203;(java.lang.String&nbsp;serverName,
-                                         java.lang.String&nbsp;userId,
-                                         <a href="../rest/IncidentReportRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IncidentReportRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Create an incident report to capture the situation detected by this governance action service.
- This incident report will be processed by other governance activities.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>requestBody</code> - properties for the new incident report</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the resulting incident report or
-
-  InvalidParameterException null or non-unique qualified name for the incident report
-  UserNotAuthorizedException this governance action service is not authorized to create an incident report
   PropertyServerException there is a problem with the metadata store</dd>
 </dl>
 </li>

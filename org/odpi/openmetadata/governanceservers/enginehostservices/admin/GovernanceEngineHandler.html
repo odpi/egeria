@@ -139,7 +139,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Object</pre>
 <div class="block">The GovernanceEngineHandler is responsible for running governance services on demand.  It is initialized
  with the configuration for the engine service it supports along with the clients to the metadata store where the
- definitions of the .</div>
+ definitions of the governance engine are managed.</div>
 </li>
 </ul>
 </div>
@@ -307,7 +307,7 @@ extends java.lang.Object</pre>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>abstract <a href="GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></span>&#8203;(java.lang.String&nbsp;governanceActionGUID,
-                    java.lang.String&nbsp;requestType,
+                    java.lang.String&nbsp;governanceRequestType,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</code></th>
@@ -526,7 +526,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user id not allowed to access configuration</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user id is not allowed to access configuration</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem in configuration server</dd>
 </dl>
 </li>
@@ -551,7 +551,7 @@ extends java.lang.Object</pre>
 <dd><code>specificRequestType</code> - specific request type to refresh</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user id not allowed to access configuration</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user id is not allowed to access configuration</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem in configuration server</dd>
 </dl>
 </li>
@@ -612,7 +612,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>runGovernanceService</h4>
 <pre class="methodSignature">public abstract&nbsp;<a href="GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a>&nbsp;runGovernanceService&#8203;(java.lang.String&nbsp;governanceActionGUID,
-                                                              java.lang.String&nbsp;requestType,
+                                                              java.lang.String&nbsp;governanceRequestType,
                                                               java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                                               java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                                                               java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)
@@ -623,7 +623,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>governanceActionGUID</code> - unique identifier of the asset to analyse</dd>
-<dd><code>requestType</code> - unique identifier of the asset that the annotations should be attached to</dd>
+<dd><code>governanceRequestType</code> - governance request type to use when calling the governance engine</dd>
 <dd><code>requestParameters</code> - name-value properties to control the governance action service</dd>
 <dd><code>requestSourceElements</code> - metadata elements associated with the request to the governance action service</dd>
 <dd><code>actionTargetElements</code> - metadata elements that need to be worked on by the governance action service</dd>

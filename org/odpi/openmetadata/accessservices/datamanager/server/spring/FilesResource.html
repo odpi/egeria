@@ -315,8 +315,8 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDataFilesByPathName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">findDataFilesByPathName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;userId,
-                       int&nbsp;startingFrom,
-                       int&nbsp;maxPageSize,
+                       int&nbsp;startFrom,
+                       int&nbsp;pageSize,
                        <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Retrieve data files by the supplied wildcard name.</div>
@@ -344,8 +344,8 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFilesByPathName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">getDataFilesByPathName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
-                      int&nbsp;startingFrom,
-                      int&nbsp;maxPageSize,
+                      int&nbsp;startFrom,
+                      int&nbsp;pageSize,
                       <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Retrieve data files by the supplied wildcard name.</div>
@@ -373,8 +373,8 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFileSystems(java.lang.String,java.lang.String,int,int)">getFileSystems</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
-              int&nbsp;startingFrom,
-              int&nbsp;maxPageSize)</code></th>
+              int&nbsp;startFrom,
+              int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a list of defined FileSystems assets.</div>
 </td>
@@ -398,12 +398,12 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i22" class="altColor">
-<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
+<td class="colFirst"><code><a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderFiles(java.lang.String,java.lang.String,java.lang.String,int,int)">getFolderFiles</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
               java.lang.String&nbsp;folderGUID,
-              int&nbsp;startingFrom,
-              int&nbsp;maxPageSize)</code></th>
+              int&nbsp;startFrom,
+              int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Get the files inside a folder - both those that are nested and those that are linked.</div>
 </td>
@@ -413,8 +413,8 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedFolders(java.lang.String,java.lang.String,java.lang.String,int,int)">getNestedFolders</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;parentFolderGUID,
-                int&nbsp;startingFrom,
-                int&nbsp;maxPageSize)</code></th>
+                int&nbsp;startFrom,
+                int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
@@ -424,8 +424,8 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopLevelFolders(java.lang.String,java.lang.String,java.lang.String,int,int)">getTopLevelFolders</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;fileSystemGUID,
-                  int&nbsp;startingFrom,
-                  int&nbsp;maxPageSize)</code></th>
+                  int&nbsp;startFrom,
+                  int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
@@ -1141,16 +1141,16 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                        @PathVariable
                                        java.lang.String&nbsp;userId,
                                        @RequestParam
-                                       int&nbsp;startingFrom,
+                                       int&nbsp;startFrom,
                                        @RequestParam
-                                       int&nbsp;maxPageSize)</pre>
+                                       int&nbsp;pageSize)</pre>
 <div class="block">Retrieve a list of defined FileSystems assets.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>List of Filesystem unique identifiers or
  InvalidParameterException one of the parameters is null or invalid or
@@ -1227,19 +1227,19 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                            @PathVariable
                                            java.lang.String&nbsp;fileSystemGUID,
                                            @RequestParam
-                                           int&nbsp;startingFrom,
+                                           int&nbsp;startFrom,
                                            @RequestParam
-                                           int&nbsp;maxPageSize)</pre>
+                                           int&nbsp;pageSize)</pre>
 <div class="block">Return the list of folders nested inside a folder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>fileSystemGUID</code> - unique identifier of the anchor folder or Filesystem</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of folder unique identifiers (null means no nested folders) or
+<dd>list of folder unique identifiers (null value means no nested folders) or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>
@@ -1260,19 +1260,19 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                          @PathVariable
                                          java.lang.String&nbsp;parentFolderGUID,
                                          @RequestParam
-                                         int&nbsp;startingFrom,
+                                         int&nbsp;startFrom,
                                          @RequestParam
-                                         int&nbsp;maxPageSize)</pre>
+                                         int&nbsp;pageSize)</pre>
 <div class="block">Return the list of folders nested inside a folder.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>parentFolderGUID</code> - unique identifier of the parent folder</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of folder unique identifiers (null means no nested folders) or
+<dd>list of folder unique identifiers (null value means no nested folders) or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>
@@ -1286,26 +1286,26 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
 <li class="blockList">
 <h4>getFolderFiles</h4>
 <pre class="methodSignature">@GetMapping(path="/folders/{folderGUID}/data-files")
-public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a>&nbsp;getFolderFiles&#8203;(@PathVariable
-                                       java.lang.String&nbsp;serverName,
-                                       @PathVariable
-                                       java.lang.String&nbsp;userId,
-                                       @PathVariable
-                                       java.lang.String&nbsp;folderGUID,
-                                       @RequestParam
-                                       int&nbsp;startingFrom,
-                                       @RequestParam
-                                       int&nbsp;maxPageSize)</pre>
+public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a>&nbsp;getFolderFiles&#8203;(@PathVariable
+                                        java.lang.String&nbsp;serverName,
+                                        @PathVariable
+                                        java.lang.String&nbsp;userId,
+                                        @PathVariable
+                                        java.lang.String&nbsp;folderGUID,
+                                        @RequestParam
+                                        int&nbsp;startFrom,
+                                        @RequestParam
+                                        int&nbsp;pageSize)</pre>
 <div class="block">Get the files inside a folder - both those that are nested and those that are linked.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>folderGUID</code> - unique identifier of the anchor folder</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of file asset unique identifiers or
+<dd>list of file assets or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>
@@ -1378,9 +1378,9 @@ public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi
                                                 @PathVariable
                                                 java.lang.String&nbsp;userId,
                                                 @RequestParam
-                                                int&nbsp;startingFrom,
+                                                int&nbsp;startFrom,
                                                 @RequestParam
-                                                int&nbsp;maxPageSize,
+                                                int&nbsp;pageSize,
                                                 @RequestBody
                                                 <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).</div>
@@ -1388,8 +1388,8 @@ public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dd><code>requestBody</code> - path name</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>data file properties or
@@ -1411,9 +1411,9 @@ public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi
                                                  @PathVariable
                                                  java.lang.String&nbsp;userId,
                                                  @RequestParam
-                                                 int&nbsp;startingFrom,
+                                                 int&nbsp;startFrom,
                                                  @RequestParam
-                                                 int&nbsp;maxPageSize,
+                                                 int&nbsp;pageSize,
                                                  @RequestBody
                                                  <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).</div>
@@ -1421,8 +1421,8 @@ public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>startingFrom</code> - starting point in the list</dd>
-<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
 <dd><code>requestBody</code> - path name</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>data file properties or

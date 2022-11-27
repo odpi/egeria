@@ -25326,7 +25326,31 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockListLast">
 <h4>requestTypes</h4>
-<pre>java.util.Map&lt;java.lang.String,&#8203;java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&gt; requestTypes</pre>
+<pre>java.util.Map&lt;java.lang.String,&#8203;<a href="org/odpi/openmetadata/accessservices/governanceengine/properties/RegisteredGovernanceServiceProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">RegisteredGovernanceServiceProperties</a>&gt; requestTypes</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/properties/RegisteredGovernanceServiceProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>requestParameters</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; requestParameters</pre>
+</li>
+<li class="blockListLast">
+<h4>serviceRequestType</h4>
+<pre>java.lang.String serviceRequestType</pre>
 </li>
 </ul>
 </li>
@@ -25892,9 +25916,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>requestParameters</h4>
 <pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; requestParameters</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>requestType</h4>
 <pre>java.lang.String requestType</pre>
+</li>
+<li class="blockListLast">
+<h4>serviceRequestType</h4>
+<pre>java.lang.String serviceRequestType</pre>
 </li>
 </ul>
 </li>
@@ -25943,34 +25971,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>qualifiedName</h4>
 <pre>java.lang.String qualifiedName</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a> implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>effectiveFrom</h4>
-<pre>java.util.Date effectiveFrom</pre>
-</li>
-<li class="blockList">
-<h4>effectiveTo</h4>
-<pre>java.util.Date effectiveTo</pre>
-</li>
-<li class="blockListLast">
-<h4>properties</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a> properties</pre>
 </li>
 </ul>
 </li>
@@ -26060,90 +26060,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody</a> extends java.lang.Object implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>effectiveFrom</h4>
-<pre>java.util.Date effectiveFrom</pre>
-</li>
-<li class="blockList">
-<h4>effectiveTime</h4>
-<pre>java.util.Date effectiveTime</pre>
-</li>
-<li class="blockList">
-<h4>effectiveTo</h4>
-<pre>java.util.Date effectiveTo</pre>
-</li>
-<li class="blockList">
-<h4>initialStatus</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a> initialStatus</pre>
-</li>
-<li class="blockList">
-<h4>properties</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a> properties</pre>
-</li>
-<li class="blockList">
-<h4>templateGUID</h4>
-<pre>java.lang.String templateGUID</pre>
-</li>
-<li class="blockListLast">
-<h4>typeName</h4>
-<pre>java.lang.String typeName</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/NewRelatedElementsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">UpdateRequestBody</a> implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>effectiveFrom</h4>
-<pre>java.util.Date effectiveFrom</pre>
-</li>
-<li class="blockList">
-<h4>effectiveTo</h4>
-<pre>java.util.Date effectiveTo</pre>
-</li>
-<li class="blockList">
-<h4>metadataElement1GUID</h4>
-<pre>java.lang.String metadataElement1GUID</pre>
-</li>
-<li class="blockList">
-<h4>metadataElement2GUID</h4>
-<pre>java.lang.String metadataElement2GUID</pre>
-</li>
-<li class="blockList">
-<h4>properties</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a> properties</pre>
-</li>
-<li class="blockListLast">
-<h4>typeName</h4>
-<pre>java.lang.String typeName</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.NextGovernanceActionTypeElementsResponse">
 <!--   -->
 </a>
@@ -26187,26 +26103,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>mandatoryGuard</h4>
 <pre>boolean mandatoryGuard</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse</a> extends <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/GovernanceEngineOMASAPIResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineOMASAPIResponse</a> implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockListLast">
-<h4>element</h4>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a> element</pre>
 </li>
 </ul>
 </li>
@@ -26275,6 +26171,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>registeredGovernanceService</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceengine/metadataelements/RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredGovernanceServiceElement</a> registeredGovernanceService</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceengine.rest.RegisteredGovernanceServicesResponse">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/RegisteredGovernanceServicesResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.RegisteredGovernanceServicesResponse</a> extends <a href="org/odpi/openmetadata/accessservices/governanceengine/rest/GovernanceEngineOMASAPIResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineOMASAPIResponse</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>elements</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceengine/metadataelements/RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredGovernanceServiceElement</a>&gt; elements</pre>
 </li>
 </ul>
 </li>

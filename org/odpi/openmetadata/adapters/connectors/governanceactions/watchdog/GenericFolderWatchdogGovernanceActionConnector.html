@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
+var data = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -162,7 +162,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">GenericFolderWatchdogGovernanceActionConnector</span>
 extends <a href="GenericWatchdogGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericWatchdogGovernanceActionConnector</a></pre>
-<div class="block">GenericFolderWatchdogGovernanceActionConnector listens for events relating to files in a folder.</div>
+<div class="block">GenericFolderWatchdogGovernanceActionConnector listens for events relating to the files in a folder.</div>
 </li>
 </ul>
 </div>
@@ -257,18 +257,10 @@ extends <a href="GenericWatchdogGovernanceActionConnector.html" title="class in 
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnect()">disconnect</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.</div>
+ or the administrator requested this governance action service stop running or the hosting server is shutting down.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a></span>&#8203;(java.lang.String&nbsp;connectorInstanceId,
-          <a href="../../../../frameworks/connectors/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></th>
-<td class="colLast">
-<div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
 <td class="colLast">
@@ -302,7 +294,7 @@ extends <a href="GenericWatchdogGovernanceActionConnector.html" title="class in 
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></li>
+<code><a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.Connector">
@@ -353,24 +345,6 @@ extends <a href="GenericWatchdogGovernanceActionConnector.html" title="class in 
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>initialize</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;initialize&#8203;(java.lang.String&nbsp;connectorInstanceId,
-                       <a href="../../../../frameworks/connectors/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connectionProperties)</pre>
-<div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>connectorInstanceId</code> - unique id for the connector instance   useful for messages etc</dd>
-<dd><code>connectionProperties</code> - POJO for the configuration used to create the connector.</dd>
-</dl>
-</li>
-</ul>
 <a id="start()">
 <!--   -->
 </a>
@@ -400,7 +374,7 @@ extends <a href="GenericWatchdogGovernanceActionConnector.html" title="class in 
 <pre class="methodSignature">public&nbsp;void&nbsp;disconnect()
                 throws <a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.
+ or the administrator requested this governance action service stop running or the hosting server is shutting down.
 
  If disconnect completes before the governance action service records
  its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.

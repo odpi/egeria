@@ -220,7 +220,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../governanceservers/enginehostservices/admin/GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></span>&#8203;(java.lang.String&nbsp;governanceActionGUID,
-                    java.lang.String&nbsp;requestType,
+                    java.lang.String&nbsp;governanceRequestType,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</code></th>
@@ -277,7 +277,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
                                      int&nbsp;maxPageSize)</pre>
 <div class="block">Create a client-side object for calling a governance action engine.  Notice there are two instances of the
  GovernanceEngineClient.  It is possible that they are pointing at different metadata server instances so do not
- consolidate them into one client (even if IntelliJ begs you to :).</div>
+ consolidate them into one client (even if IntelliJ begs you to :)).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>engineConfig</code> - the unique identifier of the governance action engine.</dd>
@@ -310,9 +310,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <li class="blockList">
 <h4>publishWatchdogEvent</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;publishWatchdogEvent&#8203;(<a href="../../../frameworks/governanceaction/events/WatchdogGovernanceEvent.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogGovernanceEvent</a>&nbsp;watchdogGovernanceEvent)
-                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Pass on the watchdog event to any governance service that supports them.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -321,8 +319,6 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <dd><code>watchdogGovernanceEvent</code> - element describing the changing metadata data.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - Vital fields of the governance action are not filled out</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance service is not permitted to execute the governance action</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem communicating with the open metadata stores</dd>
 </dl>
 </li>
 </ul>
@@ -333,7 +329,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <li class="blockList">
 <h4>runGovernanceService</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../../governanceservers/enginehostservices/admin/GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a>&nbsp;runGovernanceService&#8203;(java.lang.String&nbsp;governanceActionGUID,
-                                                     java.lang.String&nbsp;requestType,
+                                                     java.lang.String&nbsp;governanceRequestType,
                                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)
@@ -345,7 +341,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <dd><code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>governanceActionGUID</code> - unique identifier of the asset to analyse</dd>
-<dd><code>requestType</code> - unique identifier of the asset that the annotations should be attached to</dd>
+<dd><code>governanceRequestType</code> - governance request type to use when calling the governance engine</dd>
 <dd><code>requestParameters</code> - name-value properties to control the governance action service</dd>
 <dd><code>requestSourceElements</code> - metadata elements associated with the request to the governance action service</dd>
 <dd><code>actionTargetElements</code> - metadata elements that need to be worked on by the governance action service</dd>

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6};
+var data = {"i0":6,"i1":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -150,21 +150,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a></span>&#8203;(java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;qualifiedName,
-                    int&nbsp;domainIdentifier,
-                    java.lang.String&nbsp;background,
-                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
-                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
-                    java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
-                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
-                    java.lang.String&nbsp;originatorGUID)</code></th>
-<td class="colLast">
-<div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;consolidatedElementGUID,
@@ -179,7 +164,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElement1GUID,
@@ -256,7 +241,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <a id="linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>linkConsolidatedDuplicate</h4>
 <pre class="methodSignature">void&nbsp;linkConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
@@ -289,46 +274,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>createIncidentReport</h4>
-<pre class="methodSignature">java.lang.String&nbsp;createIncidentReport&#8203;(java.lang.String&nbsp;userId,
-                                      java.lang.String&nbsp;qualifiedName,
-                                      int&nbsp;domainIdentifier,
-                                      java.lang.String&nbsp;background,
-                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
-                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
-                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
-                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
-                                      java.lang.String&nbsp;originatorGUID)
-                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create an incident report to capture the situation detected by this governance action service.
- This incident report will be processed by other governance activities.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>qualifiedName</code> - unique identifier to give this new incident report</dd>
-<dd><code>domainIdentifier</code> - governance domain associated with this action (0=ALL)</dd>
-<dd><code>background</code> - description of the situation</dd>
-<dd><code>impactedResources</code> - details of the resources impacted by this situation</dd>
-<dd><code>previousIncidents</code> - links to previous incident reports covering this situation</dd>
-<dd><code>incidentClassifiers</code> - initial classifiers for the incident report</dd>
-<dd><code>additionalProperties</code> - additional arbitrary properties for the incident reports</dd>
-<dd><code>originatorGUID</code> - the unique identifier of the person or process that created the incident</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the resulting incident report</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null or non-unique qualified name for the incident report</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create an incident report</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>

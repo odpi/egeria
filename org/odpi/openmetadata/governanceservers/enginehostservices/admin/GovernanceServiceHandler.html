@@ -206,7 +206,7 @@ implements java.lang.Runnable</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#requestType">requestType</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#serviceRequestType">serviceRequestType</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -234,7 +234,7 @@ implements java.lang.Runnable</pre>
                         java.lang.String&nbsp;engineHostUserId,
                         java.lang.String&nbsp;governanceActionGUID,
                         <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;governanceActionClient,
-                        java.lang.String&nbsp;requestType,
+                        java.lang.String&nbsp;serviceRequestType,
                         java.lang.String&nbsp;governanceServiceGUID,
                         java.lang.String&nbsp;governanceServiceName,
                         <a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;governanceService,
@@ -403,13 +403,13 @@ implements java.lang.Runnable</pre>
 <pre>protected&nbsp;java.lang.String governanceActionGUID</pre>
 </li>
 </ul>
-<a id="requestType">
+<a id="serviceRequestType">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>requestType</h4>
-<pre>protected&nbsp;java.lang.String requestType</pre>
+<h4>serviceRequestType</h4>
+<pre>protected&nbsp;java.lang.String serviceRequestType</pre>
 </li>
 </ul>
 <a id="auditLog">
@@ -442,7 +442,7 @@ implements java.lang.Runnable</pre>
                                    java.lang.String&nbsp;engineHostUserId,
                                    java.lang.String&nbsp;governanceActionGUID,
                                    <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;governanceActionClient,
-                                   java.lang.String&nbsp;requestType,
+                                   java.lang.String&nbsp;serviceRequestType,
                                    java.lang.String&nbsp;governanceServiceGUID,
                                    java.lang.String&nbsp;governanceServiceName,
                                    <a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;governanceService,
@@ -457,7 +457,7 @@ implements java.lang.Runnable</pre>
 <dd><code>engineHostUserId</code> - userId for making updates to the governance actions</dd>
 <dd><code>governanceActionGUID</code> - unique identifier of the governance action that triggered this governance service</dd>
 <dd><code>governanceActionClient</code> - client for processing governance actions</dd>
-<dd><code>requestType</code> - incoming request type</dd>
+<dd><code>serviceRequestType</code> - incoming request type</dd>
 <dd><code>governanceServiceGUID</code> - unique identifier of the governance service</dd>
 <dd><code>governanceServiceName</code> - name of this governance  service - used for message logging</dd>
 <dd><code>governanceService</code> - implementation of governance service</dd>

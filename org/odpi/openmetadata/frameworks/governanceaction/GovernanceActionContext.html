@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -228,6 +228,18 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createAsset</a></span>&#8203;(java.lang.String&nbsp;assetTypeName,
+           java.lang.String&nbsp;qualifiedName,
+           java.lang.String&nbsp;name,
+           java.lang.String&nbsp;versionIdentifier,
+           java.lang.String&nbsp;description,
+           <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)</code></th>
+<td class="colLast">
+<div class="block">Create an asset such as a data file, database, API or server.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createAssetFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                        java.lang.String&nbsp;qualifiedName,
                        java.lang.String&nbsp;name,
@@ -236,7 +248,20 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create an asset such as a data file, database, API or server.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createAssetFromTemplate</a></span>&#8203;(java.lang.String&nbsp;assetTypeName,
+                       java.lang.String&nbsp;templateGUID,
+                       java.lang.String&nbsp;qualifiedName,
+                       java.lang.String&nbsp;name,
+                       java.lang.String&nbsp;versionIdentifier,
+                       java.lang.String&nbsp;description,
+                       <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)</code></th>
+<td class="colLast">
+<div class="block">Create an asset such as a data file, database, API or server.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createChildProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createChildProcess</a></span>&#8203;(java.lang.String&nbsp;processTypeName,
                   <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
@@ -248,7 +273,22 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a process that represents the processing instance of this governance action.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createChildProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createChildProcess</a></span>&#8203;(java.lang.String&nbsp;processTypeName,
+                  <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+                  java.lang.String&nbsp;qualifiedName,
+                  java.lang.String&nbsp;name,
+                  java.lang.String&nbsp;versionIdentifier,
+                  java.lang.String&nbsp;description,
+                  java.lang.String&nbsp;formula,
+                  <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties,
+                  java.lang.String&nbsp;parentGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a process that represents the processing instance of this governance action.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createIncidentReport(java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map)">createIncidentReport</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                     int&nbsp;domainIdentifier,
@@ -261,15 +301,27 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLineageMapping(java.lang.String,java.lang.String)">createLineageMapping</a></span>&#8203;(java.lang.String&nbsp;sourceElementGUID,
-                    java.lang.String&nbsp;targetElementGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLineageRelationship(java.lang.String,java.lang.String)">createLineageRelationship</a></span>&#8203;(java.lang.String&nbsp;sourceElementGUID,
+                         java.lang.String&nbsp;targetElementGUID)</code></th>
 <td class="colLast">
 <div class="block">Create a lineage mapping relationship between a source and target element.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createLineageRelationship</a></span>&#8203;(java.lang.String&nbsp;relationshipName,
+                         java.lang.String&nbsp;sourceElementGUID,
+                         java.lang.String&nbsp;qualifiedName,
+                         java.lang.String&nbsp;description,
+                         java.lang.String&nbsp;formula,
+                         java.lang.String&nbsp;targetElementGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a lineage relationship between a source and target element.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElement(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementTypeName,
                      <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
@@ -281,7 +333,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a new metadata element in the metadata store.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElement(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementTypeName,
                      <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -290,7 +342,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a new metadata element in the metadata store.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType,java.lang.String)">createPort</a></span>&#8203;(java.lang.String&nbsp;processGUID,
           java.lang.String&nbsp;qualifiedName,
@@ -301,7 +353,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Add a port to a process.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String)">createProcess</a></span>&#8203;(java.lang.String&nbsp;processTypeName,
              <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
@@ -312,7 +364,21 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a new process to represent the processing of this governance action process.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createProcess</a></span>&#8203;(java.lang.String&nbsp;processTypeName,
+             <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+             java.lang.String&nbsp;qualifiedName,
+             java.lang.String&nbsp;name,
+             java.lang.String&nbsp;versionIdentifier,
+             java.lang.String&nbsp;description,
+             java.lang.String&nbsp;formula,
+             <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new process to represent the processing of this governance action process.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcessFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String)">createProcessFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                          <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
@@ -323,7 +389,21 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a new process to represent the processing of this governance action process.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcessFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createProcessFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
+                         <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+                         java.lang.String&nbsp;qualifiedName,
+                         java.lang.String&nbsp;name,
+                         java.lang.String&nbsp;versionIdentifier,
+                         java.lang.String&nbsp;description,
+                         java.lang.String&nbsp;formula,
+                         <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new process to represent the processing of this governance action process.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">createRelatedElements</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                      java.lang.String&nbsp;metadataElement1GUID,
@@ -338,7 +418,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a relationship between two metadata elements.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">createRelatedElements</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                      java.lang.String&nbsp;metadataElement1GUID,
@@ -351,7 +431,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a relationship between two metadata elements.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMetadataElement(java.lang.String,boolean,boolean,java.util.Date)">deleteMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                      boolean&nbsp;forLineage,
@@ -361,7 +441,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Delete a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElements(java.lang.String,boolean,boolean,java.util.Date)">deleteRelatedElements</a></span>&#8203;(java.lang.String&nbsp;relationshipGUID,
                      boolean&nbsp;forLineage,
@@ -371,56 +451,56 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Delete a relationship between two metadata elements.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectListener()">disconnectListener</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Unregister the listener permanently from the event infrastructure.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActionTargetElements()">getActionTargetElements</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of elements that this governance action service should work on.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionStatus()">getCompletionStatus</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return any completion status from the governance action service.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="OpenMetadataStore.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOpenMetadataStore()">getOpenMetadataStore</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the client to access metadata from the open metadata repositories.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestParameters()">getRequestParameters</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties that hold the parameters used to drive the governance action service's processing.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestSourceElements()">getRequestSourceElements</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of metadata elements associated with the request to the governance action service.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier of the asset being discovered.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                         int&nbsp;domainIdentifier,
@@ -437,7 +517,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
  associated with the supplied request type.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.util.Map,java.util.List,java.util.List,java.util.Date)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;processQualifiedName,
                                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
@@ -448,7 +528,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;consolidatedElementGUID,
                          int&nbsp;statusIdentifier,
@@ -462,7 +542,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;metadataElement1GUID,
                             java.lang.String&nbsp;metadataElement2GUID,
@@ -477,7 +557,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Link elements as peer duplicates.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String)">openToDo</a></span>&#8203;(java.lang.String&nbsp;toDoQualifiedName,
         java.lang.String&nbsp;title,
@@ -489,7 +569,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a To-Do request for someone to work on.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElement(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">reclassifyMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                          java.lang.String&nbsp;classificationName,
@@ -502,7 +582,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards)</code></th>
@@ -510,7 +590,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
@@ -519,7 +599,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
@@ -529,7 +609,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">registerListener</a></span>&#8203;(<a href="WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceListener</a>&nbsp;listener,
                 java.util.List&lt;<a href="events/WatchdogEventType.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogEventType</a>&gt;&nbsp;interestingEventTypes,
@@ -539,14 +619,14 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata store.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Standard toString method.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElement(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">unclassifyMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                          java.lang.String&nbsp;classificationName,
@@ -557,7 +637,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;actionTargetGUID,
                         <a href="properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
@@ -567,7 +647,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the status of a specific action target.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationStatus(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateClassificationStatus</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                           java.lang.String&nbsp;classificationName,
@@ -580,7 +660,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElement(java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                      boolean&nbsp;replaceProperties,
@@ -592,7 +672,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties of a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivity(java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateMetadataElementEffectivity</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                                 boolean&nbsp;forLineage,
@@ -604,7 +684,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatus(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)">updateMetadataElementStatus</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                            boolean&nbsp;forLineage,
@@ -615,7 +695,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElements(java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateRelatedElements</a></span>&#8203;(java.lang.String&nbsp;relationshipGUID,
                      boolean&nbsp;replaceProperties,
@@ -627,7 +707,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties associated with a relationship.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsStatus(java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateRelatedElementsStatus</a></span>&#8203;(java.lang.String&nbsp;relationshipGUID,
                            boolean&nbsp;forLineage,
@@ -965,8 +1045,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
                              throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create an asset such as a data file, database, API or server.  This is used if the provisioning
- governance action service has created a new asset as part of the provisioning process.
+<div class="block">Create an asset such as a data file, database, API or server.
  This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -976,6 +1055,41 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <dd><code>qualifiedName</code> - the unique name of the new asset</dd>
 <dd><code>name</code> - the technical display name of the asset</dd>
 <dd><code>description</code> - the description of the asset</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new asset</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name or qualified name is null or invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create an asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="createAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createAsset</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createAsset&#8203;(java.lang.String&nbsp;assetTypeName,
+                                    java.lang.String&nbsp;qualifiedName,
+                                    java.lang.String&nbsp;name,
+                                    java.lang.String&nbsp;versionIdentifier,
+                                    java.lang.String&nbsp;description,
+                                    <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)
+                             throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create an asset such as a data file, database, API or server.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createAsset</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>assetTypeName</code> - the type name of the asset.  This is the name of an open metadata type that inherits from "Asset".</dd>
+<dd><code>qualifiedName</code> - the unique name of the new asset</dd>
+<dd><code>name</code> - the technical display name of the resource</dd>
+<dd><code>versionIdentifier</code> - version of the resource</dd>
+<dd><code>description</code> - the description of the resource</dd>
+<dd><code>extendedProperties</code> - attributes introduced by subtypes of Asset</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new asset</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -998,8 +1112,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
                                          throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create an asset such as a data file, database, API or server.  This is used if the provisioning
- governance action service has created a new asset as part of the provisioning process.
+<div class="block">Create an asset such as a data file, database, API or server.
  This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1010,6 +1123,46 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <dd><code>qualifiedName</code> - the unique name of the new asset</dd>
 <dd><code>name</code> - the technical display name of the asset</dd>
 <dd><code>description</code> - the description of the asset</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new asset</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name or qualified name is null or invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create an asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createAssetFromTemplate</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createAssetFromTemplate&#8203;(java.lang.String&nbsp;assetTypeName,
+                                                java.lang.String&nbsp;templateGUID,
+                                                java.lang.String&nbsp;qualifiedName,
+                                                java.lang.String&nbsp;name,
+                                                java.lang.String&nbsp;versionIdentifier,
+                                                java.lang.String&nbsp;description,
+                                                <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)
+                                         throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create an asset such as a data file, database, API or server.  This is used if the provisioning
+ governance action service has created a new asset as part of the provisioning process.
+ This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createAssetFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>assetTypeName</code> - the type name of the asset.  This is the name of an open metadata type that inherits from "Asset".</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments
+                           such as nested content, schema, connection etc)</dd>
+<dd><code>qualifiedName</code> - the unique name of the new asset</dd>
+<dd><code>name</code> - the technical display name of the asset</dd>
+<dd><code>versionIdentifier</code> - version of the resource</dd>
+<dd><code>description</code> - the description of the asset</dd>
+<dd><code>extendedProperties</code> - attributes introduced by subtypes of Asset</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new asset</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1052,6 +1205,45 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </dl>
 </li>
 </ul>
+<a id="createProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createProcess</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createProcess&#8203;(java.lang.String&nbsp;processTypeName,
+                                      <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+                                      java.lang.String&nbsp;qualifiedName,
+                                      java.lang.String&nbsp;name,
+                                      java.lang.String&nbsp;versionIdentifier,
+                                      java.lang.String&nbsp;description,
+                                      java.lang.String&nbsp;formula,
+                                      <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)
+                               throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a new process to represent the processing of this governance action process.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createProcess</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>processTypeName</code> - the type name of the process.  This is the name of an open metadata type that inherits from "Process".</dd>
+<dd><code>initialStatus</code> - status value of the process</dd>
+<dd><code>qualifiedName</code> - the unique name of the new process</dd>
+<dd><code>name</code> - the technical display name of the process</dd>
+<dd><code>versionIdentifier</code> - version of the resource</dd>
+<dd><code>description</code> - the description of the process</dd>
+<dd><code>formula</code> - expression that describes the behaviour of the process</dd>
+<dd><code>extendedProperties</code> - attributes introduced by subtypes of Process</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new process</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name or qualified name is null or invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a process</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
 <a id="createProcessFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -1077,6 +1269,46 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <dd><code>qualifiedName</code> - the unique name of the new process</dd>
 <dd><code>name</code> - the technical display name of the process</dd>
 <dd><code>description</code> - the description of the process</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new process</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name or qualified name is null or invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a process</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="createProcessFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createProcessFromTemplate</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createProcessFromTemplate&#8203;(java.lang.String&nbsp;templateGUID,
+                                                  <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+                                                  java.lang.String&nbsp;qualifiedName,
+                                                  java.lang.String&nbsp;name,
+                                                  java.lang.String&nbsp;versionIdentifier,
+                                                  java.lang.String&nbsp;description,
+                                                  java.lang.String&nbsp;formula,
+                                                  <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties)
+                                           throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a new process to represent the processing of this governance action process.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createProcessFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createProcessFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>templateGUID</code> - the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
+                           schema, connection etc)</dd>
+<dd><code>initialStatus</code> - status value of the process</dd>
+<dd><code>qualifiedName</code> - the unique name of the new process</dd>
+<dd><code>name</code> - the technical display name of the process</dd>
+<dd><code>versionIdentifier</code> - version of the resource</dd>
+<dd><code>description</code> - the description of the process</dd>
+<dd><code>formula</code> - expression that describes the behaviour of the process</dd>
+<dd><code>extendedProperties</code> - attributes introduced by subtypes of Process</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new process</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1122,6 +1354,48 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </dl>
 </li>
 </ul>
+<a id="createChildProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createChildProcess</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createChildProcess&#8203;(java.lang.String&nbsp;processTypeName,
+                                           <a href="../connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
+                                           java.lang.String&nbsp;qualifiedName,
+                                           java.lang.String&nbsp;name,
+                                           java.lang.String&nbsp;versionIdentifier,
+                                           java.lang.String&nbsp;description,
+                                           java.lang.String&nbsp;formula,
+                                           <a href="search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;extendedProperties,
+                                           java.lang.String&nbsp;parentGUID)
+                                    throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                           <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a process that represents the processing instance of this governance action.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createChildProcess(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createChildProcess</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>processTypeName</code> - the type name of the process.  This is the name of an open metadata type that inherits from "Process".</dd>
+<dd><code>initialStatus</code> - status value of the process</dd>
+<dd><code>qualifiedName</code> - the unique name of the new process</dd>
+<dd><code>name</code> - the technical display name of the process</dd>
+<dd><code>versionIdentifier</code> - version of the resource</dd>
+<dd><code>description</code> - the description of the process</dd>
+<dd><code>formula</code> - expression that describes the behaviour of the process</dd>
+<dd><code>extendedProperties</code> - attributes introduced by subtypes of Process</dd>
+<dd><code>parentGUID</code> - the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
+                           schema, connection etc)</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new process</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name or qualified name is null or invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a process</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
 <a id="createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType,java.lang.String)">
 <!--   -->
 </a>
@@ -1155,25 +1429,61 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </dl>
 </li>
 </ul>
-<a id="createLineageMapping(java.lang.String,java.lang.String)">
+<a id="createLineageRelationship(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>createLineageMapping</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLineageMapping&#8203;(java.lang.String&nbsp;sourceElementGUID,
-                                             java.lang.String&nbsp;targetElementGUID)
-                                      throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                             <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                             <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<h4>createLineageRelationship</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLineageRelationship&#8203;(java.lang.String&nbsp;sourceElementGUID,
+                                                  java.lang.String&nbsp;targetElementGUID)
+                                           throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a lineage mapping relationship between a source and target element.  This could be between two assets, two process ports or
  two schema elements.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="ProvisioningGovernanceContext.html#createLineageMapping(java.lang.String,java.lang.String)">createLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dd><code><a href="ProvisioningGovernanceContext.html#createLineageRelationship(java.lang.String,java.lang.String)">createLineageRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>sourceElementGUID</code> - unique identifier of the element that describes the source of the data.</dd>
 <dd><code>targetElementGUID</code> - unique identifier of the element that describes the destination of the data.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the relationship</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the GUIDs is null or is invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createLineageRelationship</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLineageRelationship&#8203;(java.lang.String&nbsp;relationshipName,
+                                                  java.lang.String&nbsp;sourceElementGUID,
+                                                  java.lang.String&nbsp;qualifiedName,
+                                                  java.lang.String&nbsp;description,
+                                                  java.lang.String&nbsp;formula,
+                                                  java.lang.String&nbsp;targetElementGUID)
+                                           throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a lineage relationship between a source and target element.  This could be between two assets, two process ports or
+ two schema elements.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="ProvisioningGovernanceContext.html#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createLineageRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>relationshipName</code> - either LineageMapping, ProcessCall, DataFlow, ControlFlow.</dd>
+<dd><code>sourceElementGUID</code> - unique identifier of the element that describes the source of the data.</dd>
+<dd><code>qualifiedName</code> - qualifiedName of the information supply chain</dd>
+<dd><code>targetElementGUID</code> - unique identifier of the element that describes the destination of the data.</dd>
+<dd><code>description</code> - description of the lineage activity</dd>
+<dd><code>formula</code> - expression summa</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

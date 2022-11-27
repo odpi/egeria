@@ -398,7 +398,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i22" class="altColor">
-<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
+<td class="colFirst"><code><a href="../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderFiles(java.lang.String,java.lang.String,java.lang.String,int,int)">getFolderFiles</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
               java.lang.String&nbsp;folderGUID,
@@ -1161,11 +1161,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getFolderFiles</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a>&nbsp;getFolderFiles&#8203;(java.lang.String&nbsp;serverName,
-                                       java.lang.String&nbsp;userId,
-                                       java.lang.String&nbsp;folderGUID,
-                                       int&nbsp;startingFrom,
-                                       int&nbsp;maxPageSize)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a>&nbsp;getFolderFiles&#8203;(java.lang.String&nbsp;serverName,
+                                        java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;folderGUID,
+                                        int&nbsp;startingFrom,
+                                        int&nbsp;maxPageSize)</pre>
 <div class="block">Get the files inside a folder - both those that are nested and those that are linked.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1175,7 +1175,7 @@ extends java.lang.Object</pre>
 <dd><code>startingFrom</code> - starting point in the list</dd>
 <dd><code>maxPageSize</code> - maximum number of results</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of file asset unique identifiers or
+<dd>list of file assets or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>

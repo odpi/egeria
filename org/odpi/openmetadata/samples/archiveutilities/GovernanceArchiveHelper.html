@@ -325,8 +325,9 @@ extends <a href="SimpleCatalogArchiveHelper.html" title="class in org.odpi.openm
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSupportedGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.lang.String)">addSupportedGovernanceService</a></span>&#8203;(java.lang.String&nbsp;engineGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSupportedGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String)">addSupportedGovernanceService</a></span>&#8203;(java.lang.String&nbsp;engineGUID,
                              java.lang.String&nbsp;requestType,
+                             java.lang.String&nbsp;serviceRequestType,
                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                              java.lang.String&nbsp;serviceGUID)</code></th>
 <td class="colLast">
@@ -521,7 +522,7 @@ extends <a href="SimpleCatalogArchiveHelper.html" title="class in org.odpi.openm
 </dl>
 </li>
 </ul>
-<a id="addSupportedGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.lang.String)">
+<a id="addSupportedGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -529,13 +530,15 @@ extends <a href="SimpleCatalogArchiveHelper.html" title="class in org.odpi.openm
 <h4>addSupportedGovernanceService</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addSupportedGovernanceService&#8203;(java.lang.String&nbsp;engineGUID,
                                           java.lang.String&nbsp;requestType,
+                                          java.lang.String&nbsp;serviceRequestType,
                                           java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                           java.lang.String&nbsp;serviceGUID)</pre>
 <div class="block">Create the relationship between a governance engine and one of its supported governance services.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>engineGUID</code> - unique identifier of the asset</dd>
-<dd><code>requestType</code> - governance request type to use when calling the service</dd>
+<dd><code>requestType</code> - governance request type to use when calling the governance engine</dd>
+<dd><code>serviceRequestType</code> - request type to use when calling the service (if null, governance request type is used)</dd>
 <dd><code>requestParameters</code> - default request parameters to pass to the service when called with this request type</dd>
 <dd><code>serviceGUID</code> - unique identifier of the service</dd>
 </dl>

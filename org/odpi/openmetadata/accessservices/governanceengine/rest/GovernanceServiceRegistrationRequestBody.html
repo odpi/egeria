@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -219,24 +219,31 @@ implements java.io.Serializable</pre>
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the new request that this governance service supports.</div>
+<div class="block">Return the request type used to call the governance service via this governance engine.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getServiceRequestType()">getServiceRequestType</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the request type that this governance service supports.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceServiceGUID(java.lang.String)">setGovernanceServiceGUID</a></span>&#8203;(java.lang.String&nbsp;governanceServiceGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier of the governance service.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestParameters(java.util.Map)">setRequestParameters</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)</code></th>
 <td class="colLast">
@@ -244,14 +251,21 @@ implements java.io.Serializable</pre>
  the governance context).</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestType(java.lang.String)">setRequestType</a></span>&#8203;(java.lang.String&nbsp;requestType)</code></th>
 <td class="colLast">
-<div class="block">Set up the new request that this governance service supports.</div>
+<div class="block">Set up the request type used to call the governance service via this governance engine.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setServiceRequestType(java.lang.String)">setServiceRequestType</a></span>&#8203;(java.lang.String&nbsp;requestType)</code></th>
+<td class="colLast">
+<div class="block">Set up the request type that this governance service supports.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -351,10 +365,11 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getRequestType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRequestType()</pre>
-<div class="block">Return the new request that this governance service supports.</div>
+<div class="block">Return the request type used to call the governance service via this governance engine.  If this request type is not supported by the
+ governance service, map it to the request type it does understand using setServiceRequestType.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>name of the request</dd>
+<dd>name of the request type</dd>
 </dl>
 </li>
 </ul>
@@ -365,10 +380,43 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>setRequestType</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setRequestType&#8203;(java.lang.String&nbsp;requestType)</pre>
-<div class="block">Set up the new request that this governance service supports.</div>
+<div class="block">Set up the request type used to call the governance service via this governance engine.  If this request type is not supported by the
+ governance service, map it to the request type it does understand using setServiceRequestType.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>requestType</code> - name of the request</dd>
+<dd><code>requestType</code> - name of the request type passed to the governance service</dd>
+</dl>
+</li>
+</ul>
+<a id="getServiceRequestType()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getServiceRequestType</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getServiceRequestType()</pre>
+<div class="block">Return the request type that this governance service supports.  The requestType from the caller is mapped
+ to this value if not null.  This enables meaningful request types to be set up in a governance engine that then maps
+ to a request type that the governance service understands.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>name of the request type passed to the governance service (request type used if null)</dd>
+</dl>
+</li>
+</ul>
+<a id="setServiceRequestType(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setServiceRequestType</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setServiceRequestType&#8203;(java.lang.String&nbsp;requestType)</pre>
+<div class="block">Set up the request type that this governance service supports.  The requestType from the caller is mapped
+ to this value if not null.  This enables meaningful request types to be set up in a governance engine that then maps
+ to a request type that the governance service understands.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestType</code> - name of the request type passed to the governance service (request type used if null)</dd>
 </dl>
 </li>
 </ul>
