@@ -47,16 +47,16 @@ import java.util.List;
  */
 public class OMAGServerOperationalServices
 {
-    private OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private final OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
-    private OMAGServerPlatformInstanceMap        platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    private final OMAGServerPlatformInstanceMap        platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
-    private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerOperationalServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerOperationalServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     /*
      * =============================================================

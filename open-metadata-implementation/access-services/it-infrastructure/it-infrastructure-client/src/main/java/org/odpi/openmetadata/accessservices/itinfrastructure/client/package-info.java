@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * These are the client interfaces of the IT Infrastructure OMAS.
- *
- * <ul>
- *     <li>EndpointManagerClient supports the maintenance of endpoint definitions.</li>
- * </ul>
+ * These are the Java clients for the IT Infrastructure OMAS.
  */
 package org.odpi.openmetadata.accessservices.itinfrastructure.client;

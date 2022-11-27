@@ -5063,7 +5063,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @return string
      */
     protected String removeRequestType(InstanceProperties instanceProperties)
-
     {
         final String methodName = "removeRequestType";
 
@@ -5071,6 +5070,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the serviceRequestType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeServiceRequestType(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeServiceRequestType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
