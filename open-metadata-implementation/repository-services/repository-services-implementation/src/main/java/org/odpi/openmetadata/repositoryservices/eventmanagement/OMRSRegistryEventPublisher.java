@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletionException;
 
 
 /**
@@ -90,10 +91,18 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
             for (OMRSTopicConnector omrsTopicConnector : omrsTopicConnectors)
             {
                 log.debug("topicConnector: " + omrsTopicConnector);
-                omrsTopicConnector.sendRegistryEvent(registryEvent);
+                successFlag = successFlag  && omrsTopicConnector.sendRegistryEvent(registryEvent).get();
             }
+        }
+        // exceptions from sendEvent are wrapped in CompletionException
+        catch (CompletionException exception)
+        {
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
+                    "registryEvent : " + registryEvent,
+                    exception.getCause());
 
-            successFlag = true;
+            log.debug("Exception: " + exception.getCause() + "; Registry Event: " + registryEvent);
         }
         catch (Exception error)
         {

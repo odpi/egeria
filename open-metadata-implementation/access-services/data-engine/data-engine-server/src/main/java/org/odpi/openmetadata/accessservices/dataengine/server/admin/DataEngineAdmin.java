@@ -21,8 +21,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * DataEngineAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -63,7 +65,9 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(), auditLog);
             Map<String, Object> accessServiceOptions = accessServiceConfig.getAccessServiceOptions();
-            Integer threadPoolSize = (Integer) accessServiceOptions.getOrDefault(THREAD_POOL_SIZE, 1);
+            Integer threadPoolSize = (Integer) Optional.ofNullable(accessServiceOptions)
+                    .orElse(Collections.emptyMap())
+                    .getOrDefault(THREAD_POOL_SIZE, 1);
             Connection outTopicConnection = super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
                     AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
                     DataEngineInTopicClientProvider.class.getName(),

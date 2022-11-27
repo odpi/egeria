@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletionException;
 
 
 /**
@@ -159,14 +160,24 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
             for (OMRSTopicConnector omrsTopicConnector : typesTopicConnectors)
             {
                 log.debug("topicConnector: " + omrsTopicConnector);
-                omrsTopicConnector.sendTypeDefEvent(typeDefEvent);
+                omrsTopicConnector.sendTypeDefEvent(typeDefEvent).get();
             }
         }
+        // exceptions from sendEvent are wrapped in CompletionException
+        catch (CompletionException exception)
+        {
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.SEND_TYPEDEF_EVENT_ERROR.getMessageDefinition(sourceName),
+                    "typeDefEvent {" + typeDefEvent + "}",
+                    exception.getCause());
+            log.debug("Completion exception with cause ", exception.getCause());
+        }
+
         catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_TYPEDEF_EVENT_ERROR.getMessageDefinition(sourceName),
-                                  "typeDefEvent {" + typeDefEvent.toString() + "}",
+                                  "typeDefEvent {" + typeDefEvent + "}",
                                   error);
 
             log.debug("Exception: ", error);
@@ -204,11 +215,20 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
                 }
             }
         }
+        // exceptions from sendEvent are wrapped in CompletionException
+        catch (CompletionException exception)
+        {
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.SEND_INSTANCE_EVENT_ERROR.getMessageDefinition(sourceName),
+                    "instanceEvent {" + instanceEvent + "}",
+                    exception.getCause());
+            log.debug("Completion exception with cause ", exception.getCause());
+        }
         catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_INSTANCE_EVENT_ERROR.getMessageDefinition(sourceName),
-                                  "instanceEvent {" + instanceEvent.toString() + "}",
+                                  "instanceEvent {" + instanceEvent + "}",
                                   error);
 
             log.debug("Exception: ", error);

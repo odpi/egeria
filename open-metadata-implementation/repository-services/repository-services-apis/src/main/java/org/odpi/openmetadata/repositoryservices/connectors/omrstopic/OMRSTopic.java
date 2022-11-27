@@ -8,6 +8,8 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * OMRSTopic defines the interface to the messaging Topic for OMRS Events.
  * It implemented by the OMRSTopicConnector.
@@ -61,16 +63,17 @@ public interface OMRSTopic
      * @param event OMRSRegistryEvent object containing the event properties.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    void sendRegistryEvent(OMRSRegistryEvent event) throws ConnectorCheckedException;
+    CompletableFuture<Boolean> sendRegistryEvent(OMRSRegistryEvent event) throws ConnectorCheckedException;
 
 
     /**
      * Sends the supplied event to the topic.
      *
      * @param event OMRSTypeDefEvent object containing the event properties.
+     * @return
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    void sendTypeDefEvent(OMRSTypeDefEvent event) throws ConnectorCheckedException;
+    CompletableFuture<Boolean> sendTypeDefEvent(OMRSTypeDefEvent event) throws ConnectorCheckedException;
 
 
     /**
