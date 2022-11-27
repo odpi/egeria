@@ -5,11 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.api;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * SpecialGovernanceActionInterface defines methods that are used by governance action services to make changes to open metadata.
@@ -79,36 +76,4 @@ public interface SpecialGovernanceActionInterface
                                    List<String> sourceElementGUIDs) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException;
-
-
-    /**
-     * Create an incident report to capture the situation detected by this governance action service.
-     * This incident report will be processed by other governance activities.
-     *
-     * @param userId caller's userId
-     * @param qualifiedName unique identifier to give this new incident report
-     * @param domainIdentifier governance domain associated with this action (0=ALL)
-     * @param background description of the situation
-     * @param impactedResources details of the resources impacted by this situation
-     * @param previousIncidents links to previous incident reports covering this situation
-     * @param incidentClassifiers initial classifiers for the incident report
-     * @param additionalProperties additional arbitrary properties for the incident reports
-     * @param originatorGUID the unique identifier of the person or process that created the incident
-     *
-     * @return unique identifier of the resulting incident report
-     * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    String createIncidentReport(String                        userId,
-                                String                        qualifiedName,
-                                int                           domainIdentifier,
-                                String                        background,
-                                List<IncidentImpactedElement> impactedResources,
-                                List<IncidentDependency>      previousIncidents,
-                                Map<String, Integer> incidentClassifiers,
-                                Map<String, String>           additionalProperties,
-                                String                        originatorGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
 }
