@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class EngineHostServicesResource
 {
-    private EngineHostRESTServices restAPI = new EngineHostRESTServices();
+    private final EngineHostRESTServices restAPI = new EngineHostRESTServices();
 
 
     /**

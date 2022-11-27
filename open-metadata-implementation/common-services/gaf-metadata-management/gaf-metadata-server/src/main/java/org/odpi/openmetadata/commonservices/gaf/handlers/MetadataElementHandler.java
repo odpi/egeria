@@ -1297,7 +1297,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                   methodName,
                                                                                   repositoryHelper);
 
-        MetadataElementBuilder builder = new MetadataElementBuilder(getElementPropertiesAsOMRSMap(properties),
+        MetadataElementBuilder builder = new MetadataElementBuilder(metadataElementTypeGUID,
+                                                                    metadataElementTypeName,
+                                                                    getElementPropertiesAsOMRSMap(properties),
                                                                     this.getInstanceStatus(initialStatus),
                                                                     effectiveFrom,
                                                                     effectiveTo,

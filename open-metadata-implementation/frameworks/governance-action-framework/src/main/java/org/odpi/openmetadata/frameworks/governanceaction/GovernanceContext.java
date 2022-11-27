@@ -78,7 +78,7 @@ public interface GovernanceContext
      * @return unique identifier of the resulting incident report
      *
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createIncidentReport(String                        qualifiedName,
