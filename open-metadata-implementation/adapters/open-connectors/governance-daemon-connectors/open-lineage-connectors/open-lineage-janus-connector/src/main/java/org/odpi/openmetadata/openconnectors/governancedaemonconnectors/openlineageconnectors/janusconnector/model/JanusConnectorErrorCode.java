@@ -147,14 +147,18 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.ERROR,
             "Could not execute search request {0}",
             "Searching in the database produced an error",
-            "Check the search input and try again")
-    ;
+            "Check the search input and try again"),
+    HIERARCHY_ERROR("OPEN-LINEAGE-SERVICES-039",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not execute hierarchy request {0}",
+            "Retrieving the element hierarchy produced an error",
+            "Check the input and try again");
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
     private OMRSAuditLogRecordSeverity severity;
     AuditLogMessageDefinition auditLogMessageDefinition;
 

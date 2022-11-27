@@ -8,6 +8,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -23,7 +24,7 @@ public class OpenLineageRestServices {
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageRestServices.class);
     private final OpenLineageInstanceHandler instanceHandler = new OpenLineageInstanceHandler();
-    private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
+    private final OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
 
     public LineageResponse lineage(String serverName, String userId, Scope scope, String guid,
@@ -140,6 +141,32 @@ public class OpenLineageRestServices {
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId, serverName, methodName);
             response = openLineageHandler.search(lineageSearchRequest);
+        } catch (InvalidParameterException e) {
+            openLineageExceptionHandler.captureInvalidParameterException(response, e);
+            log.debug(debugMessage, e);
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            openLineageExceptionHandler.capturePropertyServerException(response, e);
+            log.debug(debugMessage, e);
+        } catch (UserNotAuthorizedException e) {
+            openLineageExceptionHandler.captureUserNotAuthorizedException(response, e);
+            log.debug(debugMessage, e);
+        } catch (OpenLineageException e) {
+            openLineageExceptionHandler.captureOpenLineageException(response, e);
+            log.debug(debugMessage, e);
+        }catch (Exception e) {
+            openLineageExceptionHandler.captureExceptions(response, e, methodName);
+            log.debug(debugMessage, e);
+        }
+        return response;
+    }
+
+    public LineageResponse getElementHierarchy(String serverName, String userId, ElementHierarchyRequest elementHierarchyRequest) {
+        LineageResponse response = new LineageResponse();
+        final String methodName = "OpenLineageRestServices.search";
+        final String debugMessage = "An exception occurred during a hierarchy HTTP request";
+        try {
+            OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId, serverName, methodName);
+            response = openLineageHandler.getElementHierarchy(elementHierarchyRequest);
         } catch (InvalidParameterException e) {
             openLineageExceptionHandler.captureInvalidParameterException(response, e);
             log.debug(debugMessage, e);

@@ -7,14 +7,18 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.HierarchyType;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.Node;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.GraphHelper;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphQueryService;
@@ -29,12 +33,28 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_CONTENT_FOR_DATA_SET;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DEPLOYED_DB_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SEMANTIC_ASSIGNMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TERM_ANCHOR;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TERM_CATEGORIZATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_COLUMN_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_RELATED_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
@@ -42,7 +62,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
@@ -62,8 +81,8 @@ public class LineageGraphQueryServiceTest {
         addColumnLineageData(graphHelper.getGraphTraversalSource());
         addGlossaryLineageData(graphHelper.getGraphTraversalSource());
         addTableLineageData(graphHelper.getGraphTraversalSource());
+        addHierarchyData(graphHelper.getGraphTraversalSource());
     }
-
 
     @Test
     void ultimateSourceColumnLevel() {
@@ -251,20 +270,252 @@ public class LineageGraphQueryServiceTest {
     @Test
     public void testGetNodes_MultipleGlossaryTerm() {
         NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g", 10);
-        List<String> expectedNodeNames = Arrays.asList("g1", "g2", "g3");
+        List<String> expectedNodeNames = Arrays.asList("g1", "g2", "g3", "glossaryTerm");
         List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
         assertTrue(CollectionUtils.isEqualCollection(expectedNodeNames, resultNames));
     }
 
     @Test
-    public void testGetNodes_MultipleGlossaryTermLimited() {
-        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g", 2);
-        List<String> possibleResults = Arrays.asList("g1", "g2", "g3");
-        List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
-        assertEquals(2, resultNames.size());
-        assertTrue(CollectionUtils.containsAll(possibleResults, resultNames));
+    public void testGetHierarchy_upward_tabularColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.UPWARD);
+        elementHierarchyRequest.setGuid("tabularColumn");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "tabularColumn";
+        expectedNodeIDs.add("tabularSchemaType");
+        expectedNodeIDs.add("dataFile");
+        expectedNodeIDs.add("fileFolder");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_all_tabularColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.ALL);
+        elementHierarchyRequest.setGuid("tabularColumn");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "tabularColumn";
+        expectedNodeIDs.add("tabularSchemaType");
+        expectedNodeIDs.add("dataFile");
+        expectedNodeIDs.add("fileFolder");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_downward_tabularColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.DOWNWARD);
+        elementHierarchyRequest.setGuid("tabularColumn");
+
+        LineageVerticesAndEdges lineageVerticesAndEdges =
+                lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        assertTrue(CollectionUtils.isEmpty(lineageVertices));
+    }
+    @Test
+    public void testGetHierarchy_upward_dataFile() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.UPWARD);
+        elementHierarchyRequest.setGuid("dataFile");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "dataFile";
+        expectedNodeIDs.add("fileFolder");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_all_dataFile() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.ALL);
+        elementHierarchyRequest.setGuid("dataFile");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "dataFile";
+        expectedNodeIDs.add("tabularSchemaType");
+        expectedNodeIDs.add("tabularColumn");
+        expectedNodeIDs.add("fileFolder");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_downward_dataFile() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.DOWNWARD);
+        elementHierarchyRequest.setGuid("dataFile");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "dataFile";
+        expectedNodeIDs.add("tabularSchemaType");
+        expectedNodeIDs.add("tabularColumn");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_upward_relationalColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.UPWARD);
+        elementHierarchyRequest.setGuid("relationalColumn");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "relationalColumn";
+        expectedNodeIDs.add("relationalTable");
+        expectedNodeIDs.add("relationalDBSchemaType");
+        expectedNodeIDs.add("deployedDBSchemaType");
+        expectedNodeIDs.add("database");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_all_relationalColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.ALL);
+        elementHierarchyRequest.setGuid("relationalColumn");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "relationalColumn";
+        expectedNodeIDs.add("relationalTable");
+        expectedNodeIDs.add("relationalDBSchemaType");
+        expectedNodeIDs.add("deployedDBSchemaType");
+        expectedNodeIDs.add("database");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_downward_relationalColumn() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.DOWNWARD);
+        elementHierarchyRequest.setGuid("relationalColumn");
+
+        LineageVerticesAndEdges lineageVerticesAndEdges =
+                lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        assertTrue(CollectionUtils.isEmpty(lineageVertices));
+    }
+    @Test
+    public void testGetHierarchy_upward_relationalTable() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.UPWARD);
+        elementHierarchyRequest.setGuid("relationalTable");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "relationalTable";
+        expectedNodeIDs.add("relationalDBSchemaType");
+        expectedNodeIDs.add("deployedDBSchemaType");
+        expectedNodeIDs.add("database");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_all_relationalTable() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.ALL);
+        elementHierarchyRequest.setGuid("relationalTable");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "relationalTable";
+        expectedNodeIDs.add("relationalColumn");
+        expectedNodeIDs.add("relationalDBSchemaType");
+        expectedNodeIDs.add("deployedDBSchemaType");
+        expectedNodeIDs.add("database");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_downward_relationalTable() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.DOWNWARD);
+        elementHierarchyRequest.setGuid("relationalTable");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "relationalTable";
+        expectedNodeIDs.add("relationalColumn");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
     }
 
+    @Test
+    public void testGetHierarchy_upward_glossaryTerm() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.UPWARD);
+        elementHierarchyRequest.setGuid("glossaryTerm");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "glossaryTerm";
+        expectedNodeIDs.add("glossaryCategory");
+        expectedNodeIDs.add("glossary");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_all_glossaryTerm() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.ALL);
+        elementHierarchyRequest.setGuid("glossaryTerm");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "glossaryTerm";
+        expectedNodeIDs.add("relationalColumn");
+        expectedNodeIDs.add("tabularColumn");
+        expectedNodeIDs.add("glossaryCategory");
+        expectedNodeIDs.add("glossary");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+    @Test
+    public void testGetHierarchy_downward_glossaryTerm() {
+        ElementHierarchyRequest elementHierarchyRequest = new ElementHierarchyRequest();
+        elementHierarchyRequest.setHierarchyType(HierarchyType.DOWNWARD);
+        elementHierarchyRequest.setGuid("glossaryTerm");
+
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "glossaryTerm";
+        expectedNodeIDs.add("relationalColumn");
+        expectedNodeIDs.add("tabularColumn");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.getElementHierarchy(elementHierarchyRequest).getLineageVerticesAndEdges();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
     @Test
     public void testGetNodes_NoResult() {
         NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "gg", 2);
@@ -275,13 +526,14 @@ public class LineageGraphQueryServiceTest {
     @Test
     public void testGetTypes() {
         LineageTypesResponse response = lineageGraphQueryService.getTypes();
-        List<String> expectedTypes = Arrays.asList(TABULAR_COLUMN, GLOSSARY_TERM, RELATIONAL_TABLE, PROCESS, DATA_FILE);
+        List<String> expectedTypes = Arrays.asList(TABULAR_COLUMN, GLOSSARY_TERM, RELATIONAL_TABLE, PROCESS, DATA_FILE, FILE_FOLDER,
+                RELATIONAL_DB_SCHEMA_TYPE, RELATIONAL_COLUMN, GLOSSARY_CATEGORY, TABULAR_SCHEMA_TYPE, GLOSSARY, DATABASE, DEPLOYED_DB_SCHEMA_TYPE);
         assertTrue(CollectionUtils.isEqualCollection(response.getTypes(), expectedTypes));
     }
 
     @Test
     void searchTest() {
-        int expectedSearchResults = 4;
+        int expectedSearchResults = 5;
         LineageSearchRequest lineageSearchRequest = new LineageSearchRequest();
         Node node = new Node();
         node.setType(RELATIONAL_TABLE);
@@ -290,6 +542,15 @@ public class LineageGraphQueryServiceTest {
         assertNotNull(result.getVertices());
         assertEquals(expectedSearchResults, result.getVertices().size());
         result.getVertices().forEach(vertex -> assertEquals(RELATIONAL_TABLE, vertex.getNodeType()));
+    }
+
+    @Test
+    public void testGetNodes_MultipleGlossaryTermLimited() {
+        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g", 2);
+        List<String> possibleResults = Arrays.asList("g1", "g2", "g3", "glossaryTerm");
+        List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
+        assertEquals(2, resultNames.size());
+        assertTrue(CollectionUtils.containsAll(possibleResults, resultNames));
     }
 
     private void validateResponse(HashSet<String> expectedNodeIDs, Set<LineageVertex> lineageVertices) {
@@ -385,6 +646,40 @@ public class LineageGraphQueryServiceTest {
         g.addE(LINEAGE_MAPPING).from(p10).to(t10).next();
         g.addE(LINEAGE_MAPPING).from(t10).to(p20).next();
         g.addE(LINEAGE_MAPPING).from(p20).to(t20).next();
+    }
+
+    private static void addHierarchyData(GraphTraversalSource g) {
+        // relational relationalTable  & relational relationalColumn context
+        Vertex relationalTable = getVertex(g, RELATIONAL_TABLE, "relationalTable", "relationalTable");
+        Vertex database = getVertex(g, DATABASE, "database", "database");
+        Vertex deployedDBSchemaType = getVertex(g, DEPLOYED_DB_SCHEMA_TYPE, "relationalDBSchemaType", "relationalDBSchemaType");
+        Vertex relationalDbSchemaType = getVertex(g, RELATIONAL_DB_SCHEMA_TYPE, "deployedDBSchemaType", "deployedDBSchemaType");
+        Vertex relationalColumn = getVertex(g, RELATIONAL_COLUMN, "relationalColumn", "relationalColumn");
+
+        g.addE(ATTRIBUTE_FOR_SCHEMA).from(relationalTable).to(relationalDbSchemaType).next();
+        g.addE(ASSET_SCHEMA_TYPE).from(relationalDbSchemaType).to(deployedDBSchemaType).next();
+        g.addE(DATA_CONTENT_FOR_DATA_SET).from(deployedDBSchemaType).to(database).next();
+        g.addE(NESTED_SCHEMA_ATTRIBUTE).from(relationalColumn).to(relationalTable).next();
+
+        // data file  & tabular relationalColumn context
+        Vertex file = getVertex(g, DATA_FILE, "dataFile", "dataFile");
+        Vertex fileFolder = getVertex(g, FILE_FOLDER, "fileFolder", "fileFolder");
+        Vertex schemaType = getVertex(g, TABULAR_SCHEMA_TYPE, "tabularSchemaType", "tabularSchemaType");
+        Vertex tabularColumn = getVertex(g, TABULAR_COLUMN, "tabularColumn", "tabularColumn");
+
+        g.addE(NESTED_FILE).from(file).to(fileFolder).next();
+        g.addE(ATTRIBUTE_FOR_SCHEMA).from(tabularColumn).to(schemaType).next();
+        g.addE(ASSET_SCHEMA_TYPE).from(schemaType).to(file).next();
+
+        // glossary term & glossary context
+        Vertex glossaryTerm = getVertex(g, GLOSSARY_TERM, "glossaryTerm", "glossaryTerm");
+        Vertex glossaryCategory = getVertex(g, GLOSSARY_CATEGORY, "glossaryCategory", "glossaryCategory");
+        Vertex glossary = getVertex(g, GLOSSARY, "glossary", "glossary");
+
+        g.addE(SEMANTIC_ASSIGNMENT).from(glossaryTerm).to(relationalColumn).next();
+        g.addE(SEMANTIC_ASSIGNMENT).from(glossaryTerm).to(tabularColumn).next();
+        g.addE(TERM_CATEGORIZATION).from(glossaryTerm).to(glossaryCategory).next();
+        g.addE(TERM_ANCHOR).from(glossaryTerm).to(glossary).next();
     }
 
     private static Vertex getVertex(GraphTraversalSource g, String nodeType, String guid, String nodeId) {
