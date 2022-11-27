@@ -4,9 +4,13 @@ package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventErrorCode;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventType;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletionException;
 
 
 /**
@@ -90,10 +95,18 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
             for (OMRSTopicConnector omrsTopicConnector : omrsTopicConnectors)
             {
                 log.debug("topicConnector: " + omrsTopicConnector);
-                omrsTopicConnector.sendRegistryEvent(registryEvent);
+                successFlag = successFlag  && omrsTopicConnector.sendRegistryEvent(registryEvent).get();
             }
+        }
+        // exceptions from sendEvent are wrapped in CompletionException
+        catch (CompletionException exception)
+        {
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
+                    "registryEvent : " + registryEvent,
+                    exception.getCause());
 
-            successFlag = true;
+            log.debug("Exception: " + exception.getCause() + "; Registry Event: " + registryEvent);
         }
         catch (Exception error)
         {
