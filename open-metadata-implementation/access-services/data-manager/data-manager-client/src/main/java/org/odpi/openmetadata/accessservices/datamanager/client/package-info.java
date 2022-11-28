@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * These are the client interfaces of the Data Manager OMAS.
+ * These are the Java clients for the Data Manager OMAS.
  *
  * <ul>
  *     <li>MetadataSourceClient enables the caller to create the Software Server Capability that represents

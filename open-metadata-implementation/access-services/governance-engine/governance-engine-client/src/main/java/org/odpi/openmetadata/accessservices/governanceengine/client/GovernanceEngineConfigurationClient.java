@@ -681,7 +681,35 @@ public class GovernanceEngineConfigurationClient
      * @param userId identifier of calling user
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
-     * @param governanceRequestType governance request type that this governance service is able to process.
+     * @param governanceRequestType governance request type used by caller and supported by the governance server.
+     * @param requestParameters list of parameters that are passed to the governance service (via
+     *                                  the governance context).  These values can be overridden on the actual governance request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Deprecated
+    public void registerGovernanceServiceWithEngine(String               userId,
+                                                    String               governanceEngineGUID,
+                                                    String               governanceServiceGUID,
+                                                    String               governanceRequestType,
+                                                    Map<String, String>  requestParameters) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        registerGovernanceServiceWithEngine(userId, governanceEngineGUID, governanceServiceGUID, governanceRequestType, null, requestParameters);
+    }
+
+
+    /**
+     * Register a governance service with a specific governance engine.
+     *
+     * @param userId identifier of calling user
+     * @param governanceEngineGUID unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @param governanceRequestType governance request type used by caller.
+     * @param serviceRequestType mapped governance request type that this governance service is able to process.
      * @param requestParameters list of parameters that are passed to the governance service (via
      *                                  the governance context).  These values can be overridden on the actual governance request.
      *
@@ -693,6 +721,7 @@ public class GovernanceEngineConfigurationClient
                                                     String               governanceEngineGUID,
                                                     String               governanceServiceGUID,
                                                     String               governanceRequestType,
+                                                    String               serviceRequestType,
                                                     Map<String, String>  requestParameters) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
@@ -711,6 +740,7 @@ public class GovernanceEngineConfigurationClient
         GovernanceServiceRegistrationRequestBody requestBody = new GovernanceServiceRegistrationRequestBody();
         requestBody.setGovernanceServiceGUID(governanceServiceGUID);
         requestBody.setRequestType(governanceRequestType);
+        requestBody.setServiceRequestType(serviceRequestType);
         requestBody.setRequestParameters(requestParameters);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
@@ -773,18 +803,18 @@ public class GovernanceEngineConfigurationClient
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      *
-     * @return list of unique identifiers
+     * @return list of registered services
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
-    public List<String> getRegisteredGovernanceServices(String  userId,
-                                                        String  governanceEngineGUID,
-                                                        int     startingFrom,
-                                                        int     maximumResults) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<RegisteredGovernanceServiceElement> getRegisteredGovernanceServices(String  userId,
+                                                                                    String  governanceEngineGUID,
+                                                                                    int     startingFrom,
+                                                                                    int     maximumResults) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
         final String methodName = "getRegisteredGovernanceServices";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
@@ -794,15 +824,15 @@ public class GovernanceEngineConfigurationClient
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         urlTemplate,
-                                                                         serverName,
-                                                                         userId,
-                                                                         governanceEngineGUID,
-                                                                         startingFrom,
-                                                                         maximumResults);
+        RegisteredGovernanceServicesResponse restResult = restClient.callRegisteredGovernanceServicesGetRESTCall(methodName,
+                                                                                                                 urlTemplate,
+                                                                                                                 serverName,
+                                                                                                                 userId,
+                                                                                                                 governanceEngineGUID,
+                                                                                                                 startingFrom,
+                                                                                                                 maximumResults);
 
-        return restResult.getGUIDs();
+        return restResult.getElements();
     }
 
 

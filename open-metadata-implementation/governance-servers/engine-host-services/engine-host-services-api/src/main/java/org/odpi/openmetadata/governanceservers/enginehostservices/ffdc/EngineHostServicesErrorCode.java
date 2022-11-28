@@ -163,7 +163,7 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
 
     NULL_GOVERNANCE_SERVICE(400, "ENGINE-HOST-SERVICES-400-016",
                             "Method {0} can not execute in the governance engine {1} hosted by engine host server {2} because the associated " +
-                                    "governance service properties are null",
+                                    "governance service properties are invalid: {3}",
                             "The governance request is not run and an error is returned to the caller.",
                             "This may be an error in the governance engine's logic or the Governance Engine OMAS may have returned " +
                                     "invalid configuration.  Raise an issue to get help to fix it"),

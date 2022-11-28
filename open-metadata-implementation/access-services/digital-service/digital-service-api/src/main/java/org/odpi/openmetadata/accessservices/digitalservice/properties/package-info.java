@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * Properties of the elements managed by the Digital Service OMAS.
+ * These beans describe the core properties that are passed to the server to create and update metadata.
  */
 package org.odpi.openmetadata.accessservices.digitalservice.properties;

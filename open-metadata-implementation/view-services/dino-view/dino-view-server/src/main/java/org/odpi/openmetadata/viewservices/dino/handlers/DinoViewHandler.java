@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.adminservices.client.EngineHostConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.IntegrationDaemonConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurationClient;
@@ -2336,31 +2337,45 @@ public class DinoViewHandler {
              * with which the service was registered with the engine.
              */
 
-            List<String> governanceServices = gecc.getRegisteredGovernanceServices(userId, governanceEngineGUID, 0, 100);
+            List<RegisteredGovernanceServiceElement> governanceServices = gecc.getRegisteredGovernanceServices(userId, governanceEngineGUID, 0, 100);
 
             if (governanceServices != null && governanceServices.size()>0) {
 
                 Map<String, ServicePropertiesAndRequests> serviceMap = new HashMap<>();
 
-                for (int i=0; i<governanceServices.size(); i++) {
+                for (RegisteredGovernanceServiceElement governanceService : governanceServices) {
 
-                    String governanceServiceGUID = governanceServices.get(i);
-
-                    GovernanceServiceElement gse = gecc.getGovernanceServiceByGUID(userId, governanceServiceGUID);
-
-                    GovernanceServiceProperties gsp = gse.getProperties();
+                    GovernanceServiceProperties gsp = governanceService.getProperties();
 
                     String governanceServiceQualifiedName = gsp.getQualifiedName();
 
-                    RegisteredGovernanceServiceElement rgse = gecc.getRegisteredGovernanceService(userId, governanceEngineGUID, governanceServiceGUID);
+                    Map<String, RegisteredGovernanceServiceProperties> requestTypes = governanceService.getProperties().getRequestTypes();
 
-                    RegisteredGovernanceService rgs = rgse.getProperties();
+                    if (requestTypes != null) {
 
-                    Map<String, Map<String, String>> requestTypes = rgs.getRequestTypes();
+                        Map<String, Map<String, String>> requestTypeMap = new HashMap<>();
 
-                    ServicePropertiesAndRequests spar = new ServicePropertiesAndRequests(gsp, requestTypes);
+                        for (String requestType : requestTypes.keySet()) {
 
-                    serviceMap.put(governanceServiceQualifiedName, spar);
+                            RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = requestTypes.get(requestType);
+
+                            if (registeredGovernanceServiceProperties != null) {
+
+                                if (registeredGovernanceServiceProperties.getServiceRequestType() == null) {
+
+                                    requestTypeMap.put(requestType, registeredGovernanceServiceProperties.getRequestParameters());
+                                }
+                                else {
+
+                                    requestTypeMap.put(requestType + " -> " + registeredGovernanceServiceProperties.getServiceRequestType(), registeredGovernanceServiceProperties.getRequestParameters());
+                                }
+                            }
+                        }
+
+                        ServicePropertiesAndRequests spar = new ServicePropertiesAndRequests(gsp, requestTypeMap);
+
+                        serviceMap.put(governanceServiceQualifiedName, spar);
+                    }
 
                 }
                 engineDetails.setServiceMap(serviceMap);

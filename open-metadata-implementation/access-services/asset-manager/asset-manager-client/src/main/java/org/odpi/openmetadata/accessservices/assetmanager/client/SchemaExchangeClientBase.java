@@ -569,13 +569,14 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentElementGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/schema-types/retrieve?forLineage={3}&forDuplicateProcessing={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
         SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                      serverName,
                                                                                      userId,
+                                                                                     parentElementTypeName,
                                                                                      parentElementGUID,
                                                                                      forLineage,
                                                                                      forDuplicateProcessing);

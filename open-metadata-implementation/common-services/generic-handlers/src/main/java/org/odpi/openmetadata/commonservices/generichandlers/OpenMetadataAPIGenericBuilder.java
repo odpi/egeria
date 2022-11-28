@@ -197,19 +197,36 @@ public class OpenMetadataAPIGenericBuilder
             {
                 if (templateClassification != null)
                 {
-
                     try
                     {
-                        Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                              externalSourceGUID,
-                                                                                              externalSourceName,
-                                                                                              instanceProvenanceType,
-                                                                                              userId,
-                                                                                              templateClassification.getName(),
-                                                                                              typeName,
-                                                                                              ClassificationOrigin.ASSIGNED,
-                                                                                              null,
-                                                                                              templateClassification.getProperties());
+                        Classification classification;
+
+                        if (templateClassification.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+                        {
+                            classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                   null,
+                                                                                   null,
+                                                                                   InstanceProvenanceType.LOCAL_COHORT,
+                                                                                   userId,
+                                                                                   templateClassification.getName(),
+                                                                                   typeName,
+                                                                                   ClassificationOrigin.ASSIGNED,
+                                                                                   null,
+                                                                                   templateClassification.getProperties());
+                        }
+                        else
+                        {
+                            classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                   externalSourceGUID,
+                                                                                   externalSourceName,
+                                                                                   instanceProvenanceType,
+                                                                                   userId,
+                                                                                   templateClassification.getName(),
+                                                                                   typeName,
+                                                                                   ClassificationOrigin.ASSIGNED,
+                                                                                   null,
+                                                                                   templateClassification.getProperties());
+                        }
                         this.newClassifications.put(classification.getName(), classification);
                     }
                     catch (TypeErrorException error)
@@ -223,7 +240,7 @@ public class OpenMetadataAPIGenericBuilder
 
 
     /**
-     * Set up the Anchors classification for this entity.  This is used when a new entity is being created and it is known to be
+     * Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be
      * connected to a specific anchor.
      *
      * @param userId calling user

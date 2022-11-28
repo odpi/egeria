@@ -18,7 +18,10 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-api')
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-registration')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 

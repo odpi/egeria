@@ -5782,181 +5782,187 @@ public class OpenMetadataAPIGenericHandler<B>
             }
 
             /*
-             * Is this a new relationship?
+             * Skip "SourcedFrom" relationships since they are not part of the template.
              */
-            if ((entityProxy != null) && (entityProxy.getType() != null) && (! entityProxy.getGUID().equals(previousTemplateGUID)))
+            if (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME))
             {
-                EntityDetail nextTemplateEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                    entityProxy.getGUID(),
-                                                                                    nextTemplateEntityGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing,
-                                                                                    effectiveTime,
-                                                                                    methodName);
-
-                if ((nextTemplateEntity != null) && (nextTemplateEntity.getType() != null))
+                /*
+                 * Is this a new relationship?
+                 */
+                if ((entityProxy != null) && (entityProxy.getType() != null) && (! entityProxy.getGUID().equals(previousTemplateGUID)))
                 {
-                    String nextTemplateEntityTypeGUID = nextTemplateEntity.getType().getTypeDefGUID();
-                    String nextTemplateEntityTypeName = nextTemplateEntity.getType().getTypeDefName();
+                    EntityDetail nextTemplateEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                        entityProxy.getGUID(),
+                                                                                        nextTemplateEntityGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
+                                                                                        effectiveTime,
+                                                                                        methodName);
 
-                    EntityDetail nextTemplateEntityAnchor = this.validateAnchorEntity(userId,
-                                                                                      nextTemplateEntity.getGUID(),
-                                                                                      null,
-                                                                                      nextTemplateEntity,
-                                                                                      nextTemplateEntityGUIDParameterName,
-                                                                                      false,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      serviceSupportedZones,
-                                                                                      effectiveTime,
-                                                                                      methodName);
+                    if ((nextTemplateEntity != null) && (nextTemplateEntity.getType() != null))
+                    {
+                        String nextTemplateEntityTypeGUID = nextTemplateEntity.getType().getTypeDefGUID();
+                        String nextTemplateEntityTypeName = nextTemplateEntity.getType().getTypeDefName();
 
-                    String nextTemplateAnchorGUID = null;
-                    if (nextTemplateEntityAnchor != null)
-                    {
-                        nextTemplateAnchorGUID = nextTemplateEntityAnchor.getGUID();
-                    }
-                    String nextBeanEntityGUID;
+                        EntityDetail nextTemplateEntityAnchor = this.validateAnchorEntity(userId,
+                                                                                          nextTemplateEntity.getGUID(),
+                                                                                          null,
+                                                                                          nextTemplateEntity,
+                                                                                          nextTemplateEntityGUIDParameterName,
+                                                                                          false,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          serviceSupportedZones,
+                                                                                          effectiveTime,
+                                                                                          methodName);
 
-                    if (templateProgress.coveredGUIDMap.containsKey(nextTemplateEntity.getGUID()))
-                    {
-                        /*
-                         * The template entity has already been replicated, so we just need to create the
-                         * relationship from the equivalent new bean to the start bean.
-                         */
-                        nextBeanEntityGUID = templateProgress.coveredGUIDMap.get(nextTemplateEntity.getGUID());
-                    }
-                    else if ((nextTemplateAnchorGUID == null) || (! templateProgress.templateAnchorGUIDs.contains(nextTemplateAnchorGUID)))
-                    {
-                        /*
-                         * The linked entity is either not got an anchorGUID or has a different anchorGUID.
-                         * However, we still need to create the relationship between the start bean and the linked entity.
-                         */
-                        nextBeanEntityGUID = nextTemplateEntity.getGUID();
-                    }
-                    else
-                    {
-                        /*
-                         * This linked entity has the same anchorGUID, so it needs to be copied.
-                         */
-                        OpenMetadataAPIGenericBuilder builder;
-                        String nextQualifiedName = null;
-                        if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                        String nextTemplateAnchorGUID = null;
+                        if (nextTemplateEntityAnchor != null)
+                        {
+                            nextTemplateAnchorGUID = nextTemplateEntityAnchor.getGUID();
+                        }
+                        String nextBeanEntityGUID;
+
+                        if (templateProgress.coveredGUIDMap.containsKey(nextTemplateEntity.getGUID()))
                         {
                             /*
-                             * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
-                             * process so the GUID is stored as a potential anchor.
+                             * The template entity has already been replicated, so we just need to create the
+                             * relationship from the equivalent new bean to the start bean.
                              */
-                            templateProgress.templateAnchorGUIDs.add(nextTemplateEntity.getGUID());
-
-                            nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
-                            int    nextQualifiedNameCount = 0;
-
-                            if (qualifiedNameUsageCount.get(nextQualifiedName) != null)
-                            {
-                                nextQualifiedNameCount = qualifiedNameUsageCount.get(nextQualifiedName);
-                            }
-                            qualifiedNameUsageCount.put(nextQualifiedName, nextQualifiedNameCount + 1);
-
-                            if (nextQualifiedNameCount > 0)
-                            {
-                                nextQualifiedName = nextQualifiedName + "_" + nextQualifiedNameCount;
-                            }
-
-                            builder = new ReferenceableBuilder(nextQualifiedName,
-                                                               null,
-                                                               nextTemplateEntityTypeGUID,
-                                                               nextTemplateEntityTypeName,
-                                                               null,
-                                                               nextTemplateEntity.getStatus(),
-                                                               repositoryHelper,
-                                                               serviceName,
-                                                               serverName);
+                            nextBeanEntityGUID = templateProgress.coveredGUIDMap.get(nextTemplateEntity.getGUID());
+                        }
+                        else if ((nextTemplateAnchorGUID == null) || (! templateProgress.templateAnchorGUIDs.contains(nextTemplateAnchorGUID)))
+                        {
+                            /*
+                             * The linked entity is either not got an anchorGUID or has a different anchorGUID.
+                             * However, we still need to create the relationship between the start bean and the linked entity.
+                             */
+                            nextBeanEntityGUID = nextTemplateEntity.getGUID();
                         }
                         else
                         {
-                            builder = new OpenMetadataAPIGenericBuilder(nextTemplateEntityTypeGUID,
-                                                                        nextTemplateEntityTypeName,
-                                                                        null,
-                                                                        nextTemplateEntity.getStatus(),
-                                                                        null,
-                                                                        repositoryHelper,
-                                                                        serviceName,
-                                                                        serverName);
+                            /*
+                             * This linked entity has the same anchorGUID, so it needs to be copied.
+                             */
+                            OpenMetadataAPIGenericBuilder builder;
+                            String                        nextQualifiedName = null;
+                            if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                            {
+                                /*
+                                 * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
+                                 * process so the GUID is stored as a potential anchor.
+                                 */
+                                templateProgress.templateAnchorGUIDs.add(nextTemplateEntity.getGUID());
+
+                                nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
+                                int nextQualifiedNameCount = 0;
+
+                                if (qualifiedNameUsageCount.get(nextQualifiedName) != null)
+                                {
+                                    nextQualifiedNameCount = qualifiedNameUsageCount.get(nextQualifiedName);
+                                }
+                                qualifiedNameUsageCount.put(nextQualifiedName, nextQualifiedNameCount + 1);
+
+                                if (nextQualifiedNameCount > 0)
+                                {
+                                    nextQualifiedName = nextQualifiedName + "_" + nextQualifiedNameCount;
+                                }
+
+                                builder = new ReferenceableBuilder(nextQualifiedName,
+                                                                   null,
+                                                                   nextTemplateEntityTypeGUID,
+                                                                   nextTemplateEntityTypeName,
+                                                                   null,
+                                                                   nextTemplateEntity.getStatus(),
+                                                                   repositoryHelper,
+                                                                   serviceName,
+                                                                   serverName);
+                            }
+                            else
+                            {
+                                builder = new OpenMetadataAPIGenericBuilder(nextTemplateEntityTypeGUID,
+                                                                            nextTemplateEntityTypeName,
+                                                                            null,
+                                                                            nextTemplateEntity.getStatus(),
+                                                                            null,
+                                                                            repositoryHelper,
+                                                                            serviceName,
+                                                                            serverName);
+                            }
+
+                            builder.setTemplateProperties(nextTemplateEntity.getProperties());
+                            builder.setTemplateClassifications(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               nextTemplateEntity.getClassifications(),
+                                                               methodName);
+
+                            templateProgress = this.createBeanFromTemplate(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           false,
+                                                                           templateProgress,
+                                                                           nextTemplateEntity.getGUID(),
+                                                                           nextTemplateEntityGUIDParameterName,
+                                                                           nextTemplateEntity.getType().getTypeDefGUID(),
+                                                                           nextTemplateEntityTypeName,
+                                                                           nextQualifiedName,
+                                                                           nextQualifiedNameParameterName,
+                                                                           builder,
+                                                                           serviceSupportedZones,
+                                                                           methodName);
+
+                            nextBeanEntityGUID = templateProgress.newBeanGUID;
                         }
 
-                        builder.setTemplateProperties(nextTemplateEntity.getProperties());
-                        builder.setTemplateClassifications(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
-                                                           nextTemplateEntity.getClassifications(),
-                                                           methodName);
-
-                        templateProgress = this.createBeanFromTemplate(userId,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       false,
-                                                                       templateProgress,
-                                                                       nextTemplateEntity.getGUID(),
-                                                                       nextTemplateEntityGUIDParameterName,
-                                                                       nextTemplateEntity.getType().getTypeDefGUID(),
-                                                                       nextTemplateEntityTypeName,
-                                                                       nextQualifiedName,
-                                                                       nextQualifiedNameParameterName,
-                                                                       builder,
-                                                                       serviceSupportedZones,
-                                                                       methodName);
-
-                        nextBeanEntityGUID = templateProgress.newBeanGUID;
-                    }
-
-                    /*
-                     * Link the previously created bean to the next bean - making sure end one and end two are correctly set up.
-                     */
-                    if (relationshipOneToTwo)
-                    {
-                        this.linkElementToElement(userId,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  startingGUID,
-                                                  startingGUIDParameterName,
-                                                  expectedTypeName,
-                                                  nextBeanEntityGUID,
-                                                  nextBeanEntityGUIDParameterName,
-                                                  nextTemplateEntityTypeName,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  relationship.getType().getTypeDefGUID(),
-                                                  relationship.getType().getTypeDefName(),
-                                                  relationship.getProperties(),
-                                                  effectiveFrom,
-                                                  effectiveTo,
-                                                  effectiveTime,
-                                                  methodName);
-                    }
-                    else
-                    {
-                        this.linkElementToElement(userId,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  nextBeanEntityGUID,
-                                                  nextBeanEntityGUIDParameterName,
-                                                  nextTemplateEntityTypeName,
-                                                  startingGUID,
-                                                  startingGUIDParameterName,
-                                                  expectedTypeName,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  relationship.getType().getTypeDefGUID(),
-                                                  relationship.getType().getTypeDefName(),
-                                                  relationship.getProperties(),
-                                                  effectiveFrom,
-                                                  effectiveTo,
-                                                  effectiveTime,
-                                                  methodName);
+                        /*
+                         * Link the previously created bean to the next bean - making sure end one and end two are correctly set up.
+                         */
+                        if (relationshipOneToTwo)
+                        {
+                            this.linkElementToElement(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      startingGUID,
+                                                      startingGUIDParameterName,
+                                                      expectedTypeName,
+                                                      nextBeanEntityGUID,
+                                                      nextBeanEntityGUIDParameterName,
+                                                      nextTemplateEntityTypeName,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      serviceSupportedZones,
+                                                      relationship.getType().getTypeDefGUID(),
+                                                      relationship.getType().getTypeDefName(),
+                                                      relationship.getProperties(),
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      effectiveTime,
+                                                      methodName);
+                        }
+                        else
+                        {
+                            this.linkElementToElement(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      nextBeanEntityGUID,
+                                                      nextBeanEntityGUIDParameterName,
+                                                      nextTemplateEntityTypeName,
+                                                      startingGUID,
+                                                      startingGUIDParameterName,
+                                                      expectedTypeName,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      serviceSupportedZones,
+                                                      relationship.getType().getTypeDefGUID(),
+                                                      relationship.getType().getTypeDefName(),
+                                                      relationship.getProperties(),
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      effectiveTime,
+                                                      methodName);
+                        }
                     }
                 }
             }

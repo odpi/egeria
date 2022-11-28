@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class GovernanceListenerManager
 {
-    private volatile Map<String, WatchdogListener> listenerMap = new HashMap<>();
+    private final Map<String, WatchdogListener> listenerMap = new HashMap<>();
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
-    private AuditLog auditLog;
-    private String   governanceEngineName;
+    private final AuditLog auditLog;
+    private final String   governanceEngineName;
 
     /**
      * Create a governance listener manager for watchdog listeners.
@@ -50,7 +50,7 @@ public class GovernanceListenerManager
      */
     public synchronized void processEvent(WatchdogGovernanceEvent event) throws InvalidParameterException
     {
-        if ((listenerMap != null) && (event != null))
+        if (event != null)
         {
             for (String connectorId : listenerMap.keySet())
             {
@@ -86,14 +86,12 @@ public class GovernanceListenerManager
      * @param interestingEventTypes types of events that should be passed to the listener
      * @param interestingMetadataTypes types of elements that are the subject of the interesting event types.
      * @param specificInstance unique identifier of a specific instance to watch for
-     *
-     * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     synchronized void registerListener(String                     connectorId,
                                        WatchdogGovernanceListener listener,
                                        List<WatchdogEventType>    interestingEventTypes,
                                        List<String>               interestingMetadataTypes,
-                                       String                     specificInstance) throws InvalidParameterException
+                                       String                     specificInstance)
     {
         WatchdogListener watchdogListener = listenerMap.get(connectorId);
 
@@ -147,7 +145,7 @@ public class GovernanceListenerManager
 
 
         /**
-         * Process a the watchdog event that was published by the Governance Engine OMAS for a specific listener.
+         * Process the watchdog event that was published by the Governance Engine OMAS for a specific listener.
          *
          * @param event event object - call getEventType to find out what type of event.
          * @throws InvalidParameterException the event is incomplete

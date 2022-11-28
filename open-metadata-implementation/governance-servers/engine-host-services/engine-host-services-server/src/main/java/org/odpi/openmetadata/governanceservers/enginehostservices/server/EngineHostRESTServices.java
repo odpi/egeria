@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
  */
 public class EngineHostRESTServices
 {
-    private static EngineHostInstanceHandler instanceHandler = new EngineHostInstanceHandler();
+    private static final EngineHostInstanceHandler instanceHandler = new EngineHostInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(EngineHostRESTServices.class),
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(EngineHostRESTServices.class),
                                                                       instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -154,7 +154,7 @@ public class EngineHostRESTServices
 
 
     /**
-     * Return a summary of each of the governance engines' status for a specific engine service.
+     * Return a summary of each of the governance engines' status for all running engine services.
      *
      * @param serverName engine host server name
      * @param userId calling user
