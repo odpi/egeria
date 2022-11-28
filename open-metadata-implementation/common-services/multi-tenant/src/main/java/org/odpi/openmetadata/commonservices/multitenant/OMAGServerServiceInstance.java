@@ -17,7 +17,7 @@ public abstract class OMAGServerServiceInstance
     protected String               serverName;
     protected String               serviceName;
     private   ServerInstanceStatus serviceInstanceStatus = ServerInstanceStatus.UNKNOWN;
-    protected int                  maxPageSize           = 500;
+    protected int                  maxPageSize;
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 

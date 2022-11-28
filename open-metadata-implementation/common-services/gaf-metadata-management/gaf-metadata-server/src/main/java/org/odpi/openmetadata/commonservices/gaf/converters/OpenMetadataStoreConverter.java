@@ -37,7 +37,7 @@ import java.util.Map;
 
 
 /**
- * GovernanceEngineOMASConverter provides the generic methods for the Governance Engine beans converters.  Generic classes
+ * OpenMetadataStoreConverter provides the generic methods for the Governance Action Framework (GAF) beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Governance Engine bean.

@@ -192,13 +192,19 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                    "exception stack trace to determine why the connector is not able to initiate the process and resolve that issue.  " +
                                    "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                    "connector in the integration daemon once the original cause of the error has been corrected."),
+
+    MISSING_TEMPLATE("GOVERNANCE-ACTION-CONNECTORS-0023",
+                               OMRSAuditLogRecordSeverity.ERROR,
+                               "The {0} governance action service is unable to retrieve the template {1} configured in property {2}.  The asset {3} was created without a template",
+                               "The asset is created with the supplied parameters.",
+                               "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template."),
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**

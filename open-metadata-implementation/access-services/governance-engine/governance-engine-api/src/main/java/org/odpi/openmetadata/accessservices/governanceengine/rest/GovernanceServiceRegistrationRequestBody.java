@@ -28,6 +28,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
 
     private String              governanceServiceGUID = null;
     private String              requestType           = null;
+    private String              serviceRequestType    = null;
     private Map<String, String> requestParameters     = null;
 
     /**
@@ -50,6 +51,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
         {
             governanceServiceGUID  = template.getGovernanceServiceGUID();
             requestType = template.getRequestType();
+            serviceRequestType = template.getServiceRequestType();
             requestParameters = template.getRequestParameters();
         }
     }
@@ -78,9 +80,10 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
 
 
     /**
-     * Return the new request that this governance service supports.
+     * Return the request type used to call the governance service via this governance engine.  If this request type is not supported by the
+     * governance service, map it to the request type it does understand using setServiceRequestType.
      *
-     * @return name of the request
+     * @return name of the request type
      */
     public String getRequestType()
     {
@@ -89,11 +92,38 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
 
 
     /**
-     * Set up the new request that this governance service supports.
+     * Set up the request type used to call the governance service via this governance engine.  If this request type is not supported by the
+     * governance service, map it to the request type it does understand using setServiceRequestType.
      *
-     * @param requestType name of the request
+     * @param requestType name of the request type passed to the governance service
      */
     public void setRequestType(String requestType)
+    {
+        this.requestType = requestType;
+    }
+
+
+    /**
+     * Return the request type that this governance service supports.  The requestType from the caller is mapped
+     * to this value if not null.  This enables meaningful request types to be set up in a governance engine that then maps
+     * to a request type that the governance service understands.
+     *
+     * @return name of the request type passed to the governance service (request type used if null)
+     */
+    public String getServiceRequestType()
+    {
+        return requestType;
+    }
+
+
+    /**
+     * Set up the request type that this governance service supports.  The requestType from the caller is mapped
+     * to this value if not null.  This enables meaningful request types to be set up in a governance engine that then maps
+     * to a request type that the governance service understands.
+     *
+     * @param requestType name of the request type passed to the governance service (request type used if null)
+     */
+    public void setServiceRequestType(String requestType)
     {
         this.requestType = requestType;
     }
@@ -144,10 +174,11 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
     public String toString()
     {
         return "GovernanceServiceRegistrationRequestBody{" +
-                "governanceServiceGUID='" + governanceServiceGUID + '\'' +
-                ", requestType=" + requestType +
-                ", requestParameters=" + requestParameters +
-                '}';
+                       "governanceServiceGUID='" + governanceServiceGUID + '\'' +
+                       ", requestType='" + requestType + '\'' +
+                       ", serviceRequestType='" + serviceRequestType + '\'' +
+                       ", requestParameters=" + requestParameters +
+                       '}';
     }
 
 
@@ -170,8 +201,9 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
         }
         GovernanceServiceRegistrationRequestBody that = (GovernanceServiceRegistrationRequestBody) objectToCompare;
         return Objects.equals(governanceServiceGUID, that.governanceServiceGUID) &&
-                Objects.equals(requestType, that.requestType) &&
-                Objects.equals(requestParameters, that.requestParameters);
+                       Objects.equals(requestType, that.requestType) &&
+                       Objects.equals(serviceRequestType, that.serviceRequestType) &&
+                       Objects.equals(requestParameters, that.requestParameters);
     }
 
 
@@ -183,6 +215,6 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceServiceGUID, requestType, requestParameters);
+        return Objects.hash(governanceServiceGUID, requestType, serviceRequestType, requestParameters);
     }
 }

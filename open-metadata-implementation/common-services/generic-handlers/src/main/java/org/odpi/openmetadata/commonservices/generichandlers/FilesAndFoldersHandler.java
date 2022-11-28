@@ -293,8 +293,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Files live on a file system.  This method creates a top level anchor for a file system.
-     * It has its own method because ot the extra properties in the FileSystem classification
+     * Files live on a file system.  This method creates a top level parent for a file system.
+     * It has its own method because of the extra properties in the FileSystem classification
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -746,7 +746,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     }
                     else
                     {
-                        pathName = folderFragment;
+                        pathName = folderDivider + folderFragment;
                     }
                 }
                 else
@@ -1915,18 +1915,20 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String pathParameterName = "qualifiedName";
+        String pathParameterName = "pathName";
         final String fileAssetParameterName = "fileAssetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, pathParameterName, methodName);
 
         String fullPath = pathName;
 
         if (fullPath == null)
         {
             fullPath = qualifiedName;
+            pathParameterName = "qualifiedName";
         }
+
+        invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
         String fileType = suppliedFileType;
 
@@ -2553,7 +2555,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (fullPath != null)
         {
-            if (assetExtendedProperties != null)
+            if (assetExtendedProperties == null)
             {
                 assetExtendedProperties = new HashMap<>();
             }
@@ -3467,31 +3469,84 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> getFolderFiles(String  userId,
-                                       String  folderGUID,
-                                       String  folderGUIDParameterName,
-                                       int     startingFrom,
-                                       int     pageSize,
-                                       boolean forLineage,
-                                       boolean forDuplicateProcessing,
-                                       Date    effectiveTime,
-                                       String  methodName) throws InvalidParameterException,
+    public List<String> getFolderFileGUIDs(String  userId,
+                                           String  folderGUID,
+                                           String  folderGUIDParameterName,
+                                           int     startingFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
+        // todo - handle linked files
         return fileHandler.getAttachedElementGUIDs(userId,
                                                    folderGUID,
                                                    folderGUIDParameterName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                   OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME,
-                                                   OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    startingFrom,
                                                    pageSize,
                                                    effectiveTime,
                                                    methodName);
+    }
+
+
+    /**
+     * Get the files inside a folder - both those that are nested and those that are linked.
+     *
+     * @param userId calling user
+     * @param folderGUID unique identifier of the anchor folder
+     * @param folderGUIDParameterName name of parameter providing folderGUID
+     * @param startingFrom starting point in the list
+     * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of file asset unique identifiers
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<FILE> getFolderFiles(String  userId,
+                                           String  folderGUID,
+                                           String  folderGUIDParameterName,
+                                           int     startingFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        // todo - handle linked files
+
+        return fileHandler.getAttachedElements(userId,
+                                               folderGUID,
+                                               folderGUIDParameterName,
+                                               OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                               OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
+                                               OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                               null,
+                                               null,
+                                               2,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               startingFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               methodName);
     }
 
 

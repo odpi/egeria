@@ -327,41 +327,41 @@ public class GovernanceActionContext implements GovernanceContext,
      * Pack the basic properties into an ElementProperties object.
      *
      * @param qualifiedName the unique name of the new metadata element
-     * @param name the technical name of the metadata element
-     * @param description the description of the metadata element
+     * @param name the technical name of the associated resource
+     * @param description the description of the associated resource
+     * @param versionIdentifier version of the associated resource
+     * @param extendedProperties properties from the subtype
+     * @param methodName calling method
+     *
      * @return ElementProperties contain the supplied properties.
      * @throws InvalidParameterException null qualifiedName
      */
-    private ElementProperties packBasicProperties(String qualifiedName,
-                                                  String name,
-                                                  String description,
-                                                  String methodName) throws InvalidParameterException
+    private ElementProperties packBasicProperties(String            qualifiedName,
+                                                  String            name,
+                                                  String            versionIdentifier,
+                                                  String            description,
+                                                  ElementProperties extendedProperties,
+                                                  String            methodName) throws InvalidParameterException
     {
-        final String qualifiedNamePropertyName = "qualifiedName";
-        final String namePropertyName = "name";
-        final String descriptionPropertyName = "description";
+        final String qualifiedNamePropertyName     = "qualifiedName";
+        final String namePropertyName              = "name";
+        final String versionIdentifierPropertyName = "versionIdentifier";
+        final String descriptionPropertyName       = "description";
 
         propertyHelper.validateMandatoryName(qualifiedName, qualifiedNamePropertyName, methodName);
 
-        ElementProperties properties = propertyHelper.addStringProperty(null, qualifiedNamePropertyName, qualifiedName);
+        ElementProperties properties = propertyHelper.addStringProperty(extendedProperties, qualifiedNamePropertyName, qualifiedName);
 
-        if (name != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, namePropertyName, name);
-        }
-
-        if (description != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, descriptionPropertyName, description);
-        }
+        properties = propertyHelper.addStringProperty(properties, namePropertyName, name);
+        properties = propertyHelper.addStringProperty(properties, versionIdentifierPropertyName, versionIdentifier);
+        properties = propertyHelper.addStringProperty(properties, descriptionPropertyName, description);
 
         return properties;
     }
 
 
     /**
-     * Create an asset such as a data file, database, API or server.  This is used if the provisioning
-     * governance action service has created a new asset as part of the provisioning process.
+     * Create an asset such as a data file, database, API or server.
      * This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.
      *
      * @param assetTypeName the type name of the asset.  This is the name of an open metadata type that inherits from "Asset".
@@ -383,17 +383,50 @@ public class GovernanceActionContext implements GovernanceContext,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        final String methodName = "createAsset";
+        final String methodName = "createAsset(simple)";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
         return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
     }
 
 
     /**
-     * Create an asset such as a data file, database, API or server.  This is used if the provisioning
-     * governance action service has created a new asset as part of the provisioning process.
+     * Create an asset such as a data file, database, API or server.
+     *
+     * @param assetTypeName      the type name of the asset.  This is the name of an open metadata type that inherits from "Asset".
+     * @param qualifiedName      the unique name of the new asset
+     * @param name               the technical display name of the resource
+     * @param versionIdentifier  version of the resource
+     * @param description        the description of the resource
+     * @param extendedProperties attributes introduced by subtypes of Asset
+     *
+     * @return unique identifier of the new asset
+     *
+     * @throws InvalidParameterException  the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public String createAsset(String            assetTypeName,
+                              String            qualifiedName,
+                              String            name,
+                              String            versionIdentifier,
+                              String            description,
+                              ElementProperties extendedProperties) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "createAsset";
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
+
+        return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+    }
+
+
+    /**
+     * Create an asset such as a data file, database, API or server.
      * This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.
      *
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments
@@ -418,9 +451,53 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         final String methodName = "createAssetFromTemplate";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(null, ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        return openMetadataStore.createMetadataElementInStore("Asset", ElementStatus.ACTIVE, null, null, properties, templateGUID);
+    }
+
+
+    /**
+     * Create an asset such as a data file, database, API or server.  This is used if the provisioning
+     * governance action service has created a new asset as part of the provisioning process.
+     * This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.
+     *
+     * @param assetTypeName      the type name of the asset.  This is the name of an open metadata type that inherits from "Asset".
+     * @param templateGUID       the unique identifier of the existing asset to copy (this will copy all the attachments
+     *                           such as nested content, schema, connection etc)
+     * @param qualifiedName      the unique name of the new asset
+     * @param name               the technical display name of the asset
+     * @param versionIdentifier  version of the resource
+     * @param description        the description of the asset
+     * @param extendedProperties attributes introduced by subtypes of Asset
+     *
+     * @return unique identifier of the new asset
+     *
+     * @throws InvalidParameterException  the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public String createAssetFromTemplate(String            assetTypeName,
+                                          String            templateGUID,
+                                          String            qualifiedName,
+                                          String            name,
+                                          String            versionIdentifier,
+                                          String            description,
+                                          ElementProperties extendedProperties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        final String methodName = "createAssetFromTemplate";
+
+        String metadataElementTypeName = "Asset";
+
+        if (assetTypeName != null)
+        {
+            metadataElementTypeName = assetTypeName;
+        }
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
+
+        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
     }
 
 
@@ -450,7 +527,52 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         final String methodName = "createProcess";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
+
+        return openMetadataStore.createMetadataElementInStore(processTypeName,
+                                                              initialStatus,
+                                                              null,
+                                                              null,
+                                                              properties,
+                                                              null);
+    }
+
+
+    /**
+     * Create a new process to represent the processing of this governance action process.
+     *
+     * @param processTypeName    the type name of the process.  This is the name of an open metadata type that inherits from "Process".
+     * @param initialStatus      status value of the process
+     * @param qualifiedName      the unique name of the new process
+     * @param name               the technical display name of the process
+     * @param versionIdentifier  version of the resource
+     * @param description        the description of the process
+     * @param formula            expression that describes the behaviour of the process
+     * @param extendedProperties attributes introduced by subtypes of Process
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public String createProcess(String            processTypeName,
+                                ElementStatus     initialStatus,
+                                String            qualifiedName,
+                                String            name,
+                                String            versionIdentifier,
+                                String            description,
+                                String            formula,
+                                ElementProperties extendedProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "createProcess";
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
+
+        properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         return openMetadataStore.createMetadataElementInStore(processTypeName,
                                                               initialStatus,
@@ -486,9 +608,55 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        final String methodName = "createProcess";
+        final String methodName = "createProcessFromTemplate";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
+
+        return openMetadataStore.createMetadataElementInStore(null,
+                                                              initialStatus,
+                                                              null,
+                                                              null,
+                                                              properties,
+                                                              templateGUID);
+    }
+
+
+    /**
+     * Create a new process to represent the processing of this governance action process.
+     *
+     * @param templateGUID       the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
+     *                           schema, connection etc)
+     * @param initialStatus      status value of the process
+     * @param qualifiedName      the unique name of the new process
+     * @param name               the technical display name of the process
+     * @param versionIdentifier  version of the resource
+     * @param description        the description of the process
+     * @param formula            expression that describes the behaviour of the process
+     * @param extendedProperties attributes introduced by subtypes of Process
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public String createProcessFromTemplate(String            templateGUID,
+                                            ElementStatus     initialStatus,
+                                            String            qualifiedName,
+                                            String            name,
+                                            String            versionIdentifier,
+                                            String            description,
+                                            String            formula,
+                                            ElementProperties extendedProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "createProcessFromTemplate";
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
+
+        properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         return openMetadataStore.createMetadataElementInStore(null,
                                                               initialStatus,
@@ -525,9 +693,77 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        final String methodName = "createProcess";
+        final String methodName = "createChildProcess(simple)";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
+
+        String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
+                                                                            initialStatus,
+                                                                            null,
+                                                                            null,
+                                                                            properties,
+                                                                            null);
+
+        if (processGUID != null)
+        {
+            ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
+                                                                                      "containmentType",
+                                                                                      "ProcessContainmentType",
+                                                                                      "OWNED");
+
+            openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
+                                                           parentGUID,
+                                                           processGUID,
+                                                           false,
+                                                           false,
+                                                           null,
+                                                           null,
+                                                           relationshipProperties,
+                                                           new Date());
+        }
+
+        return processGUID;
+    }
+
+
+    /**
+     * Create a process that represents the processing instance of this governance action.
+     *
+     * @param processTypeName    the type name of the process.  This is the name of an open metadata type that inherits from "Process".
+     * @param initialStatus      status value of the process
+     * @param qualifiedName      the unique name of the new process
+     * @param name               the technical display name of the process
+     * @param versionIdentifier  version of the resource
+     * @param description        the description of the process
+     * @param formula            expression that describes the behaviour of the process
+     * @param extendedProperties attributes introduced by subtypes of Process
+     * @param parentGUID         the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
+     *                           schema, connection etc)
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  the type name or qualified name is null or invalid
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public String createChildProcess(String             processTypeName,
+                                     ElementStatus      initialStatus,
+                                     String             qualifiedName,
+                                     String             name,
+                                     String             versionIdentifier,
+                                     String             description,
+                                     String             formula,
+                                     ElementProperties  extendedProperties,
+                                     String             parentGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "createChildProcess";
+
+        ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
+
+        properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
                                                                             initialStatus,
@@ -595,7 +831,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         propertyHelper.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        ElementProperties properties = packBasicProperties(qualifiedName, null, null, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName, null, null, null,null, methodName);
 
         if (displayName != null)
         {
@@ -629,8 +865,8 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String createLineageMapping(String sourceElementGUID,
-                                       String targetElementGUID) throws InvalidParameterException,
+    public String createLineageRelationship(String sourceElementGUID,
+                                            String targetElementGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -645,6 +881,71 @@ public class GovernanceActionContext implements GovernanceContext,
 
         return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, false, false, null, null, null, new Date());
     }
+
+
+    /**
+     * Create a lineage relationship between a source and target element.  This could be between two assets, two process ports or
+     * two schema elements.
+     *
+     * @param relationshipName  either LineageMapping, ProcessCall, DataFlow, ControlFlow.
+     * @param sourceElementGUID unique identifier of the element that describes the source of the data.
+     * @param qualifiedName     qualifiedName of the information supply chain
+     * @param targetElementGUID unique identifier of the element that describes the destination of the data.
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the GUIDs is null or is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    @Override
+    public String createLineageRelationship(String relationshipName,
+                                            String sourceElementGUID,
+                                            String qualifiedName,
+                                            String description,
+                                            String formula,
+                                            String targetElementGUID) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "createLineageRelationship";
+        final String lineageMappingTypeName = "LineageMapping";
+
+        final String sourceElementGUIDParameterName = "sourceElementGUID";
+        final String targetElementGUIDParameterName = "targetElementGUID";
+
+        propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
+
+        ElementProperties relationshipProperties = packBasicProperties(qualifiedName, null, null, description, null, methodName);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "formula", formula);
+
+        if (relationshipName == null)
+        {
+            return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName,
+                                                                  sourceElementGUID,
+                                                                  targetElementGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  relationshipProperties,
+                                                                  new Date());
+        }
+        else
+        {
+            return openMetadataStore.createRelatedElementsInStore(relationshipName,
+                                                                  sourceElementGUID,
+                                                                  targetElementGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  relationshipProperties,
+                                                                  new Date());
+        }
+    }
+
 
     /*
      * Remediation methods

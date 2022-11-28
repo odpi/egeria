@@ -408,11 +408,11 @@ public class EngineConfigurationResource
      */
     @GetMapping(path = "/governance-engines/{governanceEngineGUID}/governance-services")
 
-    public GUIDListResponse getRegisteredGovernanceServices(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String governanceEngineGUID,
-                                                            @RequestParam int    startingFrom,
-                                                            @RequestParam int    maximumResults)
+    public RegisteredGovernanceServicesResponse getRegisteredGovernanceServices(@PathVariable String serverName,
+                                                                                @PathVariable String userId,
+                                                                                @PathVariable String governanceEngineGUID,
+                                                                                @RequestParam int    startingFrom,
+                                                                                @RequestParam int    maximumResults)
     {
         return restAPI.getRegisteredGovernanceServices(serverName, userId, governanceEngineGUID, startingFrom, maximumResults);
     }

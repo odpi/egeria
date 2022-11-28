@@ -24,11 +24,11 @@ import java.util.*;
  */
 public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 {
-    private GovernanceEngineClient      governanceEngineClient;    /* Initialized in constructor */
-    private GovernanceListenerManager   governanceListenerManager; /* Initialized in constructor */
+    private final GovernanceEngineClient      governanceEngineClient;    /* Initialized in constructor */
+    private final GovernanceListenerManager   governanceListenerManager; /* Initialized in constructor */
 
-    private String partnerURLRoot;             /* Initialized in constructor */
-    private String partnerServerName;          /* Initialized in constructor */
+    private final String partnerURLRoot;             /* Initialized in constructor */
+    private final String partnerServerName;          /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "GovernanceActionEngine";
 
@@ -36,7 +36,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     /**
      * Create a client-side object for calling a governance action engine.  Notice there are two instances of the
      * GovernanceEngineClient.  It is possible that they are pointing at different metadata server instances so do not
-     * consolidate them into one client (even if IntelliJ begs you to :).
+     * consolidate them into one client (even if IntelliJ begs you to :)).
      *
      * @param engineConfig the unique identifier of the governance action engine.
      * @param localServerName the name of the engine host server where the governance action engine is running
@@ -83,12 +83,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param watchdogGovernanceEvent element describing the changing metadata data.
      *
      * @throws InvalidParameterException Vital fields of the governance action are not filled out
-     * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
-     * @throws PropertyServerException there is a problem communicating with the open metadata stores
      */
-    public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException
     {
         governanceListenerManager.processEvent(watchdogGovernanceEvent);
     }
@@ -98,7 +94,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
-     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param governanceRequestType governance request type to use when calling the governance engine
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -110,7 +106,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      */
     @Override
     public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                         String                     requestType,
+                                                         String                     governanceRequestType,
                                                          Map<String, String>        requestParameters,
                                                          List<RequestSourceElement> requestSourceElements,
                                                          List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -120,17 +116,22 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 
         super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
 
-        GovernanceServiceCache governanceServiceCache = super.getServiceCache(requestType);
+        GovernanceServiceCache governanceServiceCache = super.getServiceCache(governanceRequestType);
 
         if (governanceServiceCache != null)
         {
+            /*
+             * Need to combine the request parameters from the SupportedGovernanceService relationship with any from the caller.
+             * The caller's request parameters take precedence.  This is done in the governanceServiceCache.
+             */
+
             GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(governanceEngineProperties,
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
                                                                                                                governanceActionGUID,
                                                                                                                serverClient,
-                                                                                                               requestType,
-                                                                                                               requestParameters,
+                                                                                                               governanceServiceCache.getServiceRequestType(),
+                                                                                                               governanceServiceCache.getRequestParameters(requestParameters),
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
                                                                                                                governanceServiceCache.getGovernanceServiceGUID(),
@@ -142,7 +143,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceListenerManager,
                                                                                                                auditLog);
 
-            Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + governanceActionGUID + new Date().toString());
+            Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + governanceActionGUID + new Date());
             thread.start();
 
             return governanceActionServiceHandler;
