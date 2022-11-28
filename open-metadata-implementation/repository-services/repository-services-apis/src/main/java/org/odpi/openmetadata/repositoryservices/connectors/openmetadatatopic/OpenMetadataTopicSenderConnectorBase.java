@@ -43,14 +43,25 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
         /*
          * Each of the event bus connectors need to be passed the new event.
          */
-        CompletableFuture.runAsync(() -> {
-            for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors) {
-                try {
-                    eventBusConnector.sendEvent(event);
-                } catch (ConnectorCheckedException e) {
-                    throw new CompletionException(e);
+        try {
+            CompletableFuture.runAsync(() -> {
+                for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors) {
+                    try {
+                        eventBusConnector.sendEvent(event);
+                    } catch (ConnectorCheckedException e) {
+                        throw new CompletionException(e);
+                    }
                 }
+            });
+            // exceptions from sendEvent are wrapped in CompletionException
+        } catch (CompletionException exception) {
+            if (exception.getCause() instanceof ConnectorCheckedException) {
+                throw (ConnectorCheckedException) exception.getCause();
+            } else if (exception.getCause() instanceof InvalidParameterException) {
+                throw (InvalidParameterException) exception.getCause();
+            } else {
+                throw exception;
             }
-        });
+        }
     }
 }
