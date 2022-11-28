@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.gaf.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.gaf.rest.*;
-import org.odpi.openmetadata.commonservices.gaf.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
@@ -677,58 +676,6 @@ public class OpenMetadataStoreResource
     {
         return restAPI.createIncidentReport(serverName, serviceURLMarker, userId, requestBody);
     }
-
-
-
-    /**
-     * Create a simple relationship between two elements. If the relationship already exists,
-     * the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/related-elements/link-as-peer-duplicate")
-
-    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                    serverName,
-                                                     @PathVariable String                    serviceURLMarker,
-                                                     @PathVariable String                    userId,
-                                                     @RequestBody  PeerDuplicatesRequestBody requestBody)
-    {
-        return restAPI.linkElementsAsDuplicates(serverName, serviceURLMarker, userId, requestBody);
-    }
-
-
-    /**
-     * Create a simple relationship between two elements. If the relationship already exists,
-     * the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/related-elements/link-as-consolidated-duplicate")
-
-    public VoidResponse linkConsolidatedDuplicate(@PathVariable String                            serverName,
-                                                  @PathVariable String                            serviceURLMarker,
-                                                  @PathVariable String                            userId,
-                                                  @RequestBody  ConsolidatedDuplicatesRequestBody requestBody)
-    {
-        return restAPI.linkConsolidatedDuplicate(serverName, serviceURLMarker, userId, requestBody);
-    }
-
 
 
     /**

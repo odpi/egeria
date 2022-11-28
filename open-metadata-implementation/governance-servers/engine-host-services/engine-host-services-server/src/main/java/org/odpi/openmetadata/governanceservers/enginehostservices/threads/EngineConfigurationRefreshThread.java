@@ -24,13 +24,13 @@ import java.util.Map;
  */
 public class EngineConfigurationRefreshThread implements Runnable
 {
-    private Map<String, GovernanceEngineHandler> engineHandlers;
-    private GovernanceEngineEventClient          eventClient;
-    private AuditLog                             auditLog;
-    private String                               localServerUserId;
-    private String                               localServerName;
-    private String                               accessServiceServerName;
-    private String                               accessServiceRootURL;
+    private final Map<String, GovernanceEngineHandler> engineHandlers;
+    private final GovernanceEngineEventClient          eventClient;
+    private final AuditLog                             auditLog;
+    private final String                               localServerUserId;
+    private final String                               localServerName;
+    private final String                               accessServiceServerName;
+    private final String                               accessServiceRootURL;
 
     private volatile boolean                     keepTrying = true;
 

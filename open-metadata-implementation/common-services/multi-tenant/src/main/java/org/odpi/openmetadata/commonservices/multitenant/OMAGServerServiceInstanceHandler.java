@@ -2,15 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-
-import java.util.List;
 
 /**
  * OMAGServerServiceInstanceHandler retrieves information from the instance map for

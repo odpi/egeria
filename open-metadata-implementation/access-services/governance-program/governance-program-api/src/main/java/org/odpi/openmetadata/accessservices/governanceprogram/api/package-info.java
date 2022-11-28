@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 /**
- * Governance Program OMAS Java API defined the means to maintain and query the definitions that make up the governance program.
+ * Governance Program OMAS Java API defines the means to maintain and query the definitions that make up the governance program.
  *
  * <ul>
  *   <li>

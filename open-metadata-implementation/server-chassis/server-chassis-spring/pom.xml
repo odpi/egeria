@@ -108,6 +108,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -547,6 +553,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>ocf-metadata-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>gaf-metadata-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 
