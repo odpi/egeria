@@ -414,7 +414,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     private CompletableFuture<Boolean> sendEvent(OMRSEventV1 event,
                                                  boolean     logEvent)
     {
-        final String methodName = "send";
+        final String methodName = "sendEvent";
         if (event != null)
         {
             return CompletableFuture.supplyAsync(() -> sendEventTask(event, logEvent));
@@ -432,7 +432,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     private boolean sendEventTask(OMRSEventV1 event,
                                   boolean logEvent)
     {
-        final String methodName = "send";
+        final String methodName = "sendEventTask";
         try
         {
             ObjectMapper objectMapper = new ObjectMapper();
