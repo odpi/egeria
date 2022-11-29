@@ -20,10 +20,11 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
      * Send the request to the embedded event bus connector(s).
      *
      * @param event event as a string
+     * @return
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
-    protected void sendEvent(String event) throws InvalidParameterException,
+    protected CompletableFuture<Void> sendEvent(String event) throws InvalidParameterException,
                                                   ConnectorCheckedException
     {
         final String methodName = "sendEvent";
@@ -43,25 +44,14 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
         /*
          * Each of the event bus connectors need to be passed the new event.
          */
-        try {
-            CompletableFuture.runAsync(() -> {
-                for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors) {
-                    try {
-                        eventBusConnector.sendEvent(event);
-                    } catch (ConnectorCheckedException e) {
-                        throw new CompletionException(e);
-                    }
+        return CompletableFuture.runAsync(() -> {
+            for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors) {
+                try {
+                    eventBusConnector.sendEvent(event);
+                } catch (ConnectorCheckedException e) {
+                    throw new CompletionException(e);
                 }
-            });
-            // exceptions from sendEvent are wrapped in CompletionException
-        } catch (CompletionException exception) {
-            if (exception.getCause() instanceof ConnectorCheckedException) {
-                throw (ConnectorCheckedException) exception.getCause();
-            } else if (exception.getCause() instanceof InvalidParameterException) {
-                throw (InvalidParameterException) exception.getCause();
-            } else {
-                throw exception;
             }
-        }
+        });
     }
 }
