@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.gaf.server;
 import org.odpi.openmetadata.commonservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.commonservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.commonservices.gaf.rest.*;
-import org.odpi.openmetadata.commonservices.gaf.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -1218,143 +1217,6 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements.
-     * If the relationship already exists, the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse linkElementsAsDuplicates(String                    serverName,
-                                                 String                    serviceURLMarker,
-                                                 String                    userId,
-                                                 PeerDuplicatesRequestBody requestBody)
-    {
-        final String methodName = "linkElementsAsDuplicates";
-
-        final String element1GUIDParameterName = "element1GUID";
-        final String element2GUIDParameterName = "element2GUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.linkElementsAsPeerDuplicates(userId,
-                                                     requestBody.getMetadataElement1GUID(),
-                                                     element1GUIDParameterName,
-                                                     requestBody.getMetadataElement2GUID(),
-                                                     element2GUIDParameterName,
-                                                     requestBody.getSetKnownDuplicate(),
-                                                     requestBody.getStatusIdentifier(),
-                                                     requestBody.getSteward(),
-                                                     requestBody.getStewardTypeName(),
-                                                     requestBody.getStewardPropertyName(),
-                                                     requestBody.getSource(),
-                                                     requestBody.getNotes(),
-                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                     methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Identify an element that acts as a consolidated version for a set of duplicate elements.
-     * (The consolidated element is created using createMetadataElement.)
-     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
-     * classification already exists, the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse linkConsolidatedDuplicate(String                            serverName,
-                                                  String                            serviceURLMarker,
-                                                  String                            userId,
-                                                  ConsolidatedDuplicatesRequestBody requestBody)
-    {
-        final String methodName = "linkConsolidatedDuplicate";
-
-        final String elementGUIDParameterName = "consolidatedElementGUID";
-        final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.linkConsolidatedDuplicate(userId,
-                                                  requestBody.getConsolidatedElementGUID(),
-                                                  elementGUIDParameterName,
-                                                  requestBody.getStatusIdentifier(),
-                                                  requestBody.getSteward(),
-                                                  requestBody.getStewardTypeName(),
-                                                  requestBody.getStewardPropertyName(),
-                                                  requestBody.getSource(),
-                                                  requestBody.getNotes(),
-                                                  requestBody.getSourceElementGUIDs(),
-                                                  sourceElementGUIDsParameterName,
-                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                  methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Update the properties associated with a relationship.
      *
      * @param serverName     name of server instance to route request to
@@ -1542,7 +1404,7 @@ public class OpenMetadataStoreRESTServices
      * This incident report will be processed by other governance activities.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param requestBody properties for the new incident report
      *

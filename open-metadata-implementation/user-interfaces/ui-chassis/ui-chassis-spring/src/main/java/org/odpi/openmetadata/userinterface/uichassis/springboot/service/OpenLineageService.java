@@ -11,6 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
@@ -248,6 +249,22 @@ public class OpenLineageService {
         }
     }
 
+    /**
+     * Returns a subraph representing the hierarchy of a certain node, based on the request
+     *
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType of the display name of the nodes
+     *
+     * @return a subgraph containing all relevant paths,
+     */
+    public Graph getElementHierarchy(String userId, ElementHierarchyRequest elementHierarchyRequest) {
+        try {
+            LineageVerticesAndEdges response = openLineageClient.getElementHierarchy(userId, elementHierarchyRequest);
+            return processResponse(response, elementHierarchyRequest.getGuid());
+        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            LOG.error("Cannot get node names from the lineage graph");
+            throw new OpenLineageServiceException("node names retrieval error", e);
+        }
+    }
     /**
      * @param response string returned from Open Lineage Services to be processed
      * @param guid     the guid to process

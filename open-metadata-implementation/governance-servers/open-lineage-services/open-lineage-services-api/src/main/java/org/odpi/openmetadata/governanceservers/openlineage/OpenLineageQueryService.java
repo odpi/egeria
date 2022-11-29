@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -58,4 +59,14 @@ public interface OpenLineageQueryService {
      */
     LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria);
 
+    /**
+     * Retrieve hierarchy starting from the entity identified by the guid
+     *
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType
+     *                                of the display name of the nodes, the maximum number of node names to retrieve
+     *
+     * @return the lineage vertices and edges that compose the hierarchy
+     *
+     */
+    LineageResponse getElementHierarchy(ElementHierarchyRequest elementHierarchyRequest);
 }

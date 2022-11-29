@@ -785,8 +785,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            PropertyServerException
     {
         final String governanceActionGUIDParameterName = "governanceActionGUID";
-        final String actionTargetGUIDParameterName = "actionTargetGUID";
-        final String requestSourceGUIDParameterName = "requestSourceGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, governanceActionGUIDParameterName, methodName);
@@ -803,6 +801,33 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   effectiveTime,
                                                                   methodName);
 
+        return this.getGovernanceAction(userId, primaryEntity, effectiveTime, methodName);
+    }
+
+    /**
+     * Request the status of an executing governance action request.
+     *
+     * @param userId identifier of calling user
+     * @param primaryEntity entity of the governance action request
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return status enum
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public B getGovernanceAction(String       userId,
+                                 EntityDetail primaryEntity,
+                                 Date         effectiveTime,
+                                 String       methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String actionTargetGUIDParameterName = "actionTargetGUID";
+        final String requestSourceGUIDParameterName = "requestSourceGUID";
+
         if (primaryEntity != null)
         {
             List<Relationship> relationships = new ArrayList<>();
@@ -811,7 +836,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                            invalidParameterHandler,
                                                                                            userId,
-                                                                                           governanceActionGUID,
+                                                                                           primaryEntity.getGUID(),
                                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                            null,
                                                                                            null,
@@ -851,7 +876,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
+                                                                               true,
                                                                                false,
                                                                                supportedZones,
                                                                                effectiveTime,
@@ -870,13 +895,12 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
+                                                                               true,
                                                                                false,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
                     }
-
                 }
             }
 
@@ -2053,7 +2077,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             if (entityCount > startFrom)
             {
-                B bean = this.getGovernanceAction(userId, nextGovernanceAction.getGUID(), effectiveTime, methodName);
+                B bean = this.getGovernanceAction(userId, nextGovernanceAction, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -2126,7 +2150,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 if ((status == OpenMetadataAPIMapper.REQUESTED_GA_STATUS_ORDINAL) || (status == OpenMetadataAPIMapper.APPROVED_GA_STATUS_ORDINAL) ||
                     (status == OpenMetadataAPIMapper.WAITING_GA_STATUS_ORDINAL) || (status == OpenMetadataAPIMapper.IN_PROGRESS_GA_STATUS_ORDINAL))
                 {
-                    B bean = this.getGovernanceAction(userId, nextGovernanceAction.getGUID(), effectiveTime, methodName);
+                    B bean = this.getGovernanceAction(userId, nextGovernanceAction, effectiveTime, methodName);
 
                     if (bean != null)
                     {
@@ -2212,7 +2236,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 if ((status == OpenMetadataAPIMapper.WAITING_GA_STATUS_ORDINAL) || (status == OpenMetadataAPIMapper.IN_PROGRESS_GA_STATUS_ORDINAL))
                 {
-                    B bean = this.getGovernanceAction(userId, nextGovernanceAction.getGUID(), effectiveTime, methodName);
+                    B bean = this.getGovernanceAction(userId, nextGovernanceAction, effectiveTime, methodName);
 
                     if (bean != null)
                     {

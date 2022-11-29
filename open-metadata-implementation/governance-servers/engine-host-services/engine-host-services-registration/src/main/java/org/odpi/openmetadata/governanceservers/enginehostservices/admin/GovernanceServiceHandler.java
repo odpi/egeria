@@ -36,7 +36,7 @@ public abstract class GovernanceServiceHandler implements Runnable
 
     protected Connector governanceService;
     protected String    governanceActionGUID;
-    protected String    requestType;
+    protected String    serviceRequestType;
     protected AuditLog  auditLog;
 
 
@@ -50,7 +50,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param engineHostUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
-     * @param requestType incoming request type
+     * @param serviceRequestType incoming request type
      * @param governanceServiceGUID unique identifier of the governance service
      * @param governanceServiceName name of this governance  service - used for message logging
      * @param governanceService implementation of governance service
@@ -61,7 +61,7 @@ public abstract class GovernanceServiceHandler implements Runnable
                                        String                     engineHostUserId,
                                        String                     governanceActionGUID,
                                        GovernanceEngineClient     governanceActionClient,
-                                       String                     requestType,
+                                       String                     serviceRequestType,
                                        String                     governanceServiceGUID,
                                        String                     governanceServiceName,
                                        Connector                  governanceService,
@@ -74,7 +74,7 @@ public abstract class GovernanceServiceHandler implements Runnable
         this.governanceServiceName      = governanceServiceName;
         this.governanceActionGUID       = governanceActionGUID;
         this.governanceActionClient     = governanceActionClient;
-        this.requestType                = requestType;
+        this.serviceRequestType         = serviceRequestType;
         this.governanceService          = governanceService;
         this.auditLog                   = auditLog;
     }
@@ -161,7 +161,7 @@ public abstract class GovernanceServiceHandler implements Runnable
             auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_TARGET_COMPLETION.getMessageDefinition(governanceActionGUID,
                                                                                                                                  governanceServiceName,
                                                                                                                                  getGovernanceEngineName(),
-                                                                                                                                 requestType,
+                                                                                                                                 serviceRequestType,
                                                                                                                                  actionTargetGUID,
                                                                                                                                  statusString,
                                                                                                                                  startTime,
@@ -223,7 +223,7 @@ public abstract class GovernanceServiceHandler implements Runnable
             auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_RECORD_COMPLETION.getMessageDefinition(governanceActionGUID,
                                                                                                                                  governanceServiceName,
                                                                                                                                  getGovernanceEngineName(),
-                                                                                                                                 requestType,
+                                                                                                                                 serviceRequestType,
                                                                                                                                  statusString,
                                                                                                                                  guardsString,
                                                                                                                                  requestParameterNames,

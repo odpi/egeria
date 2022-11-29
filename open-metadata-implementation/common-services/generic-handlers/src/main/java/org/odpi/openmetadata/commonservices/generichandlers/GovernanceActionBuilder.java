@@ -46,7 +46,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
      * @param requestSourceName name of the process that requested the governance action
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this governance action
      * @param governanceActionTypeName unique name of the governance action type that initiated this governance action
-     * @param requestType request type to identify the governance action service to run
+     * @param requestType request type from the caller
      * @param requestParameters properties to pass to the governance action service
      * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
      * @param receivedGuards list of guards that triggered this governance action

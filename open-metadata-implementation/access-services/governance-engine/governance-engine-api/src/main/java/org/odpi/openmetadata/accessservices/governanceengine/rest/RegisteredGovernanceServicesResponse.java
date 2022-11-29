@@ -6,9 +6,11 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,22 +18,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OpenMetadataElementResponse is the response structure used on the OMAS REST API calls that return the GAF definition of the OpenMetadataElement.
+ * RegisteredGovernanceServicesResponse is the response structure used on REST API calls that returns a
+ * list of RegisteredGovernanceServices objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
+public class RegisteredGovernanceServicesResponse extends GovernanceEngineOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private OpenMetadataElement element = null;
-
+    private List<RegisteredGovernanceServiceElement> elements = null;
 
     /**
      * Default constructor
      */
-    public OpenMetadataElementResponse()
+    public RegisteredGovernanceServicesResponse()
     {
         super();
     }
@@ -42,36 +44,45 @@ public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
      *
      * @param template object to copy
      */
-    public OpenMetadataElementResponse(OpenMetadataElementResponse template)
+    public RegisteredGovernanceServicesResponse(RegisteredGovernanceServicesResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.element = template.getElement();
+            this.elements = template.getElements();
         }
     }
 
 
     /**
-     * Return the element result.
+     * Return the properties objects.
      *
-     * @return bean
+     * @return list of properties objects
      */
-    public OpenMetadataElement getElement()
+    public List<RegisteredGovernanceServiceElement> getElements()
     {
-        return element;
+        if (elements == null)
+        {
+            return null;
+        }
+        else if (elements.isEmpty())
+        {
+            return null;
+        }
+
+        return elements;
     }
 
 
     /**
-     * Set up the element result.
+     * Set up the properties objects.
      *
-     * @param element  bean
+     * @param elements  list of properties objects
      */
-    public void setElement(OpenMetadataElement element)
+    public void setElements(List<RegisteredGovernanceServiceElement> elements)
     {
-        this.element = element;
+        this.elements = elements;
     }
 
 
@@ -83,8 +94,8 @@ public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
     @Override
     public String toString()
     {
-        return "OpenMetadataElementResponse{" +
-                "element=" + element +
+        return "RegisteredGovernanceServicesResponse{" +
+                "elements=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -112,7 +123,7 @@ public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof OpenMetadataElementResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -120,11 +131,11 @@ public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
         {
             return false;
         }
-        OpenMetadataElementResponse that = (OpenMetadataElementResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        RegisteredGovernanceServicesResponse that = (RegisteredGovernanceServicesResponse) objectToCompare;
+        return Objects.equals(getElements(), that.getElements());
     }
 
-
+    
     /**
      * Return hash code for this object
      *
@@ -133,6 +144,6 @@ public class OpenMetadataElementResponse extends GovernanceEngineOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(element);
+        return Objects.hash(super.hashCode(), getElements());
     }
 }

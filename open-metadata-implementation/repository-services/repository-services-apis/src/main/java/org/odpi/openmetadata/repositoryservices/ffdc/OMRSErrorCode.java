@@ -53,7 +53,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to create a new classification for an entity because the open metadata repository does not recognize the classification type.",
             "Create a ClassificationDef for the classification and retry the request."),
     INVALID_CLASSIFICATION_FOR_ENTITY(400, "OMRS-REPOSITORY-400-006",
-            "Open metadata repository {0} is unable to assign a classification of type {0} to an entity of type {1} as the classification type is not valid for this type of entity",
+            "Open metadata repository {0} is unable to assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity",
             "The system is not able to classify an entity since the ClassificationDef for the classification does not list the entity type, or one of its super-types.",
             "Update the ClassificationDef to include the entity's type and rerun the request. Alternatively use a different classification."),
     NO_TYPEDEF_NAME(400, "OMRS-REPOSITORY-400-007",

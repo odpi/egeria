@@ -23,7 +23,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
 {
     private static final long   serialVersionUID = 1L;
 
-    private Map<String, Map<String, String>> requestTypes = null; /* a map from request types to analysis parameters */
+    private Map<String, RegisteredGovernanceServiceProperties> requestTypes = null; /* a map from request types to service request type and request parameters */
 
 
     /**
@@ -65,7 +65,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      *
      * @return Map of request types to parameters
      */
-    public Map<String, Map<String, String>> getRequestTypes()
+    public Map<String, RegisteredGovernanceServiceProperties> getRequestTypes()
     {
         if (requestTypes == null)
         {
@@ -87,7 +87,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      *
      * @param requestTypes Map of request types to parameters
      */
-    public void setRequestTypes(Map<String, Map<String, String>> requestTypes)
+    public void setRequestTypes(Map<String, RegisteredGovernanceServiceProperties> requestTypes)
     {
         this.requestTypes = requestTypes;
     }

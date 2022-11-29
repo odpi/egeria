@@ -71,8 +71,8 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
-     * @return metadata element properties
-     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */

@@ -26,9 +26,9 @@ import java.util.Map;
  */
 public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 {
-    private GovernanceActionServiceConnector governanceActionService;
-    private String                           governanceActionServiceType;
-    private GovernanceContext                governanceContext;
+    private final GovernanceActionServiceConnector governanceActionService;
+    private final String                           governanceActionServiceType;
+    private final GovernanceContext                governanceContext;
 
 
     /**
@@ -38,10 +38,10 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      *
      * @param governanceActionEngineProperties properties of the governance action engine - used for message logging
      * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
-     * @param governanceActionUserId user Id for use by the engine host services
+     * @param governanceActionUserId user id for use by the engine host services
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for managing governance actions
-     * @param requestType incoming request
+     * @param serviceRequestType incoming request
      * @param requestParameters parameters associated with the request type
      * @param requestSourceElements the elements that caused this service to run
      * @param actionTargetElements the elements for the service to work on
@@ -60,7 +60,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     governanceActionUserId,
                                    String                     governanceActionGUID,
                                    GovernanceEngineClient     governanceActionClient,
-                                   String                     requestType,
+                                   String                     serviceRequestType,
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
@@ -78,7 +78,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
               governanceActionUserId,
               governanceActionGUID,
               governanceActionClient,
-              requestType,
+              serviceRequestType,
               governanceActionServiceGUID,
               governanceActionServiceName,
               governanceActionServiceConnector,
@@ -107,7 +107,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             {
                 GovernanceActionContext context = new GovernanceActionContext(governanceActionUserId,
                                                                               governanceActionGUID,
-                                                                              requestType,
+                                                                              serviceRequestType,
                                                                               requestParameters,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
@@ -150,11 +150,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 {
                     auditLog.logMessage(actionDescription,
                                         GovernanceActionAuditCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                         requestType,
+                                                                                                                         serviceRequestType,
                                                                                                                          governanceActionServiceConnector.getClass().getName()));
                     throw new InvalidParameterException(
                             GovernanceActionErrorCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                             requestType,
+                                                                                                             serviceRequestType,
                                                                                                              governanceActionServiceConnector.getClass().getName()),
                             this.getClass().getName(),
                             actionDescription,
@@ -163,7 +163,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_INITIALIZED.getMessageDefinition(governanceActionServiceName,
-                                                                                                                 requestType,
+                                                                                                                 serviceRequestType,
                                                                                                                  governanceActionServiceConnector.getClass().getName(),
                                                                                                                  getGovernanceEngineName()));
             }
@@ -171,10 +171,10 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             {
                 auditLog.logMessage(actionDescription,
                                       GovernanceActionAuditCode.NOT_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                   requestType,
+                                                                                                                   serviceRequestType,
                                                                                                                    governanceActionServiceConnector.getClass().getName()));
                 throw new InvalidParameterException(GovernanceActionErrorCode.NOT_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                                 requestType,
+                                                                                                                                 serviceRequestType,
                                                                                                                                  governanceActionServiceConnector.getClass().getName()),
                                                     this.getClass().getName(),
                                                     actionDescription,
@@ -189,12 +189,12 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.INVALID_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                   requestType,
+                                                                                                                   serviceRequestType,
                                                                                                                    error.getClass().getName(),
                                                                                                                    error.getMessage()),
                                   error);
             throw new InvalidParameterException(GovernanceActionErrorCode.INVALID_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                                 requestType,
+                                                                                                                                 serviceRequestType,
                                                                                                                                  error.getClass().getName(),
                                                                                                                                  error.getMessage()),
                                                 this.getClass().getName(),
@@ -221,7 +221,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
             auditLog.logMessage(actionDescription,
                                 GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_STARTING.getMessageDefinition(governanceActionServiceType,
                                                                                                                   governanceServiceName,
-                                                                                                                  requestType,
+                                                                                                                  serviceRequestType,
                                                                                                                   governanceEngineProperties.getQualifiedName(),
                                                                                                                   governanceEngineGUID));
 
@@ -238,14 +238,14 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceActionServiceType,
                                                                                                                       governanceServiceName,
-                                                                                                                      requestType));
+                                                                                                                      serviceRequestType));
             }
             else
             {
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceActionServiceType,
                                                                                                                       governanceServiceName,
-                                                                                                                      requestType,
+                                                                                                                      serviceRequestType,
                                                                                                                       completionStatus.getName(),
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
                 super.disconnect();

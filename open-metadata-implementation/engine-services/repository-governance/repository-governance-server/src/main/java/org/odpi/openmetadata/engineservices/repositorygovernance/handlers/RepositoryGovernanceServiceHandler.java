@@ -17,13 +17,13 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.admin.Governan
 import java.util.Date;
 
 /**
- * RepositoryGovernanceServiceHandler provides the support to run a repository governance service.  A new instance is created for each request and it is assigned its
- * own thread.
+ * RepositoryGovernanceServiceHandler provides the support to run a repository governance service.
+ * A new instance is created for each request, and it is assigned its own thread.
  */
 public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 {
-    private RepositoryGovernanceServiceConnector repositoryGovernanceService;
-    private RepositoryGovernanceContext          repositoryGovernanceContext;
+    private final RepositoryGovernanceServiceConnector repositoryGovernanceService;
+    private final RepositoryGovernanceContext          repositoryGovernanceContext;
 
 
     /**
@@ -36,7 +36,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
      * @param engineHostUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
-     * @param requestType requestType - used for message logging
+     * @param serviceRequestType requestType - used for message logging
      * @param repositoryGovernanceServiceGUID name of this repository governance service - used for message logging
      * @param repositoryGovernanceServiceName name of this repository governance service - used for message logging
      * @param repositoryGovernanceServiceConnector connector that does the work
@@ -48,7 +48,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
                                        String                      engineHostUserId,
                                        String                      governanceActionGUID,
                                        GovernanceEngineClient      governanceActionClient,
-                                       String                      requestType,
+                                       String                      serviceRequestType,
                                        String                      repositoryGovernanceServiceGUID,
                                        String                      repositoryGovernanceServiceName,
                                        Connector                   repositoryGovernanceServiceConnector,
@@ -60,14 +60,12 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
               engineHostUserId,
               governanceActionGUID,
               governanceActionClient,
-              requestType,
+              serviceRequestType,
               repositoryGovernanceServiceGUID,
               repositoryGovernanceServiceName,
               repositoryGovernanceServiceConnector,
               auditLog);
 
-
-        this.requestType    = requestType;
         this.repositoryGovernanceContext = repositoryGovernanceContext;
         this.auditLog       = auditLog;
 
@@ -82,14 +80,14 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 
             auditLog.logException(actionDescription,
                                   RepositoryGovernanceAuditCode.INVALID_REPOSITORY_GOVERNANCE_SERVICE.getMessageDefinition(repositoryGovernanceServiceName,
-                                                                                                        requestType,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage()),
+                                                                                                                           serviceRequestType,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
                                   error);
             throw new InvalidParameterException(RepositoryGovernanceErrorCode.INVALID_REPOSITORY_GOVERNANCE_SERVICE.getMessageDefinition(repositoryGovernanceServiceName,
-                                                                                                                      requestType,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      error.getMessage()),
+                                                                                                                                         serviceRequestType,
+                                                                                                                                         error.getClass().getName(),
+                                                                                                                                         error.getMessage()),
                                                 this.getClass().getName(),
                                                 actionDescription,
                                                 error,
@@ -113,7 +111,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
         {
             auditLog.logMessage(actionDescription,
                                 RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
-                                                                                                      requestType,
+                                                                                                                          serviceRequestType,
                                                                                                       governanceEngineProperties.getQualifiedName(),
                                                                                                       governanceEngineGUID));
 
@@ -132,14 +130,14 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
             {
                 auditLog.logMessage(actionDescription,
                                     RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_RETURNED.getMessageDefinition(governanceServiceName,
-                                                                                                          requestType,
+                                                                                                                              serviceRequestType,
                                                                                                           Long.toString(endTime.getTime() - startTime.getTime())));
             }
             else
             {
                 auditLog.logMessage(actionDescription,
                                     RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
-                                                                                                          requestType,
+                                                                                                                              serviceRequestType,
                                                                                                           completionStatus.getName(),
                                                                                                           Long.toString(endTime.getTime() - startTime.getTime())));
                 super.disconnect();
@@ -151,7 +149,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
             auditLog.logException(actionDescription,
                                   RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
                                                                                                       error.getClass().getName(),
-                                                                                                      requestType,
+                                                                                                                          serviceRequestType,
                                                                                                       governanceEngineProperties.getQualifiedName(),
                                                                                                       governanceEngineGUID,
                                                                                                       error.getMessage()),

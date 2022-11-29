@@ -23,10 +23,18 @@ They supply metadata to support the Coco Pharmaceuticals scenarios.
   them and the load of their data into the data lake.  This archive simulates the type of metadata expected from
   an ETL tool suite.  It is intended for **cocoMDS5** in the open metadata labs but can be used in any server.
 
+* **Coco Pharmaceuticals Organizations** - provides the profiles, user identifies and team of the featured
+  personas of Coco Pharmaceuticals.
+
 * **CocoClinicalTrialsTemplatesArchive** - provides the template assets used for onboarding weekly patient measurements during a clinical trial.
+
+* **Governance Program Definitions** - provides the metadata to describe Coco Pharmaceuticals governance program.
 
 * **CocoGovernanceEngineDefinitionsArchive** - provides the metadata to describe Coco Pharmaceuticals three governance engines:
   `AssetGovernance`, `AssetDiscovery` and `AssetQuality`.
+
+* **Coco Pharmaceuticals Sustainability Initiative** provides the base definitions for Coco Pharmaceutical's
+  sustainability initiative.
 
 * **CocoTypesArchive** - provides additional types for Coco Pharmaceuticals.  These are `BiopsyScope` Enum, `BiopsyReport` Entity, `BiopsySupportingEvidence` Relationship and
   `ReviewedByClinicalTrials` Classification.

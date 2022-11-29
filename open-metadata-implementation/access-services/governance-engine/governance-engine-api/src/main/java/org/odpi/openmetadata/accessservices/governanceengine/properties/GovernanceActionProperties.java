@@ -88,6 +88,8 @@ public class GovernanceActionProperties extends ReferenceableProperties
             governanceActionTypeName = template.getGovernanceActionTypeName();
             requestType = template.getRequestType();
             requestParameters = template.getRequestParameters();
+            requestSourceElements = template.getRequestSourceElements();
+            actionTargetElements = template.getActionTargetElements();
 
             actionStatus = template.getActionStatus();
 
@@ -490,9 +492,9 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
 
     /**
-     * Return the request type associated with this governance action.
+     * Return the governance request type used to call the governance service via this governance engine.
      *
-     * @return string name
+     * @return name of the request type
      */
     public String getRequestType()
     {
@@ -501,9 +503,9 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the request type associated with this governance action, used to identify ths governance service to run.
+     * Set up the governance request type used to call the governance service via this governance engine.
      *
-     * @param requestType string name
+     * @param requestType name of the request type passed to the governance service
      */
     public void setRequestType(String requestType)
     {

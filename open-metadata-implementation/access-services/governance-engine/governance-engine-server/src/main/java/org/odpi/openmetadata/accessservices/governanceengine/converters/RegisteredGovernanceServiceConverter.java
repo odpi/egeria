@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -21,8 +22,8 @@ import java.util.Map;
  */
 public class RegisteredGovernanceServiceConverter
 {
-    private OMRSRepositoryHelper       repositoryHelper;
-    private String                     serviceName;
+    private final OMRSRepositoryHelper       repositoryHelper;
+    private final String                     serviceName;
 
     /**
      * Constructor captures the repository content needed to create the endpoint object.
@@ -54,7 +55,7 @@ public class RegisteredGovernanceServiceConverter
 
         if (relationships != null)
         {
-            Map<String, Map<String, String>> requestTypeMappings = new HashMap<>();
+            Map<String, RegisteredGovernanceServiceProperties> requestTypeMappings = new HashMap<>();
 
             for (Relationship relationship : relationships)
             {
@@ -72,20 +73,37 @@ public class RegisteredGovernanceServiceConverter
                                                                                 OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
                                                                                 instanceProperties,
                                                                                 methodName);
-                        Map<String, String> analysisParameters = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                           OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                                           instanceProperties,
-                                                                                                           methodName);
+
+                        RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = new RegisteredGovernanceServiceProperties();
+
+                        String serviceRequestType = repositoryHelper.getStringProperty(serviceName,
+                                                                                       OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                       instanceProperties,
+                                                                                       methodName);
+
 
                         if (requestType != null)
                         {
-                            requestTypeMappings.put(requestType, analysisParameters);
+                            if (serviceRequestType == null)
+                            {
+                                registeredGovernanceServiceProperties.setServiceRequestType(requestType);
+                            }
+                            else
+                            {
+                                registeredGovernanceServiceProperties.setServiceRequestType(serviceRequestType);
+                            }
+                            registeredGovernanceServiceProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                      OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                      instanceProperties,
+                                                                                                      methodName));
+
+                            requestTypeMappings.put(requestType, registeredGovernanceServiceProperties);
                         }
                     }
                 }
             }
 
-            if (!requestTypeMappings.isEmpty())
+            if (! requestTypeMappings.isEmpty())
             {
                 RegisteredGovernanceService properties = bean.getProperties();
 
