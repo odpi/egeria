@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -1468,6 +1469,29 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      isMergeUpdate,
                                                      effectiveTime,
                                                      methodName);
+        // ensure that any new classifications are applied to the attribute.
+        List<Classification> newClassifications = schemaAttributeBuilder.getEntityClassifications();
+        if (newClassifications !=null && !newClassifications.isEmpty())
+        {
+            for (Classification classification:newClassifications)
+            {
+                schemaAttributeHandler.setClassificationInRepository(userId,
+                        getExternalSourceGUID(correlationProperties),
+                        getExternalSourceName(correlationProperties),
+                        schemaAttributeGUID,
+                        schemaAttributeGUIDParameterName,
+                        schemaAttributeBuilder.getTypeName(),
+                        classification.getType().getTypeDefGUID(),
+                        classification.getType().getTypeDefName(),
+                        classification.getProperties(),
+                        isMergeUpdate,
+                        forLineage,
+                        forDuplicateProcessing,
+                        supportedZones,
+                        effectiveTime,
+                        methodName);
+            }
+        }
 
         this.maintainSupplementaryProperties(userId,
                                              schemaAttributeGUID,
