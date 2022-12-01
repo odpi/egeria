@@ -408,7 +408,7 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-attribute")
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-attributes")
 
     public GUIDResponse createSchemaAttribute(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
