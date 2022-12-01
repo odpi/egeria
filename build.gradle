@@ -15,7 +15,7 @@ plugins {
     // helps resolve log implementation clashes
     id 'dev.jacomet.logging-capabilities' version "0.10.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'de.jjohannes.java-ecosystem-capabilities' version "0.8"
+    id 'org.gradlex.java-ecosystem-capabilities' version "1.0"
 }
 
 
@@ -31,7 +31,7 @@ allprojects {
     // Mostly java, so default to this for now
     apply plugin: 'java'
     apply plugin: 'jacoco'
-    apply plugin: 'de.jjohannes.java-ecosystem-capabilities'
+    apply plugin: 'org.gradlex.java-ecosystem-capabilities'
     apply plugin: 'dev.jacomet.logging-capabilities'
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
