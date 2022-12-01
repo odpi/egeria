@@ -77,7 +77,7 @@ allprojects {
         hdrhistogramVersion = '2.1.12'
         hibernatevalidatorVersion = '8.0.0.Final'
         httpclientVersion = '4.5.13'
-        httpcoreVersion = '4.4.15'
+        httpcoreVersion = '4.4.16'
         jacksonVersion = '2.13.4'
         jacksonDatabindVersion = '2.13.4.2'
         jacksonaslVersion = '1.9.14-atlassian-6'
