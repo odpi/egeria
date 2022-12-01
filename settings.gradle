@@ -20,7 +20,7 @@ pluginManagement {
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
-        id 'com.github.psxpaul.execfork' version '0.2.0'
+        id 'com.github.psxpaul.execfork' version '0.2.1'
         id 'de.jjohannes.java-ecosystem-capabilities' version '0.5'
 
 
