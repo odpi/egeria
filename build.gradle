@@ -11,7 +11,7 @@ plugins {
     id "io.freefair.lombok" version "6.5.1"
     id "io.freefair.aggregate-javadoc" version "6.5.1"
     // Checks for unnecessary dependencies
-    id 'com.autonomousapps.dependency-analysis' version "1.13.1"
+    id 'com.autonomousapps.dependency-analysis' version "1.17.0"
     // helps resolve log implementation clashes
     id 'dev.jacomet.logging-capabilities' version "0.10.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
