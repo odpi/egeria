@@ -57,7 +57,7 @@ allprojects {
         antlrVersion = '3.5.3'
         ST4Version = '4.3.4'
         avroVersion = '1.11.1'
-        classgraphVersion = '4.8.149'
+        classgraphVersion = '4.8.151'
         classmateVersion = '1.5.1'
         collections4Version = '4.4'
         commonscodecVersion = '1.15'
