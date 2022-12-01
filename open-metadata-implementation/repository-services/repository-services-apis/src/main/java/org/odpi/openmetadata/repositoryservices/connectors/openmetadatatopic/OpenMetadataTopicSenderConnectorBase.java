@@ -20,7 +20,7 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
      * Send the request to the embedded event bus connector(s).
      *
      * @param event event as a string
-     * @return
+     * @return a completable future with the sendEvent result
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */

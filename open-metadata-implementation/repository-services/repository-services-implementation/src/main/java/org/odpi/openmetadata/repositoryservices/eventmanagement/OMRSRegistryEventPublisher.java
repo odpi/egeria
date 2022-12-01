@@ -16,8 +16,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 
@@ -92,11 +94,13 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 
         try
         {
+            List<CompletableFuture<Boolean>> results = new ArrayList<>();
             for (OMRSTopicConnector omrsTopicConnector : omrsTopicConnectors)
             {
                 log.debug("topicConnector: " + omrsTopicConnector);
-                successFlag = successFlag  && omrsTopicConnector.sendRegistryEvent(registryEvent).get();
+                results.add(omrsTopicConnector.sendRegistryEvent(registryEvent));
             }
+            successFlag = results.stream().map(CompletableFuture::join).reduce(true, (r1, r2) -> r1 && r2);
         }
         // exceptions from sendEvent are wrapped in CompletionException
         catch (CompletionException exception)
