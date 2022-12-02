@@ -6139,7 +6139,70 @@ public class OpenMetadataAPIGenericHandler<B>
                                     methodName);
     }
 
+    /**
+     * Update one or more updateProperties in the requested entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param schemaAttributeBuilder schema attribute builder
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) by replacing just the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateBeanInRepository(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       String             entityGUID,
+                                       String             entityGUIDParameterName,
+                                       String             entityTypeGUID,
+                                       String             entityTypeName,
+                                       boolean            forLineage,
+                                       boolean            forDuplicateProcessing,
+                                       List<String>       serviceSupportedZones,
+                                       SchemaAttributeBuilder schemaAttributeBuilder,
+                                       boolean            isMergeUpdate,
+                                       Date               effectiveTime,
+                                       String             methodName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
+                entityGUID,
+                entityGUIDParameterName,
+                entityTypeName,
+                forLineage,
+                forDuplicateProcessing,
+                effectiveTime,
+                methodName);
 
+        updateBeanInRepository(userId,
+                externalSourceGUID,
+                externalSourceName,
+                startingEntity,
+                entityGUIDParameterName,
+                entityTypeGUID,
+                entityTypeName,
+                forLineage,
+                forDuplicateProcessing,
+                serviceSupportedZones,
+                schemaAttributeBuilder,
+                isMergeUpdate,
+                effectiveTime,
+                methodName);
+    }
 
     /**
      * Update one or more updateProperties in the requested entity.
@@ -6384,6 +6447,186 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         serverName,
                                                         methodName);
+        }
+    }
+
+    /**
+     * Update one or more updateProperties in the requested entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param originalEntity unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param schemaAttributeBuilder schema attribute builder
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) by replacing just the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateBeanInRepository(String             userId,
+                                       String             externalSourceGUID,
+                                       String             externalSourceName,
+                                       EntityDetail       originalEntity,
+                                       String             entityGUIDParameterName,
+                                       String             entityTypeGUID,
+                                       String             entityTypeName,
+                                       boolean            forLineage,
+                                       boolean            forDuplicateProcessing,
+                                       List<String>       serviceSupportedZones,
+                                       SchemaAttributeBuilder schemaAttributeBuilder, //xxx
+                                       boolean            isMergeUpdate,
+                                       Date               effectiveTime,
+                                       String             methodName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if ((originalEntity != null) && (originalEntity.getType() != null))
+        {
+            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                    originalEntity.getGUID(),
+                    entityTypeName,
+                    originalEntity,
+                    entityGUIDParameterName,
+                    true,
+                    forLineage,
+                    forDuplicateProcessing,
+                    serviceSupportedZones,
+                    effectiveTime,
+                    methodName);
+
+            /*
+             * Sort out the properties
+             */
+            InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
+                    schemaAttributeBuilder.getInstanceProperties(methodName),
+                    originalEntity.getProperties());
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                auditLog.logMessage(methodName,
+                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                originalEntity.getGUID(),
+                                methodName,
+                                userId));
+                return;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                auditLog.logMessage(methodName,
+                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                originalEntity.getGUID(),
+                                methodName,
+                                userId));
+
+                return;
+            }
+
+            /*
+             * Validate that any changes to the unique properties do not clash with other entities.
+             */
+            validateUniqueProperties(originalEntity.getGUID(),
+                    entityTypeGUID,
+                    entityTypeName,
+                    newProperties,
+                    effectiveTime,
+                    methodName);
+
+            /*
+             * There is an extra security check if the update is for an asset.
+             */
+            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            {
+                securityVerifier.validateUserForAssetUpdate(userId,
+                        originalEntity,
+                        newProperties,
+                        originalEntity.getStatus(),
+                        repositoryHelper,
+                        serviceName,
+                        methodName);
+            }
+
+            repositoryHandler.updateEntityProperties(userId,
+                    externalSourceGUID,
+                    externalSourceName,
+                    originalEntity.getGUID(),
+                    originalEntity,
+                    entityTypeGUID,
+                    entityTypeName,
+                    newProperties,
+                    methodName);
+
+            /*
+             * Update is OK so record that it occurred in the LatestChange classification if there is an anchor entity.
+             */
+            final String actionDescriptionTemplate = "Updating properties in %s %s";
+            String actionDescription = String.format(actionDescriptionTemplate, entityTypeName, originalEntity.getGUID());
+
+            if (anchorEntity != null)
+            {
+                this.addLatestChangeToAnchor(anchorEntity,
+                        OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                        OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                        null,
+                        originalEntity.getGUID(),
+                        entityTypeName,
+                        null,
+                        userId,
+                        actionDescription,
+                        forLineage,
+                        forDuplicateProcessing,
+                        effectiveTime,
+                        methodName);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(originalEntity,
+                        OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                        OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                        null,
+                        null,
+                        null,
+                        null,
+                        userId,
+                        actionDescription,
+                        forLineage,
+                        forDuplicateProcessing,
+                        effectiveTime,
+                        methodName);
+            }
+        }
+        else
+        {
+            String entityGUID = "<null>";
+
+            if (originalEntity != null)
+            {
+                entityGUID = originalEntity.getGUID();
+            }
+            invalidParameterHandler.throwUnknownElement(userId,
+                    entityGUID,
+                    entityTypeName,
+                    serviceName,
+                    serverName,
+                    methodName);
         }
     }
 

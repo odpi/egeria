@@ -1462,36 +1462,16 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      getExternalSourceName(correlationProperties),
                                                      schemaAttributeGUID,
                                                      schemaAttributeGUIDParameterName,
+                                                     schemaAttributeProperties.getQualifiedName(),
+                                                     qualifiedNameParameterName,
+                                                     schemaAttributeBuilder,
+                                              null,
+                                                     schemaAttributeProperties.getTypeName(),
+                                                     isMergeUpdate,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     supportedZones,
-                                                     schemaAttributeBuilder.getInstanceProperties(methodName),
-                                                     isMergeUpdate,
                                                      effectiveTime,
                                                      methodName);
-        // ensure that any new classifications are applied to the attribute.
-        List<Classification> newClassifications = schemaAttributeBuilder.getEntityClassifications();
-        if (newClassifications !=null && !newClassifications.isEmpty())
-        {
-            for (Classification classification:newClassifications)
-            {
-                schemaAttributeHandler.setClassificationInRepository(userId,
-                        getExternalSourceGUID(correlationProperties),
-                        getExternalSourceName(correlationProperties),
-                        schemaAttributeGUID,
-                        schemaAttributeGUIDParameterName,
-                        schemaAttributeBuilder.getTypeName(),
-                        classification.getType().getTypeDefGUID(),
-                        classification.getType().getTypeDefName(),
-                        classification.getProperties(),
-                        isMergeUpdate,
-                        forLineage,
-                        forDuplicateProcessing,
-                        supportedZones,
-                        effectiveTime,
-                        methodName);
-            }
-        }
 
         this.maintainSupplementaryProperties(userId,
                                              schemaAttributeGUID,
