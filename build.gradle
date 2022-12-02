@@ -119,7 +119,7 @@ allprojects {
         springdataVersion = '2.7.5'
         springldapVersion = '2.4.1'
         springsecurityVersion = '5.7.5'
-        swaggerVersion = '2.2.7'
+        swaggerVersion = '2.2.6'
         testngVersion = '7.6.1'
         thriftVersion = '0.17.0'
         springwebVersion = '5.3.23'
