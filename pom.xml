@@ -165,7 +165,7 @@
         <janus.version>0.6.1</janus.version>
         <spring-boot.version>2.7.5</spring-boot.version>
         <gremlin.version>3.5.2</gremlin.version>
-        <springdoc.version>1.6.13</springdoc.version>
+        <springdoc.version>1.6.12</springdoc.version>
         <spring-data.version>2.7.5</spring-data.version>
         <spring.version>5.3.23</spring.version>
         <spring-security.version>5.7.5</spring-security.version>
