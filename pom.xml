@@ -137,11 +137,11 @@
     <properties>
         <open-metadata.version>${project.version}</open-metadata.version>
 
-        <!-- Level of Java  -->
+        <!-- Level of Java -->
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <!-- Platform encoding  -->
+        <!-- Platform encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <classmate.version>1.5.1</classmate.version>
