@@ -1863,6 +1863,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             }
         }
     }
+
+
     /**
      * Update the properties in a schema attribute.
      *
@@ -1873,8 +1875,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param schemaAttributeGUIDParameterName parameter name supplying schemaAttributeGUID
      * @param qualifiedName unique identifier for this schema type
      * @param qualifiedNameParameterName name of parameter supplying the qualified name
-     * @param formula String formula - for derived values
      * @param schemaAttributeBuilder schema attribute builder
+     * @param formula String formula - for derived values
      * @param typeName name of the type of this element - which defines the valid extended properties
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1886,23 +1888,23 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void   updateSchemaAttribute(String               userId,
-                                        String               externalSourceGUID,
-                                        String               externalSourceName,
-                                        String               schemaAttributeGUID,
-                                        String               schemaAttributeGUIDParameterName,
-                                        String               qualifiedName,
-                                        String               qualifiedNameParameterName,
+    public void   updateSchemaAttribute(String                 userId,
+                                        String                 externalSourceGUID,
+                                        String                 externalSourceName,
+                                        String                 schemaAttributeGUID,
+                                        String                 schemaAttributeGUIDParameterName,
+                                        String                 qualifiedName,
+                                        String                 qualifiedNameParameterName,
                                         SchemaAttributeBuilder schemaAttributeBuilder,
-                                        String               formula,
-                                        String               typeName,
-                                        boolean              isMergeUpdate,
-                                        boolean              forLineage,
-                                        boolean              forDuplicateProcessing,
-                                        Date                 effectiveTime,
-                                        String               methodName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException
+                                        String                 formula,
+                                        String                 typeName,
+                                        boolean                isMergeUpdate,
+                                        boolean                forLineage,
+                                        boolean                forDuplicateProcessing,
+                                        Date                   effectiveTime,
+                                        String                 methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
@@ -1923,15 +1925,15 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         }
 
         EntityDetail schemaAttributeEntity = this.getEntityFromRepository(userId,
-                schemaAttributeGUID,
-                schemaAttributeGUIDParameterName,
-                attributeTypeName,
-                null,
-                null,
-                forLineage,
-                forDuplicateProcessing,
-                effectiveTime,
-                methodName);
+                                                                          schemaAttributeGUID,
+                                                                          schemaAttributeGUIDParameterName,
+                                                                          attributeTypeName,
+                                                                          null,
+                                                                          null,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
 
         if (schemaAttributeEntity != null)
         {
@@ -1953,46 +1955,47 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                     methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
-
-            // todo this logic assumes the schema type is stored as a classification
-            setClassificationInRepository(userId,
-                    externalSourceGUID,
-                    externalSourceName,
-                    schemaAttributeEntity,
-                    schemaAttributeGUIDParameterName,
-                    attributeTypeName,
-                    OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                    OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                    schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
-                    isMergeUpdate,
-                    forLineage,
-                    forDuplicateProcessing,
-                    supportedZones,
-                    effectiveTime,
-                    methodName);
-
+            if (schemaTypeBuilder != null)
+            {
+                // todo this logic assumes the schema type is stored as a classification
+                setClassificationInRepository(userId,
+                                              externalSourceGUID,
+                                                      externalSourceName,
+                                                      schemaAttributeEntity,
+                                                      schemaAttributeGUIDParameterName,
+                                                      attributeTypeName,
+                                                      OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                      schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                                      isMergeUpdate,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      supportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+            }
             /*
-             * The formula is set if the column is derived
+             * The formula is set if the schema attribute is derived
              */
             if (formula != null)
             {
                 schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
 
                 setClassificationInRepository(userId,
-                        externalSourceGUID,
-                        externalSourceName,
-                        schemaAttributeEntity,
-                        schemaAttributeGUIDParameterName,
-                        attributeTypeName,
-                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                        schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
-                        isMergeUpdate,
-                        forLineage,
-                        forDuplicateProcessing,
-                        supportedZones,
-                        effectiveTime,
-                        methodName);
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              schemaAttributeEntity,
+                                              schemaAttributeGUIDParameterName,
+                                              attributeTypeName,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                              isMergeUpdate,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              effectiveTime,
+                                              methodName);
             }
         }
     }

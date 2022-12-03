@@ -1465,7 +1465,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      schemaAttributeProperties.getQualifiedName(),
                                                      qualifiedNameParameterName,
                                                      schemaAttributeBuilder,
-                                              null,
+                                                     schemaAttributeProperties.getSchemaType().getFormula(),
                                                      schemaAttributeProperties.getTypeName(),
                                                      isMergeUpdate,
                                                      forLineage,
