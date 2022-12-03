@@ -1977,7 +1977,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             /*
              * The formula is set if the schema attribute is derived
              */
-            if (formula != null)
+            if (formula != null && schemaTypeBuilder != null)
             {
                 schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
 
