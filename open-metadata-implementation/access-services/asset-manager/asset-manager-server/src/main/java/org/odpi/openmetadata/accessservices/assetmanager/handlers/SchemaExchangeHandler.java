@@ -1457,8 +1457,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(userId,
                                                                                        schemaAttributeProperties,
                                                                                        methodName);
-        String externalSourceGUID = getExternalSourceGUID(correlationProperties);
-        String  externalSourceName = getExternalSourceName(correlationProperties);
 
         schemaAttributeHandler.updateSchemaAttribute(userId,
                                                      getExternalSourceGUID(correlationProperties),
