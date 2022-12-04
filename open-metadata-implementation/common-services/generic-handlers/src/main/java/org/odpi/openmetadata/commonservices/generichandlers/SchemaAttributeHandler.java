@@ -1973,29 +1973,39 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                       supportedZones,
                                                       effectiveTime,
                                                       methodName);
-            }
-            /*
-             * The formula is set if the schema attribute is derived
-             */
-            if (formula != null && schemaTypeBuilder != null)
-            {
-                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
-
-                setClassificationInRepository(userId,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              schemaAttributeEntity,
-                                              schemaAttributeGUIDParameterName,
-                                              attributeTypeName,
-                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
-                                              isMergeUpdate,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              supportedZones,
-                                              effectiveTime,
-                                              methodName);
+                /*
+                 * The formula is set if the schema attribute is derived
+                 */
+                if (formula != null)
+                {
+                    schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
+                    List<Classification> classifications = schemaAttributeBuilder.getEntityClassifications();
+                    Classification calculatedValueClassification = null;
+                    for (Classification classification : classifications)
+                    {
+                        if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME)) {
+                            calculatedValueClassification = classification;
+                        }
+                    }
+                    if (calculatedValueClassification != null)
+                    {
+                        setClassificationInRepository(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      schemaAttributeEntity,
+                                                      schemaAttributeGUIDParameterName,
+                                                      attributeTypeName,
+                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                      calculatedValueClassification.getProperties(),
+                                                      isMergeUpdate,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      supportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+                    }
+                }
             }
         }
     }
