@@ -231,7 +231,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    public void setCalculatedValue(String userId,
+    void setCalculatedValue(String userId,
                             String externalSourceGUID,
                             String externalSourceName,
                             String formula,
