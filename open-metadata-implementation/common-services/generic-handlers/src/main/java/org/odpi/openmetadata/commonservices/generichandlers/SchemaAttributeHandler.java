@@ -1976,33 +1976,22 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 String formula = schemaTypeBuilder.getFormula();
                 if (!isMergeUpdate || (formula != null && isMergeUpdate))
                 {
-                    schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
-                    List<Classification> classifications = schemaAttributeBuilder.getEntityClassifications();
-                    Classification calculatedValueClassification = null;
-                    for (Classification classification : classifications)
-                    {
-                        if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME)) {
-                            calculatedValueClassification = classification;
-                        }
-                    }
-                    if (calculatedValueClassification != null)
-                    {
-                        setClassificationInRepository(userId,
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      schemaAttributeEntity,
-                                                      schemaAttributeGUIDParameterName,
-                                                      attributeTypeName,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      calculatedValueClassification.getProperties(),
-                                                      isMergeUpdate,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      supportedZones,
-                                                      effectiveTime,
-                                                      methodName);
-                    }
+                    setClassificationInRepository(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  schemaAttributeEntity,
+                                                  schemaAttributeGUIDParameterName,
+                                                  attributeTypeName,
+                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                  schemaAttributeBuilder.getCalculatedValueProperties(formula, methodName),
+                                                  isMergeUpdate,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  supportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
                 }
             }
         }
