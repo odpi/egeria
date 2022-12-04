@@ -1876,7 +1876,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param qualifiedName unique identifier for this schema type
      * @param qualifiedNameParameterName name of parameter supplying the qualified name
      * @param schemaAttributeBuilder schema attribute builder
-     * @param formula String formula - for derived values
      * @param typeName name of the type of this element - which defines the valid extended properties
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1896,7 +1895,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                         String                 qualifiedName,
                                         String                 qualifiedNameParameterName,
                                         SchemaAttributeBuilder schemaAttributeBuilder,
-                                        String                 formula,
                                         String                 typeName,
                                         boolean                isMergeUpdate,
                                         boolean                forLineage,
@@ -1973,9 +1971,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                               effectiveTime,
                                               methodName);
                 /*
-                 * The formula is set if the schema attribute is derived
+                 * The formula is set if the schema attribute is derived. Need to test the merge semantics.
                  */
-                if (formula != null)
+                String formula = schemaTypeBuilder.getFormula();
+                if (!isMergeUpdate || (formula != null && isMergeUpdate))
                 {
                     schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
                     List<Classification> classifications = schemaAttributeBuilder.getEntityClassifications();

@@ -356,6 +356,15 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     {
         return (! (formula == null));
     }
+    /**
+     * Return whether the schema has a derived value of not.  This is determined from the setting of formula
+     *
+     * @return boolean
+     */
+    public String getFormula()
+    {
+        return formula;
+    }
 
 
     /**

@@ -1442,7 +1442,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
+        SchemaTypeProperties schemaType = schemaAttributeProperties.getSchemaType();
+        invalidParameterHandler.validateObject(schemaType,"displayName", methodName);
         this.validateExternalIdentifier(userId,
                                         schemaAttributeGUID,
                                         schemaAttributeGUIDParameterName,
@@ -1456,6 +1457,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(userId,
                                                                                        schemaAttributeProperties,
                                                                                        methodName);
+        String externalSourceGUID = getExternalSourceGUID(correlationProperties);
+        String  externalSourceName = getExternalSourceName(correlationProperties);
 
         schemaAttributeHandler.updateSchemaAttribute(userId,
                                                      getExternalSourceGUID(correlationProperties),
@@ -1465,7 +1468,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      schemaAttributeProperties.getQualifiedName(),
                                                      qualifiedNameParameterName,
                                                      schemaAttributeBuilder,
-                                                     schemaAttributeProperties.getSchemaType().getFormula(),
                                                      schemaAttributeProperties.getTypeName(),
                                                      isMergeUpdate,
                                                      forLineage,
