@@ -364,13 +364,15 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                     schemaType.getUsage(),
                                                                     schemaType.getEncodingStandard(),
                                                                     schemaType.getNamespace(),
+                                                                    schemaType.getFormula(),
                                                                     schemaType.getAdditionalProperties(),
                                                                     typeGUID,
                                                                     typeName,
                                                                     schemaType.getExtendedProperties(),
                                                                     repositoryHelper,
                                                                     serviceName,
-                                                                    serverName);
+                                                                    serverName
+                                                                    );
 
         if (schemaType instanceof LiteralSchemaTypeProperties)
         {

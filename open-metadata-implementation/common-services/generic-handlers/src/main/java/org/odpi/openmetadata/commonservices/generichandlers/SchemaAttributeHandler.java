@@ -302,6 +302,15 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             {
                 schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
             }
+            SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
+
+            /*
+             * if there is a a formula then set it into the schemaAttributeBuilder
+             */
+            if (schemaTypeBuilder != null && schemaTypeBuilder.isDerived())
+            {
+                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder.getFormula(), methodName);
+            }
 
             return this.createNestedSchemaAttribute(userId,
                                                     externalSourceGUID,
@@ -623,8 +632,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         /*
-         * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
-         * The returned value is the guid of the table.
+         * Now create the nested schema attribute itself along with its schema type.
+         * The returned value is the guid of the nested attribute (e.g. table).
          */
         String schemaAttributeGUID = this.createBeanInRepository(userId,
                                                                  externalSourceGUID,
