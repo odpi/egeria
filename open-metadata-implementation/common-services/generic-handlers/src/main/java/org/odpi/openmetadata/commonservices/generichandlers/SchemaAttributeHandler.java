@@ -1964,21 +1964,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
             if (schemaTypeBuilder != null)
             {
-                // todo this logic assumes the schema type is stored as a classification
-                setClassificationInRepository(userId,
-                                              externalSourceGUID,externalSourceName,
-                                              schemaAttributeEntity,
-                                              schemaAttributeGUIDParameterName,
-                                              attributeTypeName,
-                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
-                                              isMergeUpdate,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              supportedZones,
-                                              effectiveTime,
-                                              methodName);
+
                 /*
                  * The formula is set if the schema attribute is derived. Need to test the merge semantics.
                  */
@@ -2026,6 +2012,21 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                   methodName);
 
                 }
+                // todo this logic assumes the schema type is stored as a classification
+                setClassificationInRepository(userId,
+                        externalSourceGUID,externalSourceName,
+                        schemaAttributeEntity,
+                        schemaAttributeGUIDParameterName,
+                        attributeTypeName,
+                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                        schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                        isMergeUpdate,
+                        forLineage,
+                        forDuplicateProcessing,
+                        supportedZones,
+                        effectiveTime,
+                        methodName);
             }
         }
     }
