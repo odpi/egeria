@@ -1983,8 +1983,32 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                  * The formula is set if the schema attribute is derived. Need to test the merge semantics.
                  */
                 String formula = schemaTypeBuilder.getFormula();
-                if (!isMergeUpdate || (formula != null && isMergeUpdate))
+                if (formula == null)
                 {
+                    // if we have no formula requested and we are not a merge, any existing
+                    // calculated value classification should be cleared
+                    if (!isMergeUpdate) {
+                        List<Classification> classifications = schemaAttributeEntity.getClassifications();
+                        for (Classification classification:classifications)
+                        {
+                            if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME))
+                            {
+                                removeClassificationFromRepository(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   schemaAttributeGUID,
+                                                                   schemaAttributeGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+                            }
+                        }
+                    }
+                } else {
                     setClassificationInRepository(userId,
                                                   externalSourceGUID,
                                                   externalSourceName,
