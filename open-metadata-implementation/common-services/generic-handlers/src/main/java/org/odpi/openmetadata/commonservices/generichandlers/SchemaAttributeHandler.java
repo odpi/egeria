@@ -1975,22 +1975,24 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                     // calculated value classification should be cleared
                     if (!isMergeUpdate) {
                         List<Classification> classifications = schemaAttributeEntity.getClassifications();
-                        for (Classification classification:classifications)
+                        if (classifications != null && classifications.size() >0)
                         {
-                            if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME))
+                            for (Classification classification : classifications)
                             {
-                                removeClassificationFromRepository(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   schemaAttributeGUID,
-                                                                   schemaAttributeGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveTime,
-                                                                   methodName);
+                                if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME)) {
+                                    removeClassificationFromRepository(userId,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       schemaAttributeGUID,
+                                                                       schemaAttributeGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+                                }
                             }
                         }
                     }
