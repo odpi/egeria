@@ -18,14 +18,13 @@ This file recognizes the people who have make an important contribution to Egeri
 | Jacob Madsen | jacob.madsen@ibm.com |
 | David Kneisly | dskneisl@us.ibm.com |
 | Brian Gillikin | brian.gillikin@ibm.com |
-| Alexandra Bucur | alexandra-nona.bucur@ing.com |
-| Cezar Sirbu | sirbunicolaecezar@gmail.com |
 | Federica Donald | federica.donald@ibm.com |
 | Adinarayana Harida | adharida@in.ibm.com |
 | Sachin Naik |  sachin.naik@ibm.com |
 | Liz McIntosh | liz.mcintosh@sas.com |
 | Dan Wolfson | dan.wolfson@pdr-associates.com |
 | Juergen Helmelt | juergenhemelt |
+| Cristian-Mihai Iliescu  |  MihaiIliescu  |
 
 
 
