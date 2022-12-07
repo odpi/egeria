@@ -24,7 +24,7 @@ This file recognizes the people who have make an important contribution to Egeri
 | Liz McIntosh | liz.mcintosh@sas.com |
 | Dan Wolfson | dan.wolfson@pdr-associates.com |
 | Juergen Helmelt | juergenhemelt |
-| Cristian-Mihai Iliescu  |  MihaiIliescu  |
+| Cristian-Mihai Iliescu  |  cristianmihaiiliescu@gmail.com  |
 
 
 
