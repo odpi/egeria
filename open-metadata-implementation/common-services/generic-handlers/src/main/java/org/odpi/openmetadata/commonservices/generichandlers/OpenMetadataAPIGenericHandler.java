@@ -12138,7 +12138,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                                      startingElementEntity,
-                                                                                                     startingElementTypeName,
+                                                                                                     startingElementEntity.getType().getTypeDefName(),
                                                                                                      attachingGUID,
                                                                                                      attachmentTypeGUID,
                                                                                                      attachmentTypeName,

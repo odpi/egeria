@@ -128,6 +128,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-server</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

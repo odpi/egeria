@@ -519,7 +519,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! databaseDisplayName.equals(retrievedDatabase.getDisplayName()))
+            if (! databaseDisplayName.equals(retrievedDatabase.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
@@ -560,7 +560,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! databaseDisplayName.equals(retrievedDatabase.getDisplayName()))
+            if (! databaseDisplayName.equals(retrievedDatabase.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
@@ -604,6 +604,7 @@ public class CreateDatabaseTest
      * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
+    @SuppressWarnings(value = "deprecation")
     private String getDatabase(DatabaseManagerClient client,
                                String                databaseManagerGUID,
                                String                userId) throws FVTUnexpectedCondition
@@ -615,7 +616,7 @@ public class CreateDatabaseTest
             DatabaseProperties properties = new DatabaseProperties();
 
             properties.setQualifiedName(databaseName);
-            properties.setDisplayName(databaseDisplayName);
+            properties.setDisplayName(databaseDisplayName); // check deprecated method still works
             properties.setDescription(databaseDescription);
             properties.setDatabaseType(databaseType);
             properties.setDatabaseVersion(databaseVersion);
@@ -746,7 +747,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! databaseSchemaDisplayName.equals(retrievedSchema.getDisplayName()))
+            if (! databaseSchemaDisplayName.equals(retrievedSchema.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
@@ -780,7 +781,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! databaseSchemaDisplayName.equals(retrievedSchema.getDisplayName()))
+            if (! databaseSchemaDisplayName.equals(retrievedSchema.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
@@ -839,7 +840,7 @@ public class CreateDatabaseTest
             DatabaseSchemaProperties properties = new DatabaseSchemaProperties();
 
             properties.setQualifiedName(databaseSchemaName);
-            properties.setDisplayName(databaseSchemaDisplayName);
+            properties.setName(databaseSchemaDisplayName);
             properties.setDescription(databaseSchemaDescription);
 
             String databaseSchemaGUID = client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);

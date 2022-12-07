@@ -75,10 +75,7 @@ public class RelatedElementConverter<B> extends GovernanceEngineOMASConverter<B>
                 {
                     bean.setEffectiveFromTime(instanceProperties.getEffectiveFromTime());
                     bean.setEffectiveToTime(instanceProperties.getEffectiveToTime());
-
-                    Map<String, Object> propertyMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
-
-                    bean.setRelationshipProperties(propertyHelper.addPropertyMap(new ElementProperties(), propertyMap));
+                    bean.setRelationshipProperties(mapElementProperties(instanceProperties));
                 }
 
                 OpenMetadataElement relatedBean = new OpenMetadataElement();

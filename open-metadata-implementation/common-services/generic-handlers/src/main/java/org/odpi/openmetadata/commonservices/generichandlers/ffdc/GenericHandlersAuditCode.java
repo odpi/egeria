@@ -98,13 +98,13 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
 
     INITIATE_GOVERNANCE_ACTION("OMAG-GENERIC-HANDLERS-0020",
                                OMRSAuditLogRecordSeverity.STARTUP,
-                               "Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6}",
+                               "Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}",
                                "A new GovernanceAction entity is created.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
                                "Validate that this governance action should be initialized.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
 
     INITIATE_GOVERNANCE_ACTION_FROM_TYPE("OMAG-GENERIC-HANDLERS-0021",
                                OMRSAuditLogRecordSeverity.STARTUP,
-                               "Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7}",
+                               "Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}",
                                "A new GovernanceAction entity is created using the definition of the governance action type.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
                                "Validate that this governance action should be initialized using this type.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
 

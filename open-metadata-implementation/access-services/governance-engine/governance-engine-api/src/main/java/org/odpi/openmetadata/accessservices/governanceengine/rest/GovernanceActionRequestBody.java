@@ -37,6 +37,8 @@ public class GovernanceActionRequestBody implements Serializable
     private Date                  startTime             = null;
     private String                requestType           = null;
     private Map<String, String>   requestParameters     = null;
+    private String                processName           = null;
+    private String                requestSourceName     = null;
     private String                originatorServiceName = null;
     private String                originatorEngineName  = null;
 
@@ -68,6 +70,8 @@ public class GovernanceActionRequestBody implements Serializable
             startTime = template.getStartTime();
             requestType = template.getRequestType();
             requestParameters = template.getRequestParameters();
+            processName = template.getProcessName();
+            requestSourceName = template.getRequestSourceName();
             originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName = template.getOriginatorEngineName();}
     }
@@ -324,6 +328,50 @@ public class GovernanceActionRequestBody implements Serializable
 
 
     /**
+     * Return the name of the process that this action belongs to.
+     *
+     * @return name
+     */
+    public String getProcessName()
+    {
+        return processName;
+    }
+
+
+    /**
+     * Set up the name of the process that this action belongs to.
+     *
+     * @param processName name
+     */
+    public void setProcessName(String processName)
+    {
+        this.processName = processName;
+    }
+
+
+    /**
+     * Return the name of the request source.
+     *
+     * @return string name
+     */
+    public String getRequestSourceName()
+    {
+        return requestSourceName;
+    }
+
+
+    /**
+     * Set up the name of the request source.
+     *
+     * @param requestSourceName string name
+     */
+    public void setRequestSourceName(String requestSourceName)
+    {
+        this.requestSourceName = requestSourceName;
+    }
+
+
+    /**
      * Set up the unique name of the service that created this request.
      *
      * @return string name
@@ -382,11 +430,14 @@ public class GovernanceActionRequestBody implements Serializable
                        ", description='" + description + '\'' +
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargets=" + actionTargets +
+                       ", receivedGuards=" + receivedGuards +
                        ", startTime=" + startTime +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
-                       ", originatorServiceName=" + originatorServiceName +
-                       ", originatorEngineName=" + originatorEngineName +
+                       ", processName='" + processName + '\'' +
+                       ", requestSourceName='" + requestSourceName + '\'' +
+                       ", originatorServiceName='" + originatorServiceName + '\'' +
+                       ", originatorEngineName='" + originatorEngineName + '\'' +
                        '}';
     }
 
@@ -417,6 +468,8 @@ public class GovernanceActionRequestBody implements Serializable
                        Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(requestType, that.requestType) &&
+                       Objects.equals(processName, that.processName) &&
+                       Objects.equals(requestSourceName, that.requestSourceName) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
                        Objects.equals(requestParameters, that.requestParameters);
@@ -432,6 +485,6 @@ public class GovernanceActionRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, startTime, requestType,
-                            requestParameters, originatorServiceName, originatorEngineName);
+                            processName, requestSourceName, requestParameters, originatorServiceName, originatorEngineName);
     }
 }

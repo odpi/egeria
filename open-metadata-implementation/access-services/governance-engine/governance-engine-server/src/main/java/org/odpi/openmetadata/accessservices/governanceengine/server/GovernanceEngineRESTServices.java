@@ -12,7 +12,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -309,6 +311,7 @@ public class GovernanceEngineRESTServices
                                                  statusOrdinal,
                                                  requestBody.getStartDate(),
                                                  requestBody.getCompletionDate(),
+                                                 requestBody.getCompletionMessage(),
                                                  new Date(),
                                                  methodName);
             }
@@ -432,6 +435,7 @@ public class GovernanceEngineRESTServices
                                                requestBody.getRequestParameters(),
                                                requestBody.getOutputGuards(),
                                                requestBody.getNewActionTargets(),
+                                               requestBody.getCompletionMessage(),
                                                new Date(),
                                                methodName);
             }
@@ -486,26 +490,49 @@ public class GovernanceEngineRESTServices
             {
                 GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.initiateGovernanceAction(userId,
-                                                                  requestBody.getQualifiedName(),
-                                                                  requestBody.getDomainIdentifier(),
-                                                                  requestBody.getDisplayName(),
-                                                                  requestBody.getDescription(),
-                                                                  requestBody.getRequestSourceGUIDs(),
-                                                                  requestBody.getActionTargets(),
-                                                                  null,
-                                                                  requestBody.getReceivedGuards(),
-                                                                  requestBody.getStartTime(),
-                                                                  governanceEngineName,
-                                                                  requestBody.getRequestType(),
-                                                                  requestBody.getRequestParameters(),
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  methodName,
-                                                                  requestBody.getOriginatorServiceName(),
-                                                                  requestBody.getOriginatorEngineName(),
-                                                                  methodName));
+                String governanceActionGUID = handler.createGovernanceAction(userId,
+                                                                             requestBody.getQualifiedName(),
+                                                                             requestBody.getDomainIdentifier(),
+                                                                             requestBody.getDisplayName(),
+                                                                             requestBody.getDescription(),
+                                                                             requestBody.getRequestSourceGUIDs(),
+                                                                             requestBody.getActionTargets(),
+                                                                             null,
+                                                                             requestBody.getReceivedGuards(),
+                                                                             requestBody.getStartTime(),
+                                                                             governanceEngineName,
+                                                                             requestBody.getRequestType(),
+                                                                             requestBody.getRequestParameters(),
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             requestBody.getProcessName(),
+                                                                             requestBody.getRequestSourceName(),
+                                                                             requestBody.getOriginatorServiceName(),
+                                                                             requestBody.getOriginatorEngineName(),
+                                                                             methodName);
+
+                if (governanceActionGUID != null)
+                {
+                    /*
+                     * Since there is no process control, the governance action moves immediately into APPROVED
+                     * status, and it is picked up by the listening engine hosts.
+                     */
+                    handler.approveGovernanceAction(userId,
+                                                    governanceActionGUID,
+                                                    requestBody.getQualifiedName(),
+                                                    null,
+                                                    requestBody.getReceivedGuards(),
+                                                    requestBody.getStartTime(),
+                                                    governanceEngineName,
+                                                    requestBody.getRequestType(),
+                                                    requestBody.getRequestParameters(),
+                                                    null,
+                                                    requestBody.getProcessName(),
+                                                    methodName);
+
+                    response.setGUID(governanceActionGUID);
+                }
             }
             else
             {
@@ -799,4 +826,143 @@ public class GovernanceEngineRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+
+    /**
+     * Retrieve the list of governance action metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionElementsResponse findGovernanceActions(String                  serverName,
+                                                                  String                  userId,
+                                                                  int                     startFrom,
+                                                                  int                     pageSize,
+                                                                  SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findGovernanceActions";
+
+        String searchStringParameterName = "searchString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId,
+                                                                                                                      serverName,
+                                                                                                                      methodName);
+
+                if (requestBody.getSearchStringParameterName() != null)
+                {
+                    searchStringParameterName = requestBody.getSearchStringParameterName();
+                }
+
+                response.setElements(handler.findGovernanceActions(userId,
+                                                                   requestBody.getSearchString(),
+                                                                   searchStringParameterName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of governance action  metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionElementsResponse getGovernanceActionsByName(String          serverName,
+                                                                       String          userId,
+                                                                       int             startFrom,
+                                                                       int             pageSize,
+                                                                       NameRequestBody requestBody)
+    {
+        final String methodName = "getGovernanceActionsByName";
+
+        String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId,
+                                                                                                                      serverName,
+                                                                                                                      methodName);
+
+                if (requestBody.getNameParameterName() != null)
+                {
+                    nameParameterName = requestBody.getNameParameterName();
+                }
+
+                response.setElements(handler.getGovernanceActionsByName(userId,
+                                                                            requestBody.getName(),
+                                                                            nameParameterName,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            null,
+                                                                            methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 }

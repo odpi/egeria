@@ -206,15 +206,31 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
 
 
     /**
-     * Free up any resources held since the connector is no longer needed.  This is a standard
-     * method from the Open Connector Framework (OCF).  If you need to override this method
-     * be sure to call super.disconnect() in your version.
+     * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  void disconnect() throws ConnectorCheckedException
+    public  synchronized void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
+
+        if (this.embeddedConnectors != null)
+        {
+            for (Connector embeddedConnector : this.embeddedConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    try
+                    {
+                        embeddedConnector.disconnect();
+                    }
+                    catch (Exception error)
+                    {
+                        // keep going
+                    }
+                }
+            }
+        }
     }
 }

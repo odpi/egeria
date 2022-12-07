@@ -151,7 +151,7 @@ public class DataFolderRequestBody extends FileFolderProperties
                 ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                 ", encodingDescription='" + getEncodingDescription() + '\'' +
                 ", encodingProperties=" + getEncodingProperties() +
-                ", displayName='" + getDisplayName() + '\'' +
+                ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

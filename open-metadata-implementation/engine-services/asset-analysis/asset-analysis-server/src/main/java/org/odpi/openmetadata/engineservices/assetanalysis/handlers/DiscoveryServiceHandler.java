@@ -161,7 +161,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             super.disconnect();
             discoveryService.setDiscoveryContext(null);
 
-            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null);
+            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null, null);
         }
         catch (Exception  error)
         {

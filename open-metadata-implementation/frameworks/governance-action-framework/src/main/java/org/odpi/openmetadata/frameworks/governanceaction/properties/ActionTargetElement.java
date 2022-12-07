@@ -19,18 +19,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActionTargetElement implements Serializable
+public class ActionTargetElement extends NewActionTarget
 {
-    private static final long      serialVersionUID = 1L;
+    private static final long      serialVersionUID  = 1L;
 
-    private String                 actionTargetName = null;
+    private GovernanceActionStatus status            = null;
+    private Date                   startDate         = null;
+    private Date                   completionDate    = null;
+    private String                 completionMessage = null;
 
-    private String                 actionTargetGUID = null;
-    private GovernanceActionStatus status           = null;
-    private Date                   startDate        = null;
-    private Date                   completionDate   = null;
-
-    private OpenMetadataElement    targetElement    = null;
+    private OpenMetadataElement    targetElement     = null;
 
 
     /**
@@ -49,65 +47,22 @@ public class ActionTargetElement implements Serializable
      */
     public ActionTargetElement(ActionTargetElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            actionTargetName = template.getActionTargetName();
-            actionTargetGUID = template.getActionTargetGUID();
             status = template.getStatus();
             startDate = template.getStartDate();
             completionDate = template.getCompletionDate();
+            completionMessage = template.getCompletionMessage();
             targetElement = template.getTargetElement();
         }
     }
 
 
     /**
-     * Return the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
-     *
-     * @return string name
-     */
-    public String getActionTargetName()
-    {
-        return actionTargetName;
-    }
-
-
-    /**
-     * Set up the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.
-     *
-     * @param actionTargetName string name
-     */
-    public void setActionTargetName(String actionTargetName)
-    {
-        this.actionTargetName = actionTargetName;
-    }
-
-
-    /**
-     * Return the unique identifier for this action target.
-     *
-     * @return string identifier
-     */
-    public String getActionTargetGUID()
-    {
-        return actionTargetGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for this action target.
-     *
-     * @param actionTargetGUID string identifier
-     */
-    public void setActionTargetGUID(String actionTargetGUID)
-    {
-        this.actionTargetGUID = actionTargetGUID;
-    }
-
-
-    /**
      * Return the current status of the action target.  The default value is the status is derived from
-     * the governance action service.  However if it has to process many target elements, then these values can
+     * the governance action service.  However, if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return status enum
@@ -120,7 +75,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Set up current status of the action target.  The default value is the status is derived from
-     * the governance action service.  However if it has to process many target elements, then these values can
+     * the governance action service.  However, if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @param status enum
@@ -133,7 +88,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Return the date/time when the governance action service started processing this target element. By default,
-     * this value is derived from the startDate for the governance action service.  However if it has to process many target elements, then these values can
+     * this value is derived from the startDate for the governance action service.  However, if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return date object
@@ -146,7 +101,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Set up the date/time when the governance action service started processing this target element. By default,
-     * this value is derived from the startDate for the governance action service.  However if it has to process many target
+     * this value is derived from the startDate for the governance action service.  However, if it has to process many target
      * elements, then these values can be used to show progress.
      *
      * @param startDate date object
@@ -159,7 +114,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Return the date/time when the governance action service stopped processing this target element. By default,
-     * this value is derived from the completionDate for the governance action service.  However if it has to process
+     * this value is derived from the completionDate for the governance action service.  However, if it has to process
      * many target elements, then these values can be used to show progress.
      *
      * @return date object
@@ -172,7 +127,7 @@ public class ActionTargetElement implements Serializable
 
     /**
      * Set up the date/time when the governance action service stopped processing this target element. By default,
-     * this value is derived from the completionDate for the governance action service.  However if it has to process
+     * this value is derived from the completionDate for the governance action service.  However, if it has to process
      * many target elements, then these values can be used to show progress.
      *
      * @param completionDate date object
@@ -180,6 +135,28 @@ public class ActionTargetElement implements Serializable
     public void setCompletionDate(Date completionDate)
     {
         this.completionDate = completionDate;
+    }
+
+
+    /**
+     * Return the optional message from the running governance service supplied on its completion.
+     *
+     * @return string message
+     */
+    public String getCompletionMessage()
+    {
+        return completionMessage;
+    }
+
+
+    /**
+     * Set up optional message from the running governance service supplied on its completion.
+     *
+     * @param completionMessage string message
+     */
+    public void setCompletionMessage(String completionMessage)
+    {
+        this.completionMessage = completionMessage;
     }
 
 
@@ -214,12 +191,13 @@ public class ActionTargetElement implements Serializable
     public String toString()
     {
         return "ActionTargetElement{" +
-                       "actionTargetName='" + actionTargetName + '\'' +
-                       ", actionTargetGUID='" + actionTargetGUID + '\'' +
-                       ", status=" + status +
+                       "status=" + status +
                        ", startDate=" + startDate +
                        ", completionDate=" + completionDate +
+                       ", completionMessage='" + completionMessage + '\'' +
                        ", targetElement=" + targetElement +
+                       ", actionTargetName='" + getActionTargetName() + '\'' +
+                       ", actionTargetGUID='" + getActionTargetGUID() + '\'' +
                        '}';
     }
 
@@ -237,19 +215,35 @@ public class ActionTargetElement implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ActionTargetElement))
         {
             return false;
         }
-        ActionTargetElement that = (ActionTargetElement) objectToCompare;
-        return Objects.equals(actionTargetName, that.actionTargetName) &&
-                       Objects.equals(actionTargetGUID, that.actionTargetGUID) &&
-                       status == that.status &&
-                       Objects.equals(startDate, that.startDate) &&
-                       Objects.equals(completionDate, that.completionDate) &&
-                       Objects.equals(targetElement, that.targetElement);
-    }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
 
+        ActionTargetElement that = (ActionTargetElement) objectToCompare;
+
+        if (status != that.status)
+        {
+            return false;
+        }
+        if (startDate != null ? ! startDate.equals(that.startDate) : that.startDate != null)
+        {
+            return false;
+        }
+        if (completionDate != null ? ! completionDate.equals(that.completionDate) : that.completionDate != null)
+        {
+            return false;
+        }
+        if (completionMessage != null ? ! completionMessage.equals(that.completionMessage) : that.completionMessage != null)
+        {
+            return false;
+        }
+        return targetElement != null ? targetElement.equals(that.targetElement) : that.targetElement == null;
+    }
 
 
     /**
@@ -260,6 +254,12 @@ public class ActionTargetElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(actionTargetName, actionTargetGUID, status, startDate, completionDate, targetElement);
+        int result = super.hashCode();
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
+        result = 31 * result + (completionMessage != null ? completionMessage.hashCode() : 0);
+        result = 31 * result + (targetElement != null ? targetElement.hashCode() : 0);
+        return result;
     }
 }

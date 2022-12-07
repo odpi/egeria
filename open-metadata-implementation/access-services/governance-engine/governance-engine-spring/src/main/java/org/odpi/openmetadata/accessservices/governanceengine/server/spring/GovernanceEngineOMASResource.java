@@ -16,7 +16,9 @@ import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestB
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -386,4 +388,61 @@ public class GovernanceEngineOMASResource
     {
         return restAPI.getActiveClaimedGovernanceActions(serverName, userId, governanceEngineGUID, startFrom, pageSize);
     }
+
+
+
+    /**
+     * Retrieve the list of governance action metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-actions/by-search-string")
+
+    public GovernanceActionElementsResponse findGovernanceActions(@PathVariable String                  serverName,
+                                                                  @PathVariable String                  userId,
+                                                                  @RequestParam int                     startFrom,
+                                                                  @RequestParam int                     pageSize,
+                                                                  @RequestBody SearchStringRequestBody requestBody)
+    {
+        return restAPI.findGovernanceActions(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of governance action metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-actions/by-name")
+
+    public GovernanceActionElementsResponse getGovernanceActionsByName(@PathVariable String          serverName,
+                                                                       @PathVariable String          userId,
+                                                                       @RequestParam int             startFrom,
+                                                                       @RequestParam int             pageSize,
+                                                                       @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getGovernanceActionsByName(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
 }

@@ -149,7 +149,7 @@ public class DataFileRequestBody extends DataFileProperties
                 ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                 ", encodingDescription='" + getEncodingDescription() + '\'' +
                 ", encodingProperties=" + getEncodingProperties() +
-                ", displayName='" + getDisplayName() + '\'' +
+                ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

@@ -65,7 +65,15 @@ public class GovernanceServiceCache
 
             RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
 
-            this.serviceRequestType = registeredGovernanceServiceProperties.getServiceRequestType();
+            if (registeredGovernanceServiceProperties.getServiceRequestType() != null)
+            {
+                this.serviceRequestType = registeredGovernanceServiceProperties.getServiceRequestType();
+            }
+            else
+            {
+                this.serviceRequestType = requestType;
+            }
+
             this.requestParameters  = registeredGovernanceServiceProperties.getRequestParameters();
 
             getNextGovernanceService(); /* validate that the connection works */

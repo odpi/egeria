@@ -152,7 +152,7 @@ public class DatabaseProperties extends DataStoreProperties
         return "DatabaseProperties{" +
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
