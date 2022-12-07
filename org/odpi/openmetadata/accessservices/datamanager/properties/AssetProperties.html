@@ -27,8 +27,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":10,"i1":10,"i2":42,"i3":10,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":10,"i10":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -194,7 +194,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -218,7 +218,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the stored display name property for the asset.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -253,7 +253,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
-<div class="block">Set up the stored display name property for the asset.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -404,7 +404,9 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <ul class="blockList">
 <li class="blockList">
 <h4>getDisplayName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
+<pre class="methodSignature">@Deprecated
+public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Returns the stored display name property for the asset.
  If no display name is available then name is returned.</div>
 <dl>
@@ -419,7 +421,9 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <ul class="blockList">
 <li class="blockList">
 <h4>setDisplayName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDisplayName&#8203;(java.lang.String&nbsp;displayName)</pre>
+<pre class="methodSignature">@Deprecated
+public&nbsp;void&nbsp;setDisplayName&#8203;(java.lang.String&nbsp;displayName)</pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Set up the stored display name property for the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

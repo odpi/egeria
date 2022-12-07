@@ -538,10 +538,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i34" class="altColor">
 <td class="colFirst"><code>abstract void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">recordCompletionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
-                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</code></th>
+                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                      java.lang.String&nbsp;completionMessage)</code></th>
 <td class="colLast">
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
@@ -913,7 +914,7 @@ extends java.lang.Object</pre>
 <dd><code>organization</code> - name of the organization null means any.</dd>
 <dd><code>identifier</code> - identifier of the element in the standard null means any.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>TypeDefs list each entry in the list contains a typedef.  This is is a structure
+<dd>TypeDefs list each entry in the list contains a typedef.  This is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
@@ -937,7 +938,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>searchCriteria</code> - String search criteria.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>TypeDefs list each entry in the list contains a typedef.  This is is a structure
+<dd>TypeDefs list each entry in the list contains a typedef.  This is a structure
  describing the TypeDef's category and properties.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the searchCriteria is null.</dd>
@@ -1411,7 +1412,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>entityTypeGUID</code> - unique identifier for the type of entity requested.  Null means any type of entity
-                       (but could be slow so not recommended.</dd>
+                       (but could be slow so not recommended).</dd>
 <dd><code>classificationName</code> - name of the classification, note a null is not valid.</dd>
 <dd><code>matchClassificationProperties</code> - list of classification properties used to narrow the search (where any String
                                       property's value should be defined as a Java regular expression, even if it
@@ -1807,7 +1808,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">
+<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1816,7 +1817,8 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public abstract&nbsp;void&nbsp;recordCompletionStatus&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                                             java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
                                             java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
-                                            java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)
+                                            java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                                            java.lang.String&nbsp;completionMessage)
                                      throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                             <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1827,6 +1829,7 @@ extends java.lang.Object</pre>
 <dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
 <dd><code>newRequestParameters</code> - additional request parameters.  These override/augment any request parameters defined for the next invoked service</dd>
 <dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
+<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the completion status is null</dd>
 <dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance

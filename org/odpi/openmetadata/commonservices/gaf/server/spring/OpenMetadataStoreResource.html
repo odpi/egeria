@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -287,6 +287,22 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="../../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">RelatedMetadataElementListResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,int)">getAllRelatedMetadataElements</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                             java.lang.String&nbsp;serviceURLMarker,
+                             java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;elementGUID,
+                             boolean&nbsp;forLineage,
+                             boolean&nbsp;forDuplicateProcessing,
+                             long&nbsp;effectiveTime,
+                             int&nbsp;startingAtEnd,
+                             int&nbsp;startFrom,
+                             int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long)">getMetadataElementByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;serviceURLMarker,
@@ -299,7 +315,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMetadataElementByUniqueName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;serviceURLMarker,
@@ -312,7 +328,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMetadataElementGUIDByUniqueName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serviceURLMarker,
@@ -325,7 +341,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">RelatedMetadataElementListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,int)">getRelatedMetadataElements</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serviceURLMarker,
@@ -342,7 +358,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logAssetAuditMessage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">logAssetAuditMessage</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;serviceURLMarker,
@@ -354,7 +370,7 @@ extends java.lang.Object</pre>
 <div class="block">Log an audit message about an asset.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdatePropertiesRequestBody)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;serviceURLMarker,
@@ -366,7 +382,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdateRequestBody)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;serviceURLMarker,
@@ -378,7 +394,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdateEffectivityDatesRequestBody)">updateClassificationEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                       java.lang.String&nbsp;serviceURLMarker,
@@ -390,7 +406,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdateEffectivityDatesRequestBody)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                        java.lang.String&nbsp;serviceURLMarker,
@@ -401,7 +417,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdatePropertiesRequestBody)">updateMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serviceURLMarker,
@@ -412,7 +428,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdateStatusRequestBody)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serviceURLMarker,
@@ -423,7 +439,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdateEffectivityDatesRequestBody)">updateRelatedElementsEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                        java.lang.String&nbsp;serviceURLMarker,
@@ -434,7 +450,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../../ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.rest.UpdatePropertiesRequestBody)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serviceURLMarker,
@@ -648,6 +664,55 @@ public&nbsp;<a href="../../rest/OpenMetadataElementsResponse.html" title="class 
 
   InvalidParameterException the qualified name is null
   UserNotAuthorizedException the governance action service is not able to access the element
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="getAllRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllRelatedMetadataElements</h4>
+<pre class="methodSignature">@GetMapping(path="/related-elements/{elementGUID}")
+public&nbsp;<a href="../../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">RelatedMetadataElementListResponse</a>&nbsp;getAllRelatedMetadataElements&#8203;(@PathVariable
+                                                                        java.lang.String&nbsp;serverName,
+                                                                        @PathVariable
+                                                                        java.lang.String&nbsp;serviceURLMarker,
+                                                                        @PathVariable
+                                                                        java.lang.String&nbsp;userId,
+                                                                        @PathVariable
+                                                                        java.lang.String&nbsp;elementGUID,
+                                                                        @RequestParam
+                                                                        boolean&nbsp;forLineage,
+                                                                        @RequestParam
+                                                                        boolean&nbsp;forDuplicateProcessing,
+                                                                        @RequestParam
+                                                                        long&nbsp;effectiveTime,
+                                                                        @RequestParam
+                                                                        int&nbsp;startingAtEnd,
+                                                                        @RequestParam
+                                                                        int&nbsp;startFrom,
+                                                                        @RequestParam
+                                                                        int&nbsp;pageSize)</pre>
+<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>elementGUID</code> - unique identifier for the starting metadata element</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dd><code>startingAtEnd</code> - indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of related elements
+
+  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
   PropertyServerException there is a problem accessing the metadata store</dd>
 </dl>
 </li>

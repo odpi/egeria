@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -209,75 +209,61 @@ implements java.io.Serializable</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIgnoreMultipleTriggers()">getIgnoreMultipleTriggers</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return whether this action type can be triggered more than once in a single step of the governance action process.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMandatoryGuard()">getMandatoryGuard</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return if the guard must be returned from the previous action for any of the next actions to progress.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNextActionLinkGUID()">getNextActionLinkGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier of the relationship.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNextActionType()">getNextActionType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return details of the next governance action type</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGuard(java.lang.String)">setGuard</a></span>&#8203;(java.lang.String&nbsp;guard)</code></th>
 <td class="colLast">
 <div class="block">Set up the triggering guard (or null for any guard).</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIgnoreMultipleTriggers(boolean)">setIgnoreMultipleTriggers</a></span>&#8203;(boolean&nbsp;ignoreMultipleTriggers)</code></th>
-<td class="colLast">
-<div class="block">Set up whether this action type can be triggered more than once in a single step of the governance action process.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMandatoryGuard(boolean)">setMandatoryGuard</a></span>&#8203;(boolean&nbsp;mandatoryGuard)</code></th>
 <td class="colLast">
 <div class="block">Set up if the guard must be returned from the previous action for any of the next actions to progress.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNextActionLinkGUID(java.lang.String)">setNextActionLinkGUID</a></span>&#8203;(java.lang.String&nbsp;nextActionLinkGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier of the relationship.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNextActionType(org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement)">setNextActionType</a></span>&#8203;(<a href="GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionTypeElement</a>&nbsp;nextActionType)</code></th>
 <td class="colLast">
 <div class="block">Set up details of the next governance action type</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -451,34 +437,6 @@ implements java.io.Serializable</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>mandatoryGuard</code> - boolean flag</dd>
-</dl>
-</li>
-</ul>
-<a id="getIgnoreMultipleTriggers()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getIgnoreMultipleTriggers</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;getIgnoreMultipleTriggers()</pre>
-<div class="block">Return whether this action type can be triggered more than once in a single step of the governance action process.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>boolean flag</dd>
-</dl>
-</li>
-</ul>
-<a id="setIgnoreMultipleTriggers(boolean)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setIgnoreMultipleTriggers</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setIgnoreMultipleTriggers&#8203;(boolean&nbsp;ignoreMultipleTriggers)</pre>
-<div class="block">Set up whether this action type can be triggered more than once in a single step of the governance action process.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>ignoreMultipleTriggers</code> - boolean flag</dd>
 </dl>
 </li>
 </ul>

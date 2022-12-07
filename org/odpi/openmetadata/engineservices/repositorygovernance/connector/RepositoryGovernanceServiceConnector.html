@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -259,20 +259,27 @@ implements <a href="RepositoryGovernanceService.html" title="interface in org.od
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnect()">disconnect</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Free up any resources held since the connector is no longer needed.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorComponentDescription()">getConnectorComponentDescription</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRepositoryGovernanceContext()">getRepositoryGovernanceContext</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the archive context for this archive service.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#handleUnexpectedException(java.lang.String,java.lang.Exception)">handleUnexpectedException</a></span>&#8203;(java.lang.String&nbsp;methodName,
                          java.lang.Exception&nbsp;error)</code></th>
@@ -280,42 +287,42 @@ implements <a href="RepositoryGovernanceService.html" title="interface in org.od
 <div class="block">Provide a common exception for unexpected errors.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a></span>&#8203;(java.util.List&lt;<a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a></span>&#8203;(<a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryGovernanceContext(org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext)">setRepositoryGovernanceContext</a></span>&#8203;(<a href="RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a>&nbsp;repositoryGovernanceContext)</code></th>
 <td class="colLast">
 <div class="block">Set up access to the open metadata ecosystem.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryGovernanceServiceName(java.lang.String)">setRepositoryGovernanceServiceName</a></span>&#8203;(java.lang.String&nbsp;archiveServiceName)</code></th>
 <td class="colLast">
 <div class="block">Set up the archive service name.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Indicates that the archive service is completely configured and can begin processing.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateContext(org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext)">validateContext</a></span>&#8203;(<a href="RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a>&nbsp;governanceContext)</code></th>
 <td class="colLast">
@@ -328,7 +335,7 @@ implements <a href="RepositoryGovernanceService.html" title="interface in org.od
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></li>
+<code><a href="../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.Connector">
@@ -565,7 +572,7 @@ implements <a href="RepositoryGovernanceService.html" title="interface in org.od
 <a id="validateContext(org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>validateContext</h4>
 <pre class="methodSignature">protected&nbsp;void&nbsp;validateContext&#8203;(<a href="RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a>&nbsp;governanceContext)
@@ -577,6 +584,23 @@ implements <a href="RepositoryGovernanceService.html" title="interface in org.od
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - error to say that the connector (governance action service) is not able to proceed because
  it has not been set up correctly.</dd>
+</dl>
+</li>
+</ul>
+<a id="disconnect()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>disconnect</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;disconnect()
+                throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
+<div class="block">Free up any resources held since the connector is no longer needed.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
 </dl>
 </li>
 </ul>

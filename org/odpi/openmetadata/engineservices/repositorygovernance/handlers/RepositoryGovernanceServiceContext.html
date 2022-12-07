@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -497,45 +497,37 @@ extends <a href="../connector/RepositoryGovernanceContext.html" title="class in 
 </tr>
 <tr id="i30" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">recordCompletionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
-                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</code></th>
+                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
+                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                      java.lang.String&nbsp;completionMessage)</code></th>
 <td class="colLast">
 <div class="block">Declare that all the processing for the archive service is finished and the status of the work.</div>
 </td>
 </tr>
 <tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
-                      java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
-                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
-                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</code></th>
-<td class="colLast">
-<div class="block">Declare that all the processing for the archive service is finished and the status of the work.</div>
-</td>
-</tr>
-<tr id="i32" class="altColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicRepositoryEventListener)">registerListener</a></span>&#8203;(<a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicRepositoryEventListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicRepositoryEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata repositories.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#searchForTypeDefs(java.lang.String)">searchForTypeDefs</a></span>&#8203;(java.lang.String&nbsp;searchCriteria)</code></th>
 <td class="colLast">
 <div class="block">Return the TypeDefs that match the search criteria.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRepositoryGovernanceServiceHandler(org.odpi.openmetadata.engineservices.repositorygovernance.handlers.RepositoryGovernanceServiceHandler)">setRepositoryGovernanceServiceHandler</a></span>&#8203;(<a href="RepositoryGovernanceServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.handlers">RepositoryGovernanceServiceHandler</a>&nbsp;archiveServiceHandler)</code></th>
 <td class="colLast">
 <div class="block">Set up the archive service handler.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -1775,33 +1767,7 @@ extends <a href="../connector/RepositoryGovernanceContext.html" title="class in 
 </dl>
 </li>
 </ul>
-<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>recordCompletionStatus</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;recordCompletionStatus&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
-                                   java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
-                                   java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)
-                            throws <a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
-                                   <a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a>,
-                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Declare that all the processing for the archive service is finished and the status of the work.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>status</code> - completion status enum value</dd>
-<dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
-<dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting archive service</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the completion status is null</dd>
-<dd><code><a href="../../../repositoryservices/ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the archive service is not authorized to update the governance
-                                     action service completion status</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">
+<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1810,17 +1776,19 @@ extends <a href="../connector/RepositoryGovernanceContext.html" title="class in 
 <pre class="methodSignature">public&nbsp;void&nbsp;recordCompletionStatus&#8203;(<a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                                    java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
-                                   java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)
+                                   java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                                   java.lang.String&nbsp;completionMessage)
                             throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Declare that all the processing for the archive service is finished and the status of the work.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../connector/RepositoryGovernanceContext.html#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">recordCompletionStatus</a></code>&nbsp;in class&nbsp;<code><a href="../connector/RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a></code></dd>
+<dd><code><a href="../connector/RepositoryGovernanceContext.html#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">recordCompletionStatus</a></code>&nbsp;in class&nbsp;<code><a href="../connector/RepositoryGovernanceContext.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceContext</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>status</code> - completion status enum value</dd>
 <dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
 <dd><code>newRequestParameters</code> - additional request parameters.  These override/augment any request parameters defined for the next invoked service</dd>
 <dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting archive service</dd>
+<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
 </dl>

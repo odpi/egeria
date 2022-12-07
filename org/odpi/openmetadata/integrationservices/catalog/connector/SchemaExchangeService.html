@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -187,6 +187,16 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearSchemaElementRelationship</a></span>&#8203;(java.lang.String&nbsp;endOneGUID,
+                              java.lang.String&nbsp;endTwoGUID,
+                              java.lang.String&nbsp;relationshipName,
+                              java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Remove a relationship between two schema elements.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                      java.lang.String&nbsp;parentElementGUID,
                      java.lang.String&nbsp;parentElementTypeName,
@@ -195,7 +205,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the relationship between a schema type and its parent data asset, process or port.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttribute(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)">createSchemaAttribute</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                      java.lang.String&nbsp;schemaElementGUID,
@@ -206,7 +216,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttributeFromTemplate(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,java.util.Date)">createSchemaAttributeFromTemplate</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                                  java.lang.String&nbsp;schemaElementGUID,
@@ -218,7 +228,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaType(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">createSchemaType</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                 <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
@@ -227,7 +237,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                             java.lang.String&nbsp;templateGUID,
@@ -237,7 +247,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaAttributes(java.lang.String,int,int,java.util.Date)">findSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;searchString,
                     int&nbsp;startFrom,
@@ -247,7 +257,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaType(java.lang.String,int,int,java.util.Date)">findSchemaType</a></span>&#8203;(java.lang.String&nbsp;searchString,
               int&nbsp;startFrom,
@@ -257,7 +267,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedAttributes(java.lang.String,int,int,java.util.Date)">getNestedAttributes</a></span>&#8203;(java.lang.String&nbsp;parentSchemaElementGUID,
                    int&nbsp;startFrom,
@@ -267,7 +277,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attributes associated with a schema element.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String,java.util.Date)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID,
                         java.util.Date&nbsp;effectiveTime)</code></th>
@@ -275,7 +285,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,int,int,java.util.Date)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                          int&nbsp;startFrom,
@@ -285,7 +295,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String,java.util.Date)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                    java.util.Date&nbsp;effectiveTime)</code></th>
@@ -293,7 +303,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,int,int,java.util.Date)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    int&nbsp;startFrom,
@@ -303,7 +313,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String,java.util.Date)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;parentElementGUID,
                        java.lang.String&nbsp;parentElementTypeName,
@@ -312,7 +322,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String,java.util.Date)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                    java.util.Date&nbsp;effectiveTime)</code></th>
@@ -320,21 +330,21 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isForDuplicateProcessing()">isForDuplicateProcessing</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return whether retrieval requests from this service are to avoid merging duplicates or not.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isForLineage()">isForLineage</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String,java.lang.String,java.util.Date)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID,
                      java.lang.String&nbsp;schemaAttributeExternalIdentifier,
@@ -343,7 +353,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String,java.lang.String,java.util.Date)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                 java.lang.String&nbsp;schemaTypeExternalIdentifier,
@@ -352,21 +362,21 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a></span>&#8203;(boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Set up whether retrieval requests from this service are to avoid merging duplicates or not.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setForLineage(boolean)">setForLineage</a></span>&#8203;(boolean&nbsp;forLineage)</code></th>
 <td class="colLast">
 <div class="block">Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSchemaElementAsCalculatedValue(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">setSchemaElementAsCalculatedValue</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                                  java.lang.String&nbsp;schemaElementGUID,
@@ -377,7 +387,7 @@ extends java.lang.Object</pre>
 <div class="block">Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Date)">setupColumnAsPrimaryKey</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
@@ -392,7 +402,7 @@ extends java.lang.Object</pre>
 <div class="block">Classify the column schema attribute to indicate that it describes a primary key.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupForeignKeyRelationship(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)">setupForeignKeyRelationship</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                            java.lang.String&nbsp;primaryKeyGUID,
@@ -403,7 +413,19 @@ extends java.lang.Object</pre>
 <div class="block">Link two schema attributes together to show a foreign key relationship.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">setupSchemaElementRelationship</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
+                              java.lang.String&nbsp;endOneGUID,
+                              java.lang.String&nbsp;endTwoGUID,
+                              java.lang.String&nbsp;relationshipName,
+                              java.util.Date&nbsp;effectiveTime,
+                              <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Create a relationship between two schema elements.</div>
+</td>
+</tr>
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaTypeParent(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)">setupSchemaTypeParent</a></span>&#8203;(boolean&nbsp;assetManagerIsHome,
                      java.lang.String&nbsp;schemaTypeGUID,
@@ -415,7 +437,7 @@ extends java.lang.Object</pre>
 <div class="block">Connect a schema type to a data asset, process or port.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)">updateForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;assetManagerGUID,
@@ -428,7 +450,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the relationship properties for the query target.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID,
                      java.lang.String&nbsp;schemaAttributeExternalIdentifier,
@@ -439,7 +461,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                 java.lang.String&nbsp;schemaTypeExternalIdentifier,
@@ -665,6 +687,65 @@ extends java.lang.Object</pre>
 <dd><code>schemaTypeGUID</code> - unique identifier of the schema type to connect</dd>
 <dd><code>parentElementGUID</code> - unique identifier of the open metadata element that this schema type is to be connected to</dd>
 <dd><code>parentElementTypeName</code> - unique type name of the open metadata element that this schema type is to be connected to</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupSchemaElementRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setupSchemaElementRelationship&#8203;(boolean&nbsp;assetManagerIsHome,
+                                           java.lang.String&nbsp;endOneGUID,
+                                           java.lang.String&nbsp;endTwoGUID,
+                                           java.lang.String&nbsp;relationshipName,
+                                           java.util.Date&nbsp;effectiveTime,
+                                           <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+ are passed on the API.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this relationship</dd>
+<dd><code>endOneGUID</code> - unique identifier of the schema element at end one of the relationship</dd>
+<dd><code>endTwoGUID</code> - unique identifier of the schema element at end two of the relationship</dd>
+<dd><code>relationshipName</code> - name of the relationship to delete</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>properties</code> - relationship properties</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearSchemaElementRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearSchemaElementRelationship&#8203;(java.lang.String&nbsp;endOneGUID,
+                                           java.lang.String&nbsp;endTwoGUID,
+                                           java.lang.String&nbsp;relationshipName,
+                                           java.util.Date&nbsp;effectiveTime)
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>endOneGUID</code> - unique identifier of the schema element at end one of the relationship</dd>
+<dd><code>endTwoGUID</code> - unique identifier of the schema element at end two of the relationship</dd>
+<dd><code>relationshipName</code> - name of the relationship to delete</dd>
 <dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>

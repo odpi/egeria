@@ -213,7 +213,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceActionType(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">createGovernanceActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceActionType(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,boolean,int,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">createGovernanceActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;qualifiedName,
                           int&nbsp;domainIdentifier,
                           java.lang.String&nbsp;displayName,
@@ -223,6 +223,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                           java.lang.String&nbsp;governanceEngineGUID,
                           java.lang.String&nbsp;requestType,
                           java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                          boolean&nbsp;ignoreMultipleTriggers,
+                          int&nbsp;waitTime,
                           java.util.Date&nbsp;effectiveFrom,
                           java.util.Date&nbsp;effectiveTo,
                           boolean&nbsp;forLineage,
@@ -353,12 +355,11 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupNextActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">setupNextActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupNextActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">setupNextActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;currentActionTypeGUID,
                    java.lang.String&nbsp;nextActionTypeGUID,
                    java.lang.String&nbsp;guard,
                    boolean&nbsp;mandatoryGuard,
-                   boolean&nbsp;ignoreMultipleTriggers,
                    java.util.Date&nbsp;effectiveFrom,
                    java.util.Date&nbsp;effectiveTo,
                    boolean&nbsp;forLineage,
@@ -372,7 +373,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionType(java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">updateGovernanceActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionType(java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,boolean,int,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">updateGovernanceActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;actionTypeGUID,
                           boolean&nbsp;isMergeUpdate,
                           java.lang.String&nbsp;qualifiedName,
@@ -384,6 +385,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                           java.lang.String&nbsp;governanceEngineGUID,
                           java.lang.String&nbsp;requestType,
                           java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                          boolean&nbsp;ignoreMultipleTriggers,
+                          int&nbsp;waitTime,
                           java.util.Date&nbsp;effectiveFrom,
                           java.util.Date&nbsp;effectiveTo,
                           boolean&nbsp;forLineage,
@@ -396,11 +399,10 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateNextActionType(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.lang.String)">updateNextActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateNextActionType(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String)">updateNextActionType</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;nextActionLinkGUID,
                     java.lang.String&nbsp;guard,
                     boolean&nbsp;mandatoryGuard,
-                    boolean&nbsp;ignoreMultipleTriggers,
                     java.util.Date&nbsp;effectiveFrom,
                     java.util.Date&nbsp;effectiveTo,
                     java.lang.String&nbsp;methodName)</code></th>
@@ -488,7 +490,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createGovernanceActionType(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="createGovernanceActionType(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,boolean,int,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -504,6 +506,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                                                    java.lang.String&nbsp;governanceEngineGUID,
                                                    java.lang.String&nbsp;requestType,
                                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                                                   boolean&nbsp;ignoreMultipleTriggers,
+                                                   int&nbsp;waitTime,
                                                    java.util.Date&nbsp;effectiveFrom,
                                                    java.util.Date&nbsp;effectiveTo,
                                                    boolean&nbsp;forLineage,
@@ -526,6 +530,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 <dd><code>governanceEngineGUID</code> - unique identifier of governance engine to execute the request</dd>
 <dd><code>requestType</code> - type of request</dd>
 <dd><code>requestParameters</code> - properties for the request type</dd>
+<dd><code>ignoreMultipleTriggers</code> - prevent multiple instances of the next step to run (or not)</dd>
+<dd><code>waitTime</code> - minimum number of minutes to wait before running the governance action</dd>
 <dd><code>effectiveFrom</code> - starting time for this relationship (null for all time)</dd>
 <dd><code>effectiveTo</code> - ending time for this relationship</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
@@ -541,7 +547,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </dl>
 </li>
 </ul>
-<a id="updateGovernanceActionType(java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="updateGovernanceActionType(java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String,java.lang.String,java.util.Map,boolean,int,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -559,6 +565,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                                        java.lang.String&nbsp;governanceEngineGUID,
                                        java.lang.String&nbsp;requestType,
                                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                                       boolean&nbsp;ignoreMultipleTriggers,
+                                       int&nbsp;waitTime,
                                        java.util.Date&nbsp;effectiveFrom,
                                        java.util.Date&nbsp;effectiveTo,
                                        boolean&nbsp;forLineage,
@@ -583,6 +591,8 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 <dd><code>governanceEngineGUID</code> - unique identifier of governance engine to execute the request</dd>
 <dd><code>requestType</code> - type of request</dd>
 <dd><code>requestParameters</code> - properties for the request type</dd>
+<dd><code>ignoreMultipleTriggers</code> - prevent multiple instances of the next step to run (or not)</dd>
+<dd><code>waitTime</code> - minimum number of minutes to wait before running the governance action</dd>
 <dd><code>effectiveFrom</code> - starting time for this relationship (null for all time)</dd>
 <dd><code>effectiveTo</code> - ending time for this relationship</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
@@ -859,7 +869,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </dl>
 </li>
 </ul>
-<a id="setupNextActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<a id="setupNextActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -870,7 +880,6 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                                             java.lang.String&nbsp;nextActionTypeGUID,
                                             java.lang.String&nbsp;guard,
                                             boolean&nbsp;mandatoryGuard,
-                                            boolean&nbsp;ignoreMultipleTriggers,
                                             java.util.Date&nbsp;effectiveFrom,
                                             java.util.Date&nbsp;effectiveTo,
                                             boolean&nbsp;forLineage,
@@ -889,7 +898,6 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 <dd><code>nextActionTypeGUID</code> - unique identifier of the governance action type that defines the next step in the governance action process</dd>
 <dd><code>guard</code> - guard required for this next step to proceed - or null for always run the next step.</dd>
 <dd><code>mandatoryGuard</code> - means that no next steps can run if this guard is not returned</dd>
-<dd><code>ignoreMultipleTriggers</code> - prevent multiple instances of the next step to run (or not)</dd>
 <dd><code>effectiveFrom</code> - starting time for this relationship (null for all time)</dd>
 <dd><code>effectiveTo</code> - ending time for this relationship</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
@@ -905,7 +913,7 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 </dl>
 </li>
 </ul>
-<a id="updateNextActionType(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.lang.String)">
+<a id="updateNextActionType(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -915,7 +923,6 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
                                  java.lang.String&nbsp;nextActionLinkGUID,
                                  java.lang.String&nbsp;guard,
                                  boolean&nbsp;mandatoryGuard,
-                                 boolean&nbsp;ignoreMultipleTriggers,
                                  java.util.Date&nbsp;effectiveFrom,
                                  java.util.Date&nbsp;effectiveTo,
                                  java.lang.String&nbsp;methodName)
@@ -930,7 +937,6 @@ extends <a href="OpenMetadataAPIGenericHandler.html" title="class in org.odpi.op
 <dd><code>nextActionLinkGUID</code> - unique identifier of the relationship between the governance action types</dd>
 <dd><code>guard</code> - guard required for this next step to proceed - or null for always run the next step.</dd>
 <dd><code>mandatoryGuard</code> - means that no next steps can run if this guard is not returned</dd>
-<dd><code>ignoreMultipleTriggers</code> - prevent multiple instances of the next step to run (or not)</dd>
 <dd><code>effectiveFrom</code> - starting time for this relationship (null for all time)</dd>
 <dd><code>effectiveTo</code> - ending time for this relationship</dd>
 <dd><code>methodName</code> - calling method</dd>

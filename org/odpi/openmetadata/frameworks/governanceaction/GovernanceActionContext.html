@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -473,34 +473,41 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </td>
 </tr>
 <tr id="i25" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActionGUID()">getGovernanceActionGUID</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier of the governance action that this service request is associated with.</div>
+</td>
+</tr>
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="OpenMetadataStore.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOpenMetadataStore()">getOpenMetadataStore</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the client to access metadata from the open metadata repositories.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestParameters()">getRequestParameters</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties that hold the parameters used to drive the governance action service's processing.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestSourceElements()">getRequestSourceElements</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of metadata elements associated with the request to the governance action service.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the unique identifier of the asset being discovered.</div>
+<div class="block">Return the type of request.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                         int&nbsp;domainIdentifier,
@@ -517,7 +524,25 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
  associated with the supplied request type.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
+                        int&nbsp;domainIdentifier,
+                        java.lang.String&nbsp;displayName,
+                        java.lang.String&nbsp;description,
+                        java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
+                        java.util.List&lt;<a href="properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
+                        java.util.Date&nbsp;startTime,
+                        java.lang.String&nbsp;governanceEngineName,
+                        java.lang.String&nbsp;requestType,
+                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                        java.lang.String&nbsp;processName)</code></th>
+<td class="colLast">
+<div class="block">Create a governance action in the metadata store which will trigger the governance action service
+ associated with the supplied request type.</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.util.Map,java.util.List,java.util.List,java.util.Date)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;processQualifiedName,
                                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
@@ -528,7 +553,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;consolidatedElementGUID,
                          int&nbsp;statusIdentifier,
@@ -542,7 +567,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;metadataElement1GUID,
                             java.lang.String&nbsp;metadataElement2GUID,
@@ -557,7 +582,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Link elements as peer duplicates.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String)">openToDo</a></span>&#8203;(java.lang.String&nbsp;toDoQualifiedName,
         java.lang.String&nbsp;title,
@@ -569,7 +594,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a To-Do request for someone to work on.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElement(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">reclassifyMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                          java.lang.String&nbsp;classificationName,
@@ -582,7 +607,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards)</code></th>
@@ -590,7 +615,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
@@ -599,7 +624,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
@@ -609,7 +634,18 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i40" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">recordCompletionStatus</a></span>&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
+                      java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
+                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
+                      java.util.List&lt;<a href="properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                      java.lang.String&nbsp;completionMessage)</code></th>
+<td class="colLast">
+<div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
+</td>
+</tr>
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener,java.util.List,java.util.List,java.lang.String)">registerListener</a></span>&#8203;(<a href="WatchdogGovernanceListener.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceListener</a>&nbsp;listener,
                 java.util.List&lt;<a href="events/WatchdogEventType.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogEventType</a>&gt;&nbsp;interestingEventTypes,
@@ -619,14 +655,14 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata store.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Standard toString method.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElement(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">unclassifyMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                          java.lang.String&nbsp;classificationName,
@@ -637,17 +673,18 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;actionTargetGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date,java.lang.String)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;actionTargetGUID,
                         <a href="properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
                         java.util.Date&nbsp;startDate,
-                        java.util.Date&nbsp;completionDate)</code></th>
+                        java.util.Date&nbsp;completionDate,
+                        java.lang.String&nbsp;completionMessage)</code></th>
 <td class="colLast">
 <div class="block">Update the status of a specific action target.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationStatus(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateClassificationStatus</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                           java.lang.String&nbsp;classificationName,
@@ -660,7 +697,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElement(java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateMetadataElement</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                      boolean&nbsp;replaceProperties,
@@ -672,7 +709,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties of a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivity(java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateMetadataElementEffectivity</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                                 boolean&nbsp;forLineage,
@@ -684,7 +721,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatus(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)">updateMetadataElementStatus</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                            boolean&nbsp;forLineage,
@@ -695,7 +732,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElements(java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateRelatedElements</a></span>&#8203;(java.lang.String&nbsp;relationshipGUID,
                      boolean&nbsp;replaceProperties,
@@ -707,7 +744,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Update the properties associated with a relationship.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsStatus(java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateRelatedElementsStatus</a></span>&#8203;(java.lang.String&nbsp;relationshipGUID,
                            boolean&nbsp;forLineage,
@@ -779,6 +816,22 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getGovernanceActionGUID()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceActionGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGovernanceActionGUID()</pre>
+<div class="block">Return the unique identifier of the governance action that this service request is associated with.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="GovernanceContext.html#getGovernanceActionGUID()">getGovernanceActionGUID</a></code>&nbsp;in interface&nbsp;<code><a href="GovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceContext</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string guid</dd>
+</dl>
+</li>
+</ul>
 <a id="getRequestType()">
 <!--   -->
 </a>
@@ -786,7 +839,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <li class="blockList">
 <h4>getRequestType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRequestType()</pre>
-<div class="block">Return the unique identifier of the asset being discovered.</div>
+<div class="block">Return the type of request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="GovernanceContext.html#getRequestType()">getRequestType</a></code>&nbsp;in interface&nbsp;<code><a href="GovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceContext</a></code></dd>
@@ -900,7 +953,7 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </dl>
 </li>
 </ul>
-<a id="updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">
+<a id="updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -909,7 +962,8 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <pre class="methodSignature">public&nbsp;void&nbsp;updateActionTargetStatus&#8203;(java.lang.String&nbsp;actionTargetGUID,
                                      <a href="properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
                                      java.util.Date&nbsp;startDate,
-                                     java.util.Date&nbsp;completionDate)
+                                     java.util.Date&nbsp;completionDate,
+                                     java.lang.String&nbsp;completionMessage)
                               throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -919,12 +973,13 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
  governance action service.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="GovernanceContext.html#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">updateActionTargetStatus</a></code>&nbsp;in interface&nbsp;<code><a href="GovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceContext</a></code></dd>
+<dd><code><a href="GovernanceContext.html#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date,java.lang.String)">updateActionTargetStatus</a></code>&nbsp;in interface&nbsp;<code><a href="GovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceContext</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>actionTargetGUID</code> - unique identifier of the governance action service.</dd>
 <dd><code>status</code> - status enum to show its progress</dd>
 <dd><code>startDate</code> - date/time that the governance action service started processing the target</dd>
 <dd><code>completionDate</code> - date/time that the governance process completed processing this target.</dd>
+<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the action target GUID is not recognized</dd>
 <dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the action target properties</dd>
@@ -1008,6 +1063,38 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
 <dd><code>newRequestParameters</code> - additional request parameters.  These override/augment any request parameters defined for the next invoked service</dd>
 <dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the completion status is null</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance
+                                     action service completion status</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>recordCompletionStatus</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;recordCompletionStatus&#8203;(<a href="properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
+                                   java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
+                                   java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;newRequestParameters,
+                                   java.util.List&lt;<a href="properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+                                   java.lang.String&nbsp;completionMessage)
+                            throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="GovernanceContext.html#recordCompletionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.Map,java.util.List,java.lang.String)">recordCompletionStatus</a></code>&nbsp;in interface&nbsp;<code><a href="GovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">GovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>status</code> - completion status enum value</dd>
+<dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
+<dd><code>newRequestParameters</code> - additional request parameters.  These override/augment any request parameters defined for the next invoked service</dd>
+<dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
+<dd><code>completionMessage</code> - message to describe completion results or reasons for failure</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the completion status is null</dd>
 <dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance
@@ -2263,6 +2350,53 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <dd><code>governanceEngineName</code> - name of the governance engine to run the request</dd>
 <dd><code>requestType</code> - request type to identify the governance action service to run</dd>
 <dd><code>requestParameters</code> - properties to pass to the governance action service</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the governance action</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null qualified name</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a governance action</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="initiateGovernanceAction(java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>initiateGovernanceAction</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;initiateGovernanceAction&#8203;(java.lang.String&nbsp;qualifiedName,
+                                                 int&nbsp;domainIdentifier,
+                                                 java.lang.String&nbsp;displayName,
+                                                 java.lang.String&nbsp;description,
+                                                 java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
+                                                 java.util.List&lt;<a href="properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
+                                                 java.util.Date&nbsp;startTime,
+                                                 java.lang.String&nbsp;governanceEngineName,
+                                                 java.lang.String&nbsp;requestType,
+                                                 java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
+                                                 java.lang.String&nbsp;processName)
+                                          throws <a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a governance action in the metadata store which will trigger the governance action service
+ associated with the supplied request type.  The governance action remains to act as a record
+ of the actions taken for auditing.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="WatchdogGovernanceContext.html#initiateGovernanceAction(java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String)">initiateGovernanceAction</a></code>&nbsp;in interface&nbsp;<code><a href="WatchdogGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">WatchdogGovernanceContext</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>qualifiedName</code> - unique identifier to give this governance action</dd>
+<dd><code>domainIdentifier</code> - governance domain associated with this action (0=ALL)</dd>
+<dd><code>displayName</code> - display name for this action</dd>
+<dd><code>description</code> - description for this action</dd>
+<dd><code>requestSourceGUIDs</code> - request source elements for the resulting governance action service</dd>
+<dd><code>actionTargets</code> - map of action target names to GUIDs for the resulting governance action service</dd>
+<dd><code>startTime</code> - future start time or null for "as soon as possible".</dd>
+<dd><code>governanceEngineName</code> - name of the governance engine to run the request</dd>
+<dd><code>requestType</code> - request type to identify the governance action service to run</dd>
+<dd><code>requestParameters</code> - properties to pass to the governance action service</dd>
+<dd><code>processName</code> - name of the process that this action is a part of</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the governance action</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

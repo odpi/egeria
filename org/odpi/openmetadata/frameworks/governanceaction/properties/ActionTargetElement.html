@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -123,7 +123,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -136,8 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">ActionTargetElement</span>
-extends java.lang.Object
-implements java.io.Serializable</pre>
+extends <a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a></pre>
 <div class="block">ActionTargetElement describes an element that a governance action service should process.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -201,97 +205,83 @@ implements java.io.Serializable</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActionTargetGUID()">getActionTargetGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier for this action target.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActionTargetName()">getActionTargetName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the name assigned to this action target.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.Date</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionDate()">getCompletionDate</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the date/time when the governance action service stopped processing this target element.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionMessage()">getCompletionMessage</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the optional message from the running governance service supplied on its completion.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.Date</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStartDate()">getStartDate</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the date/time when the governance action service started processing this target element.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStatus()">getStatus</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the current status of the action target.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTargetElement()">getTargetElement</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return details of the target element that the governance action service is to process.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Create a hash code for this element type.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setActionTargetGUID(java.lang.String)">setActionTargetGUID</a></span>&#8203;(java.lang.String&nbsp;actionTargetGUID)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique identifier for this action target.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setActionTargetName(java.lang.String)">setActionTargetName</a></span>&#8203;(java.lang.String&nbsp;actionTargetName)</code></th>
-<td class="colLast">
-<div class="block">Set up the name assigned to this action target.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCompletionDate(java.util.Date)">setCompletionDate</a></span>&#8203;(java.util.Date&nbsp;completionDate)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time when the governance action service stopped processing this target element.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCompletionMessage(java.lang.String)">setCompletionMessage</a></span>&#8203;(java.lang.String&nbsp;completionMessage)</code></th>
+<td class="colLast">
+<div class="block">Set up optional message from the running governance service supplied on its completion.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStartDate(java.util.Date)">setStartDate</a></span>&#8203;(java.util.Date&nbsp;startDate)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time when the governance action service started processing this target element.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus)">setStatus</a></span>&#8203;(<a href="GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status)</code></th>
 <td class="colLast">
 <div class="block">Set up current status of the action target.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTargetElement(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement)">setTargetElement</a></span>&#8203;(<a href="OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;targetElement)</code></th>
 <td class="colLast">
 <div class="block">Set up details of the target element that the governance action service is to process.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -299,6 +289,13 @@ implements java.io.Serializable</pre>
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.<a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a></h3>
+<code><a href="NewActionTarget.html#getActionTargetGUID()">getActionTargetGUID</a>, <a href="NewActionTarget.html#getActionTargetName()">getActionTargetName</a>, <a href="NewActionTarget.html#setActionTargetGUID(java.lang.String)">setActionTargetGUID</a>, <a href="NewActionTarget.html#setActionTargetName(java.lang.String)">setActionTargetName</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -357,62 +354,6 @@ implements java.io.Serializable</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getActionTargetName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getActionTargetName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getActionTargetName()</pre>
-<div class="block">Return the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string name</dd>
-</dl>
-</li>
-</ul>
-<a id="setActionTargetName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setActionTargetName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setActionTargetName&#8203;(java.lang.String&nbsp;actionTargetName)</pre>
-<div class="block">Set up the name assigned to this action target.  This name helps to guide the governance service in its processing of this action target.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>actionTargetName</code> - string name</dd>
-</dl>
-</li>
-</ul>
-<a id="getActionTargetGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getActionTargetGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getActionTargetGUID()</pre>
-<div class="block">Return the unique identifier for this action target.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string identifier</dd>
-</dl>
-</li>
-</ul>
-<a id="setActionTargetGUID(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setActionTargetGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setActionTargetGUID&#8203;(java.lang.String&nbsp;actionTargetGUID)</pre>
-<div class="block">Set up the unique identifier for this action target.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>actionTargetGUID</code> - string identifier</dd>
-</dl>
-</li>
-</ul>
 <a id="getStatus()">
 <!--   -->
 </a>
@@ -421,7 +362,7 @@ implements java.io.Serializable</pre>
 <h4>getStatus</h4>
 <pre class="methodSignature">public&nbsp;<a href="GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;getStatus()</pre>
 <div class="block">Return the current status of the action target.  The default value is the status is derived from
- the governance action service.  However if it has to process many target elements, then these values can
+ the governance action service.  However, if it has to process many target elements, then these values can
  be used to show progress.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -437,7 +378,7 @@ implements java.io.Serializable</pre>
 <h4>setStatus</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setStatus&#8203;(<a href="GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status)</pre>
 <div class="block">Set up current status of the action target.  The default value is the status is derived from
- the governance action service.  However if it has to process many target elements, then these values can
+ the governance action service.  However, if it has to process many target elements, then these values can
  be used to show progress.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -453,7 +394,7 @@ implements java.io.Serializable</pre>
 <h4>getStartDate</h4>
 <pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getStartDate()</pre>
 <div class="block">Return the date/time when the governance action service started processing this target element. By default,
- this value is derived from the startDate for the governance action service.  However if it has to process many target elements, then these values can
+ this value is derived from the startDate for the governance action service.  However, if it has to process many target elements, then these values can
  be used to show progress.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -469,7 +410,7 @@ implements java.io.Serializable</pre>
 <h4>setStartDate</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setStartDate&#8203;(java.util.Date&nbsp;startDate)</pre>
 <div class="block">Set up the date/time when the governance action service started processing this target element. By default,
- this value is derived from the startDate for the governance action service.  However if it has to process many target
+ this value is derived from the startDate for the governance action service.  However, if it has to process many target
  elements, then these values can be used to show progress.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -485,7 +426,7 @@ implements java.io.Serializable</pre>
 <h4>getCompletionDate</h4>
 <pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getCompletionDate()</pre>
 <div class="block">Return the date/time when the governance action service stopped processing this target element. By default,
- this value is derived from the completionDate for the governance action service.  However if it has to process
+ this value is derived from the completionDate for the governance action service.  However, if it has to process
  many target elements, then these values can be used to show progress.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -501,11 +442,39 @@ implements java.io.Serializable</pre>
 <h4>setCompletionDate</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setCompletionDate&#8203;(java.util.Date&nbsp;completionDate)</pre>
 <div class="block">Set up the date/time when the governance action service stopped processing this target element. By default,
- this value is derived from the completionDate for the governance action service.  However if it has to process
+ this value is derived from the completionDate for the governance action service.  However, if it has to process
  many target elements, then these values can be used to show progress.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>completionDate</code> - date object</dd>
+</dl>
+</li>
+</ul>
+<a id="getCompletionMessage()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCompletionMessage</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getCompletionMessage()</pre>
+<div class="block">Return the optional message from the running governance service supplied on its completion.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string message</dd>
+</dl>
+</li>
+</ul>
+<a id="setCompletionMessage(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setCompletionMessage</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setCompletionMessage&#8203;(java.lang.String&nbsp;completionMessage)</pre>
+<div class="block">Set up optional message from the running governance service supplied on its completion.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>completionMessage</code> - string message</dd>
 </dl>
 </li>
 </ul>
@@ -547,7 +516,7 @@ implements java.io.Serializable</pre>
 <div class="block">Standard toString method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="NewActionTarget.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -563,7 +532,7 @@ implements java.io.Serializable</pre>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="NewActionTarget.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -581,7 +550,7 @@ implements java.io.Serializable</pre>
 <div class="block">Create a hash code for this element type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="NewActionTarget.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int hash code</dd>
 </dl>

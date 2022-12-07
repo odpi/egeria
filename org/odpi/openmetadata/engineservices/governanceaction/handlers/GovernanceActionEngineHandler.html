@@ -219,8 +219,9 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../governanceservers/enginehostservices/admin/GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></span>&#8203;(java.lang.String&nbsp;governanceActionGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#runGovernanceService(java.lang.String,java.lang.String,java.util.Date,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></span>&#8203;(java.lang.String&nbsp;governanceActionGUID,
                     java.lang.String&nbsp;governanceRequestType,
+                    java.util.Date&nbsp;startDate,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                     java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</code></th>
@@ -322,7 +323,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 </dl>
 </li>
 </ul>
-<a id="runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">
+<a id="runGovernanceService(java.lang.String,java.lang.String,java.util.Date,java.util.Map,java.util.List,java.util.List)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -330,6 +331,7 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <h4>runGovernanceService</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../../governanceservers/enginehostservices/admin/GovernanceServiceHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceServiceHandler</a>&nbsp;runGovernanceService&#8203;(java.lang.String&nbsp;governanceActionGUID,
                                                      java.lang.String&nbsp;governanceRequestType,
+                                                     java.util.Date&nbsp;startDate,
                                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements,
                                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)
@@ -338,10 +340,11 @@ extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceE
 <div class="block">Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#runGovernanceService(java.lang.String,java.lang.String,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></dd>
+<dd><code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#runGovernanceService(java.lang.String,java.lang.String,java.util.Date,java.util.Map,java.util.List,java.util.List)">runGovernanceService</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>governanceActionGUID</code> - unique identifier of the asset to analyse</dd>
 <dd><code>governanceRequestType</code> - governance request type to use when calling the governance engine</dd>
+<dd><code>startDate</code> - date/time to start the governance action service</dd>
 <dd><code>requestParameters</code> - name-value properties to control the governance action service</dd>
 <dd><code>requestSourceElements</code> - metadata elements associated with the request to the governance action service</dd>
 <dd><code>actionTargetElements</code> - metadata elements that need to be worked on by the governance action service</dd>

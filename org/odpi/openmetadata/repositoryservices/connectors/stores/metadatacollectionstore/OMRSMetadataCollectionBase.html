@@ -1244,7 +1244,7 @@ extends <a href="OMRSMetadataCollection.html" title="class in org.odpi.openmetad
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isRelationshipKnown(java.lang.String,java.lang.String)">isRelationshipKnown</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
-<div class="block">Returns a boolean indicating if the relationship is stored in the metadata collection.</div>
+<div class="block">Returns a relationship indicating if the relationship is stored in the metadata collection.</div>
 </td>
 </tr>
 <tr id="i91" class="rowColor">
@@ -3943,7 +3943,8 @@ extends <a href="OMRSMetadataCollection.html" title="class in org.odpi.openmetad
                            throws <a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                   <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                   <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Returns the entity if the entity is stored in the metadata collection, otherwise null.</div>
+<div class="block">Returns the entity if the entity is stored in the metadata collection, otherwise null.
+ Notice that entities in DELETED state are returned by this call.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="OMRSMetadataCollection.html#isEntityKnown(java.lang.String,java.lang.String)">isEntityKnown</a></code>&nbsp;in class&nbsp;<code><a href="OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
@@ -4447,7 +4448,8 @@ extends <a href="OMRSMetadataCollection.html" title="class in org.odpi.openmetad
                                  throws <a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                         <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                         <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
-<div class="block">Returns a boolean indicating if the relationship is stored in the metadata collection.</div>
+<div class="block">Returns a relationship indicating if the relationship is stored in the metadata collection.
+ Notice that relationships in DELETED state are returned by this call.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="OMRSMetadataCollection.html#isRelationshipKnown(java.lang.String,java.lang.String)">isRelationshipKnown</a></code>&nbsp;in class&nbsp;<code><a href="OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>

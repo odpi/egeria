@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -123,7 +123,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">org.odpi.openmetadata.accessservices.governanceengine.properties.ReferenceableProperties</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -136,9 +141,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">GovernanceActionElement</span>
-extends java.lang.Object
+extends <a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">ReferenceableProperties</a>
 implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">MetadataElement</a>, java.io.Serializable</pre>
-<div class="block">GovernanceActionTypeElement contains the properties and header for an entity retrieved from the metadata
+<div class="block">GovernanceActionTypeElement contains the properties and header for a GovernanceAction entity retrieved from the metadata
  repository that represents a governance action type (plus relevant relationships and properties).</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -201,41 +206,349 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActionStatus()">getActionStatus</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the current status of the governance action.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActionTargetElements()">getActionTargetElements</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of elements that the governance action will work on.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionGuards()">getCompletionGuards</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of completion guards supplied by the governance service.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionMessage()">getCompletionMessage</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the optional message from the running governance service supplied on its completion.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.Date</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCompletionTime()">getCompletionTime</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the date/time that the governance service completed (or null if not yet completed).</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the description of the governance action.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the display name for the governance action.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDomainIdentifier()">getDomainIdentifier</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../properties/GovernanceActionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceActionProperties</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProperties()">getProperties</a></span>()</code></th>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFollowOnActions()">getFollowOnActions</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the properties of the governance action.</div>
+<div class="block">Return the list of governance actions that will run after this governance action has completed.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActionTypeGUID()">getGovernanceActionTypeGUID</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActionTypeName()">getGovernanceActionTypeName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceEngineGUID()">getGovernanceEngineGUID</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
+</td>
+</tr>
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceEngineName()">getGovernanceEngineName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique name of governance engine that is processing the governance action.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMandatoryGuards()">getMandatoryGuards</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of guards that must be received before this governance action can proceed.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPreviousActions()">getPreviousActions</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of governance actions that preceded this governance action.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessingEngineUserId()">getProcessingEngineUserId</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessName()">getProcessName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the name of the governance action process - or similar request source.</div>
+</td>
+</tr>
+<tr id="i19" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReceivedGuards()">getReceivedGuards</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of guards provided by the previous governance service(s).</div>
+</td>
+</tr>
+<tr id="i20" class="altColor">
+<td class="colFirst"><code>java.util.Date</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestedTime()">getRequestedTime</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the time that the governance action was created.</div>
+</td>
+</tr>
+<tr id="i21" class="rowColor">
+<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestParameters()">getRequestParameters</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the parameters to pass onto the governance service.</div>
+</td>
+</tr>
+<tr id="i22" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestSourceElements()">getRequestSourceElements</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the list of elements that triggered this request.</div>
+</td>
+</tr>
+<tr id="i23" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the governance request type used to call the governance service via this governance engine.</div>
+</td>
+</tr>
+<tr id="i24" class="altColor">
+<td class="colFirst"><code>java.util.Date</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStartTime()">getStartTime</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the time that this governance action should start (null means as soon as possible).</div>
+</td>
+</tr>
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i26" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setActionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus)">setActionStatus</a></span>&#8203;(<a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;actionStatus)</code></th>
+<td class="colLast">
+<div class="block">Set up the current status of the governance action.</div>
+</td>
+</tr>
+<tr id="i27" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setActionTargetElements(java.util.List)">setActionTargetElements</a></span>&#8203;(java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of elements that the governance action will work on.</div>
+</td>
+</tr>
+<tr id="i28" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCompletionGuards(java.util.List)">setCompletionGuards</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;completionGuards)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of completion guards supplied by the governance service.</div>
+</td>
+</tr>
+<tr id="i29" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCompletionMessage(java.lang.String)">setCompletionMessage</a></span>&#8203;(java.lang.String&nbsp;completionMessage)</code></th>
+<td class="colLast">
+<div class="block">Set up optional message from the running governance service supplied on its completion.</div>
+</td>
+</tr>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCompletionTime(java.util.Date)">setCompletionTime</a></span>&#8203;(java.util.Date&nbsp;completionTime)</code></th>
+<td class="colLast">
+<div class="block">Set up the date/time that the governance service completed (or null if not yet completed).</div>
+</td>
+</tr>
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
+<td class="colLast">
+<div class="block">Set up the description of the governance action.</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
+<td class="colLast">
+<div class="block">Set up the display name for the governance action.</div>
+</td>
+</tr>
+<tr id="i33" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDomainIdentifier(int)">setDomainIdentifier</a></span>&#8203;(int&nbsp;domainIdentifier)</code></th>
+<td class="colLast">
+<div class="block">Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
+</td>
+</tr>
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties)">setProperties</a></span>&#8203;(<a href="../properties/GovernanceActionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceActionProperties</a>&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setFollowOnActions(java.util.List)">setFollowOnActions</a></span>&#8203;(java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;followOnActions)</code></th>
 <td class="colLast">
-<div class="block">Set up the properties of the governance action.</div>
+<div class="block">Set up the list of governance actions that will run after this governance action has completed.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i36" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceActionTypeGUID(java.lang.String)">setGovernanceActionTypeGUID</a></span>&#8203;(java.lang.String&nbsp;governanceActionTypeGUID)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+</td>
+</tr>
+<tr id="i37" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceActionTypeName(java.lang.String)">setGovernanceActionTypeName</a></span>&#8203;(java.lang.String&nbsp;governanceActionTypeName)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+</td>
+</tr>
+<tr id="i38" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceEngineGUID(java.lang.String)">setGovernanceEngineGUID</a></span>&#8203;(java.lang.String&nbsp;governanceEngineGUID)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
+</td>
+</tr>
+<tr id="i39" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceEngineName(java.lang.String)">setGovernanceEngineName</a></span>&#8203;(java.lang.String&nbsp;governanceEngineName)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique name of governance engine that is processing the governance action.</div>
+</td>
+</tr>
+<tr id="i40" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMandatoryGuards(java.util.List)">setMandatoryGuards</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;mandatoryGuards)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of guards that must be received before this governance action can proceed.</div>
+</td>
+</tr>
+<tr id="i41" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPreviousActions(java.util.List)">setPreviousActions</a></span>&#8203;(java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;previousActions)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of governance actions that preceded this governance action.</div>
+</td>
+</tr>
+<tr id="i42" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProcessingEngineUserId(java.lang.String)">setProcessingEngineUserId</a></span>&#8203;(java.lang.String&nbsp;processingEngineUserId)</code></th>
+<td class="colLast">
+<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+</td>
+</tr>
+<tr id="i43" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProcessName(java.lang.String)">setProcessName</a></span>&#8203;(java.lang.String&nbsp;processName)</code></th>
+<td class="colLast">
+<div class="block">Set up the name of the governance action process - or similar request source.</div>
+</td>
+</tr>
+<tr id="i44" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setReceivedGuards(java.util.List)">setReceivedGuards</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;receivedGuards)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of guards provided by the previous governance service(s).</div>
+</td>
+</tr>
+<tr id="i45" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestedTime(java.util.Date)">setRequestedTime</a></span>&#8203;(java.util.Date&nbsp;requestedTime)</code></th>
+<td class="colLast">
+<div class="block">Set up the time that the governance action was created.</div>
+</td>
+</tr>
+<tr id="i46" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestParameters(java.util.Map)">setRequestParameters</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)</code></th>
+<td class="colLast">
+<div class="block">Set up the parameters to pass onto the governance service.</div>
+</td>
+</tr>
+<tr id="i47" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestSourceElements(java.util.List)">setRequestSourceElements</a></span>&#8203;(java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements)</code></th>
+<td class="colLast">
+<div class="block">Set up the list of elements that triggered this request.</div>
+</td>
+</tr>
+<tr id="i48" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestType(java.lang.String)">setRequestType</a></span>&#8203;(java.lang.String&nbsp;requestType)</code></th>
+<td class="colLast">
+<div class="block">Set up the governance request type used to call the governance service via this governance engine.</div>
+</td>
+</tr>
+<tr id="i49" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStartTime(java.util.Date)">setStartTime</a></span>&#8203;(java.util.Date&nbsp;startTime)</code></th>
+<td class="colLast">
+<div class="block">Set up the time that this governance action should start (null means as soon as possible).</div>
+</td>
+</tr>
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -243,6 +556,13 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceengine.properties.ReferenceableProperties">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceengine.properties.<a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">ReferenceableProperties</a></h3>
+<code><a href="../properties/ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../properties/ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../properties/ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../properties/ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -332,31 +652,647 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </dl>
 </li>
 </ul>
-<a id="getProperties()">
+<a id="getDomainIdentifier()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getProperties</h4>
-<pre class="methodSignature">public&nbsp;<a href="../properties/GovernanceActionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceActionProperties</a>&nbsp;getProperties()</pre>
-<div class="block">Return the properties of the governance action.</div>
+<h4>getDomainIdentifier</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getDomainIdentifier()</pre>
+<div class="block">Return the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>properties bean</dd>
+<dd>int</dd>
 </dl>
 </li>
 </ul>
-<a id="setProperties(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties)">
+<a id="setDomainIdentifier(int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setProperties</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setProperties&#8203;(<a href="../properties/GovernanceActionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceActionProperties</a>&nbsp;properties)</pre>
-<div class="block">Set up the properties of the governance action.</div>
+<h4>setDomainIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDomainIdentifier&#8203;(int&nbsp;domainIdentifier)</pre>
+<div class="block">Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>properties</code> - properties bean</dd>
+<dd><code>domainIdentifier</code> - int</dd>
+</dl>
+</li>
+</ul>
+<a id="getDisplayName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDisplayName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
+<div class="block">Return the display name for the governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
+<a id="setDisplayName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setDisplayName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDisplayName&#8203;(java.lang.String&nbsp;displayName)</pre>
+<div class="block">Set up the display name for the governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>displayName</code> - string name</dd>
+</dl>
+</li>
+</ul>
+<a id="getDescription()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDescription</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
+<div class="block">Return the description of the governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string text</dd>
+</dl>
+</li>
+</ul>
+<a id="setDescription(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setDescription</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDescription&#8203;(java.lang.String&nbsp;description)</pre>
+<div class="block">Set up the description of the governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>description</code> - string text</dd>
+</dl>
+</li>
+</ul>
+<a id="getMandatoryGuards()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMandatoryGuards</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getMandatoryGuards()</pre>
+<div class="block">Return the list of guards that must be received before this governance action can proceed.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="setMandatoryGuards(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setMandatoryGuards</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setMandatoryGuards&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;mandatoryGuards)</pre>
+<div class="block">Set up the list of guards that must be received before this governance action can proceed.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>mandatoryGuards</code> - list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="getReceivedGuards()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getReceivedGuards</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getReceivedGuards()</pre>
+<div class="block">Return the list of guards provided by the previous governance service(s).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="setReceivedGuards(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setReceivedGuards</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setReceivedGuards&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;receivedGuards)</pre>
+<div class="block">Set up the list of guards provided by the previous governance service(s).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>receivedGuards</code> - list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="getGovernanceEngineGUID()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceEngineGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGovernanceEngineGUID()</pre>
+<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string guid</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceEngineGUID(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceEngineGUID</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setGovernanceEngineGUID&#8203;(java.lang.String&nbsp;governanceEngineGUID)</pre>
+<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>governanceEngineGUID</code> - string guid</dd>
+</dl>
+</li>
+</ul>
+<a id="getGovernanceEngineName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceEngineName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGovernanceEngineName()</pre>
+<div class="block">Return the unique name of governance engine that is processing the governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceEngineName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceEngineName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setGovernanceEngineName&#8203;(java.lang.String&nbsp;governanceEngineName)</pre>
+<div class="block">Set up the unique name of governance engine that is processing the governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>governanceEngineName</code> - string name</dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getProcessName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getProcessName()</pre>
+<div class="block">Return the name of the governance action process - or similar request source.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>name</dd>
+</dl>
+</li>
+</ul>
+<a id="setProcessName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setProcessName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setProcessName&#8203;(java.lang.String&nbsp;processName)</pre>
+<div class="block">Set up the name of the governance action process - or similar request source.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>processName</code> - name</dd>
+</dl>
+</li>
+</ul>
+<a id="getGovernanceActionTypeGUID()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceActionTypeGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGovernanceActionTypeGUID()</pre>
+<div class="block">Return the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>guid</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceActionTypeGUID(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceActionTypeGUID</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setGovernanceActionTypeGUID&#8203;(java.lang.String&nbsp;governanceActionTypeGUID)</pre>
+<div class="block">Set up the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>governanceActionTypeGUID</code> - guid</dd>
+</dl>
+</li>
+</ul>
+<a id="getGovernanceActionTypeName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceActionTypeName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGovernanceActionTypeName()</pre>
+<div class="block">Return the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>name</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceActionTypeName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceActionTypeName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setGovernanceActionTypeName&#8203;(java.lang.String&nbsp;governanceActionTypeName)</pre>
+<div class="block">Set up the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>governanceActionTypeName</code> - name</dd>
+</dl>
+</li>
+</ul>
+<a id="getActionStatus()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getActionStatus</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;getActionStatus()</pre>
+<div class="block">Return the current status of the governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>status enum</dd>
+</dl>
+</li>
+</ul>
+<a id="setActionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setActionStatus</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setActionStatus&#8203;(<a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;actionStatus)</pre>
+<div class="block">Set up the current status of the governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>actionStatus</code> - status enum</dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessingEngineUserId()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getProcessingEngineUserId</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getProcessingEngineUserId()</pre>
+<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string userId</dd>
+</dl>
+</li>
+</ul>
+<a id="setProcessingEngineUserId(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setProcessingEngineUserId</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setProcessingEngineUserId&#8203;(java.lang.String&nbsp;processingEngineUserId)</pre>
+<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>processingEngineUserId</code> - string userId</dd>
+</dl>
+</li>
+</ul>
+<a id="getRequestSourceElements()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRequestSourceElements</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;getRequestSourceElements()</pre>
+<div class="block">Return the list of elements that triggered this request.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of elements</dd>
+</dl>
+</li>
+</ul>
+<a id="setRequestSourceElements(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRequestSourceElements</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRequestSourceElements&#8203;(java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt;&nbsp;requestSourceElements)</pre>
+<div class="block">Set up the list of elements that triggered this request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestSourceElements</code> - list of elements</dd>
+</dl>
+</li>
+</ul>
+<a id="getActionTargetElements()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getActionTargetElements</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;getActionTargetElements()</pre>
+<div class="block">Return the list of elements that the governance action will work on.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of elements</dd>
+</dl>
+</li>
+</ul>
+<a id="setActionTargetElements(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setActionTargetElements</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setActionTargetElements&#8203;(java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</pre>
+<div class="block">Set up the list of elements that the governance action will work on.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>actionTargetElements</code> - list of elements</dd>
+</dl>
+</li>
+</ul>
+<a id="getRequestedTime()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRequestedTime</h4>
+<pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getRequestedTime()</pre>
+<div class="block">Return the time that the governance action was created.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>date/time</dd>
+</dl>
+</li>
+</ul>
+<a id="setRequestedTime(java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRequestedTime</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRequestedTime&#8203;(java.util.Date&nbsp;requestedTime)</pre>
+<div class="block">Set up the time that the governance action was created.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestedTime</code> - date/time</dd>
+</dl>
+</li>
+</ul>
+<a id="getStartTime()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getStartTime</h4>
+<pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getStartTime()</pre>
+<div class="block">Return the time that this governance action should start (null means as soon as possible).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>date object</dd>
+</dl>
+</li>
+</ul>
+<a id="setStartTime(java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setStartTime</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setStartTime&#8203;(java.util.Date&nbsp;startTime)</pre>
+<div class="block">Set up the time that this governance action should start (null means as soon as possible).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>startTime</code> - date object</dd>
+</dl>
+</li>
+</ul>
+<a id="getRequestType()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRequestType</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRequestType()</pre>
+<div class="block">Return the governance request type used to call the governance service via this governance engine.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>name of the request type</dd>
+</dl>
+</li>
+</ul>
+<a id="setRequestType(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRequestType</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRequestType&#8203;(java.lang.String&nbsp;requestType)</pre>
+<div class="block">Set up the governance request type used to call the governance service via this governance engine.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestType</code> - name of the request type passed to the governance service</dd>
+</dl>
+</li>
+</ul>
+<a id="getRequestParameters()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRequestParameters</h4>
+<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;getRequestParameters()</pre>
+<div class="block">Return the parameters to pass onto the governance service.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>map of properties</dd>
+</dl>
+</li>
+</ul>
+<a id="setRequestParameters(java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRequestParameters</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRequestParameters&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)</pre>
+<div class="block">Set up the parameters to pass onto the governance service.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestParameters</code> - map of properties</dd>
+</dl>
+</li>
+</ul>
+<a id="getCompletionTime()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCompletionTime</h4>
+<pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getCompletionTime()</pre>
+<div class="block">Return the date/time that the governance service completed (or null if not yet completed).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>date object</dd>
+</dl>
+</li>
+</ul>
+<a id="setCompletionTime(java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setCompletionTime</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setCompletionTime&#8203;(java.util.Date&nbsp;completionTime)</pre>
+<div class="block">Set up the date/time that the governance service completed (or null if not yet completed).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>completionTime</code> - date object</dd>
+</dl>
+</li>
+</ul>
+<a id="getCompletionGuards()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCompletionGuards</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getCompletionGuards()</pre>
+<div class="block">Return the list of completion guards supplied by the governance service.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="setCompletionGuards(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setCompletionGuards</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setCompletionGuards&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;completionGuards)</pre>
+<div class="block">Set up the list of completion guards supplied by the governance service.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>completionGuards</code> - list of guards</dd>
+</dl>
+</li>
+</ul>
+<a id="getCompletionMessage()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCompletionMessage</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getCompletionMessage()</pre>
+<div class="block">Return the optional message from the running governance service supplied on its completion.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string message</dd>
+</dl>
+</li>
+</ul>
+<a id="setCompletionMessage(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setCompletionMessage</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setCompletionMessage&#8203;(java.lang.String&nbsp;completionMessage)</pre>
+<div class="block">Set up optional message from the running governance service supplied on its completion.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>completionMessage</code> - string message</dd>
+</dl>
+</li>
+</ul>
+<a id="getPreviousActions()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPreviousActions</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;getPreviousActions()</pre>
+<div class="block">Return the list of governance actions that preceded this governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of element stubs</dd>
+</dl>
+</li>
+</ul>
+<a id="setPreviousActions(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setPreviousActions</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setPreviousActions&#8203;(java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;previousActions)</pre>
+<div class="block">Set up the list of governance actions that preceded this governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>previousActions</code> - list of element stubs</dd>
+</dl>
+</li>
+</ul>
+<a id="getFollowOnActions()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFollowOnActions</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;getFollowOnActions()</pre>
+<div class="block">Return the list of governance actions that will run after this governance action has completed.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of element stubs</dd>
+</dl>
+</li>
+</ul>
+<a id="setFollowOnActions(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setFollowOnActions</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setFollowOnActions&#8203;(java.util.List&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RelatedGovernanceActionElement</a>&gt;&nbsp;followOnActions)</pre>
+<div class="block">Set up the list of governance actions that will run after this governance action has completed.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>followOnActions</code> - list of element stubs</dd>
 </dl>
 </li>
 </ul>
@@ -370,7 +1306,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">JSON-style toString</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="../properties/ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -386,7 +1322,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="../properties/ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -404,7 +1340,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return hash code for this object</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="../properties/ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int hash code</dd>
 </dl>

@@ -877,7 +877,8 @@ extends <a href="SchemaProperties.html" title="class in org.odpi.openmetadata.ac
 <li class="blockList">
 <h4>getSchemaType</h4>
 <pre class="methodSignature">public&nbsp;<a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;getSchemaType()</pre>
-<div class="block">Set up SchemaType for this schema attribute.</div>
+<div class="block">Set up SchemaType for this schema attribute.  Use a bean that is a subclass of SchemaTypeProperties that matches the type you wish to
+ represent.  When it is sent to server, it will use the type of the SchemaTypeProperties to set up the correct schema type information.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>schema type properties</dd>

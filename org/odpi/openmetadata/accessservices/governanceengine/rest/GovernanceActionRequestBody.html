@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -243,138 +243,166 @@ implements java.io.Serializable</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessName()">getProcessName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the name of the process that this action belongs to.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the qualified name for this new governance action.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReceivedGuards()">getReceivedGuards</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of guards that should be passed to the governance service that executes this request.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestParameters()">getRequestParameters</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the parameters to pass onto the governance service.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestSourceGUIDs()">getRequestSourceGUIDs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of elements that triggered this request.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestSourceName()">getRequestSourceName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the name of the request source.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the request type associated with this governance action.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.Date</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStartTime()">getStartTime</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the time that this governance action should start (null means as soon as possible).</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setActionTargets(java.util.List)">setActionTargets</a></span>&#8203;(java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of elements that the governance action will work on.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the description of the governance action.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
 <div class="block">Set up the display name for the governance action.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDomainIdentifier(int)">setDomainIdentifier</a></span>&#8203;(int&nbsp;domainIdentifier)</code></th>
 <td class="colLast">
 <div class="block">Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginatorEngineName(java.lang.String)">setOriginatorEngineName</a></span>&#8203;(java.lang.String&nbsp;originatorEngineName)</code></th>
 <td class="colLast">
 <div class="block">Set up the qualified name of the governance engine that originated this request (if any).</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginatorServiceName(java.lang.String)">setOriginatorServiceName</a></span>&#8203;(java.lang.String&nbsp;originatorServiceName)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique name of the service that created this request.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i22" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProcessName(java.lang.String)">setProcessName</a></span>&#8203;(java.lang.String&nbsp;processName)</code></th>
+<td class="colLast">
+<div class="block">Set up the name of the process that this action belongs to.</div>
+</td>
+</tr>
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQualifiedName(java.lang.String)">setQualifiedName</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Set up the qualified name of this new governance action.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setReceivedGuards(java.util.List)">setReceivedGuards</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;receivedGuards)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of guards that should be passed to the governance service that executes this request.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestParameters(java.util.Map)">setRequestParameters</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)</code></th>
 <td class="colLast">
 <div class="block">Set up the parameters to pass onto the governance service.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestSourceGUIDs(java.util.List)">setRequestSourceGUIDs</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of elements that triggered this request.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestSourceName(java.lang.String)">setRequestSourceName</a></span>&#8203;(java.lang.String&nbsp;requestSourceName)</code></th>
+<td class="colLast">
+<div class="block">Set up the name of the request source.</div>
+</td>
+</tr>
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestType(java.lang.String)">setRequestType</a></span>&#8203;(java.lang.String&nbsp;requestType)</code></th>
 <td class="colLast">
 <div class="block">Set up the request type associated with this governance action, used to identify ths governance service to run.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setStartTime(java.util.Date)">setStartTime</a></span>&#8203;(java.util.Date&nbsp;startTime)</code></th>
 <td class="colLast">
 <div class="block">Set up the time that this governance action should start (null means as soon as possible).</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -716,6 +744,62 @@ implements java.io.Serializable</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>requestParameters</code> - map of properties</dd>
+</dl>
+</li>
+</ul>
+<a id="getProcessName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getProcessName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getProcessName()</pre>
+<div class="block">Return the name of the process that this action belongs to.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>name</dd>
+</dl>
+</li>
+</ul>
+<a id="setProcessName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setProcessName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setProcessName&#8203;(java.lang.String&nbsp;processName)</pre>
+<div class="block">Set up the name of the process that this action belongs to.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>processName</code> - name</dd>
+</dl>
+</li>
+</ul>
+<a id="getRequestSourceName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRequestSourceName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRequestSourceName()</pre>
+<div class="block">Return the name of the request source.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
+<a id="setRequestSourceName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setRequestSourceName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRequestSourceName&#8203;(java.lang.String&nbsp;requestSourceName)</pre>
+<div class="block">Set up the name of the request source.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestSourceName</code> - string name</dd>
 </dl>
 </li>
 </ul>

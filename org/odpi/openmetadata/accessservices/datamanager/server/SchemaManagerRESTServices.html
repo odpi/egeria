@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -201,6 +201,18 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">clearSchemaElementRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                              java.lang.String&nbsp;userId,
+                              java.lang.String&nbsp;endOneGUID,
+                              java.lang.String&nbsp;relationshipTypeName,
+                              java.lang.String&nbsp;endTwoGUID,
+                              <a href="../rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Remove a relationship between two schema elements.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaTypes(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">clearSchemaTypes</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;schemaAttributeGUID,
@@ -209,7 +221,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the linked schema types from a schema attribute.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEnumSchemaType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.EnumSchemaTypeRequestBody)">createEnumSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -219,7 +231,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLiteralSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.LiteralSchemaTypeRequestBody)">createLiteralSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;userId,
@@ -228,7 +240,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type that has a fixed value.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMapSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MapSchemaTypeRequestBody)">createMapSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -239,7 +251,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createPrimitiveSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.PrimitiveSchemaTypeRequestBody)">createPrimitiveSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -248,7 +260,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a primitive schema type such as a string, integer or character.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.SchemaAttributeRequestBody)">createSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -258,7 +270,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createSchemaAttributeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                  java.lang.String&nbsp;userId,
@@ -269,7 +281,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeChoice(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.SchemaTypeChoiceRequestBody)">createSchemaTypeChoice</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
@@ -278,7 +290,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createSchemaTypeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
@@ -288,7 +300,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createStructSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.StructSchemaTypeRequestBody)">createStructSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
@@ -297,7 +309,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../rest/SchemaAttributesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaAttributesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody,int,int)">findSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -309,7 +321,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../rest/SchemaTypesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody,int,int)">findSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
@@ -321,7 +333,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../rest/ValidValueSetsResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ValidValueSetsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findValidValueSet(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody,int,int)">findValidValueSet</a></span>&#8203;(java.lang.String&nbsp;serverName,
                  java.lang.String&nbsp;userId,
@@ -332,7 +344,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../rest/SchemaAttributesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaAttributesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedAttributes(java.lang.String,java.lang.String,java.lang.String,int,int)">getNestedAttributes</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -343,7 +355,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../rest/SchemaAttributeResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaAttributeResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -352,7 +364,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../rest/SchemaAttributesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaAttributesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -364,7 +376,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../rest/SchemaTypeResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaTypeResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -373,7 +385,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../rest/SchemaTypesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaTypesResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -385,7 +397,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../rest/SchemaTypeResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">SchemaTypeResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;userId,
@@ -395,7 +407,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../rest/ElementStubResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ElementStubResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -404,7 +416,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../rest/ValidValueSetsResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ValidValueSetsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">getValidValueSetByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
@@ -415,7 +427,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -425,7 +437,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
@@ -435,7 +447,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupCalculatedValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.FormulaRequestBody)">setupCalculatedValue</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -445,7 +457,7 @@ extends java.lang.Object</pre>
 <div class="block">Classify the schema element to indicate that it describes a calculated value.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupQueryTargetRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.DerivedSchemaTypeQueryTargetRequestBody)">setupQueryTargetRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
@@ -456,7 +468,19 @@ extends java.lang.Object</pre>
 <div class="block">Link two schema elements together to show a query target relationship.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
+<td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">setupSchemaElementRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                              java.lang.String&nbsp;userId,
+                              java.lang.String&nbsp;endOneGUID,
+                              java.lang.String&nbsp;relationshipTypeName,
+                              java.lang.String&nbsp;endTwoGUID,
+                              <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Create a relationship between two schema elements.</div>
+</td>
+</tr>
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">setupSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
@@ -468,7 +492,7 @@ extends java.lang.Object</pre>
 <div class="block">Connect a schema type to a schema attribute.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateQueryTargetRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.DerivedSchemaTypeQueryTargetRequestBody)">updateQueryTargetRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;userId,
@@ -479,7 +503,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the relationship properties for the query target.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.SchemaAttributeRequestBody)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -490,7 +514,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.SchemaTypeRequestBody)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
@@ -814,7 +838,66 @@ extends java.lang.Object</pre>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>requestBody</code> - optional identifiers for the external source</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is invalid
+  UserNotAuthorizedException the user is not authorized to issue this request
+  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupSchemaElementRelationship</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;setupSchemaElementRelationship&#8203;(java.lang.String&nbsp;serverName,
+                                                   java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;endOneGUID,
+                                                   java.lang.String&nbsp;relationshipTypeName,
+                                                   java.lang.String&nbsp;endTwoGUID,
+                                                   <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+ are passed on the API.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of the service to route the request to.</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>endOneGUID</code> - unique identifier of the schema element at end one of the relationship</dd>
+<dd><code>endTwoGUID</code> - unique identifier of the schema element at end two of the relationship</dd>
+<dd><code>relationshipTypeName</code> - type of the relationship to delete</dd>
 <dd><code>requestBody</code> - new properties for the metadata element</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is invalid
+  UserNotAuthorizedException the user is not authorized to issue this request
+  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearSchemaElementRelationship</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;clearSchemaElementRelationship&#8203;(java.lang.String&nbsp;serverName,
+                                                   java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;endOneGUID,
+                                                   java.lang.String&nbsp;relationshipTypeName,
+                                                   java.lang.String&nbsp;endTwoGUID,
+                                                   <a href="../rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of the service to route the request to.</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>endOneGUID</code> - unique identifier of the schema element at end one of the relationship</dd>
+<dd><code>endTwoGUID</code> - unique identifier of the schema element at end two of the relationship</dd>
+<dd><code>relationshipTypeName</code> - type of the relationship to delete</dd>
+<dd><code>requestBody</code> - optional identifiers for the external source</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
   InvalidParameterException  one of the parameters is invalid

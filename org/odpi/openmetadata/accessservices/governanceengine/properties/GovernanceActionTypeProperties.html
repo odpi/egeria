@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -232,83 +232,111 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i5" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIgnoreMultipleTriggers()">getIgnoreMultipleTriggers</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return whether this action type can be triggered more than once in a single step of the governance action process.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestParameters()">getRequestParameters</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the parameters to pass onto the governance service.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRequestType()">getRequestType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the request type associated with this governance action.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSupportedGuards()">getSupportedGuards</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of guards provided by the previous governance service.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getWaitTime()">getWaitTime</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the minimum number of minutes to wait before starting the next governance action.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the description of the governance action.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
 <div class="block">Set up the display name for the governance action.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDomainIdentifier(int)">setDomainIdentifier</a></span>&#8203;(int&nbsp;domainIdentifier)</code></th>
 <td class="colLast">
 <div class="block">Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceEngineGUID(java.lang.String)">setGovernanceEngineGUID</a></span>&#8203;(java.lang.String&nbsp;governanceEngineGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIgnoreMultipleTriggers(boolean)">setIgnoreMultipleTriggers</a></span>&#8203;(boolean&nbsp;ignoreMultipleTriggers)</code></th>
+<td class="colLast">
+<div class="block">Set up whether this action type can be triggered more than once in a single step of the governance action process.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestParameters(java.util.Map)">setRequestParameters</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)</code></th>
 <td class="colLast">
 <div class="block">Set up the parameters to pass onto the governance service.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRequestType(java.lang.String)">setRequestType</a></span>&#8203;(java.lang.String&nbsp;requestType)</code></th>
 <td class="colLast">
 <div class="block">Set up the request type associated with this governance action, used to identify ths governance service to run.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSupportedGuards(java.util.List)">setSupportedGuards</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;supportedGuards)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of guards provided by the previous governance service.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setWaitTime(int)">setWaitTime</a></span>&#8203;(int&nbsp;waitTime)</code></th>
+<td class="colLast">
+<div class="block">Set up the minimum number of minutes to wait before starting the next governance action.</div>
+</td>
+</tr>
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -573,6 +601,62 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>requestParameters</code> - map of properties</dd>
+</dl>
+</li>
+</ul>
+<a id="getIgnoreMultipleTriggers()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getIgnoreMultipleTriggers</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;getIgnoreMultipleTriggers()</pre>
+<div class="block">Return whether this action type can be triggered more than once in a single step of the governance action process.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag</dd>
+</dl>
+</li>
+</ul>
+<a id="setIgnoreMultipleTriggers(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setIgnoreMultipleTriggers</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIgnoreMultipleTriggers&#8203;(boolean&nbsp;ignoreMultipleTriggers)</pre>
+<div class="block">Set up whether this action type can be triggered more than once in a single step of the governance action process.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>ignoreMultipleTriggers</code> - boolean flag</dd>
+</dl>
+</li>
+</ul>
+<a id="getWaitTime()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getWaitTime</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getWaitTime()</pre>
+<div class="block">Return the minimum number of minutes to wait before starting the next governance action.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>int (minutes)</dd>
+</dl>
+</li>
+</ul>
+<a id="setWaitTime(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setWaitTime</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setWaitTime&#8203;(int&nbsp;waitTime)</pre>
+<div class="block">Set up the minimum number of minutes to wait before starting the next governance action.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>waitTime</code> - int (minutes)</dd>
 </dl>
 </li>
 </ul>

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -189,6 +189,17 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findGovernanceActions(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                     java.lang.String&nbsp;userId,
+                     int&nbsp;startFrom,
+                     int&nbsp;pageSize,
+                     <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of governance action metadata elements that contain the search string.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveClaimedGovernanceActions(java.lang.String,java.lang.String,java.lang.String,int,int)">getActiveClaimedGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                  java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;governanceEngineGUID,
@@ -198,7 +209,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveGovernanceActions(java.lang.String,java.lang.String,int,int)">getActiveGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;userId,
@@ -208,7 +219,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are still in process.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../rest/GovernanceActionElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceAction(java.lang.String,java.lang.String,java.lang.String)">getGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -217,7 +228,7 @@ extends java.lang.Object</pre>
 <div class="block">Request the status and properties of an executing governance action request.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActions(java.lang.String,java.lang.String,int,int)">getGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -227,7 +238,18 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the governance actions that are known to the server.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActionsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getGovernanceActionsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                          java.lang.String&nbsp;userId,
+                          int&nbsp;startFrom,
+                          int&nbsp;pageSize,
+                          <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of governance action metadata elements with a matching qualified or display name.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectionResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)">getOutTopicConnection</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -236,7 +258,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the connection object for the Governance Engine OMAS's out topic.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -247,7 +269,7 @@ extends java.lang.Object</pre>
  associated with the supplied request type.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                java.lang.String&nbsp;userId,
@@ -256,7 +278,7 @@ extends java.lang.Object</pre>
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.ConsolidatedDuplicatesRequestBody)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -265,7 +287,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a simple relationship between two elements.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
@@ -274,7 +296,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a simple relationship between two elements.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logAssetAuditMessage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">logAssetAuditMessage</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
@@ -285,7 +307,7 @@ extends java.lang.Object</pre>
 <div class="block">Log an audit message about an asset.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody)">recordCompletionStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
@@ -295,7 +317,7 @@ extends java.lang.Object</pre>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
@@ -304,7 +326,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the status of a specific action target.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody)">updateGovernanceActionStatus</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
@@ -751,7 +773,7 @@ public&nbsp;<a href="../../rest/GovernanceActionElementsResponse.html" title="cl
 <a id="getActiveClaimedGovernanceActions(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getActiveClaimedGovernanceActions</h4>
 <pre class="methodSignature">@GetMapping(path="/governance-engines/{governanceEngineGUID}/active-governance-actions")
@@ -780,6 +802,74 @@ public&nbsp;<a href="../../rest/GovernanceActionElementsResponse.html" title="cl
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem detected by the metadata store.</dd>
+</dl>
+</li>
+</ul>
+<a id="findGovernanceActions(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>findGovernanceActions</h4>
+<pre class="methodSignature">@PostMapping(path="/governance-actions/by-search-string")
+public&nbsp;<a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a>&nbsp;findGovernanceActions&#8203;(@PathVariable
+                                                              java.lang.String&nbsp;serverName,
+                                                              @PathVariable
+                                                              java.lang.String&nbsp;userId,
+                                                              @RequestParam
+                                                              int&nbsp;startFrom,
+                                                              @RequestParam
+                                                              int&nbsp;pageSize,
+                                                              @RequestBody
+                                                              <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Retrieve the list of governance action metadata elements that contain the search string.
+ The search string is treated as a regular expression.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of the service to route the request to</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>requestBody</code> - string to find in the properties</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements or
+  InvalidParameterException  one of the parameters is invalid
+  UserNotAuthorizedException the user is not authorized to issue this request
+  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getGovernanceActionsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getGovernanceActionsByName</h4>
+<pre class="methodSignature">@PostMapping(path="/governance-actions/by-name")
+public&nbsp;<a href="../../rest/GovernanceActionElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementsResponse</a>&nbsp;getGovernanceActionsByName&#8203;(@PathVariable
+                                                                   java.lang.String&nbsp;serverName,
+                                                                   @PathVariable
+                                                                   java.lang.String&nbsp;userId,
+                                                                   @RequestParam
+                                                                   int&nbsp;startFrom,
+                                                                   @RequestParam
+                                                                   int&nbsp;pageSize,
+                                                                   @RequestBody
+                                                                   <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Retrieve the list of governance action metadata elements with a matching qualified or display name.
+ There are no wildcards supported on this request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of the service to route the request to</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>requestBody</code> - name to search for</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements or
+  InvalidParameterException  one of the parameters is invalid
+  UserNotAuthorizedException the user is not authorized to issue this request
+  PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
