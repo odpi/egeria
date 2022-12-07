@@ -305,7 +305,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
 
             /*
-             * if there is a a formula then set it into the schemaAttributeBuilder
+             * if there is a formula then set it into the schemaAttributeBuilder
              */
             if (schemaTypeBuilder != null && schemaTypeBuilder.isDerived())
             {
@@ -1947,19 +1947,19 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             InstanceProperties instanceProperties = schemaAttributeBuilder.getInstanceProperties(methodName);
 
             this.updateBeanInRepository(userId,
-                    externalSourceGUID,
-                    externalSourceName,
-                    schemaAttributeGUID,
-                    schemaAttributeGUIDParameterName,
-                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                    forLineage,
-                    forDuplicateProcessing,
-                    supportedZones,
-                    instanceProperties,
-                    true,
-                    effectiveTime,
-                    methodName);
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        schemaAttributeGUID,
+                                        schemaAttributeGUIDParameterName,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        instanceProperties,
+                                        true,
+                                        effectiveTime,
+                                        methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
             if (schemaTypeBuilder != null)
@@ -1973,13 +1973,15 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 {
                     // if we have no formula requested and we are not a merge, any existing
                     // calculated value classification should be cleared
-                    if (!isMergeUpdate) {
+                    if (!isMergeUpdate)
+                    {
                         List<Classification> classifications = schemaAttributeEntity.getClassifications();
                         if (classifications != null && classifications.size() >0)
                         {
                             for (Classification classification : classifications)
                             {
-                                if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME)) {
+                                if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME))
+                                {
                                     removeClassificationFromRepository(userId,
                                                                        externalSourceGUID,
                                                                        externalSourceName,
@@ -1996,7 +1998,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                             }
                         }
                     }
-                } else {
+                } else
+                {
                     setClassificationInRepository(userId,
                                                   externalSourceGUID,
                                                   externalSourceName,

@@ -200,21 +200,21 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                             )
     {
         this(qualifiedName,
-                displayName,
-                description,
-                versionNumber,
-                isDeprecated,
-                author,
-                usage,
-                encodingStandard,
-                namespace,
-                additionalProperties,
-                typeId,
-                typeName,
-                extendedProperties,
-                repositoryHelper,
-                serviceName,
-                serverName);
+             displayName,
+             description,
+             versionNumber,
+             isDeprecated,
+             author,
+             usage,
+             encodingStandard,
+             namespace,
+             additionalProperties,
+             typeId,
+             typeName,
+             extendedProperties,
+             repositoryHelper,
+             serviceName,
+             serverName);
         setDerivedProperties(formula);
     }
 
