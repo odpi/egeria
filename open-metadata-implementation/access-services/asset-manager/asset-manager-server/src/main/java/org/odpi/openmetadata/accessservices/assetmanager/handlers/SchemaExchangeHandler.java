@@ -372,8 +372,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                     schemaType.getExtendedProperties(),
                                                                     repositoryHelper,
                                                                     serviceName,
-                                                                    serverName
-                                                                    );
+                                                                    serverName);
 
         if (schemaType instanceof LiteralSchemaTypeProperties)
         {
