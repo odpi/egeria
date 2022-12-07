@@ -6,14 +6,13 @@ description: File a bug/issue
 title: "[BUG] <title>"
 labels: [bug, triage]
 body:
-  - type: checkboxes
+  - type: input
     id: issue_exists
     attributes:
-      label: Is there an existing issue for this?
-      description: "Search to see if an issue already exists for the probem you encountered. This can save you and the maintainers time. Please include any related issues in the other text boxes below ie by #1234 for an egeria issue, or include the URL"
-      options:
-        - label: I have searched the existing issues
-          required: true
+      label: Existing/related issue?
+      description: "Search for related issues. List below as #123456"
+    validations:
+      required: false
   - type: textarea
     attributes:
       label: Current Behavior

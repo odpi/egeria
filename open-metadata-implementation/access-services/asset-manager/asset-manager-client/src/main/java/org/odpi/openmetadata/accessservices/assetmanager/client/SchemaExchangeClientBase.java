@@ -1057,7 +1057,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    methodName));
         requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attribute/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
