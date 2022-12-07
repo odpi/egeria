@@ -29,12 +29,12 @@ import java.util.List;
  */
 public class GovernanceActionProcessClient implements GovernanceActionProcessInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -701,7 +701,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
 
 
     /**
-     * Set up a link between an governance action process and a governance action type.  This defines the first
+     * Set up a link between a governance action process and a governance action type.  This defines the first
      * step in the process.
      *
      * @param userId calling user
@@ -848,7 +848,6 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
 
         requestBody.setGuard(guard);
         requestBody.setMandatoryGuard(mandatoryGuard);
-        requestBody.setIgnoreMultipleTriggers(ignoreMultipleTriggers);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -896,7 +895,6 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
 
         requestBody.setGuard(guard);
         requestBody.setMandatoryGuard(mandatoryGuard);
-        requestBody.setIgnoreMultipleTriggers(ignoreMultipleTriggers);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -949,7 +947,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
 
 
     /**
-     * Remove a follow on step from a governance action process.
+     * Remove a follow-on step from a governance action process.
      *
      * @param userId calling user
      * @param actionLinkGUID unique identifier of the relationship between the governance action types

@@ -586,6 +586,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
@@ -594,9 +595,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     public abstract void updateActionTargetStatus(String                 actionTargetGUID,
                                                   GovernanceActionStatus status,
                                                   Date                   startDate,
-                                                  Date                   completionDate) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException;
+                                                  Date                   completionDate,
+                                                  String                 completionMessage) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**
@@ -606,6 +608,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param requestParameters properties to pass to the next governance action service
      * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -614,9 +617,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
     public abstract void recordCompletionStatus(CompletionStatus      status,
                                                 List<String>          outputGuards,
                                                 Map<String, String>   requestParameters,
-                                                List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
+                                                List<NewActionTarget> newActionTargets,
+                                                String                completionMessage) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
@@ -634,6 +638,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param startTime future start time or null for "as soon as possible".
      * @param requestType request type to identify the governance action service to run
      * @param requestParameters properties to pass to the governance action service
+     * @param processName name of the process that this action is a part of
      *
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
@@ -649,9 +654,10 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
                                                     Date                  startTime,
                                                     String                governanceEngineName,
                                                     String                requestType,
-                                                    Map<String, String>   requestParameters) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
+                                                    Map<String, String>   requestParameters,
+                                                    String                processName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**

@@ -33,22 +33,22 @@ import java.util.Map;
 
 
 /**
- * EngineHostOperationalServices is responsible for controlling the startup and shutdown of
+ * EngineHostOperationalServices is responsible for controlling the startup and shutdown
  * of the engine host services.
  */
 public class EngineHostOperationalServices
 {
-    private String                         localServerName;               /* Initialized in constructor */
-    private String                         localServerId;                 /* Initialized in constructor */
-    private String                         localServerUserId;             /* Initialized in constructor */
-    private String                         localServerPassword;           /* Initialized in constructor */
-    private int                            maxPageSize;                   /* Initialized in constructor */
+    private final String                         localServerName;               /* Initialized in constructor */
+    private final String                         localServerId;                 /* Initialized in constructor */
+    private final String                         localServerUserId;             /* Initialized in constructor */
+    private final String                         localServerPassword;           /* Initialized in constructor */
+    private final int                            maxPageSize;                   /* Initialized in constructor */
 
     private AuditLog                        auditLog           = null;
     private EngineHostInstance              engineHostInstance = null;
-    private Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
+    private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private List<EngineServiceAdmin> engineServiceAdminList = null;
 

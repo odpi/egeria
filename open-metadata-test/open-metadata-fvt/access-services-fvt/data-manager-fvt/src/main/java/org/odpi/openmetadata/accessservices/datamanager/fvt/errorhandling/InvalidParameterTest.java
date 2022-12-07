@@ -767,7 +767,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
-            FilesAndFoldersClient client     = new FilesAndFoldersClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            FilesAndFoldersClient client     = new FilesAndFoldersClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testCreateNestedFolders(userId, client);
         }

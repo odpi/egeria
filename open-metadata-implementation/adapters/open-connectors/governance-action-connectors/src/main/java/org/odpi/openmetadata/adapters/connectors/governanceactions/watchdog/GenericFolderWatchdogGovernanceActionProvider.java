@@ -16,7 +16,7 @@ import java.util.List;
 public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
     private static final String  connectorTypeGUID = "b4629f05-710c-492b-bc9c-6e3f89e002df";
-    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Watchdog:GenericFolder";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericFolder";
     private static final String  connectorTypeDisplayName = "Generic Folder Watchdog Governance Action Service";
     private static final String  connectorTypeDescription = "Watchdog Governance Action Service that listens for events relating to file assets located in a particular folder.";
 
@@ -67,6 +67,7 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
         supportedGuards = new ArrayList<>();
         supportedGuards.add(MONITORING_COMPLETE);
         supportedGuards.add(MONITORING_FAILED);
+        supportedGuards.add(MONITORING_STOPPED);
 
         super.setConnectorClassName(connectorClassName);
 

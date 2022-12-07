@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.SchemaTypeConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -764,6 +765,163 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        effectiveTime,
                                                        methodName);
         }
+    }
+
+
+    /**
+     * Connect a schema type to a data asset, process or port.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties properties for the new relationship
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName     calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public void setupSchemaElementRelationship(String                 userId,
+                                               String                 assetManagerGUID,
+                                               String                 assetManagerName,
+                                               boolean                assetManagerIsHome,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               RelationshipProperties properties,
+                                               Date                   effectiveFrom,
+                                               Date                   effectiveTo,
+                                               boolean                forLineage,
+                                               boolean                forDuplicateProcessing,
+                                               Date                   effectiveTime,
+                                               String                 methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+        final String propertiesParameterName       = "properties";
+
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        InstanceProperties instanceProperties = null;
+
+        if ((properties != null) && (! properties.getExtendedProperties().isEmpty()))
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addPropertyMapToInstance(serviceName, null, properties.getExtendedProperties(), methodName);
+            }
+            catch (Exception badPropertyException)
+            {
+                throw new InvalidParameterException(AssetManagerErrorCode.BAD_PARAMETER.getMessageDefinition(relationshipTypeName,
+                                                                                                             badPropertyException.getClass().getName(),
+                                                                                                             badPropertyException.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    badPropertyException,
+                                                    propertiesParameterName);
+            }
+        }
+
+        schemaTypeHandler.linkElementToElement(userId,
+                                               this.getExternalSourceGUID(assetManagerGUID, assetManagerIsHome),
+                                               this.getExternalSourceName(assetManagerName, assetManagerIsHome),
+                                               endOneGUID,
+                                               endOneParameterName,
+                                               OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                               endTwoGUID,
+                                               endTwoParameterName,
+                                               OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               relationshipTypeGUID,
+                                               relationshipTypeName,
+                                               instanceProperties,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               effectiveTime,
+                                               methodName);
+    }
+
+
+    /**
+     * Remove the relationship between a schema type and its parent data asset, process or port.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementRelationship(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  endOneGUID,
+                                               String  endTwoGUID,
+                                               String  relationshipTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        schemaTypeHandler.unlinkElementFromElement(userId,
+                                                   false,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   endOneGUID,
+                                                   endOneParameterName,
+                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                   endTwoGUID,
+                                                   endTwoParameterName,
+                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   relationshipTypeGUID,
+                                                   relationshipTypeName,
+                                                   effectiveTime,
+                                                   methodName);
     }
 
 

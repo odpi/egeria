@@ -114,7 +114,7 @@ public class CreateEventsTest
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());
 
-        EventBrokerClient client = thisTest.getEventBrokerClient(serverName, serverPlatformRootURL, auditLog);
+        EventBrokerClient client = thisTest.getEventBrokerClient(serverName, serverPlatformRootURL);
 
         String eventBrokerGUID = thisTest.getEventBroker(serverName, serverPlatformRootURL, userId, auditLog);
         String topicGUID = thisTest.getTopic(client, eventBrokerGUID, userId);
@@ -214,13 +214,11 @@ public class CreateEventsTest
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param auditLog logging destination
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
     private EventBrokerClient getEventBrokerClient(String   serverName,
-                                                           String   serverPlatformRootURL,
-                                                           AuditLog auditLog) throws FVTUnexpectedCondition
+                                                   String   serverPlatformRootURL) throws FVTUnexpectedCondition
     {
         final String activityName = "getEventBrokerClient";
 
@@ -228,7 +226,7 @@ public class CreateEventsTest
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-            return new EventBrokerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            return new EventBrokerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
         catch (Exception unexpectedError)
         {
@@ -373,7 +371,7 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! topicDisplayName.equals(retrievedTopic.getDisplayName()))
+            if (! topicDisplayName.equals(retrievedTopic.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
@@ -410,7 +408,7 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! topicDisplayName.equals(retrievedTopic.getDisplayName()))
+            if (! topicDisplayName.equals(retrievedTopic.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
@@ -461,7 +459,7 @@ public class CreateEventsTest
             TopicProperties properties = new TopicProperties();
 
             properties.setQualifiedName(topicName);
-            properties.setDisplayName(topicDisplayName);
+            properties.setName(topicDisplayName);
             properties.setDescription(topicDescription);
             properties.setTopicType(topicType);
 

@@ -142,86 +142,110 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         if (! completed)
         {
-            if (event instanceof WatchdogMetadataElementEvent)
+            try
             {
-                WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
-
-                String fileGUID = metadataElementEvent.getMetadataElement().getElementGUID();
-
-                if ((matchFolderToFileName(metadataElementEvent.getMetadataElement().getElementProperties())) || (fileInFolder(fileGUID)))
+                if (event instanceof WatchdogMetadataElementEvent)
                 {
-                    Map<String, String>   requestParameters = new HashMap<>();
-                    List<NewActionTarget> actionTargets = new ArrayList<>();
+                    WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
 
-                    NewActionTarget actionTarget = new NewActionTarget();
+                    String fileGUID = metadataElementEvent.getMetadataElement().getElementGUID();
 
-                    actionTarget.setActionTargetGUID(fileGUID);
-                    actionTarget.setActionTargetName(actionTargetName);
-                    actionTargets.add(actionTarget);
-
-                    if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
+                    if ((matchFolderToFileName(metadataElementEvent.getMetadataElement().getElementProperties())) || (fileInFolder(fileGUID)))
                     {
-                        initiateProcess(newElementProcessName,
-                                        null,
-                                        actionTargets);
-                    }
-                    else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
-                    {
-                        ElementProperties previousElementProperties = null;
+                        Map<String, String>   requestParameters = new HashMap<>();
+                        List<NewActionTarget> actionTargets     = new ArrayList<>();
 
-                        if (metadataElementEvent.getPreviousMetadataElement() != null)
+                        NewActionTarget actionTarget = new NewActionTarget();
+
+                        actionTarget.setActionTargetGUID(fileGUID);
+                        actionTarget.setActionTargetName(actionTargetName);
+                        actionTargets.add(actionTarget);
+
+                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                         {
-                            previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
-                        }
-
-                        requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                       metadataElementEvent.getMetadataElement().getElementProperties()));
-
-                        initiateProcess(updatedElementProcessName,
-                                        requestParameters,
-                                        actionTargets);
-                    }
-                    else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
-                    {
-                        initiateProcess(deletedElementProcessName,
-                                        null,
-                                        actionTargets);
-                    }
-                    else
-                    {
-                        WatchdogClassificationEvent classificationEvent = (WatchdogClassificationEvent) event;
-
-                        requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
-
-                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
-                        {
-                            initiateProcess(classifiedElementProcessName,
-                                            requestParameters,
+                            initiateProcess(newElementProcessName,
+                                            null,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                         {
                             ElementProperties previousElementProperties = null;
 
-                            if (classificationEvent.getPreviousClassification() != null)
+                            if (metadataElementEvent.getPreviousMetadataElement() != null)
                             {
-                                previousElementProperties = classificationEvent.getPreviousClassification().getClassificationProperties();
+                                previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
                             }
 
                             requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                           classificationEvent.getChangedClassification().getClassificationProperties()));
+                                                                                           metadataElementEvent.getMetadataElement().getElementProperties()));
 
-
-                            initiateProcess(reclassifiedElementProcessName,
+                            initiateProcess(updatedElementProcessName,
                                             requestParameters,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                         {
-                            initiateProcess(declassifiedElementProcessName,
-                                            requestParameters,
+                            initiateProcess(deletedElementProcessName,
+                                            null,
                                             actionTargets);
                         }
+                        else
+                        {
+                            WatchdogClassificationEvent classificationEvent = (WatchdogClassificationEvent) event;
+
+                            requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
+
+                            if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
+                            {
+                                initiateProcess(classifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                            else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                            {
+                                ElementProperties previousElementProperties = null;
+
+                                if (classificationEvent.getPreviousClassification() != null)
+                                {
+                                    previousElementProperties = classificationEvent.getPreviousClassification().getClassificationProperties();
+                                }
+
+                                requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
+                                                                                               classificationEvent.getChangedClassification().getClassificationProperties()));
+
+
+                                initiateProcess(reclassifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                            else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
+                            {
+                                initiateProcess(declassifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                try
+                {
+                    List<String> outputGuards = new ArrayList<>();
+                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
+
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
+                }
+                catch (Exception completionError)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logException(methodName,
+                                              GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
+                                                                                                                                       completionError.getClass().getName(),
+                                                                                                                                       completionError.getMessage()),
+                                              error);
                     }
                 }
             }
@@ -231,9 +255,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_STOPPED);
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, null);
                 }
                 catch (Exception error)
                 {

@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 
 
 /**
- * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is a Provisioning Governance Action Service.
+ * GenericWatchdogGovernanceActionProvider is the OCF connector provider for the Generic WatchDog Governance Action Service.
+ * This is a WatchDog Governance Action Service.
  */
 public abstract class GenericWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
@@ -53,9 +53,10 @@ public abstract class GenericWatchdogGovernanceActionProvider extends Governance
 
 
     /*
-     * These are the guards that could be returned.  The monitor will only complete if it encounters an unrecoverable error
+     * These are the guards that could be returned.  The monitor will only complete if it encounters an unrecoverable error,
      * or it is set up to listen for a single event and that event occurs.
      */
     static final String MONITORING_COMPLETE = "monitoring-complete"; /* requested single event occurred */
     static final String MONITORING_FAILED   = "monitoring-failed";   /* monitor not configured correctly or failed */
+    static final String MONITORING_STOPPED   = "monitoring-stopped";   /* monitor stopped by external request */
 }

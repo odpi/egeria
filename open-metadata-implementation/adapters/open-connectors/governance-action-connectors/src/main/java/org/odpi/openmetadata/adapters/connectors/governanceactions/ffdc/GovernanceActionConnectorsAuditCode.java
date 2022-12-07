@@ -215,7 +215,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

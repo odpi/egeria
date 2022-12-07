@@ -170,6 +170,53 @@ public class OpenMetadataStoreResource
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/related-elements/{elementGUID}")
+
+    public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
+                                                                            @PathVariable String  serviceURLMarker,
+                                                                            @PathVariable String  userId,
+                                                                            @PathVariable String  elementGUID,
+                                                                            @RequestParam boolean forLineage,
+                                                                            @RequestParam boolean forDuplicateProcessing,
+                                                                            @RequestParam long    effectiveTime,
+                                                                            @RequestParam int     startingAtEnd,
+                                                                            @RequestParam int     startFrom,
+                                                                            @RequestParam int     pageSize)
+    {
+        return restAPI.getRelatedMetadataElements(serverName,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  elementGUID,
+                                                  null,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveTime,
+                                                  startingAtEnd,
+                                                  startFrom,
+                                                  pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata elements connected to the supplied element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
