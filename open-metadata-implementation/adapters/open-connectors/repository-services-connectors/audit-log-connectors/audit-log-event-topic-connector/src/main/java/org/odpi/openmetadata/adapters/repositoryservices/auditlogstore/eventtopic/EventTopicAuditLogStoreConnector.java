@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase implements VirtualConnectorExtension
 {
-    private List<OpenMetadataTopicConnector> topicConnectors = new ArrayList<>();
+    private final List<OpenMetadataTopicConnector> topicConnectors = new ArrayList<>();
 
 
     /**

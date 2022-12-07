@@ -1721,6 +1721,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
@@ -2390,7 +2391,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.

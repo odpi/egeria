@@ -31,7 +31,6 @@ public class AssetProperties extends ReferenceableProperties
 
     private String name              = null;
     private String versionIdentifier = null;
-    private String displayName       = null;
     private String description       = null;
 
 
@@ -57,7 +56,6 @@ public class AssetProperties extends ReferenceableProperties
         {
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
-            displayName                  = template.getDisplayName();
             description                  = template.getDescription();
         }
     }
@@ -70,11 +68,6 @@ public class AssetProperties extends ReferenceableProperties
      */
     public String getName()
     {
-        if (name == null)
-        {
-            return displayName;
-        }
-
         return name;
     }
 
@@ -118,14 +111,10 @@ public class AssetProperties extends ReferenceableProperties
      *
      * @return String name
      */
+    @Deprecated
     public String getDisplayName()
     {
-        if (displayName == null)
-        {
-            return name;
-        }
-
-        return displayName;
+        return name;
     }
 
 
@@ -134,9 +123,10 @@ public class AssetProperties extends ReferenceableProperties
      *
      * @param displayName String name
      */
+    @Deprecated
     public void setDisplayName(String displayName)
     {
-        this.displayName = displayName;
+        this.name = displayName;
     }
 
 
@@ -174,7 +164,7 @@ public class AssetProperties extends ReferenceableProperties
         return "AssetProperties{" +
                        "name='" + name + '\'' +
                        ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", displayName='" + displayName + '\'' +
+                       ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -219,10 +209,6 @@ public class AssetProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
-        {
-            return false;
-        }
         return description != null ? description.equals(that.description) : that.description == null;
     }
 
@@ -235,6 +221,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier, displayName, description);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description);
     }
 }

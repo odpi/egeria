@@ -161,7 +161,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    repositoryGovernanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null, null);
+                    repositoryGovernanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null, null, error.getMessage());
                     super.disconnect();
                 }
             }

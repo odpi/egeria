@@ -121,7 +121,7 @@ public class QueryRequestBody extends QueryProperties
         return "QueryRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

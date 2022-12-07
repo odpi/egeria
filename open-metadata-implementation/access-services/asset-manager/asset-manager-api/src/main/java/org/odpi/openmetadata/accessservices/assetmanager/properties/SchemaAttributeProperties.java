@@ -368,7 +368,8 @@ public class SchemaAttributeProperties extends SchemaProperties
 
 
     /**
-     * Set up SchemaType for this schema attribute.
+     * Set up SchemaType for this schema attribute.  Use a bean that is a subclass of SchemaTypeProperties that matches the type you wish to
+     * represent.  When it is sent to server, it will use the type of the SchemaTypeProperties to set up the correct schema type information.
      *
      * @return schema type properties
      */

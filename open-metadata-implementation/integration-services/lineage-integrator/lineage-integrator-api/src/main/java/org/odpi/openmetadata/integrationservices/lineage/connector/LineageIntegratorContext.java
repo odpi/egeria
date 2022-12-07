@@ -684,6 +684,75 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
 
 
     /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipName name of the relationship to delete
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaElementRelationship(boolean                assetManagerIsHome,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipName,
+                                               Date                   effectiveTime,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        dataAssetExchangeClient.setupSchemaElementRelationship(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               assetManagerIsHome,
+                                                               endOneGUID,
+                                                               endTwoGUID,
+                                                               relationshipName,
+                                                               effectiveTime,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               properties);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipName name of the relationship to delete
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementRelationship(String  endOneGUID,
+                                               String  endTwoGUID,
+                                               String  relationshipName,
+                                               Date    effectiveTime) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        dataAssetExchangeClient.clearSchemaElementRelationship(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               endOneGUID,
+                                                               endTwoGUID,
+                                                               relationshipName,
+                                                               effectiveTime,
+                                                               forLineage,
+                                                               forDuplicateProcessing);
+    }
+
+
+    /**
      * Remove the metadata element representing a schema type.
      *
      * @param schemaTypeGUID unique identifier of the metadata element to remove

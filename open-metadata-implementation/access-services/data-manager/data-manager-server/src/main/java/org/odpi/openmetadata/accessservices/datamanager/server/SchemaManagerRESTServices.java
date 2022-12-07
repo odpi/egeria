@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.server;
 
 
 import org.odpi.openmetadata.accessservices.datamanager.converters.ElementStubConverter;
+import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.DataItemSortO
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -45,6 +47,7 @@ public class SchemaManagerRESTServices
                                                                                    instanceHandler.getServiceName());
 
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Default constructor
@@ -826,7 +829,7 @@ public class SchemaManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to remove
-     * @param requestBody new properties for the metadata element
+     * @param requestBody optional identifiers for the external source
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -838,7 +841,7 @@ public class SchemaManagerRESTServices
                                          String                    schemaTypeGUID,
                                          MetadataSourceRequestBody requestBody)
     {
-        final String methodName               = "removeSchemaType";
+        final String methodName = "removeSchemaType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -865,6 +868,253 @@ public class SchemaManagerRESTServices
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupSchemaElementRelationship(String                  serverName,
+                                                       String                  userId,
+                                                       String                  endOneGUID,
+                                                       String                  relationshipTypeName,
+                                                       String                  endTwoGUID,
+                                                       RelationshipRequestBody requestBody)
+    {
+        final String methodName                    = "setupSchemaElementRelationship";
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+        final String propertiesParameterName       = "properties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+            invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+            String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                                   null,
+                                                                                   instanceHandler.getServiceName(),
+                                                                                   methodName,
+                                                                                   instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+
+            if (requestBody != null)
+            {
+
+                if (requestBody.getProperties() != null)
+                {
+                    InstanceProperties instanceProperties = null;
+
+                    if (! requestBody.getProperties().getExtendedProperties().isEmpty())
+                    {
+                        try
+                        {
+                            instanceProperties = instanceHandler.getRepositoryHelper(userId, serverName, methodName).addPropertyMapToInstance(
+                                    instanceHandler.getServiceName(),
+                                    null,
+                                    requestBody.getProperties().getExtendedProperties(),
+                                    methodName);
+                        }
+                        catch (Exception badPropertyException)
+                        {
+                            throw new InvalidParameterException(DataManagerErrorCode.BAD_PARAMETER.getMessageDefinition(relationshipTypeName,
+                                                                                                                        badPropertyException.getClass().getName(),
+                                                                                                                        badPropertyException.getMessage()),
+                                                                this.getClass().getName(),
+                                                                methodName,
+                                                                badPropertyException,
+                                                                propertiesParameterName);
+                        }
+                    }
+
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 endOneGUID,
+                                                 endOneParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 endTwoGUID,
+                                                 endTwoParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 relationshipTypeGUID,
+                                                 relationshipTypeName,
+                                                 instanceProperties,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 endOneGUID,
+                                                 endOneParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 endTwoGUID,
+                                                 endTwoParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 relationshipTypeGUID,
+                                                 relationshipTypeName,
+                                                 (InstanceProperties)null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
+            }
+            else
+            {
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             endOneGUID,
+                                             endOneParameterName,
+                                             OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                             endTwoGUID,
+                                             endTwoParameterName,
+                                             OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                             false,
+                                             false,
+                                             relationshipTypeGUID,
+                                             relationshipTypeName,
+                                             (InstanceProperties)null,
+                                             null,
+                                             null,
+                                             new Date(),
+                                             methodName);            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param requestBody optional identifiers for the external source
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearSchemaElementRelationship(String                    serverName,
+                                                       String                    userId,
+                                                       String                    endOneGUID,
+                                                       String                    relationshipTypeName,
+                                                       String                    endTwoGUID,
+                                                       MetadataSourceRequestBody requestBody)
+    {
+        final String methodName                    = "clearSchemaElementRelationship";
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+            invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+            String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                                   null,
+                                                                                   instanceHandler.getServiceName(),
+                                                                                   methodName,
+                                                                                   instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+            if (requestBody != null)
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 endOneGUID,
+                                                 endOneParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 endTwoGUID,
+                                                 endTwoParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 relationshipTypeGUID,
+                                                 relationshipTypeName,
+                                                 new Date(),
+                                                 methodName);
+            }
+            else
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 endOneGUID,
+                                                 endOneParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 endTwoGUID,
+                                                 endTwoParameterName,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 relationshipTypeGUID,
+                                                 relationshipTypeName,
+                                                 new Date(),
+                                                 methodName);
             }
         }
         catch (Exception error)

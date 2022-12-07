@@ -74,7 +74,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
     NO_PROCESS_IMPLEMENTATION(400, "OMAG-GENERIC-HANDLERS-400-007",
                      "Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined",
-                     "The system is unable to initiate a governance action process because is its implementation definition is missing.",
+                     "The system is unable to initiate a governance action process because its implementation definition is missing.",
                      "Link a governance action type to the governance action process.  If the process is to have multiple steps to it, link " +
                              "additional governance action types to this first one to describe the execution flow. " +
                              "Then retry the request once the definition is corrected."),
@@ -98,6 +98,13 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                          "The system is unable to initiate a governance action because the nominated governance engine has no supported governance services.",
                          "Investigate why there are no supported governance services for the governance engine. " +
                                  "Then retry the request once the issue is resolved."),
+
+    UNKNOWN_PROCESS(400, "OMAG-GENERIC-HANDLERS-400-011",
+                              "Unable to initiate an instance of the {0} governance action process because the name is not recognized",
+                              "The system is unable to initiate a governance action process because its definition is missing.",
+                              "Verify that the process name (qualifiedName of a GovernanceActionProcess entity) is correct.  " +
+                                      "Either set up the caller to use the correct name or create a GovernanceActionProcess entity with the requested qualifiedName.  " +
+                                      "Then retry the request once the definition is added."),
 
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +

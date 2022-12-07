@@ -93,9 +93,20 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
             File              folderFile    = super.getRootDirectoryFile();
             FileFolderElement folderElement = super.getFolderElement();
 
-            if ((folderElement == null) || (folderFile == null))
+            if (folderFile == null)
             {
                 return;
+            }
+
+            if (folderElement == null)
+            {
+                FileFolderProperties properties = new FileFolderProperties();
+
+                properties.setTypeName("DataFolder");
+                properties.setPathName(folderFile.getAbsolutePath());
+                properties.setName(folderFile.getName());
+
+                this.getContext().addDataFolderToCatalog(properties, null);
             }
 
             directoryName = folderFile.getName();

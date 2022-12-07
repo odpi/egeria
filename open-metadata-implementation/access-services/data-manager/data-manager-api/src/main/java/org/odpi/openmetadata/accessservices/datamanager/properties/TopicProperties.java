@@ -82,7 +82,6 @@ public class TopicProperties extends DataSetProperties
         return "TopicProperties{" +
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

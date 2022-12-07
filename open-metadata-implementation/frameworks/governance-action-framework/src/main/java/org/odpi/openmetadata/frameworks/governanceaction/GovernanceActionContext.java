@@ -91,7 +91,19 @@ public class GovernanceActionContext implements GovernanceContext,
 
 
     /**
-     * Return the unique identifier of the asset being discovered.
+     * Return the unique identifier of the governance action that this service request is associated with.
+     *
+     * @return string guid
+     */
+    @Override
+    public String getGovernanceActionGUID()
+    {
+        return governanceActionGUID;
+    }
+
+
+    /**
+     * Return the type of request.
      *
      * @return string guid
      */
@@ -202,6 +214,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
@@ -211,11 +224,12 @@ public class GovernanceActionContext implements GovernanceContext,
     public void updateActionTargetStatus(String                 actionTargetGUID,
                                          GovernanceActionStatus status,
                                          Date                   startDate,
-                                         Date                   completionDate) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                         Date                   completionDate,
+                                         String                 completionMessage) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        openMetadataStore.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate);
+        openMetadataStore.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 
 
@@ -238,7 +252,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null, null);
     }
 
 
@@ -263,7 +277,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets, null);
     }
 
 
@@ -288,6 +302,33 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
+        this.recordCompletionStatus(status, outputGuards, newRequestParameters, newActionTargets, null);
+    }
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    @Override
+    public synchronized  void recordCompletionStatus(CompletionStatus      status,
+                                                     List<String>          outputGuards,
+                                                     Map<String, String>   newRequestParameters,
+                                                     List<NewActionTarget> newActionTargets,
+                                                     String                completionMessage) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
         this.completionStatus = status;
 
         Map<String, String> combinedRequestParameters = new HashMap<>();
@@ -302,7 +343,7 @@ public class GovernanceActionContext implements GovernanceContext,
             combinedRequestParameters.putAll(newRequestParameters);
         }
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets, completionMessage);
     }
 
 
@@ -714,7 +755,7 @@ public class GovernanceActionContext implements GovernanceContext,
             openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
                                                            parentGUID,
                                                            processGUID,
-                                                           false,
+                                                           true,
                                                            false,
                                                            null,
                                                            null,
@@ -782,7 +823,7 @@ public class GovernanceActionContext implements GovernanceContext,
             openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
                                                            parentGUID,
                                                            processGUID,
-                                                           false,
+                                                           true,
                                                            false,
                                                            null,
                                                            null,
@@ -845,7 +886,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
 
-        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, false, false, null, null, null, new Date());
+        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, true, false, null, null, null, new Date());
 
         return portGUID;
     }
@@ -879,7 +920,7 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, false, false, null, null, null, new Date());
+        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, true, false, null, null, null, new Date());
     }
 
 
@@ -917,7 +958,9 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        ElementProperties relationshipProperties = packBasicProperties(qualifiedName, null, null, description, null, methodName);
+        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, "qualifiedName", qualifiedName);
+
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "description", description);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "formula", formula);
 
         if (relationshipName == null)
@@ -925,7 +968,7 @@ public class GovernanceActionContext implements GovernanceContext,
             return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName,
                                                                   sourceElementGUID,
                                                                   targetElementGUID,
-                                                                  false,
+                                                                  true,
                                                                   false,
                                                                   null,
                                                                   null,
@@ -937,7 +980,7 @@ public class GovernanceActionContext implements GovernanceContext,
             return openMetadataStore.createRelatedElementsInStore(relationshipName,
                                                                   sourceElementGUID,
                                                                   targetElementGUID,
-                                                                  false,
+                                                                  true,
                                                                   false,
                                                                   null,
                                                                   null,
@@ -1837,7 +1880,60 @@ public class GovernanceActionContext implements GovernanceContext,
                                                           startTime,
                                                           governanceEngineName,
                                                           requestType,
-                                                          requestParameters);
+                                                          requestParameters,
+                                                          null);
+    }
+
+
+    /**
+     * Create a governance action in the metadata store which will trigger the governance action service
+     * associated with the supplied request type.  The governance action remains to act as a record
+     * of the actions taken for auditing.
+     *
+     * @param qualifiedName unique identifier to give this governance action
+     * @param domainIdentifier governance domain associated with this action (0=ALL)
+     * @param displayName display name for this action
+     * @param description description for this action
+     * @param requestSourceGUIDs  request source elements for the resulting governance action service
+     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param governanceEngineName name of the governance engine to run the request
+     * @param requestType request type to identify the governance action service to run
+     * @param requestParameters properties to pass to the governance action service
+     * @param processName name of the process that this action is a part of
+     *
+     * @return unique identifier of the governance action
+     *
+     * @throws InvalidParameterException null qualified name
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String initiateGovernanceAction(String                qualifiedName,
+                                           int                   domainIdentifier,
+                                           String                displayName,
+                                           String                description,
+                                           List<String>          requestSourceGUIDs,
+                                           List<NewActionTarget> actionTargets,
+                                           Date                  startTime,
+                                           String                governanceEngineName,
+                                           String                requestType,
+                                           Map<String, String>   requestParameters,
+                                           String                processName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return openMetadataStore.initiateGovernanceAction(qualifiedName,
+                                                          domainIdentifier,
+                                                          displayName,
+                                                          description,
+                                                          requestSourceGUIDs,
+                                                          actionTargets,
+                                                          startTime,
+                                                          governanceEngineName,
+                                                          requestType,
+                                                          requestParameters,
+                                                          processName);
     }
 
 

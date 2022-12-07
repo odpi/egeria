@@ -152,7 +152,7 @@ public class ClientConstructorTest
 
         DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new FilesAndFoldersClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new FilesAndFoldersClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 
 

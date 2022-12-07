@@ -163,8 +163,8 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_INITIALIZED.getMessageDefinition(governanceActionServiceName,
-                                                                                                                 serviceRequestType,
                                                                                                                  governanceActionServiceConnector.getClass().getName(),
+                                                                                                                 serviceRequestType,
                                                                                                                  getGovernanceEngineName()));
             }
             else

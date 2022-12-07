@@ -95,6 +95,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine
+     * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -107,6 +108,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     @Override
     public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
                                                          String                     governanceRequestType,
+                                                         Date                       startDate,
                                                          Map<String, String>        requestParameters,
                                                          List<RequestSourceElement> requestSourceElements,
                                                          List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,

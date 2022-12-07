@@ -121,7 +121,7 @@ public class FormRequestBody extends FormProperties
         return "FormRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

@@ -145,7 +145,7 @@ public class PropertyHelper
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @return resulting element properties object
@@ -162,7 +162,7 @@ public class PropertyHelper
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @return resulting element properties object
@@ -179,7 +179,7 @@ public class PropertyHelper
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @return resulting element properties object
@@ -502,6 +502,45 @@ public class PropertyHelper
                     primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
                     primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof List)
+                {
+                    List propertyAsList = (List)mapPropertyValue;
+
+                    ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+
+                    if (propertyAsList.size() != 0)
+                    {
+                        int index = 0;
+
+                        Map<String, Object> arrayPropertyAsMap = new HashMap<>();
+
+                        for (Object arrayValueObject : propertyAsList)
+                        {
+                            arrayPropertyAsMap.put(Integer.toString(index), arrayValueObject);
+                            index++;
+                        }
+
+                        arrayTypePropertyValue.setArrayValues(addPropertyMap(null, arrayPropertyAsMap));
+                        arrayTypePropertyValue.setArrayCount(index);
+                    }
+
+                    arrayTypePropertyValue.setTypeName("array");
+
+                    resultingProperties.setProperty(mapPropertyName, arrayTypePropertyValue);
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof Map)
+                {
+                    Map<String, Object> propertyAsMap = (Map<String, Object>)mapPropertyValue;
+
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+
+                    mapTypePropertyValue.setMapValues(addPropertyMap(null, propertyAsMap));
+                    mapTypePropertyValue.setTypeName("map");
+
+                    resultingProperties.setProperty(mapPropertyName, mapTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue != null)
@@ -1108,7 +1147,7 @@ public class PropertyHelper
                 }
                 else
                 {
-                    // And the EQ(uals) operator for any other type
+                    // And the EQUAlS operator for any other type
                     propertyCondition.setOperator(PropertyComparisonOperator.EQ);
                 }
 

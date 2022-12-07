@@ -94,7 +94,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ConnectionResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectionResponse
@@ -120,7 +120,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ConnectionsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectionsResponse
@@ -146,7 +146,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a ConnectionsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -174,7 +174,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ConnectorReportResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectorReportResponse
@@ -200,7 +200,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ConnectorTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectorTypesResponse
@@ -226,7 +226,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a ConnectorTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -254,7 +254,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a EndpointResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return EndpointResponse
@@ -280,7 +280,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a EndpointsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return EndpointsResponse
@@ -307,7 +307,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a EndpointsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -335,7 +335,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ExternalReferenceResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ExternalReferenceResponse
@@ -361,7 +361,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ExternalReferencesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ExternalReferencesResponse
@@ -388,7 +388,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a ExternalReferencesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -416,7 +416,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseColumnResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -442,7 +442,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseColumnsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -468,7 +468,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DatabaseColumnsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -496,7 +496,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -522,7 +522,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabasesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -548,7 +548,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabasesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -576,7 +576,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseSchemaResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -602,7 +602,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseSchemasResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -628,7 +628,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DatabaseSchemasResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -656,7 +656,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseTableResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -682,7 +682,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseTablesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -708,7 +708,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DatabaseTablesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -736,7 +736,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseViewResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -762,7 +762,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DatabaseViewsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -788,7 +788,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DatabaseViewsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -816,7 +816,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DataContainerResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -842,7 +842,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DataContainersResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -869,7 +869,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DataContainersResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -897,7 +897,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DataFileResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -923,7 +923,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DataFileResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -951,7 +951,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a DataFilesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -977,7 +977,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a DataFilesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1005,7 +1005,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a FileFolderResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1031,7 +1031,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a FileFolderResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1059,7 +1059,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a FileFoldersResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1085,7 +1085,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a FormResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1111,7 +1111,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a FormsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1137,7 +1137,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a FormsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1165,7 +1165,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a QueryResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1191,7 +1191,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a QueriesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1218,7 +1218,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a QueriesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1247,7 +1247,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ReportResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1273,7 +1273,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ReportsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1300,7 +1300,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a ReportsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1328,7 +1328,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a TopicResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1354,7 +1354,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a TopicsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1380,7 +1380,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a TopicsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1408,7 +1408,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a EventTypeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1434,7 +1434,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a EventTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1461,7 +1461,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a EventTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1489,7 +1489,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1515,7 +1515,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1542,7 +1542,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a APIsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1570,7 +1570,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIOperationResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1596,7 +1596,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIOperationsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1623,7 +1623,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a APIOperationsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1651,7 +1651,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIParameterListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1677,7 +1677,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIParameterListsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1704,7 +1704,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a APIParameterListsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody request body for the request.
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1732,7 +1732,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a SchemaAttributeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1760,7 +1760,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a SchemaAttributesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1788,7 +1788,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SchemaAttributeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1814,7 +1814,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SchemaAttributesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1840,7 +1840,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a SchemaTypeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1868,7 +1868,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SchemaTypeResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1894,7 +1894,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SchemaTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -1921,7 +1921,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a SchemaTypesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1949,7 +1949,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a ValidValueSetsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -1977,7 +1977,7 @@ public class DataManagerRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ElementStubResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
