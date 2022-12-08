@@ -120,13 +120,8 @@ public class MapSchemaTypeProperties extends SchemaTypeProperties
                        ", formula='" + getFormula() + '\'' +
                        ", queries=" + getQueries() +
                        ", isDeprecated=" + getIsDeprecated() +
-                       ", technicalName='" + getTechnicalName() + '\'' +
-                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
