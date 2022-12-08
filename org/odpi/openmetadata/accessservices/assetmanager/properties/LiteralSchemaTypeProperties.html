@@ -126,9 +126,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties</a></li>
-<li>
-<ul class="inheritance">
 <li><a href="SchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaProperties</a></li>
 <li>
 <ul class="inheritance">
@@ -136,8 +133,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.assetmanager.properties.LiteralSchemaTypeProperties</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -191,7 +186,7 @@ extends <a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadat
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.assetmanager.properties.LiteralSchemaTypeProperties)">LiteralSchemaTypeProperties</a></span>&#8203;(<a href="LiteralSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LiteralSchemaTypeProperties</a>&nbsp;template)</code></th>
 <td class="colLast">
 <div class="block">Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the definitions clone to point to the
+ likely to be being cloned in the same operation, and we want the definitions clone to point to the
  asset clone and not the original asset.</div>
 </td>
 </tr>
@@ -268,21 +263,14 @@ extends <a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadat
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a></h3>
-<code><a href="SchemaTypeProperties.html#getAuthor()">getAuthor</a>, <a href="SchemaTypeProperties.html#getEncodingStandard()">getEncodingStandard</a>, <a href="SchemaTypeProperties.html#getFormula()">getFormula</a>, <a href="SchemaTypeProperties.html#getNamespace()">getNamespace</a>, <a href="SchemaTypeProperties.html#getQueries()">getQueries</a>, <a href="SchemaTypeProperties.html#getVersionNumber()">getVersionNumber</a>, <a href="SchemaTypeProperties.html#setAuthor(java.lang.String)">setAuthor</a>, <a href="SchemaTypeProperties.html#setEncodingStandard(java.lang.String)">setEncodingStandard</a>, <a href="SchemaTypeProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="SchemaTypeProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="SchemaTypeProperties.html#setQueries(java.util.List)">setQueries</a>, <a href="SchemaTypeProperties.html#setVersionNumber(java.lang.String)">setVersionNumber</a></code></li>
+<code><a href="SchemaTypeProperties.html#getAuthor()">getAuthor</a>, <a href="SchemaTypeProperties.html#getEncodingStandard()">getEncodingStandard</a>, <a href="SchemaTypeProperties.html#getFormula()">getFormula</a>, <a href="SchemaTypeProperties.html#getNamespace()">getNamespace</a>, <a href="SchemaTypeProperties.html#getQueries()">getQueries</a>, <a href="SchemaTypeProperties.html#getUsage()">getUsage</a>, <a href="SchemaTypeProperties.html#getVersionNumber()">getVersionNumber</a>, <a href="SchemaTypeProperties.html#setAuthor(java.lang.String)">setAuthor</a>, <a href="SchemaTypeProperties.html#setEncodingStandard(java.lang.String)">setEncodingStandard</a>, <a href="SchemaTypeProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="SchemaTypeProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="SchemaTypeProperties.html#setQueries(java.util.List)">setQueries</a>, <a href="SchemaTypeProperties.html#setUsage(java.lang.String)">setUsage</a>, <a href="SchemaTypeProperties.html#setVersionNumber(java.lang.String)">setVersionNumber</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaProperties">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaProperties</a></h3>
-<code><a href="SchemaProperties.html#getIsDeprecated()">getIsDeprecated</a>, <a href="SchemaProperties.html#getTechnicalDescription()">getTechnicalDescription</a>, <a href="SchemaProperties.html#getTechnicalName()">getTechnicalName</a>, <a href="SchemaProperties.html#setIsDeprecated(boolean)">setIsDeprecated</a>, <a href="SchemaProperties.html#setTechnicalDescription(java.lang.String)">setTechnicalDescription</a>, <a href="SchemaProperties.html#setTechnicalName(java.lang.String)">setTechnicalName</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></h3>
-<code><a href="SupplementaryProperties.html#getAbbreviation()">getAbbreviation</a>, <a href="SupplementaryProperties.html#getDescription()">getDescription</a>, <a href="SupplementaryProperties.html#getDisplayName()">getDisplayName</a>, <a href="SupplementaryProperties.html#getSummary()">getSummary</a>, <a href="SupplementaryProperties.html#getUsage()">getUsage</a>, <a href="SupplementaryProperties.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="SupplementaryProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SupplementaryProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SupplementaryProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="SupplementaryProperties.html#setUsage(java.lang.String)">setUsage</a></code></li>
+<code><a href="SchemaProperties.html#getDescription()">getDescription</a>, <a href="SchemaProperties.html#getDisplayName()">getDisplayName</a>, <a href="SchemaProperties.html#getIsDeprecated()">getIsDeprecated</a>, <a href="SchemaProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SchemaProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SchemaProperties.html#setIsDeprecated(boolean)">setIsDeprecated</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties">
@@ -332,7 +320,7 @@ extends <a href="SchemaTypeProperties.html" title="class in org.odpi.openmetadat
 <h4>LiteralSchemaTypeProperties</h4>
 <pre>public&nbsp;LiteralSchemaTypeProperties&#8203;(<a href="LiteralSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LiteralSchemaTypeProperties</a>&nbsp;template)</pre>
 <div class="block">Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the definitions clone to point to the
+ likely to be being cloned in the same operation, and we want the definitions clone to point to the
  asset clone and not the original asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

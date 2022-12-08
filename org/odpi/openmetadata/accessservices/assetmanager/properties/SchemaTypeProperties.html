@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -126,15 +126,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties</a></li>
-<li>
-<ul class="inheritance">
 <li><a href="SchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaProperties</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -254,61 +249,75 @@ extends <a href="SchemaProperties.html" title="class in org.odpi.openmetadata.ac
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUsage()">getUsage</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of the expected usage of this technical element.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVersionNumber()">getVersionNumber</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the version number of the schema element - null means no version number.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAuthor(java.lang.String)">setAuthor</a></span>&#8203;(java.lang.String&nbsp;author)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the author of the schema element.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEncodingStandard(java.lang.String)">setEncodingStandard</a></span>&#8203;(java.lang.String&nbsp;encodingStandard)</code></th>
 <td class="colLast">
 <div class="block">Set up the format (encoding standard) used for this schema.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setFormula(java.lang.String)">setFormula</a></span>&#8203;(java.lang.String&nbsp;formula)</code></th>
 <td class="colLast">
 <div class="block">Set up the formula used to combine the values of the queries.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNamespace(java.lang.String)">setNamespace</a></span>&#8203;(java.lang.String&nbsp;namespace)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the namespace that this type belongs to.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQueries(java.util.List)">setQueries</a></span>&#8203;(java.util.List&lt;<a href="QueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">QueryTargetProperties</a>&gt;&nbsp;queries)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of queries that are used to create the derived schema element.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setUsage(java.lang.String)">setUsage</a></span>&#8203;(java.lang.String&nbsp;usage)</code></th>
+<td class="colLast">
+<div class="block">Set up details of the expected usage of this technical element.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setVersionNumber(java.lang.String)">setVersionNumber</a></span>&#8203;(java.lang.String&nbsp;versionNumber)</code></th>
 <td class="colLast">
 <div class="block">Set up the version number of the schema element - null means no version number.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -321,14 +330,7 @@ extends <a href="SchemaProperties.html" title="class in org.odpi.openmetadata.ac
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaProperties</a></h3>
-<code><a href="SchemaProperties.html#getIsDeprecated()">getIsDeprecated</a>, <a href="SchemaProperties.html#getTechnicalDescription()">getTechnicalDescription</a>, <a href="SchemaProperties.html#getTechnicalName()">getTechnicalName</a>, <a href="SchemaProperties.html#setIsDeprecated(boolean)">setIsDeprecated</a>, <a href="SchemaProperties.html#setTechnicalDescription(java.lang.String)">setTechnicalDescription</a>, <a href="SchemaProperties.html#setTechnicalName(java.lang.String)">setTechnicalName</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></h3>
-<code><a href="SupplementaryProperties.html#getAbbreviation()">getAbbreviation</a>, <a href="SupplementaryProperties.html#getDescription()">getDescription</a>, <a href="SupplementaryProperties.html#getDisplayName()">getDisplayName</a>, <a href="SupplementaryProperties.html#getSummary()">getSummary</a>, <a href="SupplementaryProperties.html#getUsage()">getUsage</a>, <a href="SupplementaryProperties.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="SupplementaryProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SupplementaryProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SupplementaryProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="SupplementaryProperties.html#setUsage(java.lang.String)">setUsage</a></code></li>
+<code><a href="SchemaProperties.html#getDescription()">getDescription</a>, <a href="SchemaProperties.html#getDisplayName()">getDisplayName</a>, <a href="SchemaProperties.html#getIsDeprecated()">getIsDeprecated</a>, <a href="SchemaProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SchemaProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SchemaProperties.html#setIsDeprecated(boolean)">setIsDeprecated</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties">
@@ -447,6 +449,34 @@ extends <a href="SchemaProperties.html" title="class in org.odpi.openmetadata.ac
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>author</code> - String author name</dd>
+</dl>
+</li>
+</ul>
+<a id="getUsage()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUsage</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getUsage()</pre>
+<div class="block">Return details of the expected usage of this technical element.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string text</dd>
+</dl>
+</li>
+</ul>
+<a id="setUsage(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setUsage</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setUsage&#8203;(java.lang.String&nbsp;usage)</pre>
+<div class="block">Set up details of the expected usage of this technical element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>usage</code> - string text</dd>
 </dl>
 </li>
 </ul>

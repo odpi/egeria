@@ -126,12 +126,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties</a></li>
-<li>
-<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaProperties</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -150,7 +145,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">SchemaProperties</span>
-extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></pre>
+extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ReferenceableProperties</a></pre>
 <div class="block">SchemaProperties is a bean containing the common attributes for schema types and schema attributes.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -213,24 +208,24 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIsDeprecated()">getIsDeprecated</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Is the schema element deprecated?</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalDescription()">getTechnicalDescription</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the stored technicalDescription property for the schema element.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalName()">getTechnicalName</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the simple name of the schema element.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIsDeprecated()">getIsDeprecated</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Is the schema element deprecated?</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -242,23 +237,23 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIsDeprecated(boolean)">setIsDeprecated</a></span>&#8203;(boolean&nbsp;deprecated)</code></th>
-<td class="colLast">
-<div class="block">Set whether the schema element deprecated or not.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalDescription(java.lang.String)">setTechnicalDescription</a></span>&#8203;(java.lang.String&nbsp;technicalDescription)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored technicalDescription property for the schema element.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalName(java.lang.String)">setTechnicalName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
 <div class="block">Set up the simple name of the schema element.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIsDeprecated(boolean)">setIsDeprecated</a></span>&#8203;(boolean&nbsp;deprecated)</code></th>
+<td class="colLast">
+<div class="block">Set whether the schema element deprecated or not.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -269,13 +264,6 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.SupplementaryProperties">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties.<a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></h3>
-<code><a href="SupplementaryProperties.html#getAbbreviation()">getAbbreviation</a>, <a href="SupplementaryProperties.html#getDescription()">getDescription</a>, <a href="SupplementaryProperties.html#getDisplayName()">getDisplayName</a>, <a href="SupplementaryProperties.html#getSummary()">getSummary</a>, <a href="SupplementaryProperties.html#getUsage()">getUsage</a>, <a href="SupplementaryProperties.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="SupplementaryProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SupplementaryProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SupplementaryProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="SupplementaryProperties.html#setUsage(java.lang.String)">setUsage</a></code></li>
-</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties">
 <!--   -->
@@ -368,13 +356,13 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="getTechnicalName()">
+<a id="getDisplayName()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getTechnicalName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalName()</pre>
+<h4>getDisplayName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
 <div class="block">Return the simple name of the schema element.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -382,13 +370,13 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="setTechnicalName(java.lang.String)">
+<a id="setDisplayName(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setTechnicalName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalName&#8203;(java.lang.String&nbsp;name)</pre>
+<h4>setDisplayName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDisplayName&#8203;(java.lang.String&nbsp;name)</pre>
 <div class="block">Set up the simple name of the schema element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -396,13 +384,13 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="getTechnicalDescription()">
+<a id="getDescription()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getTechnicalDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalDescription()</pre>
+<h4>getDescription</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
 <div class="block">Returns the stored technicalDescription property for the schema element.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -410,17 +398,17 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="setTechnicalDescription(java.lang.String)">
+<a id="setDescription(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setTechnicalDescription</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalDescription&#8203;(java.lang.String&nbsp;technicalDescription)</pre>
+<h4>setDescription</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDescription&#8203;(java.lang.String&nbsp;description)</pre>
 <div class="block">Set up the stored technicalDescription property for the schema element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>technicalDescription</code> - string technicalDescription</dd>
+<dd><code>description</code> - string technicalDescription</dd>
 </dl>
 </li>
 </ul>
@@ -434,7 +422,7 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 <div class="block">Standard toString method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="SupplementaryProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></code></dd>
+<dd><code><a href="ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -450,7 +438,7 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="SupplementaryProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></code></dd>
+<dd><code><a href="ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -468,7 +456,7 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 <div class="block">Return hash code based on properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="SupplementaryProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SupplementaryProperties</a></code></dd>
+<dd><code><a href="ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 </dl>
