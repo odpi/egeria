@@ -1971,31 +1971,35 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 String formula = schemaTypeBuilder.getFormula();
                 if (formula == null)
                 {
-                    // if we have no formula requested and we are not a merge, any existing
-                    // calculated value classification should be cleared
+                    /*
+                     * if we have no formula requested and we are not a merge, any existing
+                     * calculated value classification should be cleared
+                     */
                     if (!isMergeUpdate)
                     {
-                        List<Classification> classifications = schemaAttributeEntity.getClassifications();
-                        if (classifications != null && classifications.size() >0)
-                        {
-                            for (Classification classification : classifications)
+                        try {
+                            String sourceName = "local";
+                            if (externalSourceName != null && externalSourceName.length() >0)
                             {
-                                if (classification.getName().equals(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME))
-                                {
-                                    removeClassificationFromRepository(userId,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       schemaAttributeGUID,
-                                                                       schemaAttributeGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       effectiveTime,
-                                                                       methodName);
-                                }
+                                sourceName = externalSourceName;
                             }
+
+                            repositoryHelper.getClassificationFromEntity(sourceName, schemaAttributeEntity, OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME, methodName);
+                            removeClassificationFromRepository(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               schemaAttributeGUID,
+                                                               schemaAttributeGUIDParameterName,
+                                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                        } catch (ClassificationErrorException e)
+                        {
+                            // there was no calculated value classification associated with the entity
                         }
                     }
                 } else
@@ -2019,19 +2023,19 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 }
                 // todo this logic assumes the schema type is stored as a classification
                 setClassificationInRepository(userId,
-                        externalSourceGUID,externalSourceName,
-                        schemaAttributeEntity,
-                        schemaAttributeGUIDParameterName,
-                        attributeTypeName,
-                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                        OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                        schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
-                        isMergeUpdate,
-                        forLineage,
-                        forDuplicateProcessing,
-                        supportedZones,
-                        effectiveTime,
-                        methodName);
+                                              externalSourceGUID,externalSourceName,
+                                              schemaAttributeEntity,
+                                              schemaAttributeGUIDParameterName,
+                                              attributeTypeName,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                              isMergeUpdate,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              effectiveTime,
+                                              methodName);
             }
         }
     }
