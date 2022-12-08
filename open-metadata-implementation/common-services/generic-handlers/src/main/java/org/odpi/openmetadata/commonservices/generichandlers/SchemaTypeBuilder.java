@@ -413,6 +413,8 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     {
         return (! (formula == null));
     }
+
+    
     /**
      * Return the formula expression.
      *
