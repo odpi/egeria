@@ -17,6 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -3209,10 +3211,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Validates that the unique property is not already in use.
+     * Validates that the unique property is not already in use across all types that contain the unique property.
      *
      * @param entityGUID existing entity (or null if this is a create)
-     * @param entityTypeGUID the unique identifier of type of the entity
      * @param entityTypeName the unique name of the type of the entity
      * @param uniqueParameterValue the value of the unique parameter
      * @param uniqueParameterName the name of the unique parameter
@@ -3224,7 +3225,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void validateUniqueProperty(String entityGUID,
-                                       String entityTypeGUID,
                                        String entityTypeName,
                                        String uniqueParameterValue,
                                        String uniqueParameterName,
@@ -3236,14 +3236,46 @@ public class OpenMetadataAPIGenericHandler<B>
         List<String> propertyNames = new ArrayList<>();
         propertyNames.add(uniqueParameterName);
 
+        String owningEntityTypeGUID = null;
+        String owningEntityTypeName = null;
+
+        String entityTypeNameToCheck = entityTypeName;
+        while (owningEntityTypeGUID == null)
+        {
+            TypeDef potentialOwningEntityTypeDef = repositoryHelper.getTypeDefByName(methodName, entityTypeNameToCheck);
+            List<TypeDefAttribute> typeDefAttributes = potentialOwningEntityTypeDef.getPropertiesDefinition();
+            if (typeDefAttributes != null && !typeDefAttributes.isEmpty())
+            {
+                for (TypeDefAttribute typeDefAttribute:typeDefAttributes)
+                {
+                    if (typeDefAttribute.isUnique() && typeDefAttribute.getAttributeName().equals(uniqueParameterName))
+                    {
+                        owningEntityTypeGUID = potentialOwningEntityTypeDef.getGUID();
+                        owningEntityTypeName = potentialOwningEntityTypeDef.getName();
+                    }
+                }
+            }
+
+            TypeDefLink superTypeDefLink = potentialOwningEntityTypeDef.getSuperType();
+
+            if (superTypeDefLink != null)
+            {
+                entityTypeNameToCheck = superTypeDefLink.getName();
+            } else
+            {
+                // should not happen. Log?
+                break;
+            }
+        }
+
         /*
          * An entity with the Memento classification set is ignored
          */
         List<EntityDetail> existingEntities = this.getEntitiesByValue(localServerUserId,
                                                                       uniqueParameterValue,
                                                                       uniqueParameterName,
-                                                                      entityTypeGUID,
-                                                                      entityTypeName,
+                                                                      owningEntityTypeGUID,
+                                                                      owningEntityTypeName,
                                                                       propertyNames,
                                                                       true,
                                                                       null,
@@ -3289,7 +3321,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * Validate that new properties for an entity do not have unique properties that clash with other instances.
      *
      * @param entityGUID unique identifier of the entity to be updated (or null for a new entity).
-     * @param entityTypeGUID the unique identifier of type of the entity
      * @param entityTypeName the unique name of the type of the entity
      * @param newProperties properties to test
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3300,7 +3331,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void validateUniqueProperties(String             entityGUID,
-                                          String             entityTypeGUID,
                                           String             entityTypeName,
                                           InstanceProperties newProperties,
                                           Date               effectiveTime,
@@ -3330,7 +3360,6 @@ public class OpenMetadataAPIGenericHandler<B>
                         InstancePropertyValue uniquePropertyValue = uniqueProperties.getPropertyValue(uniquePropertyName);
 
                         validateUniqueProperty(entityGUID,
-                                               entityTypeGUID,
                                                entityTypeName,
                                                uniquePropertyValue.valueAsString(),
                                                uniquePropertyName,
@@ -3371,7 +3400,7 @@ public class OpenMetadataAPIGenericHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        validateUniqueProperties(null, entityTypeGUID, entityTypeName, newProperties, effectiveTime, methodName);
+        validateUniqueProperties(null, entityTypeName, newProperties, effectiveTime, methodName);
 
         if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
         {
@@ -6301,7 +6330,6 @@ public class OpenMetadataAPIGenericHandler<B>
              * Validate that any changes to the unique properties do not clash with other entities.
              */
             validateUniqueProperties(originalEntity.getGUID(),
-                                     entityTypeGUID,
                                      entityTypeName,
                                      newProperties,
                                      effectiveTime,
