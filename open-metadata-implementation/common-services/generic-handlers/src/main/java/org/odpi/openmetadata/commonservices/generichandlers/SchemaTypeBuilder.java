@@ -196,8 +196,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                              Map<String, Object>  extendedProperties,
                              OMRSRepositoryHelper repositoryHelper,
                              String               serviceName,
-                             String               serverName
-                            )
+                             String               serverName)
     {
         this(qualifiedName,
              displayName,
