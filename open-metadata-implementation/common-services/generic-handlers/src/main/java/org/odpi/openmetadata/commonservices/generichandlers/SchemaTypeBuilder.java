@@ -414,15 +414,27 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         return (! (formula == null));
     }
 
-    
+
     /**
-     * Return the formula expression.
+     * Return the schema type properties in an InstanceProperties object.
      *
-     * @return string
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
      */
-    public String getFormula()
+    public InstanceProperties getCalculatedValueProperties(String methodName)
     {
-        return formula;
+        InstanceProperties properties = null;
+
+        if (formula != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                    null,
+                    OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                    formula,
+                    methodName);
+        }
+
+        return properties;
     }
 
 

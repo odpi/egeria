@@ -309,7 +309,15 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
              */
             if (schemaTypeBuilder != null && schemaTypeBuilder.isDerived())
             {
-                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder.getFormula(), methodName);
+                String sourceName = "local";
+                if (externalSourceName != null && externalSourceName.length() >0)
+                {
+                    sourceName = externalSourceName;
+                }
+                InstanceProperties instanceProperties = schemaTypeBuilder.getCalculatedValueProperties(methodName);
+                String formula = repositoryHelper.getStringProperty(sourceName, OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, instanceProperties, methodName);
+
+                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
             }
 
             return this.createNestedSchemaAttribute(userId,
@@ -1968,8 +1976,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 /*
                  * The formula is set if the schema attribute is derived. Need to test the merge semantics.
                  */
-                String formula = schemaTypeBuilder.getFormula();
-                if (formula == null)
+                InstanceProperties calculatedValueProperties = schemaTypeBuilder.getCalculatedValueProperties(methodName);
+                if (calculatedValueProperties == null)
                 {
                     /*
                      * if we have no formula requested and we are not a merge, any existing
@@ -2012,7 +2020,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                   attributeTypeName,
                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                  schemaAttributeBuilder.getCalculatedValueProperties(formula, methodName),
+                                                  calculatedValueProperties,
                                                   isMergeUpdate,
                                                   forLineage,
                                                   forDuplicateProcessing,
