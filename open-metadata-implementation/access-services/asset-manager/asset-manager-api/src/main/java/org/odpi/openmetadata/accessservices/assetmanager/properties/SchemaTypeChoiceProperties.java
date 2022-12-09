@@ -36,7 +36,7 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
 
     /**
      * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
+     * likely to be being cloned in the same operation, and we want the definitions clone to point to the
      * asset clone and not the original asset.
      *
      * @param template template object to copy.
@@ -127,13 +127,8 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
                        ", formula='" + getFormula() + '\'' +
                        ", queries=" + getQueries() +
                        ", isDeprecated=" + getIsDeprecated() +
-                       ", technicalName='" + getTechnicalName() + '\'' +
-                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

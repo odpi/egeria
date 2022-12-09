@@ -163,15 +163,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                 forDuplicateProcessing,
                                                                                 effectiveTime,
                                                                                 methodName));
-
-                    this.getSupplementaryProperties(element.getElementHeader().getGUID(),
-                                                    schemaTypeGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                    element.getSchemaTypeProperties(),
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
                 }
             }
         }
@@ -221,15 +212,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                 forDuplicateProcessing,
                                                                                 effectiveTime,
                                                                                 methodName));
-
-                    this.getSupplementaryProperties(element.getElementHeader().getGUID(),
-                                                    schemaAttributeGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                    element.getSchemaAttributeProperties(),
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
                 }
             }
         }
@@ -297,18 +279,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         if (schemaTypeGUID != null)
         {
-            this.maintainSupplementaryProperties(userId,
-                                                 schemaTypeGUID,
-                                                 schemaTypeGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                 schemaTypeProperties.getQualifiedName(),
-                                                 schemaTypeProperties,
-                                                 false,
-                                                 forLineage,
-                                                 forDuplicateProcessing,
-                                                 effectiveTime,
-                                                 methodName);
-
             this.createExternalIdentifier(userId,
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
@@ -584,18 +554,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                            forDuplicateProcessing,
                                            effectiveTime,
                                            methodName);
-
-        this.maintainSupplementaryProperties(userId,
-                                             schemaTypeGUID,
-                                             schemaTypeGUIDParameterName,
-                                             OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                             schemaTypeProperties.getQualifiedName(),
-                                             schemaTypeProperties,
-                                             isMergeUpdate,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
     }
 
 
@@ -1111,15 +1069,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
                                                                                   methodName));
-
-            this.getSupplementaryProperties(schemaTypeElement.getElementHeader().getGUID(),
-                                            schemaTypeGUIDParameterName,
-                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                            schemaTypeElement.getSchemaTypeProperties(),
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
         }
 
         return schemaTypeElement;
@@ -1226,15 +1175,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
                                                                                   methodName));
-
-            this.getSupplementaryProperties(schemaTypeElement.getElementHeader().getGUID(),
-                                            schemaTypeGUIDParameterName,
-                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                            schemaTypeElement.getSchemaTypeProperties(),
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
         }
 
         return schemaTypeElement;
@@ -1399,18 +1339,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
-
-            this.maintainSupplementaryProperties(userId,
-                                                 schemaAttributeGUID,
-                                                 schemaAttributeGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                 schemaAttributeProperties.getQualifiedName(),
-                                                 schemaAttributeProperties,
-                                                 false,
-                                                 forLineage,
-                                                 forDuplicateProcessing,
-                                                 effectiveTime,
-                                                 methodName);
         }
 
         return schemaAttributeGUID;
@@ -1631,18 +1559,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      forDuplicateProcessing,
                                                      effectiveTime,
                                                      methodName);
-
-        this.maintainSupplementaryProperties(userId,
-                                             schemaAttributeGUID,
-                                             schemaAttributeGUIDParameterName,
-                                             OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                             schemaAttributeProperties.getQualifiedName(),
-                                             schemaAttributeProperties,
-                                             isMergeUpdate,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
     }
 
 
@@ -2301,8 +2217,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                                PropertyServerException
     {
         List<SchemaAttributeElement> results = schemaAttributeHandler.getSchemaAttributesByName(userId,
-                                                                                                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
-                                                                                                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                                 name,
                                                                                                 null,
                                                                                                 null,
@@ -2372,15 +2288,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        forDuplicateProcessing,
                                                                                        effectiveTime,
                                                                                        methodName));
-
-            this.getSupplementaryProperties(schemaAttributeElement.getElementHeader().getGUID(),
-                                            schemaAttributeGUIDParameterName,
-                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                            schemaAttributeElement.getSchemaAttributeProperties(),
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
         }
 
         return schemaAttributeElement;
