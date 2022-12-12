@@ -599,6 +599,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                                               specificMatchPropertyNames,
                                                               true,
+                                                              false,
                                                               null,
                                                               null,
                                                               forLineage,

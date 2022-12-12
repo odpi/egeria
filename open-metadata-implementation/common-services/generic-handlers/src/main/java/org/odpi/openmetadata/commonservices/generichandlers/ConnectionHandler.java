@@ -2526,6 +2526,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                specificMatchPropertyNames,
                                                                true,
+                                                               false,
                                                                null,
                                                                null,
                                                                forLineage,
