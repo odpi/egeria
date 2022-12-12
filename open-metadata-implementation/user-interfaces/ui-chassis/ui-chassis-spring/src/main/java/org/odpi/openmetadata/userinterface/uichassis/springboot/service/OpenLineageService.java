@@ -102,11 +102,11 @@ public class OpenLineageService {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
-            LOG.error("Cannot get end2end lineage for guid {}", guid);
+            LOG.error("Cannot get end-to-end lineage for guid {}", guid);
             throw e;
         } catch (InvalidParameterException e) {
-            LOG.error("Cannot get end2end lineage for guid {}", guid);
-            throw new LineageNotFoundException("end2end lineage error", e);
+            LOG.error("Cannot get end-to-end lineage for guid {}", guid);
+            throw new LineageNotFoundException("end-to-end lineage error", e);
         } catch (OpenLineageException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
