@@ -643,10 +643,7 @@ public class AssetCatalogHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
 
-        if(searchParameters.getExactMatch()) {
-            searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, searchParameters.getCaseInsensitive());
-        }
-        else {
+        if(!searchParameters.getExactMatch()) {
             searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.getCaseInsensitive());
         }
 
@@ -1350,7 +1347,7 @@ public class AssetCatalogHandler {
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder();
         List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByValue(userId, searchCriteria,
                 SEARCH_STRING_PARAMETER_NAME, entityTypeGUID, entityTypeName, Collections.singletonList(propertyName),
-                searchParameters.getExactMatch(), null, null, false,
+                searchParameters.getExactMatch(), searchParameters.getCaseInsensitive(),null, null, false,
                 false, supportedZones, sequencingOrder.getName(),searchParameters.getFrom(),
                 searchParameters.getPageSize(), clockService.getNow(), methodName);
 
