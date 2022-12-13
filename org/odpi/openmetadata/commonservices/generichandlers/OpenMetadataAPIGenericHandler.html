@@ -2618,15 +2618,14 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i128" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUniqueProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">validateUniqueProperty</a></span>&#8203;(java.lang.String&nbsp;entityGUID,
-                      java.lang.String&nbsp;entityTypeGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateUniqueProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">validateUniqueProperty</a></span>&#8203;(java.lang.String&nbsp;entityGUID,
                       java.lang.String&nbsp;entityTypeName,
                       java.lang.String&nbsp;uniqueParameterValue,
                       java.lang.String&nbsp;uniqueParameterName,
                       java.util.Date&nbsp;effectiveTime,
                       java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
-<div class="block">Validates that the unique property is not already in use.</div>
+<div class="block">Validates that the unique property is not already in use across all types that contain the unique property.</div>
 </td>
 </tr>
 <tr id="i129" class="rowColor">
@@ -3721,14 +3720,13 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="validateUniqueProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">
+<a id="validateUniqueProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>validateUniqueProperty</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateUniqueProperty&#8203;(java.lang.String&nbsp;entityGUID,
-                                   java.lang.String&nbsp;entityTypeGUID,
                                    java.lang.String&nbsp;entityTypeName,
                                    java.lang.String&nbsp;uniqueParameterValue,
                                    java.lang.String&nbsp;uniqueParameterName,
@@ -3737,11 +3735,10 @@ extends java.lang.Object</pre>
                             throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                    <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                    <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Validates that the unique property is not already in use.</div>
+<div class="block">Validates that the unique property is not already in use across all types that contain the unique property.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>entityGUID</code> - existing entity (or null if this is a create)</dd>
-<dd><code>entityTypeGUID</code> - the unique identifier of type of the entity</dd>
 <dd><code>entityTypeName</code> - the unique name of the type of the entity</dd>
 <dd><code>uniqueParameterValue</code> - the value of the unique parameter</dd>
 <dd><code>uniqueParameterName</code> - the name of the unique parameter</dd>
