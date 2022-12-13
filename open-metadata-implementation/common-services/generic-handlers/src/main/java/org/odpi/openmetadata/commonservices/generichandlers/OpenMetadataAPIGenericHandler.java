@@ -3261,7 +3261,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (superTypeDefLink != null)
             {
                 entityTypeNameToCheck = superTypeDefLink.getName();
-            } else
+            }
+            else
             {
                 // should not happen. Log?
                 break;
