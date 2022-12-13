@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -639,6 +639,26 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;externalSourceGUID,
+                     java.lang.String&nbsp;externalSourceName,
+                     java.lang.String&nbsp;schemaAttributeGUID,
+                     java.lang.String&nbsp;schemaAttributeGUIDParameterName,
+                     java.lang.String&nbsp;qualifiedName,
+                     java.lang.String&nbsp;qualifiedNameParameterName,
+                     <a href="SchemaAttributeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeBuilder</a>&nbsp;schemaAttributeBuilder,
+                     java.lang.String&nbsp;typeName,
+                     boolean&nbsp;isMergeUpdate,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing,
+                     java.util.Date&nbsp;effectiveTime,
+                     java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Update the properties in a schema attribute.</div>
+</td>
+</tr>
+<tr id="i21" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
                      java.lang.String&nbsp;externalSourceName,
@@ -654,7 +674,7 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <div class="block">Update a schema attribute</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,boolean,boolean,java.util.Date,java.lang.String)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -1547,6 +1567,53 @@ extends <a href="ReferenceableHandler.html" title="class in org.odpi.openmetadat
 <dd><code>extendedProperties</code> - properties from any subtype</dd>
 <dd><code>effectiveFrom</code> - starting time for this relationship (null for all time)</dd>
 <dd><code>effectiveTo</code> - ending time for this relationship (null for all time)</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateSchemaAttribute</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateSchemaAttribute&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;externalSourceGUID,
+                                  java.lang.String&nbsp;externalSourceName,
+                                  java.lang.String&nbsp;schemaAttributeGUID,
+                                  java.lang.String&nbsp;schemaAttributeGUIDParameterName,
+                                  java.lang.String&nbsp;qualifiedName,
+                                  java.lang.String&nbsp;qualifiedNameParameterName,
+                                  <a href="SchemaAttributeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaAttributeBuilder</a>&nbsp;schemaAttributeBuilder,
+                                  java.lang.String&nbsp;typeName,
+                                  boolean&nbsp;isMergeUpdate,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  java.lang.String&nbsp;methodName)
+                           throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the properties in a schema attribute.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>schemaAttributeGUID</code> - unique identifier of the metadata element to connect the new schema attribute to</dd>
+<dd><code>schemaAttributeGUIDParameterName</code> - parameter name supplying schemaAttributeGUID</dd>
+<dd><code>qualifiedName</code> - unique identifier for this schema type</dd>
+<dd><code>qualifiedNameParameterName</code> - name of parameter supplying the qualified name</dd>
+<dd><code>schemaAttributeBuilder</code> - schema attribute builder</dd>
+<dd><code>typeName</code> - name of the type of this element - which defines the valid extended properties</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>

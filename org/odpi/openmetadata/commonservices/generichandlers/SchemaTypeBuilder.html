@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -189,6 +189,28 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">SchemaTypeBuilder</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
+                 java.lang.String&nbsp;displayName,
+                 java.lang.String&nbsp;description,
+                 java.lang.String&nbsp;versionNumber,
+                 boolean&nbsp;isDeprecated,
+                 java.lang.String&nbsp;author,
+                 java.lang.String&nbsp;usage,
+                 java.lang.String&nbsp;encodingStandard,
+                 java.lang.String&nbsp;namespace,
+                 java.lang.String&nbsp;formula,
+                 java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
+                 java.lang.String&nbsp;typeId,
+                 java.lang.String&nbsp;typeName,
+                 java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties,
+                 <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
+                 java.lang.String&nbsp;serviceName,
+                 java.lang.String&nbsp;serverName)</code></th>
+<td class="colLast">
+<div class="block">Constructor supporting all common properties and formula.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">SchemaTypeBuilder</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                  java.lang.String&nbsp;displayName,
                  java.lang.String&nbsp;description,
@@ -209,7 +231,7 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <div class="block">Constructor supporting all common properties.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">SchemaTypeBuilder</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                  java.lang.String&nbsp;typeId,
                  java.lang.String&nbsp;typeName,
@@ -220,7 +242,7 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <div class="block">Simple typed constructor</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">SchemaTypeBuilder</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                  java.lang.String&nbsp;displayName,
                  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
@@ -249,55 +271,62 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCalculatedValueProperties(java.lang.String)">getCalculatedValueProperties</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Return the schema type properties in an InstanceProperties object.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalSchemaTypeGUID()">getExternalSchemaTypeGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier for an external schema type.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInstanceProperties(java.lang.String)">getInstanceProperties</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
 <div class="block">Return the supplied bean properties in an InstanceProperties object.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMapFrom()">getMapFrom</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the builder for the type of the value that is in the domain of the map.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMapFromGUID()">getMapFromGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the GUID for the type of the value that is in the domain of the map.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMapTo()">getMapTo</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the builder for the type of the value that is in the range of the map.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMapToGUID()">getMapToGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the GUID for the type of the value that is in the range of the map.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaOptions()">getSchemaOptions</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of types that are represented by a schema option type.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeEmbeddedInstanceProperties(java.lang.String)">getTypeEmbeddedInstanceProperties</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -305,7 +334,7 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
  classification.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesSetGUID()">getValidValuesSetGUID</a></span>()</code></th>
 <td class="colLast">
@@ -313,49 +342,49 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
  schema attribute.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isDerived()">isDerived</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return whether the schema has a derived value of not.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataType(java.lang.String)">setDataType</a></span>&#8203;(java.lang.String&nbsp;dataType)</code></th>
 <td class="colLast">
 <div class="block">Set up the type of data (for simple and literal types)</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDefaultValue(java.lang.String)">setDefaultValue</a></span>&#8203;(java.lang.String&nbsp;defaultValue)</code></th>
 <td class="colLast">
 <div class="block">Set up the default value of a field (for simple types).</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDerivedProperties(java.lang.String)">setDerivedProperties</a></span>&#8203;(java.lang.String&nbsp;formula)</code></th>
 <td class="colLast">
 <div class="block">Set up the properties that indicate that the schema element's value is not stored, it is derived from other values.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalSchemaTypeGUID(java.lang.String)">setExternalSchemaTypeGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier for an external schema type.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setFixedValue(java.lang.String)">setFixedValue</a></span>&#8203;(java.lang.String&nbsp;fixedValue)</code></th>
 <td class="colLast">
 <div class="block">Set up the fixed data value (for literal types).</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMapGUIDs(java.lang.String,java.lang.String)">setMapGUIDs</a></span>&#8203;(java.lang.String&nbsp;mapFromGUID,
            java.lang.String&nbsp;mapToGUID)</code></th>
@@ -363,7 +392,7 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <div class="block">Set up the builder to support a map type.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMapTypes(org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder,org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder)">setMapTypes</a></span>&#8203;(<a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a>&nbsp;mapFrom,
            <a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a>&nbsp;mapTo)</code></th>
@@ -371,14 +400,14 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <div class="block">Set up the builder to support a map type.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSchemaOptions(java.util.List)">setSchemaOptions</a></span>&#8203;(java.util.List&lt;<a href="SchemaTypeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SchemaTypeBuilder</a>&gt;&nbsp;schemaOptions)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of types that are represented by a schema option type.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setValidValuesSetGUID(java.lang.String)">setValidValuesSetGUID</a></span>&#8203;(java.lang.String&nbsp;validValuesSetGUID)</code></th>
 <td class="colLast">
@@ -473,7 +502,7 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <a id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>SchemaTypeBuilder</h4>
 <pre>public&nbsp;SchemaTypeBuilder&#8203;(java.lang.String&nbsp;qualifiedName,
@@ -504,6 +533,52 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <dd><code>usage</code> - guidance on how the schema should be used.</dd>
 <dd><code>encodingStandard</code> - format of the schema.</dd>
 <dd><code>namespace</code> - namespace where the schema is defined.</dd>
+<dd><code>additionalProperties</code> - additional properties</dd>
+<dd><code>typeName</code> - unique name of schema sub type</dd>
+<dd><code>typeId</code> - unique identifier of the schema subtype</dd>
+<dd><code>extendedProperties</code> - properties from the subtype.</dd>
+<dd><code>repositoryHelper</code> - helper methods</dd>
+<dd><code>serviceName</code> - name of this OMAS</dd>
+<dd><code>serverName</code> - name of local server</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>SchemaTypeBuilder</h4>
+<pre>public&nbsp;SchemaTypeBuilder&#8203;(java.lang.String&nbsp;qualifiedName,
+                         java.lang.String&nbsp;displayName,
+                         java.lang.String&nbsp;description,
+                         java.lang.String&nbsp;versionNumber,
+                         boolean&nbsp;isDeprecated,
+                         java.lang.String&nbsp;author,
+                         java.lang.String&nbsp;usage,
+                         java.lang.String&nbsp;encodingStandard,
+                         java.lang.String&nbsp;namespace,
+                         java.lang.String&nbsp;formula,
+                         java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
+                         java.lang.String&nbsp;typeId,
+                         java.lang.String&nbsp;typeName,
+                         java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties,
+                         <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
+                         java.lang.String&nbsp;serviceName,
+                         java.lang.String&nbsp;serverName)</pre>
+<div class="block">Constructor supporting all common properties and formula.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>qualifiedName</code> - unique name of schema type itself</dd>
+<dd><code>displayName</code> - new value for the display name.</dd>
+<dd><code>description</code> - description of the schema type.</dd>
+<dd><code>versionNumber</code> - version of the schema type.</dd>
+<dd><code>isDeprecated</code> - is the schema type deprecated</dd>
+<dd><code>author</code> - name of the author</dd>
+<dd><code>usage</code> - guidance on how the schema should be used.</dd>
+<dd><code>encodingStandard</code> - format of the schema.</dd>
+<dd><code>namespace</code> - namespace where the schema is defined.</dd>
+<dd><code>formula</code> - formula for derived properties</dd>
 <dd><code>additionalProperties</code> - additional properties</dd>
 <dd><code>typeName</code> - unique name of schema sub type</dd>
 <dd><code>typeId</code> - unique identifier of the schema subtype</dd>
@@ -767,6 +842,22 @@ extends <a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadat
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean</dd>
+</dl>
+</li>
+</ul>
+<a id="getCalculatedValueProperties(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCalculatedValueProperties</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;getCalculatedValueProperties&#8203;(java.lang.String&nbsp;methodName)</pre>
+<div class="block">Return the schema type properties in an InstanceProperties object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the calling method</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>InstanceProperties object</dd>
 </dl>
 </li>
 </ul>
