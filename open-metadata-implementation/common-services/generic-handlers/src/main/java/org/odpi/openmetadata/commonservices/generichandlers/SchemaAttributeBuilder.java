@@ -226,8 +226,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param userId calling user
      * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName        name of the software capability entity that represented the external source
-     * @param formula details of how this value is calculated
-     * @param methodName calling method
+     * @param formula                   details of how this value is calculated
+     * @param methodName                calling method
      * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
@@ -235,6 +235,26 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                             String externalSourceGUID,
                             String externalSourceName,
                             String formula,
+                            String methodName) throws InvalidParameterException
+    {
+        this.setCalculatedValue(userId, externalSourceGUID,externalSourceName, getCalculatedValueProperties(formula, methodName), methodName);
+    }
+    /**
+     * Set up the CalculatedValue classification for this entity.
+     * This method overrides any previously defined CalculatedValue classification for this entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software capability entity that represented the external source
+     * @param instanceProperties        properties for the calculated vlaue classification
+     * @param methodName calling method
+     * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
+     *                                   connected by an open metadata repository cohort
+     */
+    void setCalculatedValue(String userId,
+                            String externalSourceGUID,
+                            String externalSourceName,
+                            InstanceProperties instanceProperties,
                             String methodName) throws InvalidParameterException
     {
         try
@@ -247,15 +267,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
             }
 
             Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  externalSourceGUID,
-                                                                                  externalSourceName,
-                                                                                  instanceProvenanceType,
-                                                                                  userId,
-                                                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getCalculatedValueProperties(formula, methodName));
+                    externalSourceGUID,
+                    externalSourceName,
+                    instanceProvenanceType,
+                    userId,
+                    OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                    typeName,
+                    ClassificationOrigin.ASSIGNED,
+                    null,
+                    instanceProperties);
             newClassifications.put(classification.getName(), classification);
         }
         catch (TypeErrorException error)
