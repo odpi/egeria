@@ -190,20 +190,8 @@ public class OpenLineageServerOperationalServices {
 
         VirtualConnection assetLineageConnection = (VirtualConnection) restResult.getConnection();
         Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
-        if (assetLineageConnection != null && assetLineageTopicConnectionOverride != null) {
-            Map<String, Object> configurationProperties = assetLineageTopicConnectionOverride.getConfigurationProperties();
-
-            List<EmbeddedConnection> embeddedConnections = assetLineageConnection.getEmbeddedConnections();
-            if (embeddedConnections != null) {
-                for (EmbeddedConnection embeddedConnection : embeddedConnections) {
-                    Connection connection = embeddedConnection.getEmbeddedConnection();
-                    if (connection != null && KAFKA_OPEN_METADATA_TOPIC_PROVIDER.equalsIgnoreCase(connection.getConnectorType().getConnectorProviderClassName())) {
-                        connection.setConfigurationProperties(configurationProperties);
-                        embeddedConnection.setEmbeddedConnection(connection);
-                    }
-                }
-            }
-            assetLineageConnection.setConfigurationProperties(configurationProperties);
+        if (assetLineageTopicConnectionOverride != null) {
+           return assetLineageTopicConnectionOverride;
         }
         return assetLineageConnection;
     }
