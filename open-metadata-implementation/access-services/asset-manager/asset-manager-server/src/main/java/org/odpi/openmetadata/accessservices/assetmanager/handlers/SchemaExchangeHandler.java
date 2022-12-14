@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -334,6 +335,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                     schemaType.getUsage(),
                                                                     schemaType.getEncodingStandard(),
                                                                     schemaType.getNamespace(),
+                                                                    schemaType.getFormula(),
                                                                     schemaType.getAdditionalProperties(),
                                                                     typeGUID,
                                                                     typeName,
@@ -1527,7 +1529,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
+        SchemaTypeProperties schemaType = schemaAttributeProperties.getSchemaType();
+        invalidParameterHandler.validateObject(schemaType,"displayName", methodName);
         this.validateExternalIdentifier(userId,
                                         schemaAttributeGUID,
                                         schemaAttributeGUIDParameterName,
@@ -1547,11 +1550,13 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                      getExternalSourceName(correlationProperties),
                                                      schemaAttributeGUID,
                                                      schemaAttributeGUIDParameterName,
+                                                     schemaAttributeProperties.getQualifiedName(),
+                                                     qualifiedNameParameterName,
+                                                     schemaAttributeBuilder,
+                                                     schemaAttributeProperties.getTypeName(),
+                                                     isMergeUpdate,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     supportedZones,
-                                                     schemaAttributeBuilder.getInstanceProperties(methodName),
-                                                     isMergeUpdate,
                                                      effectiveTime,
                                                      methodName);
     }
