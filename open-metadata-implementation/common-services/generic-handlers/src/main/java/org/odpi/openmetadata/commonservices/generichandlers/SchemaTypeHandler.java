@@ -1633,6 +1633,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               typeName,
                                                               specificMatchPropertyNames,
                                                               true,
+                                                              false,
                                                               null,
                                                               null,
                                                               forLineage,

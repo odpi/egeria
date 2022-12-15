@@ -721,6 +721,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               typeName,
                                                               specificMatchPropertyNames,
                                                               true,
+                                                              false,
                                                               null,
                                                               null,
                                                               forLineage,
