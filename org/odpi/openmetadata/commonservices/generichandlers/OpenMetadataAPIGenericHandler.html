@@ -1498,6 +1498,30 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i67" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.lang.String,int,int,java.util.Date,java.lang.String)">getEntitiesByValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;value,
+                  java.lang.String&nbsp;valueParameterName,
+                  java.lang.String&nbsp;resultTypeGUID,
+                  java.lang.String&nbsp;resultTypeName,
+                  java.util.List&lt;java.lang.String&gt;&nbsp;specificMatchPropertyNames,
+                  boolean&nbsp;exactValueMatch,
+                  boolean&nbsp;caseInsensitive,
+                  java.lang.String&nbsp;requiredClassificationName,
+                  java.lang.String&nbsp;omittedClassificationName,
+                  boolean&nbsp;forLineage,
+                  boolean&nbsp;forDuplicateProcessing,
+                  java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
+                  java.lang.String&nbsp;sequencingPropertyName,
+                  int&nbsp;startFrom,
+                  int&nbsp;pageSize,
+                  java.util.Date&nbsp;effectiveTime,
+                  java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Return the list of entities of the requested type that match the supplied value.</div>
+</td>
+</tr>
+<tr id="i68" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">getEntitiesByValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;value,
                   java.lang.String&nbsp;valueParameterName,
@@ -1517,7 +1541,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of entities of the requested type that match the supplied value.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,boolean,boolean,java.lang.String,int,int,java.util.Date,java.lang.String)">getEntitiesByValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;value,
@@ -1530,29 +1554,6 @@ extends java.lang.Object</pre>
                   java.lang.String&nbsp;omittedClassificationName,
                   boolean&nbsp;forLineage,
                   boolean&nbsp;forDuplicateProcessing,
-                  java.lang.String&nbsp;sequencingPropertyName,
-                  int&nbsp;startFrom,
-                  int&nbsp;pageSize,
-                  java.util.Date&nbsp;effectiveTime,
-                  java.lang.String&nbsp;methodName)</code></th>
-<td class="colLast">
-<div class="block">Return the list of entities of the requested type that match the supplied value.</div>
-</td>
-</tr>
-<tr id="i69" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.lang.String,int,int,java.util.Date,java.lang.String)">getEntitiesByValue</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;value,
-                  java.lang.String&nbsp;valueParameterName,
-                  java.lang.String&nbsp;resultTypeGUID,
-                  java.lang.String&nbsp;resultTypeName,
-                  java.util.List&lt;java.lang.String&gt;&nbsp;specificMatchPropertyNames,
-                  boolean&nbsp;exactValueMatch,
-                  java.lang.String&nbsp;requiredClassificationName,
-                  java.lang.String&nbsp;omittedClassificationName,
-                  boolean&nbsp;forLineage,
-                  boolean&nbsp;forDuplicateProcessing,
-                  java.util.List&lt;java.lang.String&gt;&nbsp;serviceSupportedZones,
                   java.lang.String&nbsp;sequencingPropertyName,
                   int&nbsp;startFrom,
                   int&nbsp;pageSize,
@@ -7182,7 +7183,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.lang.String,int,int,java.util.Date,java.lang.String)">
+<a id="getEntitiesByValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.lang.String,int,int,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -7195,6 +7196,7 @@ extends java.lang.Object</pre>
                                                        java.lang.String&nbsp;resultTypeName,
                                                        java.util.List&lt;java.lang.String&gt;&nbsp;specificMatchPropertyNames,
                                                        boolean&nbsp;exactValueMatch,
+                                                       boolean&nbsp;caseInsensitive,
                                                        java.lang.String&nbsp;requiredClassificationName,
                                                        java.lang.String&nbsp;omittedClassificationName,
                                                        boolean&nbsp;forLineage,
@@ -7219,6 +7221,7 @@ extends java.lang.Object</pre>
 <dd><code>specificMatchPropertyNames</code> - list of property value to look in - if null or empty list then all string properties are checked.</dd>
 <dd><code>exactValueMatch</code> - indicates whether the value must match the whole property value in a matching result, or whether it is a
                         RegEx partial match</dd>
+<dd><code>caseInsensitive</code> - set to true to have a case-insensitive exact match regular expression</dd>
 <dd><code>requiredClassificationName</code> - String the name of the classification that must be on the attached entity</dd>
 <dd><code>omittedClassificationName</code> - String the name of a classification that must not be on the attached entity</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
