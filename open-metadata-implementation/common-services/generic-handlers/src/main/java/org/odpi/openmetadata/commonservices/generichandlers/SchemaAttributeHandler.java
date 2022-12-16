@@ -1583,6 +1583,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               typeName,
                                                                               specificMatchPropertyNames,
                                                                               true,
+                                                                              false,
                                                                               requiredClassificationName,
                                                                               omittedClassificationName,
                                                                               forLineage,
