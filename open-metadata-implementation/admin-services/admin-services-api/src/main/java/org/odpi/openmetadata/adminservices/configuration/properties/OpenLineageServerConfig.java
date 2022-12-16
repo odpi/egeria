@@ -136,9 +136,9 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the connection override object as defined in the server configuration
+     * Return the connection object for the in topic as defined in the server configuration
      *
-     * @return Connection override object as defined in the server configuration
+     * @return Connection object for the in topic as defined in the server configuration
      */
     public Connection getInTopicConnection() {
         return inTopicConnection;
