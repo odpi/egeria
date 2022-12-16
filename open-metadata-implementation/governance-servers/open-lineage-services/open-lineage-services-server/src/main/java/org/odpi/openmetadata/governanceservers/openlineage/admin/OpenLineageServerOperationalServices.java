@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
@@ -43,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -189,9 +187,9 @@ public class OpenLineageServerOperationalServices {
         }
 
         VirtualConnection assetLineageConnection = (VirtualConnection) restResult.getConnection();
-        Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
-        if (assetLineageTopicConnectionOverride != null) {
-           return assetLineageTopicConnectionOverride;
+        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
+        if (inTopicConnection != null) {
+           return inTopicConnection;
         }
         return assetLineageConnection;
     }
