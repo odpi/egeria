@@ -82,17 +82,20 @@ public class EntityProxy extends EntitySummary
             {
                 InstancePropertyValue qualifiedName = entityDetail.getProperties().getPropertyValue(qualifiedNameProperty);
 
-                InstanceProperties properties = new InstanceProperties();
+                if (qualifiedName != null)
+                {
+                    InstanceProperties properties = new InstanceProperties();
 
-                Map<String, InstancePropertyValue> propertyValueMap = new HashMap<>();
+                    Map<String, InstancePropertyValue> propertyValueMap = new HashMap<>();
 
-                propertyValueMap.put(qualifiedNameProperty, qualifiedName);
+                    propertyValueMap.put(qualifiedNameProperty, qualifiedName);
 
-                properties.setInstanceProperties(propertyValueMap);
-                properties.setEffectiveFromTime(entityDetail.getProperties().getEffectiveFromTime());
-                properties.setEffectiveToTime(entityDetail.getProperties().getEffectiveToTime());
+                    properties.setInstanceProperties(propertyValueMap);
+                    properties.setEffectiveFromTime(entityDetail.getProperties().getEffectiveFromTime());
+                    properties.setEffectiveToTime(entityDetail.getProperties().getEffectiveToTime());
 
-                this.uniqueProperties = properties;
+                    this.uniqueProperties = properties;
+                }
             }
         }
     }

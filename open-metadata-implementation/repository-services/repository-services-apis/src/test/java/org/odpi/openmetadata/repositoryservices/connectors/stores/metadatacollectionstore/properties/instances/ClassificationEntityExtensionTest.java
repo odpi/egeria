@@ -39,6 +39,7 @@ public class ClassificationEntityExtensionTest
     {
         ClassificationEntityExtension testObject = new ClassificationEntityExtension();
 
+        testObject.setHeaderVersion(ClassificationEntityExtension.CURRENT_CLASSIFICATION_EXT_HEADER_VERSION);
         testObject.setClassification(classification);
         testObject.setEntityToClassify(entityProxy);
 
