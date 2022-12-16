@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceElementHeader;
@@ -16,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefElementHeader;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -94,4 +96,38 @@ public abstract class RepositoryElementHeader implements Serializable
     }
 
 
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (! (objectToCompare instanceof RepositoryElementHeader))
+        {
+            return false;
+        }
+
+        RepositoryElementHeader that = (RepositoryElementHeader) objectToCompare;
+
+        return headerVersion == that.headerVersion;
+    }
+
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return (int) (headerVersion ^ (headerVersion >>> 32));
+    }
 }
