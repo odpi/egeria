@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.test.unittest.utilities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import static org.testng.Assert.*;
 
@@ -12,6 +14,10 @@ import static org.testng.Assert.*;
  */
 public class BeanTestBase
 {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
     /**
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
@@ -57,7 +63,6 @@ public class BeanTestBase
      */
     protected <T>T testJSON(T   testObject, Class<T> testObjectClass)
     {
-        ObjectMapper objectMapper = new ObjectMapper();
         String       jsonString   = null;
 
         /*
@@ -65,7 +70,7 @@ public class BeanTestBase
          */
         try
         {
-            jsonString = objectMapper.writeValueAsString(testObject);
+            jsonString = OBJECT_WRITER.writeValueAsString(testObject);
         }
         catch (Throwable  exc)
         {
@@ -74,7 +79,7 @@ public class BeanTestBase
 
         try
         {
-            return objectMapper.readValue(jsonString, testObjectClass);
+            return OBJECT_READER.readValue(jsonString, testObjectClass);
         }
         catch (Throwable  exc)
         {

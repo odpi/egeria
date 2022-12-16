@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
@@ -37,7 +38,7 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerPublisher.class);
     private static final String eventPublisherName = "Security Officer OMAS Event Publisher";
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
     private SecurityOfficerEventProcessor securityOfficerEventProcessor;
     private OpenMetadataTopicConnector openMetadataTopicConnector;
     private AuditLog auditLog;
@@ -219,7 +220,7 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     public void publishEvent(SecurityOfficerEvent securityOfficerEvent) {
 
         try {
-            String event = OBJECT_MAPPER.writeValueAsString(securityOfficerEvent);
+            String event = OBJECT_WRITER.writeValueAsString(securityOfficerEvent);
 
             openMetadataTopicConnector.sendEvent(event);
         } catch (ConnectorCheckedException | JsonProcessingException e) {

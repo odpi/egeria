@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode;
@@ -35,6 +37,10 @@ import java.util.List;
 public class DirectoryBasedOpenMetadataArchiveStore
 {
     private static final Logger log = LoggerFactory.getLogger(DirectoryBasedOpenMetadataArchiveStore.class);
+    
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
     private static final String archivePropertiesFileName = "/archiveProperties.json";
     private static final String typeStoreDirectoryName = "/typeStore";
@@ -56,8 +62,6 @@ public class DirectoryBasedOpenMetadataArchiveStore
     private String   archiveStoreName;
     private AuditLog auditLog;
     private boolean  keepVersionHistory;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
 
     /**
@@ -163,7 +167,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.debug("fileId: " + archiveStoreName + archivePropertiesFileName);
 
-            String archiveStoreFileContents = objectMapper.writeValueAsString(properties);
+            String archiveStoreFileContents = OBJECT_WRITER.writeValueAsString(properties);
 
             FileUtils.writeStringToFile(propertiesFile, archiveStoreFileContents, (String)null, false);
         }
@@ -195,7 +199,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
 
             String archiveStoreFileContents = FileUtils.readFileToString(elementFile, "UTF-8");
 
-            return objectMapper.readValue(archiveStoreFileContents, OpenMetadataArchiveProperties.class);
+            return OBJECT_READER.readValue(archiveStoreFileContents, OpenMetadataArchiveProperties.class);
 
         }
         catch (IOException ioException)
@@ -240,7 +244,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.debug("fileId: " + fileName);
 
-            String archiveStoreFileContents = objectMapper.writeValueAsString(element);
+            String archiveStoreFileContents = OBJECT_WRITER.writeValueAsString(element);
 
             FileUtils.writeStringToFile(elementFile, archiveStoreFileContents, (String)null, false);
 
@@ -288,7 +292,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
 
             String archiveStoreFileContents = FileUtils.readFileToString(elementFile, "UTF-8");
 
-            return objectMapper.readValue(archiveStoreFileContents, RepositoryElementHeader.class);
+            return OBJECT_READER.readValue(archiveStoreFileContents, RepositoryElementHeader.class);
 
         }
         catch (IOException ioException)

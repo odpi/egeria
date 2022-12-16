@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.conformance.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
@@ -25,12 +26,14 @@ import java.util.List;
  */
 public class OpenMetadataConformanceTestReport
 {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
     private String     serverName;                        /* Initialized in constructor */
     private String     serverURLRoot;                     /* Initialized in constructor */
     private String     testClientUserId;                  /* Initialized in constructor */
     private RESTClient restClient;                        /* Initialized in constructor */
 
-    private final ObjectMapper objectMapper;
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
     /**
@@ -49,7 +52,6 @@ public class OpenMetadataConformanceTestReport
         this.serverURLRoot = serverURLRoot;
         this.testClientUserId = testClientUserId;
 
-        this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         this.restClient = new RESTClient(serverName, serverURLRoot);
     }
 
@@ -72,7 +74,6 @@ public class OpenMetadataConformanceTestReport
         this.serverURLRoot = serverURLRoot;
         this.testClientUserId = testClientUserId;
 
-        this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         this.restClient = new RESTClient(serverName, serverURLRoot, testClientUserId, testClientPassword);
     }
 
@@ -290,7 +291,7 @@ public class OpenMetadataConformanceTestReport
     {
         String noSpaces = path.replaceAll("\\s+", "_");
         File file = new File(noSpaces);
-        objectMapper.writeValue(file, value);
+        OBJECT_WRITER.writeValue(file, value);
     }
 
 

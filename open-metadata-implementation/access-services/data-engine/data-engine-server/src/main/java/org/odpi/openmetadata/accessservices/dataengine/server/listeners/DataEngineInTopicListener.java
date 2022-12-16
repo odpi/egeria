@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.listeners;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
@@ -13,13 +13,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * The Data Engine in topic processor is listening events from external data engines about
  * metadata changes. It will handle different types of events defined in Data Engine OMAS API module.
  */
 public class DataEngineInTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(DataEngineInTopicListener.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
     private final AuditLog auditLog;
     private final DataEngineEventProcessor dataEngineEventProcessor;
 
@@ -49,7 +51,7 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
         } else {
 
             try {
-                DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineEventHeader.class);
+                DataEngineEventHeader dataEngineEventHeader = OBJECT_READER.readValue(dataEngineEvent, DataEngineEventHeader.class);
 
                 if ((dataEngineEventHeader != null)) {
                     switch (dataEngineEventHeader.getDataEngineEventType()) {
@@ -145,12 +147,11 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                 } else {
                     log.debug("Ignored instance event - null Data Engine event type");
                 }
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 log.debug("Exception processing event from in Data Engine In Topic", e);
 
                 auditLog.logException("process Data Engine inTopic Event",
                         DataEngineAuditCode.PROCESS_EVENT_EXCEPTION.getMessageDefinition(e.getMessage()), e);
-
             }
         }
     }
