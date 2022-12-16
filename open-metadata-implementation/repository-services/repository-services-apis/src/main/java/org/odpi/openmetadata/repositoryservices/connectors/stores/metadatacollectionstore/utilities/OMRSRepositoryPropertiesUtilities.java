@@ -1150,6 +1150,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+            primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValue.setPrimitiveValue(propertyValue);
             primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -1203,6 +1204,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
@@ -1250,6 +1252,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
@@ -1295,6 +1298,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
@@ -1345,6 +1349,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             /*
              * Date objects are stored in PrimitivePropertyValue as Java Long.
              */
+            primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
             Long longValue = propertyValue.getTime();
             primitivePropertyValue.setPrimitiveValue(longValue);
@@ -1394,6 +1399,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
@@ -1445,6 +1451,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
 
+        enumPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         enumPropertyValue.setOrdinal(ordinal);
         enumPropertyValue.setSymbolicName(symbolicName);
         enumPropertyValue.setDescription(description);
@@ -1490,6 +1497,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             }
 
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+            arrayPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+            arrayPropertyValue.setTypeGUID(stringArrayTypeGUID);
+            arrayPropertyValue.setTypeName(stringArrayTypeName);
             arrayPropertyValue.setArrayCount(arrayValues.size());
             int index = 0;
             for (String arrayValue : arrayValues)
@@ -1545,6 +1556,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
+
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1567,6 +1580,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -1612,6 +1627,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1635,6 +1651,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -1680,6 +1698,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1703,6 +1722,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -1748,6 +1769,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1771,6 +1793,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -1817,6 +1841,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1840,6 +1865,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -1881,6 +1908,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -1896,6 +1924,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue instanceof String)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -1906,6 +1935,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Integer)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
@@ -1916,6 +1946,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Long)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
@@ -1926,6 +1957,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Short)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getGUID());
@@ -1936,6 +1968,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Date)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
@@ -1950,6 +1983,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Character)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getGUID());
@@ -1960,6 +1994,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Byte)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getGUID());
@@ -1970,6 +2005,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Boolean)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
@@ -1980,6 +2016,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Float)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getGUID());
@@ -1990,8 +2027,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof BigDecimal)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(
-                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
@@ -2001,8 +2038,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof BigInteger)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(
-                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
@@ -2012,6 +2049,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Double)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
@@ -2027,6 +2065,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getGUID());
@@ -2077,6 +2116,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2092,6 +2132,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -2142,6 +2183,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+
             }
             else
             {
@@ -2157,6 +2200,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
@@ -2208,6 +2252,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2223,6 +2268,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
@@ -2273,6 +2319,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2288,6 +2335,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());

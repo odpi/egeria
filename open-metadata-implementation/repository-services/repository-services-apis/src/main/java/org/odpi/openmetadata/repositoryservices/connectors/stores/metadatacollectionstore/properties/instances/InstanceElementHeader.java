@@ -31,8 +31,6 @@ public abstract class InstanceElementHeader extends RepositoryElementHeader
 {
     private static final long serialVersionUID = 1L;
 
-    public static final long  CURRENT_INSTANCE_HEADER_VERSION = 1;
-
     /**
      * Default Constructor sets the instance to nulls
      */
