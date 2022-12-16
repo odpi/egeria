@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.connectors.outt
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureOutTopicEvent;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureErrorCode;
@@ -19,6 +20,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
  */
 public class DigitalArchitectureOutTopicServerConnector extends OpenMetadataTopicSenderConnectorBase
 {
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
+
     /**
      * Send the request to the embedded event bus connector(s).
      *
@@ -29,11 +33,10 @@ public class DigitalArchitectureOutTopicServerConnector extends OpenMetadataTopi
     public void sendEvent(DigitalArchitectureOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
-            String eventString = objectMapper.writeValueAsString(event);
+            String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString);
 
             if (super.auditLog != null)

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposi
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Property;
 
@@ -36,9 +38,13 @@ class GraphOMRSRelationshipMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSRelationshipMapper.class);
 
-    private String               repositoryName;
-    private String               metadataCollectionId;
-    private OMRSRepositoryHelper repositoryHelper;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
+    private final String               repositoryName;
+    private final String               metadataCollectionId;
+    private final OMRSRepositoryHelper repositoryHelper;
 
     GraphOMRSRelationshipMapper(String               metadataCollectionId,
                                 String               repositoryName,
@@ -248,10 +254,9 @@ class GraphOMRSRelationshipMapper {
 
         List<String> maintainedByList = relationship.getMaintainedBy();
         if (maintainedByList != null && !maintainedByList.isEmpty()) {
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(maintainedByList);
+                jsonString = OBJECT_WRITER.writeValueAsString(maintainedByList);
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY, jsonString);
 
             } catch (Exception exc) {
@@ -284,10 +289,9 @@ class GraphOMRSRelationshipMapper {
 
         Map<String, Serializable> mappingProperties = relationship.getMappingProperties();
         if (mappingProperties != null && !mappingProperties.isEmpty()) {
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(mappingProperties);
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES, jsonString);
 
             } catch (Exception exc) {
@@ -315,11 +319,10 @@ class GraphOMRSRelationshipMapper {
         InstanceProperties instanceProperties = relationship.getProperties();
         if (instanceProperties != null) {
             // First approach is to write properties as json - useful for handling collections and possibly for full text/string matching???
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
 
             try {
-                jsonString = objectMapper.writeValueAsString(instanceProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(instanceProperties);
                 edge.property("relationshipProperties", jsonString);
 
             } catch (Exception exc) {
@@ -429,9 +432,8 @@ class GraphOMRSRelationshipMapper {
         // maintainedBy
         String maintainedByString = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
         if (maintainedByString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                List<String> maintainedByList = (List<String>) objectMapper.readValue(maintainedByString, List.class);
+                List<String> maintainedByList = (List<String>) OBJECT_READER.readValue(maintainedByString, List.class);
                 log.debug("{} edge has deserialized maintainedBy list {}", methodName, maintainedByList);
                 relationship.setMaintainedBy(maintainedByList);
 
@@ -452,10 +454,9 @@ class GraphOMRSRelationshipMapper {
         // mappingProperties
         String mappingPropertiesString = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES);
         if (mappingPropertiesString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
                 TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
-                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                Map<String, Serializable> mappingPropertiesMap = OBJECT_MAPPER.readValue(mappingPropertiesString, typeReference);
                 log.debug("{} edge has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 relationship.setMappingProperties(mappingPropertiesMap);
 
@@ -474,9 +475,8 @@ class GraphOMRSRelationshipMapper {
         // relationshipProperties
         String stringProps = (String) (getEdgeProperty(edge, "relationshipProperties"));
         if (stringProps != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
+                InstanceProperties instanceProperties = OBJECT_READER.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} relationship has deserialized properties {}", methodName, instanceProperties);
                 relationship.setProperties(instanceProperties);
 

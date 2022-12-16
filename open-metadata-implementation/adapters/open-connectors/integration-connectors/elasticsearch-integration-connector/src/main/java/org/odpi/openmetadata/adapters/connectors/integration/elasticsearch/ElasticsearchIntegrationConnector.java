@@ -9,6 +9,7 @@ import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
@@ -33,6 +34,7 @@ import static org.odpi.openmetadata.adapters.connectors.integration.elasticsearc
  */
 public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector {
     private static final Logger log = LoggerFactory.getLogger(ElasticsearchIntegrationConnector.class);
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
     private static final String INDEX_NAME = "indexName";
     private static final String ASSETS_INDEX_NAME = "assets";
 
@@ -41,7 +43,6 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
     private SearchIntegratorContext myContext = null;
     private ElasticsearchClient client;
     private String indexName = "test";
-    private ObjectMapper objectMapper;
 
     /**
      * Initialize the connector.
@@ -65,7 +66,6 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
 
         String configuredIndexName = (String) configurationProperties.get(INDEX_NAME);
         this.indexName = Objects.requireNonNullElse(configuredIndexName, ASSETS_INDEX_NAME);
-        this.objectMapper = new ObjectMapper();
     }
 
 
@@ -149,7 +149,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
         }
         log.debug("saving to elasticsearch {}", asset);
         try {
-            String jsonAsset = objectMapper.writeValueAsString(asset);
+            String jsonAsset = OBJECT_WRITER.writeValueAsString(asset);
             client.index(s-> s.index(jsonAsset).index(indexName).id(asset.getGUID()));
 
         } catch (IOException ioException) {

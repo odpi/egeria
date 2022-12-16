@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
@@ -10,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.slf4j.Logger;
@@ -61,6 +63,10 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                                  AuditLoggingComponent
 {
     private static final Logger       log      = LoggerFactory.getLogger(OMRSTopicConnector.class);
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
     private List<Connector> embeddedConnectors = null;
 
@@ -415,9 +421,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         {
             try
             {
-                ObjectMapper objectMapper = new ObjectMapper();
 
-                String eventString = objectMapper.writeValueAsString(event);
+                String eventString = OBJECT_WRITER.writeValueAsString(event);
 
                 if ((auditLog != null) && (logEvent))
                 {
@@ -485,9 +490,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             try
             {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                eventBean = objectMapper.readValue(event, OMRSEventBean.class);
+                eventBean = OBJECT_READER.readValue(event, OMRSEventBean.class);
             }
             catch (Exception   exception)
             {

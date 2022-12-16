@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.connectors.intopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
@@ -20,6 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderConnectorBase
 {
 
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
+
     /**
      * Send the request to the embedded event bus connector(s).
      *
@@ -30,12 +33,10 @@ public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderCon
     public void sendEvent(DataEngineEventHeader event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
-
-            String eventString = objectMapper.writeValueAsString(event);
+            String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString);
 
             if (super.auditLog != null)
