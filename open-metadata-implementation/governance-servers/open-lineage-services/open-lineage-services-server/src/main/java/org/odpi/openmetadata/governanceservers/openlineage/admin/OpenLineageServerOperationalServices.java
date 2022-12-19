@@ -167,6 +167,10 @@ public class OpenLineageServerOperationalServices {
     private Connection getAssetLineageOutTopicConnection(OpenLineageServerConfig openLineageServerConfig, String methodName) throws
                                                                                                                              InvalidParameterException,
                                                                                                                              InterruptedException {
+        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
+        if (inTopicConnection != null) {
+            return inTopicConnection;
+        }
 
         OCFRESTClient restClient;
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
@@ -185,13 +189,7 @@ public class OpenLineageServerOperationalServices {
             Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
             restResult = getConnection(methodName, restClient, accessServiceConfig);
         }
-
-        VirtualConnection assetLineageConnection = (VirtualConnection) restResult.getConnection();
-        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
-        if (inTopicConnection != null) {
-           return inTopicConnection;
-        }
-        return assetLineageConnection;
+        return restResult.getConnection();
     }
 
     private ConnectionResponse getConnection(String methodName, OCFRESTClient restClient, OLSSimplifiedAccessServiceConfig accessServiceConfig) {
