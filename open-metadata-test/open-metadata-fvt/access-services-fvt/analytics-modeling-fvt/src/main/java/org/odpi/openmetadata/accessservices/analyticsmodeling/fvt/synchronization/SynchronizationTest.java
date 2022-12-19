@@ -189,6 +189,6 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 	{
 		String root = Paths.get(".").toAbsolutePath().normalize().toString();
 		String input  =  root + folder + fileName + ".json";
-        return OBJECT_READER.readValue(new String(Files.readAllBytes(Paths.get(input))), cls);
+        return OBJECT_READER.readValue(new String(Files.readAllBytes(Paths.get(input)), Charset.defaultCharset()), cls);
 	}
 }
