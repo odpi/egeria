@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
@@ -43,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -169,6 +167,10 @@ public class OpenLineageServerOperationalServices {
     private Connection getAssetLineageOutTopicConnection(OpenLineageServerConfig openLineageServerConfig, String methodName) throws
                                                                                                                              InvalidParameterException,
                                                                                                                              InterruptedException {
+        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
+        if (inTopicConnection != null) {
+            return inTopicConnection;
+        }
 
         OCFRESTClient restClient;
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
@@ -187,25 +189,7 @@ public class OpenLineageServerOperationalServices {
             Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
             restResult = getConnection(methodName, restClient, accessServiceConfig);
         }
-
-        VirtualConnection assetLineageConnection = (VirtualConnection) restResult.getConnection();
-        Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
-        if (assetLineageConnection != null && assetLineageTopicConnectionOverride != null) {
-            Map<String, Object> configurationProperties = assetLineageTopicConnectionOverride.getConfigurationProperties();
-
-            List<EmbeddedConnection> embeddedConnections = assetLineageConnection.getEmbeddedConnections();
-            if (embeddedConnections != null) {
-                for (EmbeddedConnection embeddedConnection : embeddedConnections) {
-                    Connection connection = embeddedConnection.getEmbeddedConnection();
-                    if (connection != null && KAFKA_OPEN_METADATA_TOPIC_PROVIDER.equalsIgnoreCase(connection.getConnectorType().getConnectorProviderClassName())) {
-                        connection.setConfigurationProperties(configurationProperties);
-                        embeddedConnection.setEmbeddedConnection(connection);
-                    }
-                }
-            }
-            assetLineageConnection.setConfigurationProperties(configurationProperties);
-        }
-        return assetLineageConnection;
+        return restResult.getConnection();
     }
 
     private ConnectionResponse getConnection(String methodName, OCFRESTClient restClient, OLSSimplifiedAccessServiceConfig accessServiceConfig) {
