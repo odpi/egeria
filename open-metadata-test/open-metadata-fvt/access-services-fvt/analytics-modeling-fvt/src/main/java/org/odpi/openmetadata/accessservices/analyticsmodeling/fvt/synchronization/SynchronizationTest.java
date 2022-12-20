@@ -190,8 +190,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 			throws IOException
 	{
 		String root = Paths.get(".").toAbsolutePath().normalize().toString();
-		String input  =  root + folder + fileName + ".json";
-        String name = FilenameUtils.getName(input);
-        return OBJECT_READER.readValue(Files.readString(Paths.get(name), Charset.defaultCharset()), cls);
+		String input  =  root + folder + FilenameUtils.getName(fileName) + ".json";
+        return OBJECT_READER.readValue(Files.readString(Paths.get(input).normalize(), Charset.defaultCharset()), cls);
 	}
 }
