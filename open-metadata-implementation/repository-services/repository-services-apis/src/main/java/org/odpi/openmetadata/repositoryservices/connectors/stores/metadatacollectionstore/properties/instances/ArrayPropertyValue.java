@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -30,8 +32,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Default constructor sets the array to empty.
      */
-    public ArrayPropertyValue()
-    {
+    public ArrayPropertyValue() {
         super(InstancePropertyCategory.ARRAY);
     }
 
@@ -167,8 +168,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ArrayPropertyValue{" +
                 "arrayCount=" + arrayCount +
                 ", arrayValues=" + arrayValues +
@@ -192,22 +192,13 @@ public class ArrayPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof ArrayPropertyValue))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
         ArrayPropertyValue that = (ArrayPropertyValue) objectToCompare;
-
-        if (arrayCount != that.arrayCount)
-        {
-            return false;
-        }
-        return arrayValues != null ? arrayValues.equals(that.arrayValues) : that.arrayValues == null;
+        return arrayCount == that.arrayCount &&
+                Objects.equals(arrayValues, that.arrayValues);
     }
 
 
@@ -217,11 +208,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      * @return int hash code
      */
     @Override
-    public int hashCode()
-    {
-        int result = super.hashCode();
-        result = 31 * result + arrayCount;
-        result = 31 * result + (arrayValues != null ? arrayValues.hashCode() : 0);
-        return result;
+    public int hashCode() {
+        return Objects.hash(arrayCount, arrayValues);
     }
 }

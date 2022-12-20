@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
@@ -777,7 +776,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             {
                 instanceType = new InstanceType();
 
-                instanceType.setHeaderVersion(InstanceType.CURRENT_INSTANCE_TYPE_HEADER_VERSION);
                 instanceType.setTypeDefCategory(category);
                 instanceType.setTypeDefGUID(typeDef.getGUID());
                 instanceType.setTypeDefName(typeDef.getName());

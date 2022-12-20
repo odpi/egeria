@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 
+import java.util.Objects;
+
 /**
  * ClassificationEntityExtension is used to represent a single classification for an entity.
  * It includes the details of the classification and an entity proxy to define which entity
@@ -15,8 +17,6 @@ public class ClassificationEntityExtension extends InstanceElementHeader
 
     private Classification   classification = null;
     private EntityProxy      entityToClassify = null;
-
-    public static final long CURRENT_CLASSIFICATION_EXT_HEADER_VERSION = 1;
 
 
     /**
@@ -117,22 +117,13 @@ public class ClassificationEntityExtension extends InstanceElementHeader
         {
             return true;
         }
-        if (! (objectToCompare instanceof ClassificationEntityExtension))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
         ClassificationEntityExtension that = (ClassificationEntityExtension) objectToCompare;
-
-        if (classification != null ? ! classification.equals(that.classification) : that.classification != null)
-        {
-            return false;
-        }
-        return entityToClassify != null ? entityToClassify.equals(that.entityToClassify) : that.entityToClassify == null;
+        return Objects.equals(getClassification(), that.getClassification()) &&
+                Objects.equals(getEntityToClassify(), that.getEntityToClassify());
     }
 
 
@@ -144,9 +135,6 @@ public class ClassificationEntityExtension extends InstanceElementHeader
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (classification != null ? classification.hashCode() : 0);
-        result = 31 * result + (entityToClassify != null ? entityToClassify.hashCode() : 0);
-        return result;
+        return Objects.hash(getClassification(), getEntityToClassify());
     }
 }

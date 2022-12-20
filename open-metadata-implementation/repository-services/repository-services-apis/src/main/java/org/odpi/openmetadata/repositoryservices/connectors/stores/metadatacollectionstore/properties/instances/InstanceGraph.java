@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class InstanceGraph extends InstanceElementHeader
 {
     private static final long    serialVersionUID = 1L;
-
-    public static final long  CURRENT_INSTANCE_GRAPH_HEADER_VERSION = 1;
 
     private List<EntityDetail> entities      = null;
     private List<Relationship> relationships = null;
@@ -312,36 +311,25 @@ public class InstanceGraph extends InstanceElementHeader
         {
             return true;
         }
-        if (! (objectToCompare instanceof InstanceGraph))
+        if (!(objectToCompare instanceof InstanceGraph))
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
         InstanceGraph that = (InstanceGraph) objectToCompare;
-
-        if (entities != null ? ! entities.equals(that.entities) : that.entities != null)
-        {
-            return false;
-        }
-        return relationships != null ? relationships.equals(that.relationships) : that.relationships == null;
+        return Objects.equals(entities, that.entities) &&
+                Objects.equals(relationships, that.relationships);
     }
 
 
     /**
      * Return a hash code based on the values of this object.
      *
-     * @return int hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (entities != null ? entities.hashCode() : 0);
-        result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
-        return result;
+
+        return Objects.hash(entities, relationships);
     }
 }

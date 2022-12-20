@@ -815,7 +815,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
         dummyClassification.setName(classificationName);
         dummyEntity.setGUID(entityGUID);
-        dummyExtension.setHeaderVersion(ClassificationEntityExtension.CURRENT_CLASSIFICATION_EXT_HEADER_VERSION);
         dummyExtension.setClassification(dummyClassification);
         dummyExtension.setEntityToClassify(dummyEntity);
 
@@ -851,7 +850,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
         dummyClassification.setName(classificationName);
         dummyEntity.setGUID(entityGUID);
-        dummyExtension.setHeaderVersion(ClassificationEntityExtension.CURRENT_CLASSIFICATION_EXT_HEADER_VERSION);
         dummyExtension.setClassification(dummyClassification);
         dummyExtension.setEntityToClassify(dummyEntity);
 

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -138,18 +140,12 @@ public class StructPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof StructPropertyValue))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
         StructPropertyValue that = (StructPropertyValue) objectToCompare;
-
-        return attributes != null ? attributes.equals(that.attributes) : that.attributes == null;
+        return Objects.equals(attributes, that.attributes);
     }
 
 
@@ -161,8 +157,6 @@ public class StructPropertyValue extends InstancePropertyValue
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
-        return result;
+        return Objects.hash(attributes);
     }
 }

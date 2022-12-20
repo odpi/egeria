@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,14 +33,12 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    public static final long  CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION = 1;
-
     /*
      * Common type information that is this is augmented by the subclasses
      */
     private InstancePropertyCategory instancePropertyCategory = null;
-    private String                   typeGUID = null;
-    private String                   typeName = null;
+    private String typeGUID = null;
+    private String typeName = null;
 
 
     /**
@@ -245,26 +244,14 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
         {
             return true;
         }
-        if (! (objectToCompare instanceof InstancePropertyValue))
+        if (!(objectToCompare instanceof InstancePropertyValue))
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
         InstancePropertyValue that = (InstancePropertyValue) objectToCompare;
-
-        if (instancePropertyCategory != that.instancePropertyCategory)
-        {
-            return false;
-        }
-        if (typeGUID != null ? ! typeGUID.equals(that.typeGUID) : that.typeGUID != null)
-        {
-            return false;
-        }
-        return typeName != null ? typeName.equals(that.typeName) : that.typeName == null;
+        return getInstancePropertyCategory() == that.getInstancePropertyCategory() &&
+                Objects.equals(getTypeGUID(), that.getTypeGUID()) &&
+                Objects.equals(getTypeName(), that.getTypeName());
     }
 
 
@@ -276,10 +263,6 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (instancePropertyCategory != null ? instancePropertyCategory.hashCode() : 0);
-        result = 31 * result + (typeGUID != null ? typeGUID.hashCode() : 0);
-        result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
-        return result;
+        return Objects.hash(getInstancePropertyCategory(), getTypeGUID(), getTypeName());
     }
 }
