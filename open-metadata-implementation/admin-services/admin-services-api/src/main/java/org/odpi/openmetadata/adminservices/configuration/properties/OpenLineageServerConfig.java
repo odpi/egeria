@@ -28,7 +28,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String openLineageName;
     private String openLineageDescription;
     private String lineageServerURL;
-    private Connection assetLineageTopicConnectionOverride;
+    private Connection inTopicConnection;
     private Connection lineageGraphConnection;
     private int jobIntervalInSeconds;
     private OLSSimplifiedAccessServiceConfig accessServiceConfig;
@@ -55,7 +55,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             openLineageName = template.openLineageName;
             openLineageDescription = template.openLineageDescription;
             lineageServerURL = template.lineageServerURL;
-            assetLineageTopicConnectionOverride = template.assetLineageTopicConnectionOverride;
+            inTopicConnection = template.inTopicConnection;
             lineageGraphConnection = template.lineageGraphConnection;
             accessServiceConfig = template.accessServiceConfig;
             backgroundJobs = template.backgroundJobs;
@@ -136,21 +136,21 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the connection override object as defined in the server configuration
+     * Return the connection object for the in topic as defined in the server configuration
      *
-     * @return Connection override object as defined in the server configuration
+     * @return Connection object for the in topic as defined in the server configuration
      */
-    public Connection getAssetLineageTopicConnectionOverride() {
-        return assetLineageTopicConnectionOverride;
+    public Connection getInTopicConnection() {
+        return inTopicConnection;
     }
 
     /**
      * Sets Connection override object in the server configuration
      *
-     * @param assetLineageTopicConnectionOverride Connection for In Topic
+     * @param inTopicConnection Connection for In Topic
      */
-    public void setAssetLineageTopicConnectionOverride(Connection assetLineageTopicConnectionOverride) {
-        this.assetLineageTopicConnectionOverride = assetLineageTopicConnectionOverride;
+    public void setInTopicConnection(Connection inTopicConnection) {
+        this.inTopicConnection = inTopicConnection;
     }
 
 
@@ -231,7 +231,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", assetLineageTopicConnectionOverride=" + assetLineageTopicConnectionOverride +
+                ", inTopicConnection=" + inTopicConnection +
                 ", openLineageGraphConnection=" + lineageGraphConnection +
                 ", accessServiceConfig=" + accessServiceConfig +
                 ", backgroundJobs=" + backgroundJobs +
@@ -247,7 +247,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(openLineageName, that.openLineageName) &&
                 Objects.equals(openLineageDescription, that.openLineageDescription) &&
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
-                Objects.equals(assetLineageTopicConnectionOverride, that.assetLineageTopicConnectionOverride) &&
+                Objects.equals(inTopicConnection, that.inTopicConnection) &&
                 Objects.equals(lineageGraphConnection, that.lineageGraphConnection) &&
                 Objects.equals(accessServiceConfig, that.accessServiceConfig) &&
                 Objects.equals(backgroundJobs, that.backgroundJobs);
@@ -256,6 +256,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName, openLineageDescription, lineageServerURL,
-                assetLineageTopicConnectionOverride, lineageGraphConnection, accessServiceConfig, backgroundJobs);
+                inTopicConnection, lineageGraphConnection, accessServiceConfig, backgroundJobs);
     }
 }
