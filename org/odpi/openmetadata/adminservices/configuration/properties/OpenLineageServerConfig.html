@@ -209,17 +209,17 @@ extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openme
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetLineageTopicConnectionOverride()">getAssetLineageTopicConnectionOverride</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the connection override object as defined in the server configuration</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="OLSBackgroundJob.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OLSBackgroundJob</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBackgroundJobs()">getBackgroundJobs</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets background jobs.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInTopicConnection()">getInTopicConnection</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the connection object for the in topic as defined in the server configuration</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -276,16 +276,16 @@ extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openme
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAssetLineageTopicConnectionOverride(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">setAssetLineageTopicConnectionOverride</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;assetLineageTopicConnectionOverride)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBackgroundJobs(java.util.List)">setBackgroundJobs</a></span>&#8203;(java.util.List&lt;<a href="OLSBackgroundJob.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OLSBackgroundJob</a>&gt;&nbsp;backgroundJobs)</code></th>
 <td class="colLast">
-<div class="block">Sets Connection override object in the server configuration</div>
+<div class="block">Sets background jobs.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBackgroundJobs(java.util.List)">setBackgroundJobs</a></span>&#8203;(java.util.List&lt;<a href="OLSBackgroundJob.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OLSBackgroundJob</a>&gt;&nbsp;backgroundJobs)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setInTopicConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">setInTopicConnection</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;inTopicConnection)</code></th>
 <td class="colLast">
-<div class="block">Sets background jobs.</div>
+<div class="block">Sets Connection override object in the server configuration</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
@@ -503,31 +503,31 @@ extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openme
 </dl>
 </li>
 </ul>
-<a id="getAssetLineageTopicConnectionOverride()">
+<a id="getInTopicConnection()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getAssetLineageTopicConnectionOverride</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;getAssetLineageTopicConnectionOverride()</pre>
-<div class="block">Return the connection override object as defined in the server configuration</div>
+<h4>getInTopicConnection</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;getInTopicConnection()</pre>
+<div class="block">Return the connection object for the in topic as defined in the server configuration</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connection override object as defined in the server configuration</dd>
+<dd>Connection object for the in topic as defined in the server configuration</dd>
 </dl>
 </li>
 </ul>
-<a id="setAssetLineageTopicConnectionOverride(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<a id="setInTopicConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setAssetLineageTopicConnectionOverride</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAssetLineageTopicConnectionOverride&#8203;(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;assetLineageTopicConnectionOverride)</pre>
+<h4>setInTopicConnection</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setInTopicConnection&#8203;(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;inTopicConnection)</pre>
 <div class="block">Sets Connection override object in the server configuration</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>assetLineageTopicConnectionOverride</code> - Connection for In Topic</dd>
+<dd><code>inTopicConnection</code> - Connection for In Topic</dd>
 </dl>
 </li>
 </ul>
