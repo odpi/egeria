@@ -698,7 +698,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue
                 omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue();
 
-        omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ARRAY);
         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
         omrsPropertyValue.setTypeName(typeDef.getName());
@@ -753,7 +752,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                         omrsPropertyValue =
                                 new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue();
 
-                        omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ENUM);
                         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
                         omrsPropertyValue.setTypeName(typeDef.getName());
@@ -787,7 +785,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue
                 omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue();
 
-        omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.MAP);
         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
         omrsPropertyValue.setTypeName(typeDef.getName());
@@ -831,7 +828,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue
                 omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue();
 
-        omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
         omrsPropertyValue.setTypeName(typeDef.getName());
@@ -918,7 +914,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue
                 omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue();
 
-        omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.STRUCT);
         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
         omrsPropertyValue.setTypeName(typeDef.getName());

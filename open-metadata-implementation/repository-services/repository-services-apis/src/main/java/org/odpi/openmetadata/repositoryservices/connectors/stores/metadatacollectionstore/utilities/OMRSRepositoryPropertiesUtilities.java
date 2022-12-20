@@ -27,22 +27,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     public static final String METADATA_COLLECTION_ID_PROPERTY_NAME     = "metadataCollectionId";
     public static final String METADATA_COLLECTION_NAME_PROPERTY_NAME   = "metadataCollectionName";
 
-    private static final String stringMapTypeGUID = "005c7c14-ac84-4136-beed-959401b041f8";
-    private static final String stringMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + ">";
-    private static final String booleanMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ab";
-    private static final String booleanMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName() + ">";
-    private static final String intMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ac";
-    private static final String intMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName() + ">";
-    private static final String longMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ae";
-    private static final String longMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName() + ">";
-    private static final String objectMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
-    private static final String objectMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName() + ">";
-
-    private static final String stringArrayTypeGUID = "0428b5d3-f824-459c-b7f5-f8151de59707";
-    private static final String stringArrayTypeName = "array<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + ">";
-    private static final String intArrayTypeGUID = "0103fe10-98b0-4910-8ee0-21d529f7ff6d";
-    private static final String intArrayTypeName = "array<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName() + ">";
-
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryPropertiesUtilities.class);
 
     /**
@@ -146,7 +130,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -204,7 +188,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             retrievedProperty = this.getEnumPropertyOrdinal(sourceName, propertyName, properties, methodName);
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties);
+            log.debug("Properties left: " + properties.toString());
         }
 
         log.debug("Retrieved " + propertyName + " property ordinal : " + retrievedProperty);
@@ -344,7 +328,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -478,7 +462,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -554,7 +538,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -630,7 +614,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -707,7 +691,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties);
+                log.debug("Properties left: " + properties.toString());
             }
         }
 
@@ -945,7 +929,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getIntProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties);
+            log.debug("Properties left: " + properties.toString());
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1033,7 +1017,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getDateProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties);
+            log.debug("Properties left: " + properties.toString());
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1120,7 +1104,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getBooleanProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties);
+            log.debug("Properties left: " + properties.toString());
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1166,7 +1150,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-            primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValue.setPrimitiveValue(propertyValue);
             primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -1220,7 +1203,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
@@ -1237,7 +1219,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add. Property may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1268,7 +1250,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
@@ -1283,7 +1264,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add. Property may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1314,7 +1295,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
@@ -1329,7 +1309,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add. Property may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1365,7 +1345,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             /*
              * Date objects are stored in PrimitivePropertyValue as Java Long.
              */
-            primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
             Long longValue = propertyValue.getTime();
             primitivePropertyValue.setPrimitiveValue(longValue);
@@ -1415,7 +1394,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
-        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
@@ -1467,7 +1445,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
 
-        enumPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         enumPropertyValue.setOrdinal(ordinal);
         enumPropertyValue.setSymbolicName(symbolicName);
         enumPropertyValue.setDescription(description);
@@ -1513,12 +1490,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             }
 
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
-
-            arrayPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
-            arrayPropertyValue.setTypeGUID(stringArrayTypeGUID);
-            arrayPropertyValue.setTypeName(stringArrayTypeName);
             arrayPropertyValue.setArrayCount(arrayValues.size());
-
             int index = 0;
             for (String arrayValue : arrayValues)
             {
@@ -1533,7 +1505,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             resultingProperties.setProperty(propertyName, arrayPropertyValue);
 
-            log.debug("Returning instanceProperty: " + resultingProperties);
+            log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
             return resultingProperties;
         }
@@ -1573,8 +1545,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
-
-                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1597,15 +1567,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
-
-                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(objectMapTypeGUID);
-                    mapPropertyValue.setTypeName(objectMapTypeName);
-
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties);
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                     return resultingProperties;
                 }
@@ -1647,7 +1612,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
-                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1671,14 +1635,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
-
-                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(stringMapTypeGUID);
-                    mapPropertyValue.setTypeName(stringMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties);
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                     return resultingProperties;
                 }
@@ -1720,12 +1680,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
-                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
                     resultingProperties = properties;
                 }
+
 
                 /*
                  * The values of a map property are stored as an embedded InstanceProperties object.
@@ -1743,14 +1703,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
-
-                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(booleanMapTypeGUID);
-                    mapPropertyValue.setTypeName(booleanMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties);
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                     return resultingProperties;
                 }
@@ -1792,7 +1748,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
-                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1816,15 +1771,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
-
-                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(longMapTypeGUID);
-                    mapPropertyValue.setTypeName(longMapTypeName);
-
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties);
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                     return resultingProperties;
                 }
@@ -1867,7 +1817,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (properties == null)
                 {
                     resultingProperties = new InstanceProperties();
-                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
                 }
                 else
                 {
@@ -1891,14 +1840,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapInstanceProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
-
-                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(longMapTypeGUID);
-                    mapPropertyValue.setTypeName(longMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties);
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                     return resultingProperties;
                 }
@@ -1936,7 +1881,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
-                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -1952,7 +1896,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue instanceof String)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -1963,7 +1906,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Integer)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
@@ -1974,7 +1916,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Long)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
@@ -1985,7 +1926,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Short)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getGUID());
@@ -1996,7 +1936,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Date)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
@@ -2011,7 +1950,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Character)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getGUID());
@@ -2022,7 +1960,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Byte)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getGUID());
@@ -2033,7 +1970,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Boolean)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
@@ -2044,7 +1980,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Float)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getGUID());
@@ -2055,8 +1990,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof BigDecimal)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitivePropertyValue.setPrimitiveDefCategory(
+                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
@@ -2066,8 +2001,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof BigInteger)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitivePropertyValue.setPrimitiveDefCategory(
+                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
@@ -2077,7 +2012,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue instanceof Double)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
@@ -2093,7 +2027,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 else if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getGUID());
@@ -2105,7 +2038,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                 return resultingProperties;
             }
@@ -2144,7 +2077,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
-                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2160,7 +2092,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -2172,7 +2103,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                 return resultingProperties;
             }
@@ -2211,8 +2142,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
-                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
-
             }
             else
             {
@@ -2228,7 +2157,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
@@ -2240,7 +2168,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                 return resultingProperties;
             }
@@ -2280,7 +2208,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
-                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2296,7 +2223,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
@@ -2308,7 +2234,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                 return resultingProperties;
             }
@@ -2347,7 +2273,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
-                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
             }
             else
             {
@@ -2363,7 +2288,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
@@ -2375,7 +2299,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
 
                 return resultingProperties;
             }
@@ -2669,7 +2593,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             /*
              * The patch has already been applied and so can be ignored.  This is not an
-             * error because all members of the cohort broadcast new types, so it is to be
+             * error because all members of the cohort broadcast new types so it is to be
              * expected that the same patch will come in multiple times.
              */
             return originalTypeDef;
@@ -2715,7 +2639,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 }
                 else
                 {
-                    // And the EQUALS operator for any other type
+                    // And the EQ(uals) operator for any other type
                     pc.setOperator(PropertyComparisonOperator.EQ);
                 }
                 // TODO: we may want to default complex types (lists, etc) to other operators than EQ?

@@ -137,21 +137,21 @@ public class TypeDefGallery extends TypeDefElementHeader
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param objectToCompare object to test
+     * @param o object to test
      * @return result
      */
     @Override
-    public boolean equals(Object objectToCompare)
+    public boolean equals(Object o)
     {
-        if (this == objectToCompare)
+        if (this == o)
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeDefGallery))
+        if (!(o instanceof TypeDefGallery))
         {
             return false;
         }
-        TypeDefGallery that = (TypeDefGallery) objectToCompare;
+        TypeDefGallery that = (TypeDefGallery) o;
         return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs()) &&
                 Objects.equals(getTypeDefs(), that.getTypeDefs());
     }
