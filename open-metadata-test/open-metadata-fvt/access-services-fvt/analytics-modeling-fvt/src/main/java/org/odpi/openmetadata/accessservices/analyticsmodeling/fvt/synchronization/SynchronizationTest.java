@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.synchronizati
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import org.apache.commons.io.FilenameUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.client.SynchronizationClient;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.RepositoryService;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.common.AnalyticsModelingTestBase;
@@ -190,6 +191,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 	{
 		String root = Paths.get(".").toAbsolutePath().normalize().toString();
 		String input  =  root + folder + fileName + ".json";
-        return OBJECT_READER.readValue(Files.readString(Paths.get(input).normalize(), Charset.defaultCharset()), cls);
+        String name = FilenameUtils.getName(input);
+        return OBJECT_READER.readValue(Files.readString(Paths.get(name), Charset.defaultCharset()), cls);
 	}
 }
