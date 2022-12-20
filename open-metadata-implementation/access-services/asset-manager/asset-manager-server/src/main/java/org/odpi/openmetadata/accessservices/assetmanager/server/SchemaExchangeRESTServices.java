@@ -388,6 +388,169 @@ public class SchemaExchangeRESTServices
 
 
     /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupSchemaElementRelationship(String                  serverName,
+                                                       String                  userId,
+                                                       String                  endOneGUID,
+                                                       String                  relationshipTypeName,
+                                                       String                  endTwoGUID,
+                                                       boolean                 assetManagerIsHome,
+                                                       boolean                 forLineage,
+                                                       boolean                 forDuplicateProcessing,
+                                                       RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupSchemaElementRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupSchemaElementRelationship(userId,
+                                                           requestBody.getAssetManagerGUID(),
+                                                           requestBody.getAssetManagerName(),
+                                                           assetManagerIsHome,
+                                                           endTwoGUID,
+                                                           endOneGUID,
+                                                           relationshipTypeName,
+                                                           requestBody.getProperties(),
+                                                           requestBody.getProperties().getEffectiveFrom(),
+                                                           requestBody.getProperties().getEffectiveTo(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
+                                                           methodName);
+                }
+                else
+                {
+                    handler.setupSchemaElementRelationship(userId,
+                                                           requestBody.getAssetManagerGUID(),
+                                                           requestBody.getAssetManagerName(),
+                                                           assetManagerIsHome,
+                                                           endTwoGUID,
+                                                           endOneGUID,
+                                                           relationshipTypeName,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
+                                                           methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearSchemaElementRelationship(String                        serverName,
+                                                       String                        userId,
+                                                       String                        endOneGUID,
+                                                       String                        relationshipTypeName,
+                                                       String                        endTwoGUID,
+                                                       boolean                       forLineage,
+                                                       boolean                       forDuplicateProcessing,
+                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "clearSchemaElementRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
+
+                handler.clearSchemaElementRelationship(userId,
+                                                       requestBody.getAssetManagerGUID(),
+                                                       requestBody.getAssetManagerName(),
+                                                       endTwoGUID,
+                                                       endOneGUID,
+                                                       relationshipTypeName,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
+                                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Remove the metadata element representing a schema type.
      *
      * @param serverName name of the server to route the request to

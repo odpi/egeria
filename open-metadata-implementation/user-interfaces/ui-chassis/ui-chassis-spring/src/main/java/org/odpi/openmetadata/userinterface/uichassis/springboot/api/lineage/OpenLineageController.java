@@ -64,7 +64,7 @@ public class OpenLineageController {
      * @throws PropertyServerException from the underlying service
      * @throws OpenLineageException from the underlying service
      */
-    @GetMapping( value = "/entities/{guid}/end2end")
+    @GetMapping( value = "/entities/{guid}/end-to-end")
     @ResponseBody
     public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses)
             throws InvalidParameterException, PropertyServerException, OpenLineageException {

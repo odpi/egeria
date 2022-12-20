@@ -127,7 +127,7 @@ public class ReportRequestBody extends ReportProperties
                        ", createTime=" + getCreateTime() +
                        ", lastModifiedTime=" + getLastModifiedTime() +
                        ", lastModifier='" + getLastModifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

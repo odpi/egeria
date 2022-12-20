@@ -1027,30 +1027,6 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * Completing the archive service
      */
 
-
-
-    /**
-     * Declare that all the processing for the archive service is finished and the status of the work.
-     *
-     * @param status completion status enum value
-     * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargets list of action target names to GUIDs for the resulting archive service
-     *
-     * @throws InvalidParameterException the completion status is null
-     * @throws UserNotAuthorizedException the archive service is not authorized to update the governance
-     *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
-     */
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        this.recordCompletionStatus(status, outputGuards, null, newActionTargets);
-    }
-
-
     /**
      * Declare that all the processing for the archive service is finished and the status of the work.
      *
@@ -1058,13 +1034,15 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
      * @param newActionTargets list of action target names to GUIDs for the resulting archive service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     public synchronized  void recordCompletionStatus(CompletionStatus      status,
                                                      List<String>          outputGuards,
                                                      Map<String, String>   newRequestParameters,
-                                                     List<NewActionTarget> newActionTargets) throws PropertyServerException
+                                                     List<NewActionTarget> newActionTargets,
+                                                     String                completionMessage) throws PropertyServerException
     {
         final String methodName = "recordCompletionStatus";
 
@@ -1085,7 +1063,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
         try
         {
             repositoryServicesClient.disconnectFromEnterpriseTopic();
-            repositoryGovernanceServiceHandler.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets);
+            repositoryGovernanceServiceHandler.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets, completionMessage);
         }
         catch (Exception error)
         {

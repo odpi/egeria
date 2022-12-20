@@ -495,6 +495,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                                                     specificMatchPropertyNames,
                                                                     true,
+                                                                    false,
                                                                     null,
                                                                     null,
                                                                     forLineage,

@@ -17,7 +17,7 @@ import java.util.List;
 public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Provisioning:MoveCopyFile";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyFile";
     private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 
@@ -37,9 +37,11 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
     static final String SOURCE_FILE_PROPERTY        = "sourceFile";
     static final String DESTINATION_FOLDER_PROPERTY = "destinationFolder";
+    static final String NEW_ASSET_GUID_PROPERTY     = "newAssetGUID";
 
-    static final String PROVISIONING_COMPLETE_GUARD = "provisioning-complete";
-    static final String PROVISIONING_FAILED_GUARD   = "provisioning-failed";
+    static final String PROVISIONING_COMPLETE_GUARD             = "provisioning-complete";
+    static final String PROVISIONING_FAILED_NO_FILE_NAMES_GUARD = "provisioning-failed-no-file-names";
+    static final String PROVISIONING_FAILED_EXCEPTION_GUARD     = "provisioning-failed-exception";
 
     private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
 
@@ -73,10 +75,12 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedTargetActionNames = new ArrayList<>();
         supportedTargetActionNames.add(SOURCE_FILE_PROPERTY);
         supportedTargetActionNames.add(DESTINATION_FOLDER_PROPERTY);
+        supportedTargetActionNames.add(NEW_ASSET_GUID_PROPERTY);
 
         supportedGuards = new ArrayList<>();
         supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
-        supportedGuards.add(PROVISIONING_FAILED_GUARD);
+        supportedGuards.add(PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
+        supportedGuards.add(PROVISIONING_FAILED_EXCEPTION_GUARD);
 
         super.setConnectorClassName(connectorClassName);
 

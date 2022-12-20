@@ -17,7 +17,7 @@ public class FileReadException extends ConnectorCheckedException
 {
     private static final long    serialVersionUID = 1L;
 
-    private   String fileName;
+    private final String fileName;
 
     /**
      * This is the typical constructor used for creating an exception.

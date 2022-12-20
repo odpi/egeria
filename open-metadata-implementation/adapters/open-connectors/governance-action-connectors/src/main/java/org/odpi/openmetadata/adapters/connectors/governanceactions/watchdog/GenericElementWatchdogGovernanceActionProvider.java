@@ -5,21 +5,20 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * GenericElementWatchdogGovernanceActionProvider is the OCF connector provider for the generic element monitor governance action service.
- * This is is a Watchdog Governance Action Service.  The provider initializes the ConnectorProviderBase with the connector's class name,
+ * This is a Watchdog Governance Action Service.  The provider initializes the ConnectorProviderBase with the connector's class name,
  * sets up the default connector type for this service and the definitions of its request types, properties and guards that
  * define and control its behaviour.
  */
 public class GenericElementWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
     private static final String  connectorTypeGUID = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
-    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Watchdog:GenericElement";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericElement";
     private static final String  connectorTypeDisplayName = "Generic Element Watchdog Governance Action Service";
     private static final String  connectorTypeDescription =
             "A Watchdog Governance Action Service that detects changes to requested elements and initiates a governance action process when they " +
@@ -90,6 +89,7 @@ public class GenericElementWatchdogGovernanceActionProvider extends GenericWatch
         supportedGuards = new ArrayList<>();
         supportedGuards.add(MONITORING_COMPLETE);
         supportedGuards.add(MONITORING_FAILED);
+        supportedGuards.add(MONITORING_STOPPED);
 
         super.setConnectorClassName(connectorClassName);
 

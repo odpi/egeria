@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -170,7 +169,7 @@ public class MetadataSourceClient extends DataManagerBaseClient implements Metad
 
     /**
      * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager integrator OMIS.
+     * data manager.  Typically, this is Egeria's data manager integrator OMIS.
      *
      * @param userId calling user
      * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
@@ -218,7 +217,7 @@ public class MetadataSourceClient extends DataManagerBaseClient implements Metad
 
     /**
      * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager proxy.
+     * data manager.  Typically, this is Egeria's data manager proxy.
      *
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
@@ -406,7 +405,7 @@ public class MetadataSourceClient extends DataManagerBaseClient implements Metad
 
 
     /**
-     * Create information about a data processing engine - set up typeName in the properties to create sub types such as
+     * Create information about a data processing engine - set up typeName in the properties to create subtypes such as
      * ReportingEngine, WorkflowEngine, AnalyticsEngine, DataMovementEngine or DataVirtualizationEngine.
      *
      * @param userId calling user

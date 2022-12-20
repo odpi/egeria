@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -34,6 +35,8 @@ public interface GovernanceProcessingInterface
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType request type to identify the governance action service to run
      * @param requestParameters properties to pass to the governance action service
+     * @param processName name of the process that this action is a part of
+     * @param requestSourceName source of the request
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
      *
@@ -54,6 +57,8 @@ public interface GovernanceProcessingInterface
                                     String                governanceEngineName,
                                     String                requestType,
                                     Map<String, String>   requestParameters,
+                                    String                processName,
+                                    String                requestSourceName,
                                     String                originatorServiceName,
                                     String                originatorEngineName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
@@ -186,6 +191,51 @@ public interface GovernanceProcessingInterface
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
 
+    /**
+     * Retrieve the list of governance action metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GovernanceActionElement> findGovernanceActions(String userId,
+                                                        String searchString,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
+     * Retrieve the list of governance action metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GovernanceActionElement> getGovernanceActionsByName(String userId,
+                                                             String name,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
 
     /**
      * Update the status of a specific action target. By default, these values are derived from
@@ -198,6 +248,7 @@ public interface GovernanceProcessingInterface
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
@@ -207,9 +258,10 @@ public interface GovernanceProcessingInterface
                                   String                 actionTargetGUID,
                                   GovernanceActionStatus status,
                                   Date                   startDate,
-                                  Date                   completionDate) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+                                  Date                   completionDate,
+                                  String                 completionMessage) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 
 
     /**
@@ -239,6 +291,7 @@ public interface GovernanceProcessingInterface
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -249,7 +302,8 @@ public interface GovernanceProcessingInterface
                                 Map<String, String>   requestParameters,
                                 CompletionStatus      status,
                                 List<String>          outputGuards,
-                                List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                List<NewActionTarget> newActionTargets,
+                                String                completionMessage) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 }

@@ -292,7 +292,7 @@ public class SchemaManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to remove
-     * @param requestBody new properties for the metadata element
+     * @param requestBody optional identifiers for the external source
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -307,6 +307,65 @@ public class SchemaManagerResource
                                          @RequestBody  MetadataSourceRequestBody requestBody)
     {
         return restAPI.removeSchemaType(serverName, userId, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}")
+
+    public VoidResponse setupSchemaElementRelationship(@PathVariable String                    serverName,
+                                                       @PathVariable String                    userId,
+                                                       @PathVariable String                    endOneGUID,
+                                                       @PathVariable String                    relationshipTypeName,
+                                                       @PathVariable String                    endTwoGUID,
+                                                       @RequestBody(required = false)
+                                                                     RelationshipRequestBody   requestBody)
+    {
+        return restAPI.setupSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param requestBody optional identifiers for the external source
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}/delete")
+
+    public VoidResponse clearSchemaElementRelationship(@PathVariable String                    serverName,
+                                                       @PathVariable String                    userId,
+                                                       @PathVariable String                    endOneGUID,
+                                                       @PathVariable String                    relationshipTypeName,
+                                                       @PathVariable String                    endTwoGUID,
+                                                       @RequestBody(required = false)
+                                                                     MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, requestBody);
     }
 
 

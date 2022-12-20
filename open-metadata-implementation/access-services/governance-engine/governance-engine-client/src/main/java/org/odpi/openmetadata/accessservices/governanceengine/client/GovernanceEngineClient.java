@@ -8,7 +8,9 @@ import org.odpi.openmetadata.accessservices.governanceengine.client.rest.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -111,6 +113,7 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
@@ -121,9 +124,10 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
                                          String                 actionTargetGUID,
                                          GovernanceActionStatus status,
                                          Date                   startDate,
-                                         Date                   completionDate) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                         Date                   completionDate,
+                                         String                 completionMessage) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "updateActionTargetStatus";
         final String guidParameterName = "actionTargetGUID";
@@ -138,6 +142,7 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
         requestBody.setStatus(status);
         requestBody.setStartDate(startDate);
         requestBody.setCompletionDate(completionDate);
+        requestBody.setCompletionMessage(completionMessage);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -196,6 +201,7 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -207,9 +213,10 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
                                        Map<String, String>   requestParameters,
                                        CompletionStatus      status,
                                        List<String>          outputGuards,
-                                       List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                       List<NewActionTarget> newActionTargets,
+                                       String                completionMessage) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "recordCompletionStatus";
         final String statusParameterName = "status";
@@ -224,6 +231,7 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
         requestBody.setStatus(status);
         requestBody.setOutputGuards(outputGuards);
         requestBody.setNewActionTargets(newActionTargets);
+        requestBody.setCompletionMessage(completionMessage);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -251,6 +259,8 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType governance request type from the caller
      * @param requestParameters properties to pass to the governance action service
+     * @param processName name of the process that this action is a part of
+     * @param requestSourceName source of the request
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
      *
@@ -272,6 +282,8 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
                                            String                governanceEngineName,
                                            String                requestType,
                                            Map<String, String>   requestParameters,
+                                           String                processName,
+                                           String                requestSourceName,
                                            String                originatorServiceName,
                                            String                originatorEngineName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
@@ -298,6 +310,8 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
         requestBody.setStartTime(startTime);
         requestBody.setRequestType(requestType);
         requestBody.setRequestParameters(requestParameters);
+        requestBody.setProcessName(processName);
+        requestBody.setRequestSourceName(requestSourceName);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
 
@@ -435,8 +449,6 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
     }
 
 
-
-
     /**
      * Retrieve the governance actions known to the server.
      *
@@ -543,6 +555,100 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   governanceEngineGUID,
+                                                                                                  Integer.toString(startFrom),
+                                                                                                  Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionElement> findGovernanceActions(String userId,
+                                                               String searchString,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "findGovernanceActionTypes";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/by-search-string?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
+                                                                                                  urlTemplate,
+                                                                                                  requestBody,
+                                                                                                  serverName,
+                                                                                                  userId,
+                                                                                                  Integer.toString(startFrom),
+                                                                                                  Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionElement> getGovernanceActionsByName(String userId,
+                                                                    String name,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "getGovernanceActionsByName";
+        final String nameParameterName = "name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/by-name?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
+                                                                                                  urlTemplate,
+                                                                                                  requestBody,
+                                                                                                  serverName,
+                                                                                                  userId,
                                                                                                   Integer.toString(startFrom),
                                                                                                   Integer.toString(pageSize));
 

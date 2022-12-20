@@ -182,11 +182,11 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**
@@ -197,7 +197,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

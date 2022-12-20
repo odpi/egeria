@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerifyFileFolderGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is a Provisioning Governance Action Service.
+ * VerifyFileFolderGovernanceActionProvider is the OCF connector provider for the "Verify FileFolder" Verification Governance Action Service.
+ * This is a Verification Governance Action Service.
  */
 public class VerifyFileFolderGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "1fc4f300-5003-4b1e-8669-953ade4a3742";
-    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Verification:VerifyFileFolder";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:VerifyFileFolder";
     private static final String  connectorTypeDisplayName = "Verify File Folder Governance Action Service";
     private static final String  connectorTypeDescription = "Verification Governance Action Service that checks whether a file asset is located in a particular folder.";
 

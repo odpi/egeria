@@ -96,8 +96,7 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
         displayApplicationClient = new DisplayApplicationClient(partnerOMASServerName,
                                                                 partnerOMASPlatformRootURL,
                                                                 restClient,
-                                                                maxPageSize,
-                                                                auditLog);
+                                                                maxPageSize);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,

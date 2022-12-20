@@ -34,6 +34,10 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     private String              requestType          = null;
     private Map<String, String> requestParameters    = null;
 
+    private boolean             ignoreMultipleTriggers = false;
+    private int                 waitTime               = 0;
+
+
     /**
      * Default constructor
      */
@@ -63,6 +67,9 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
             governanceEngineGUID = template.getGovernanceEngineGUID();
             requestType = template.getRequestType();
             requestParameters = template.getRequestParameters();
+
+            ignoreMultipleTriggers = template.getIgnoreMultipleTriggers();
+            waitTime               = template.getWaitTime();
         }
     }
 
@@ -231,6 +238,51 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     }
 
 
+
+    /**
+     * Return whether this action type can be triggered more than once in a single step of the governance action process.
+     *
+     * @return boolean flag
+     */
+    public boolean getIgnoreMultipleTriggers()
+    {
+        return ignoreMultipleTriggers;
+    }
+
+
+    /**
+     * Set up whether this action type can be triggered more than once in a single step of the governance action process.
+     *
+     * @param ignoreMultipleTriggers boolean flag
+     */
+    public void setIgnoreMultipleTriggers(boolean ignoreMultipleTriggers)
+    {
+        this.ignoreMultipleTriggers = ignoreMultipleTriggers;
+    }
+
+
+    /**
+     * Return the minimum number of minutes to wait before starting the next governance action.
+     *
+     * @return int (minutes)
+     */
+    public int getWaitTime()
+    {
+        return waitTime;
+    }
+
+
+    /**
+     * Set up the minimum number of minutes to wait before starting the next governance action.
+     *
+     * @param waitTime int (minutes)
+     */
+    public void setWaitTime(int waitTime)
+    {
+        this.waitTime = waitTime;
+    }
+
+
     /**
      * JSON-style toString.
      *
@@ -247,6 +299,8 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
+                       ", ignoreMultipleTriggers=" + ignoreMultipleTriggers +
+                       ", waitTime=" + waitTime +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
@@ -278,7 +332,8 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
-
+                       ignoreMultipleTriggers == that.ignoreMultipleTriggers &&
+                       waitTime == that.waitTime &&
                        Objects.equals(supportedGuards, that.supportedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
@@ -295,6 +350,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), domainIdentifier, displayName, description,
-                            supportedGuards, governanceEngineGUID, requestType, requestParameters);
+                            supportedGuards, governanceEngineGUID, requestType, requestParameters,
+                            ignoreMultipleTriggers, waitTime);
     }
 }

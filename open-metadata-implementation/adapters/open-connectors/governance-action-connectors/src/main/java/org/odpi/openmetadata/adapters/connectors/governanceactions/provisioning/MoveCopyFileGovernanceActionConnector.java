@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
@@ -32,7 +31,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private String  topLevelProcessName                  = this.getClass().getName();
+    private String  topLevelProcessName                  = "MoveCopyFileGovernanceActionConnector";
     private String  destinationFileTemplateQualifiedName = null;
     private String  topLevelProcessTemplateQualifiedName = null;
     private String  destinationFileNamePattern           = "{0}";
@@ -189,16 +188,32 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
 
     /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
+     * Indicates that the governance action service is completely configured and can begin processing.
      *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() at the start of your overriding version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        final String methodName = "start";
+
+        super.start();
+
+        List<String>     outputGuards = new ArrayList<>();
+        CompletionStatus completionStatus;
+        String           completionMessage = null;
+
+        if (MoveCopyFileGovernanceActionProvider.MOVE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        {
+            copyFile = false;
+        }
+        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        {
+            deleteFile = true;
+        }
 
         Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
 
@@ -270,37 +285,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 childProcessLineage = false;
             }
         }
-    }
-
-
-
-    /**
-     * Indicates that the governance action service is completely configured and can begin processing.
-     *
-     * This is a standard method from the Open Connector Framework (OCF) so
-     * be sure to call super.start() at the start of your overriding version.
-     *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
-     */
-    @Override
-    public void start() throws ConnectorCheckedException
-    {
-        final String methodName = "start";
-
-        super.start();
-
-        List<String>     outputGuards = new ArrayList<>();
-        CompletionStatus completionStatus;
-
-        if (MoveCopyFileGovernanceActionProvider.MOVE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
-        {
-            copyFile = false;
-        }
-        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
-        {
-            deleteFile = true;
-        }
-
 
         /*
          * Retrieve the source file and destination folder from either the request parameters or the action targets.  If both
@@ -436,7 +420,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                         NewActionTarget actionTarget = new NewActionTarget();
 
                         actionTarget.setActionTargetGUID(newActionTargetGUID);
-                        actionTarget.setActionTargetName(destinationFileName);
+                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_GUID_PROPERTY);
                         newActionTargets.add(actionTarget);
                     }
 
@@ -445,7 +429,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 }
                 else
                 {
-                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
                     completionStatus = CompletionStatus.FAILED;
                 }
             }
@@ -464,13 +448,14 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                       error);
             }
 
-            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_EXCEPTION_GUARD);
             completionStatus = CompletionStatus.FAILED;
+            completionMessage = error.getMessage();
         }
 
         try
         {
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets, completionMessage);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -753,7 +738,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String fileExtension = FilenameUtils.getExtension(destinationFilePathName);
         String newFileGUID;
 
-        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, false, false, null);
+        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, true, false, null);
         String processGUID;
 
         if (topLevelProcessGUID == null)
@@ -795,11 +780,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID == null)
         {
-            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", false, false, null);
+            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
 
             if (sourceFileGUID == null)
             {
-                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
+                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, true, false, null);
             }
 
             if (! sourceLineageFromFile)
@@ -809,6 +794,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
 
         ElementProperties extendedProperties = propertyHelper.addStringProperty(null, "pathName", destinationFilePathName);
+        extendedProperties = propertyHelper.addStringProperty(extendedProperties, "fileName", fileName);
+
         String            assetTypeName = this.getAssetTypeName(fileExtension);
 
         if (destinationFileTemplateQualifiedName == null)
@@ -823,7 +810,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                                    false,
                                                                                                                    null);
 
-            newFileGUID = governanceContext.createAssetFromTemplate(assetTypeName, assetTemplateGUID, destinationFilePathName, fileName, null, null, extendedProperties);
+            newFileGUID = governanceContext.createAssetFromTemplate(assetTypeName, assetTemplateGUID, "CSVFile:" + destinationFilePathName, fileName, null, null, extendedProperties);
 
             if ((assetTemplateGUID == null) && (auditLog != null))
             {
@@ -839,13 +826,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             newFileGUID = getFolderGUID(newFileGUID);
         }
 
-        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
+        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship(sourceFileGUID, processGUID);
+            governanceContext.createLineageRelationship("DataFlow", sourceFileGUID, null, null, null, processGUID);
         }
 
-        governanceContext.createLineageRelationship(processGUID, newFileGUID);
+        governanceContext.createLineageRelationship("DataFlow", processGUID, null, null, null, newFileGUID);
 
         if (auditLog != null)
         {

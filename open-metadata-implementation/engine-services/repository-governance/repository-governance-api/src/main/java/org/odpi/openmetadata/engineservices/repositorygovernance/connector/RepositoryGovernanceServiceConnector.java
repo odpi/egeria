@@ -171,4 +171,34 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
                                                 methodName);
         }
     }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    @Override
+    public  synchronized void disconnect() throws ConnectorCheckedException
+    {
+        super.disconnect();
+
+        if (this.embeddedConnectors != null)
+        {
+            for (Connector embeddedConnector : this.embeddedConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    try
+                    {
+                        embeddedConnector.disconnect();
+                    }
+                    catch (Exception error)
+                    {
+                        // keep going
+                    }
+                }
+            }
+        }
+    }
 }
