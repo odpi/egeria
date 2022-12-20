@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEn
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -448,21 +447,20 @@ public abstract class GovernanceEngineHandler
         try
         {
             GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, governanceActionGUID);
-            GovernanceActionProperties properties                    = latestGovernanceActionElement.getProperties();
 
-            if (properties.getActionStatus() == GovernanceActionStatus.APPROVED)
+            if (latestGovernanceActionElement.getActionStatus() == GovernanceActionStatus.APPROVED)
             {
                 serverClient.claimGovernanceAction(serverUserId, governanceActionGUID);
 
-                // todo if the start date is in the future then the governance action should be given to the scheduler
 
                 serverClient.updateGovernanceActionStatus(serverUserId, governanceActionGUID, GovernanceActionStatus.IN_PROGRESS);
 
                 runGovernanceService(governanceActionGUID,
-                                     properties.getRequestType(),
-                                     properties.getRequestParameters(),
-                                     properties.getRequestSourceElements(),
-                                     properties.getActionTargetElements());
+                                     latestGovernanceActionElement.getRequestType(),
+                                     latestGovernanceActionElement.getStartTime(),
+                                     latestGovernanceActionElement.getRequestParameters(),
+                                     latestGovernanceActionElement.getRequestSourceElements(),
+                                     latestGovernanceActionElement.getActionTargetElements());
             }
         }
         catch (Exception error)
@@ -482,6 +480,7 @@ public abstract class GovernanceEngineHandler
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine
+     * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -494,6 +493,7 @@ public abstract class GovernanceEngineHandler
      */
     public abstract GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
                                                                   String                     governanceRequestType,
+                                                                  Date                       startDate,
                                                                   Map<String, String>        requestParameters,
                                                                   List<RequestSourceElement> requestSourceElements,
                                                                   List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,

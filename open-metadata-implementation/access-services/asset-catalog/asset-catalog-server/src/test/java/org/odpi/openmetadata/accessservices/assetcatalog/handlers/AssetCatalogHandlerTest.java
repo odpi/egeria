@@ -429,7 +429,7 @@ public class AssetCatalogHandlerTest {
         List<EntityDetail> mockedEntities = mockEntities();
         when(assetHandler.getEntitiesByValue(USER, SEARCH_CRITERIA,
                 SEARCH_STRING_PARAMETER_NAME, ASSET_TYPE_GUID, ASSET_TYPE, Collections.singletonList(NAME),
-                searchParams.getCaseInsensitive(), null, null,
+                searchParams.getExactMatch(), false, null, null,
                 false, false, null,
                 SequencingOrder.ANY.getName(), FROM, PAGE_SIZE, null, methodName)).thenReturn(mockedEntities);
 

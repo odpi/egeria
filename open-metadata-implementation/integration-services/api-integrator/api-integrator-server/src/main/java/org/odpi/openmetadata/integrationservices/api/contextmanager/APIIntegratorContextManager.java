@@ -104,8 +104,7 @@ public class APIIntegratorContextManager extends IntegrationContextManager
          apiManagerClient= new APIManagerClient(partnerOMASServerName,
                                                 partnerOMASPlatformRootURL,
                                                 restClient,
-                                                maxPageSize,
-                                                auditLog);
+                                                maxPageSize);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,

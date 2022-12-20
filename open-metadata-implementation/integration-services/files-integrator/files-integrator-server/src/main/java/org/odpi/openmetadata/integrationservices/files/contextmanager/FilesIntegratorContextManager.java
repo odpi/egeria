@@ -98,8 +98,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
         filesAndFoldersClient = new FilesAndFoldersClient(partnerOMASServerName,
                                                           partnerOMASPlatformRootURL,
                                                           restClient,
-                                                          maxPageSize,
-                                                          auditLog);
+                                                          maxPageSize);
 
         connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,

@@ -178,7 +178,7 @@ public class CommentConverter<B> extends AssetConsumerOMASConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
 
                 if (instancePropertyValue instanceof EnumPropertyValue)
                 {

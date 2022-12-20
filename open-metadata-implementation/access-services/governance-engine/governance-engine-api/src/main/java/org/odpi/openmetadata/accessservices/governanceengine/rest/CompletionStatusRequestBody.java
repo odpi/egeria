@@ -31,6 +31,7 @@ public class CompletionStatusRequestBody implements Serializable
     private Map<String, String>   requestParameters = null;
     private List<String>          outputGuards      = null;
     private List<NewActionTarget> newActionTargets  = null;
+    private String                completionMessage = null;
 
 
     /**
@@ -55,6 +56,7 @@ public class CompletionStatusRequestBody implements Serializable
             requestParameters = template.getRequestParameters();
             outputGuards = template.getOutputGuards();
             newActionTargets = template.getNewActionTargets();
+            completionMessage = template.getCompletionMessage();
         }
     }
 
@@ -177,6 +179,29 @@ public class CompletionStatusRequestBody implements Serializable
     }
 
 
+
+    /**
+     * Return message to describe completion results or reasons for failure.
+     *
+     * @return string
+     */
+    public String getCompletionMessage()
+    {
+        return completionMessage;
+    }
+
+
+    /**
+     * Set up message to describe completion results or reasons for failure.
+     *
+     * @param completionMessage string
+     */
+    public void setCompletionMessage(String completionMessage)
+    {
+        this.completionMessage = completionMessage;
+    }
+
+
     /**
      * JSON-style toString.
      *
@@ -190,6 +215,7 @@ public class CompletionStatusRequestBody implements Serializable
                        ", requestParameters=" + requestParameters +
                        ", outputGuards=" + outputGuards +
                        ", newActionTargets=" + newActionTargets +
+                       ", completionMessage=" + completionMessage +
                        '}';
     }
 
@@ -214,6 +240,7 @@ public class CompletionStatusRequestBody implements Serializable
         CompletionStatusRequestBody that = (CompletionStatusRequestBody) objectToCompare;
         return status == that.status &&
                        Objects.equals(outputGuards, that.outputGuards) &&
+                       Objects.equals(completionMessage, that.completionMessage) &&
                        Objects.equals(newActionTargets, that.newActionTargets);
     }
 
@@ -226,6 +253,6 @@ public class CompletionStatusRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(status, outputGuards, newActionTargets);
+        return Objects.hash(status, outputGuards, newActionTargets, completionMessage);
     }
 }

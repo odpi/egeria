@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +50,10 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
         super.start();
 
-        List<String>        outputGuards = new ArrayList<>();
-        CompletionStatus    completionStatus = null;
-        Map<String, String> newRequestParameters = null;
+        List<String>          outputGuards = new ArrayList<>();
+        List<NewActionTarget> newActionTargets = null;
+        CompletionStatus      completionStatus = null;
+        Map<String, String>   newRequestParameters = null;
 
         try
         {
@@ -63,6 +65,11 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
                 ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
+
+                newActionTargets = new ArrayList<>();
+
+                newActionTargets.add(actionTarget); // pass on existing action target to follow-on actions
+
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
                 /*
@@ -100,7 +107,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                     else if (originClassifications.size() == 1)
                     {
                         /*
-                         * A single origin has been found so it is ok to add it to the action target asset.
+                         * A single origin has been found, so it is ok to add it to the action target asset.
                          */
                         governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
                                                                   assetOriginClassification,
@@ -141,7 +148,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                 outputGuards.add(OriginSeekerGovernanceActionProvider.MULTIPLE_TARGETS_DETECTED_GUARD);
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, null);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, newActionTargets);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -199,8 +206,17 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                                                List<String>         coveredEntityGUIDs) throws Exception
     {
         final String lineageMappingRelationshipName = "LineageMapping";
+        final String dataFlowRelationshipName = "DataFlow";
+        final String controlFlowRelationshipName = "ControlFlow";
+        final String processCallRelationshipName = "ProcessCall";
 
         List<ElementProperties> results = new ArrayList<>();
+
+        String[] relationshipArray = { lineageMappingRelationshipName,
+                                       dataFlowRelationshipName,
+                                       controlFlowRelationshipName,
+                                       processCallRelationshipName };
+        List<String> lineageRelationships = Arrays.asList(relationshipArray);
 
         /*
          * The lineage is explored by repeatedly retrieving the lineage from the metadata store.
@@ -214,7 +230,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
          */
         List<RelatedMetadataElement> lineageLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                      2,
-                                                                                     lineageMappingRelationshipName,
+                                                                                     null,
                                                                                      true,
                                                                                      false,
                                                                                      null,
@@ -230,54 +246,59 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             {
                 if (lineageLink != null)
                 {
-                    OpenMetadataElement nextAsset = lineageLink.getElementProperties();
+                    String relationshipName = lineageLink.getRelationshipType().getTypeName();
 
-                    /*
-                     * Some lineage graphs are circular so the covered entity guids prevents the same element from being processed twice.
-                     */
-                    if (! coveredEntityGUIDs.contains(nextAsset.getElementGUID()))
+                    if (lineageRelationships.contains(relationshipName))
                     {
-                        coveredEntityGUIDs.add(nextAsset.getElementGUID());
+                        OpenMetadataElement nextAsset = lineageLink.getElementProperties();
 
                         /*
-                         * If we find an origin classification on this asset we stop traversing the lineage graph.
+                         * Some lineage graphs are circular so the covered entity guids prevents the same element from being processed twice.
                          */
-                        AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
-
-                        if (existingAssetOriginClassification == null)
+                        if (! coveredEntityGUIDs.contains(nextAsset.getElementGUID()))
                         {
-                            /*
-                             * No origin classification so it must look further back in the lineage graph.
-                             */
-                            List<ElementProperties> upstreamResults = getOrigins(nextAsset, coveredEntityGUIDs);
+                            coveredEntityGUIDs.add(nextAsset.getElementGUID());
 
-                            if ((upstreamResults != null) && (!upstreamResults.isEmpty()))
+                            /*
+                             * If we find an origin classification on this asset we stop traversing the lineage graph.
+                             */
+                            AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
+
+                            if (existingAssetOriginClassification == null)
                             {
                                 /*
-                                 * Now it is necessary to merge and deduplicate the results.
+                                 * No origin classification so it must look further back in the lineage graph.
                                  */
-                                for (ElementProperties upstreamResult : upstreamResults)
+                                List<ElementProperties> upstreamResults = getOrigins(nextAsset, coveredEntityGUIDs);
+
+                                if ((upstreamResults != null) && (! upstreamResults.isEmpty()))
                                 {
-                                    if (upstreamResult != null)
+                                    /*
+                                     * Now it is necessary to merge and deduplicate the results.
+                                     */
+                                    for (ElementProperties upstreamResult : upstreamResults)
                                     {
-                                        if (!results.contains(upstreamResult))
+                                        if (upstreamResult != null)
                                         {
-                                            results.add(upstreamResult);
+                                            if (! results.contains(upstreamResult))
+                                            {
+                                                results.add(upstreamResult);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            /*
-                             * There is an origin classification so process it.
-                             */
-                            if (existingAssetOriginClassification.getClassificationProperties() != null)
+                            else
                             {
-                                if (! results.contains(existingAssetOriginClassification.getClassificationProperties()))
+                                /*
+                                 * There is an origin classification so process it.
+                                 */
+                                if (existingAssetOriginClassification.getClassificationProperties() != null)
                                 {
-                                    results.add(existingAssetOriginClassification.getClassificationProperties());
+                                    if (! results.contains(existingAssetOriginClassification.getClassificationProperties()))
+                                    {
+                                        results.add(existingAssetOriginClassification.getClassificationProperties());
+                                    }
                                 }
                             }
                         }

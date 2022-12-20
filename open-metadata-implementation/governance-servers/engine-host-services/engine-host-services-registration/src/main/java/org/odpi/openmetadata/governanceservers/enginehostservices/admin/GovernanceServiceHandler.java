@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTar
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
@@ -131,9 +133,10 @@ public abstract class GovernanceServiceHandler implements Runnable
     public void updateActionTargetStatus(String                 actionTargetGUID,
                                          GovernanceActionStatus status,
                                          Date                   startDate,
-                                         Date                   completionDate) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                         Date                   completionDate,
+                                         String                 completionMessage) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "updateActionTargetStatus";
 
@@ -165,10 +168,11 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                                                                                                  actionTargetGUID,
                                                                                                                                  statusString,
                                                                                                                                  startTime,
-                                                                                                                                 completionTime));
+                                                                                                                                 completionTime,
+                                                                                                                                 completionMessage));
         }
 
-        governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate);
+        governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 
 
@@ -179,6 +183,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param requestParameters properties to pass to the next governance action service
      * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -187,9 +192,10 @@ public abstract class GovernanceServiceHandler implements Runnable
     public void recordCompletionStatus(CompletionStatus      status,
                                        List<String>          outputGuards,
                                        Map<String, String>   requestParameters,
-                                       List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                       List<NewActionTarget> newActionTargets,
+                                       String                completionMessage) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "recordCompletionStatus";
 
@@ -198,7 +204,6 @@ public abstract class GovernanceServiceHandler implements Runnable
             String statusString          = "<null>";
             String guardsString          = "<null>";
             String requestParameterNames = "<null>";
-            String actionTargets         = "<null>";
 
             if (status != null)
             {
@@ -215,9 +220,17 @@ public abstract class GovernanceServiceHandler implements Runnable
                 requestParameterNames = requestParameters.keySet().toString();
             }
 
+            Map<String, String> actionTargetMap = new HashMap<>();
+
             if (newActionTargets != null)
             {
-                actionTargets = newActionTargets.toString();
+                for (NewActionTarget newActionTarget : newActionTargets)
+                {
+                    if (newActionTarget != null)
+                    {
+                        actionTargetMap.put(newActionTarget.getActionTargetName(), newActionTarget.getActionTargetGUID());
+                    }
+                }
             }
 
             auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_RECORD_COMPLETION.getMessageDefinition(governanceActionGUID,
@@ -227,7 +240,8 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                                                                                                  statusString,
                                                                                                                                  guardsString,
                                                                                                                                  requestParameterNames,
-                                                                                                                                 actionTargets));
+                                                                                                                                 actionTargetMap.toString(),
+                                                                                                                                 completionMessage));
         }
 
         governanceActionClient.recordCompletionStatus(engineHostUserId,
@@ -235,7 +249,8 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                       requestParameters,
                                                       status,
                                                       outputGuards,
-                                                      newActionTargets);
+                                                      newActionTargets,
+                                                      completionMessage);
     }
 
 

@@ -17,6 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -3209,10 +3211,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Validates that the unique property is not already in use.
+     * Validates that the unique property is not already in use across all types that contain the unique property.
      *
      * @param entityGUID existing entity (or null if this is a create)
-     * @param entityTypeGUID the unique identifier of type of the entity
      * @param entityTypeName the unique name of the type of the entity
      * @param uniqueParameterValue the value of the unique parameter
      * @param uniqueParameterName the name of the unique parameter
@@ -3224,7 +3225,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void validateUniqueProperty(String entityGUID,
-                                       String entityTypeGUID,
                                        String entityTypeName,
                                        String uniqueParameterValue,
                                        String uniqueParameterName,
@@ -3236,16 +3236,50 @@ public class OpenMetadataAPIGenericHandler<B>
         List<String> propertyNames = new ArrayList<>();
         propertyNames.add(uniqueParameterName);
 
+        String owningEntityTypeGUID = null;
+        String owningEntityTypeName = null;
+
+        String entityTypeNameToCheck = entityTypeName;
+        while (owningEntityTypeGUID == null)
+        {
+            TypeDef potentialOwningEntityTypeDef = repositoryHelper.getTypeDefByName(methodName, entityTypeNameToCheck);
+            List<TypeDefAttribute> typeDefAttributes = potentialOwningEntityTypeDef.getPropertiesDefinition();
+            if (typeDefAttributes != null && !typeDefAttributes.isEmpty())
+            {
+                for (TypeDefAttribute typeDefAttribute:typeDefAttributes)
+                {
+                    if (typeDefAttribute.isUnique() && typeDefAttribute.getAttributeName().equals(uniqueParameterName))
+                    {
+                        owningEntityTypeGUID = potentialOwningEntityTypeDef.getGUID();
+                        owningEntityTypeName = potentialOwningEntityTypeDef.getName();
+                    }
+                }
+            }
+
+            TypeDefLink superTypeDefLink = potentialOwningEntityTypeDef.getSuperType();
+
+            if (superTypeDefLink != null)
+            {
+                entityTypeNameToCheck = superTypeDefLink.getName();
+            }
+            else
+            {
+                // should not happen. Log?
+                break;
+            }
+        }
+
         /*
          * An entity with the Memento classification set is ignored
          */
         List<EntityDetail> existingEntities = this.getEntitiesByValue(localServerUserId,
                                                                       uniqueParameterValue,
                                                                       uniqueParameterName,
-                                                                      entityTypeGUID,
-                                                                      entityTypeName,
+                                                                      owningEntityTypeGUID,
+                                                                      owningEntityTypeName,
                                                                       propertyNames,
                                                                       true,
+                                                                      false,
                                                                       null,
                                                                       OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
                                                                       false,
@@ -3289,7 +3323,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * Validate that new properties for an entity do not have unique properties that clash with other instances.
      *
      * @param entityGUID unique identifier of the entity to be updated (or null for a new entity).
-     * @param entityTypeGUID the unique identifier of type of the entity
      * @param entityTypeName the unique name of the type of the entity
      * @param newProperties properties to test
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3300,7 +3333,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void validateUniqueProperties(String             entityGUID,
-                                          String             entityTypeGUID,
                                           String             entityTypeName,
                                           InstanceProperties newProperties,
                                           Date               effectiveTime,
@@ -3330,7 +3362,6 @@ public class OpenMetadataAPIGenericHandler<B>
                         InstancePropertyValue uniquePropertyValue = uniqueProperties.getPropertyValue(uniquePropertyName);
 
                         validateUniqueProperty(entityGUID,
-                                               entityTypeGUID,
                                                entityTypeName,
                                                uniquePropertyValue.valueAsString(),
                                                uniquePropertyName,
@@ -3371,7 +3402,7 @@ public class OpenMetadataAPIGenericHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        validateUniqueProperties(null, entityTypeGUID, entityTypeName, newProperties, effectiveTime, methodName);
+        validateUniqueProperties(null, entityTypeName, newProperties, effectiveTime, methodName);
 
         if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
         {
@@ -6301,7 +6332,6 @@ public class OpenMetadataAPIGenericHandler<B>
              * Validate that any changes to the unique properties do not clash with other entities.
              */
             validateUniqueProperties(originalEntity.getGUID(),
-                                     entityTypeGUID,
                                      entityTypeName,
                                      newProperties,
                                      effectiveTime,
@@ -9234,6 +9264,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName type name of entities to return
      * @param specificMatchPropertyNames list of property names to look in (or null to search any string property)
      * @param exactValueMatch should the value be treated as a literal or a RegEx?
+     * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
      * @param sequencingPropertyName should the results be sequenced?
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -9249,6 +9280,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           String       resultTypeName,
                                                           List<String> specificMatchPropertyNames,
                                                           boolean      exactValueMatch,
+                                                          boolean      caseInsensitive,
                                                           String       sequencingPropertyName,
                                                           boolean      forLineage,
                                                           boolean      forDuplicateProcessing,
@@ -9265,7 +9297,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (exactValueMatch)
             {
-                searchValue = repositoryHelper.getExactMatchRegex(searchString);
+                searchValue = repositoryHelper.getExactMatchRegex(searchString, caseInsensitive);
             }
 
             if ((specificMatchPropertyNames == null) || (specificMatchPropertyNames.isEmpty()))
@@ -9425,6 +9457,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
+                                                                         false,
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -9594,6 +9627,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
+                                                                         false,
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -10299,6 +10333,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                          resultTypeName,
                                                          specificMatchPropertyNames,
                                                          exactValueMatch,
+                                                         false,
                                                          requiredClassificationName,
                                                          omittedClassificationName,
                                                          forLineage,
@@ -10414,6 +10449,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeGUID,
                                                                          resultTypeName,
                                                                          null,
+                                                                         false,
                                                                          false,
                                                                          sequencingPropertyName,
                                                                          forLineage,
@@ -10603,6 +10639,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        resultTypeName,
                                        null,
                                        false,
+                                       false,
                                        requiredClassificationName,
                                        omittedClassificationName,
                                        forLineage,
@@ -10666,6 +10703,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        resultTypeName,
                                        specificMatchPropertyNames,
                                        exactValueMatch,
+                                       false,
                                        requiredClassificationName,
                                        omittedClassificationName,
                                        forLineage,
@@ -10812,6 +10850,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        resultTypeName,
                                        specificMatchPropertyNames,
                                        exactValueMatch,
+                                       false,
                                        requiredClassificationName,
                                        omittedClassificationName,
                                        forLineage,
@@ -10835,6 +10874,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
+     * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -10858,6 +10898,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String       resultTypeName,
                                                  List<String> specificMatchPropertyNames,
                                                  boolean      exactValueMatch,
+                                                 boolean      caseInsensitive,
                                                  String       requiredClassificationName,
                                                  String       omittedClassificationName,
                                                  boolean      forLineage,
@@ -10886,6 +10927,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          specificMatchPropertyNames,
                                                                          exactValueMatch,
+                                                                         caseInsensitive,
                                                                          sequencingPropertyName,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -11103,6 +11145,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               resultTypeName,
                                                               specificMatchPropertyNames,
                                                               exactValueMatch,
+                                                              false,
                                                               requiredClassificationName,
                                                               omittedClassificationName,
                                                               forLineage,
@@ -11175,6 +11218,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              resultTypeName,
                                                              specificMatchPropertyNames,
                                                              true,
+                                                             false,
                                                              null,
                                                              null,
                                                              forLineage,
@@ -11369,6 +11413,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          specificMatchPropertyNames,
                                                                          exactValueMatch,
+                                                                         false,
                                                                          sequencingPropertyName,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -11657,6 +11702,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeGUID,
                                                                          resultTypeName,
                                                                          null,
+                                                                         false,
                                                                          false,
                                                                          sequencingPropertyName,
                                                                          forLineage,
@@ -12138,7 +12184,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                                      startingElementEntity,
-                                                                                                     startingElementTypeName,
+                                                                                                     startingElementEntity.getType().getTypeDefName(),
                                                                                                      attachingGUID,
                                                                                                      attachmentTypeGUID,
                                                                                                      attachmentTypeName,

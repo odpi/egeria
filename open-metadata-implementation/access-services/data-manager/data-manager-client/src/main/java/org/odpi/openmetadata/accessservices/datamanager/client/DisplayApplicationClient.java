@@ -93,19 +93,16 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DisplayApplicationClient(String                serverName,
                                     String                serverPlatformURLRoot,
                                     DataManagerRESTClient restClient,
-                                    int                   maxPageSize,
-                                    AuditLog              auditLog) throws InvalidParameterException
+                                    int                   maxPageSize) throws InvalidParameterException
     {
-        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
-
 
     /**
      * Create a new client that passes userId and password in each HTTP request.  This is the

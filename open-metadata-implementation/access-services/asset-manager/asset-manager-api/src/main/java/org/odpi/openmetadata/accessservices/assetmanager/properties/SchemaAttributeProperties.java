@@ -368,7 +368,8 @@ public class SchemaAttributeProperties extends SchemaProperties
 
 
     /**
-     * Set up SchemaType for this schema attribute.
+     * Set up SchemaType for this schema attribute.  Use a bean that is a subclass of SchemaTypeProperties that matches the type you wish to
+     * represent.  When it is sent to server, it will use the type of the SchemaTypeProperties to set up the correct schema type information.
      *
      * @return schema type properties
      */
@@ -397,30 +398,31 @@ public class SchemaAttributeProperties extends SchemaProperties
     public String toString()
     {
         return "SchemaAttributeProperties{" +
-                "elementPosition=" + elementPosition +
-                ", minCardinality=" + minCardinality +
-                ", maxCardinality=" + maxCardinality +
-                ", allowsDuplicateValues=" + allowsDuplicateValues +
-                ", orderedValues=" + orderedValues +
-                ", defaultValueOverride='" + defaultValueOverride + '\'' +
-                ", sortOrder=" + sortOrder +
-                ", minimumLength=" + minimumLength +
-                ", length=" + length +
-                ", significantDigits=" + precision +
-                ", isNullable=" + isNullable +
-                ", nativeJavaClass='" + nativeJavaClass + '\'' +
-                ", aliases=" + aliases +
-                ", schemaType=" + schemaType +
-                ", nullable=" + getIsNullable() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getTechnicalName() + '\'' +
-                ", description='" + getTechnicalDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", elementPosition=" + elementPosition +
+                       ", minCardinality=" + minCardinality +
+                       ", maxCardinality=" + maxCardinality +
+                       ", allowsDuplicateValues=" + allowsDuplicateValues +
+                       ", orderedValues=" + orderedValues +
+                       ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                       ", sortOrder=" + sortOrder +
+                       ", minimumLength=" + minimumLength +
+                       ", length=" + length +
+                       ", precision=" + precision +
+                       ", isNullable=" + isNullable +
+                       ", nativeJavaClass='" + nativeJavaClass + '\'' +
+                       ", aliases=" + aliases +
+                       ", schemaType=" + schemaType +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       '}';
     }
 
 

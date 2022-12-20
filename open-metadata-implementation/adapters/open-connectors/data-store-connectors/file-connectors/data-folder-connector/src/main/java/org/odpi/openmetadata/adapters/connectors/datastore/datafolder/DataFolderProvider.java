@@ -20,8 +20,7 @@ public class DataFolderProvider extends ConnectorProviderBase
     private static final String  assetTypeName = "DataFolder";
 
     /**
-     * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific connector implementation.
      */
     public DataFolderProvider()
     {

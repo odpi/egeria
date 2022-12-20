@@ -122,7 +122,7 @@ public class TopicRequestBody extends TopicProperties
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
                        ", topicType='" + getTopicType() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

@@ -450,7 +450,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administer requested this governance action service stop running or the hosting server is shutting down.
+     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
      *
      * If disconnect completes before the governance action service records
      * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.

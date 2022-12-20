@@ -305,7 +305,7 @@ public interface GovernanceActionProcessInterface
 
 
     /**
-     * Set up a link between an governance action process and a governance action type.  This defines the first
+     * Set up a link between a governance action process and a governance action type.  This defines the first
      * step in the process.
      *
      * @param userId calling user
@@ -430,7 +430,7 @@ public interface GovernanceActionProcessInterface
 
 
     /**
-     * Remove a follow on step from a governance action process.
+     * Remove a follow-on step from a governance action process.
      *
      * @param userId calling user
      * @param actionLinkGUID unique identifier of the relationship between the governance action types

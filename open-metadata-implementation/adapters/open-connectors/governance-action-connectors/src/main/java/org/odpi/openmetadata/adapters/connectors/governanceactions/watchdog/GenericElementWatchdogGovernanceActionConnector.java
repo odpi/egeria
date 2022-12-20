@@ -57,159 +57,183 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
         if (! completed)
         {
-            if (event instanceof WatchdogMetadataElementEvent)
+            try
             {
-                WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
-
-                String elementGUID = metadataElementEvent.getMetadataElement().getElementGUID();
-
-                Map<String, String>   requestParameters = new HashMap<>();
-                List<NewActionTarget> actionTargets     = new ArrayList<>();
-
-                NewActionTarget actionTarget = new NewActionTarget();
-
-                actionTarget.setActionTargetName(actionTargetName);
-                actionTarget.setActionTargetGUID(elementGUID);
-                actionTargets.add(actionTarget);
-
-                if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
+                if (event instanceof WatchdogMetadataElementEvent)
                 {
-                    if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
-                    {
-                        initiateProcess(newElementProcessName,
-                                        null,
-                                        actionTargets);
-                    }
-                    else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
-                    {
-                        ElementProperties previousElementProperties = null;
+                    WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
 
-                        if (metadataElementEvent.getPreviousMetadataElement() != null)
+                    String elementGUID = metadataElementEvent.getMetadataElement().getElementGUID();
+
+                    Map<String, String>   requestParameters = new HashMap<>();
+                    List<NewActionTarget> actionTargets     = new ArrayList<>();
+
+                    NewActionTarget actionTarget = new NewActionTarget();
+
+                    actionTarget.setActionTargetName(actionTargetName);
+                    actionTarget.setActionTargetGUID(elementGUID);
+                    actionTargets.add(actionTarget);
+
+                    if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
+                    {
+                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                         {
-                            previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
-                        }
-
-                        requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                       metadataElementEvent.getMetadataElement().getElementProperties()));
-
-                        initiateProcess(updatedElementProcessName,
-                                        requestParameters,
-                                        actionTargets);
-                    }
-                    else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
-                    {
-                        initiateProcess(deletedElementProcessName,
-                                        null,
-                                        actionTargets);
-                    }
-                    else
-                    {
-                        WatchdogClassificationEvent classificationEvent = (WatchdogClassificationEvent) event;
-
-                        requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
-
-                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
-                        {
-                            initiateProcess(classifiedElementProcessName,
-                                            requestParameters,
+                            initiateProcess(newElementProcessName,
+                                            null,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                         {
                             ElementProperties previousElementProperties = null;
 
-                            if (classificationEvent.getPreviousClassification() != null)
+                            if (metadataElementEvent.getPreviousMetadataElement() != null)
                             {
-                                previousElementProperties = classificationEvent.getPreviousClassification().getClassificationProperties();
+                                previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
                             }
 
                             requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                           classificationEvent.getChangedClassification().getClassificationProperties()));
+                                                                                           metadataElementEvent.getMetadataElement().getElementProperties()));
 
-
-                            initiateProcess(reclassifiedElementProcessName,
+                            initiateProcess(updatedElementProcessName,
                                             requestParameters,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                         {
-                            initiateProcess(declassifiedElementProcessName,
-                                            requestParameters,
+                            initiateProcess(deletedElementProcessName,
+                                            null,
                                             actionTargets);
                         }
-                    }
-
-                    if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
-                    {
-                        completed = true;
-                    }
-                }
-            }
-            else if (event instanceof WatchdogRelatedElementsEvent)
-            {
-                WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent) event;
-
-                RelatedMetadataElements relatedMetadataElements = relatedElementsEvent.getRelatedMetadataElements();
-
-                if (relatedMetadataElements != null)
-                {
-                    String end1GUID = relatedMetadataElements.getElementGUIDAtEnd1();
-                    String end2GUID = relatedMetadataElements.getElementGUIDAtEnd2();
-
-                    if ((instancesToListenTo == null) ||
-                                (instancesToListenTo.contains(end1GUID)) ||
-                                (instancesToListenTo.contains(end2GUID)))
-                    {
-                        Map<String, String> requestParameters = new HashMap<>();
-
-                        requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
-                        requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getTypeName());
-
-                        List<NewActionTarget> actionTargets = new ArrayList<>();
-
-                        NewActionTarget actionTarget = new NewActionTarget();
-
-                        actionTarget.setActionTargetName(actionTargetName);
-                        actionTarget.setActionTargetGUID(end1GUID);
-                        actionTargets.add(actionTarget);
-
-                        actionTarget.setActionTargetName(actionTargetTwoName);
-                        actionTarget.setActionTargetGUID(end2GUID);
-                        actionTargets.add(actionTarget);
-
-                        if (relatedElementsEvent.getEventType() == WatchdogEventType.NEW_RELATIONSHIP)
+                        else
                         {
-                            initiateProcess(newRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
-                        }
-                        else if (relatedElementsEvent.getEventType() == WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES)
-                        {
-                            ElementProperties previousElementProperties = null;
+                            WatchdogClassificationEvent classificationEvent = (WatchdogClassificationEvent) event;
 
-                            if (relatedElementsEvent.getPreviousRelatedMetadataElements() != null)
+                            requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
+
+                            if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
                             {
-                                previousElementProperties = relatedElementsEvent.getPreviousRelatedMetadataElements().getRelationshipProperties();
+                                initiateProcess(classifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
                             }
+                            else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                            {
+                                ElementProperties previousElementProperties = null;
 
-                            requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                           relatedMetadataElements.getRelationshipProperties()));
+                                if (classificationEvent.getPreviousClassification() != null)
+                                {
+                                    previousElementProperties = classificationEvent.getPreviousClassification().getClassificationProperties();
+                                }
 
-                            initiateProcess(updatedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
-                        }
-                        else if (relatedElementsEvent.getEventType() == WatchdogEventType.DELETED_RELATIONSHIP)
-                        {
-                            initiateProcess(deletedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
+                                requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
+                                                                                               classificationEvent.getChangedClassification().getClassificationProperties()));
+
+
+                                initiateProcess(reclassifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                            else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
+                            {
+                                initiateProcess(declassifiedElementProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
                         }
 
                         if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
                         {
                             completed = true;
                         }
+                    }
+                }
+                else if (event instanceof WatchdogRelatedElementsEvent)
+                {
+                    WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent) event;
+
+                    RelatedMetadataElements relatedMetadataElements = relatedElementsEvent.getRelatedMetadataElements();
+
+                if (relatedMetadataElements != null)
+                {
+                    String end1GUID = relatedMetadataElements.getElementGUIDAtEnd1();
+                    String end2GUID = relatedMetadataElements.getElementGUIDAtEnd2();
+
+                        if ((instancesToListenTo == null) ||
+                                    (instancesToListenTo.contains(end1GUID)) ||
+                                    (instancesToListenTo.contains(end2GUID)))
+                        {
+                            Map<String, String> requestParameters = new HashMap<>();
+
+                            requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
+                            requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getTypeName());
+
+                            List<NewActionTarget> actionTargets = new ArrayList<>();
+
+                            NewActionTarget actionTarget = new NewActionTarget();
+
+                            actionTarget.setActionTargetName(actionTargetName);
+                            actionTarget.setActionTargetGUID(end1GUID);
+                            actionTargets.add(actionTarget);
+
+                            actionTarget.setActionTargetName(actionTargetTwoName);
+                            actionTarget.setActionTargetGUID(end2GUID);
+                            actionTargets.add(actionTarget);
+
+                            if (relatedElementsEvent.getEventType() == WatchdogEventType.NEW_RELATIONSHIP)
+                            {
+                                initiateProcess(newRelationshipProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                            else if (relatedElementsEvent.getEventType() == WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES)
+                            {
+                                ElementProperties previousElementProperties = null;
+
+                                if (relatedElementsEvent.getPreviousRelatedMetadataElements() != null)
+                                {
+                                    previousElementProperties = relatedElementsEvent.getPreviousRelatedMetadataElements().getRelationshipProperties();
+                                }
+
+                                requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
+                                                                                               relatedMetadataElements.getRelationshipProperties()));
+
+                                initiateProcess(updatedRelationshipProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+                            else if (relatedElementsEvent.getEventType() == WatchdogEventType.DELETED_RELATIONSHIP)
+                            {
+                                initiateProcess(deletedRelationshipProcessName,
+                                                requestParameters,
+                                                actionTargets);
+                            }
+
+                            if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
+                            {
+                                completed = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                try
+                {
+                    List<String> outputGuards = new ArrayList<>();
+                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
+
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
+                }
+                catch (Exception completionError)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logException(methodName,
+                                              GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
+                                                                                                                                       completionError.getClass().getName(),
+                                                                                                                                       completionError.getMessage()),
+                                              error);
                     }
                 }
             }
@@ -219,7 +243,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_STOPPED);
 
                     governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
                 }
@@ -241,7 +265,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administer requested this governance action service stop running or the hosting server is shutting down.
+     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
      *
      * If disconnect completes before the governance action service records
      * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.

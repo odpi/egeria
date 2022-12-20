@@ -53,7 +53,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -65,7 +65,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

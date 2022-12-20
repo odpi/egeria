@@ -8,7 +8,6 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

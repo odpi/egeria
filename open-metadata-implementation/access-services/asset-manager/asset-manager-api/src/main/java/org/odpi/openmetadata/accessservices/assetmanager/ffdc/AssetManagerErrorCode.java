@@ -32,6 +32,11 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
                     "provide a scope for the external identifier.",
             "Ensure that the asset manager's unique identifier is passed on the request and then retry it."),
 
+    BAD_PARAMETER(400, "OMAS-ASSET-MANAGER-400-002",
+                  "At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}",
+                  "The system is unable to create the requested relationship because it can not parse the properties.",
+                  "Correct the caller's logic so that the properties passed are correctly formatted and retry the request."),
+
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-MANAGER-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
@@ -66,6 +71,7 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
                                     "not of the required type. It should be an instance of {4}",
                                     "The system is unable to create the required connector which means some of its services will not work.",
                                     "Verify that the OMAG server is running and the OMAS service is correctly configured."),
+
 
 
             ;

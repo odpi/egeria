@@ -92,6 +92,44 @@ public interface WatchdogGovernanceContext extends GovernanceContext
 
 
     /**
+     * Create a governance action in the metadata store which will trigger the governance action service
+     * associated with the supplied request type.  The governance action remains to act as a record
+     * of the actions taken for auditing.
+     *
+     * @param qualifiedName unique identifier to give this governance action
+     * @param domainIdentifier governance domain associated with this action (0=ALL)
+     * @param displayName display name for this action
+     * @param description description for this action
+     * @param requestSourceGUIDs  request source elements for the resulting governance action service
+     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param governanceEngineName name of the governance engine to run the request
+     * @param requestType request type to identify the governance action service to run
+     * @param requestParameters properties to pass to the governance action service
+     * @param processName name of the process that this action is a part of
+     *
+     * @return unique identifier of the governance action
+     *
+     * @throws InvalidParameterException null qualified name
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String initiateGovernanceAction(String                qualifiedName,
+                                    int                   domainIdentifier,
+                                    String                displayName,
+                                    String                description,
+                                    List<String>          requestSourceGUIDs,
+                                    List<NewActionTarget> actionTargets,
+                                    Date                  startTime,
+                                    String                governanceEngineName,
+                                    String                requestType,
+                                    Map<String, String>   requestParameters,
+                                    String                processName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param processQualifiedName unique name of the governance action process to use

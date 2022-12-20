@@ -2113,6 +2113,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              assetTypeName,
                                                              specificMatchPropertyNames,
                                                              true,
+                                                             false,
                                                              null,
                                                              null,
                                                              forLineage,

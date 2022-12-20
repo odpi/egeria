@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class OriginSeekerGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "1c6939c4-de2c-44aa-a044-0ec64df0560f";
-    private static final String  connectorTypeQualifiedName = "Egeria:GeneralGovernanceActionService:Remediation:OriginSeeker";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:OriginSeeker";
     private static final String  connectorTypeDisplayName = "Origin Seeker Governance Action Service";
     private static final String  connectorTypeDescription = "Follows the lineage mapping for an action target element to determine its origin.";
 

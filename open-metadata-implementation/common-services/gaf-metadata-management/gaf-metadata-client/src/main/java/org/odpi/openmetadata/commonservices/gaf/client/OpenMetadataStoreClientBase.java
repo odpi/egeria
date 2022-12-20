@@ -410,26 +410,46 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
-        final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
+
+        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
+        final String specificURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
-        RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
-                                                                                                             urlTemplate,
-                                                                                                             serverName,
-                                                                                                             serviceURLMarker,
-                                                                                                             userId,
-                                                                                                             elementGUID,
-                                                                                                             relationshipTypeName,
-                                                                                                             Integer.toString(startingAtEnd),
-                                                                                                             forLineage,
-                                                                                                             forDuplicateProcessing,
-                                                                                                             this.getEffectiveTimeAsLong(effectiveTime),
-                                                                                                             Integer.toString(startFrom),
-                                                                                                             Integer.toString(pageSize));
+        RelatedMetadataElementListResponse restResult;
+
+        if (relationshipTypeName == null)
+        {
+            restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
+                                                                              allURLTemplate,
+                                                                              serverName,
+                                                                              serviceURLMarker,
+                                                                              userId,
+                                                                              elementGUID,
+                                                                              Integer.toString(startingAtEnd),
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              this.getEffectiveTimeAsLong(effectiveTime),
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
+        }
+        else
+        {
+            restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
+                                                                              specificURLTemplate,
+                                                                              serverName,
+                                                                              serviceURLMarker,
+                                                                              userId,
+                                                                              elementGUID,
+                                                                              relationshipTypeName,
+                                                                              Integer.toString(startingAtEnd),
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              this.getEffectiveTimeAsLong(effectiveTime),
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
+        }
 
         return restResult.getElementList();
     }

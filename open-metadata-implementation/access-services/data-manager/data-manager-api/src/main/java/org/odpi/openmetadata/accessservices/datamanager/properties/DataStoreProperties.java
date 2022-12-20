@@ -257,7 +257,6 @@ public class DataStoreProperties extends AssetProperties
         return "DataStoreProperties{" +
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +

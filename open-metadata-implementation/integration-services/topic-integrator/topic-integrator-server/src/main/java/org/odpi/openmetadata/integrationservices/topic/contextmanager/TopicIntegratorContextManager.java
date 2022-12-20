@@ -100,8 +100,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
         eventBrokerClient = new EventBrokerClient(partnerOMASServerName,
                                                   partnerOMASPlatformRootURL,
                                                   restClient,
-                                                  maxPageSize,
-                                                  auditLog);
+                                                  maxPageSize);
 
         connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,

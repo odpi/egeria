@@ -100,7 +100,7 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -113,7 +113,7 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
      *
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

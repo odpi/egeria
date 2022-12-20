@@ -73,7 +73,6 @@ public class QueryConverter<B> extends DataManagerOMASConverter<B>
                     queryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     queryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     queryProperties.setName(this.removeName(instanceProperties));
-                    queryProperties.setDisplayName(queryProperties.getName());
                     queryProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     queryProperties.setDescription(this.removeDescription(instanceProperties));
 
