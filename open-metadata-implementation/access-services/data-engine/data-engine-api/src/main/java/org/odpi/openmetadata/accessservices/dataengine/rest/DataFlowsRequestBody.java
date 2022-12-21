@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 
 import java.util.List;
 
@@ -24,17 +24,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class LineageMappingsRequestBody extends DataEngineOMASAPIRequestBody {
+public class DataFlowsRequestBody extends DataEngineOMASAPIRequestBody {
 
     /**
-     * The lineage mappings
+     * The data flows
      * -- GETTER --
-     * Return the lineage mappings
-     * @return the lineage mappings
+     * Return the data flows
+     * @return the data flows
      * -- SETTER --
-     * Set up the lineage mappings
-     * @param lineageMappings the lineage mappings
+     * Set up the data flows
+     * @param dataFlows the data flows
      */
-    private List<LineageMapping> lineageMappings;
+    private List<DataFlow> dataFlows;
 
 }

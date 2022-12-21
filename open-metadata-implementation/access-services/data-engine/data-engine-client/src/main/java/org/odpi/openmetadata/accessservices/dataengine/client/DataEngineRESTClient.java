@@ -4,11 +4,11 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -26,7 +26,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaReques
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
@@ -87,7 +87,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_METHOD_NAME = "createOrUpdatePortAlias";
     private static final String PORT_ALIAS_DELETE_METHOD_NAME = "deletePortAlias";
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
-    private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
+    private static final String DATA_FLOWS_METHOD_NAME = "addDataFlows";
     private static final String DATABASE_METHOD_NAME = "upsertDatabase";
     private static final String DATABASE_SCHEMA_METHOD_NAME = "upsertDatabaseSchema";
     private static final String RELATIONAL_TABLE_METHOD_NAME = "upsertRelationalTable";
@@ -326,15 +326,15 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException {
-        final String methodName = LINEAGE_MAPPINGS_METHOD_NAME;
+    public void addDataFlows(String userId, List<DataFlow> dataFlows) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
+        final String methodName = DATA_FLOWS_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
-        requestBody.setLineageMappings(lineageMappings);
+        DataFlowsRequestBody requestBody = new DataFlowsRequestBody();
+        requestBody.setDataFlows(dataFlows);
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);

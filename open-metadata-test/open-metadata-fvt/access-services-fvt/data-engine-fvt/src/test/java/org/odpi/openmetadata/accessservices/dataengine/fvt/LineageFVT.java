@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -46,7 +46,7 @@ public class LineageFVT extends DataEngineFVT{
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
-    public void verifyLineageMappingsForAJobProcess(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+    public void verifyDataFlowsForAJobProcess(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
@@ -58,7 +58,7 @@ public class LineageFVT extends DataEngineFVT{
             validate(process, repositoryService);
         }
 
-        Map<String, List<String>> columnLineages = lineageSetupService.getJobProcessLineageMappingsProxiesByCsvColumn();
+        Map<String, List<String>> columnLineages = lineageSetupService.getJobProcessDataFlowsProxiesByCsvColumn();
 
         for (String columnName : columnLineages.keySet()) {
             List<String> attributes = columnLineages.get(columnName);
@@ -68,17 +68,17 @@ public class LineageFVT extends DataEngineFVT{
                 EntityDetail entityDetail = repositoryService.findEntityByQualifiedName(currentAttribute, TABULAR_COLUMN_TYPE_GUID);
                 validateCurrentAttribute(currentAttribute, entityDetail);
 
-                List<Relationship> relationships = repositoryService.findLineageMappingRelationshipsByGUID(entityDetail.getGUID());
-                List<String> lineageMappingOtherProxyQualifiedName =
-                        repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
-                List<String> expectedLineageMappings = new ArrayList<>();
+                List<Relationship> relationships = repositoryService.findDataFlowRelationshipsByGUID(entityDetail.getGUID());
+                List<String> dataFlowOtherProxyQualifiedName =
+                        repositoryService.getDataFlowsProxiesQualifiedNames(relationships, currentAttribute);
+                List<String> expectedDataFlows = new ArrayList<>();
                 if (previousAttribute != null) {
-                    expectedLineageMappings.add(previousAttribute);
+                    expectedDataFlows.add(previousAttribute);
                 }
-                expectedLineageMappings.add(attributes.get(i + 1));
-                Collections.sort(expectedLineageMappings);
-                Collections.sort(lineageMappingOtherProxyQualifiedName);
-                assertEquals(expectedLineageMappings, lineageMappingOtherProxyQualifiedName);
+                expectedDataFlows.add(attributes.get(i + 1));
+                Collections.sort(expectedDataFlows);
+                Collections.sort(dataFlowOtherProxyQualifiedName);
+                assertEquals(expectedDataFlows, dataFlowOtherProxyQualifiedName);
                 previousAttribute = currentAttribute;
             }
         }
@@ -212,10 +212,10 @@ public class LineageFVT extends DataEngineFVT{
         RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient,
                 null, databaseSchema.getQualifiedName(), false);
 
-        List<LineageMapping> lineageMappings = new ArrayList<>();
-        lineageMappings.add(lineageSetupService.createLineageMapping(dataFile.getQualifiedName(), process.getQualifiedName()));
-        lineageMappings.add(lineageSetupService.createLineageMapping(process.getQualifiedName(), relationalTable.getQualifiedName()));
-        dataEngineClient.addLineageMappings(userId, lineageMappings);
+        List<DataFlow> dataFlows = new ArrayList<>();
+        dataFlows.add(lineageSetupService.createDataFlow(dataFile.getQualifiedName(), process.getQualifiedName()));
+        dataFlows.add(lineageSetupService.createDataFlow(process.getQualifiedName(), relationalTable.getQualifiedName()));
+        dataEngineClient.addDataFlows(userId, dataFlows);
 
         List<EntityDetail> targetDataFiles = repositoryService.findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
         assertDataFile(dataFile, targetDataFiles);

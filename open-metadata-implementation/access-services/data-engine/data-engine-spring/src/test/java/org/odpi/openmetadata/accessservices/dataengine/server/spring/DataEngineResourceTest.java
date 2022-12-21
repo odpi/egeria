@@ -12,7 +12,7 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
@@ -96,11 +96,11 @@ class DataEngineResourceTest {
     }
 
     @Test
-    void testAddLineageMappings() {
-        LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
-        dataEngineResource.addLineageMappings(USER, SERVER_NAME, requestBody);
+    void testAddDataFlows() {
+        DataFlowsRequestBody requestBody = new DataFlowsRequestBody();
+        dataEngineResource.addDataFlows(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineRestServices, times(1)).addLineageMappings(USER, SERVER_NAME, requestBody);
+        verify(dataEngineRestServices, times(1)).addDataFlows(USER, SERVER_NAME, requestBody);
     }
 
     @Test

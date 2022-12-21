@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -35,7 +35,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaReques
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
@@ -121,7 +121,7 @@ public class DataEngineRESTServices {
 
     private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
-    private static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
+    private static final String EXCEPTION_WHILE_ADDING_DATA_FLOW = "Exception while adding data flow {} : {}";
     private static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
     private static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
     private static final String DEBUG_DELETE_MESSAGE = "Data Engine OMAS deleted entity with GUID {} and type {}";
@@ -550,7 +550,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create or update the process with ports, schema types and lineage mappings
+     * Create or update the process with ports, schema types and data flows
      *
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
@@ -577,7 +577,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Delete a process, with the associated port implementations, port aliases and lineage mappings
+     * Delete a process, with the associated port implementations, port aliases and data flows
      *
      * @param userId      the name of the calling user
      * @param serverName  name of server instance to call
@@ -792,11 +792,11 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create LineageMappings relationships between schema attributes
+     * Create DataFlows relationships between schema attributes
      *
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
-     * @param lineageMappings    the list of lineage mappings to be created
+     * @param dataFlows    the list of daa flows to be created
      * @param response           the response object that will capture the exceptions that might occur during
      *                           parallel processing
      * @param externalSourceName the unique name of the external source
@@ -805,52 +805,52 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addLineageMappings(String userId, String serverName, List<LineageMapping> lineageMappings, FFDCResponseBase response,
-                                   String externalSourceName) throws InvalidParameterException,
+    public void addDataFlows(String userId, String serverName, List<DataFlow> dataFlows, FFDCResponseBase response,
+                             String externalSourceName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException {
-        final String methodName = "addLineageMappings";
+        final String methodName = "addDataFlows";
 
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, lineageMappings);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, dataFlows);
 
-        if (CollectionUtils.isEmpty(lineageMappings)) {
+        if (CollectionUtils.isEmpty(dataFlows)) {
             return;
         }
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        lineageMappings.parallelStream().forEach(lineageMapping -> {
+        dataFlows.parallelStream().forEach(dataFlow -> {
             try {
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
-                        lineageMapping.getTargetAttribute(), externalSourceName);
+                dataEngineSchemaTypeHandler.addDataFlowRelationship(userId, dataFlow.getDataSupplier(),
+                        dataFlow.getDataConsumer(), externalSourceName, dataFlow.getFormula(), dataFlow.getDescription());
             } catch (Exception error) {
-                log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
+                log.error(EXCEPTION_WHILE_ADDING_DATA_FLOW, dataFlow.toString(), error.toString());
                 restExceptionHandler.captureExceptions(response, error, methodName);
             }
         });
     }
 
     /**
-     * Create LineageMappings relationships between schema attributes
+     * Create DataFlow relationships between schema attributes
      *
      * @param userId                     the name of the calling user
      * @param serverName                 ame of server instance to call
-     * @param lineageMappingsRequestBody list of lineage mappings
+     * @param dataFlowsRequestBody list of data flows
      *
      * @return void response
      */
-    public VoidResponse addLineageMappings(String userId, String serverName, LineageMappingsRequestBody lineageMappingsRequestBody) {
-        final String methodName = "addLineageMappings";
+    public VoidResponse addDataFlows(String userId, String serverName, DataFlowsRequestBody dataFlowsRequestBody) {
+        final String methodName = "addDataFlows";
 
         VoidResponse response = new VoidResponse();
         try {
-            if (lineageMappingsRequestBody == null) {
+            if (dataFlowsRequestBody == null) {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
 
-            addLineageMappings(userId, serverName, lineageMappingsRequestBody.getLineageMappings(), response,
-                    lineageMappingsRequestBody.getExternalSourceName());
+            addDataFlows(userId, serverName, dataFlowsRequestBody.getDataFlows(), response,
+                    dataFlowsRequestBody.getExternalSourceName());
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
@@ -1620,7 +1620,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the process with ports, schema types and lineage mappings
+     * Create the process with ports, schema types and data flows
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user

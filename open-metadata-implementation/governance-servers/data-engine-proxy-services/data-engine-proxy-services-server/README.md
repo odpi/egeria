@@ -19,7 +19,7 @@ In essence, this is to carry out the following:
     1. Then send any changed `PortImplementation`s via the Data Engine OMAS.
     1. Then send any changed `PortAlias`s via the Data Engine OMAS.
     1. Then send any changed `Process`es via the Data Engine OMAS.
-    1. Finally send any changed `LineageMapping`s via the Data Engine OMAS.
+    1. Finally send any changed `DataFlow`s via the Data Engine OMAS.
 
 The sequence of changes is important to ensure that we build up the information from the
 bottom up, so that necessary pre-requisites for various relationships can be created via
