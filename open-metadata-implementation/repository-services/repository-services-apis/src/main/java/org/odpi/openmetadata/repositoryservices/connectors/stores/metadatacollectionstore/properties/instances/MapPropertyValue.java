@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -178,12 +176,18 @@ public class MapPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof MapPropertyValue))
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+
         MapPropertyValue that = (MapPropertyValue) objectToCompare;
-        return Objects.equals(mapValues, that.mapValues);
+
+        return mapValues != null ? mapValues.equals(that.mapValues) : that.mapValues == null;
     }
 
 
@@ -195,7 +199,8 @@ public class MapPropertyValue extends InstancePropertyValue
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(mapValues);
+        int result = super.hashCode();
+        result = 31 * result + (mapValues != null ? mapValues.hashCode() : 0);
+        return result;
     }
 }
