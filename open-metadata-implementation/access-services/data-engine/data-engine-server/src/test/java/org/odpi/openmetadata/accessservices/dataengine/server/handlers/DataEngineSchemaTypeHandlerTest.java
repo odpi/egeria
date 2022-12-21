@@ -47,8 +47,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
@@ -215,7 +215,7 @@ class DataEngineSchemaTypeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                DATA_FLOW_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -233,7 +233,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                DATA_FLOW_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
