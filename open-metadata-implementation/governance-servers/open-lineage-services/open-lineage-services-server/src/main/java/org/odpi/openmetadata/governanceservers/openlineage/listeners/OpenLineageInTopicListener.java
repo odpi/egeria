@@ -94,7 +94,7 @@ public class OpenLineageInTopicListener extends AssetLineageEventListener {
                 storingServices.upsertEntityContext(lineageRelationshipsEvent);
                 break;
             case CLASSIFICATION_CONTEXT_EVENT:
-            case LINEAGE_MAPPINGS_EVENT:
+            case DATA_FLOWS_EVENT:
             case PROCESS_CONTEXT_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
                 storingServices.addEntityContext(lineageRelationshipsEvent);
