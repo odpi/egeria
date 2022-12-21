@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataengine.model;
+package org.odpi.openmetadata.accessservices.dataengine.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,46 +9,45 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 
-import java.io.Serializable;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The type Lineage mapping.
+ * The Data Flows event of Data Engine OMAS.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
-public class LineageMapping implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class DataFlowsEvent extends DataEngineEventHeader {
 
+    /**
+     * Serial version UID
+     * -- GETTER --
+     * Gets the serial version UID
+     * @return the serial version UID
+     * -- SETTER --
+     * Sets the serial version UID
+     * @param serialVersionUID the serial version UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * The source attribute
+     * The data flows
      * -- GETTER --
-     * Gets source attribute.
-     * @return the source attribute
+     * Return the data flows
+     * @return the data flows
      * -- SETTER --
-     * Sets source attribute.
-     * @param sourceAttribute the source attribute
+     * Set up the data flows
+     * @param dataFlows the data flows
      */
-    private String sourceAttribute;
-
-    /**
-     * The target attribute
-     * -- GETTER --
-     * Gets target attribute.
-     * @return the target attribute
-     * -- SETTER --
-     * Sets target attribute.
-     * @param targetAttribute the target attribute
-     */
-    private String targetAttribute;
+    private List<DataFlow> dataFlows;
 
 }

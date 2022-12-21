@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine;
 
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
@@ -58,7 +58,7 @@ public class LineageSetupService {
 
     private final Map<String, String> csvToDatabase = new HashMap<>();
 
-    private final Map<String, List<String>> jobProcessLineageMappingsProxies = new HashMap<>();
+    private final Map<String, List<String>> jobProcessDataFlowsProxies = new HashMap<>();
 
     public LineageSetupService() {
         csvToDatabase.put("last", "surname");
@@ -69,17 +69,17 @@ public class LineageSetupService {
         csvHeaderAttributeNames = new ArrayList<>(csvToDatabase.keySet());
         databaseTableAttributeNames = new ArrayList<>(csvToDatabase.values());
 
-        csvHeaderAttributeNames.forEach(headerAttribute -> jobProcessLineageMappingsProxies.put(headerAttribute,
-                getLineageMappingAttributesForColumn(headerAttribute)));
+        csvHeaderAttributeNames.forEach(headerAttribute -> jobProcessDataFlowsProxies.put(headerAttribute,
+                getDataFlowAttributesForColumn(headerAttribute)));
     }
 
-    /** retrieves the list of qualified names for the attributes that are linked in lineage mappings, in the order they can be
+    /** retrieves the list of qualified names for the attributes that are linked in data flows, in the order they can be
      * traversed from the CSV column to the DB column. This list is retrieved for each of the columns. This is the order in
      * which the process was constructed and intended to be and is used by the FVT to check the result of all the creation calls.
-     * @return a list of lineage mapping attribute names in order for each CSV column
+     * @return a list of data flow attribute names in order for each CSV column
      */
-    public Map<String, List<String>> getJobProcessLineageMappingsProxiesByCsvColumn() {
-        return jobProcessLineageMappingsProxies;
+    public Map<String, List<String>> getJobProcessDataFlowsProxiesByCsvColumn() {
+        return jobProcessDataFlowsProxies;
     }
 
     /** Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
@@ -102,18 +102,18 @@ public class LineageSetupService {
         return processes;
     }
 
-    private List<String> getLineageMappingAttributesForColumn(String name) {
-        List<String> lineageAttributes = new ArrayList<>();
-        lineageAttributes.add(getAttributeName(VIRTUAL, CSV, PortType.INOUT_PORT.getName(), name));
-        lineageAttributes.add(getAttributeName(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), name));
-        lineageAttributes.add(getAttributeName(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), name));
-        lineageAttributes.add(getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), name));
+    private List<String> getDataFlowAttributesForColumn(String name) {
+        List<String> attributes = new ArrayList<>();
+        attributes.add(getAttributeName(VIRTUAL, CSV, PortType.INOUT_PORT.getName(), name));
+        attributes.add(getAttributeName(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), name));
+        attributes.add(getAttributeName(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), name));
+        attributes.add(getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), name));
         String newName = csvToDatabase.get(name);
-        lineageAttributes.add(getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), newName));
-        lineageAttributes.add(getAttributeName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), newName));
-        lineageAttributes.add(getAttributeName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), newName));
-        lineageAttributes.add(getAttributeName(VIRTUAL, DATABASE, PortType.INOUT_PORT.getName(), newName));
-        return lineageAttributes;
+        attributes.add(getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), newName));
+        attributes.add(getAttributeName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), newName));
+        attributes.add(getAttributeName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), newName));
+        attributes.add(getAttributeName(VIRTUAL, DATABASE, PortType.INOUT_PORT.getName(), newName));
+        return attributes;
     }
 
     public void createVirtualAssets(String userId, DataEngineClient dataEngineOMASClient)
@@ -127,11 +127,11 @@ public class LineageSetupService {
         dataEngineOMASClient.createOrUpdateSchemaType(userId, dbSchemaType);
     }
 
-    public LineageMapping createLineageMapping(String sourceName, String targetName) {
-        LineageMapping lineageMapping = new LineageMapping();
-        lineageMapping.setSourceAttribute(sourceName);
-        lineageMapping.setTargetAttribute(targetName);
-        return lineageMapping;
+    public DataFlow createDataFlow(String dataSupplier, String dataConsumer) {
+        DataFlow dataFlow = new DataFlow();
+        dataFlow.setDataSupplier(dataSupplier);
+        dataFlow.setDataConsumer(dataConsumer);
+        return dataFlow;
     }
 
     private Process createJobProcess(String userId, DataEngineClient dataEngineOMASClient)
@@ -147,15 +147,15 @@ public class LineageSetupService {
         PortAlias outputPortAlias = createPortAlias(outputPortAliasDelegation, PortType.OUTPUT_PORT);
         job.setPortAliases(Arrays.asList(inputPortAlias, outputPortAlias));
 
-        List<LineageMapping> lineageMappings = createLineageMappings(FIRST_STAGE_PROCESS_NAME, SECOND_STAGE_PROCESS_NAME,
+        List<DataFlow> dataFlows = createDataFlows(FIRST_STAGE_PROCESS_NAME, SECOND_STAGE_PROCESS_NAME,
                 FIRST_STAGE_OUTPUT_PORT_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(),
                 PortType.INPUT_PORT.getName(), csvHeaderAttributeNames);
-        lineageMappings.addAll(createLineageMappings(SECOND_STAGE_PROCESS_NAME, THIRD_STAGE_PROCESS_NAME,
+        dataFlows.addAll(createDataFlows(SECOND_STAGE_PROCESS_NAME, THIRD_STAGE_PROCESS_NAME,
                 SECOND_STAGE_OUTPUT_PORT_NAME, THIRD_STAGE_INPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(),
                 PortType.INPUT_PORT.getName(), databaseTableAttributeNames));
 
         dataEngineOMASClient.createOrUpdateProcess(userId, job);
-        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        dataEngineOMASClient.addDataFlows(userId, dataFlows);
         return job;
     }
 
@@ -174,15 +174,15 @@ public class LineageSetupService {
         Process firstStageProcess = createStageProcess(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME, FIRST_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, csvHeaderAttributeNames);
 
-        List<LineageMapping> lineageMappings = createLineageMappings(VIRTUAL, FIRST_STAGE_PROCESS_NAME,
+        List<DataFlow> dataFlows = createDataFlows(VIRTUAL, FIRST_STAGE_PROCESS_NAME,
                 CSV, FIRST_STAGE_INPUT_PORT_NAME, PortType.INOUT_PORT.getName(), PortType.INPUT_PORT.getName(), csvHeaderAttributeNames);
 
-        lineageMappings.addAll(createLineageMappings(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_PROCESS_NAME,
+        dataFlows.addAll(createDataFlows(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_PROCESS_NAME,
                 FIRST_STAGE_INPUT_PORT_NAME, FIRST_STAGE_OUTPUT_PORT_NAME, PortType.INPUT_PORT.getName(),
                 PortType.OUTPUT_PORT.getName(), csvHeaderAttributeNames));
 
         dataEngineOMASClient.createOrUpdateProcess(userId, firstStageProcess);
-        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        dataEngineOMASClient.addDataFlows(userId, dataFlows);
         return firstStageProcess;
     }
 
@@ -191,16 +191,16 @@ public class LineageSetupService {
         Process secondStageProcess = createStageProcess(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, SECOND_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, databaseTableAttributeNames);
 
-        List<LineageMapping> lineageMappings = new ArrayList<>();
+        List<DataFlow> dataFlows = new ArrayList<>();
         csvToDatabase.forEach((csvColumn, databaseColumn) -> {
             String sourceName = getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), csvColumn);
             String targetName = getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), databaseColumn);
-            LineageMapping lineageMapping = createLineageMapping(sourceName, targetName);
-            lineageMappings.add(lineageMapping);
+            DataFlow dataFlow = createDataFlow(sourceName, targetName);
+            dataFlows.add(dataFlow);
         });
 
         dataEngineOMASClient.createOrUpdateProcess(userId, secondStageProcess);
-        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        dataEngineOMASClient.addDataFlows(userId, dataFlows);
         return secondStageProcess;
     }
 
@@ -209,27 +209,27 @@ public class LineageSetupService {
         Process thirdStageProcess = createStageProcess(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME, THIRD_STAGE_OUTPUT_PORT_NAME,
                 databaseTableAttributeNames, databaseTableAttributeNames);
 
-        List<LineageMapping> lineageMappings = createLineageMappings(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME,
+        List<DataFlow> dataFlows = createDataFlows(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME,
                 THIRD_STAGE_OUTPUT_PORT_NAME, PortType.INPUT_PORT.getName(), PortType.OUTPUT_PORT.getName(), databaseTableAttributeNames);
 
-        lineageMappings.addAll(createLineageMappings(THIRD_STAGE_PROCESS_NAME, VIRTUAL, THIRD_STAGE_OUTPUT_PORT_NAME,
+        dataFlows.addAll(createDataFlows(THIRD_STAGE_PROCESS_NAME, VIRTUAL, THIRD_STAGE_OUTPUT_PORT_NAME,
                 DATABASE, PortType.OUTPUT_PORT.getName(), PortType.INOUT_PORT.getName(), databaseTableAttributeNames));
 
         dataEngineOMASClient.createOrUpdateProcess(userId, thirdStageProcess);
-        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        dataEngineOMASClient.addDataFlows(userId, dataFlows);
         return thirdStageProcess;
     }
 
-    private List<LineageMapping> createLineageMappings(String sourceProcessName, String targetProcessName, String sourcePort, String targetPort,
-                                                       String sourcePortType, String targetPortType, List<String> attributeNames) {
-        List<LineageMapping> lineageMappings = new ArrayList<>();
+    private List<DataFlow> createDataFlows(String sourceProcessName, String targetProcessName, String sourcePort, String targetPort,
+                                           String sourcePortType, String targetPortType, List<String> attributeNames) {
+        List<DataFlow> dataFlows = new ArrayList<>();
         attributeNames.forEach(csvColumn -> {
             String sourceName = getAttributeName(sourceProcessName, sourcePort, sourcePortType, csvColumn);
             String targetName = getAttributeName(targetProcessName, targetPort, targetPortType, csvColumn);
-            LineageMapping lineageMapping = createLineageMapping(sourceName, targetName);
-            lineageMappings.add(lineageMapping);
+            DataFlow dataFlow = createDataFlow(sourceName, targetName);
+            dataFlows.add(dataFlow);
         } );
-        return lineageMappings;
+        return dataFlows;
     }
 
     private Process createStageProcess(String processName, String inputPortName, String outputPortName, List<String> inputAttributeNames, List<String> outputAttributeNames) {

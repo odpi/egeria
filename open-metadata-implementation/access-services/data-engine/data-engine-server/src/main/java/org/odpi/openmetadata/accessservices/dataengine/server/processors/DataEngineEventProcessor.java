@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
@@ -171,25 +171,25 @@ public class DataEngineEventProcessor {
     }
 
     /**
-     * Process a {@link LineageMappingsEvent}
+     * Process a {@link DataFlowsEvent}
      *
      * @param dataEngineEvent the event to be processed
      */
-    public void processLineageMappingsEvent(String dataEngineEvent) {
-        final String methodName = "processLineageMappingsEvent";
+    public void processDataFlowsEvent(String dataEngineEvent) {
+        final String methodName = "processDataFlowsEvent";
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
-            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
+            DataFlowsEvent dataFlowsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFlowsEvent.class);
 
-            if (CollectionUtils.isEmpty(lineageMappingsEvent.getLineageMappings())) {
+            if (CollectionUtils.isEmpty(dataFlowsEvent.getDataFlows())) {
                 return;
             }
 
             FFDCResponseBase response = new FFDCResponseBase();
-            dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
-                    response, lineageMappingsEvent.getExternalSourceName());
+            dataEngineRESTServices.addDataFlows(dataFlowsEvent.getUserId(), serverName, dataFlowsEvent.getDataFlows(),
+                    response, dataFlowsEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             logException(dataEngineEvent, methodName, e);
         }
