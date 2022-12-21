@@ -220,13 +220,13 @@ public class LineageFVT extends DataEngineFVT{
         List<EntityDetail> targetDataFiles = repositoryService.findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
         assertDataFile(dataFile, targetDataFiles);
 
-        List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(targetDataFiles.get(0).getGUID(), LINEAGE_MAPPING_RELATIONSHIP_GUID);
+        List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(targetDataFiles.get(0).getGUID(), DATA_FLOW_RELATIONSHIP_GUID);
         assertProcess(process, targetProcesses);
 
         List<EntityDetail> targetRelationalTable = repositoryService.findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
         assertRelationalTable(relationalTable, targetRelationalTable);
 
-        targetProcesses = repositoryService.getRelatedEntities(targetRelationalTable.get(0).getGUID(), LINEAGE_MAPPING_RELATIONSHIP_GUID);
+        targetProcesses = repositoryService.getRelatedEntities(targetRelationalTable.get(0).getGUID(), DATA_FLOW_RELATIONSHIP_GUID);
         assertProcess(process, targetProcesses);
     }
 

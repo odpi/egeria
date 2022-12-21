@@ -63,7 +63,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_IMPLEMENTATION_URL_TEMPLATE = DATA_ENGINE_PATH + "port-implementations";
     private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
-    private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
+    private static final String DATA_FLOWS_URL_TEMPLATE = DATA_ENGINE_PATH + "data-flows";
     private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
     private static final String DATABASE_SCHEMA_URL_TEMPLATE = DATA_ENGINE_PATH + "database-schemas";
     private static final String RELATIONAL_TABLE_URL_TEMPLATE = DATA_ENGINE_PATH + "relational-tables";
@@ -337,7 +337,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setDataFlows(dataFlows);
         requestBody.setExternalSourceName(externalSourceName);
 
-        callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
+        callVoidPostRESTCall(userId, methodName, DATA_FLOWS_URL_TEMPLATE, requestBody);
     }
 
     /**
