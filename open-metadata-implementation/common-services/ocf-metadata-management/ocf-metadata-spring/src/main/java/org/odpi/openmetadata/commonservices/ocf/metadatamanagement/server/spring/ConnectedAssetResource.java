@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConnectedAssetResource
 {
-    private OCFMetadataRESTServices restAPI = new OCFMetadataRESTServices();
+    private final OCFMetadataRESTServices restAPI = new OCFMetadataRESTServices();
 
     /**
      * Default constructor
@@ -658,7 +658,7 @@ public class ConnectedAssetResource
      * @param serverName     String   name of server instance to call.
      * @param serviceURLName    String   name of the service that created the connector that issued this request.
      * @param userId         String   userId of user making request.
-     * @param schemaTypeGUID String   unique id for containing schema type.
+     * @param parentSchemaGUID String   unique id for containing schema type.
      * @param elementStart   int      starting position for fist returned element.
      * @param maxElements    int      maximum number of elements to return on the call.
      *
@@ -668,16 +668,45 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/assets/schemas/{schemaTypeGUID}/schema-attributes")
+    @GetMapping(path = "/assets/schemas/{parentSchemaGUID}/schema-attributes")
 
-    public SchemaAttributesResponse getSchemaAttributes(@PathVariable String  serverName,
-                                                        @PathVariable String  serviceURLName,
-                                                        @PathVariable String  userId,
-                                                        @PathVariable String  schemaTypeGUID,
-                                                        @RequestParam int     elementStart,
-                                                        @RequestParam int     maxElements)
+    public SchemaAttributesResponse getSchemaAttributes(@PathVariable String serverName,
+                                                        @PathVariable String serviceURLName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String parentSchemaGUID,
+                                                        @RequestParam int    elementStart,
+                                                        @RequestParam int    maxElements)
     {
-        return restAPI.getSchemaAttributes(serverName, serviceURLName, userId, schemaTypeGUID, elementStart, maxElements);
+        return restAPI.getSchemaAttributes(serverName, serviceURLName, userId, parentSchemaGUID, elementStart, maxElements);
+    }
+
+
+    /**
+     * Returns a list of api operations for a schema type.
+     *
+     * @param serverName     String   name of server instance to call.
+     * @param serviceURLName    String   name of the service that created the connector that issued this request.
+     * @param userId         String   userId of user making request.
+     * @param parentSchemaTypeGUID String   unique id for containing schema element.
+     * @param elementStart   int      starting position for fist returned element.
+     * @param maxElements    int      maximum number of elements to return on the call.
+     *
+     * @return a schema attributes response or
+     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * UnrecognizedGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/assets/schemas/apis/{parentSchemaTypeGUID}/api-operations")
+
+    public APIOperationsResponse getAPIOperations(@PathVariable String  serverName,
+                                                  @PathVariable String  serviceURLName,
+                                                  @PathVariable String  userId,
+                                                  @PathVariable String  parentSchemaTypeGUID,
+                                                  @RequestParam int     elementStart,
+                                                  @RequestParam int     maxElements)
+    {
+        return restAPI.getAPIOperations(serverName, serviceURLName, userId, parentSchemaTypeGUID, elementStart, maxElements);
     }
 
 }

@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class ConfigAccessServicesResource
 {
-    private OMAGServerAdminForAccessServices adminAPI = new OMAGServerAdminForAccessServices();
+    private final OMAGServerAdminForAccessServices adminAPI = new OMAGServerAdminForAccessServices();
 
 
     /**

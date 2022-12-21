@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListener
 {
-    private Map<String, GovernanceEngineHandler> governanceEngineHandlers;
-    private AuditLog                             auditLog;
+    private final Map<String, GovernanceEngineHandler> governanceEngineHandlers;
+    private final AuditLog                             auditLog;
 
     /**
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
@@ -39,7 +39,7 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
 
     /**
      * Process an event that was published by the Governance Engine OMAS.  The events cover all defined governance engines and actions.
-     * This method only needs to pass on the information to those governance engine hosted in this server.
+     * This method only needs to pass on the information to those governance engines hosted in this server.
      * Events relating to other governance engines can be ignored.  So can events that are for capabilities not supported by these engine
      * services.
      *

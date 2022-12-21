@@ -32,12 +32,12 @@ open metadata services are activated.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "platform-origin",
       "testCaseName" : "Platform origin test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/platform-workbench/platfrom-origin-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/platform-workbench/platform-origin-test-case.md",
       "assertionMessage" : "Platform origin descriptor successfully retrieved",
       "successfulAssertions" : [ "Origin descriptor retrieved from platform." ],
       "unsuccessfulAssertions" : [ ],
       "discoveredProperties" : {
-        "Repository origin id" : "Egeria OMAG Server Platform (version 3.13-SNAPSHOT)"
+        "Repository origin id" : "Egeria OMAG Server Platform (version 3.15-SNAPSHOT)"
       }
 }
 ```

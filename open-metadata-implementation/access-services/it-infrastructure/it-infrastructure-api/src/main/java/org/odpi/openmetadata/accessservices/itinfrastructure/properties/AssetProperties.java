@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.*;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -29,6 +27,8 @@ public class AssetProperties extends ConfigurationItemProperties
 {
     private static final long     serialVersionUID = 1L;
 
+    private String name = null;
+    private String versionIdentifier = null;
     private String displayName = null;
     private String description = null;
 
@@ -52,8 +52,10 @@ public class AssetProperties extends ConfigurationItemProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
+            name                         = template.getName();
+            versionIdentifier            = template.getVersionIdentifier();
+            displayName                  = template.getDisplayName();
+            description                  = template.getDescription();
         }
     }
 
@@ -79,15 +81,70 @@ public class AssetProperties extends ConfigurationItemProperties
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    public String getName()
+    {
+        if (name == null)
+        {
+            return displayName;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * If no display name is available then name is returned.
      *
      * @return String name
      */
     public String getDisplayName()
     {
+        if (displayName == null)
+        {
+            return name;
+        }
+
         return displayName;
     }
+
 
 
     /**
@@ -133,7 +190,9 @@ public class AssetProperties extends ConfigurationItemProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "displayName='" + displayName + '\'' +
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -159,19 +218,31 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        AssetProperties asset = (AssetProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getDescription(), asset.getDescription());
-    }
 
+        AssetProperties that = (AssetProperties) objectToCompare;
+
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        {
+            return false;
+        }
+        return description != null ? description.equals(that.description) : that.description == null;
+    }
 
 
     /**
@@ -182,6 +253,11 @@ public class AssetProperties extends ConfigurationItemProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (versionIdentifier != null ? versionIdentifier.hashCode() : 0);
+        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 }

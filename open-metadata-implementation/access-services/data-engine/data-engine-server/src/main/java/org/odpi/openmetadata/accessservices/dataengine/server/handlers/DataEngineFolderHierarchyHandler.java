@@ -69,7 +69,7 @@ public class DataEngineFolderHierarchyHandler {
     }
 
     /**
-     * Construct the folder structure in which a data file is stored all the way to the SoftwareServerCapability. Care is
+     * Construct the folder structure in which a data file is stored all the way to the Engine. Care is
      * taken to maintain uniqueness of the relationship NestedFile that is between the file and the first folder.
      *
      * @param fileGuid           data file guid
@@ -167,7 +167,7 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                folder.getQualifiedName(), folder.getDisplayName(), null, folder.getDescription(), folder.getZoneMembership(),
                 folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
                 null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
                 FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, null, null,
@@ -177,10 +177,10 @@ public class DataEngineFolderHierarchyHandler {
     /**
      * Extracts each folder path and builds FileFolders, with the qualified name of the form
      * '<externalSourceName>::<path>'. The order is important, meaning the first folder is the one containing the file
-     * and the last one the root, and used in creating the folder hierarchy structure al the way to the SoftwareServerCapability
+     * and the last one the root, and used in creating the folder hierarchy structure al the way to the Engine
      *
      * @param pathName           file path
-     * @param externalSourceName name of SoftwareServerCapability
+     * @param externalSourceName name of Engine
      * @param methodName         method name
      *
      * @return list of FileFolders

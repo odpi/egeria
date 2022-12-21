@@ -53,7 +53,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to create a new classification for an entity because the open metadata repository does not recognize the classification type.",
             "Create a ClassificationDef for the classification and retry the request."),
     INVALID_CLASSIFICATION_FOR_ENTITY(400, "OMRS-REPOSITORY-400-006",
-            "Open metadata repository {0} is unable to assign a classification of type {0} to an entity of type {1} as the classification type is not valid for this type of entity",
+            "Open metadata repository {0} is unable to assign a classification of type {1} to an entity of type {2} as the classification type is not valid for this type of entity",
             "The system is not able to classify an entity since the ClassificationDef for the classification does not list the entity type, or one of its super-types.",
             "Update the ClassificationDef to include the entity's type and rerun the request. Alternatively use a different classification."),
     NO_TYPEDEF_NAME(400, "OMRS-REPOSITORY-400-007",
@@ -204,12 +204,6 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request because the instance is needed.",
             "The reference instance comes from another server.  Look for errors in the audit log and validate that the message passing " +
                                     "protocol levels are compatible. If nothing is obviously wrong with the set up, " +
-                                    "raise a Github issue or ask for help on the dev mailing list."),
-    LOCAL_REFERENCE_INSTANCE(400, "OMRS-REPOSITORY-400-042",
-            "A reference instance has been passed to repository {0} during the {1} in the {2} parameter which has the local repository as its home",
-            "The system is unable to perform the request because the instance should come from another repository.",
-            "The reference instance comes from another server.  Look for errors in the audit log and validate that the message passing " +
-                                    "protocol levels are compatible. If nothing is clearly wrong with the set up, " +
                                     "raise a Github issue or ask for help on the dev mailing list."),
     NULL_ENTITY_PROXY(400, "OMRS-REPOSITORY-400-043",
             "A null entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation",
@@ -753,7 +747,11 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The home metadata collection identifier {0} found by method {1} for instance with GUID {2} is not the metadata collection identifier {3} for the local metadata repository {4}",
             "A request to update a metadata instance (entity or relationship) has been encountered on a reference copy metadata instance.",
             "Locate the open metadata repository that has the home instance and perform the update at that repository."),
-    NULL_METADATA_COLLECTION_ID_FROM_REMOTE(500, "OMRS-METADATA-COLLECTION-500-017",
+    INSTANCE_HOME_IS_LOCAL(500, "OMRS-METADATA-COLLECTION-500-017",
+           "The home metadata collection identifier {0} found by method {1} for instance with GUID {2} is the metadata collection identifier {3} for the local metadata repository {4}",
+           "A rehome request to update a metadata instance (entity or relationship) metadata collection id has been encountered on a local metadata instance.  This request should be issues on the new home repository.",
+           "Locate the open metadata repository that is to be the new home of the instance and perform the rehome at that repository."),
+    NULL_METADATA_COLLECTION_ID_FROM_REMOTE(500, "OMRS-METADATA-COLLECTION-500-018",
             "The open metadata repository connector {0} has returned a null metadata collection identifier",
             "There is an internal error in the remote repository.",
             "Determine the source of the implementation of the remote repository and request help from its developers."),
@@ -791,8 +789,8 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Raise a Github issue so that this can be fixed."),
     UNKNOWN_TYPEDEF(500, "OMRS-CONTENT-MANAGER-500-005",
             "The repository content manager has detected an unknown TypeDef {0} ({1}) from {2}. It was passed to method {3} via parameters {4} and {5}",
-            "There is an internal problem in the Open Metadata Repository Services (OMRS) code.",
-            "Raise a Github issue so this can be addressed."),
+            "There is an internal problem in the Open Metadata Ecosystem code or its callers because an invalid unique identifier, or name off a type has been passed to the Open Metadata Repository Services (OMRS).",
+            "Trace the caller of the request to determine where the type information was specified.  If the error is in the Egeria code, or you need help from the community, raise a Github issue so this can be addressed."),
     ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-ARCHIVE-500-001",
             "The archive builder failed to initialize.",
             "There is an internal error in the archive building process.",
@@ -964,7 +962,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -976,7 +974,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

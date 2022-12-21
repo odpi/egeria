@@ -187,14 +187,14 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
 
     GOVERNANCE_ACTION_INITIALIZED("OMES-GOVERNANCE-ACTION-0032",
                                   OMRSAuditLogRecordSeverity.STARTUP,
-                                  "{0} governance service {1} with request type {2} has initialized in governance engine {3}",
+                                  "{0} governance service ({1}) with request type {2} has initialized in governance engine {3}",
                                   "The governance engine is starting a governance action request.",
                                   "Validate that the governance action ran to successful completion."),
 
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    final AuditLogMessageDefinition messageDefinition;
 
 
 

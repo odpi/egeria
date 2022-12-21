@@ -156,10 +156,6 @@ public class AssetConverter extends ReferenceableConverter
                                                                                   AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
                                                                                   instanceProperties,
                                                                                   methodName));
-                bean.setLatestChange(repositoryHelper.removeStringProperty(serviceName,
-                                                                           AssetMapper.LATEST_CHANGE_PROPERTY_NAME,
-                                                                           instanceProperties,
-                                                                           methodName));
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
                                                                                           ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                                                                                           instanceProperties,

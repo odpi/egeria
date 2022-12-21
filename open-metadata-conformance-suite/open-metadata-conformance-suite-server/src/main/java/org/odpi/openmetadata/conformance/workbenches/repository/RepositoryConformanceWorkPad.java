@@ -22,7 +22,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchId            = "repository-workbench";
     private static final String workbenchName          = "Open Metadata Repository Test Workbench";
     private static final String workbenchVersionNumber = "V1.1";
-    private static final String workbenchDocURL        = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/" + workbenchId;
+    private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
     private OMRSAuditLog            auditLog;
@@ -440,7 +440,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         {
 
             String candidateProfile = profile.getProfileName();
-            if (candidateProfile.equals(profileName)) {
+            if (candidateProfile.equals(profileName))
+            {
 
                 profileResults = new OpenMetadataConformanceProfileResults();
                 profileResults.setId(profile.getProfileId());
@@ -472,8 +473,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                     List<OpenMetadataConformanceTestEvidence>       negativeTestEvidence = new ArrayList<>();
 
                     profileResults.setConformanceStatus(super.processEvidence(profileTestEvidence,
-                            positiveTestEvidence,
-                            negativeTestEvidence));
+                                                                              positiveTestEvidence,
+                                                                              negativeTestEvidence));
 
                     List<OpenMetadataConformanceRequirementResults> requirementResultsList = new ArrayList<>();
                     OpenMetadataConformanceRequirementResults       requirementResults;
@@ -509,8 +510,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                             negativeTestEvidence = new ArrayList<>();
 
                             requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                                    positiveTestEvidence,
-                                    negativeTestEvidence));
+                                                                                          positiveTestEvidence,
+                                                                                          negativeTestEvidence));
 
                             if (!positiveTestEvidence.isEmpty())
                             {
@@ -582,8 +583,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
         for (RepositoryConformanceProfile profile : profiles)
         {
-
             profileSummary = new OpenMetadataConformanceProfileSummary();
+
             profileSummary.setId(profile.getProfileId());
             profileSummary.setName(profile.getProfileName());
             profileSummary.setDocumentationURL(profile.getProfileDocumentationURL());
@@ -592,54 +593,67 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
             List<OpenMetadataConformanceTestEvidence> profileTestEvidence = new ArrayList<>();
 
-            if (testEvidenceList != null) {
-                for (OpenMetadataConformanceTestEvidence testEvidenceItem : testEvidenceList) {
-                    if ((testEvidenceItem != null) && (testEvidenceItem.getProfileId().intValue() == profileSummary.getId().intValue())) {
+            if (testEvidenceList != null)
+            {
+                for (OpenMetadataConformanceTestEvidence testEvidenceItem : testEvidenceList)
+                {
+                    if ((testEvidenceItem != null) && (testEvidenceItem.getProfileId().intValue() == profile.getProfileId().intValue()))
+                    {
                         profileTestEvidence.add(testEvidenceItem);
                     }
                 }
             }
 
-            if (profileTestEvidence.isEmpty()) {
+            if (profileTestEvidence.isEmpty())
+            {
                 profileSummary.setConformanceStatus(OpenMetadataConformanceStatus.UNKNOWN_STATUS);
-            } else {
+            }
+            else
+            {
                 List<OpenMetadataConformanceTestEvidence> positiveTestEvidence = new ArrayList<>();
                 List<OpenMetadataConformanceTestEvidence> negativeTestEvidence = new ArrayList<>();
 
                 profileSummary.setConformanceStatus(super.processEvidence(profileTestEvidence,
-                        positiveTestEvidence,
-                        negativeTestEvidence));
+                                                                          positiveTestEvidence,
+                                                                          negativeTestEvidence));
 
                 List<OpenMetadataConformanceRequirementSummary> requirementResultsList = new ArrayList<>();
                 OpenMetadataConformanceRequirementSummary requirementSummary;
 
 
-                for (RepositoryConformanceProfileRequirement requirement : requirements) {
-                    requirementSummary = new OpenMetadataConformanceRequirementSummary();
+                for (RepositoryConformanceProfileRequirement requirement : requirements)
+                {
+                    if (requirement.getProfileId().intValue() == profile.getProfileId().intValue())
+                    {
+                        requirementSummary = new OpenMetadataConformanceRequirementSummary();
 
-                    requirementSummary.setId(requirement.getRequirementId());
-                    requirementSummary.setName(requirement.getName());
-                    requirementSummary.setDescription(requirement.getDescription());
-                    requirementSummary.setDocumentationURL(requirement.getDocumentationURL());
+                        requirementSummary.setId(requirement.getRequirementId());
+                        requirementSummary.setName(requirement.getName());
+                        requirementSummary.setDescription(requirement.getDescription());
+                        requirementSummary.setDocumentationURL(requirement.getDocumentationURL());
 
-                    List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+                        List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
 
-                    for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence) {
-                        if (testEvidenceItem != null) {
-                            if (testEvidenceItem.getRequirementId().intValue() == requirementSummary.getId().intValue()) {
-                                requirementTestEvidence.add(testEvidenceItem);
+                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence)
+                        {
+                            if (testEvidenceItem != null)
+                            {
+                                if (testEvidenceItem.getRequirementId().intValue() == requirementSummary.getId().intValue())
+                                {
+                                    requirementTestEvidence.add(testEvidenceItem);
+                                }
                             }
                         }
+
+                        positiveTestEvidence = new ArrayList<>();
+                        negativeTestEvidence = new ArrayList<>();
+
+                        requirementSummary.setConformanceStatus(super.processEvidence(requirementTestEvidence,
+                                                                                      positiveTestEvidence,
+                                                                                      negativeTestEvidence));
+
+                        requirementResultsList.add(requirementSummary);
                     }
-
-                    positiveTestEvidence = new ArrayList<>();
-                    negativeTestEvidence = new ArrayList<>();
-
-                    requirementSummary.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                            positiveTestEvidence,
-                            negativeTestEvidence));
-
-                    requirementResultsList.add(requirementSummary);
                 }
 
                 profileSummary.setRequirementSummary(requirementResultsList);

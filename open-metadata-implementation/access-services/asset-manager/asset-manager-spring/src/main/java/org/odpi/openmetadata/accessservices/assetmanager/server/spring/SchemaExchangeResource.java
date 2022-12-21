@@ -11,8 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * DataAssetExchangeResource is the server-side implementation of the Asset Manager OMAS's
- * support for data asset such as data sets.  It matches the DataAssetExchangeClient.
+ * SchemaExchangeResource is the server-side implementation of the Asset Manager OMAS's
+ * support for schemas.  It matches the SchemaExchangeClientBase.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-manager/users/{userId}")
@@ -150,14 +150,14 @@ public class SchemaExchangeResource
      */
     @PostMapping(path = "/parents/{parentElementGUID}/{parentElementTypeName}/schema-types/{schemaTypeGUID}")
 
-    public VoidResponse setupSchemaTypeParent(@PathVariable String                         serverName,
-                                              @PathVariable String                         userId,
-                                              @PathVariable String                         parentElementGUID,
-                                              @PathVariable String                         parentElementTypeName,
-                                              @PathVariable String                         schemaTypeGUID,
-                                              @RequestParam boolean                        assetManagerIsHome,
+    public VoidResponse setupSchemaTypeParent(@PathVariable String                        serverName,
+                                              @PathVariable String                        userId,
+                                              @PathVariable String                        parentElementGUID,
+                                              @PathVariable String                        parentElementTypeName,
+                                              @PathVariable String                        schemaTypeGUID,
+                                              @RequestParam boolean                       assetManagerIsHome,
                                               @RequestParam (required = false, defaultValue = "false")
-                                                            boolean                        forLineage,
+                                                            boolean                       forLineage,
                                               @RequestParam (required = false, defaultValue = "false")
                                                             boolean                       forDuplicateProcessing,
                                               @RequestBody  RelationshipRequestBody       requestBody)
@@ -185,18 +185,91 @@ public class SchemaExchangeResource
      */
     @PostMapping(path = "/parents/{parentElementGUID}/{parentElementTypeName}/schema-types/{schemaTypeGUID}/remove")
 
-    public VoidResponse clearSchemaTypeParent(@PathVariable String                             serverName,
-                                              @PathVariable String                             userId,
-                                              @PathVariable String                             parentElementGUID,
-                                              @PathVariable String                             parentElementTypeName,
-                                              @PathVariable String                             schemaTypeGUID,
+    public VoidResponse clearSchemaTypeParent(@PathVariable String                        serverName,
+                                              @PathVariable String                        userId,
+                                              @PathVariable String                        parentElementGUID,
+                                              @PathVariable String                        parentElementTypeName,
+                                              @PathVariable String                        schemaTypeGUID,
                                               @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                      forLineage,
+                                                      boolean                             forLineage,
                                               @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                      forDuplicateProcessing,
+                                                      boolean                             forDuplicateProcessing,
                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}")
+
+    public VoidResponse setupSchemaElementRelationship(@PathVariable String                         serverName,
+                                                       @PathVariable String                         userId,
+                                                       @PathVariable String                         endOneGUID,
+                                                       @PathVariable String                         relationshipTypeName,
+                                                       @PathVariable String                         endTwoGUID,
+                                                       @RequestParam boolean                        assetManagerIsHome,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        forDuplicateProcessing,
+                                                       @RequestBody  RelationshipRequestBody        requestBody)
+    {
+        return restAPI.setupSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}/remove")
+
+    public VoidResponse clearSchemaElementRelationship(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @PathVariable String                        endOneGUID,
+                                                       @PathVariable String                        relationshipTypeName,
+                                                       @PathVariable String                        endTwoGUID,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forDuplicateProcessing,
+                                                       @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -408,7 +481,7 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-attribute")
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-attributes")
 
     public GUIDResponse createSchemaAttribute(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,

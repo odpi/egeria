@@ -29,8 +29,9 @@ public class AssetProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String              displayName                  = null;
-    private String              description                  = null;
+    private String name              = null;
+    private String versionIdentifier = null;
+    private String description       = null;
 
 
 
@@ -53,21 +54,67 @@ public class AssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
+            name                         = template.getName();
+            versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
         }
     }
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * If no display name is available then name is returned.
      *
      * @return String name
      */
+    @Deprecated
     public String getDisplayName()
     {
-        return displayName;
+        return name;
     }
 
 
@@ -76,9 +123,10 @@ public class AssetProperties extends ReferenceableProperties
      *
      * @param displayName String name
      */
+    @Deprecated
     public void setDisplayName(String displayName)
     {
-        this.displayName = displayName;
+        this.name = displayName;
     }
 
 
@@ -114,14 +162,18 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -138,18 +190,28 @@ public class AssetProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        return description != null ? description.equals(that.description) : that.description == null;
     }
+
 
     /**
      * Return hash code based on properties.
@@ -159,6 +221,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description);
     }
 }

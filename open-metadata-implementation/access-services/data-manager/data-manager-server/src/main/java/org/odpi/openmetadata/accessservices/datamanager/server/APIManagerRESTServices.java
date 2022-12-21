@@ -107,14 +107,15 @@ public class APIManagerRESTServices
                                                           handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
                                                           handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                           requestBody.getQualifiedName(),
-                                                          requestBody.getDisplayName(),
+                                                          requestBody.getName(),
+                                                          requestBody.getVersionIdentifier(),
                                                           requestBody.getDescription(),
                                                           requestBody.getAdditionalProperties(),
                                                           typeName,
                                                           requestBody.getExtendedProperties(),
                                                           InstanceStatus.ACTIVE,
-                                                          null,
-                                                          null,
+                                                          requestBody.getEffectiveFrom(),
+                                                          requestBody.getEffectiveTo(),
                                                           new Date(),
                                                           methodName);
 
@@ -235,7 +236,9 @@ public class APIManagerRESTServices
                                                               requestBody.getQualifiedName(),
                                                               qualifiedNameParameterName,
                                                               requestBody.getDisplayName(),
+                                                              requestBody.getVersionIdentifier(),
                                                               requestBody.getDescription(),
+                                                              null,
                                                               requestBody.getNetworkAddress(),
                                                               false,
                                                               false,
@@ -345,7 +348,8 @@ public class APIManagerRESTServices
                                     apiGUID,
                                     apiGUIDParameterName,
                                     requestBody.getQualifiedName(),
-                                    requestBody.getDisplayName(),
+                                    requestBody.getName(),
+                                    requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -1272,7 +1276,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param apiGUID unique identifier of the topic to query
+     * @param apiGUID unique identifier of the asset to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

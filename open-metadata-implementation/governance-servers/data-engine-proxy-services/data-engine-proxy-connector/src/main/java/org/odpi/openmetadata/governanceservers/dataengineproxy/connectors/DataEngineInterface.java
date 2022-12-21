@@ -5,11 +5,13 @@
  */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 import java.util.Date;
@@ -25,7 +27,7 @@ public interface DataEngineInterface {
      *
      * @return SoftwareCapability
      */
-    SoftwareServerCapability getDataEngineDetails();
+    Engine getDataEngineDetails();
 
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
@@ -34,6 +36,13 @@ public interface DataEngineInterface {
      * @return boolean
      */
     boolean requiresPolling();
+
+    /**
+     * Gets processing state sync key.
+     *
+     * @return the processing state sync key
+     */
+    String getProcessingStateSyncKey();
 
     /**
      * Retrieve the date and time at which changes were last synchronized.

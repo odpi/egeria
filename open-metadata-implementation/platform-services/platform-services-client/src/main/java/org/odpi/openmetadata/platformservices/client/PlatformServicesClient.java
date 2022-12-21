@@ -5,12 +5,15 @@ package org.odpi.openmetadata.platformservices.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
@@ -23,14 +26,14 @@ import java.util.List;
  */
 public class PlatformServicesClient
 {
-    private PlatformServicesRESTClient  restClient;                 /* Initialized in constructor */
+    private final PlatformServicesRESTClient restClient;                 /* Initialized in constructor */
 
-    private   String                    platformRootURL;            /* Initialized in constructor */
-    protected AuditLog                  auditLog;                   /* Initialized in constructor */
+    private final String                     platformRootURL;            /* Initialized in constructor */
+    protected     AuditLog                   auditLog;                   /* Initialized in constructor */
 
     private final String                retrieveURLTemplatePrefix   = "/open-metadata/platform-services/users/{1}/server-platform";
 
-    private InvalidParameterHandler   invalidParameterHandler     = new InvalidParameterHandler();
+    private final InvalidParameterHandler   invalidParameterHandler     = new InvalidParameterHandler();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -135,6 +138,38 @@ public class PlatformServicesClient
         String restResult = restClient.callStringGetRESTCall(methodName, urlTemplate, userId);
 
         return restResult; // .getResultString();
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider after validating that the
+     * connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
+     * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
+     *
+     * @param userId calling user
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean or exceptions that occur when trying to create the connector
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+
+    public ConnectorType getConnectorType(String userId,
+                                          String connectorProviderClassName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName = "getConnectorType";
+        final String connectorProviderParameterName = "connectorProviderClassName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(connectorProviderClassName, connectorProviderParameterName, methodName);
+
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{1}" + connectorProviderClassName;
+
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName, urlTemplate, userId, connectorProviderClassName);
+
+        return restResult.getConnectorType();
     }
 
 

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.handlers;
 
+import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceEngineConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceServiceConverter;
@@ -30,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -456,6 +458,7 @@ public class GovernanceConfigurationHandler
                                                                             null,
                                                                             qualifiedName,
                                                                             displayName,
+                                                                            null,
                                                                             description,
                                                                             null,
                                                                             typeName,
@@ -817,6 +820,7 @@ public class GovernanceConfigurationHandler
                                                           guidParameter,
                                                           qualifiedName,
                                                           displayName,
+                                                          null,
                                                           description,
                                                           additionalProperties,
                                                           OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
@@ -892,6 +896,7 @@ public class GovernanceConfigurationHandler
                                                     String              governanceEngineGUID,
                                                     String              governanceServiceGUID,
                                                     String              governanceRequestType,
+                                                    String              serviceRequestType,
                                                     Map<String, String> defaultAnalysisParameters) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException
@@ -954,6 +959,11 @@ public class GovernanceConfigurationHandler
                                                                                                         defaultAnalysisParameters,
                                                                                                         methodName);
 
+                        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                  properties,
+                                                                                  OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                  serviceRequestType,
+                                                                                  methodName);
                         repositoryHandler.updateRelationshipProperties(userId,
                                                                        null,
                                                                        null,
@@ -989,6 +999,13 @@ public class GovernanceConfigurationHandler
                                                      OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
                                                      governanceRequestType,
                                                      methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                          serviceRequestType,
+                                                                          methodName);
+
         repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                         instanceProperties,
                                                         OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
@@ -1067,7 +1084,7 @@ public class GovernanceConfigurationHandler
 
 
     /**
-     * Retrieve the identifiers of the governance services registered with a governance engine.
+     * Retrieve the identifiers of the registered governance services with a governance engine.
      *
      * @param userId identifier of calling user
      * @param governanceEngineGUID unique identifier of the governance engine.
@@ -1080,29 +1097,108 @@ public class GovernanceConfigurationHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
-    public List<String> getRegisteredGovernanceServices(String userId,
-                                                        String governanceEngineGUID,
-                                                        int    startingFrom,
-                                                        int    maximumResults) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<RegisteredGovernanceServiceElement> getRegisteredGovernanceServices(String userId,
+                                                                                    String governanceEngineGUID,
+                                                                                    int    startingFrom,
+                                                                                    int    maximumResults) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         final String methodName = "getRegisteredGovernanceServices";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
 
-        return governanceEngineHandler.getAttachedElementGUIDs(userId,
-                                                              governanceEngineGUID,
-                                                              governanceEngineGUIDParameter,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
-                                                               false,
-                                                               false,
-                                                              startingFrom,
-                                                              maximumResults,
-                                                              null,
-                                                              methodName);
+        List<Relationship> relationships = governanceEngineHandler.getAttachmentLinks(userId,
+                                                                                      governanceEngineGUID,
+                                                                                      governanceEngineGUIDParameter,
+                                                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                      2,
+                                                                                      false,
+                                                                                      false,
+                                                                                      startingFrom,
+                                                                                      maximumResults,
+                                                                                      new Date(),
+                                                                                      methodName);
+
+        if (relationships != null)
+        {
+            Map<String, RegisteredGovernanceServiceElement>  governanceServices = new HashMap<>();
+
+            for (Relationship relationship : relationships)
+            {
+                /*
+                 * Process Governance Service (end 2)
+                 */
+                EntityProxy end2 = relationship.getEntityTwoProxy();
+
+                RegisteredGovernanceServiceElement governanceService = governanceServices.get(end2.getGUID());
+
+                if (governanceService == null)
+                {
+                    try
+                    {
+                        GovernanceServiceElement newElement = this.getGovernanceServiceByGUID(userId, end2.getGUID());
+
+                        if (newElement != null)
+                        {
+                            governanceService = new RegisteredGovernanceServiceElement(newElement);
+
+                            governanceServices.put(end2.getGUID(), governanceService);
+                        }
+                    }
+                    catch (Exception notKnown)
+                    {
+                        /* ignore */
+                    }
+                }
+
+                if (governanceService != null)
+                {
+                    /*
+                     * Build the request type list for the service.
+                     */
+                    String requestType = repositoryHelper.getStringProperty(serviceName,
+                                                                            OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                            relationship.getProperties(),
+                                                                            methodName);
+
+                    if (requestType != null)
+                    {
+                        RegisteredGovernanceServiceProperties relationshipProperties = new RegisteredGovernanceServiceProperties();
+
+                        relationshipProperties.setServiceRequestType(repositoryHelper.getStringProperty(serviceName,
+                                                                                                        OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                        relationship.getProperties(),
+                                                                                                        methodName));
+                        relationshipProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                              OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                              relationship.getProperties(),
+                                                                                                              methodName));
+
+                        Map<String, RegisteredGovernanceServiceProperties> requestTypes = governanceService.getProperties().getRequestTypes();
+
+                        if (requestTypes == null)
+                        {
+                            requestTypes = new HashMap<>();
+                        }
+
+                        requestTypes.put(requestType, relationshipProperties);
+
+                        governanceService.getProperties().setRequestTypes(requestTypes);
+                    }
+                }
+            }
+
+            if (! governanceServices.isEmpty())
+            {
+                return new ArrayList<>(governanceServices.values());
+            }
+        }
+
+        return null;
     }
 
 

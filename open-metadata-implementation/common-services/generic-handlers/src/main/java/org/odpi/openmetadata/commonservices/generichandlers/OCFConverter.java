@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
-    protected void setUpElementHeader(ElementBase  elementBase,
+    protected void setUpElementHeader(ElementBase   elementBase,
                                       EntityDetail  entity,
                                       String        expectedTypeName,
                                       String        methodName) throws PropertyServerException
@@ -68,6 +67,18 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             elementBase.setType(this.getElementType(entity));
             elementBase.setURL(entity.getInstanceURL());
             elementBase.setClassifications(this.getEntityClassifications(entity));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(entity.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(entity.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(entity.getMetadataCollectionName());
+            elementOrigin.setLicense(entity.getInstanceLicense());
+
+            elementBase.setOrigin(elementOrigin);
+
+            elementBase.setVersions(this.getElementVersions(entity));
         }
         else
         {
@@ -98,6 +109,18 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             elementBase.setType(this.getElementType(instanceHeader));
             elementBase.setURL(instanceHeader.getInstanceURL());
             elementBase.setClassifications(this.getElementClassifications(classifications));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(instanceHeader.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(instanceHeader.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(instanceHeader.getMetadataCollectionName());
+            elementOrigin.setLicense(instanceHeader.getInstanceLicense());
+
+            elementBase.setOrigin(elementOrigin);
+
+            elementBase.setVersions(this.getElementVersions(instanceHeader));
         }
         else
         {
@@ -235,7 +258,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      */
     protected OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = OwnerType.OTHER;
+        OwnerType ownerType = null;
 
         if (properties != null)
         {

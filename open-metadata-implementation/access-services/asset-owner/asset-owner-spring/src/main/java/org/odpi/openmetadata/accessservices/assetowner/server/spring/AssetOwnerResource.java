@@ -28,7 +28,7 @@ import java.util.List;
 
 public class AssetOwnerResource
 {
-    private AssetOwnerRESTServices restAPI = new AssetOwnerRESTServices();
+    private final AssetOwnerRESTServices restAPI = new AssetOwnerRESTServices();
 
 
     /**

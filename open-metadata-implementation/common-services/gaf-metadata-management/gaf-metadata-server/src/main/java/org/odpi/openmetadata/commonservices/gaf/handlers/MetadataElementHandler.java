@@ -174,31 +174,40 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String namePropertyName  = "uniqueNamePropertyName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
         invalidParameterHandler.validateName(uniqueNamePropertyName, namePropertyName, methodName);
-
-        invalidParameterHandler.validateUserId(userId, methodName);
 
         if (uniqueNameParameterName != null)
         {
             invalidParameterHandler.validateName(uniqueName, uniqueNameParameterName, methodName);
+
+            return this.getBeanByUniqueName(userId,
+                                            uniqueName,
+                                            uniqueNameParameterName,
+                                            uniqueNamePropertyName,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
         }
         else
         {
             invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
-        }
 
-        return this.getBeanByUniqueName(userId,
-                                        uniqueName,
-                                        uniqueNameParameterName,
-                                        uniqueNamePropertyName,
-                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        serviceSupportedZones,
-                                        effectiveTime,
-                                        methodName);
+            return this.getBeanByUniqueName(userId,
+                                            uniqueName,
+                                            nameParameterName,
+                                            uniqueNamePropertyName,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
+        }
     }
 
 
@@ -347,12 +356,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                                    PropertyServerException
     {
         final String guidParameterName = "elementGUID";
-        final String typeNameParameterName = "relationshipTypeName";
         final String otherEndGUIDParameterName = "otherEnd.getGUID()";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
         String relationshipTypeGUID = null;
 
@@ -1297,7 +1304,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                   methodName,
                                                                                   repositoryHelper);
 
-        MetadataElementBuilder builder = new MetadataElementBuilder(getElementPropertiesAsOMRSMap(properties),
+        MetadataElementBuilder builder = new MetadataElementBuilder(metadataElementTypeGUID,
+                                                                    metadataElementTypeName,
+                                                                    getElementPropertiesAsOMRSMap(properties),
                                                                     this.getInstanceStatus(initialStatus),
                                                                     effectiveFrom,
                                                                     effectiveTo,

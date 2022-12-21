@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -3048,6 +3050,14 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     updateAllowed = true;
                 }
                 break;
+
+            default:
+                /*
+                 * For any other instance provenance values allow the rehome action - this allows content pack information, deregistered repositories
+                 * and configuration to be rehomed
+                 */
+                updateAllowed = true;
+                break;
         }
 
         if (!updateAllowed)
@@ -3271,6 +3281,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
                 break;
 
+            default:
+                /*
+                 * For any other instance provenance values allow the rehome action - this allows content pack information, deregistered repositories
+                 * and configuration to be rehomed
+                 */
+                updateAllowed = true;
+                break;
         }
 
         if (!updateAllowed)
@@ -3278,11 +3295,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * The instance should not be updated - throw InvalidParameterException
              */
-            throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(instance.getMetadataCollectionId(),
-                                                                                                           methodName,
-                                                                                                           instance.getGUID(),
-                                                                                                           metadataCollectionId,
-                                                                                                           sourceName),
+            throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_IS_LOCAL.getMessageDefinition(instance.getMetadataCollectionId(),
+                                                                                                          methodName,
+                                                                                                          instance.getGUID(),
+                                                                                                          metadataCollectionId,
+                                                                                                          sourceName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "instance");
@@ -4137,19 +4154,19 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         matchesProperties = !Objects.equals(actualValue, testValue);
                         break;
                     case LT:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) < 0);
                         break;
                     case LTE:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) <= 0);
                         break;
                     case GT:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) > 0);
                         break;
                     case GTE:
-                        // Should only apply to numbers and dates
+                        // Should only apply to number values and dates
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
                         break;
                     case IN:
@@ -4332,6 +4349,31 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                 String         methodName) throws InvalidParameterException,
                                                                                   RepositoryErrorException
     {
+        this.validateReferenceInstanceHeader(sourceName, localMetadataCollectionId, instanceParameterName, instance, null, methodName);
+    }
+
+
+    /**
+     * Validates that an instance has the correct header for it to be a reference copy.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param localMetadataCollectionId  the unique identifier for the local repository' metadata collection.
+     * @param instanceParameterName the name of the parameter that provided the instance.
+     * @param instance the instance to test
+     * @param auditLog optional logging destination
+     * @param methodName the name of the method that supplied the instance.
+     * @throws RepositoryErrorException problem with repository
+     * @throws InvalidParameterException the instance is null or linked to local metadata repository
+     */
+    @Override
+    public void validateReferenceInstanceHeader(String         sourceName,
+                                                String         localMetadataCollectionId,
+                                                String         instanceParameterName,
+                                                InstanceHeader instance,
+                                                AuditLog       auditLog,
+                                                String         methodName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException
+    {
         if (instance == null)
         {
             throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(sourceName, methodName),
@@ -4346,12 +4388,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (localMetadataCollectionId.equals(instance.getMetadataCollectionId()))
         {
-            throw new InvalidParameterException(OMRSErrorCode.LOCAL_REFERENCE_INSTANCE.getMessageDefinition(sourceName,
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName, OMRSAuditCode.LOCAL_REFERENCE_INSTANCE.getMessageDefinition(instanceParameterName,
                                                                                                             methodName,
-                                                                                                            instanceParameterName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                instanceParameterName);
+                                                                                                            localMetadataCollectionId));
+            }
         }
     }
 

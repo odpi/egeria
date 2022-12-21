@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerifyAssetGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
+ * VerifyAssetGovernanceActionProvider is the OCF connector provider for the "Verify Asset" Governance Action Service.
  * This is a Verification Governance Action Service.
  */
 public class VerifyAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase

@@ -3,8 +3,9 @@
 
 /**
  * This package provides the support for issuing REST API calls to the OMAG Server and processing common error responses
- * (InvalidParameterException, UserNotAuthorizedException, PropertyServerException)
- * from the calls.  This leaves the Asset Consumer OMAS Clients to focus on marshalling requests and returning successful responses.
+ * (InvalidParameterException, UserNotAuthorizedException, PropertyServerException) from the calls.
+ *
+ * This leaves the Asset Consumer OMAS Clients to focus on marshalling requests and returning successful responses.
  */
 
 package org.odpi.openmetadata.accessservices.assetconsumer.client.rest;

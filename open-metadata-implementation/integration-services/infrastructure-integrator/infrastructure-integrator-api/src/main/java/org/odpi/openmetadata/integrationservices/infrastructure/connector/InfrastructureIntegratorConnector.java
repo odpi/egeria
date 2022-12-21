@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.infrastructure.ffdc.Infrastruct
  * InfrastructureIntegratorConnector is the base class for an integration connector that is managed by the
  * Infrastructure Integrator OMIS.
  */
-public abstract class InfrastructureIntegratorConnector extends IntegrationConnectorBase
+public abstract class InfrastructureIntegratorConnector extends IntegrationConnectorBase implements InfrastructureIntegratorOMISConnector
 {
     private InfrastructureIntegratorContext context = null;
 

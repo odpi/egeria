@@ -24,7 +24,7 @@ public class InMemoryOMRSRepositoryConnector extends OMRSRepositoryConnector
 
 
     /**
-     * Set up the unique Id for this metadata collection.
+     * Set up the unique id for this metadata collection.
      *
      * @param metadataCollectionId - String unique Id
      */

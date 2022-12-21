@@ -15,6 +15,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermHasARelationshipMapper;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -32,10 +34,11 @@ import java.util.Date;
 
 public class SubjectAreaRESTServicesInstance {
     private static final String className = SubjectAreaRelationshipHandler.class.getName();
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRESTServicesInstance.class);
 
     // The OMRSAPIHelper allows the junits to mock out the omrs layer
     protected static SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaRESTServicesInstance.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -72,9 +75,7 @@ public class SubjectAreaRESTServicesInstance {
                                                                                         R relationship)
     {
 
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -133,9 +134,7 @@ public class SubjectAreaRESTServicesInstance {
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -164,9 +163,7 @@ public class SubjectAreaRESTServicesInstance {
                                                                                      String guid)
     {
 
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -179,9 +176,7 @@ public class SubjectAreaRESTServicesInstance {
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -217,9 +212,7 @@ public class SubjectAreaRESTServicesInstance {
                                                                                         L relationship,
                                                                                         boolean isReplace)
     {
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -232,9 +225,7 @@ public class SubjectAreaRESTServicesInstance {
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -265,9 +256,7 @@ public class SubjectAreaRESTServicesInstance {
                                                                                      String guid)
     {
 
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -280,9 +269,7 @@ public class SubjectAreaRESTServicesInstance {
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -315,9 +302,7 @@ public class SubjectAreaRESTServicesInstance {
                                                                                          Class<? extends IRelationshipMapper<L>> clazz,
                                                                                          String guid)
     {
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -330,9 +315,7 @@ public class SubjectAreaRESTServicesInstance {
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 

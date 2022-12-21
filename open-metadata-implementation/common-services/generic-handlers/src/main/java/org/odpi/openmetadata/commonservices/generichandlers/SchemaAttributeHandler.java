@@ -302,6 +302,23 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             {
                 schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
             }
+            SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
+
+            /*
+             * if there is a formula then set it into the schemaAttributeBuilder
+             */
+            if (schemaTypeBuilder != null && schemaTypeBuilder.isDerived())
+            {
+                String sourceName = "local";
+                if (externalSourceName != null && externalSourceName.length() >0)
+                {
+                    sourceName = externalSourceName;
+                }
+                InstanceProperties instanceProperties = schemaTypeBuilder.getCalculatedValueProperties(methodName);
+                String formula = repositoryHelper.getStringProperty(sourceName, OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, instanceProperties, methodName);
+
+                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
+            }
 
             return this.createNestedSchemaAttribute(userId,
                                                     externalSourceGUID,
@@ -623,8 +640,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         /*
-         * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
-         * The returned value is the guid of the table.
+         * Now create the nested schema attribute itself along with its schema type.
+         * The returned value is the guid of the nested attribute (e.g. table).
          */
         String schemaAttributeGUID = this.createBeanInRepository(userId,
                                                                  externalSourceGUID,
@@ -839,7 +856,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
      * schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
      * retrieval is needed.
-      *
+     *
      * @param userId         String   userId of user making request.
      * @param parentElementGUID String   unique id for parent schema element.
      * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
@@ -869,6 +886,56 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
+        return getAttachedSchemaAttributes(userId,
+                                           parentElementGUID,
+                                           parentElementGUIDParameterName,
+                                           schemaAttributeTypeName,
+                                           supportedZones,
+                                           startFrom,
+                                           pageSize,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
+     * schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
+     * retrieval is needed.
+      *
+     * @param userId         String   userId of user making request.
+     * @param parentElementGUID String   unique id for parent schema element.
+     * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName subtype of schema attribute or null
+     * @param serviceSupportedZones list of zone names for calling service
+     * @param startFrom   int      starting position for first returned element.
+     * @param pageSize    int      maximum number of elements to return on the call.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName     calling method
+     *
+     * @return a schema attributes response
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<SCHEMA_ATTRIBUTE> getAttachedSchemaAttributes(String       userId,
+                                                              String       parentElementGUID,
+                                                              String       parentElementGUIDParameterName,
+                                                              String       schemaAttributeTypeName,
+                                                              List<String> serviceSupportedZones,
+                                                              int          startFrom,
+                                                              int          pageSize,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing,
+                                                              Date    effectiveTime,
+                                                              String  methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
         EntityDetail parentEntity = this.getEntityFromRepository(userId,
                                                                  parentElementGUID,
                                                                  parentElementGUIDParameterName,
@@ -877,7 +944,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
-                                                                 supportedZones,
+                                                                 serviceSupportedZones,
                                                                  effectiveTime,
                                                                  methodName);
 
@@ -889,7 +956,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                       parentElementGUID,
                                                       parentElementGUIDParameterName,
                                                       schemaAttributeTypeName,
-                                                      supportedZones,
+                                                      serviceSupportedZones,
                                                       startFrom,
                                                       pageSize,
                                                       forLineage,
@@ -905,7 +972,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                     schemaAttributeTypeName,
                                                                     null,
                                                                     null,
-                                                                    supportedZones,
+                                                                    serviceSupportedZones,
                                                                     startFrom,
                                                                     pageSize,
                                                                     forLineage,
@@ -1516,6 +1583,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               typeName,
                                                                               specificMatchPropertyNames,
                                                                               true,
+                                                                              false,
                                                                               requiredClassificationName,
                                                                               omittedClassificationName,
                                                                               forLineage,
@@ -1798,6 +1866,173 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 setClassificationInRepository(userId,
                                               externalSourceGUID,
                                               externalSourceName,
+                                              schemaAttributeEntity,
+                                              schemaAttributeGUIDParameterName,
+                                              attributeTypeName,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                              isMergeUpdate,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              effectiveTime,
+                                              methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Update the properties in a schema attribute.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param schemaAttributeGUID unique identifier of the metadata element to connect the new schema attribute to
+     * @param schemaAttributeGUIDParameterName parameter name supplying schemaAttributeGUID
+     * @param qualifiedName unique identifier for this schema type
+     * @param qualifiedNameParameterName name of parameter supplying the qualified name
+     * @param schemaAttributeBuilder schema attribute builder
+     * @param typeName name of the type of this element - which defines the valid extended properties
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void   updateSchemaAttribute(String                 userId,
+                                        String                 externalSourceGUID,
+                                        String                 externalSourceName,
+                                        String                 schemaAttributeGUID,
+                                        String                 schemaAttributeGUIDParameterName,
+                                        String                 qualifiedName,
+                                        String                 qualifiedNameParameterName,
+                                        SchemaAttributeBuilder schemaAttributeBuilder,
+                                        String                 typeName,
+                                        boolean                isMergeUpdate,
+                                        boolean                forLineage,
+                                        boolean                forDuplicateProcessing,
+                                        Date                   effectiveTime,
+                                        String                 methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
+
+        /*
+         * Check that the type name requested is valid.
+         */
+        String attributeTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            attributeTypeName = typeName;
+        }
+
+        EntityDetail schemaAttributeEntity = this.getEntityFromRepository(userId,
+                                                                          schemaAttributeGUID,
+                                                                          schemaAttributeGUIDParameterName,
+                                                                          attributeTypeName,
+                                                                          null,
+                                                                          null,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        if (schemaAttributeEntity != null)
+        {
+            InstanceProperties instanceProperties = schemaAttributeBuilder.getInstanceProperties(methodName);
+
+            this.updateBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        schemaAttributeGUID,
+                                        schemaAttributeGUIDParameterName,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        instanceProperties,
+                                        true,
+                                        effectiveTime,
+                                        methodName);
+
+            SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
+            if (schemaTypeBuilder != null)
+            {
+
+                /*
+                 * The formula is set if the schema attribute is derived. Need to test the merge semantics.
+                 */
+                InstanceProperties calculatedValueProperties = schemaTypeBuilder.getCalculatedValueProperties(methodName);
+                if (calculatedValueProperties == null)
+                {
+                    /*
+                     * if we have no formula requested and we are not a merge, any existing
+                     * calculated value classification should be cleared
+                     */
+                    if (!isMergeUpdate)
+                    {
+                        try {
+                            String sourceName = "local";
+                            if (externalSourceName != null && externalSourceName.length() >0)
+                            {
+                                sourceName = externalSourceName;
+                            }
+
+                            repositoryHelper.getClassificationFromEntity(sourceName, schemaAttributeEntity, OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME, methodName);
+                            removeClassificationFromRepository(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               schemaAttributeGUID,
+                                                               schemaAttributeGUIDParameterName,
+                                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                        } catch (ClassificationErrorException e)
+                        {
+                            // there was no calculated value classification associated with the entity
+                        }
+                    }
+                } else
+                {
+                    setClassificationInRepository(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  schemaAttributeEntity,
+                                                  schemaAttributeGUIDParameterName,
+                                                  attributeTypeName,
+                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                  calculatedValueProperties,
+                                                  isMergeUpdate,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  supportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
+                }
+                // todo this logic assumes the schema type is stored as a classification
+                setClassificationInRepository(userId,
+                                              externalSourceGUID,externalSourceName,
                                               schemaAttributeEntity,
                                               schemaAttributeGUIDParameterName,
                                               attributeTypeName,

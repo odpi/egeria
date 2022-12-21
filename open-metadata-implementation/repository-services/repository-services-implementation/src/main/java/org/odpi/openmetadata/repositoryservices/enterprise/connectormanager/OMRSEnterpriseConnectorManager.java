@@ -896,8 +896,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      */
     private static class RegisteredConnectorConsumer
     {
-        private String                connectorConsumerId;
-        private OMRSConnectorConsumer connectorConsumer;
+        private final String                connectorConsumerId;
+        private final OMRSConnectorConsumer connectorConsumer;
 
 
         /**

@@ -1005,7 +1005,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param userId calling user

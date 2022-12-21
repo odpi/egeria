@@ -263,10 +263,8 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "SoftwareServerPlatformProperties{" +
-                       "platformType='" + platformType + '\'' +
-                       ", platformVersion='" + platformVersion + '\'' +
-                       ", platformSource='" + platformSource + '\'' +
-                       ", platformUserId='" + platformUserId + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -276,6 +274,15 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", platformType='" + platformType + '\'' +
+                       ", platformVersion='" + platformVersion + '\'' +
+                       ", platformSource='" + platformSource + '\'' +
+                       ", platformUserId='" + platformUserId + '\'' +
+                       ", cloneToAsset=" + cloneToAsset() +
+                       ", softwareServerPlatformType='" + getSoftwareServerPlatformType() + '\'' +
+                       ", softwareServerPlatformVersion='" + getSoftwareServerPlatformVersion() + '\'' +
+                       ", softwareServerPlatformSource='" + getSoftwareServerPlatformSource() + '\'' +
+                       ", softwareServerPlatformUserId='" + getSoftwareServerPlatformUserId() + '\'' +
                        '}';
     }
 

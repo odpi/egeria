@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
  */
 public class AssetAnalysisRESTServices
 {
-    private static AssetAnalysisInstanceHandler instanceHandler = new AssetAnalysisInstanceHandler();
+    private static final AssetAnalysisInstanceHandler instanceHandler = new AssetAnalysisInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AssetAnalysisRESTServices.class),
-                                                                      instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AssetAnalysisRESTServices.class),
+                                                                            instanceHandler.getServiceName());
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -48,16 +48,16 @@ public class AssetAnalysisRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorTypeResponse validateConnector(String serverName,
-                                                   String userId,
-                                                   String connectorProviderClassName)
+    public ConnectorReportResponse validateConnector(String serverName,
+                                                     String userId,
+                                                     String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectorTypeResponse response = new ConnectorTypeResponse();
-        AuditLog              auditLog = null;
+        ConnectorReportResponse response = new ConnectorReportResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -69,7 +69,7 @@ public class AssetAnalysisRESTServices
 
             if (connectorReport != null)
             {
-                response = new ConnectorTypeResponse(connectorReport);
+                response.setConnectorReport(connectorReport);
             }
         }
         catch (Exception error)

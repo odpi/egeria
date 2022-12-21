@@ -58,10 +58,10 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  void disconnect() throws ConnectorCheckedException
+    public  synchronized void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
     }

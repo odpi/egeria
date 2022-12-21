@@ -54,7 +54,7 @@ public class CommentResponse extends OCFOMASAPIResponse
 
 
     /**
-     * Return the note log properties.
+     * Return the comment properties.
      *
      * @return note log bean
      */
@@ -65,7 +65,7 @@ public class CommentResponse extends OCFOMASAPIResponse
 
 
     /**
-     * Set up the not log properties.
+     * Set up the comment properties.
      *
      * @param comment bean
      */
@@ -76,7 +76,7 @@ public class CommentResponse extends OCFOMASAPIResponse
 
 
     /**
-     * Return the count of the notes within the note log.
+     * Return the count of the replies to the comment.
      *
      * @return int
      */
@@ -87,7 +87,7 @@ public class CommentResponse extends OCFOMASAPIResponse
 
 
     /**
-     * Set up the count of notes within the note log.
+     * Set up the count of the replies to the comment.
      *
      * @param replyCount int
      */

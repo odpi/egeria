@@ -25,6 +25,8 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
     /**
      * Constructor.
      *
+     * @param metadataElementTypeGUID type identifier
+     * @param metadataElementTypeName type name
      * @param propertyMap map of property names to values
      * @param initialStatus initial status of the element
      * @param effectiveFrom date to make the element active in the governance program (null for now)
@@ -33,7 +35,9 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    MetadataElementBuilder(Map<String, InstancePropertyValue> propertyMap,
+    MetadataElementBuilder(String                             metadataElementTypeGUID,
+                           String                             metadataElementTypeName,
+                           Map<String, InstancePropertyValue> propertyMap,
                            InstanceStatus                     initialStatus,
                            Date                               effectiveFrom,
                            Date                               effectiveTo,
@@ -41,8 +45,8 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
                            String                             serviceName,
                            String                             serverName)
     {
-        super(OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+        super(metadataElementTypeGUID,
+              metadataElementTypeName,
               null,
               initialStatus,
               effectiveFrom,

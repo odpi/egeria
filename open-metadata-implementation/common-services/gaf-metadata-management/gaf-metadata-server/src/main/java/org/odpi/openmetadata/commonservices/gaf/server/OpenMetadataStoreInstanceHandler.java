@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.gaf.server;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
@@ -22,7 +23,7 @@ public class OpenMetadataStoreInstanceHandler extends OMASServiceInstanceHandler
      */
     public OpenMetadataStoreInstanceHandler()
     {
-        super(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName());
+        super(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
     }
 
 

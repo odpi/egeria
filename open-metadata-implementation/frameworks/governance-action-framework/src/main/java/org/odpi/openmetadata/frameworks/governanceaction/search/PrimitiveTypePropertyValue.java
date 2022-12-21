@@ -269,7 +269,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Byte(castValue.toString());
+                    return castValue.toString();
                 }
                 else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR)
                 {
@@ -281,19 +281,19 @@ public class PrimitiveTypePropertyValue extends PropertyValue
                 {
                     Double    castValue = (Double)primitiveValue;
 
-                    return new Float(castValue);
+                    return castValue;
                 }
                 else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Long(castValue);
+                    return castValue;
                 }
                 else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Short(castValue.toString());
+                    return castValue.toString();
                 }
                 else
                 {

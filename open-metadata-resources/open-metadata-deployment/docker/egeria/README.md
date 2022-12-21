@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Egeria Logo](https://github.com/odpi/egeria/raw/master/assets/img/egeria3.png)
+![Egeria Logo](https://github.com/odpi/egeria/raw/main/assets/img/egeria3.png)
 
 [![GitHub](https://img.shields.io/github/license/odpi/egeria)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/org.odpi.egeria/egeria)](https://mvnrepository.com/artifact/org.odpi.egeria)
@@ -21,7 +21,7 @@ value from data whilst ensuring it is properly governed.
 
 This *nix based image contains all the required runtime artifacts for egeria - for example the main server chassis, the user interface, required dependencies etc.
 
-Specifically it contains the full [egeria assembly](https://github.com/odpi/egeria/blob/master/open-metadata-distribution/open-metadata-assemblies/src/main/assemblies/egeria-omag.xml)
+Specifically it contains the full [egeria assembly](https://github.com/odpi/egeria/blob/main/open-metadata-distribution/open-metadata-assemblies/src/main/assemblies/egeria-omag.xml)
 
 ## Usage
 
@@ -87,7 +87,7 @@ bash-4.4$
 
 By default any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.](Docker docs).
 
-As of version 2.6 (or master as of 18 Dec 2020), Egeria saves all data when running to the 'data' directory. In the docker image this is at '/deployments/data'
+As of version 2.6 (or main as of 18 Dec 2020), Egeria saves all data when running to the 'data' directory. In the docker image this is at '/deployments/data'
 
 Similarly when using this image within kubernetes you should ensure persistent storage is mounted over this directory. Our k8s examples will do this as of 2.6
 
@@ -127,7 +127,7 @@ With that in place we can now run our docker image, this time making use of the 
 $ docker run -p 9443:9443 -v source=egeria-data,target=/deployments/data odpi/egeria:latest 
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/server/server-chassis-spring-3.13-SNAPSHOT.jar
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/server/server-chassis-spring-3.15-SNAPSHOT.jar
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -186,7 +186,7 @@ you may need to create another job to retrieve the required libraries or content
 #### Adding to the image through a docker build
 
 Use the egeria image as a base, for example begin your custom Dockerfile with
-`FROM odpi/egeria:3.13-SNAPSHOT`
+`FROM odpi/egeria:3.15-SNAPSHOT`
 
 Then add in the files you need, as well as customize the LOADER_PATH variable ie
 `COPY myextralib.jar /deployments/server/lib`

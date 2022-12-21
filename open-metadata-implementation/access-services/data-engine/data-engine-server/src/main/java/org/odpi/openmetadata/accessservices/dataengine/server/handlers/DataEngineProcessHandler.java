@@ -61,7 +61,7 @@ public class DataEngineProcessHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
-     * @param registrationHandler     provides utilities for manipulating software server capability entities
+     * @param registrationHandler     provides utilities for manipulating engine entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                     OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,
@@ -98,7 +98,7 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(), process.getName(),
-                process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                null, process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()), process.getOriginBusinessCapabilityGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), null, null,
@@ -140,7 +140,7 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-               updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
+               updatedProcess.getQualifiedName(), updatedProcess.getName(), null, updatedProcess.getDescription(),
                updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
                buildProcessExtendedProperties(updatedProcess), null, null, true, false,
                 false, dataEngineCommonHandler.getNow(), methodName);

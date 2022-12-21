@@ -3,34 +3,32 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
+import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceEngineOMASConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -52,9 +50,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
     private final EntityDetail                                     nullEntity = null;
     private final Relationship                                     nullRelationship = null;
-
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
+    private final GovernanceEngineOMASConverter<MetadataElement>   converter;
 
     /**
      * Initialize the topic listener.
@@ -84,6 +80,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
         this.eventPublisher   = eventPublisher;
         this.repositoryHelper = repositoryHelper;
+
+        this.converter = new GovernanceEngineOMASConverter<>(repositoryHelper, serviceName, metadataElementHandler.getServerName());
     }
 
 
@@ -236,8 +234,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                  EntityDetail entity,
                                                  String       methodName)
     {
-        final String entityGUIDParameterName = "entity.getGUID";
-
         if (entity != null)
         {
             InstanceType type = entity.getType();
@@ -358,13 +354,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME))
-                {
-                    return true;
-                }
-
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
                                               OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
                 {
                     return true;
@@ -388,242 +377,24 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * Translate the repository services' InstanceProvenanceType to a GAF ElementOrigin.
-     *
-     * @param instanceStatus value from the repository services
-     * @return ElementOrigin enum
-     */
-    private ElementStatus getElementStatus(InstanceStatus instanceStatus)
-    {
-        if (instanceStatus != null)
-        {
-            switch (instanceStatus)
-            {
-                case UNKNOWN:
-                    return ElementStatus.UNKNOWN;
-
-                case DRAFT:
-                    return ElementStatus.DRAFT;
-
-                case PREPARED:
-                    return ElementStatus.PREPARED;
-
-                case PROPOSED:
-                    return ElementStatus.PROPOSED;
-
-                case APPROVED:
-                    return ElementStatus.APPROVED;
-
-                case REJECTED:
-                    return ElementStatus.REJECTED;
-
-                case APPROVED_CONCEPT:
-                    return ElementStatus.APPROVED_CONCEPT;
-
-                case UNDER_DEVELOPMENT:
-                    return ElementStatus.UNDER_DEVELOPMENT;
-
-                case DEVELOPMENT_COMPLETE:
-                    return ElementStatus.DEVELOPMENT_COMPLETE;
-
-                case APPROVED_FOR_DEPLOYMENT:
-                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
-
-                case STANDBY:
-                    return ElementStatus.STANDBY;
-
-                case ACTIVE:
-                    return ElementStatus.ACTIVE;
-
-                case FAILED:
-                    return ElementStatus.FAILED;
-
-                case DISABLED:
-                    return ElementStatus.DISABLED;
-
-                case COMPLETE:
-                    return ElementStatus.COMPLETE;
-
-                case DEPRECATED:
-                    return ElementStatus.DEPRECATED;
-
-                case OTHER:
-                    return ElementStatus.OTHER;
-            }
-        }
-
-        return ElementStatus.UNKNOWN;
-    }
-
-
-
-    /**
-     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
-     *
-     * @param instanceProvenanceType value from the repository services
-     * @return ElementOrigin enum
-     */
-    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
-    {
-        if (instanceProvenanceType != null)
-        {
-            switch (instanceProvenanceType)
-            {
-                case DEREGISTERED_REPOSITORY:
-                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
-
-                case EXTERNAL_SOURCE:
-                    return ElementOriginCategory.EXTERNAL_SOURCE;
-
-                case EXPORT_ARCHIVE:
-                    return ElementOriginCategory.EXPORT_ARCHIVE;
-
-                case LOCAL_COHORT:
-                    return ElementOriginCategory.LOCAL_COHORT;
-
-                case CONTENT_PACK:
-                    return ElementOriginCategory.CONTENT_PACK;
-
-                case CONFIGURATION:
-                    return ElementOriginCategory.CONFIGURATION;
-
-                case UNKNOWN:
-                    return ElementOriginCategory.UNKNOWN;
-            }
-        }
-
-        return ElementOriginCategory.UNKNOWN;
-    }
-
-
-    /**
-     * Convert information from a repository instance into an ElementType.
-     *
-     * @param instanceHeader values from the server
-     * @return ElementType object
-     */
-    private ElementType getElementType(InstanceHeader instanceHeader)
-    {
-        ElementType  elementType = new ElementType();
-
-        InstanceType instanceType = instanceHeader.getType();
-
-        if (instanceType != null)
-        {
-            elementType.setTypeId(instanceType.getTypeDefGUID());
-            elementType.setTypeName(instanceType.getTypeDefName());
-            elementType.setTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setTypeDescription(instanceType.getTypeDefDescription());
-
-            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
-
-            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
-            {
-                List<String>   superTypes = new ArrayList<>();
-
-                for (TypeDefLink typeDefLink : typeDefSuperTypes)
-                {
-                    if (typeDefLink != null)
-                    {
-                        superTypes.add(typeDefLink.getName());
-                    }
-                }
-
-                if (! superTypes.isEmpty())
-                {
-                    elementType.setSuperTypeNames(superTypes);
-                }
-            }
-        }
-
-        return elementType;
-    }
-
-
-    /**
-     * Fill a GAF control header from the information in a repository services element header.
-     *
-     * @param sourceName source of the event
-     * @param elementControlHeader GAF object control header
-     * @param header OMRS element header
-     */
-    private void fillElementControlHeader(String               sourceName,
-                                          ElementControlHeader elementControlHeader,
-                                          InstanceAuditHeader  header)
-    {
-        if (header != null)
-        {
-            ElementOrigin elementOrigin = new ElementOrigin();
-
-            elementOrigin.setSourceServer(sourceName);
-            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
-            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
-            elementOrigin.setLicense(header.getInstanceLicense());
-
-            elementControlHeader.setOrigin(elementOrigin);
-
-            ElementVersions elementVersions = new ElementVersions();
-
-            elementVersions.setCreatedBy(header.getCreatedBy());
-            elementVersions.setUpdatedBy(header.getUpdatedBy());
-            elementVersions.setMaintainedBy(header.getMaintainedBy());
-            elementVersions.setCreateTime(header.getCreateTime());
-            elementVersions.setUpdateTime(header.getUpdateTime());
-            elementVersions.setVersion(header.getVersion());
-
-            elementControlHeader.setVersions(elementVersions);
-
-            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
-
-            ElementType elementType = new ElementType();
-
-            elementType.setTypeId(header.getType().getTypeDefGUID());
-            elementType.setTypeName(header.getType().getTypeDefName());
-
-            if (header.getType().getTypeDefSuperTypes() != null)
-            {
-                List<String> superTypeNames = new ArrayList<>();
-
-                for (TypeDefLink typeDefLink : header.getType().getTypeDefSuperTypes())
-                {
-                    superTypeNames.add(typeDefLink.getName());
-                }
-
-                elementType.setSuperTypeNames(superTypeNames);
-            }
-
-            elementType.setTypeDescription(header.getType().getTypeDefDescription());
-            elementType.setTypeVersion(header.getType().getTypeDefVersion());
-
-            elementControlHeader.setType(elementType);
-        }
-    }
-
-
-    /**
      * Using the content of the classification, create an element classification.
      *
-     * @param sourceName source of the event
      * @param classification from the repository services
      * @return open metadata element object
      */
-    private AttachedClassification getClassification(String         sourceName,
-                                                     Classification classification)
+    private AttachedClassification getClassification(Classification classification)
     {
         if (classification != null)
         {
             AttachedClassification beanClassification = new AttachedClassification();
 
-            fillElementControlHeader(sourceName, beanClassification, classification);
+            converter.fillElementControlHeader(beanClassification, classification);
 
             beanClassification.setClassificationName(classification.getName());
 
             if (classification.getProperties() != null)
             {
-                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
-
-                beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                beanClassification.setClassificationProperties(converter.mapElementProperties(classification.getProperties()));
                 beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
                 beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
             }
@@ -638,27 +409,23 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * Using the content of the relationship, create a related metadata elements object.
      *
-     * @param sourceName source of the event
      * @param relationship relationship from the repository
      * @return related metadata elements object
      */
-    private RelatedMetadataElements getRelatedElements(String       sourceName,
-                                                       Relationship relationship)
+    private RelatedMetadataElements getRelatedElements(Relationship relationship)
     {
         if (relationship != null)
         {
             RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
 
-            fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
+            converter.fillElementControlHeader(relatedMetadataElements, relationship);
 
             relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
-            relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
+            relatedMetadataElements.setRelationshipType(converter.getElementType(relationship));
 
             if (relationship.getProperties() != null)
             {
-                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
-
-                relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                relatedMetadataElements.setRelationshipProperties(converter.mapElementProperties(relationship.getProperties()));
                 relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
                 relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
             }
@@ -768,11 +535,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 watchdogEvent.setEventType(eventType);
                 watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), true, false, null, methodName));
-                watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification));
+                watchdogEvent.setChangedClassification(this.getClassification(classification));
 
                 if (previousClassification != null)
                 {
-                    watchdogEvent.setChangedClassification(this.getClassification(sourceName, previousClassification));
+                    watchdogEvent.setChangedClassification(this.getClassification(previousClassification));
                 }
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
@@ -800,7 +567,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * Process an relationship extracted from an event.
+     * Process a relationship extracted from an event.
      *
      * @param sourceName source of the event
      * @param eventType watchdog event type
@@ -830,11 +597,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogRelatedElementsEvent watchdogEvent = new WatchdogRelatedElementsEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setRelatedMetadataElements(this.getRelatedElements(sourceName, relationship));
+                watchdogEvent.setRelatedMetadataElements(this.getRelatedElements(relationship));
 
                 if (previousRelationship != null)
                 {
-                    watchdogEvent.setPreviousRelatedMetadataElements(this.getRelatedElements(sourceName, previousRelationship));
+                    watchdogEvent.setPreviousRelatedMetadataElements(this.getRelatedElements(previousRelationship));
                 }
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
@@ -1160,7 +927,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -1299,7 +1066,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1492,7 +1259,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1620,7 +1387,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *

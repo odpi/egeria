@@ -26,6 +26,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.LiteralSchema
 import org.odpi.openmetadata.accessservices.datamanager.properties.MapSchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.PrimitiveSchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeChoiceProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
@@ -104,6 +105,17 @@ public class TopicIntegratorContext
     public String getEventBrokerName()
     {
         return eventBrokerName;
+    }
+
+
+    /**
+     * Return the unique identifier of the event broker's entity that corresponds to the eventBrokerName.
+     *
+     * @return string name
+     */
+    public String getEventBrokerGUID()
+    {
+        return eventBrokerGUID;
     }
 
 
@@ -858,6 +870,51 @@ public class TopicIntegratorContext
                                                                PropertyServerException
     {
         eventBrokerClient.removeSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaElementRelationship(String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        eventBrokerClient.setupSchemaElementRelationship(userId, eventBrokerGUID, eventBrokerName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementRelationship(String endOneGUID,
+                                               String endTwoGUID,
+                                               String relationshipTypeName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        eventBrokerClient.clearSchemaElementRelationship(userId, eventBrokerGUID, eventBrokerName, endOneGUID, endTwoGUID, relationshipTypeName);
     }
 
 

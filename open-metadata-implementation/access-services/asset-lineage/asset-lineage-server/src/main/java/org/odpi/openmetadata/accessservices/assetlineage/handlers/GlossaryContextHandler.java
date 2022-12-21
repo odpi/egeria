@@ -221,7 +221,7 @@ public class GlossaryContextHandler {
             return true;
         }
 
-        return CollectionUtils.isNotEmpty(getTermCategorizations(userId, entityDetailGUID, entityDetail.getType().getTypeDefGUID()));
+        return CollectionUtils.isNotEmpty(getTermCategorizations(userId, entityDetailGUID, entityDetail.getType().getTypeDefName()));
     }
 
     /**

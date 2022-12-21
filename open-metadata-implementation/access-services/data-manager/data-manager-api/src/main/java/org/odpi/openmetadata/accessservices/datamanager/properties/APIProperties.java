@@ -47,12 +47,16 @@ public class APIProperties extends AssetProperties
     public String toString()
     {
         return "APIProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.gaf.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.gaf.converters.MetadataElementConverter;
 import org.odpi.openmetadata.commonservices.gaf.ffdc.OpenMetadataStoreErrorCode;
 import org.odpi.openmetadata.commonservices.gaf.handlers.MetadataElementHandler;
@@ -20,9 +21,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OpenMetadataStoreInstance extends OMASServiceInstance
 {
-    private final static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+    private final static CommonServicesDescription myDescription = CommonServicesDescription.GAF_METADATA_MANAGEMENT;
 
-    private final MetadataElementHandler<OpenMetadataElement>              metadataElementHandler;
+    private final MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -39,7 +40,7 @@ public class OpenMetadataStoreInstance extends OMASServiceInstance
                                      String                  localServerUserId,
                                      int                     maxPageSize) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceFullName(),
+        super(myDescription.getServiceName(),
               repositoryConnector,
               null,
               null,

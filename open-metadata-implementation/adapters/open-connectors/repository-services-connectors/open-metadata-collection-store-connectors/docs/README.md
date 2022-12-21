@@ -43,7 +43,7 @@ following:
 
 ```
 <properties>
-    <open-metadata.version>3.13-SNAPSHOT</open-metadata.version>
+    <open-metadata.version>3.15-SNAPSHOT</open-metadata.version>
 </properties>
 <dependencies>
     <dependency>
@@ -179,7 +179,7 @@ Platform and configured through the REST calls covered above.
 by different.)
 
 For a more detailed example of this minimal packaging to make use of the proxy, refer to the
-[IBM InfoSphere Information Governance Catalog Repository Connector's distribution module](https://github.com/odpi/egeria-connector-ibm-information-server/tree/master/distribution).
+[IBM InfoSphere Information Governance Catalog Repository Connector's distribution module](https://github.com/odpi/egeria-connector-ibm-information-server/tree/main/distribution).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

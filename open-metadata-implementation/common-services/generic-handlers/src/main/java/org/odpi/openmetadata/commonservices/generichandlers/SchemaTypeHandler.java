@@ -1340,6 +1340,122 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
 
     /**
+     * Return the list of schema types nested in the parent schema type - this is typically schema type options or APIOperations in a APISchemaType.
+     *
+     * @param userId     calling user
+     * @param parentGUID identifier for the entity that the object is attached to
+     * @param parentGUIDParameterName parameter supplying parentGUID
+     * @param parentTypeName type name of anchor
+     * @param serviceSupportedZones supported zones for calling service
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom              paging start point
+     * @param pageSize                  maximum results that can be returned
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of schemaType objects or null
+     *
+     * @throws InvalidParameterException  the schemaType bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getNestedSchemaTypesForParent(String       userId,
+                                                 String       parentGUID,
+                                                 String       parentGUIDParameterName,
+                                                 String       parentTypeName,
+                                                 List<String> serviceSupportedZones,
+                                                 boolean      forLineage,
+                                                 boolean      forDuplicateProcessing,
+                                                 int          startingFrom,
+                                                 int          pageSize,
+                                                 Date         effectiveTime,
+                                                 String       methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        EntityDetail parentEntity = this.getEntityFromRepository(userId,
+                                                                 parentGUID,
+                                                                 parentGUIDParameterName,
+                                                                 parentTypeName,
+                                                                 null,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
+
+        if (parentEntity != null)
+        {
+            List<EntityDetail> schemaTypeEntities;
+
+            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME))
+            {
+                schemaTypeEntities = this.getAttachedEntities(userId,
+                                                              parentEntity,
+                                                              parentGUIDParameterName,
+                                                              parentTypeName,
+                                                              OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                              null,
+                                                              null,
+                                                              2,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              serviceSupportedZones,
+                                                              startingFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              methodName);
+            }
+            else
+            {
+                schemaTypeEntities = this.getAttachedEntities(userId,
+                                                              parentEntity,
+                                                              parentGUIDParameterName,
+                                                              parentTypeName,
+                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                              null,
+                                                              null,
+                                                              2,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              serviceSupportedZones,
+                                                              startingFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              methodName);
+            }
+
+            if (schemaTypeEntities != null)
+            {
+                List<B> results = new ArrayList<>();
+
+                for (EntityDetail schemaTypeEntity : schemaTypeEntities)
+                {
+                    B schemaTypeBean = getSchemaTypeFromEntity(userId,
+                                                               schemaTypeEntity,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+
+                    results.add(schemaTypeBean);
+                }
+
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve a specific schema type based on its unique identifier (GUID).  This is used to do updates
      * and to retrieve a linked schema.
      *
@@ -1517,6 +1633,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               typeName,
                                                               specificMatchPropertyNames,
                                                               true,
+                                                              false,
                                                               null,
                                                               null,
                                                               forLineage,
@@ -1899,7 +2016,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               0,
+                                                                               2,
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                supportedZones,

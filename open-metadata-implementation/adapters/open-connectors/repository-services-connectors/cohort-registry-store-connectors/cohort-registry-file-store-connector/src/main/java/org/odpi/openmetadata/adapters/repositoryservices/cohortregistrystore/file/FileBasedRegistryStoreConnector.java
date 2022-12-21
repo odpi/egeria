@@ -202,7 +202,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
             /*
              * It is possible that the remote repository already has an entry in the cohort registry and if this is
-             * the case, it will be overwritten.  Otherwise the new remote properties are added.
+             * the case, it will be overwritten.  Otherwise, the new remote properties are added.
              * The map is used to ensure duplicates can not be stored.
              */
             Map<String, MemberRegistration>  remoteMemberMap = this.getRemoteMemberMap(registryStoreProperties.getRemoteRegistrations());

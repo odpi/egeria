@@ -92,7 +92,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an AssetResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AssetResponse
@@ -118,7 +118,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an AssetsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AssetsResponse
@@ -145,7 +145,7 @@ public class OCFRESTClient extends FFDCRESTClient
      *
      * @param methodName  name of the method being called.
      * @param requestBody request body for the REST call - contains most of the parameters
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AssetsResponse
@@ -172,7 +172,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an CertificationsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return CertificationsResponse
@@ -198,7 +198,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an CommentsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return CommentsResponse
@@ -224,7 +224,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a Connection object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectionResponse
@@ -250,7 +250,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an ConnectionsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ConnectionsResponse
@@ -276,7 +276,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an ExternalIdentifiersResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ExternalIdentifiersResponse
@@ -302,7 +302,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an ExternalReferencesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ExternalReferencesResponse
@@ -328,7 +328,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an InformalTagsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return InformalTagsResponse
@@ -354,7 +354,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an LicensesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return LicensesResponse
@@ -380,7 +380,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an LikesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return LikesResponse
@@ -406,7 +406,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an LocationsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return LocationsResponse
@@ -432,7 +432,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a GlossaryTermResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermResponse
@@ -458,7 +458,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a GlossaryTermListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermListResponse
@@ -484,7 +484,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an NoteLogsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return NoteLogsResponse
@@ -510,7 +510,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an NotesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return NotesResponse
@@ -536,7 +536,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an RatingsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return RatingsResponse
@@ -562,7 +562,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an RelatedAssetsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return RelatedAssetsResponse
@@ -588,7 +588,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an RelatedMediaReferencesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return RelatedMediaReferencesResponse
@@ -614,7 +614,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns an SchemaAttributesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return SchemaAttributesResponse
@@ -635,11 +635,37 @@ public class OCFRESTClient extends FFDCRESTClient
         return restResult;
     }
 
+
+    /**
+     * Issue a GET REST call that returns an APIOperationsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return APIOperationsResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    APIOperationsResponse callOCFAPIOperationsGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        APIOperationsResponse restResult = this.callGetRESTCall(methodName, APIOperationsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
     /**
      * Issue a GET REST call that returns a TagResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return TagResponse
@@ -665,7 +691,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a TagsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return TagsResponse
@@ -691,7 +717,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a TagsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param requestBody request body for the REST API call
      * @param params      a list of parameters that are slotted into the url template.
      *

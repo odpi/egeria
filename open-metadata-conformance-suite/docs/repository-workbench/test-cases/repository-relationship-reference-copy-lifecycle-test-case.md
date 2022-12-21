@@ -72,7 +72,7 @@ This is the sample output for the ConnectionConnectorType type.
             "repository-test-case-base-02: Metadata collection for repository connector supplied to conformance suite.",
             "repository-relationship-reference-copy-lifecycle-09: ConnectionConnectorType reference relationship re-homed."
         ],
-        "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-relationship-reference-copy-lifecycle-test-case.md",
+        "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-relationship-reference-copy-lifecycle-test-case.md",
         "testCaseId": "repository-relationship-reference-copy-lifecycle-ConnectionConnectorType",
         "testCaseName": "Repository relationship reference copy lifecycle test case",
         "unsuccessfulAssertions": []

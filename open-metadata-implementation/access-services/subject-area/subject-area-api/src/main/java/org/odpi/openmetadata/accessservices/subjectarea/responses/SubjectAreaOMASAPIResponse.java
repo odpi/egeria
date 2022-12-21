@@ -48,7 +48,7 @@ public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase implements G
      **/
     public void setExceptionInfo(OCFCheckedExceptionBase e, String className) {
         super.setRelatedHTTPCode(e.getReportedHTTPCode());
-        super.setExceptionClassName(className);
+        super.setExceptionClassName(e.getClass().getName());
         super.setActionDescription(e.getReportingActionDescription());
         super.setExceptionUserAction(e.getReportedUserAction());
         super.setExceptionErrorMessage(e.getReportedErrorMessage());

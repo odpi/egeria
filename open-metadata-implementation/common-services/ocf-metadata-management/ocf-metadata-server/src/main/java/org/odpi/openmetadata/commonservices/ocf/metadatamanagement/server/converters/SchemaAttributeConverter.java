@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * LicenseConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- * EntityDetail object into an License bean.
+ * EntityDetail object into a License bean.
  */
 public class SchemaAttributeConverter<B> extends OCFConverter<B>
 {
@@ -87,7 +87,6 @@ public class SchemaAttributeConverter<B> extends OCFConverter<B>
                 bean.setDescription(this.removeDescription(instanceProperties));
                 bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
                 /* Note this value should be in the classification */
-                bean.setAnchorGUID(this.removeAnchorGUID(instanceProperties));
                 bean.setElementPosition(this.removePosition(instanceProperties));
                 bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
                 bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
@@ -101,14 +100,6 @@ public class SchemaAttributeConverter<B> extends OCFConverter<B>
                 bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                 bean.setAliases(this.removeAliases(instanceProperties));
                 bean.setSortOrder(this.removeSortOrder(instanceProperties));
-
-                /*
-                 * The value in the Anchors classification overrides the value in the main properties of the SchemaAttribute's entity.
-                 * Having these properties in the main entity is deprecated.
-                 */
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
-
-                bean.setAnchorGUID(this.getAnchorGUID(instanceProperties));
 
                 instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
 

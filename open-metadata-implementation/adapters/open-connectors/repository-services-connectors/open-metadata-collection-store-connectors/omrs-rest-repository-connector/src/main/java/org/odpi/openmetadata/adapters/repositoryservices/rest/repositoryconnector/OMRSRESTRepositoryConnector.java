@@ -49,6 +49,7 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
                                                                 super.repositoryName,
                                                                 repositoryHelper,
                                                                 repositoryValidator,
+                                                                auditLog,
                                                                 metadataCollectionId);
         }
         catch (RepositoryErrorException  error)

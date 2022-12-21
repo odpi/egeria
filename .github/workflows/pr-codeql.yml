@@ -10,10 +10,10 @@ name: "CodeQL Analysis"
 
 on:
   push:
-    branches: [master, feature-*, egeria-release-*]
+    branches: [main, feature-*, egeria-release-*]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [master, feature-*, egeria-release-*]
+    branches: [main, feature-*, egeria-release-*]
   schedule:
     - cron: '0 20 * * 0'
 

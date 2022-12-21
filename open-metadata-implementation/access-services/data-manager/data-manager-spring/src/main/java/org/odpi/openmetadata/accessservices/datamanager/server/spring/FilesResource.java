@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class FilesResource
 {
-    private FilesRESTServices restAPI = new FilesRESTServices();
+    private final FilesRESTServices restAPI = new FilesRESTServices();
 
 
     /**
@@ -532,8 +532,8 @@ public class FilesResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
      *
      * @return List of Filesystem unique identifiers or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -544,10 +544,10 @@ public class FilesResource
 
     public GUIDListResponse getFileSystems(@PathVariable String  serverName,
                                            @PathVariable String  userId,
-                                           @RequestParam int     startingFrom,
-                                           @RequestParam int     maxPageSize)
+                                           @RequestParam int     startFrom,
+                                           @RequestParam int     pageSize)
     {
-        return restAPI.getFileSystems(serverName, userId, startingFrom, maxPageSize);
+        return restAPI.getFileSystems(serverName, userId, startFrom, pageSize);
     }
 
 
@@ -602,10 +602,10 @@ public class FilesResource
      * @param serverName name of calling server
      * @param userId calling user
      * @param fileSystemGUID unique identifier of the anchor folder or Filesystem
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
      *
-     * @return list of folder unique identifiers (null means no nested folders) or
+     * @return list of folder unique identifiers (null value means no nested folders) or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -615,10 +615,10 @@ public class FilesResource
     public GUIDListResponse  getTopLevelFolders(@PathVariable String  serverName,
                                                 @PathVariable String  userId,
                                                 @PathVariable String  fileSystemGUID,
-                                                @RequestParam int     startingFrom,
-                                                @RequestParam int     maxPageSize)
+                                                @RequestParam int     startFrom,
+                                                @RequestParam int     pageSize)
     {
-        return restAPI.getTopLevelFolders(serverName, userId, fileSystemGUID, startingFrom, maxPageSize);
+        return restAPI.getTopLevelFolders(serverName, userId, fileSystemGUID, startFrom, pageSize);
     }
 
 
@@ -628,10 +628,10 @@ public class FilesResource
      * @param serverName name of calling server
      * @param userId calling user
      * @param parentFolderGUID unique identifier of the parent folder
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
      *
-     * @return list of folder unique identifiers (null means no nested folders) or
+     * @return list of folder unique identifiers (null value means no nested folders) or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -641,10 +641,10 @@ public class FilesResource
     public GUIDListResponse  getNestedFolders(@PathVariable String  serverName,
                                               @PathVariable String  userId,
                                               @PathVariable String  parentFolderGUID,
-                                              @RequestParam int     startingFrom,
-                                              @RequestParam int     maxPageSize)
+                                              @RequestParam int     startFrom,
+                                              @RequestParam int     pageSize)
     {
-        return restAPI.getNestedFolders(serverName, userId, parentFolderGUID, startingFrom, maxPageSize);
+        return restAPI.getNestedFolders(serverName, userId, parentFolderGUID, startFrom, pageSize);
     }
 
 
@@ -654,23 +654,23 @@ public class FilesResource
      * @param serverName name of calling server
      * @param userId calling user
      * @param folderGUID unique identifier of the anchor folder
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
      *
-     * @return list of file asset unique identifiers or
+     * @return list of file assets or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
     @GetMapping(path = "/folders/{folderGUID}/data-files")
 
-    public GUIDListResponse  getFolderFiles(@PathVariable String  serverName,
-                                            @PathVariable String  userId,
-                                            @PathVariable String  folderGUID,
-                                            @RequestParam int     startingFrom,
-                                            @RequestParam int     maxPageSize)
+    public DataFilesResponse  getFolderFiles(@PathVariable String  serverName,
+                                             @PathVariable String  userId,
+                                             @PathVariable String  folderGUID,
+                                             @RequestParam int     startFrom,
+                                             @RequestParam int     pageSize)
     {
-        return restAPI.getFolderFiles(serverName, userId, folderGUID, startingFrom, maxPageSize);
+        return restAPI.getFolderFiles(serverName, userId, folderGUID, startFrom, pageSize);
     }
 
 
@@ -723,8 +723,8 @@ public class FilesResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
      * @param requestBody path name
      *
      * @return data file properties or
@@ -734,12 +734,39 @@ public class FilesResource
      */
     @PostMapping(path = "/data-files/by-search-path-name")
 
+    public DataFilesResponse getDataFilesByPathName(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @RequestParam int                 startFrom,
+                                                    @RequestParam int                 pageSize,
+                                                    @RequestBody  PathNameRequestBody requestBody)
+    {
+        return  restAPI.getDataFilesByPathName(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
+     * @param requestBody path name
+     *
+     * @return data file properties or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @PostMapping(path = "/data-files/by-search-name")
+
     public DataFilesResponse findDataFilesByPathName(@PathVariable String              serverName,
                                                      @PathVariable String              userId,
-                                                     @RequestParam int                 startingFrom,
-                                                     @RequestParam int                 maxPageSize,
+                                                     @RequestParam int                 startFrom,
+                                                     @RequestParam int                 pageSize,
                                                      @RequestBody  PathNameRequestBody requestBody)
     {
-        return  restAPI.findDataFilesByPathName(serverName, userId, startingFrom, maxPageSize, requestBody);
+        return  restAPI.findDataFilesByPathName(serverName, userId, startFrom, pageSize, requestBody);
     }
 }

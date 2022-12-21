@@ -89,7 +89,7 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
     public void getSubcategories() throws Exception{
        when(entitiesHandler.getAttachedEntities(USER_ID, categories.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                CATEGORY_TYPE_NAME, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_GUID, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,
-               null, null, null, 0,
+               null, null, null, 2,
                false, false, null, 0, 10000,
                null, "getSubcategories")).thenReturn(Arrays.asList(categories.get(1), categories.get(2)));
 

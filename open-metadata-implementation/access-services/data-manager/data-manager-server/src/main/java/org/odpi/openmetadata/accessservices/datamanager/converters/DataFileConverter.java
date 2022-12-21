@@ -73,7 +73,8 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
 
                     dataFileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     dataFileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    dataFileProperties.setDisplayName(this.removeName(instanceProperties));
+                    dataFileProperties.setName(this.removeName(instanceProperties));
+                    dataFileProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     dataFileProperties.setDescription(this.removeDescription(instanceProperties));
                     dataFileProperties.setPathName(this.removePathName(instanceProperties));
                     dataFileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));

@@ -68,7 +68,7 @@ class DataEngineTopicHandlerTest {
         dataEngineTopicHandler.upsertTopic(USER, topic, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(topicHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-               EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, null,
+               EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, null, null,
                0, null, null, null, null,
                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), null, null, InstanceStatus.ACTIVE, null, "upsertTopic");
     }
@@ -82,7 +82,7 @@ class DataEngineTopicHandlerTest {
         dataEngineTopicHandler.upsertTopic(USER, topic, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(topicHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
-                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME,
+                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null,
                  null, null, TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), null, null,
                  true, false, false, null, "upsertTopic");
     }

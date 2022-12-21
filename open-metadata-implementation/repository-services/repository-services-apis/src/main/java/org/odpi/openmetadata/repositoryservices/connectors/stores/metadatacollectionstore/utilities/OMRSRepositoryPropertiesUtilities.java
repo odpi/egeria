@@ -27,6 +27,22 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     public static final String METADATA_COLLECTION_ID_PROPERTY_NAME     = "metadataCollectionId";
     public static final String METADATA_COLLECTION_NAME_PROPERTY_NAME   = "metadataCollectionName";
 
+    private static final String stringMapTypeGUID = "005c7c14-ac84-4136-beed-959401b041f8";
+    private static final String stringMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + ">";
+    private static final String booleanMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ab";
+    private static final String booleanMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName() + ">";
+    private static final String intMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ac";
+    private static final String intMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName() + ">";
+    private static final String longMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ae";
+    private static final String longMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName() + ">";
+    private static final String objectMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
+    private static final String objectMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName() + ">";
+
+    private static final String stringArrayTypeGUID = "0428b5d3-f824-459c-b7f5-f8151de59707";
+    private static final String stringArrayTypeName = "array<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + ">";
+    private static final String intArrayTypeGUID = "0103fe10-98b0-4910-8ee0-21d529f7ff6d";
+    private static final String intArrayTypeName = "array<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName() + ">";
+
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryPropertiesUtilities.class);
 
     /**
@@ -130,7 +146,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -188,7 +204,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             retrievedProperty = this.getEnumPropertyOrdinal(sourceName, propertyName, properties, methodName);
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties.toString());
+            log.debug("Properties left: " + properties);
         }
 
         log.debug("Retrieved " + propertyName + " property ordinal : " + retrievedProperty);
@@ -328,7 +344,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -462,7 +478,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -538,7 +554,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -614,7 +630,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -691,7 +707,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -929,7 +945,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getIntProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties.toString());
+            log.debug("Properties left: " + properties);
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1017,7 +1033,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getDateProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties.toString());
+            log.debug("Properties left: " + properties);
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1104,7 +1120,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             retrievedProperty = this.getBooleanProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
-            log.debug("Properties left: " + properties.toString());
+            log.debug("Properties left: " + properties);
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
@@ -1219,7 +1235,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1264,7 +1280,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1309,7 +1325,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to may be null.
+     * @param properties  properties object to add. Property may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -1490,7 +1506,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             }
 
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+            arrayPropertyValue.setTypeGUID(stringArrayTypeGUID);
+            arrayPropertyValue.setTypeName(stringArrayTypeName);
             arrayPropertyValue.setArrayCount(arrayValues.size());
+
             int index = 0;
             for (String arrayValue : arrayValues)
             {
@@ -1505,7 +1525,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             resultingProperties.setProperty(propertyName, arrayPropertyValue);
 
-            log.debug("Returning instanceProperty: " + resultingProperties.toString());
+            log.debug("Returning instanceProperty: " + resultingProperties);
 
             return resultingProperties;
         }
@@ -1568,9 +1588,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
                     mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(objectMapTypeGUID);
+                    mapPropertyValue.setTypeName(objectMapTypeName);
+
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                    log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
@@ -1636,9 +1659,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
                     mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(stringMapTypeGUID);
+                    mapPropertyValue.setTypeName(stringMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                    log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
@@ -1686,7 +1711,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     resultingProperties = properties;
                 }
 
-
                 /*
                  * The values of a map property are stored as an embedded InstanceProperties object.
                  */
@@ -1704,9 +1728,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
                     mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(booleanMapTypeGUID);
+                    mapPropertyValue.setTypeName(booleanMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                    log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
@@ -1772,9 +1798,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
                     mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(longMapTypeGUID);
+                    mapPropertyValue.setTypeName(longMapTypeName);
+
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                    log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
@@ -1841,9 +1870,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
                     mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(longMapTypeGUID);
+                    mapPropertyValue.setTypeName(longMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
-                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                    log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
@@ -2038,7 +2069,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                log.debug("Returning instanceProperty: " + resultingProperties);
 
                 return resultingProperties;
             }
@@ -2103,7 +2134,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                log.debug("Returning instanceProperty: " + resultingProperties);
 
                 return resultingProperties;
             }
@@ -2168,7 +2199,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                log.debug("Returning instanceProperty: " + resultingProperties);
 
                 return resultingProperties;
             }
@@ -2234,7 +2265,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                log.debug("Returning instanceProperty: " + resultingProperties);
 
                 return resultingProperties;
             }
@@ -2299,7 +2330,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
             if (propertyCount > 0)
             {
-                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+                log.debug("Returning instanceProperty: " + resultingProperties);
 
                 return resultingProperties;
             }
@@ -2593,7 +2624,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             /*
              * The patch has already been applied and so can be ignored.  This is not an
-             * error because all members of the cohort broadcast new types so it is to be
+             * error because all members of the cohort broadcast new types, so it is to be
              * expected that the same patch will come in multiple times.
              */
             return originalTypeDef;
@@ -2639,7 +2670,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 }
                 else
                 {
-                    // And the EQ(uals) operator for any other type
+                    // And the EQUALS operator for any other type
                     pc.setOperator(PropertyComparisonOperator.EQ);
                 }
                 // TODO: we may want to default complex types (lists, etc) to other operators than EQ?

@@ -74,7 +74,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
     NO_PROCESS_IMPLEMENTATION(400, "OMAG-GENERIC-HANDLERS-400-007",
                      "Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined",
-                     "The system is unable to initiate a governance action process because is its implementation definition is missing.",
+                     "The system is unable to initiate a governance action process because its implementation definition is missing.",
                      "Link a governance action type to the governance action process.  If the process is to have multiple steps to it, link " +
                              "additional governance action types to this first one to describe the execution flow. " +
                              "Then retry the request once the definition is corrected."),
@@ -86,6 +86,25 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                               "The most likely cause of the error is that the parameters passed on the call are incorrect.  " +
                                       "Correct the parameters and retry the request.  If the values are correct then save this error message along with " +
                                       "details of the stored metadata instances and contact the Egeria community."),
+
+    UNKNOWN_REQUEST_TYPE(400, "OMAG-GENERIC-HANDLERS-400-009",
+                        "Governance Engine {0} ({1}) does not support request type {2}; requested via service {3} running in server {4}",
+                        "The system is unable to initiate a governance action because the nominated request type is not found in the metadata repository.",
+                        "Investigate whether the request type is incorrect or the definition is missing. " +
+                                "Then retry the request once the issue is resolved."),
+
+    NO_REQUEST_TYPE_FOR_ENGINE(400, "OMAG-GENERIC-HANDLERS-400-010",
+                         "Governance Engine {0} ({1}) does not support any request types and so it cannot run request type {2}; requested via service {3} running in server {4}",
+                         "The system is unable to initiate a governance action because the nominated governance engine has no supported governance services.",
+                         "Investigate why there are no supported governance services for the governance engine. " +
+                                 "Then retry the request once the issue is resolved."),
+
+    UNKNOWN_PROCESS(400, "OMAG-GENERIC-HANDLERS-400-011",
+                              "Unable to initiate an instance of the {0} governance action process because the name is not recognized",
+                              "The system is unable to initiate a governance action process because its definition is missing.",
+                              "Verify that the process name (qualifiedName of a GovernanceActionProcess entity) is correct.  " +
+                                      "Either set up the caller to use the correct name or create a GovernanceActionProcess entity with the requested qualifiedName.  " +
+                                      "Then retry the request once the definition is added."),
 
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +

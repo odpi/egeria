@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class ConfigViewServicesResource
 {
-    private OMAGServerAdminForViewServices adminAPI = new OMAGServerAdminForViewServices();
+    private final OMAGServerAdminForViewServices adminAPI = new OMAGServerAdminForViewServices();
 
 
     /**

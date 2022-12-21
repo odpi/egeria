@@ -187,7 +187,7 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
 
         NewCSVFileAssetRequestBody requestBody = new NewCSVFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);
         requestBody.setColumnHeaders(columnHeaders);

@@ -95,6 +95,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveName,
                                                             originatorName,
                                                             creationDate,
                                                             versionNumber,

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.api.GovernanceActionAPI;
 import org.odpi.openmetadata.engineservices.governanceaction.client.rest.GovernanceActionRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -18,11 +18,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  */
 public class GovernanceActionEngineClient implements GovernanceActionAPI
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformRootURL;    /* Initialized in constructor */
-    private GovernanceActionRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformRootURL;    /* Initialized in constructor */
+    private final GovernanceActionRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     
     
     /**
@@ -88,12 +88,12 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
-                                                                                    serverPlatformRootURL + urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     connectorProviderClassName);
+        ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          connectorProviderClassName);
 
-        return new ConnectorReport(restResult);
+        return restResult.getConnectorReport();
     }
 }

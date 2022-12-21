@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -41,8 +40,8 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     private GovernanceExchangeClient   governanceExchangeClient;
     private StewardshipExchangeClient  stewardshipExchangeClient;
 
-    private ObjectMapper                   objectMapper             = new ObjectMapper();
-    private List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
+    private final ObjectMapper                   objectMapper             = new ObjectMapper();
+    private final List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
 
 
     /**
@@ -152,28 +151,23 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-
-        String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null)
+        if (metadataSourceQualifiedName != null)
         {
-            AssetManagerProperties properties = new AssetManagerProperties();
+            String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
+            if (metadataSourceGUID == null)
+            {
+                AssetManagerProperties properties = new AssetManagerProperties();
 
-            metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        return metadataSourceGUID;
+        return null;
     }
 
 

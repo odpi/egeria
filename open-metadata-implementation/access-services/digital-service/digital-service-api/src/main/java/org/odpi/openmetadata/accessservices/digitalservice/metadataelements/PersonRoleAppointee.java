@@ -26,7 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = PersonRoleHistory.class, name = "PersonRoleHistory")
+                  @JsonSubTypes.Type(value = PersonRoleHistory.class, name = "PersonRoleHistory"),
+                  @JsonSubTypes.Type(value = AgreementRoleAppointee.class, name = "AgreementRoleAppointee"),
               })
 public class PersonRoleAppointee extends PersonRoleElement
 {
@@ -115,7 +116,6 @@ public class PersonRoleAppointee extends PersonRoleElement
                        "currentAppointees=" + currentAppointees +
                        ", elementHeader=" + getElementHeader() +
                        ", properties=" + getProperties() +
-                       ", relatedElement=" + getRelatedElement() +
                        '}';
     }
 

@@ -469,6 +469,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                                       propertyNames,
                                                                       true,
+                                                                      false,
                                                                       null,
                                                                       null,
                                                                       forLineage,

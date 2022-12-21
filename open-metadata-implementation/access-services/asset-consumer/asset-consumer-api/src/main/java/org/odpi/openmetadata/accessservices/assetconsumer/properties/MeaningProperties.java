@@ -26,6 +26,7 @@ public class MeaningProperties extends ReferenceableProperties
      * Attributes of a meaning object definition
      */
     private String      name = null;
+    private String      summary = null;
     private String      description = null;
 
 
@@ -50,6 +51,7 @@ public class MeaningProperties extends ReferenceableProperties
         if (template != null)
         {
             name = template.getName();
+            summary = template.getSummary();
             description = template.getDescription();
         }
     }
@@ -74,6 +76,28 @@ public class MeaningProperties extends ReferenceableProperties
     public void setName(String name)
     {
         this.name = name;
+    }
+
+
+    /**
+     * Return the short summary of the term.
+     *
+     * @return string summary
+     */
+    public String getSummary()
+    {
+        return summary;
+    }
+
+
+    /**
+     * Set up the short summary of the term.
+     *
+     * @param summary string summary
+     */
+    public void setSummary(String summary)
+    {
+        this.summary = summary;
     }
 
 
@@ -108,13 +132,14 @@ public class MeaningProperties extends ReferenceableProperties
     public String toString()
     {
         return "MeaningProperties{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + name + '\'' +
+                       ", summary='" + summary + '\'' +
+                       ", description='" + description + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -141,6 +166,7 @@ public class MeaningProperties extends ReferenceableProperties
         }
         MeaningProperties that = (MeaningProperties) objectToCompare;
         return Objects.equals(name, that.name) &&
+                       Objects.equals(summary, that.summary)&&
                        Objects.equals(description, that.description);
     }
 
@@ -153,6 +179,6 @@ public class MeaningProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description);
+        return Objects.hash(super.hashCode(), name, summary, description);
     }
 }

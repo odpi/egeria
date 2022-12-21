@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerifyFileFolderGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is a Provisioning Governance Action Service.
+ * VerifyFileFolderGovernanceActionProvider is the OCF connector provider for the "Verify FileFolder" Verification Governance Action Service.
+ * This is a Verification Governance Action Service.
  */
 public class VerifyFileFolderGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {

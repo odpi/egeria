@@ -5,9 +5,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaConfigHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -16,9 +17,10 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SubjectAreaConfigRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaConfigRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
     private static final String className = SubjectAreaConfigRESTServices.class.getName();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaConfigRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -35,9 +37,7 @@ public class SubjectAreaConfigRESTServices extends SubjectAreaRESTServicesInstan
      */
     public SubjectAreaOMASAPIResponse<Config> getConfig(String serverName, String userId) {
         final String methodName = "getConfig";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Config> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -50,9 +50,7 @@ public class SubjectAreaConfigRESTServices extends SubjectAreaRESTServicesInstan
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

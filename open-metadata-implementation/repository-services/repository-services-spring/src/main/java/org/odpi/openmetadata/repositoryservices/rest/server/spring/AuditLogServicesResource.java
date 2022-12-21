@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogSeveritiesResponse;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AuditLogServicesResource
 {
-    private OMRSAuditLogRESTServices restAPI = new OMRSAuditLogRESTServices();
+    private final OMRSAuditLogRESTServices restAPI = new OMRSAuditLogRESTServices();
 
     /**
      * Default constructor
@@ -48,6 +49,11 @@ public class AuditLogServicesResource
      */
     @GetMapping(path = "/severity-definitions")
 
+    @Operation(summary="getSeverityList",
+               description="Return the details of the severities that this server supports.",
+               externalDocs=@ExternalDocumentation(description="Audit Log",
+                                                   url="https://egeria-project.org/concepts/audit-log/"))
+
     public AuditLogSeveritiesResponse getSeverityList(@PathVariable String   serverName,
                                                       @PathVariable String   userId)
     {
@@ -63,6 +69,11 @@ public class AuditLogServicesResource
      * @return registration properties for server
      */
     @GetMapping(path = "/report")
+
+    @Operation(summary="getAuditLogReport",
+               description="Return the report from the local server's audit log.",
+               externalDocs=@ExternalDocumentation(description="Audit Log",
+                                                   url="https://egeria-project.org/concepts/audit-log/"))
 
     public AuditLogReportResponse getAuditLogReport(@PathVariable String   serverName,
                                                     @PathVariable String   userId)

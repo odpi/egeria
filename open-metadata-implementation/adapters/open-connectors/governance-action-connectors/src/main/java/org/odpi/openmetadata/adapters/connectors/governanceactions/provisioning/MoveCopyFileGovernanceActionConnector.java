@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
@@ -28,11 +27,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
     /*
      * This map remembers the index of the last file that was created in a destination folder.
      */
-    private static volatile Map<String, Integer> fileIndexMap = new HashMap<>();
+    private static final Map<String, Integer> fileIndexMap = new HashMap<>();
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private String  topLevelProcessName                  = this.getClass().getName();
+    private String  topLevelProcessName                  = "MoveCopyFileGovernanceActionConnector";
     private String  destinationFileTemplateQualifiedName = null;
     private String  topLevelProcessTemplateQualifiedName = null;
     private String  destinationFileNamePattern           = "{0}";
@@ -189,16 +188,32 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
 
     /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
+     * Indicates that the governance action service is completely configured and can begin processing.
      *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() at the start of your overriding version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        final String methodName = "start";
+
+        super.start();
+
+        List<String>     outputGuards = new ArrayList<>();
+        CompletionStatus completionStatus;
+        String           completionMessage = null;
+
+        if (MoveCopyFileGovernanceActionProvider.MOVE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        {
+            copyFile = false;
+        }
+        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        {
+            deleteFile = true;
+        }
 
         Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
 
@@ -270,37 +285,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 childProcessLineage = false;
             }
         }
-    }
-
-
-
-    /**
-     * Indicates that the governance action service is completely configured and can begin processing.
-     *
-     * This is a standard method from the Open Connector Framework (OCF) so
-     * be sure to call super.start() at the start of your overriding version.
-     *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
-     */
-    @Override
-    public void start() throws ConnectorCheckedException
-    {
-        final String methodName = "start";
-
-        super.start();
-
-        List<String>     outputGuards = new ArrayList<>();
-        CompletionStatus completionStatus;
-
-        if (MoveCopyFileGovernanceActionProvider.MOVE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
-        {
-            copyFile = false;
-        }
-        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
-        {
-            deleteFile = true;
-        }
-
 
         /*
          * Retrieve the source file and destination folder from either the request parameters or the action targets.  If both
@@ -314,13 +298,38 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             {
                 if (requestParameterName != null)
                 {
-                    if (MoveCopyFileGovernanceActionProvider.SOURCE_FILE_PROPERTY.equals(requestParameterName))
+                    switch (requestParameterName)
                     {
-                        sourceFileName = requestParameters.get(requestParameterName);
-                    }
-                    else if (MoveCopyFileGovernanceActionProvider.DESTINATION_FOLDER_PROPERTY.equals(requestParameterName))
-                    {
-                        destinationFolderName = requestParameters.get(requestParameterName);
+                        case MoveCopyFileGovernanceActionProvider.SOURCE_FILE_PROPERTY:
+                            sourceFileName = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.DESTINATION_FOLDER_PROPERTY:
+                            destinationFolderName = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.DESTINATION_TEMPLATE_NAME_PROPERTY:
+                            destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.TARGET_FILE_NAME_PATTERN_PROPERTY:
+                            destinationFileNamePattern = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.NO_LINEAGE_PROPERTY:
+                            createLineage = false;
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_NAME_PROPERTY:
+                            topLevelProcessName = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY:
+                            topLevelProcessTemplateQualifiedName = requestParameters.get(requestParameterName);
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY:
+                            childProcessLineage = false;
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY:
+                            sourceLineageFromFile = false;
+                            break;
+                        case MoveCopyFileGovernanceActionProvider.LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY:
+                            destinationLineageToFile = false;
+                            break;
                     }
                 }
             }
@@ -411,7 +420,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                         NewActionTarget actionTarget = new NewActionTarget();
 
                         actionTarget.setActionTargetGUID(newActionTargetGUID);
-                        actionTarget.setActionTargetName(destinationFileName);
+                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_GUID_PROPERTY);
                         newActionTargets.add(actionTarget);
                     }
 
@@ -420,7 +429,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 }
                 else
                 {
-                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
                     completionStatus = CompletionStatus.FAILED;
                 }
             }
@@ -439,13 +448,14 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                       error);
             }
 
-            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_EXCEPTION_GUARD);
             completionStatus = CompletionStatus.FAILED;
+            completionMessage = error.getMessage();
         }
 
         try
         {
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets, completionMessage);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -467,9 +477,25 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         final String connectionRelationshipName = "ConnectionToAsset";
 
         final String qualifiedNameParameterName = "qualifiedName";
+        final String pathNameParameterName = "pathName";
+
+        ElementProperties properties = asset.getElementProperties();
 
         /*
-         * The best location of the pathname is in the endpoint address property of the connection object linked to the
+         * Begin by extracting the path name from the pathName property in the asset.
+         */
+        String pathName = propertyHelper.getStringProperty(governanceServiceName,
+                                                           pathNameParameterName,
+                                                           properties,
+                                                           methodName);
+
+        if (pathName != null)
+        {
+            return pathName;
+        }
+
+        /*
+         * The next best location of the pathname is in the endpoint address property of the connection object linked to the
          * metadata element.
          */
         OpenMetadataStore store = governanceContext.getOpenMetadataStore();
@@ -496,8 +522,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
             else if (connectionLinks.size() > 1)
             {
-                String pathName = null;
-
                 for (RelatedMetadataElement connectionLink : connectionLinks)
                 {
                     if (connectionLink != null)
@@ -538,7 +562,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
             else
             {
-                String pathName = this.getPathNameFromConnection(asset.getElementGUID(), connectionLinks.get(0));
+                pathName = this.getPathNameFromConnection(asset.getElementGUID(), connectionLinks.get(0));
 
                 if (pathName != null)
                 {
@@ -559,23 +583,22 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
 
         /*
-         * Unable to get the pathname from the endpoint so default to the qualified name.
+         * Unable to get the path name from the pathName or endpoint so default to the qualified name.
          */
-        ElementProperties properties = asset.getElementProperties();
 
-        String qualifiedName = propertyHelper.getStringProperty(governanceServiceName,
-                                                                qualifiedNameParameterName,
-                                                                properties,
-                                                                methodName);
+        pathName = propertyHelper.getStringProperty(governanceServiceName,
+                                                    qualifiedNameParameterName,
+                                                    properties,
+                                                    methodName);
 
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
                                 GovernanceActionConnectorsAuditCode.QUALIFIED_NAME_PATH_NAME.getMessageDefinition(governanceServiceName,
-                                                                                                                  qualifiedName));
+                                                                                                                  pathName));
         }
 
-        return qualifiedName;
+        return pathName;
     }
 
 
@@ -715,7 +738,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String fileExtension = FilenameUtils.getExtension(destinationFilePathName);
         String newFileGUID;
 
-        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, false, false, null);
+        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, true, false, null);
         String processGUID;
 
         if (topLevelProcessGUID == null)
@@ -757,11 +780,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID == null)
         {
-            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", false, false, null);
+            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
 
             if (sourceFileGUID == null)
             {
-                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
+                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, true, false, null);
             }
 
             if (! sourceLineageFromFile)
@@ -770,11 +793,14 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
         }
 
+        ElementProperties extendedProperties = propertyHelper.addStringProperty(null, "pathName", destinationFilePathName);
+        extendedProperties = propertyHelper.addStringProperty(extendedProperties, "fileName", fileName);
+
+        String            assetTypeName = this.getAssetTypeName(fileExtension);
+
         if (destinationFileTemplateQualifiedName == null)
         {
-            String assetTypeName = this.getAssetTypeName(fileExtension);
-
-            newFileGUID = governanceContext.createAsset(assetTypeName, destinationFilePathName, fileName, null);
+            newFileGUID = governanceContext.createAsset(assetTypeName, assetTypeName + ":" + destinationFilePathName, fileName, null, null, extendedProperties);
         }
         else
         {
@@ -784,7 +810,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                                    false,
                                                                                                                    null);
 
-            newFileGUID = governanceContext.createAssetFromTemplate(assetTemplateGUID, destinationFilePathName, fileName, null);
+            newFileGUID = governanceContext.createAssetFromTemplate(assetTypeName, assetTemplateGUID, "CSVFile:" + destinationFilePathName, fileName, null, null, extendedProperties);
+
+            if ((assetTemplateGUID == null) && (auditLog != null))
+            {
+                auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
+                                                                                                                          destinationFileTemplateQualifiedName,
+                                                                                                                          MoveCopyFileGovernanceActionProvider.DESTINATION_TEMPLATE_NAME_PROPERTY,
+                                                                                                                          newFileGUID));
+            }
         }
 
         if (! destinationLineageToFile)
@@ -792,13 +826,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             newFileGUID = getFolderGUID(newFileGUID);
         }
 
-        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
+        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageMapping(sourceFileGUID, processGUID);
+            governanceContext.createLineageRelationship("DataFlow", sourceFileGUID, null, null, null, processGUID);
         }
 
-        governanceContext.createLineageMapping(processGUID, newFileGUID);
+        governanceContext.createLineageRelationship("DataFlow", processGUID, null, null, null, newFileGUID);
 
         if (auditLog != null)
         {

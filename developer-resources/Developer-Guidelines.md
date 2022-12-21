@@ -171,7 +171,7 @@ a comprehensive multi-level approach to testing.
 Modules include unit tests.  These unit tests should focus on
 simple validation of Java Beans, utilities and code that can easily be tested
 in isolation.  The unit tests run as part of the build and a pull request
-can not be incorporated into master if
+can not be incorporated into main if
 any unit tests are failing.  They should not significantly extend the time of the
 build since this impacts all of the contributors productivity.
 Our preferred Java frameworks for unit testing are [TestNG](http://testng.org) and [Mockito](http://mockito.org).
@@ -189,7 +189,7 @@ FVTs should be able to validate that this function is stable and correct.
 
 Some connectors are tested via the [Conformance Test Suite](../open-metadata-conformance-suite).
 If you deliver a connector that is covered by this test suite, you should run the tests before
-merging changes into master.  The conformance test suite is also
+merging changes into main.  The conformance test suite is also
 run as part of the release process.
 
 Egeria's hands on labs

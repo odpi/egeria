@@ -5,12 +5,14 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -291,8 +293,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Files live on a file system.  This method creates a top level anchor for a file system.
-     * It has its own method because ot the extra properties in the FileSystem classification
+     * Files live on a file system.  This method creates a top level parent for a file system.
+     * It has its own method because of the extra properties in the FileSystem classification
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -368,13 +370,14 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Create the requested asset.
+     * Create the requested FileFolder asset.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param pathName qualified name for the file system
-     * @param displayName short display name
+     * @param pathName full path name for the file system
+     * @param name short display name
+     * @param versionIdentifier version identifier for the folder
      * @param description description of the file system
      * @param typeName type of file system
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -394,7 +397,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 String  externalSourceGUID,
                                 String  externalSourceName,
                                 String  pathName,
-                                String  displayName,
+                                String  name,
+                                String  versionIdentifier,
                                 String  description,
                                 String  typeName,
                                 Date    effectiveFrom,
@@ -403,8 +407,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 boolean forDuplicateProcessing,
                                 Date    effectiveTime,
                                 String  methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String folderAssetGUIDParameterName = "folderAssetGUID";
 
@@ -414,16 +418,21 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             folderAssetTypeName = typeName;
         }
 
+        Map<String, Object> extendedProperties = new HashMap<>();
+
+        extendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
+
         return folderHandler.createAssetWithConnection(userId,
                                                        externalSourceGUID,
                                                        externalSourceName,
                                                        folderAssetGUIDParameterName,
-                                                       pathName,
-                                                       displayName,
+                                                       this.createQualifiedName(folderAssetTypeName, null, pathName, versionIdentifier),
+                                                       name,
+                                                       versionIdentifier,
                                                        description,
                                                        null,
                                                        folderAssetTypeName,
-                                                       null,
+                                                       extendedProperties,
                                                        InstanceStatus.ACTIVE,
                                                        true,
                                                        null,
@@ -447,8 +456,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param fileType file extension name
+     * @param fileName name of the file
      * @param pathName qualified name for the file system
      * @param displayName short display name
+     * @param versionIdentifier version identifier for the file system
      * @param description description of the file system
      * @param typeName type of file system
      * @param initialExtendedProperties extended properties for a specific file type
@@ -470,8 +481,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              externalSourceGUID,
                                    String              externalSourceName,
                                    String              fileType,
+                                   String              fileName,
                                    String              pathName,
                                    String              displayName,
+                                   String              versionIdentifier,
                                    String              description,
                                    String              typeName,
                                    Map<String, Object> initialExtendedProperties,
@@ -494,6 +507,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         }
 
         extendedProperties.put(OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME, fileType);
+        extendedProperties.put(OpenMetadataAPIMapper.FILE_NAME_PROPERTY_NAME, fileName);
+        extendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
 
         String fileAssetTypeName = OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
         if (typeName != null)
@@ -505,8 +520,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceGUID,
                                                      externalSourceName,
                                                      fileAssetGUIDParameterName,
-                                                     pathName,
+                                                     this.createQualifiedName(fileAssetTypeName, null, pathName, versionIdentifier),
                                                      displayName,
+                                                     versionIdentifier,
                                                      description,
                                                      null,
                                                      fileAssetTypeName,
@@ -524,7 +540,36 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      forDuplicateProcessing,
                                                      effectiveTime,
                                                      methodName);
+    }
 
+
+    /**
+     * Construct the qualified name for a file resource.
+     *
+     * @param typeName type of element
+     * @param qualifiedName supplied qualified name
+     * @param pathName pathname in file system
+     * @param versionIdentifier version identifier
+     * @return qualified name
+     */
+    private String createQualifiedName(String typeName,
+                                       String qualifiedName,
+                                       String pathName,
+                                       String versionIdentifier)
+    {
+        if (qualifiedName != null)
+        {
+            return qualifiedName;
+        }
+
+        if (versionIdentifier == null)
+        {
+            return typeName + ":" + pathName;
+        }
+        else
+        {
+            return typeName + ":" + pathName + ":" + versionIdentifier;
+        }
     }
 
 
@@ -539,6 +584,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param connectToGUID root object to connect the folder to
      * @param pathName pathname of the folder (or folders)
      * @param folderName name of the leaf folder
+     * @param versionIdentifier version identifier for the asset
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -558,6 +604,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          String   connectToGUID,
                                          String   pathName,
                                          String   folderName,
+                                         String   versionIdentifier,
                                          Date     effectiveFrom,
                                          Date     effectiveTo,
                                          boolean  forLineage,
@@ -575,6 +622,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          pathName,
                                          folderName,
+                                         versionIdentifier,
                                          null,
                                          OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                          effectiveFrom,
@@ -698,7 +746,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     }
                     else
                     {
-                        pathName = folderFragment;
+                        pathName = folderDivider + folderFragment;
                     }
                 }
                 else
@@ -730,6 +778,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               nextConnectToGUID,
                                                               pathName,
                                                               folderName,
+                                                              null,
                                                               effectiveFrom,
                                                               effectiveTo,
                                                               forLineage,
@@ -1241,6 +1290,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param fileAssetGUID unique identifier of file asset
      * @param fileAssetParameterName parameter providing the fileAssetGUID
+     * @param fileAssetTypeName name of the type of file or folder
      * @param pathName pathname of the file
      * @param pathNameParameterName parameter providing the pathName
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1259,6 +1309,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String  externalSourceName,
                                           String  fileAssetGUID,
                                           String  fileAssetParameterName,
+                                          String  fileAssetTypeName,
                                           String  pathName,
                                           String  pathNameParameterName,
                                           boolean forLineage,
@@ -1383,6 +1434,15 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             }
             else
             {
+                String relationshipTypeGUID = OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID;
+                String relationshipTypeName = OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
+
+                if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME))
+                {
+                    relationshipTypeGUID = OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID;
+                    relationshipTypeName = OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME;
+                }
+
                 folderHandler.linkElementToElement(userId,
                                                    externalSourceGUID,
                                                    externalSourceName,
@@ -1391,11 +1451,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
-                                                   OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                   fileAssetTypeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
+                                                   relationshipTypeGUID,
+                                                   relationshipTypeName,
                                                    (InstanceProperties) null,
                                                    null,
                                                    null,
@@ -1438,7 +1498,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param displayName display name for the folder in the catalog
+     * @param name  name for the folder in the catalog
+     * @param versionIdentifier version identifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param pathName pathname of the file
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -1457,7 +1518,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String> addDataFileAssetToCatalog(String   userId,
                                                   String   externalSourceGUID,
                                                   String   externalSourceName,
-                                                  String   displayName,
+                                                  String   name,
+                                                  String   versionIdentifier,
                                                   String   description,
                                                   String   pathName,
                                                   Date     effectiveFrom,
@@ -1476,13 +1538,15 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateName(pathName, pathParameterName, methodName);
 
         String fileType = this.getFileType(pathName);
-
+        String fileName = this.getFileName(pathName);
         String fileAssetGUID = this.createFileAsset(userId,
                                                     externalSourceGUID,
                                                     externalSourceName,
                                                     fileType,
+                                                    fileName,
                                                     pathName,
-                                                    displayName,
+                                                    name,
+                                                    versionIdentifier,
                                                     description,
                                                     OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                     null,
@@ -1499,6 +1563,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
+                                     OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                      pathName,
                                      pathParameterName,
                                      forLineage,
@@ -1601,8 +1666,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
+     * @param qualifiedName optional qualified name
      * @param pathName pathname of the file
-     * @param displayName display name for the folder in the catalog
+     * @param name  name for the folder in the catalog
+     * @param versionIdentifier  version identifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param createTime time that the folder was created
      * @param modifiedTime the time of the latest change to the file
@@ -1630,8 +1697,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String> addDataFolderAssetToCatalog(String              userId,
                                                     String              externalSourceGUID,
                                                     String              externalSourceName,
+                                                    String              qualifiedName,
                                                     String              pathName,
-                                                    String              displayName,
+                                                    String              name,
+                                                    String              versionIdentifier,
                                                     String              description,
                                                     Date                createTime,
                                                     Date                modifiedTime,
@@ -1680,8 +1749,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        externalSourceGUID,
                                                                        externalSourceName,
                                                                        folderAssetParameterName,
-                                                                       pathName,
-                                                                       displayName,
+                                                                       createQualifiedName(folderAssetTypeName, qualifiedName, pathName, versionIdentifier),
+                                                                       name,
+                                                                       versionIdentifier,
                                                                        description,
                                                                        additionalProperties,
                                                                        folderAssetTypeName,
@@ -1705,6 +1775,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      folderAssetGUID,
                                      folderAssetParameterName,
+                                     folderAssetTypeName,
                                      pathName,
                                      pathParameterName,
                                      forLineage,
@@ -1726,7 +1797,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param displayName display name for the folder in the catalog
+     * @param name  name for the folder in the catalog
+     * @param versionIdentifier  versionIdentifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param pathName pathname of the file
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -1746,7 +1818,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              externalSourceGUID,
                                                     String              externalSourceName,
                                                     String              pathName,
-                                                    String              displayName,
+                                                    String              name,
+                                                    String              versionIdentifier,
                                                     String              description,
                                                     Date                effectiveFrom,
                                                     Date                effectiveTo,
@@ -1767,7 +1840,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceGUID,
                                                    externalSourceName,
                                                    pathName,
-                                                   displayName,
+                                                   name,
+                                                   versionIdentifier,
                                                    description,
                                                    OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
                                                    effectiveFrom,
@@ -1782,6 +1856,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      folderAssetGUID,
                                      folderAssetParameterName,
+                                     OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
                                      pathName,
                                      pathParameterName,
                                      forLineage,
@@ -1798,7 +1873,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the file - typically path and file name
-     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param name short  name for file (defaults to the file name without the path)
+     * @param versionIdentifier version identifier for the file
      * @param description description of the file
      * @param pathName  the fully qualified physical location of the data store - default is qualified name
      * @param createTime the time that the file was created
@@ -1829,7 +1905,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String              externalSourceGUID,
                                           String              externalSourceName,
                                           String              qualifiedName,
-                                          String              displayName,
+                                          String              name,
+                                          String              versionIdentifier,
                                           String              description,
                                           String              pathName,
                                           Date                createTime,
@@ -1852,18 +1929,20 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String pathParameterName = "qualifiedName";
+        String pathParameterName = "pathName";
         final String fileAssetParameterName = "fileAssetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, pathParameterName, methodName);
 
         String fullPath = pathName;
 
         if (fullPath == null)
         {
             fullPath = qualifiedName;
+            pathParameterName = "qualifiedName";
         }
+
+        invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
         String fileType = suppliedFileType;
 
@@ -1903,8 +1982,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      externalSourceGUID,
                                                                      externalSourceName,
                                                                      fileAssetParameterName,
-                                                                     fullPath,
-                                                                     displayName,
+                                                                     createQualifiedName(fileAssetTypeName, qualifiedName, pathName, versionIdentifier),
+                                                                     name,
+                                                                     versionIdentifier,
                                                                      description,
                                                                      additionalProperties,
                                                                      fileAssetTypeName,
@@ -1930,6 +2010,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          fileAssetGUID,
                                          fileAssetParameterName,
+                                         fileAssetTypeName,
                                          fullPath,
                                          pathParameterName,
                                          forLineage,
@@ -1949,8 +2030,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the asset description to copy
+     * @param qualifiedName optional unique name
      * @param fullPath unique path and file name for file
-     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param name short display name for file (defaults to the file name without the path)
+     * @param versionIdentifier version identifier of the file
      * @param description description of the file
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -1966,8 +2049,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       String  externalSourceGUID,
                                                       String  externalSourceName,
                                                       String  templateGUID,
+                                                      String  qualifiedName,
                                                       String  fullPath,
-                                                      String  displayName,
+                                                      String  name,
+                                                      String  versionIdentifier,
                                                       String  description,
                                                       boolean forLineage,
                                                       boolean forDuplicateProcessing,
@@ -1977,12 +2062,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  PropertyServerException
     {
         final String templateGUIDParameterName  = "templateGUID";
-        final String qualifiedNameParameterName = "fullPath";
+        final String pathNameParameterName      = "fullPath";
         final String fileAssetParameterName     = "fileAssetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(fullPath, qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(fullPath, pathNameParameterName, methodName);
 
         String fileAssetGUID = fileHandler.addAssetFromTemplate(userId,
                                                                 externalSourceGUID,
@@ -1991,10 +2076,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                 templateGUIDParameterName,
                                                                 OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                                fullPath,
-                                                                qualifiedNameParameterName,
-                                                                displayName,
+                                                                createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, qualifiedName, fullPath, versionIdentifier),
+                                                                pathNameParameterName,
+                                                                name,
+                                                                versionIdentifier,
                                                                 description,
+                                                                fullPath,
                                                                 fullPath,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
@@ -2008,8 +2095,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          fileAssetGUID,
                                          fileAssetParameterName,
+                                         OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                          fullPath,
-                                         qualifiedNameParameterName,
+                                         pathNameParameterName,
                                          forLineage,
                                          forDuplicateProcessing,
                                          effectiveTime,
@@ -2021,14 +2109,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Create a new file asset based on an existing asset but with the supplied path name, display name and description.
+     * Create a new folder asset based on an existing asset but with the supplied path name, display name and description.
      *
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the asset description to copy
+     * @param qualifiedName optional qualified name
      * @param pathName unique path and file name for file
-     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param name short name for file (defaults to the file name without the path)
+     * @param versionIdentifier version identifier for the file
      * @param description description of the file
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -2044,8 +2134,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                         String  externalSourceGUID,
                                                         String  externalSourceName,
                                                         String  templateGUID,
+                                                        String  qualifiedName,
                                                         String  pathName,
-                                                        String  displayName,
+                                                        String  name,
+                                                        String  versionIdentifier,
                                                         String  description,
                                                         boolean forLineage,
                                                         boolean forDuplicateProcessing,
@@ -2055,24 +2147,26 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                    PropertyServerException
     {
         final String templateGUIDParameterName  = "templateGUID";
-        final String qualifiedNameParameterName = "pathName";
+        final String pathNameParameterName      = "pathName";
         final String fileAssetParameterName     = "folderAssetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(pathName, qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(pathName, pathNameParameterName, methodName);
 
         String folderAssetGUID = fileHandler.addAssetFromTemplate(userId,
                                                                   externalSourceGUID,
                                                                   externalSourceName,
                                                                   templateGUID,
                                                                   templateGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
-                                                                  pathName,
-                                                                  qualifiedNameParameterName,
-                                                                  displayName,
+                                                                  OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                                  this.createQualifiedName(OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME, qualifiedName, pathName, versionIdentifier),
+                                                                  pathNameParameterName,
+                                                                  name,
+                                                                  versionIdentifier,
                                                                   description,
+                                                                  pathName,
                                                                   pathName,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -2086,8 +2180,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          folderAssetGUID,
                                          fileAssetParameterName,
+                                         OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                          pathName,
-                                         qualifiedNameParameterName,
+                                         pathNameParameterName,
                                          forLineage,
                                          forDuplicateProcessing,
                                          effectiveTime,
@@ -2104,7 +2199,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param displayName display name for the file in the catalog
+     * @param name display name for the file in the catalog
+     * @param versionIdentifier version identifier for the file
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -2123,7 +2219,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addAvroFileToCatalog(String       userId,
                                               String       externalSourceGUID,
                                               String       externalSourceName,
-                                              String       displayName,
+                                              String       name,
+                                              String       versionIdentifier,
                                               String       description,
                                               String       fullPath,
                                               Date         effectiveFrom,
@@ -2142,6 +2239,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
         String fileType = this.getFileType(fullPath);
+        String fileName = this.getFileName(fullPath);
 
         if (fileType == null)
         {
@@ -2152,8 +2250,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceGUID,
                                                     externalSourceName,
                                                     fileType,
+                                                    fileName,
                                                     fullPath,
-                                                    displayName,
+                                                    name,
+                                                    versionIdentifier,
                                                     description,
                                                     OpenMetadataAPIMapper.AVRO_FILE_TYPE_NAME,
                                                     null,
@@ -2170,6 +2270,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
+                                     OpenMetadataAPIMapper.AVRO_FILE_TYPE_NAME,
                                      fullPath,
                                      pathParameterName,
                                      forLineage,
@@ -2185,7 +2286,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param displayName display name for the file in the catalog
+     * @param name  name for the file in the catalog
+     * @param versionIdentifier version identifier for the file
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
@@ -2207,7 +2309,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addCSVFileToCatalog(String       userId,
                                              String       externalSourceGUID,
                                              String       externalSourceName,
-                                             String       displayName,
+                                             String       name,
+                                             String       versionIdentifier,
                                              String       description,
                                              String       fullPath,
                                              List<String> columnHeaders,
@@ -2231,6 +2334,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
         String fileType = this.getFileType(fullPath);
+        String fileName = this.getFileName(fullPath);
 
         if (fileType == null)
         {
@@ -2266,8 +2370,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceGUID,
                                                     externalSourceName,
                                                     fileType,
+                                                    fileName,
                                                     fullPath,
-                                                    displayName,
+                                                    name,
+                                                    versionIdentifier,
                                                     description,
                                                     OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                                                     extendedProperties,
@@ -2370,6 +2476,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetGUIDParameterName,
+                                     OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                                      fullPath,
                                      pathParameterName,
                                      forLineage,
@@ -2389,6 +2496,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
      * @param fullPath unique path and file name for file
      * @param displayName short display name for file (defaults to the file name without the path)
+     * @param versionIdentifier versionIdentifier property
      * @param description description of the file
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
@@ -2417,6 +2525,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                     boolean             isMergeUpdate,
                                     String              fullPath,
                                     String              displayName,
+                                    String              versionIdentifier,
                                     String              description,
                                     Date                createTime,
                                     Date                modifiedTime,
@@ -2441,6 +2550,18 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
 
+        String qualifiedName = null;
+        String fileType = suppliedFileType;
+
+        if ((fullPath != null) && (fileType == null))
+        {
+            fileType = this.getFileType(fullPath);
+        }
+        if (! isMergeUpdate)
+        {
+            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME, null, fullPath, versionIdentifier);
+        }
+
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
                                                                                  createTime,
                                                                                  modifiedTime,
@@ -2448,17 +2569,27 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  encodingLanguage,
                                                                                  encodingDescription,
                                                                                  encodingProperties,
-                                                                                 suppliedFileType,
+                                                                                 fileType,
                                                                                  extendedProperties);
 
+        if (fullPath != null)
+        {
+            if (assetExtendedProperties == null)
+            {
+                assetExtendedProperties = new HashMap<>();
+            }
+
+            assetExtendedProperties.put(OpenMetadataAPIMapper.FILE_NAME_PROPERTY_NAME, this.getFileName(fullPath));
+        }
 
         fileHandler.updateAsset(userId,
                                 externalSourceGUID,
                                 externalSourceName,
                                 dataFileGUID,
                                 dataFileGUIDParameterName,
-                                fullPath,
+                                qualifiedName,
                                 displayName,
+                                versionIdentifier,
                                 description,
                                 additionalProperties,
                                 OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
@@ -2484,7 +2615,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param dataFileGUID guid of the file asset
      * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
      * @param fullPath unique path and file name for file
-     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param versionIdentifier version identifier for the file
+     * @param displayName short name for file
      * @param description description of the file
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
@@ -2512,6 +2644,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                       boolean             isMergeUpdate,
                                       String              fullPath,
                                       String              displayName,
+                                      String              versionIdentifier,
                                       String              description,
                                       Date                createTime,
                                       Date                modifiedTime,
@@ -2530,10 +2663,17 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String dataFolderGUIDParameterName = "dataFolderGUID";
+        final String dataFileGUIDParameterName = "dataFileGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataFileGUID, dataFolderGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
+
+        String qualifiedName = null;
+
+        if (! isMergeUpdate)
+        {
+            qualifiedName = this.createQualifiedName(OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME, null, fullPath, versionIdentifier);
+        }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
                                                                                  createTime,
@@ -2550,9 +2690,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 externalSourceGUID,
                                 externalSourceName,
                                 dataFileGUID,
-                                dataFolderGUIDParameterName,
-                                fullPath,
+                                dataFileGUIDParameterName,
+                                qualifiedName,
                                 displayName,
+                                versionIdentifier,
                                 description,
                                 additionalProperties,
                                 OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
@@ -2761,7 +2902,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param dataFileGUID guid of the file asset
-     * @param fullPathname unique path and file name for file
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2775,7 +2915,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                       String  externalSourceGUID,
                                       String  externalSourceName,
                                       String  dataFileGUID,
-                                      String  fullPathname,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime,
@@ -2795,8 +2934,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            dataFileGUIDParameterName,
                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           fullPathname,
+                                           null,
+                                           null,
                                            forLineage,
                                            forDuplicateProcessing,
                                            effectiveTime,
@@ -2812,7 +2951,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param dataFolderGUID guid of the file asset
-     * @param fullPathname unique path and file name for file
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2826,7 +2964,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                         String  externalSourceGUID,
                                         String  externalSourceName,
                                         String  dataFolderGUID,
-                                        String  fullPathname,
                                         boolean forLineage,
                                         boolean forDuplicateProcessing,
                                         Date    effectiveTime,
@@ -2846,8 +2983,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            dataFolderGUIDParameterName,
                                            OpenMetadataAPIMapper.DATA_FOLDER_TYPE_GUID,
                                            OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           fullPathname,
+                                           null,
+                                           null,
                                            forLineage,
                                            forDuplicateProcessing,
                                            effectiveTime,
@@ -3033,17 +3170,44 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        final String  nameName = "pathName";
+        final String  pathNameParameterName = "pathName";
 
-        return folderHandler.getBeanGUIDByQualifiedName(userId,
-                                                        OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                        pathName,
-                                                        nameName,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        effectiveTime,
-                                                        methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        List<EntityDetail> entities = fileHandler.getEntitiesByValue(userId,
+                                                                     pathName,
+                                                                     pathNameParameterName,
+                                                                     OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                                     specificMatchPropertyNames,
+                                                                     true,
+                                                                     null,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                     0,
+                                                                     0,
+                                                                     effectiveTime,
+                                                                     methodName);
+        if (entities == null)
+        {
+            return null;
+        }
+        else if (entities.size() == 1)
+        {
+            return entities.get(0).getGUID();
+        }
+
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                                                                                pathName,
+                                                                                                                entities.toString(),
+                                                                                                                methodName,
+                                                                                                                pathNameParameterName,
+                                                                                                                serverName),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 
 
@@ -3072,17 +3236,44 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String  nameName = "pathName";
+        final String  pathNameParameterName = "pathName";
 
-        return folderHandler.getBeanByQualifiedName(userId,
-                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                    pathName,
-                                                    nameName,
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        List<FOLDER> folders = folderHandler.getBeansByValue(userId,
+                                                             pathName,
+                                                             pathNameParameterName,
+                                                             OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                             specificMatchPropertyNames,
+                                                             true,
+                                                             null,
+                                                             null,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             0,
+                                                             0,
+                                                             effectiveTime,
+                                                             methodName);
+        if (folders == null)
+        {
+            return null;
+        }
+        else if (folders.size() == 1)
+        {
+            return folders.get(0);
+        }
+
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                                                                                pathName,
+                                                                                                                folders.toString(),
+                                                                                                                methodName,
+                                                                                                                pathNameParameterName,
+                                                                                                                serverName),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 
 
@@ -3092,6 +3283,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      *
      * @param userId calling user
      * @param pathName path name
+     * @param startingFrom starting point in the list
+     * @param pageSize maximum number of results
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3103,28 +3296,38 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<FOLDER> findFolderByPathName(String  userId,
-                                             String  pathName,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime,
-                                             String  methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<FOLDER> findFoldersByPathName(String  userId,
+                                              String  pathName,
+                                              int     startingFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        final String  nameName = "pathName";
+        final String  pathNameParameterName = "pathName";
 
-        return folderHandler.findBeansByQualifiedName(userId,
-                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                      pathName,
-                                                      nameName,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      0,
-                                                      invalidParameterHandler.getMaxPagingSize(),
-                                                      effectiveTime,
-                                                      methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        return folderHandler.getBeansByValue(userId,
+                                             pathName,
+                                             pathNameParameterName,
+                                             OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
+                                             OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                             specificMatchPropertyNames,
+                                             false,
+                                             null,
+                                             null,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                             startingFrom,
+                                             pageSize,
+                                             effectiveTime,
+                                             methodName);
     }
 
 
@@ -3133,6 +3336,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      *
      * @param userId calling user
      * @param name wildcard  name
+     * @param startingFrom starting point in the list
+     * @param pageSize maximum number of results
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3144,14 +3349,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<FOLDER> findFolderByName(String  userId,
-                                         String  name,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<FOLDER> findFoldersByName(String  userId,
+                                          String  name,
+                                          int     startingFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String  nameName = "name";
 
@@ -3160,8 +3367,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                               name,
                                               nameName,
-                                              0,
-                                              invalidParameterHandler.getMaxPagingSize(),
+                                              startingFrom,
+                                              pageSize,
                                               forLineage,
                                               forDuplicateProcessing,
                                               effectiveTime,
@@ -3281,31 +3488,84 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> getFolderFiles(String  userId,
-                                       String  folderGUID,
-                                       String  folderGUIDParameterName,
-                                       int     startingFrom,
-                                       int     pageSize,
-                                       boolean forLineage,
-                                       boolean forDuplicateProcessing,
-                                       Date    effectiveTime,
-                                       String  methodName) throws InvalidParameterException,
+    public List<String> getFolderFileGUIDs(String  userId,
+                                           String  folderGUID,
+                                           String  folderGUIDParameterName,
+                                           int     startingFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
+        // todo - handle linked files
         return fileHandler.getAttachedElementGUIDs(userId,
                                                    folderGUID,
                                                    folderGUIDParameterName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                   OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME,
-                                                   OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    startingFrom,
                                                    pageSize,
                                                    effectiveTime,
                                                    methodName);
+    }
+
+
+    /**
+     * Get the files inside a folder - both those that are nested and those that are linked.
+     *
+     * @param userId calling user
+     * @param folderGUID unique identifier of the anchor folder
+     * @param folderGUIDParameterName name of parameter providing folderGUID
+     * @param startingFrom starting point in the list
+     * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of file asset unique identifiers
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<FILE> getFolderFiles(String  userId,
+                                           String  folderGUID,
+                                           String  folderGUIDParameterName,
+                                           int     startingFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        // todo - handle linked files
+
+        return fileHandler.getAttachedElements(userId,
+                                               folderGUID,
+                                               folderGUIDParameterName,
+                                               OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                               OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
+                                               OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                               null,
+                                               null,
+                                               2,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               startingFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               methodName);
     }
 
 
@@ -3374,21 +3634,48 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return fileHandler.getBeanByQualifiedName(userId,
-                                                  OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                  pathName,
-                                                  pathNameParameterName,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  effectiveTime,
-                                                  methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        List<FILE> files = fileHandler.getBeansByValue(userId,
+                                                       pathName,
+                                                       pathNameParameterName,
+                                                       OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                       specificMatchPropertyNames,
+                                                       true,
+                                                       null,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                       0,
+                                                       0,
+                                                       effectiveTime,
+                                                       methodName);
+        if (files == null)
+        {
+            return null;
+        }
+        else if (files.size() == 1)
+        {
+            return files.get(0);
+        }
+
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                                                                                pathName,
+                                                                                                                files.toString(),
+                                                                                                                methodName,
+                                                                                                                pathNameParameterName,
+                                                                                                                serverName),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 
 
     /**
-     * Retrieve a data file by its fully qualified path name.  In theory there should be none or one asset returned.
-     * However, in complex environments, duplicates are possible.
+     * Find data file by a full or partial path name. The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * pathName property.
      *
      * @param userId calling user
      * @param pathName path name
@@ -3406,34 +3693,43 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<FILE> findDataFileByPathName(String  userId,
-                                             String  pathName,
-                                             String  pathNameParameterName,
-                                             int     startingFrom,
-                                             int     pageSize,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime,
-                                             String  methodName) throws InvalidParameterException,
+    public List<FILE> findDataFilesByPathName(String  userId,
+                                              String  pathName,
+                                              String  pathNameParameterName,
+                                              int     startingFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return fileHandler.findBeansByQualifiedName(userId,
-                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                    pathName,
-                                                    pathNameParameterName,
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    startingFrom,
-                                                    pageSize,
-                                                    effectiveTime,
-                                                    methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        return fileHandler.getBeansByValue(userId,
+                                           pathName,
+                                           pathNameParameterName,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                           specificMatchPropertyNames,
+                                           false,
+                                           null,
+                                           null,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           startingFrom,
+                                           pageSize,
+                                           effectiveTime,
+                                           methodName);
     }
 
 
     /**
-     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * qualifiedName, name and pathName property.
      *
      * @param userId calling user
      * @param name wildcard name
@@ -3463,16 +3759,26 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        return fileHandler.findAssetsByName(userId,
-                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
-                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                            name,
-                                            nameParameterName,
-                                            startingFrom,
-                                            pageSize,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME);
+
+        return fileHandler.getBeansByValue(userId,
+                                           name,
+                                           nameParameterName,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                           specificMatchPropertyNames,
+                                           true,
+                                           null,
+                                           null,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           startingFrom,
+                                           pageSize,
+                                           effectiveTime,
+                                           methodName);
     }
 }

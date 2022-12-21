@@ -30,33 +30,6 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
     private List<String> publishZones = null;
 
-    /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
-     *
-     * @param connectorInstanceId   unique id for the connector instance useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
-    {
-        super.initialize(connectorInstanceId, connectionProperties);
-
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        /*
-         * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
-         */
-        if (configurationProperties != null)
-        {
-            Object publishZonesOption = configurationProperties.get(ZonePublisherGovernanceActionProvider.PUBLISH_ZONES_PROPERTY);
-
-            if (publishZonesOption != null)
-            {
-                publishZones = getZoneArrayFromString(publishZonesOption.toString());
-            }
-        }
-    }
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
@@ -72,6 +45,21 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
         final String methodName = "start";
 
         super.start();
+
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        /*
+         * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
+         */
+        if (configurationProperties != null)
+        {
+            Object publishZonesOption = configurationProperties.get(ZonePublisherGovernanceActionProvider.PUBLISH_ZONES_PROPERTY);
+
+            if (publishZonesOption != null)
+            {
+                publishZones = getZoneArrayFromString(publishZonesOption.toString());
+            }
+        }
 
         /*
          * Retrieve the zones to set in the assets.  This may override the value set in the configuration properties.

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
@@ -62,6 +62,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -99,7 +100,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
@@ -140,6 +140,7 @@ public class DataEngineRESTServices {
     public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
     public static final String UPSERT_METHOD_CALLS_FOR = "Method {} will take longer. Inside it, upsert method will be called for: {} and/or {}";
     public static final String TOPIC_PARAMETER_NAME = "topic";
+    public static final String PROCESSING_STATE = "processingState";
     private static final String EVENT_TYPE_PARAMETER_NAME = "eventType";
     private static final String TOPIC_QUALIFIED_NAME_PARAMETER_NAME = "topicQualifiedName";
 
@@ -147,7 +148,7 @@ public class DataEngineRESTServices {
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
 
     /**
-     * Create the external data engine as software server capability entity
+     * Create the external data engine as engine entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
@@ -166,7 +167,7 @@ public class DataEngineRESTServices {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
-            response.setGUID(createExternalDataEngine(userId, serverName, requestBody.getSoftwareServerCapability()));
+            response.setGUID(createExternalDataEngine(userId, serverName, requestBody.getEngine()));
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
@@ -182,7 +183,7 @@ public class DataEngineRESTServices {
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the external data engine
      *
-     * @return the unique identifier from a software server capability definition for an external data engine
+     * @return the unique identifier from an engine definition for an external data engine
      */
     public GUIDResponse getExternalDataEngine(String serverName, String userId, String qualifiedName) {
         final String methodName = "getExternalDataEngineByQualifiedName";
@@ -758,11 +759,11 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the external data engine as software server capability entity
+     * Create the external data engine as engine entity
      *
-     * @param userId                   the name of the calling user
-     * @param serverName               name of server instance to call
-     * @param softwareServerCapability the software server values
+     * @param userId     the name of the calling user
+     * @param serverName name of server instance to call
+     * @param engine     the engine values
      *
      * @return he unique identifier (guid) of the created external data engine
      *
@@ -770,24 +771,24 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String createExternalDataEngine(String userId, String serverName, SoftwareServerCapability softwareServerCapability) throws
+    public String createExternalDataEngine(String userId, String serverName, Engine engine) throws
                                                                                                                                 InvalidParameterException,
                                                                                                                                 PropertyServerException,
                                                                                                                                 UserNotAuthorizedException {
         final String methodName = "createExternalDataEngine";
 
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, softwareServerCapability);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, engine);
 
-        if (softwareServerCapability == null) {
+        if (engine == null) {
             return null;
         }
 
         DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        String softwareServerCapabilityGUID = handler.upsertExternalDataEngine(userId, softwareServerCapability);
+        String externalDataEngineGUID = handler.upsertExternalDataEngine(userId, engine);
 
-        log.info(EXTERNAL_ENGINE_WAS_REGISTERED, softwareServerCapability.getQualifiedName(), softwareServerCapabilityGUID);
-        return softwareServerCapabilityGUID;
+        log.info(EXTERNAL_ENGINE_WAS_REGISTERED, engine.getQualifiedName(), externalDataEngineGUID);
+        return externalDataEngineGUID;
     }
 
     /**
@@ -2192,10 +2193,25 @@ public class DataEngineRESTServices {
 
             ProcessingState processingState = processingStateRequestBody.getProcessingState();
             if (processingState == null) {
-                restExceptionHandler.handleMissingValue("processingState", methodName);
+                restExceptionHandler.handleMissingValue(PROCESSING_STATE, methodName);
                 return response;
             }
             return upsertProcessingState(userId, serverName, processingState, processingStateRequestBody.getExternalSourceName());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    public PropertiesResponse getProcessingState(String userId, String serverName, String externalSourceName) {
+        final String methodName = "getProcessingState";
+
+        PropertiesResponse response = new PropertiesResponse();
+        try {
+            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+            ProcessingState processingState = handler.getProcessingStateClassification(userId, externalSourceName);
+            Map<String, Object> properties = new HashMap<>(processingState.getSyncDatesByKey());
+            response.setProperties(properties);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
@@ -2217,7 +2233,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
         try {
             DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
-            handler.createDataEngineClassification(userId, processingState, externalSourceName);
+            handler.upsertProcessingStateClassification(userId, processingState, externalSourceName);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }

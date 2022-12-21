@@ -18,6 +18,8 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
     private final String       displayName;
     private final String       description;
     private final List<String> supportedGuards;
+    private final boolean      ignoreMultipleTriggers;
+    private final int          waitTime;
 
     /**
      * Create constructor
@@ -27,6 +29,8 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
      * @param displayName short display name for the governance action
      * @param description description of the governance action
      * @param supportedGuards list of guards that triggered this governance action
+     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     * @param waitTime minimum number of minutes to wait before running the governance action
      * @param additionalProperties additional properties for a governance action
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -37,6 +41,8 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                 String               displayName,
                                 String               description,
                                 List<String>         supportedGuards,
+                                boolean              ignoreMultipleTriggers,
+                                int                  waitTime,
                                 Map<String, String>  additionalProperties,
                                 OMRSRepositoryHelper repositoryHelper,
                                 String               serviceName,
@@ -55,6 +61,8 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
         this.supportedGuards = supportedGuards;
+        this.ignoreMultipleTriggers = ignoreMultipleTriggers;
+        this.waitTime = waitTime;
     }
 
 
@@ -92,6 +100,18 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                                                        OpenMetadataAPIMapper.PRODUCED_GUARDS_PROPERTY_NAME,
                                                                        supportedGuards,
                                                                        methodName);
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
+                                                                   ignoreMultipleTriggers,
+                                                                   methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.WAIT_TIME_PROPERTY_NAME,
+                                                               waitTime,
+                                                               methodName);
 
         return properties;
     }

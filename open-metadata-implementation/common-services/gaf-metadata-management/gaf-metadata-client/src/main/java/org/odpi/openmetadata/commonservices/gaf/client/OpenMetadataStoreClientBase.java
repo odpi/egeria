@@ -4,7 +4,7 @@ package org.odpi.openmetadata.commonservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.gaf.api.MetadataElementInterface;
 import org.odpi.openmetadata.commonservices.gaf.api.MultiLanguageInterface;
-import org.odpi.openmetadata.commonservices.gaf.api.SpecialGovernanceActionInterface;
+import org.odpi.openmetadata.commonservices.gaf.api.StewardshipActionInterface;
 import org.odpi.openmetadata.commonservices.gaf.api.ValidMetadataValuesInterface;
 import org.odpi.openmetadata.commonservices.gaf.client.rest.OpenMetadataStoreRESTClient;
 import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
@@ -38,16 +38,16 @@ import java.util.Map;
  * listener for the watchdog governance services.
  */
 public abstract class OpenMetadataStoreClientBase implements MetadataElementInterface,
-                                                             SpecialGovernanceActionInterface,
+                                                             StewardshipActionInterface,
                                                              MultiLanguageInterface,
                                                              ValidMetadataValuesInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serviceURLMarker;         /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final OpenMetadataStoreRESTClient restClient;               /* Initialized in constructor */
+    protected final String                      serverName;               /* Initialized in constructor */
+    protected final String                      serviceURLMarker;         /* Initialized in constructor */
+    protected final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private   final OpenMetadataStoreRESTClient restClient;               /* Initialized in constructor */
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private final PropertyHelper  propertyHelper  = new PropertyHelper();
 
@@ -119,11 +119,11 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      *
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public OpenMetadataStoreClientBase(String            serviceURLMarker,
-                                       String            serverName,
-                                       String            serverPlatformURLRoot,
+    public OpenMetadataStoreClientBase(String                      serviceURLMarker,
+                                       String                      serverName,
+                                       String                      serverPlatformURLRoot,
                                        OpenMetadataStoreRESTClient restClient,
-                                       int               maxPageSize) throws InvalidParameterException
+                                       int                         maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -208,9 +208,9 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
-     * @return metadata element properties
+     * @return metadata element properties or null if not found
      *
-     * @throws InvalidParameterException  the unique identifier is null or not known.
+     * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
@@ -310,6 +310,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
+                                                                  serviceURLMarker,
                                                                   userId,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -409,26 +410,46 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
-        final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
+
+        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
+        final String specificURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
-        RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
-                                                                                                             urlTemplate,
-                                                                                                             serverName,
-                                                                                                             serviceURLMarker,
-                                                                                                             userId,
-                                                                                                             elementGUID,
-                                                                                                             relationshipTypeName,
-                                                                                                             Integer.toString(startingAtEnd),
-                                                                                                             forLineage,
-                                                                                                             forDuplicateProcessing,
-                                                                                                             this.getEffectiveTimeAsLong(effectiveTime),
-                                                                                                             Integer.toString(startFrom),
-                                                                                                             Integer.toString(pageSize));
+        RelatedMetadataElementListResponse restResult;
+
+        if (relationshipTypeName == null)
+        {
+            restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
+                                                                              allURLTemplate,
+                                                                              serverName,
+                                                                              serviceURLMarker,
+                                                                              userId,
+                                                                              elementGUID,
+                                                                              Integer.toString(startingAtEnd),
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              this.getEffectiveTimeAsLong(effectiveTime),
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
+        }
+        else
+        {
+            restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
+                                                                              specificURLTemplate,
+                                                                              serverName,
+                                                                              serviceURLMarker,
+                                                                              userId,
+                                                                              elementGUID,
+                                                                              relationshipTypeName,
+                                                                              Integer.toString(startingAtEnd),
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              this.getEffectiveTimeAsLong(effectiveTime),
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
+        }
 
         return restResult.getElementList();
     }
@@ -888,6 +909,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         urlTemplate,
                                         requestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         metadataElementGUID,
                                         classificationName);
@@ -1002,6 +1024,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         urlTemplate,
                                         requestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         metadataElementGUID,
                                         classificationName);
@@ -1412,17 +1435,17 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
          */
         List<OpenMetadataElement> personRoleMatches = this.findMetadataElements(userId,
                                                                                 personRoleTypeName,
-                                                                                             null,
-                                                                                             searchProperties,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             false,
-                                                                                             false,
-                                                                                             new Date(),
-                                                                                             0,
-                                                                                             0);
+                                                                                null,
+                                                                                searchProperties,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                new Date(),
+                                                                                0,
+                                                                                0);
 
         if ((personRoleMatches == null) || personRoleMatches.isEmpty())
         {
@@ -1493,130 +1516,6 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         this.createRelatedElementsInStore(userId, actionAssignmentTypeName, personRoleGUID, todoGUID, false, false,null, null, null, new Date());
 
         return todoGUID;
-    }
-
-
-    /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements.
-     * If the relationship already exists, the properties are updated.
-     *
-     * @param userId caller's userId
-     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
-     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     * @param setKnownDuplicate boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public void linkElementsAsPeerDuplicates(String  userId,
-                                             String  metadataElement1GUID,
-                                             String  metadataElement2GUID,
-                                             int     statusIdentifier,
-                                             String  steward,
-                                             String  stewardTypeName,
-                                             String  stewardPropertyName,
-                                             String  source,
-                                             String  notes,
-                                             boolean setKnownDuplicate) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String methodName = "linkElementsAsPeerDuplicates";
-        final String end1ParameterName = "metadataElement1GUID";
-        final String end2ParameterName = "metadataElement2GUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-peer-duplicate";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
-        invalidParameterHandler.validateGUID(metadataElement2GUID, end2ParameterName, methodName);
-
-        PeerDuplicatesRequestBody requestBody = new PeerDuplicatesRequestBody();
-
-        requestBody.setMetadataElement1GUID(metadataElement1GUID);
-        requestBody.setMetadataElement2GUID(metadataElement2GUID);
-        requestBody.setStatusIdentifier(statusIdentifier);
-        requestBody.setSteward(steward);
-        requestBody.setStewardTypeName(stewardTypeName);
-        requestBody.setStewardPropertyName(stewardPropertyName);
-        requestBody.setSource(source);
-        requestBody.setNotes(notes);
-        requestBody.setSetKnownDuplicate(setKnownDuplicate);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId);
-    }
-
-
-    /**
-     * Identify an element that acts as a consolidated version for a set of duplicate elements.
-     * (The consolidated element is created using createMetadataElement.)
-     *
-     * @param userId caller's userId
-     * @param consolidatedElementGUID unique identifier of the metadata element
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
-     *                           have the KnownDuplicateClassification.
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public void linkConsolidatedDuplicate(String       userId,
-                                          String       consolidatedElementGUID,
-                                          int          statusIdentifier,
-                                          String       steward,
-                                          String       stewardTypeName,
-                                          String       stewardPropertyName,
-                                          String       source,
-                                          String       notes,
-                                          List<String> sourceElementGUIDs) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        final String methodName = "linkConsolidatedDuplicate";
-        final String consolidatedElementGUIDParameterName = "consolidatedElementGUID";
-        final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-consolidated-duplicate";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(sourceElementGUIDs, sourceElementGUIDsParameterName, methodName);
-
-        ConsolidatedDuplicatesRequestBody requestBody = new ConsolidatedDuplicatesRequestBody();
-
-        requestBody.setConsolidatedElementGUID(consolidatedElementGUID);
-        requestBody.setStatusIdentifier(statusIdentifier);
-        requestBody.setSteward(steward);
-        requestBody.setStewardTypeName(stewardTypeName);
-        requestBody.setStewardPropertyName(stewardPropertyName);
-        requestBody.setSource(source);
-        requestBody.setNotes(notes);
-        requestBody.setSourceElementGUIDs(sourceElementGUIDs);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId);
     }
 
 

@@ -98,11 +98,11 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
 
 
-    private String              metadataCollectionId;
-    private EntityDef           entityDef;
-    private String              testTypeName;
+    private final String              metadataCollectionId;
+    private final EntityDef           entityDef;
+    private final String              testTypeName;
 
-    private List<EntityDetail>  createdEntities = new ArrayList<>();
+    private final List<EntityDetail>  createdEntities = new ArrayList<>();
 
 
 

@@ -29,6 +29,7 @@ public class ActionTargetStatusRequestBody implements Serializable
     private GovernanceActionStatus status = null;
     private Date                   startDate = null;
     private Date                   completionDate = null;
+    private String                 completionMessage = null;
 
 
     /**
@@ -53,6 +54,7 @@ public class ActionTargetStatusRequestBody implements Serializable
             status = template.getStatus();
             startDate = template.getStartDate();
             completionDate = template.getCompletionDate();
+            completionMessage = template.getCompletionMessage();
         }
     }
 
@@ -146,6 +148,28 @@ public class ActionTargetStatusRequestBody implements Serializable
 
 
     /**
+     * Return message to describe completion results or reasons for failure.
+     *
+     * @return string
+     */
+    public String getCompletionMessage()
+    {
+        return completionMessage;
+    }
+
+
+    /**
+     * Set up message to describe completion results or reasons for failure.
+     *
+     * @param completionMessage string
+     */
+    public void setCompletionMessage(String completionMessage)
+    {
+        this.completionMessage = completionMessage;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -158,6 +182,7 @@ public class ActionTargetStatusRequestBody implements Serializable
                        ", status=" + status +
                        ", startDate=" + startDate +
                        ", completionDate=" + completionDate +
+                       ", completionMessage='" + completionMessage + '\'' +
                        '}';
     }
 
@@ -183,7 +208,8 @@ public class ActionTargetStatusRequestBody implements Serializable
         return Objects.equals(actionTargetGUID, that.actionTargetGUID) &&
                        status == that.status &&
                        Objects.equals(startDate, that.startDate) &&
-                       Objects.equals(completionDate, that.completionDate);
+                       Objects.equals(completionDate, that.completionDate) &&
+                       Objects.equals(completionMessage, that.completionMessage);
     }
 
 
@@ -195,6 +221,6 @@ public class ActionTargetStatusRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(actionTargetGUID, status, startDate, completionDate);
+        return Objects.hash(actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 }

@@ -103,6 +103,7 @@ public class SimpleCatalogArchiveHelper
 
     private static final String GOVERNANCE_DEFINITION_SCOPE_RELATIONSHIP_NAME = "GovernanceDefinitionScope";
     private static final String GOVERNED_BY_RELATIONSHIP_NAME                 = "GovernedBy";
+    private static final String RESOURCE_LIST_RELATIONSHIP_NAME               = "ResourceList";
 
     public static final String GOVERNANCE_DRIVER_LINK_RELATIONSHIP_NAME      = "GovernanceDriverLink";
     public static final String GOVERNANCE_RESPONSE_RELATIONSHIP_NAME         = "GovernanceResponse";
@@ -145,7 +146,7 @@ public class SimpleCatalogArchiveHelper
     private static final String TERM_ANCHOR_TYPE_NAME                    = "TermAnchor";
     private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
     private static final String SYNONYM_RELATIONSHIP_TYPE_NAME           = "Synonym";
-    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
+    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "SemanticAssignment";
     private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
@@ -357,6 +358,8 @@ public class SimpleCatalogArchiveHelper
     private static final String PROJECT_TYPE_PROPERTY                        = "projectType";
     private static final String PURPOSES_PROPERTY                            = "purposes";
     private static final String DETAILS_PROPERTY                             = "details";
+    private static final String RESOURCE_USE_PROPERTY                        = "resourceUse";
+    private static final String WATCH_RESOURCE_PROPERTY                      = "watchResource";
 
     private static final String GROUPS_PROPERTY                              = "groups";
     private static final String SECURITY_LABELS_PROPERTY                     = "securityLabels";
@@ -526,7 +529,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -534,6 +538,7 @@ public class SimpleCatalogArchiveHelper
      */
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
+                                      String                     archiveName,
                                       String                     archiveRootName,
                                       String                     originatorName,
                                       Date                       creationDate,
@@ -542,7 +547,7 @@ public class SimpleCatalogArchiveHelper
     {
         this(archiveBuilder,
              archiveGUID,
-             archiveRootName,
+             archiveName,
              originatorName,
              creationDate,
              versionNumber,
@@ -551,6 +556,43 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+    /**
+     * Typical constructor passes parameters used to build the open metadata archive's property header.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveName,
+                                      String                     archiveRootName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      InstanceProvenanceType     instanceProvenanceType,
+                                      String                     license)
+    {
+        this(archiveBuilder,
+             archiveGUID,
+             archiveName,
+             originatorName,
+             creationDate,
+             versionNumber,
+             versionName,
+             instanceProvenanceType,
+             license,
+             archiveRootName + guidMapFileNamePostFix);
+    }
+
 
     /**
      * Constructor passes parameters used to build the open metadata archive's property header.
@@ -558,7 +600,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveName name of the open metadata archive metadata collection.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -567,25 +609,58 @@ public class SimpleCatalogArchiveHelper
      */
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
-                                      String                     archiveRootName,
+                                      String                     archiveName,
                                       String                     originatorName,
                                       Date                       creationDate,
                                       long                       versionNumber,
                                       String                     versionName,
                                       String                     guidMapFileName)
     {
+        this(archiveBuilder, archiveGUID, archiveName, originatorName, creationDate, versionNumber, versionName, InstanceProvenanceType.CONTENT_PACK, null, guidMapFileName);
+    }
+
+
+    /**
+     * Constructor passes parameters used to build the open metadata archive's property header.
+     * This version is used for multiple dependant archives, and they need to share the guid map.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     * @param guidMapFileName name of the guid map file.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      InstanceProvenanceType     instanceProvenanceType,
+                                      String                     license,
+                                      String                     guidMapFileName)
+    {
         this.archiveBuilder = archiveBuilder;
 
         this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
                                                    archiveGUID,
+                                                   archiveName,
                                                    originatorName,
                                                    creationDate,
                                                    versionNumber,
-                                                   versionName);
+                                                   versionName,
+                                                   instanceProvenanceType,
+                                                   license);
 
         this.idToGUIDMap = new OMRSArchiveGUIDMap(guidMapFileName);
 
-        this.archiveRootName = archiveRootName;
+        this.archiveRootName = archiveName;
         this.originatorName = originatorName;
         this.versionName = versionName;
 
@@ -2386,6 +2461,38 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(GOVERNED_BY_RELATIONSHIP_NAME,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governed_by_relationship"),
                                                                      null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+    /**
+     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param resourceQName qualified name of the second referenceable
+     * @param resourceUse string description
+     * @param watchResource should the resource be watched (boolean)
+     */
+    public void addResourceListRelationship(String  referenceableQName,
+                                            String  resourceQName,
+                                            String  resourceUse,
+                                            boolean watchResource)
+    {
+        final String methodName = "addResourceListRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(resourceQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, RESOURCE_USE_PROPERTY, resourceUse, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, WATCH_RESOURCE_PROPERTY, watchResource, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(RESOURCE_LIST_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4320,7 +4427,7 @@ public class SimpleCatalogArchiveHelper
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description, null, null, null,null, false, false, false, null, null, null);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, null, description, null, null,null, false, false, false, null, null, null);
     }
 
 

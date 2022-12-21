@@ -8,6 +8,8 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSInstanceEventProcessor;
 
+import java.util.List;
+
 
 /**
  * OMRSLocalRepository is an interface used by the OMRS components to retrieve information about the local
@@ -88,4 +90,24 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      * @return String name
      */
     String getOrganizationName();
+
+
+    /**
+     * Set up the list of metadata collection identifiers from the remote members of a connected cohort.
+     *
+     * @param cohortName name of cohort
+     * @param remoteCohortMetadataCollectionIds list of metadata collection ids
+     */
+    void setRemoteCohortMetadataCollectionIds(String       cohortName,
+                                              List<String> remoteCohortMetadataCollectionIds);
+
+
+    /**
+     * Is the metadata collection id for an active member of the cohort.  This is used to set up the
+     * provenance type correctly (between LOCAL_COHORT and DEREGISTERED_REPOSITORY).
+     *
+     * @param metadataCollectionId id to test
+     * @return boolean flag meaning that the metadata collection is recognized
+     */
+    boolean isActiveCohortMember(String metadataCollectionId);
 }

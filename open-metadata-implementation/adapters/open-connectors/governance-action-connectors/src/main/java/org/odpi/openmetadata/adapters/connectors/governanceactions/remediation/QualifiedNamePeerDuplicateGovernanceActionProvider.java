@@ -30,7 +30,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * store implementation.
+     * connector implementation.
      */
     public QualifiedNamePeerDuplicateGovernanceActionProvider()
     {

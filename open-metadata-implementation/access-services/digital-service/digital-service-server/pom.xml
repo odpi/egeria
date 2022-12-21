@@ -57,7 +57,7 @@
     <parent>
         <artifactId>digital-service</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.13-SNAPSHOT</version>
+        <version>3.15-SNAPSHOT</version>
     </parent>
 
     <groupId>org.odpi.egeria</groupId>
@@ -67,6 +67,6 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>http://github.com/odpi/egeria/tree/main</url>
     </scm>
 </project>

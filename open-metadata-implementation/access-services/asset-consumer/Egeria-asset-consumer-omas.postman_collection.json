@@ -1,0 +1,1371 @@
+{
+	"info": {
+		"_postman_id": "9d66711a-e01c-4fe2-9dd5-3eb83e6e5e87",
+		"name": "Egeria-asset-consumer-omas",
+		"description": "This collection documents the the REST APIs for AssetConsumer OMAS.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19267272"
+	},
+	"item": [
+		{
+			"name": "getConnectionByGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/connections/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-consumer",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"connections",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the requested connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getOutTopicConnection",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}//topics/out-topic-connection/{{callerId}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"",
+						"topics",
+						"out-topic-connection",
+						"{{callerId}}"
+					]
+				},
+				"description": "Return the connection object for connecting to the Asset Consumer's OMAS's out topic."
+			},
+			"response": []
+		},
+		{
+			"name": "getConnectionByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/connections/by-name/{{connectionName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"connections",
+						"by-name",
+						"{{connectionName}}"
+					]
+				},
+				"description": "Return the requested connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetForConnectionGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-consumer",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-connection",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the Asset linked to the identified connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetForConnectionName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-connection-name/{{connectionName}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-connection-name",
+						"{{connectionName}}"
+					]
+				},
+				"description": "Return the Asset linked to the identified connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getConnectionForAssetGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-consumer",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"connection"
+					]
+				},
+				"description": "Return the Connection attached to the Asset identified by the GUID.\nAn exception occurs if there are more than one connections attached to the asset that the user is able to access."
+			},
+			"response": []
+		},
+		{
+			"name": "getConnectedAssetSummary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-consumer",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"via-connection",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetByGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-consumer",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}"
+					]
+				},
+				"description": "Return the Asset identified by the GUID."
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetsByMeaning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-meaning/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-meaning",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the Asset linked to the identified connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetsByTag",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-tag/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-tag",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the Asset linked to the identified connection."
+			},
+			"response": []
+		},
+		{
+			"name": "getAssetsByName",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "DropFootWeek1",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-name?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "findAssets",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ".*",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-search-string?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "addCommentToAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{guid}}/comments",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{guid}}",
+						"comments"
+					]
+				},
+				"description": "Adds a comment directly to an asset"
+			},
+			"response": []
+		},
+		{
+			"name": "updateCommentOnAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"STANDARD_COMMENT\",\n\t\"commentText\" : \"This is the comment on the asset\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/update",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"comments",
+						"{{guid}}",
+						"update"
+					]
+				},
+				"description": "Adds a comment directly to an asset"
+			},
+			"response": []
+		},
+		{
+			"name": "removeCommentFromAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"comments",
+						"{{guid}}",
+						"delete"
+					]
+				},
+				"description": "Adds a comment directly to an asset"
+			},
+			"response": []
+		},
+		{
+			"name": "addCommentReply",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"CommentProperties\",\n\t\"isPublic\" : \"true\",\n\t\"commentType\" : \"ANSWER\",\n\t\"commentText\" : \"This is the response to your comment\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"comments",
+						"{{guid}}",
+						"replies"
+					]
+				},
+				"description": "Adds a reply to a comment"
+			},
+			"response": []
+		},
+		{
+			"name": "addRatingToAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"RatingProperties\",\n\t\"isPublic\" : \"true\",\n\t\"starRating\" : \"ONE_STAR\",\n\t\"review\" : \"This is the optional review text.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/ratings",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"ratings"
+					]
+				},
+				"description": "Adds a rating and optional review to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "removeRatingFromAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/ratings/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"ratings",
+						"delete"
+					]
+				},
+				"description": "Adds a rating and optional review to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "addLikeToAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"FeedbackRequestBody\",\n\t\"isPublic\" : \"true\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/likes",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"likes"
+					]
+				},
+				"description": "Adds a \"like\" to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "removeLikeFromAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/likes/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"likes",
+						"delete"
+					]
+				},
+				"description": "Adds a \"like\" to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "addTagToAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"FeedbackRequestBody\",\n\t\"isPublic\" : \"true\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/tags/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"tags",
+						"{{guid}}"
+					]
+				},
+				"description": "Links a tag to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "removeTagFromAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/tags/{{guid}}/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"tags",
+						"{{guid}}",
+						"delete"
+					]
+				},
+				"description": "Links a tag to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "addTagToElement",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"FeedbackRequestBody\",\n\t\"isPublic\" : \"true\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/elements/{{elementGUID}}/tags/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"elements",
+						"{{elementGUID}}",
+						"tags",
+						"{{guid}}"
+					]
+				},
+				"description": "Links a tag to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "removeTagFromElement",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/elements/{{elementGUID}}/tags/{{guid}}/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"elements",
+						"{{elementGUID}}",
+						"tags",
+						"{{guid}}",
+						"delete"
+					]
+				},
+				"description": "Links a tag to an asset."
+			},
+			"response": []
+		},
+		{
+			"name": "createTag",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"InformalTagProperties\",\n\t\"isPublic\" : \"true\",\n\t\"tagName\" : \"clinical-measurements\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags"
+					]
+				},
+				"description": "Creates a new informal tag and returns the unique identifier for it."
+			},
+			"response": []
+		},
+		{
+			"name": "updateTag",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"InformalTagProperties\",\n\t\"tagDescription\" : \"Data collected from patients, medical staff and equipment that measure an aspect of the treatment and its potential effects.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/{{guid}}/update",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"{{guid}}",
+						"update"
+					]
+				},
+				"description": "Updates the description of an existing tag (either private or public)."
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTag",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"NullRequestBody\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/{{guid}}/delete",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"{{guid}}",
+						"delete"
+					]
+				},
+				"description": "Removes a tag an all of its links to assets and other items."
+			},
+			"response": []
+		},
+		{
+			"name": "getTag",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the tag for the supplied unique identifier (guid)."
+			},
+			"response": []
+		},
+		{
+			"name": "getTagsByName",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "clinical-measurements",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/by-name?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the list of tags matching the supplied name."
+			},
+			"response": []
+		},
+		{
+			"name": "getMyTagsByName",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "clinical-measurements",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/private/by-name?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"private",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the list of tags matching the supplied name."
+			},
+			"response": []
+		},
+		{
+			"name": "findTags",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ".*",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/by-search-string?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "findMyTags",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ".*",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/tags/private/by-search-string?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"tags",
+						"private",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "getMeaningByGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumerusers/{{user}}/meanings/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumerusers",
+						"{{user}}",
+						"meanings",
+						"{{guid}}"
+					]
+				},
+				"description": "Return the Asset identified by the GUID."
+			},
+			"response": []
+		},
+		{
+			"name": "getMeaningByName",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "DropFootWeek1",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/meanings/by-name?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"meanings",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "findMeanings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ".*",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/meanings/by-search-string?startFrom=0&pageSize=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"meanings",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Return the Asset identified by the GUID and the attached Connection GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "addAuditLogMessageForAsset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"LogRecordRequestBody\",\n\t\"connectorInstanceId\" : \"iiiiii\",\n\t\"connectionName\" : \"nnnnn\",\n\t\"connectorType\" : \"ttttt\",\n    \"contextId\" : \"cccccc\",\n    \"message\" : \"This is the log message text.\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/{{assetGUID}}/log-records",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-consumer",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"log-records"
+					]
+				},
+				"description": "Adds an audit log message about an asset."
+			},
+			"response": []
+		}
+	]
+}

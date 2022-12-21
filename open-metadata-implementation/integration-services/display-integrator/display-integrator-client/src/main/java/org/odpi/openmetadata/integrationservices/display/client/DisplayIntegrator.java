@@ -5,7 +5,7 @@ package org.odpi.openmetadata.integrationservices.display.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -137,12 +137,12 @@ public class DisplayIntegrator implements DisplayIntegratorAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
-                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      connectorProviderClassName);
+        ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          connectorProviderClassName);
 
-        return new ConnectorReport(restResult);
+        return restResult.getConnectorReport();
     }
 }

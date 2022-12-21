@@ -8,6 +8,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumC
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
@@ -63,7 +64,7 @@ public class OpenLineageController {
      * @throws PropertyServerException from the underlying service
      * @throws OpenLineageException from the underlying service
      */
-    @GetMapping( value = "/entities/{guid}/end2end")
+    @GetMapping( value = "/entities/{guid}/end-to-end")
     @ResponseBody
     public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses)
             throws InvalidParameterException, PropertyServerException, OpenLineageException {
@@ -162,6 +163,20 @@ public class OpenLineageController {
             throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.search(user, searchRequest);
+    }
+
+
+    /**
+     * Returns a subraph representing the hierarchy of a certain node, based on the request
+     *
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType of the display name of the nodes
+     *
+     * @return a subgraph containing all relevant paths,
+     */
+    @PostMapping(value = "elements/hierarchy")
+    public Graph elementHierarchy(@RequestBody ElementHierarchyRequest elementHierarchyRequest) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getElementHierarchy(user, elementHierarchyRequest);
     }
 
     /**

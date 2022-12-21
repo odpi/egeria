@@ -73,7 +73,8 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
 
                     databaseSchemaProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     databaseSchemaProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    databaseSchemaProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseSchemaProperties.setName(this.removeName(instanceProperties));
+                    databaseSchemaProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     databaseSchemaProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*

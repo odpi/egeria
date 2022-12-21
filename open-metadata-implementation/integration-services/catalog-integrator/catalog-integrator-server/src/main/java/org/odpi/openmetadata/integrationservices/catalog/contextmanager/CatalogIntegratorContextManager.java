@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -31,7 +30,7 @@ import java.util.Map;
  */
 public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
-    private static String disabledExchangeServicesOption = "disabledExchangeServices";
+    private final static String disabledExchangeServicesOption = "disabledExchangeServices";
 
     private ExternalAssetManagerClient      assetManagerClient;
     private CollaborationExchangeClient     collaborationExchangeClient;
@@ -192,28 +191,23 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-
-        String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null)
+        if (metadataSourceQualifiedName != null)
         {
-            AssetManagerProperties properties = new AssetManagerProperties();
+            String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
+            if (metadataSourceGUID == null)
+            {
+                AssetManagerProperties properties = new AssetManagerProperties();
 
-            metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        return metadataSourceGUID;
+        return null;
     }
 
 
@@ -348,7 +342,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      *
      * @param serviceOptions options passed to the integration service.
      * @return null or list of disabled exchange service names
-     * @throws InvalidParameterException the supported zones property is not a list of zone names.
+     * @throws InvalidParameterException the "supported zones" property is not a list of zone names.
      */
     private List<String> extractDisabledExchangeServices(Map<String, Object> serviceOptions,
                                                          String              connectorName) throws InvalidParameterException

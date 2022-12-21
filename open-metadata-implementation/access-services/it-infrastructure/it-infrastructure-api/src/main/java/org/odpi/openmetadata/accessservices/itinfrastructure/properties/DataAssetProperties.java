@@ -73,10 +73,13 @@ public class DataAssetProperties extends AssetProperties
     public String toString()
     {
         return "DataAssetProperties{" +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
+                       ", cloneToAsset=" + cloneToAsset() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

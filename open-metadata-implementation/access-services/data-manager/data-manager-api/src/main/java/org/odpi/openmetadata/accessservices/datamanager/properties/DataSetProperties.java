@@ -58,12 +58,16 @@ public class DataSetProperties extends AssetProperties
     public String toString()
     {
         return "DataSetProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

@@ -37,9 +37,11 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
     static final String SOURCE_FILE_PROPERTY        = "sourceFile";
     static final String DESTINATION_FOLDER_PROPERTY = "destinationFolder";
+    static final String NEW_ASSET_GUID_PROPERTY     = "newAssetGUID";
 
-    static final String PROVISIONING_COMPLETE_GUARD = "provisioning-complete";
-    static final String PROVISIONING_FAILED_GUARD   = "provisioning-failed";
+    static final String PROVISIONING_COMPLETE_GUARD             = "provisioning-complete";
+    static final String PROVISIONING_FAILED_NO_FILE_NAMES_GUARD = "provisioning-failed-no-file-names";
+    static final String PROVISIONING_FAILED_EXCEPTION_GUARD     = "provisioning-failed-exception";
 
     private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
 
@@ -61,14 +63,24 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedRequestParameters = new ArrayList<>();
         supportedRequestParameters.add(SOURCE_FILE_PROPERTY);
         supportedRequestParameters.add(DESTINATION_FOLDER_PROPERTY);
+        supportedRequestParameters.add(DESTINATION_TEMPLATE_NAME_PROPERTY);
+        supportedRequestParameters.add(TARGET_FILE_NAME_PATTERN_PROPERTY);
+        supportedRequestParameters.add(NO_LINEAGE_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_NAME_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
+        supportedRequestParameters.add(TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
+        supportedRequestParameters.add(LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
+        supportedRequestParameters.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);
 
         supportedTargetActionNames = new ArrayList<>();
         supportedTargetActionNames.add(SOURCE_FILE_PROPERTY);
         supportedTargetActionNames.add(DESTINATION_FOLDER_PROPERTY);
+        supportedTargetActionNames.add(NEW_ASSET_GUID_PROPERTY);
 
         supportedGuards = new ArrayList<>();
         supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
-        supportedGuards.add(PROVISIONING_FAILED_GUARD);
+        supportedGuards.add(PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
+        supportedGuards.add(PROVISIONING_FAILED_EXCEPTION_GUARD);
 
         super.setConnectorClassName(connectorClassName);
 

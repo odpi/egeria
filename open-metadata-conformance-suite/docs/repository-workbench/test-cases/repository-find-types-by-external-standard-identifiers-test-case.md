@@ -29,7 +29,7 @@ operations to validate that all possible searches work correctly.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-find-types-by-external-standard-identifiers",
       "testCaseName" : "Repository find type definitions by external standard identifiers test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-find-types-by-external-standard-identifiers-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/repository-workbench/repository-find-types-by-external-standard-identifiers-test-case.md",
       "assertionMessage" : "Type definitions can be extracted by external standard identifiers",
       "successfulAssertions" : [ "All type definitions returned for external standard mappings." ],
       "unsuccessfulAssertions" : [ ],

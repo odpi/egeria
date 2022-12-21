@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DataEngineProxyResource {
 
-    private OMAGServerDataEngineProxyService adminAPI = new OMAGServerDataEngineProxyService();
+    private final OMAGServerDataEngineProxyService adminAPI = new OMAGServerDataEngineProxyService();
 
     /**
      * Store the provided Data Engine Proxy configuration

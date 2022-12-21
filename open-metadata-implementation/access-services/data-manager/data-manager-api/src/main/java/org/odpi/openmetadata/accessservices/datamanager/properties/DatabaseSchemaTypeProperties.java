@@ -22,10 +22,6 @@ public class DatabaseSchemaTypeProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String qualifiedName = null;
-
-
-
     /**
      * Default constructor
      */
@@ -42,34 +38,6 @@ public class DatabaseSchemaTypeProperties extends ReferenceableProperties
     public DatabaseSchemaTypeProperties(DatabaseSchemaTypeProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            qualifiedName = template.getQualifiedName();
-        }
-    }
-
-
-    /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
-     *
-     * @return String name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param qualifiedName String name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
     }
 
 
@@ -82,7 +50,7 @@ public class DatabaseSchemaTypeProperties extends ReferenceableProperties
     public String toString()
     {
         return "DatabaseSchemaTypeProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
+                       "qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -90,43 +58,5 @@ public class DatabaseSchemaTypeProperties extends ReferenceableProperties
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof DatabaseSchemaTypeProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        DatabaseSchemaTypeProperties that = (DatabaseSchemaTypeProperties) objectToCompare;
-        return Objects.equals(qualifiedName, that.qualifiedName);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), qualifiedName);
     }
 }

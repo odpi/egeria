@@ -27,7 +27,8 @@ import java.util.List;
  * QualifiedNamePeerDuplicateGovernanceActionConnector checks the qualified name to determine the duplicates of the entity that is passed
  * as an action target.
  */
-public class QualifiedNamePeerDuplicateGovernanceActionConnector extends RemediationGovernanceActionService {
+public class QualifiedNamePeerDuplicateGovernanceActionConnector extends RemediationGovernanceActionService
+{
     private static final String QUALIFIED_NAME_PROPERTY = "qualifiedName";
 
     /**
@@ -39,7 +40,8 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
      * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public void start() throws ConnectorCheckedException {
+    public void start() throws ConnectorCheckedException
+    {
         final String methodName = "start";
 
         super.start();
@@ -47,11 +49,15 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
         List<String> outputGuards = new ArrayList<>();
         CompletionStatus completionStatus = CompletionStatus.INVALID;
 
-        try {
-            if (governanceContext.getActionTargetElements() == null) {
+        try
+        {
+            if (governanceContext.getActionTargetElements() == null)
+            {
                 completionStatus = CompletionStatus.FAILED;
                 outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
-            } else if (governanceContext.getActionTargetElements().size() == 1) {
+            }
+            else if (governanceContext.getActionTargetElements().size() == 1)
+            {
                 ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
@@ -60,22 +66,42 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                 String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(QUALIFIED_NAME_PROPERTY).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);
                 List<OpenMetadataElement> elements = store.findMetadataElements(targetElement.getType().getTypeId(),
-                        null, searchProperties, null, null, null,
-                        null, false, true, new Date(), 0, 0);
+                                                                                null,
+                                                                                searchProperties,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                true,
+                                                                                new Date(),
+                                                                                0,
+                                                                                0);
 
-                if (elements != null) {
+                if (elements != null)
+                {
                     String targetElementGUID = targetElement.getElementGUID();
-                    if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID)) {
+                    if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID))
+                    {
                         outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_DUPLICATION_DETECTED_GUARD);
-                        completionStatus = CompletionStatus.INVALID;
                     }
-                    for (OpenMetadataElement duplicateAsset : elements) {
+                    for (OpenMetadataElement duplicateAsset : elements)
+                    {
                         String duplicateAssetGUID = duplicateAsset.getElementGUID();
-                        if (duplicateAssetGUID.equalsIgnoreCase(targetElementGUID)) {
+                        if (duplicateAssetGUID.equalsIgnoreCase(targetElementGUID))
+                        {
                             continue;
                         }
-                        store.linkElementsAsPeerDuplicates(targetElementGUID, duplicateAssetGUID, 1,
-                                null, null, null, null, null, true);
+
+                        store.linkElementsAsPeerDuplicates(targetElementGUID,
+                                                           duplicateAssetGUID,
+                                                           1,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           true);
                         outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
                         completionStatus = CompletionStatus.ACTIONED;
                         break;
@@ -84,15 +110,31 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);
-        } catch (OCFCheckedExceptionBase error) {
+        }
+        catch (OCFCheckedExceptionBase error)
+        {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
-                    error.getClass().getName(), error.getMessage()), error.getClass().getName(), methodName, error);
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              error.getMessage()),
+                                                error.getClass().getName(),
+                                                methodName,
+                                                error);
         }
     }
 
-    private SearchProperties getSearchProperties(String qualifiedName) {
+
+    /**
+     * Build up property parameters for a search.
+     *
+     * @param qualifiedName name to search for
+     * @return search properties
+     */
+    private SearchProperties getSearchProperties(String qualifiedName)
+    {
         SearchProperties searchProperties = new SearchProperties();
         List<PropertyCondition> conditions = new ArrayList<>();
         PropertyCondition condition = new PropertyCondition();

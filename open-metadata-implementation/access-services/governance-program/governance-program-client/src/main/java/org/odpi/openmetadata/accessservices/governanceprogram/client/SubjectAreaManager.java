@@ -275,6 +275,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
                                 methodName);
     }
 
+
     /**
      * Return information about a specific subject area.
      *

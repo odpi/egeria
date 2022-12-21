@@ -43,7 +43,7 @@ public class DataEngineTopicHandler {
      * @param invalidParameterHandler       handler for managing parameter errors
      * @param topicHandler                  provides utilities specific for manipulating topic entities
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
-     * @param dataEngineRegistrationHandler provides utilities for  software server capability entities
+     * @param dataEngineRegistrationHandler provides utilities for engine entities
      */
     public DataEngineTopicHandler(InvalidParameterHandler invalidParameterHandler, AssetHandler<Topic> topicHandler,
                                   DataEngineRegistrationHandler dataEngineRegistrationHandler,
@@ -86,14 +86,14 @@ public class DataEngineTopicHandler {
             topicHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
                     false, false, null, methodName);
             topicGUID = topicHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, topic.getQualifiedName(),
-                     topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
+                     topic.getDisplayName(), null, topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
                      topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
                      topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties,
                      null, null, InstanceStatus.ACTIVE, now, methodName);
         } else {
             topicGUID = originalTopicEntity.get().getGUID();
             topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
-                    topic.getQualifiedName(), topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(),
+                    topic.getQualifiedName(), topic.getDisplayName(), null, topic.getDescription(), topic.getAdditionalProperties(),
                     TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties, null, null, true,
                     false, false, now, methodName);
         }

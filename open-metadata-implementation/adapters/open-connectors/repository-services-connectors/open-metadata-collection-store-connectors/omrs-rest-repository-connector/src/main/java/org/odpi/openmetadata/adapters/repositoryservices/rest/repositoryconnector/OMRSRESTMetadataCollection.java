@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -19,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,16 +30,17 @@ import java.util.List;
  * Requests to this metadata collection are translated one-for-one to requests to the remote repository since
  * the OMRS REST API has a one-to-one correspondence with the metadata collection.
  */
-public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
+public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 {
     static final private String defaultRepositoryName = "REST-connected Repository ";
 
-    private LocalRepositoryServicesClient omrsClient;   /* Initialized in constructor */
+    private final LocalRepositoryServicesClient omrsClient;   /* Initialized in constructor */
+    private final AuditLog                      auditLog; /* Initialized in constructor */
+    private final List<String>                  unsupportedFunctionList = new ArrayList<>();
+
     private String                        errorMessage = null;
     private String                        remoteMetadataCollectionId = null;
 
-    private boolean getHomeClassificationsSupported = true;
-    private boolean getHomeClassificationsWithHistorySupported = true;
 
 
     /**
@@ -48,6 +52,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      * @param repositoryName       name of the repository used for logging.
      * @param repositoryHelper     class used to build type definitions and instances.
      * @param repositoryValidator  class used to validate type definitions and instances.
+     * @param auditLog             optional logging destination
      * @param metadataCollectionId unique identifier for the metadata collection
      * @throws RepositoryErrorException problem creating the REST client
      */
@@ -56,14 +61,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
                                String                      repositoryName,
                                OMRSRepositoryHelper        repositoryHelper,
                                OMRSRepositoryValidator     repositoryValidator,
+                               AuditLog                    auditLog,
                                String                      metadataCollectionId) throws RepositoryErrorException
     {
         /*
-         * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
+         * The metadata collection id is the unique id for the metadata collection.  It is managed by the super class.
          */
-        super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
+        super(parentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
 
         final String  methodName = "OMRSMetadataCollection constructor";
+
+        this.auditLog = auditLog;
 
         /*
          * The name of the repository comes from the connection
@@ -106,13 +114,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
         }
         catch (Exception error)
         {
+            this.errorMessage = error.getMessage();
             throw new RepositoryErrorException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(repositoryName,
                                                                                                  this.errorMessage),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
         }
-
     }
 
 
@@ -130,6 +138,41 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                  this.errorMessage),
                                                this.getClass().getName(),
                                                methodName);
+        }
+    }
+
+
+    /**
+     * Test whether a function is supported.
+     *
+     * @param methodName method name of function
+     * @return boolean flag indicating whether the function should be called
+     */
+    private synchronized boolean isfunctionSupported(String methodName)
+    {
+        return ! unsupportedFunctionList.contains(methodName);
+    }
+
+
+    /**
+     * Mark that a function has been reported as unsupported by the remote repository.
+     *
+     * @param methodName calling method
+     */
+    private synchronized void markFunctionUnsupported(String methodName)
+    {
+        final String localMethodName = "markFunctionUnsupported";
+
+        if (! unsupportedFunctionList.contains(methodName))
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(localMethodName, OMRSAuditCode.UNSUPPORTED_REMOTE_FUNCTION.getMessageDefinition(repositoryName,
+                                                                                                                    metadataCollectionId,
+                                                                                                                    methodName));
+            }
+
+            unsupportedFunctionList.add(methodName);
         }
     }
 
@@ -351,7 +394,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -377,7 +420,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId         unique identifier for requesting user.
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -702,7 +745,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException         the TypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException         the TypeDef can not be deleted because there are instances of this type in
      *                                       the metadata collection.  These instances need to be purged before the
      *                                       TypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -736,7 +779,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws TypeDefNotKnownException      the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException         the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException         the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                       the metadata collection.  These instances need to be purged before the
      *                                       AttributeTypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -844,6 +887,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid   String unique identifier for the entity
@@ -1209,7 +1253,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -1352,7 +1396,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -1894,15 +1939,33 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "addEntity";
 
-        validateClient(methodName);
-        return omrsClient.addEntity(userId, entityTypeGUID, initialProperties, initialClassifications, initialStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.addEntity(userId, entityTypeGUID, initialProperties, initialClassifications, initialStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -1947,10 +2010,32 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "addExternalEntity";
 
-        validateClient(methodName);
-        return omrsClient.addExternalEntity(userId,
-                                            entityTypeGUID,
-                                            externalSourceGUID, externalSourceName, initialProperties, initialClassifications, initialStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.addExternalEntity(userId,
+                                                    entityTypeGUID,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    initialProperties,
+                                                    initialClassifications,
+                                                    initialStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -1975,8 +2060,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "addEntityProxy";
 
-        validateClient(methodName);
-        omrsClient.addEntityProxy(userId, entityProxy);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.addEntityProxy(userId, entityProxy);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -2007,8 +2108,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "updateEntityStatus";
 
-        validateClient(methodName);
-        return omrsClient.updateEntityStatus(userId, entityGUID, newStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateEntityStatus(userId, entityGUID, newStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2040,8 +2159,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "updateEntityProperties";
 
-        validateClient(methodName);
-        return omrsClient.updateEntityProperties(userId, entityGUID, properties);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateEntityProperties(userId, entityGUID, properties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2068,16 +2205,34 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "undoEntityUpdate";
 
-        validateClient(methodName);
-        return omrsClient.undoEntityUpdate(userId, entityGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.undoEntityUpdate(userId, entityGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph but, it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
      * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
@@ -2106,8 +2261,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "deleteEntity";
 
-        validateClient(methodName);
-        return omrsClient.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2141,8 +2314,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "purgeEntity";
 
-        validateClient(methodName);
-        omrsClient.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -2171,8 +2360,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "restoreEntity";
 
-        validateClient(methodName);
-        return omrsClient.restoreEntity(userId, deletedEntityGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.restoreEntity(userId, deletedEntityGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2209,8 +2416,85 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "classifyEntity";
 
-        validateClient(methodName);
-        return omrsClient.classifyEntity(userId, entityGUID, classificationName, classificationProperties);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.classifyEntity(userId, entityGUID, classificationName, classificationProperties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity as a proxy
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return Classification newly added classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntityProxy";
+
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.classifyEntity(userId, entityProxy, classificationName, classificationProperties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2255,15 +2539,107 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName = "classifyEntity (detailed)";
 
-        validateClient(methodName);
-        return omrsClient.classifyEntity(userId,
-                                         entityGUID,
-                                         classificationName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         classificationOrigin,
-                                         classificationOriginGUID,
-                                         classificationProperties);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.classifyEntity(userId,
+                                                 entityGUID,
+                                                 classificationName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 classificationOrigin,
+                                                 classificationOriginGUID,
+                                                 classificationProperties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity as a proxy
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return Classification newly added classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntityProxy (detailed)";
+
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.classifyEntity(userId,
+                                                 entityProxy,
+                                                 classificationName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 classificationOrigin,
+                                                 classificationOriginGUID,
+                                                 classificationProperties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2294,8 +2670,76 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "declassifyEntity";
 
-        validateClient(methodName);
-        return omrsClient.declassifyEntity(userId, entityGUID, classificationName);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.declassifyEntity(userId, entityGUID, classificationName);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification declassifyEntity(String       userId,
+                                           EntityProxy  entityProxy,
+                                           String       classificationName) throws InvalidParameterException,
+                                                                                   RepositoryErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   ClassificationErrorException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   FunctionNotSupportedException
+    {
+        final String methodName  = "declassifyEntityProxy";
+
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.declassifyEntity(userId, entityProxy, classificationName);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2331,11 +2775,82 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "updateEntityClassification";
 
-        validateClient(methodName);
-        return omrsClient.updateEntityClassification(userId, entityGUID, classificationName, properties);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateEntityClassification(userId, entityGUID, classificationName, properties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification updateEntityClassification(String               userId,
+                                                     EntityProxy          entityProxy,
+                                                     String               classificationName,
+                                                     InstanceProperties   properties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
+    {
+        final String methodName  = "updateEntityProxyClassification";
+
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateEntityClassification(userId, entityProxy, classificationName, properties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Add a new relationship between two entities to the metadata collection.
@@ -2377,20 +2892,38 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "addRelationship";
 
-        validateClient(methodName);
-        return omrsClient.addRelationship(userId,
-                                          relationshipTypeGUID,
-                                          initialProperties,
-                                          entityOneGUID,
-                                          entityTwoGUID,
-                                          initialStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.addRelationship(userId,
+                                                  relationshipTypeGUID,
+                                                  initialProperties,
+                                                  entityOneGUID,
+                                                  entityTwoGUID,
+                                                  initialStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -2435,15 +2968,33 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "addExternalRelationship";
 
-        validateClient(methodName);
-        return omrsClient.addExternalRelationship(userId,
-                                                  relationshipTypeGUID,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  initialProperties,
-                                                  entityOneGUID,
-                                                  entityTwoGUID,
-                                                  initialStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.addExternalRelationship(userId,
+                                                          relationshipTypeGUID,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          initialProperties,
+                                                          entityOneGUID,
+                                                          entityTwoGUID,
+                                                          initialStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2474,8 +3025,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "updateRelationshipStatus";
 
-        validateClient(methodName);
-        return omrsClient.updateRelationshipStatus(userId, relationshipGUID, newStatus);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateRelationshipStatus(userId, relationshipGUID, newStatus);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2507,8 +3076,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "updateRelationshipProperties";
 
-        validateClient(methodName);
-        return omrsClient.updateRelationshipProperties(userId, relationshipGUID, properties);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.updateRelationshipProperties(userId, relationshipGUID, properties);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2536,14 +3123,32 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "undoRelationshipUpdate";
 
-        validateClient(methodName);
-        return omrsClient.undoRelationshipUpdate(userId, relationshipGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.undoRelationshipUpdate(userId, relationshipGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -2571,8 +3176,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "deleteRelationship";
 
-        validateClient(methodName);
-        return omrsClient.deleteRelationship(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.deleteRelationship(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2604,8 +3227,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "purgeRelationship";
 
-        validateClient(methodName);
-        omrsClient.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -2635,8 +3274,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "restoreRelationship";
 
-        validateClient(methodName);
-        return omrsClient.restoreRelationship(userId, deletedRelationshipGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.restoreRelationship(userId, deletedRelationshipGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2676,13 +3333,31 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reIdentifyEntity";
 
-        validateClient(methodName);
-        return omrsClient.reIdentifyEntity(userId, typeDefGUID, typeDefName, entityGUID, newEntityGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.reIdentifyEntity(userId, typeDefGUID, typeDefName, entityGUID, newEntityGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -2717,8 +3392,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reTypeEntity";
 
-        validateClient(methodName);
-        return omrsClient.reTypeEntity(userId, entityGUID, currentTypeDefSummary, newTypeDefSummary);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.reTypeEntity(userId, entityGUID, currentTypeDefSummary, newTypeDefSummary);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2757,14 +3450,32 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reHomeEntity";
 
-        validateClient(methodName);
-        return omrsClient.reHomeEntity(userId,
-                                       entityGUID,
-                                       typeDefGUID,
-                                       typeDefName,
-                                       homeMetadataCollectionId,
-                                       newHomeMetadataCollectionId,
-                                       newHomeMetadataCollectionName);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.reHomeEntity(userId,
+                                               entityGUID,
+                                               typeDefGUID,
+                                               typeDefName,
+                                               homeMetadataCollectionId,
+                                               newHomeMetadataCollectionId,
+                                               newHomeMetadataCollectionName);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2800,13 +3511,31 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reIdentifyRelationship";
 
-        validateClient(methodName);
-        return omrsClient.reIdentifyRelationship(userId, typeDefGUID, typeDefName, relationshipGUID, newRelationshipGUID);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.reIdentifyRelationship(userId, typeDefGUID, typeDefName, relationshipGUID, newRelationshipGUID);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change an existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -2840,8 +3569,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reTypeRelationship";
 
-        validateClient(methodName);
-        return omrsClient.reTypeRelationship(userId, relationshipGUID, currentTypeDefSummary, newTypeDefSummary);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                return omrsClient.reTypeRelationship(userId, relationshipGUID, currentTypeDefSummary, newTypeDefSummary);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
     }
 
 
@@ -2881,16 +3628,33 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "reHomeRelationship";
 
-        validateClient(methodName);
-        return omrsClient.reHomeRelationship(userId,
-                                             relationshipGUID,
-                                             typeDefGUID,
-                                             typeDefName,
-                                             homeMetadataCollectionId,
-                                             newHomeMetadataCollectionId,
-                                             newHomeMetadataCollectionName);
-    }
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
 
+            try
+            {
+                return omrsClient.reHomeRelationship(userId,
+                                                     relationshipGUID,
+                                                     typeDefGUID,
+                                                     typeDefName,
+                                                     homeMetadataCollectionId,
+                                                     newHomeMetadataCollectionId,
+                                                     newHomeMetadataCollectionName);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+
+        return null;
+    }
 
 
     /* ======================================================================
@@ -2932,8 +3696,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "saveEntityReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.saveEntityReferenceCopy(userId, entity);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.saveEntityReferenceCopy(userId, entity);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -2961,7 +3741,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "getHomeClassifications";
 
-        if (getHomeClassificationsSupported)
+        if (isfunctionSupported(methodName))
         {
             validateClient(methodName);
 
@@ -2971,12 +3751,15 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
             }
             catch (FunctionNotSupportedException error)
             {
-                getHomeClassificationsSupported = false;
+                markFunctionUnsupported(methodName);
                 throw error;
             }
         }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
 
-        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -3007,7 +3790,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "getHomeClassifications (with history)";
 
-        if (getHomeClassificationsWithHistorySupported)
+        if (isfunctionSupported(methodName))
         {
             validateClient(methodName);
 
@@ -3017,12 +3800,15 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
             }
             catch (FunctionNotSupportedException error)
             {
-                getHomeClassificationsWithHistorySupported = false;
+                markFunctionUnsupported(methodName);
                 throw error;
             }
         }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
 
-        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -3062,9 +3848,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "deleteEntityReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.deleteEntityReferenceCopy(userId, entity);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.deleteEntityReferenceCopy(userId, entity);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
+
 
     /**
      * Remove a reference copy of the entity from the local repository.  This method can be used to
@@ -3099,10 +3902,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
                                                                         FunctionNotSupportedException,
                                                                         UserNotAuthorizedException
     {
-        final String methodName  = "purgeEntityReferenceCopy";
+        final String methodName  = "purgeDeleteEntityReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.purgeEntityReferenceCopy(userId, entity);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeEntityReferenceCopy(userId, entity);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3139,8 +3958,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "purgeEntityReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.purgeEntityReferenceCopy(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeEntityReferenceCopy(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3176,8 +4011,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "refreshEntityReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.refreshEntityReferenceCopy(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.refreshEntityReferenceCopy(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3217,8 +4068,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "saveClassificationReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.saveClassificationReferenceCopy(userId, entity, classification);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.saveClassificationReferenceCopy(userId, entity, classification);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3258,8 +4125,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "saveClassificationReferenceCopy(proxy)";
 
-        validateClient(methodName);
-        omrsClient.saveClassificationReferenceCopy(userId, entity, classification);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.saveClassificationReferenceCopy(userId, entity, classification);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3298,8 +4181,80 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "purgeClassificationReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.purgeClassificationReferenceCopy(userId, entity, classification);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeClassificationReferenceCopy(userId, entity, classification);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityProxy    entity,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String methodName  = "purgeClassificationReferenceCopy (proxy)";
+
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeClassificationReferenceCopy(userId, entity, classification);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3340,8 +4295,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "saveRelationshipReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.saveRelationshipReferenceCopy(userId, relationship);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.saveRelationshipReferenceCopy(userId, relationship);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3383,8 +4354,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "deleteRelationshipReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.deleteRelationshipReferenceCopy(userId, relationship);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.deleteRelationshipReferenceCopy(userId, relationship);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3424,10 +4411,26 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
                                                                                     FunctionNotSupportedException,
                                                                                     UserNotAuthorizedException
     {
-        final String methodName  = "purgeRelationshipReferenceCopy";
+        final String methodName  = "purgeDeleteRelationshipReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.purgeRelationshipReferenceCopy(userId, relationship);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeRelationshipReferenceCopy(userId, relationship);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3464,8 +4467,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "purgeRelationshipReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.purgeRelationshipReferenceCopy(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.purgeRelationshipReferenceCopy(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3502,8 +4521,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "refreshRelationshipReferenceCopy";
 
-        validateClient(methodName);
-        omrsClient.refreshRelationshipReferenceCopy(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.refreshRelationshipReferenceCopy(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 
 
@@ -3547,7 +4582,23 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String methodName  = "saveInstanceReferenceCopies";
 
-        validateClient(methodName);
-        omrsClient.saveInstanceReferenceCopies(userId, instances);
+        if (isfunctionSupported(methodName))
+        {
+            validateClient(methodName);
+
+            try
+            {
+                omrsClient.saveInstanceReferenceCopies(userId, instances);
+            }
+            catch (FunctionNotSupportedException error)
+            {
+                markFunctionUnsupported(methodName);
+                throw error;
+            }
+        }
+        else
+        {
+            reportUnsupportedOptionalFunction(methodName);
+        }
     }
 }

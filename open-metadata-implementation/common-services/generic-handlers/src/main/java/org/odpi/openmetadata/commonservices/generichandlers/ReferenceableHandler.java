@@ -586,6 +586,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       resultTypeName,
                                                                       specificMatchPropertyNames,
                                                                       true,
+                                                                      false,
                                                                       null,
                                                                       null,
                                                                       forLineage,

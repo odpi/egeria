@@ -14,7 +14,6 @@ body:
       description: Work Plan
       value: |
         Create release x.y :
-
         Prior to the release work
         - [ ] slack post advising of upcoming release & linking to issue
         - [ ] advance warning in developer/community call
@@ -24,54 +23,53 @@ body:
         Branching & Correcting versions
         - [ ] Create branch
         - [ ] Reassign any issues not being worked on to the next release
-        - [ ] Update version for master (ie x.y-SNAPSHOT > x.y+1-SNAPSHOT)
+        - [ ] Update version for main (ie x.y-SNAPSHOT > x.y+1-SNAPSHOT)
         - [ ] Update version for branch (ie x.y-SNAPSHOT -> x.y)
 
         Final updates to the release
-        - [ ] Ensure any remaining fixes are merged into branch (and vice-versa to master)
+        - [ ] Ensure any remaining fixes are merged into branch (and vice-versa to main)
+
+        Pre-release security check
+        - [ ] Execute manual [sonatype lift scan](https://lift.sonatype.com) on release branch from and communicate findings (needs more formal process in future)
 
         Generate a release image for testing
-        - [ ] Start release pipeline manually to generate container image
+        - [ ] Start [Release](https://github.com/odpi/egeria/actions/workflows/release.yml) pipeline manually to generate container image
 
-        Updating the React UI (as this is part of the notebook test). Note egeria-ui is out of scope other than inclusion of current release
-        - [ ] Create branch
-        - [ ] Update version in master
-        - [ ] Update version in new branch 
-        - [ ] Ensure new container image is available for testing (there is no distinct release pipeline)
 
         Updating the Helm Charts (egeria-charts repo)
-        - [ ] checker correct container images are on docker.io & quay.io (these are built by the 'merge' build of a release)
-        - [ ] update image versions for helm charts (egeria-charts repo) (using -prerelease for chart version)
+        - [ ] checker correct container images are on [docker.io](https://hub.docker.com/u/odpi) & [quay.io](https://quay.io/organization/odpi) (these are built by the 'merge' build of a release)
+        - [ ] update image versions for helm charts [egeria-charts](https://github.com/odpi/egeria-charts/) repo (using -prerelease for chart version)
+          - check/update the strimzi chart versions
+          - check/update the kafka version used for the strimzi CR in each chart
+          - check/update the current jupyter lab version & generate a new docker container in egeria-jupyter
+          - update the jupyter lab version in the charts
+
 
         Final tests
-        - [ ] Check swagger doc renders (no regressions)
+        - [ ] Check [swagger doc](https://egeria-project.org/education/tutorials/swagger-tutorial/overview/?h=swagger) renders (no regressions)
         - [ ] Verify odpi-egeria-lab chart (pods active/ready)
         - [ ] Verify egeria-base chart (pods active/ready)
         - [ ] Check notebooks (config, start, data catalog at a minimum)
-        - [ ] Check polymer UI (only possible to check it runs - no demo scenario for more)
-        - [ ] Check React UI (rex, tex, glossary author)
-        - [ ] CTS - graph
-        - [ ] CTS - inmemory
+        - [ ] Check polymer UI (only possible to check it runs and run UI lab)
+        - [ ] Check React UI (rex, tex, glossary author). Some of the steps descibed [here](https://egeria-project.org/education/egeria-dojo/running-egeria/user-interfaces/ecosystem-ui/ecosystem-ui-start/)
+        - [ ] [CTS - graph](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
+        - [ ] [CTS - inmemory](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
 
         Final Docs
         - [ ] Update release notes in egeria-docs
 
         Final build and publish
-        - [ ] Run 'release' pipeline on branch to push candidates to oss.sonatype.org
+        - [ ] Check if the Release pipeline rlease artifacts are shown in staging repo in [OSS Repository Manager](https://oss.sonatype.org/#welcome)
         - [ ] 'close' staging repo & Validate artifacts ok (number, structure, validations) on oss.sonatype.org
         - [ ] Create final github releases for egeria (add link to egeria docs)
         - [ ] Close repo on oss.sonatype.org (once updated) for egeria, release
         - [ ] Check 'release' repo on oss.sonatype.org has artifacts
         - [ ] Update final versions of egeria-charts to release ie x.y
         - [ ] Publish that release is now shipped via slack #egeria-announce
+        - [ ] Post on egeria-annouce [mailing list](egeria-announce@lists.lfaidata.foundation)
         - [ ] Additional posts to social media
-        - [ ] Communicate to other repo owners ie for connectors so that they can be rebuilt/shipped as needed
+        - [ ] Communicate to other repo owners ie for connectors so that they can be rebuilt/shipped as needed (Egeria Dev Projects etc.)
 
-        Additional components
-        - ReactUI
-          - [ ] Create final github release
-        - Egeria Dev Projects
-          - [ ] Update project & dependency versions to new release
 
         Get Ready for next release
         - [ ] Open Release Issue for next release

@@ -28,7 +28,7 @@ public class NextGovernanceActionTypeElement implements Serializable
     private String                      nextActionLinkGUID     = null;
     private String                      guard                  = null;
     private boolean                     mandatoryGuard         = false;
-    private boolean                     ignoreMultipleTriggers = false;
+
 
 
     /**
@@ -50,9 +50,9 @@ public class NextGovernanceActionTypeElement implements Serializable
         if (template != null)
         {
             nextActionType         = template.getNextActionType();
+            nextActionLinkGUID     = template.getNextActionLinkGUID();
             guard                  = template.getGuard();
             mandatoryGuard         = template.getMandatoryGuard();
-            ignoreMultipleTriggers = template.getIgnoreMultipleTriggers();
         }
     }
 
@@ -146,28 +146,6 @@ public class NextGovernanceActionTypeElement implements Serializable
 
 
     /**
-     * Return whether this action type can be triggered more than once in a single step of the governance action process.
-     *
-     * @return boolean flag
-     */
-    public boolean getIgnoreMultipleTriggers()
-    {
-        return ignoreMultipleTriggers;
-    }
-
-
-    /**
-     * Set up whether this action type can be triggered more than once in a single step of the governance action process.
-     *
-     * @param ignoreMultipleTriggers boolean flag
-     */
-    public void setIgnoreMultipleTriggers(boolean ignoreMultipleTriggers)
-    {
-        this.ignoreMultipleTriggers = ignoreMultipleTriggers;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -180,7 +158,6 @@ public class NextGovernanceActionTypeElement implements Serializable
                        ", nextActionLinkGUID='" + nextActionLinkGUID + '\'' +
                        ", guard='" + guard + '\'' +
                        ", mandatoryGuard=" + mandatoryGuard +
-                       ", ignoreMultipleTriggers=" + ignoreMultipleTriggers +
                        '}';
     }
 
@@ -204,7 +181,6 @@ public class NextGovernanceActionTypeElement implements Serializable
         }
         NextGovernanceActionTypeElement that = (NextGovernanceActionTypeElement) objectToCompare;
         return mandatoryGuard == that.mandatoryGuard &&
-                       ignoreMultipleTriggers == that.ignoreMultipleTriggers &&
                        Objects.equals(nextActionType, that.nextActionType) &&
                        Objects.equals(nextActionLinkGUID, that.nextActionLinkGUID) &&
                        Objects.equals(guard, that.guard);
@@ -219,6 +195,6 @@ public class NextGovernanceActionTypeElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(nextActionType, nextActionLinkGUID, guard, mandatoryGuard, ignoreMultipleTriggers);
+        return Objects.hash(nextActionType, nextActionLinkGUID, guard, mandatoryGuard);
     }
 }

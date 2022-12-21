@@ -13,7 +13,7 @@ import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorErr
  * SearchIntegratorConnector is the base class for an integration connector that is managed by the
  * Search Integrator OMIS.
  */
-public abstract class SearchIntegratorConnector extends IntegrationConnectorBase {
+public abstract class SearchIntegratorConnector extends IntegrationConnectorBase implements  SearchIntegratorOMISConnector {
     private SearchIntegratorContext context = null;
 
 

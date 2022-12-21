@@ -132,7 +132,7 @@ public class NewCSVFileAssetRequestBody extends NewFileAssetRequestBody
     public String toString()
     {
         return "NewCSVFileAssetRequestBody{" +
-                "displayName='" + getDisplayName() + '\'' +
+                "displayName='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", fullPath='" + getFullPath() + '\'' +
                 ", columnHeaders=" + columnHeaders +
@@ -174,7 +174,7 @@ public class NewCSVFileAssetRequestBody extends NewFileAssetRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDisplayName(), getDescription(), getFullPath(), getColumnHeaders(),
+        return Objects.hash(getName(), getDescription(), getFullPath(), getColumnHeaders(),
                             getDelimiterCharacter(), getQuoteCharacter());
     }
 }

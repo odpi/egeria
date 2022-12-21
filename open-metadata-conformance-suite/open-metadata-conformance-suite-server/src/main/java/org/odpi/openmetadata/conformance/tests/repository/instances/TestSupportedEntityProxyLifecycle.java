@@ -143,7 +143,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
      * results in a 1000ms (1s) timeout.
      *
      */
-    private Integer           pollCount   = 100;
+    private Integer           pollCount   = 200;
     private Integer           pollPeriod  = 100;   // milliseconds
 
 
@@ -224,15 +224,16 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         OMRSMetadataCollection ctsMetadataCollection = repositoryConformanceWorkPad.getLocalRepositoryConnector().getMetadataCollection();
 
         String ctsMetadataCollectionName = repositoryConformanceWorkPad.getLocalRepositoryConnector().getMetadataCollectionName();
-        if (ctsMetadataCollectionName == null)
+        if (ctsMetadataCollectionName == null) {
             ctsMetadataCollectionName = "dummyMetadataCollectionName";
+        }
 
 
         /*
          * Find all the entity types that we could use at the ends of the requested relationship type
          *
          * In this testcase the repository is believed to support the relationship type defined by
-         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * relationshipDef - but may not support all the entity inheritance hierarchy - it may only
          * support a subset of entity types. So although the relationship type may have end definitions
          * each specifying a given entity type - the repository may only support certain sub-types of the
          * specified type. This is OK, and the testcase needs to only try to use entity types that are

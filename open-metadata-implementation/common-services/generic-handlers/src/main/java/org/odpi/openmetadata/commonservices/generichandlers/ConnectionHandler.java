@@ -868,8 +868,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             /*
              * A connector type is present, so it is possible to create a connection.
              */
-            String endpointName   = assetTypeName + ":" + assetQualifiedName + " Endpoint";
-            String connectionName = assetTypeName + ":" + assetQualifiedName + " Connection";
+            String endpointName   = assetQualifiedName + " Endpoint";
+            String connectionName = assetQualifiedName + " Connection";
 
             String anchorGUID = null;
 
@@ -2526,6 +2526,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                specificMatchPropertyNames,
                                                                true,
+                                                               false,
                                                                null,
                                                                null,
                                                                forLineage,

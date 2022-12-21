@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ import java.util.Objects;
  *     <li>Connections - list of connections defined to access this asset.</li>
  *     <li>Licenses - list of licenses associated with the asset.</li>
  *     <li>Certifications - list of certifications that have been awarded to this asset.</li>
+ *     <li>schema - details of the schema type associated with the asset.</li>
  * </ul>
  */
 public class AssetDetail extends AssetSummary
@@ -31,6 +33,7 @@ public class AssetDetail extends AssetSummary
     protected Connections            connections            = null;
     protected Licenses               licenses               = null;
     protected Certifications         certifications         = null;
+    protected SchemaType             schema                 = null;
 
 
     /**
@@ -53,6 +56,7 @@ public class AssetDetail extends AssetSummary
      * @param connections Iterator of connections attached to the asset
      * @param licenses Iterator of licenses for this asset
      * @param certifications Iterator of certifications for this asset
+     * @param schema SchemaType object to query schema and related data field definitions.
      */
     public AssetDetail(Asset                  assetBean,
                        ExternalIdentifiers    externalIdentifiers,
@@ -61,7 +65,8 @@ public class AssetDetail extends AssetSummary
                        ExternalReferences     externalReferences,
                        Connections            connections,
                        Licenses               licenses,
-                       Certifications         certifications)
+                       Certifications         certifications,
+                       SchemaType             schema)
     {
         super(assetBean);
 
@@ -72,6 +77,7 @@ public class AssetDetail extends AssetSummary
         this.connections = connections;
         this.licenses = licenses;
         this.certifications = certifications;
+        this.schema = schema;
     }
 
 
@@ -89,6 +95,7 @@ public class AssetDetail extends AssetSummary
 
         if (templateAssetDetail != null)
         {
+            schema = templateAssetDetail.getSchema();
             ExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
             RelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
             NoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
@@ -96,7 +103,6 @@ public class AssetDetail extends AssetSummary
             Connections            templateConnections            = templateAssetDetail.getConnections();
             Licenses               templateLicenses               = templateAssetDetail.getLicenses();
             Certifications         templateCertifications         = templateAssetDetail.getCertifications();
-
 
             if (templateExternalIdentifiers != null)
             {
@@ -131,7 +137,7 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an  list of the external identifiers for this asset (or null if none).
+     * Return a list of the external identifiers for this asset (or null if none).
      *
      * @return ExternalIdentifiers  list
      */
@@ -149,7 +155,7 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an  list of references to the related media associated with this asset.
+     * Return a list of references to the related media associated with this asset.
      *
      * @return RelatedMediaReferences  list
      */
@@ -167,7 +173,7 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an  list of NoteLogs linked to this asset.
+     * Return a list of NoteLogs linked to this asset.
      *
      * @return Notelogs iterator
      */
@@ -257,6 +263,17 @@ public class AssetDetail extends AssetSummary
 
 
     /**
+     * Return details of the schema associated with the asset.
+     *
+     * @return SchemaElement schema object to query the schema associated with the connected asset.
+     */
+    public SchemaType getSchema()
+    {
+        return schema;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -272,6 +289,7 @@ public class AssetDetail extends AssetSummary
                        ", connections=" + connections +
                        ", licenses=" + licenses +
                        ", certifications=" + certifications +
+                       ", schema=" + schema +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", shortDescription='" + getShortDescription() + '\'' +
                        ", description='" + getDescription() + '\'' +
@@ -291,14 +309,7 @@ public class AssetDetail extends AssetSummary
                        ", GUID='" + getGUID() + '\'' +
                        ", classifications=" + getClassifications() +
                        ", meanings=" + getMeanings() +
-                       ", securityTags=" + getSecurityTags() +
                        ", searchKeywords=" + getSearchKeywords() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", latestChangeDetails=" + getLatestChangeDetails() +
-                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                        ", headerVersion=" + getHeaderVersion() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -334,7 +345,8 @@ public class AssetDetail extends AssetSummary
                        Objects.equals(externalReferences, that.externalReferences) &&
                        Objects.equals(connections, that.connections) &&
                        Objects.equals(licenses, that.licenses) &&
-                       Objects.equals(certifications, that.certifications);
+                       Objects.equals(certifications, that.certifications) &&
+                       Objects.equals(schema, that.schema);
     }
 
 
@@ -347,6 +359,6 @@ public class AssetDetail extends AssetSummary
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), externalIdentifiers, relatedMediaReferences, noteLogs, externalReferences, connections, licenses,
-                            certifications);
+                            certifications, schema);
     }
 }

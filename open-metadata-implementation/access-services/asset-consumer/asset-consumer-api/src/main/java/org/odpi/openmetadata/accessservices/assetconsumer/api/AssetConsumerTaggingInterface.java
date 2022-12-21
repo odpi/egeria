@@ -75,7 +75,7 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
-     * Removes a tag from the repository.
+     * Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost..
      * A private tag can be deleted by its creator and all the references are lost;
      * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *

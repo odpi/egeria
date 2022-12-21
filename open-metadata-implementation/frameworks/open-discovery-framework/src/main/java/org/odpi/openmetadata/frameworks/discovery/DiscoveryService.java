@@ -24,7 +24,8 @@ import java.util.List;
  * Some discovery services manage the invocation of other discovery services.  These discovery services are called
  * discovery pipelines.
  */
-public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent,
+public abstract class DiscoveryService extends ConnectorBase implements OpenDiscoveryService,
+                                                                        AuditLoggingComponent,
                                                                         VirtualConnectorExtension
 {
     protected String           discoveryServiceName = "<Unknown>";
@@ -205,15 +206,31 @@ public abstract class DiscoveryService extends ConnectorBase implements AuditLog
 
 
     /**
-     * Free up any resources held since the connector is no longer needed.  This is a standard
-     * method from the Open Connector Framework (OCF).  If you need to override this method
-     * be sure to call super.disconnect() in your version.
+     * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  void disconnect() throws ConnectorCheckedException
+    public  synchronized void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
+
+        if (this.embeddedConnectors != null)
+        {
+            for (Connector embeddedConnector : this.embeddedConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    try
+                    {
+                        embeddedConnector.disconnect();
+                    }
+                    catch (Exception error)
+                    {
+                        // keep going
+                    }
+                }
+            }
+        }
     }
 }

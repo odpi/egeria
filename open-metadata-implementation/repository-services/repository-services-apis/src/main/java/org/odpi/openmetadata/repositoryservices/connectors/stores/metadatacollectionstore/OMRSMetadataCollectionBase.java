@@ -66,7 +66,7 @@ import java.util.*;
 public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 {
     /**
-     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection id.
      *
      * @param parentConnector connector that this metadata collection supports.  The connector has the information
      *                        to call the metadata repository.
@@ -612,7 +612,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param allTypes list of types to filter.
      * @param category enum value for the category of types to return.
-     * @return type list list.
+     * @return type list.
      */
     protected List<TypeDef> filterTypeDefsByCategory(List<TypeDef>   allTypes,
                                                      TypeDefCategory category)
@@ -683,7 +683,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param allTypes list of types to filter.
      * @param category enum value for the category of types to return.
-     * @return type list list.
+     * @return type list.
      */
     protected List<AttributeTypeDef> filterAttributeTypeDefsByCategory(List<AttributeTypeDef>   allTypes,
                                                                        AttributeTypeDefCategory category)
@@ -934,7 +934,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param standard name of the standard; null means any.
      * @param organization name of the organization; null means any.
      * @param identifier identifier of the element in the standard; null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException all attributes of the external id are null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -967,7 +967,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param allTypes list of types to filter.
      * @param searchCriteria String - search criteria.
-     * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list - each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      */
     public List<TypeDef> filterTypeDefsBySearchCriteria(List<TypeDef>     allTypes,
@@ -1005,7 +1005,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list where each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list where each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException the searchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -1580,7 +1580,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 TypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -1628,7 +1628,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 AttributeTypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -1901,6 +1901,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void getRelationshipsForEntityParameterValidation(String                     userId,
                                                                 String                     entityGUID,
                                                                 String                     relationshipTypeGUID,
@@ -1963,6 +1964,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void findEntitiesByPropertyParameterValidation(String                    userId,
                                                              String                    entityTypeGUID,
                                                              InstanceProperties        matchProperties,
@@ -2030,6 +2032,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @see #findEntities(String, String, List, SearchProperties, int, List, SearchClassifications, Date, String, SequencingOrder, int)
      */
+    @SuppressWarnings(value = "unused")
     protected void findEntitiesParameterValidation(String                    userId,
                                                    String                    entityTypeGUID,
                                                    List<String>              entitySubtypeGUIDs,
@@ -2093,6 +2096,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void findEntitiesByClassificationParameterValidation(String                    userId,
                                                                    String                    entityTypeGUID,
                                                                    String                    classificationName,
@@ -2193,6 +2197,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void findEntitiesByPropertyValueParameterValidation(String                userId,
                                                                   String                entityTypeGUID,
                                                                   String                searchCriteria,
@@ -2253,6 +2258,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @see #findRelationships(String, String, List, SearchProperties, int, List, Date, String, SequencingOrder, int)
      */
+    @SuppressWarnings(value = "unused")
     protected void findRelationshipsParameterValidation(String                    userId,
                                                         String                    relationshipTypeGUID,
                                                         List<String>              relationshipSubtypeGUIDs,
@@ -2317,6 +2323,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void findRelationshipsByPropertyParameterValidation(String                    userId,
                                                                   String                    relationshipTypeGUID,
                                                                   InstanceProperties        matchProperties,
@@ -2386,6 +2393,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void findRelationshipsByPropertyValueParameterValidation(String                    userId,
                                                                        String                    relationshipTypeGUID,
                                                                        String                    searchCriteria,
@@ -2449,6 +2457,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void getEntityNeighborhoodParameterValidation(String               userId,
                                                             String               entityGUID,
                                                             List<String>         entityTypeGUIDs,
@@ -2524,6 +2533,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PropertyErrorException there is a problem with one of the other parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void getLinkingEntitiesParameterValidation(String                    userId,
                                                          String                    startEntityGUID,
                                                          String                    endEntityGUID,
@@ -2575,6 +2585,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @SuppressWarnings(value = "unused")
     protected void getRelatedEntitiesParameterValidation(String               userId,
                                                          String               startEntityGUID,
                                                          List<String>         entityTypeGUIDs,
@@ -2618,6 +2629,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
@@ -3046,7 +3058,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -3208,7 +3220,8 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -4037,6 +4050,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      */
+    @SuppressWarnings(value = "unused")
     protected void updateInstancePropertiesPropertyValidation(String               userId,
                                                               String               instanceGUID,
                                                               InstanceProperties   properties,
@@ -4098,7 +4112,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the parameters passed to a delete or purge instance method.
+     * Validate the parameters passed to delete() or purge() instance method.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the instance to delete.
@@ -4136,7 +4150,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the parameters passed to a delete or purge instance method.
+     * Validate the parameters passed to delete() or purge() instance method.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the instance to delete.
@@ -4306,6 +4320,44 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * Validate the parameters passed to declassifyEntity.
      *
      * @param userId unique identifier for requesting user.
+     * @param entityProxy proxy for the entity.
+     * @param classificationName String name for the classification.
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     */
+    protected void declassifyEntityParameterValidation(String      userId,
+                                                       EntityProxy entityProxy,
+                                                       String      classificationName,
+                                                       String      methodName) throws InvalidParameterException,
+                                                                                      RepositoryErrorException
+    {
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+
+        super.basicRequestValidation(userId, methodName);
+
+        if (entityProxy == null)
+        {
+            repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, null, methodName);
+        }
+        else
+        {
+            repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityProxy.getGUID(), methodName);
+        }
+
+        repositoryValidator.validateClassificationName(repositoryName,
+                                                       classificationParameterName,
+                                                       classificationName,
+                                                       methodName);
+    }
+
+
+    /**
+     * Validate the parameters passed to declassifyEntity.
+     *
+     * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -4352,6 +4404,37 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         final String  methodName = "updateEntityClassification";
 
         return classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
+    }
+
+
+
+    /**
+     * Validate the parameters passed to updateEntityClassification.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy proxy for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return typeDef for the classification
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Deprecated
+    protected TypeDef updateEntityClassificationParameterValidation(String               userId,
+                                                                    EntityProxy          entityProxy,
+                                                                    String               classificationName,
+                                                                    InstanceProperties   properties) throws InvalidParameterException,
+                                                                                                            RepositoryErrorException,
+                                                                                                            PropertyErrorException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityClassification";
+
+        return classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
     }
 
 
@@ -4587,7 +4670,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -4801,10 +4884,10 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
      * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
@@ -5224,7 +5307,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -5409,7 +5492,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -5728,7 +5811,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -5894,7 +5977,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change the existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -6045,7 +6128,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Validate the header instance passed to a delete or purge instance method.
+     * Validate the header instance passed to delete() or purge() instance method.
      *
      * @param userId unique identifier for requesting user.
      * @param instanceHeader header for the instance.
@@ -6069,6 +6152,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                             metadataCollectionId,
                                                             instanceParameterName,
                                                             instanceHeader,
+                                                            auditLog,
                                                             methodName);
     }
 
@@ -6533,7 +6617,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public void saveRelationshipReferenceCopy(String userId,
+    public void saveRelationshipReferenceCopy(String         userId,
                                               Relationship   relationship) throws InvalidParameterException,
                                                                                   RepositoryErrorException,
                                                                                   TypeErrorException,
@@ -6971,7 +7055,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param typeGUID unique identifier of type
      * @param typeName unique name of type
      * @param methodName calling method
-     * @throws TypeDefConflictException more than one definitions for the same type name/guid
+     * @throws TypeDefConflictException more than one definition for the same type name/guid
      */
     protected void reportTypeDefConflict(String typeGUID,
                                          String typeName,

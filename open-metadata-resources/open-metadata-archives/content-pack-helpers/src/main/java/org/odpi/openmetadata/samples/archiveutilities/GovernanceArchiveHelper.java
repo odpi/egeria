@@ -33,7 +33,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     private static final String GOVERNANCE_ACTION_FLOW_TYPE_NAME          = "GovernanceActionFlow";
 
     private static final String REQUEST_TYPE_PROPERTY             = "requestType";
-    private static final String REQUEST_PARAMETERS_PROPERTY       = "parameters";
+    private static final String SERVICE_REQUEST_TYPE_PROPERTY     = "serviceRequestType";
+    private static final String REQUEST_PARAMETERS_PROPERTY       = "requestParameters";
     private static final String GUARD_PROPERTY                    = "guard";
     private static final String PRODUCED_GUARDS_PROPERTY          = "producedGuards";
     private static final String MANDATORY_GUARD_PROPERTY          = "mandatoryGuard";
@@ -45,7 +46,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -59,7 +60,33 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                    long                       versionNumber,
                                    String                     versionName)
     {
-        super(archiveBuilder, archiveGUID, archiveRootName, originatorName, creationDate, versionNumber, versionName);
+        super(archiveBuilder, archiveGUID, archiveRootName, archiveRootName, originatorName, creationDate, versionNumber, versionName);
+    }
+
+
+
+    /**
+     * Typical constructor passes parameters used to build the open metadata archive's property header.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveRootName non-spaced root name of the open metadata GUID map.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     */
+    public GovernanceArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                   String                     archiveGUID,
+                                   String                     archiveName,
+                                   String                     archiveRootName,
+                                   String                     originatorName,
+                                   Date                       creationDate,
+                                   long                       versionNumber,
+                                   String                     versionName)
+    {
+        super(archiveBuilder, archiveGUID, archiveName, archiveRootName, originatorName, creationDate, versionNumber, versionName);
     }
 
 
@@ -221,12 +248,14 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * Create the relationship between a governance engine and one of its supported governance services.
      *
      * @param engineGUID unique identifier of the asset
-     * @param requestType governance request type to use when calling the service
+     * @param requestType governance request type to use when calling the governance engine
+     * @param serviceRequestType  request type to use when calling the service (if null, governance request type is used)
      * @param requestParameters default request parameters to pass to the service when called with this request type
      * @param serviceGUID unique identifier of the service
      */
     public void addSupportedGovernanceService(String              engineGUID,
                                               String              requestType,
+                                              String              serviceRequestType,
                                               Map<String, String> requestParameters,
                                               String              serviceGUID)
     {
@@ -239,10 +268,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(serviceEntity);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, REQUEST_TYPE_PROPERTY, requestType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SERVICE_REQUEST_TYPE_PROPERTY, serviceRequestType, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, REQUEST_PARAMETERS_PROPERTY, requestParameters, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_supported_governance_service_relationship"),
+                                                                     idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_" + requestType + "_supported_governance_service_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

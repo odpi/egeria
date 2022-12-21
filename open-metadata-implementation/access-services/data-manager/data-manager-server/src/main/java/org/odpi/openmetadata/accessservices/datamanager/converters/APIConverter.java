@@ -72,7 +72,8 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
 
                     apiProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     apiProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    apiProperties.setDisplayName(this.removeName(instanceProperties));
+                    apiProperties.setName(this.removeName(instanceProperties));
+                    apiProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     apiProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*

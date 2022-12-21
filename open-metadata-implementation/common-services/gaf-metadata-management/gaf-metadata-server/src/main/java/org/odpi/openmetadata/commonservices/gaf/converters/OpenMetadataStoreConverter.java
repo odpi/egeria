@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.EnumTypeProperty
 import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -37,16 +36,14 @@ import java.util.Map;
 
 
 /**
- * GovernanceEngineOMASConverter provides the generic methods for the Governance Engine beans converters.  Generic classes
+ * OpenMetadataStoreConverter provides the generic methods for the Governance Action Framework (GAF) beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Governance Engine bean.
  */
-abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
+abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
 {
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataStoreConverter.class);
-
-    PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -56,9 +53,9 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param serviceName name of this component
      * @param serverName name of this server
      */
-    OpenMetadataStoreConverter(OMRSRepositoryHelper   repositoryHelper,
-                               String                 serviceName,
-                               String                 serverName)
+    protected OpenMetadataStoreConverter(OMRSRepositoryHelper repositoryHelper,
+                                         String serviceName,
+                                         String serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -75,7 +72,7 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param entityClassifications classifications direct from the entity
      * @return list of bean classifications
      */
-    private List<AttachedClassification> getAttachedClassifications(List<Classification> entityClassifications)
+    protected List<AttachedClassification> getAttachedClassifications(List<Classification> entityClassifications)
     {
         List<AttachedClassification> beanClassifications = null;
 
@@ -95,10 +92,7 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
 
                     if (entityClassification.getProperties() != null)
                     {
-                        Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(
-                                entityClassification.getProperties());
-
-                        beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                        beanClassification.setClassificationProperties(mapElementProperties(entityClassification.getProperties()));
                         beanClassification.setEffectiveFromTime(entityClassification.getProperties().getEffectiveFromTime());
                         beanClassification.setEffectiveToTime(entityClassification.getProperties().getEffectiveToTime());
                     }
@@ -254,8 +248,8 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param elementControlHeader GAF object control header
      * @param header OMRS element header
      */
-    void fillElementControlHeader(ElementControlHeader elementControlHeader,
-                                  InstanceAuditHeader  header)
+    public void fillElementControlHeader(ElementControlHeader elementControlHeader,
+                                         InstanceAuditHeader  header)
     {
         if (header != null)
         {
@@ -283,7 +277,7 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param instanceProperties retrieve properties
      * @return  properties mapped to GAF
      */
-    private ElementProperties mapElementProperties(InstanceProperties instanceProperties)
+    public ElementProperties mapElementProperties(InstanceProperties instanceProperties)
     {
         if (instanceProperties != null)
         {
@@ -342,6 +336,10 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
 
                                 arrayTypePropertyValue.setTypeName(omrsArrayPropertyValue.getTypeName());
                                 arrayTypePropertyValue.setArrayValues(this.mapElementProperties(omrsArrayPropertyValue.getArrayValues()));
+                                if (arrayTypePropertyValue.getArrayValues() != null)
+                                {
+                                    arrayTypePropertyValue.setArrayCount(arrayTypePropertyValue.getArrayValues().getPropertyCount());
+                                }
 
                                 gafElementProperties.setProperty(propertyName, arrayTypePropertyValue);
                                 break;
@@ -378,8 +376,8 @@ abstract class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param bean bean to fill
      * @param entity values from repositories
      */
-    void fillOpenMetadataElement(OpenMetadataElement bean,
-                                 EntityDetail        entity)
+    public void fillOpenMetadataElement(OpenMetadataElement bean,
+                                        EntityDetail        entity)
     {
         fillElementControlHeader(bean, entity);
 

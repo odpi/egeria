@@ -81,7 +81,10 @@ public class DataFileProperties extends DataStoreProperties
     public String toString()
     {
         return "DataFileProperties{" +
-                       "fileType='" + fileType + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", fileType='" + fileType + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -89,10 +92,10 @@ public class DataFileProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -113,16 +116,18 @@ public class DataFileProperties extends DataStoreProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof DataFileProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         DataFileProperties that = (DataFileProperties) objectToCompare;
-        return Objects.equals(fileType, that.fileType);
+
+        return fileType != null ? fileType.equals(that.fileType) : that.fileType == null;
     }
 
 

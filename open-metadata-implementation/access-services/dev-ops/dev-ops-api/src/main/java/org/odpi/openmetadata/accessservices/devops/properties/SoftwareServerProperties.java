@@ -265,7 +265,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
                        ", softwareServerVersion='" + softwareServerVersion + '\'' +
                        ", softwareServerSource='" + softwareServerSource + '\'' +
                        ", softwareServerUserId='" + softwareServerUserId + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

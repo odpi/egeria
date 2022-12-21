@@ -47,7 +47,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                      "Enterprise Repository Connector",
                                      "Supports enterprise access to the list of open metadata repositories registered " +
                                              "with the OMRS Enterprise Connector Manager.",
-                                     "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.md"),
+                                     "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.md"),
 
     LOCAL_REPOSITORY_CONNECTOR (7,
                                 ComponentDevelopmentStatus.STABLE,
@@ -264,6 +264,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return enum describing the status
      */
+    @Override
     public ComponentDevelopmentStatus getComponentDevelopmentStatus()
     {
         return componentDevelopmentStatus;
@@ -275,6 +276,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String component name
      */
+    @Override
     public String getComponentName()
     {
         return componentName;
@@ -288,7 +290,8 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String description
      */
-    public String getComponentType()
+    @Override
+    public String getComponentDescription()
     {
         return componentDescription;
     }
@@ -300,6 +303,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return String URL
      */
+    @Override
     public String getComponentWikiURL()
     {
         return componentWikiURL;
@@ -320,6 +324,6 @@ public enum OMRSAuditingComponent implements ComponentDescription
                        ", componentName='" + componentName + '\'' +
                        ", componentDescription='" + componentDescription + '\'' +
                        ", componentWikiURL='" + componentWikiURL + '\'' +
-                       ", componentType='" + getComponentType() + '\'' +
+                       ", componentType='" + getComponentDescription() + '\'' +
                        '}';
     }}

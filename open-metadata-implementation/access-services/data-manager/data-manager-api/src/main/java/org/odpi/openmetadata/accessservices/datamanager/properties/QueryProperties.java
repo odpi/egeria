@@ -49,13 +49,16 @@ public class QueryProperties extends DataSetProperties
     public String toString()
     {
         return "QueryProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

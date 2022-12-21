@@ -143,7 +143,9 @@ public class TemplateRequestBody extends TemplateProperties
         return "TemplateRequestBody{" +
                        "qualifiedName='" + getQualifiedName() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
                        ", networkAddress='" + getNetworkAddress() + '\'' +
                        ", externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +

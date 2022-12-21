@@ -21,7 +21,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
     private String              description              = null;
     private String              governanceEngineGUID     = null;
     private String              governanceEngineName     = null;
-    private String              requestSourceName        = null;
+    private String              processName              = null;
     private String              governanceActionTypeGUID = null;
     private String              governanceActionTypeName = null;
     private String              requestType              = null;
@@ -43,10 +43,10 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
      * @param description description of the governance action
      * @param governanceEngineGUID GUID of the governance engine that should execute the request
      * @param governanceEngineName name of the governance engine that should execute the request
-     * @param requestSourceName name of the process that requested the governance action
+     * @param processName name of the process that requested the governance action
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this governance action
      * @param governanceActionTypeName unique name of the governance action type that initiated this governance action
-     * @param requestType request type to identify the governance action service to run
+     * @param requestType request type from the caller
      * @param requestParameters properties to pass to the governance action service
      * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
      * @param receivedGuards list of guards that triggered this governance action
@@ -66,7 +66,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                             String               description,
                             String               governanceEngineGUID,
                             String               governanceEngineName,
-                            String               requestSourceName,
+                            String               processName,
                             String               governanceActionTypeGUID,
                             String               governanceActionTypeName,
                             String               requestType,
@@ -97,7 +97,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         this.description = description;
         this.governanceEngineGUID = governanceEngineGUID;
         this.governanceEngineName = governanceEngineName;
-        this.requestSourceName = requestSourceName;
+        this.processName = processName;
         this.governanceActionTypeGUID = governanceActionTypeGUID;
         this.governanceActionTypeName = governanceActionTypeName;
         this.requestType = requestType;
@@ -205,7 +205,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
-                                                                  requestSourceName,
+                                                                  processName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -338,6 +338,11 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
     /**
      * Append the supplied bean properties in the supplied InstanceProperties object.
      *
+     * @param properties existing properties
+     * @param actionStatus completion status enum value
+     * @param completionGuards optional guard strings for triggering subsequent action(s)
+     * @param completionDate when did it finish
+     * @param completionMessage message to describe completion results or reasons for failure
      * @param methodName name of the calling method
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
@@ -346,6 +351,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                        int                actionStatus,
                                                        Date               completionDate,
                                                        List<String>       completionGuards,
+                                                       String             completionMessage,
                                                        String             methodName) throws InvalidParameterException
     {
         try
@@ -368,11 +374,18 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                 OpenMetadataAPIMapper.COMPLETION_DATE_PROPERTY_NAME,
                                                                 completionDate,
                                                                 methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
                                                                        OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
                                                                        completionGuards,
                                                                        methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                                  completionMessage,
+                                                                  methodName);
 
         return properties;
     }

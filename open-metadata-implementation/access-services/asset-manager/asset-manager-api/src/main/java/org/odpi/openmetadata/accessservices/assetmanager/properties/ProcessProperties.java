@@ -103,6 +103,7 @@ public class ProcessProperties extends AssetProperties
                        ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +

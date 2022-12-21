@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RelatedGovernanceActionElement;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -44,7 +44,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
-     * relationships between them.  The relationships may be omitted if they do not have an properties.
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
@@ -71,7 +71,6 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
             if (returnBean instanceof GovernanceActionElement)
             {
                 GovernanceActionElement    bean       = (GovernanceActionElement)returnBean;
-                GovernanceActionProperties properties = new GovernanceActionProperties();
 
                 if (primaryEntity != null)
                 {
@@ -80,7 +79,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                      */
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
 
-                    properties.setRequestedTime(primaryEntity.getCreateTime());
+                    bean.setRequestedTime(primaryEntity.getCreateTime());
 
                     /*
                      * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -88,30 +87,33 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
-                    properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    properties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    properties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    properties.setDescription(this.removeDescription(instanceProperties));
-                    properties.setRequestType(this.removeRequestType(instanceProperties));
-                    properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
-                    properties.setGovernanceEngineGUID(this.removeExecutorEngineGUID(instanceProperties));
-                    properties.setGovernanceEngineName(this.removeExecutorEngineName(instanceProperties));
-                    properties.setProcessName(this.removeProcessName(instanceProperties));
-                    properties.setGovernanceActionTypeGUID(this.removeGovernanceActionTypeGUID(instanceProperties));
-                    properties.setGovernanceActionTypeName(this.removeGovernanceActionTypeName(instanceProperties));
-                    properties.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
-                    properties.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
-                    properties.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
-                    properties.setStartTime(this.removeStartDate(instanceProperties));
-                    properties.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
-                    properties.setCompletionTime(this.removeCompletionDate(instanceProperties));
-                    properties.setCompletionGuards(this.removeCompletionGuards(instanceProperties));
-                    properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    bean.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
+                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
+                    bean.setDescription(this.removeDescription(instanceProperties));
+                    bean.setRequestType(this.removeRequestType(instanceProperties));
+                    bean.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                    bean.setGovernanceEngineGUID(this.removeExecutorEngineGUID(instanceProperties));
+                    bean.setGovernanceEngineName(this.removeExecutorEngineName(instanceProperties));
+                    bean.setProcessName(this.removeProcessName(instanceProperties));
+                    bean.setGovernanceActionTypeGUID(this.removeGovernanceActionTypeGUID(instanceProperties));
+                    bean.setGovernanceActionTypeName(this.removeGovernanceActionTypeName(instanceProperties));
+                    bean.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
+                    bean.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
+                    bean.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                    bean.setStartTime(this.removeStartDate(instanceProperties));
+                    bean.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
+                    bean.setCompletionTime(this.removeCompletionDate(instanceProperties));
+                    bean.setCompletionGuards(this.removeCompletionGuards(instanceProperties));
+                    bean.setCompletionMessage(this.removeCompletionMessage(instanceProperties));
+                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     if (relationships != null)
                     {
-                        List<RequestSourceElement> requestSourceElements = new ArrayList<>();
-                        List<ActionTargetElement>  actionTargetElements  = new ArrayList<>();
+                        List<RequestSourceElement> requestSourceElements          = new ArrayList<>();
+                        List<ActionTargetElement>            actionTargetElements = new ArrayList<>();
+                        List<RelatedGovernanceActionElement> previousActions      = new ArrayList<>();
+                        List<RelatedGovernanceActionElement> followOnActions      = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
@@ -122,21 +124,21 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                 if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME))
                                 {
-                                    if (properties.getRequestType() == null)
+                                    if (bean.getRequestType() == null)
                                     {
-                                        properties.setRequestType(this.removeRequestType(instanceProperties));
-                                        properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                                        bean.setRequestType(this.removeRequestType(instanceProperties));
+                                        bean.setRequestParameters(this.removeRequestParameters(instanceProperties));
                                     }
 
-                                    if (properties.getGovernanceEngineGUID() == null)
+                                    if (bean.getGovernanceEngineGUID() == null)
                                     {
                                         EntityProxy entityProxy = relationship.getEntityTwoProxy();
 
-                                        properties.setGovernanceEngineGUID(entityProxy.getGUID());
+                                        bean.setGovernanceEngineGUID(entityProxy.getGUID());
 
                                         if (entityProxy.getUniqueProperties() != null)
                                         {
-                                            properties.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
+                                            bean.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
                                         }
                                     }
                                 }
@@ -148,6 +150,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                     actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
+                                    actionTargetElement.setCompletionMessage(this.removeCompletionMessage(instanceProperties));
 
                                     String actionTargetGUID = relationship.getEntityTwoProxy().getGUID();
 
@@ -178,21 +181,48 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                         requestSourceElements.add(requestSourceElement);
                                     }
                                 }
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_NAME))
+                                {
+                                    RelatedGovernanceActionElement relatedAction = new RelatedGovernanceActionElement();
+
+                                    relatedAction.setGuard(this.removeGuard(relationship.getProperties()));
+                                    relatedAction.setMandatoryGuard(this.removeMandatoryGuard(relationship.getProperties()));
+                                    relatedAction.setRelatedActionLinkGUID(relationship.getGUID());
+
+                                    if (primaryEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
+                                    {
+                                        relatedAction.setRelatedAction(this.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
+                                        previousActions.add(relatedAction);
+                                    }
+                                    else
+                                    {
+                                        relatedAction.setRelatedAction(this.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+                                        followOnActions.add(relatedAction);
+                                    }
+                                }
                             }
                         }
 
                         if (! requestSourceElements.isEmpty())
                         {
-                            properties.setRequestSourceElements(requestSourceElements);
+                            bean.setRequestSourceElements(requestSourceElements);
                         }
 
                         if (! actionTargetElements.isEmpty())
                         {
-                            properties.setActionTargetElements(actionTargetElements);
+                            bean.setActionTargetElements(actionTargetElements);
+                        }
+
+                        if (! previousActions.isEmpty())
+                        {
+                            bean.setPreviousActions(previousActions);
+                        }
+
+                        if (! followOnActions.isEmpty())
+                        {
+                            bean.setFollowOnActions(followOnActions);
                         }
                     }
-
-                    bean.setProperties(properties);
                 }
                 else
                 {
@@ -201,7 +231,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
             }
             else
             {
-                handleUnexpectedBeanClass(beanClass.getName(), GovernanceActionProperties.class.getName(), methodName);
+                handleUnexpectedBeanClass(beanClass.getName(), GovernanceActionElement.class.getName(), methodName);
             }
 
             return returnBean;
