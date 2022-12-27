@@ -90,7 +90,7 @@ public class CocoPharmaServerSecurityConnectorTokenBased extends OpenMetadataSer
     @Override
     public void validateUserForServer(String userId) throws UserNotAuthorizedException {
         Map<String, String> headersMap = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
-        if (headersMap != null) {
+        if (headersMap != null && !headersMap.isEmpty()) {
             Jws<Claims> jwtClaims = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(secret))
                     .build().parseClaimsJws(headersMap.get("authorisation"));
