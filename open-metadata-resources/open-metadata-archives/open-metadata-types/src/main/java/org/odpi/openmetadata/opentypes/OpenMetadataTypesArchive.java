@@ -7,10 +7,13 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -161,6 +164,9 @@ public class OpenMetadataTypesArchive
         updateGovernanceEngines();
         updateGovernanceActionTypes();
         updateGovernanceActions();
+        update0710DigitalServices();
+        update0715DigitalServiceOwnership();
+        update0735SolutionPortsAndWires();
     }
 
 
@@ -381,7 +387,6 @@ public class OpenMetadataTypesArchive
     }
 
 
-
     private TypeDefPatch updateTargetForActionRelationship()
     {
         /*
@@ -410,6 +415,254 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0710DigitalServices()
+    {
+        this.archiveBuilder.addRelationshipDef(getDigitalServiceProductRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
+    }
+
+    private RelationshipDef getDigitalServiceProductRelationship()
+    {
+        final String guid            = "51465a59-c785-406d-929c-def34596e9af";
+        final String name            = "DigitalServiceProduct";
+        final String description     = "A digital product that is maintained by a digital service.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "DigitalService";
+        final String                     end1AttributeName            = "managingDigitalService";
+        final String                     end1AttributeDescription     = "Digital service responsible for the production of the digital product.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "digitalProducts";
+        final String                     end2AttributeDescription     = "The associated digital products.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private TypeDefPatch updateDigitalProductClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DigitalProduct";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name = "syncDatesByKey";
+        final String attribute1Description = "Collection of synchronization dates identified by a key (deprecated, added in error).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name = "productName";
+        final String attribute2Description = "Display name of the product.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name = "productType";
+        final String attribute3Description = "Type or category of the product.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name = "introductionDate";
+        final String attribute4Description = "Date that the product was made available.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name = "maturity";
+        final String attribute5Description = "Level of maturity for the product.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name = "serviceLife";
+        final String attribute6Description = "Length of time that the product is expected to be in service.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name = "currentVersion";
+        final String attribute7Description = "Which is the current supported version that is recommended for consumers.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name = "nextVersion";
+        final String attribute8Description = "When is the next version expected to be released.";
+        final String attribute8DescriptionGUID = null;
+        final String attribute9Name = "withdrawDate";
+        final String attribute9Description = "What date what the product withdrawn, preventing new consumers.";
+        final String attribute9DescriptionGUID = null;
+        final String attribute10Name = "additionalProperties";
+        final String attribute10Description = "Any additional properties needed to describe the product.";
+        final String attribute10DescriptionGUID = null;
+
+        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
+                                                                  attribute1Description,
+                                                                  attribute1DescriptionGUID);
+
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute8Name,
+                                                         attribute8Description,
+                                                         attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute9Name,
+                                                         attribute9Description,
+                                                         attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
+                                                                    attribute10Description,
+                                                                    attribute10DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0715DigitalServiceOwnership()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDigitalServiceOperatorRelationship());
+    }
+
+    private TypeDefPatch updateDigitalServiceOperatorRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DigitalServiceOperator";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "digitalServiceOperators";
+        final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    end2Cardinality);
+
+
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0735SolutionPortsAndWires()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
+    }
+
+    private TypeDefPatch updateSolutionLinkingWireRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DigitalServiceOperator";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "digitalServiceOperators";
+        final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    end2Cardinality);
+
+
+        typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
     }
